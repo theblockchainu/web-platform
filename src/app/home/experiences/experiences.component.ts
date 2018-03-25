@@ -12,6 +12,7 @@ import 'rxjs/add/operator/do';
 import * as moment from 'moment';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-experiences',
@@ -43,6 +44,7 @@ export class ExperiencesComponent implements OnInit {
   public initialized: boolean;
   public selectedTopics: Array<any>;
   public loading = false;
+  public envVariable;
   private today = moment();
   constructor(
     public _collectionService: CollectionService,
@@ -53,6 +55,7 @@ export class ExperiencesComponent implements OnInit {
     public elRef: ElementRef,
     public _dialogsService: DialogsService
   ) {
+    this.envVariable = environment;
     this.userId = _cookieUtilsService.getValue('userId');
   }
   ngOnInit() {
