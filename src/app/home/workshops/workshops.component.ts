@@ -12,6 +12,7 @@ import 'rxjs/add/operator/do';
 import * as moment from 'moment';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
+import {environment} from "../../../environments/environment";
 @Component({
   selector: 'app-workshops',
   templateUrl: './workshops.component.html',
@@ -32,7 +33,7 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 export class WorkshopsComponent implements OnInit {
   public availableTopics: Array<any>;
   public topicsBackup: Array<any>;
-
+  public envVariable;
   public userId;
   public workshops: Array<any>;
   @ViewChild('topicButton') topicButton;
@@ -52,6 +53,7 @@ export class WorkshopsComponent implements OnInit {
     public elRef: ElementRef,
     public _dialogsService: DialogsService
   ) {
+    this.envVariable = environment;
     this.userId = _cookieUtilsService.getValue('userId');
   }
   ngOnInit() {

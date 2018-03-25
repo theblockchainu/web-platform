@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { CommunityService } from '../../_services/community/community.service';
+import {environment} from "../../../environments/environment";
 
 @Component({
     selector: 'app-feed',
@@ -38,6 +39,7 @@ export class HomefeedComponent implements OnInit {
     public loadingPeers = false;
     public loadingContinueLearning = false;
     private today = moment();
+    public envVariable;
 
     public ongoingArray: Array<any>;
     public upcomingArray: Array<any>;
@@ -56,6 +58,7 @@ export class HomefeedComponent implements OnInit {
         public _dialogsService: DialogsService,
         public _communityService: CommunityService
     ) {
+        this.envVariable = environment;
         this.userId = _cookieUtilsService.getValue('userId');
     }
 
