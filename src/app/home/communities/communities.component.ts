@@ -48,6 +48,7 @@ export class CommunitiesComponent implements OnInit {
     public loading = false;
     private today = moment();
 
+
     constructor(public _collectionService: CollectionService,
         public _profileService: ProfileService,
         private _cookieUtilsService: CookieUtilsService,
