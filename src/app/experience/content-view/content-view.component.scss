@@ -1,0 +1,41 @@
+.activity-title {
+  font-weight: 400;
+  font-size: 90%;
+}
+
+.activity-subtitle {
+  color: #777777;
+  font-size: 90%;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a {
+  color: #777;
+}
+
+.selected-content-label {
+  font-size: 100%;
+  font-weight: 400;
+}
+
+.content-title {
+  font-weight: 500;
+}
+
+.content-subtitle {
+  font-weight: 400;
+  color: #777777;
+  margin-top: 4px;
+}
+
+.content-type {
+  font-size: 100%;
+  color: #777777;
+}
+
+.mat-list-item {
+  height: fit-content !important;
+}

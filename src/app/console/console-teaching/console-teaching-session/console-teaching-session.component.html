@@ -1,0 +1,216 @@
+<div class="row">
+    <div class="col-md-12">
+        <div *ngIf="!loaded" class="loading-container">
+            <ngx-loading [show]="true"></ngx-loading>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" *ngIf="loaded">
+        <div #noContentView *ngIf="upcomingSessions.length === 0 && ongoingSessions.length === 0 && pastSessions.length === 0 && notApproved.length === 0"
+            class="center" style="margin-top: 10%">
+            <div class="lightText" *ngIf="!sessionEnabled">
+                You have not enabled sessions
+                <br>
+                <br> Start by enabling Session
+            </div>
+            <div class="lightText" *ngIf="sessionEnabled">
+                No one has joined your session
+            </div>
+        </div>
+        <div *ngIf="upcomingSessions.length > 0 || ongoingSessions.length > 0">
+            <div style="display:inline;">
+                <h2>Ongoing & Upcoming</h2>
+            </div>
+            <div class="row">
+                <div>
+                    <div style="margin-top:20px;" class="col-md-12">
+                        <div class="row">
+                            <div *ngFor="let session of ongoingSessions" class="col-md-4" style="margin-top: 20px;">
+                                <mat-card style="text-align: center; padding: 20px;">
+                                    <mat-card-content>
+                                        <div style="text-align: right">
+                                            <div class="pull-right">
+                                                <a [matMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                                                    <mat-icon>more_vert</mat-icon>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="collectionParticipantImageCarousel">
+                                            <div class="circle-thumb-big">
+                                                <img src="{{envVariable.apiUrl+session.peers[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+                                            </div>
+                                        </div>
+                                        <div class="teacherName">
+                                            <span>{{session.peers[0].profiles[0].first_name + ' ' + session.peers[0].profiles[0].last_name}}
+                                            </span>
+                                        </div>
+                                        <div class="teacherHeadline">
+                                            <span>{{session.peers[0].profiles[0].headline}} </span>
+                                        </div>
+                                        <div class="collectionTitle">Session</div>
+                                        <p class="upcomingEventLabel">
+                                            On going
+                                        </p>
+                                        <div class="upcomingEventTime">
+                                            Started {{session.startTime |timeToNow}}
+                                        </div>
+                                        <div class="upcomingEventTime">
+                                            {{session.startTime |extractTime:'Do MMM, HH:mm'}} - {{session.endTime |extractTime:'Do MMM, HH:mm'}}
+                                        </div>
+                                    </mat-card-content>
+                                    <br>
+                                    <mat-card-footer class="cardFooter">
+                                        <button mat-button (click)="joinLiveSession(session)">Join</button>
+                                    </mat-card-footer>
+                                </mat-card>
+                            </div>
+                            <div *ngFor="let session of upcomingSessions" class="col-md-4" style="margin-top: 20px;">
+                                <mat-card style="text-align: center; padding: 20px;">
+                                    <mat-card-content>
+                                        <div style="text-align: right">
+                                            <div class="pull-right">
+                                                <a [matMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                                                    <mat-icon>more_vert</mat-icon>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="collectionParticipantImageCarousel">
+                                            <div class="circle-thumb-big">
+                                                <img src="{{envVariable.apiUrl+session.peers[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+                                            </div>
+                                        </div>
+                                        <div class="teacherName">
+                                            <span>{{session.peers[0].profiles[0].first_name + ' ' + session.peers[0].profiles[0].last_name}}
+                                            </span>
+                                        </div>
+                                        <div class="teacherHeadline">
+                                            <span>{{session.peers[0].profiles[0].headline}} </span>
+                                        </div>
+                                        <div class="collectionTitle">Session</div>
+                                        <!-- <mat-progress-bar mode="determinate" value="{{consoleTeachingComponent.getProgressValue(collection)}}"></mat-progress-bar> -->
+                                        <p class="upcomingEventLabel">
+                                            Upcoming
+                                        </p>
+                                        <div class="upcomingEventTime">
+                                            Starts {{session.startTime |timeToNow}}
+                                        </div>
+                                        <div class="upcomingEventTime">
+                                            {{session.startTime |extractTime:'Do MMM, HH:mm'}} - {{session.endTime |extractTime:'Do MMM, HH:mm'}}
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+        </div>
+        <div *ngIf="notApproved.length > 0">
+            <div style="display:inline;">
+                <h2>Waiting to be approved</h2>
+            </div>
+            <div class="row">
+                <div style="margin-top:20px;" class="col-md-12">
+                    <div class="row">
+                        <div *ngFor="let session of notApproved" class="col-md-4" style="margin-top: 20px;">
+                            <mat-card style="text-align: center; padding: 20px;">
+                                <mat-card-content>
+                                    <div style="text-align: right">
+                                        <div class="pull-right">
+                                            <a [matMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                                                <mat-icon>more_vert</mat-icon>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="collectionParticipantImageCarousel">
+                                        <div class="circle-thumb-big">
+                                            <img src="{{envVariable.apiUrl+ session.peers[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+                                        </div>
+                                    </div>
+                                    <div class="teacherName">
+                                        <span>{{session.peers[0].profiles[0].first_name + ' ' + session.peers[0].profiles[0].last_name}}
+                                        </span>
+                                    </div>
+                                    <div class="collectionTitle">Session</div>
+                                    <!-- <mat-progress-bar mode="determinate" value="{{consoleTeachingComponent.getProgressValue(collection)}}"></mat-progress-bar> -->
+                                    <p class="upcomingEventLabel">
+                                        Unapproved
+                                    </p>
+                                    <div class="upcomingEventTime">
+                                        Starting {{session.startTime | timeToNow}}
+                                    </div>
+                                    <div class="upcomingEventTime">
+                                        {{session.startTime |extractTime:'Do MMM, HH:mm'}} - {{session.endTime |extractTime:'Do MMM, HH:mm'}}
+                                    </div>
+                                </mat-card-content>
+                                <mat-card-footer class="cardFooter">
+                                    <button mat-button (click)="approveSession(session)">Approve</button>
+                                </mat-card-footer>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div *ngIf="pastSessions.length > 0">
+            <div style="display:inline;">
+                <h2>Past</h2>
+            </div>
+            <div class="row">
+                <div style="margin-top:20px;" class="col-md-12">
+                    <div class="row">
+                        <div *ngFor="let session of pastSessions" class="col-md-4" style="margin-top: 20px;">
+                            <mat-card style="text-align: center; padding: 20px;">
+                                <mat-card-content>
+                                    <div style="text-align: right">
+                                        <div class="pull-right">
+                                            <a [matMenuTriggerFor]="collectionCardMenu" style="text-align: right; padding: 0px">
+                                                <mat-icon>more_vert</mat-icon>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="collectionParticipantImageCarousel">
+                                        <div class="circle-thumb-big">
+                                            <img src="{{envVariable.apiUrl+session.peers[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+                                        </div>
+                                    </div>
+                                    <div class="teacherName">
+                                        <span>{{session.peers[0].profiles[0].first_name + ' ' + session.peers[0].profiles[0].last_name}}
+                                        </span>
+                                    </div>
+                                    <div class="teacherHeadline">
+                                        <span>{{session.peers[0].profiles[0].headline}} </span>
+                                    </div>
+                                    <div class="collectionTitle">Session</div>
+                                    <!-- <mat-progress-bar mode="determinate" value="{{consoleTeachingComponent.getProgressValue(collection)}}"></mat-progress-bar> -->
+                                    <p class="upcomingEventLabel">
+                                        Past
+                                    </p>
+                                    <div class="upcomingEventTime">
+                                        Ended {{session.endTime|timeToNow}}
+                                    </div>
+                                    <div class="upcomingEventTime">
+                                        {{session.startTime |extractTime:'Do MMM, HH:mm'}} - {{session.endTime |extractTime:'Do MMM, HH:mm'}}
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<mat-menu #collectionCardMenu>
+    <button mat-menu-item>
+        Cancel
+    </button>
+    <button mat-menu-item>
+        Message Teacher
+    </button>
+</mat-menu>

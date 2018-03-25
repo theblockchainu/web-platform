@@ -1,0 +1,387 @@
+// @import "../src/styles/utilities/config";
+
+//Convert to scss
+.title{
+    margin-top:20px !important;
+    margin-bottom:15px;
+    line-height: 1.1;
+}
+.subtitle {
+  font-size: 16px;
+  color: #aaaaaa;
+  // margin: 5px;
+}
+.guideline-points{
+  margin:10vh 0;
+  padding: 0 0 0 15px;
+  font-size:15px;
+  li{
+    margin-bottom:20px;
+  }
+}
+.text-agree{
+  font-size:15px;
+  i{
+    display: inline-block;
+    margin-right:20px;
+  }
+}
+input[type="text"]{
+  border:none;
+  border-bottom:1px solid #ccc;
+  box-shadow:none;
+  border-radius:0;
+}
+
+.inputOTP input[type="text"]{
+  border-bottom: none;
+}
+.btn-continue{
+  padding:10px 50px;
+}
+// textarea{
+//   resize:none;
+// }
+.navbar-fixed-left {
+  width: 180px;
+  position: fixed;
+  border-radius: 0;
+  height: 100%;
+}
+
+.disableClick{
+    pointer-events: none;
+}
+
+.navbar-fixed-left .navbar-nav > li {
+  float: none;  /* Cancel default li float: left */
+  width: max-content;
+  height: 30px;
+
+}
+
+.navbar-fixed-left + .container {
+  padding-left: 160px;
+}
+
+/* On using dropdown menu (To right shift popuped) */
+.navbar-fixed-left .navbar-nav > li > .dropdown-menu {
+  margin-top: -50px;
+  margin-left: 140px;
+}
+
+.navbar-nav li{
+color: black;
+cursor: pointer;
+}
+
+.content-container {
+  padding: 0px 15px;
+  margin: auto 0px;
+}
+
+.lookingFor .lookingFor-thumb {
+        background-color: #e2e2e2;
+        // padding:50px 0;
+        height:150px;
+        position:relative;
+}
+ .lookingFor .lookingFor-thumb i{
+        display:inline-block;
+        position:absolute;
+        width:100px;
+        height:100px;
+        left:50%;
+        top:50%;
+        margin:-50px 0 0 -50px;  
+ }
+
+.lookingForTitle{
+  display:block;
+  margin:5px 0px 20px;
+  font-size:15px;
+  color:#777;
+}
+.lookingForDesc{
+  margin:10px 0 0 0;
+  font-size:13px;
+  color:#666;
+}
+
+label.check > input, label.radiobox > input{display: none;}
+label.check, label.radiobox{
+  font-size: 14px;
+  font-weight: normal;
+  position:absolute;
+  top:10px;
+  right:20px;
+  z-index: 1;
+}
+label.check i, label.radiobox i {
+    height: 24px;
+    width: 24px;
+    // background-color: #fff;
+    display: inline-block;
+    position: relative;
+    left: 0px;
+    top: 5px;
+    // border-radius:5px;
+    // border:1px solid #ccc;
+    font-style:normal;
+}
+label.radiobox i{border-radius:50%;}
+label.check [type=checkbox]:checked + i, label.radiobox input[type=radio]:checked+i{
+  background-color: #0091ea;
+  border:none;
+}
+
+.captitalise {
+    text-transform: capitalize;
+}
+
+#video-demo-container {
+	width: 400px;
+	margin: 40px auto;
+}
+
+#main-video {
+	display: none;
+	max-width: 400px;
+}
+
+
+#get-thumbnail {
+	display: none;
+}
+
+#video-canvas {
+	 display: block;
+}
+
+#upload-button {
+	width: 150px;
+	display: block;
+	margin: 20px auto;
+}
+
+.drop-area{
+  width:100px;
+  height:25px;
+  border: 1px solid #999;
+  text-align: center;
+  padding:10px;
+  cursor:pointer;
+}
+#thumbnail img{
+  width:100px;
+  height:100px;
+  margin:5px;
+}
+
+.mat-list .mat-list-item .mat-list-item-content, .mat-nav-list .mat-list-item .mat-list-item-content {
+  padding: 0px !important;
+}
+
+.selected-dates {
+  font-weight: 500;
+  padding-left: 0px;
+  margin: 5px 0px 20px 0px;
+}
+
+md-icon {
+  position: relative;
+  top: 5px;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.iconVC {
+  vertical-align:baseline;
+  font-size: 20px
+}
+
+.addIconText {
+  font-size: 16px;
+  color: darkgray;
+}
+
+.priceAlign {
+  margin-left: -50px;
+}
+
+.priceAlignParent {
+  margin-top: 12px;
+}
+
+.video .mat-grid-tile {
+  height: 100px !important;
+  width: calc(((35% - 5px) * 1) + 0px) !important;
+}
+
+.mat-grid-list {
+  height: 200px !important;
+}
+
+.profileVideo:before {
+  // display: inline-block;
+  content: "";
+  vertical-align: middle;
+  min-height: 100px;
+}
+
+.profileVideo {
+  max-height: 100%;
+  // display: inline-block;
+  min-height: 100px;
+  margin-bottom: 10px;
+  // border: 0.5px solid grey;
+  // padding: 10px;
+}
+
+.delete {
+  position: relative;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.delete-button, .delete-video {
+  position:absolute;
+  height: 20px;
+  width: 20px;
+  color: #33bd9e;
+  cursor: pointer;
+  border: 1px solid #33bd9e;
+  background: white;
+  border-radius: 20px;
+  font-size: 18px;
+}
+
+.profileVideo .delete-video {
+  top:-10px;
+  right:5px;
+}
+
+.pic:before {
+  display: inline-block;
+  content: "";
+  vertical-align: middle;
+  // min-height: 210px;
+}
+
+// .pic {
+//   max-height: 200px;
+//   display: inline-block;
+//   min-height: 210px;
+//   margin-bottom: 10px;
+  // padding: 10px;
+// }
+
+.pic img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.pic .delete-button {
+  top:-8px;
+  right:6px;
+}
+
+.pic .imageContainer {
+  height: auto;
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+.videoContainer {
+  width: 165px;
+}
+
+md-hint{
+  &.mat-hint{
+      color:#999;
+  }
+}
+
+md-input-container .mat-form-field-infix-override {
+  padding-top: 0.9em !important;
+}
+
+.addPhoneButton .mat-button-focus-overlay {
+  background: none;
+  margin-bottom: 10px; 
+  cursor: pointer
+}
+
+.hint {
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.mdiIcon {
+  font-size: 20px;
+}
+.darkColor {
+  color: #484848;
+}
+
+.addPhoneButton .mat-button-focus-overlay {
+  background: none !important;
+}
+
+.addPhoneButton .mat-button-wrapper {
+  font-size: 0.85rem !important;
+}
+
+.alignDelete {
+  line-height: 60px;
+  vertical-align: middle;
+}
+
+.customWidthCode {
+  width: 20% !important;
+}
+
+.customWidthNumber {
+  width: 70% !important;
+  padding-left: 20px;
+}
+
+.disabled {
+  cursor: not-allowed;
+  color: grey;
+}
+
+.max-height-40 {
+  max-height: 40px;
+}
+
+.max-height-25 {
+  max-height: 25px;
+}
+
+.customWidth30 {
+  width: 30%;
+}
+
+.customWidth33 {
+  width: 42%;
+}
+
+.geoLocation .custom-autocomplete .custom-autocomplete__dropdown .currentlocation a {
+  font-size: 0.9rem !important;
+}
+
+.geoLocation .custom-autocomplete .custom-autocomplete__dropdown .heading {
+  font-size: 0.8rem !important;
+}
+
+.geoLocation .custom-autocomplete .custom-autocomplete__dropdown .main-text {
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+}
+
+agm-map {
+  height: 300px;
+}

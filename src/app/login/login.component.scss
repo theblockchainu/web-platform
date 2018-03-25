@@ -1,0 +1,81 @@
+md-input-container md-icon {
+    position: absolute;
+    top: 5px;
+    left: 2px;
+    }
+
+md-dialog-content {
+    display: block;   
+    margin: 0 -67px 0 -67px;
+    max-height: 50vh;
+    overflow: unset;
+}
+
+.page-signin
+{
+    height: 450px;
+}
+
+.logincontent{
+    // width: 600px;
+    overflow: disable;
+    padding-top: 50px;
+    padding-bottom:50px;
+    border: 1px solid lightgrey;
+}
+
+.maincontent{
+    min-height: 50vh;
+}
+
+ .or-seperator-vertical {
+            border-bottom: 1px solid rgba(199, 199, 199, 0.5);
+            content: "";
+            display: inline-block;
+            left: 0;
+            position: relative;
+            top: 17px;
+            width: 100%;
+        }
+
+.round-or-text {
+            border-radius: 24px;
+            color: rgba(74, 74, 74, 0.5);
+            display: inline-block;
+            height: 30px;
+            line-height: 30px;
+            width: 50px;
+            font-size: 20px;
+            position:relative;
+        }
+
+.or-text-vertical {
+            background-color: #fff;
+            color: rgba(74, 74, 74, 0.5);
+            position: relative;
+            font-size: 13px;
+        }
+
+.loginbtn{
+    background-color: #ff5b5f;
+}
+
+.txtcolor{
+    color: #fff;
+}
+
+.fa-facebook{
+    background-color: #335397;
+    color: #fff!important;
+}
+
+.fa-google{
+    background-color: #dd4a38;
+    color: #fff!important;
+}
+
+.circle-icon {
+    padding:6px;
+    border-radius: 50%;
+    
+}

@@ -1,0 +1,83 @@
+.homefeed a{
+    color: black;  
+}
+
+.homefeed{
+    padding-top: 50px;
+}
+
+.recommendation-thumb{
+    object-fit: cover;
+    height: 240px;
+    width: 200px;
+}
+
+.peer-recommendation-thumb{
+    object-fit: cover;
+    height: 230px;
+    width: 165px;
+}
+
+.recommendation-card{
+    max-width: 230px;
+    height: 370px;
+}
+
+.homefeed label{
+    color: #484848;
+    font-size: 13px;    
+}
+
+.peer-recommendation-card{
+    max-width: 210px;
+}
+
+.workshop-feed .title, .experience-feed .title {
+    font-size:17px !important;
+    color: #484848 !important;
+}
+
+.workshop-feed .headline, .experience-feed .headline {
+    font-size:16px !important;
+    color: #767676 !important;
+
+}
+
+.mat-tab-nav-bar {
+    border-bottom: 0px;
+}
+
+.mat-tab-nav-bar img {
+    width: 96px;
+}
+.mat-tab-nav-bar h3 {
+padding-left: 12px;
+padding-top: 15px
+}
+
+
+.mat-tab-link{
+    border: 0.5px solid rgba(131, 125, 125, 0.301)
+}
+
+.noJustify a.mat-tab-link {
+    justify-content: left !important;
+    padding-left: 0px !important;
+    padding-right: 5px !important;
+    width: 280px !important;
+    height: 72px !important;
+    font-size: 1rem  !important;
+    font-weight: 600  !important;
+    background-color: transparent !important;
+    border: 1px solid rgba(0,0,0,0.1) !important;
+    border-radius: 3px !important;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.06) !important;
+    margin: 15px 15px 4px 0px !important;
+    overflow: hidden !important;
+    text-align: left !important;
+}
+
+
+.mat-tab-group.mat-primary .mat-tab-label:focus, .mat-tab-group.mat-primary .mat-tab-link:focus, .mat-tab-nav-bar.mat-primary .mat-tab-label:focus, .mat-tab-nav-bar.mat-primary .mat-tab-link:focus {
+    background: none;
+}

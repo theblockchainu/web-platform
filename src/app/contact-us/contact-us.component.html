@@ -1,0 +1,46 @@
+<div class="main-content">
+    <div class="row margin-top-70">
+        <div class="left margin-top-20 col-sm-4">
+            <p class="mat-display-1 margin-bottom-20" style="color:black">Our Office</p>
+            <p class="mat-subheading-2" style="color:rgba(0,0,0,0.54)">4580 Auto Mall Parkway <br> Fremont, CA, 94539</p>
+        </div>
+       <div class="col-sm-4 margin-top-20">
+           <!--
+            <agm-map [latitude]="lat" [longitude]="lng">
+            <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+            </agm-map>-->
+            <img src="/assets/images/map.png">
+        </div>    
+    </div>
+    <div class="w-100"></div>
+    <div class="row margin-right-100">
+        <div class="left margin-top-100 col-sm-4">
+            <p class="mat-display-1 margin-bottom-20" style="color:black">Contact Us</p>
+            <p class="mat-subheading-2" style="color:rgba(0,0,0,0.54)">Dont hesitate to reach out to us. We're<br> always here for you :)</p>
+        </div>
+        <div class="center margin-top-100 margin-left-50 margin-bottom-50 col-sm-4">
+            <form [formGroup]="contactUsForm">
+                <div class="row margin-bottom-100">
+                    <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
+                        <input matInput type="text" placeholder="First Name" formControlName="first_name">
+                    </mat-form-field>
+                    <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
+                        <input matInput type="text" placeholder="Last Name" formControlName="last_name">
+                    </mat-form-field>
+                    <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
+                        <input matInput type="text" placeholder="Email" formControlName="email">
+                    </mat-form-field>
+                    <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
+                        <input matInput type="text" placeholder="Subject" formControlName="subject">
+                    </mat-form-field>
+                    <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
+                        <textarea matInput rows="2" placeholder="Message" formControlName="message"></textarea>
+                    </mat-form-field>
+                    <div class="margin-bottom-20">
+                        <button mat-raised-button color="accent" class="btn-width vertical-bottom" style="padding: 6px !important;" type="submit" (click)="createGuestContacts()"><span class="txtcolor">Submit</span></button><br><br>
+                    </div>
+                </div>   
+            </form>
+        </div>
+    </div>
+</div>

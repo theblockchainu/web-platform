@@ -1,0 +1,40 @@
+<div mat-dialog-content class="dialog-container">
+  <div class="row">
+    <div class="col-md-12 collectionContent">
+      <button disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+        <mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+      </button>
+      <div class="mat-display-1" style="margin-bottom: 20px;">
+        How was your experience with students of <a (click)="_collectionService.viewCollection(data);dialogRef.close();">{{data.title | titlecase}}</a>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <form #reviewForm="ngForm">
+    <div class="row" *ngFor="let participant of data.participants; let i=index">
+      <div *ngIf="participant.profiles && !participant.hasReviewForPresentCollection" class="col-md-12 padding-left-0 padding-right-0">
+        <div class="row">
+            <div class="col-md-1 vcenter">
+                <img src="{{envVariable.apiUrl+participant.profiles[0].picture_url}}" style="margin-left: 0px;" class="circle-thumb" alt="dp" (error)="_collectionService.imgErrorHandler($event)">
+            </div>
+            <div class="col-md-3 vcenter">
+                <b>{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name | ucwords }}</b> &emsp;
+                <br>
+                <span *ngIf="participant.profiles[0].headline" class="mat-caption">{{participant.profiles[0].headline | ucfirst}}</span>
+            </div>
+            <div class="col-md-2 vcenter">
+                <p-rating name="score_{{i}}" [(ngModel)]="participant.score" stars="5" [cancel]="false" style="font-size: 13px;"></p-rating>
+            </div>
+            <div class="col-md-5 vcenter">
+                <mat-form-field [floatLabel]="'always'" style="width:100%">
+                    <textarea placeholder="How was {{participant.profiles[0].first_name | ucwords}}'s performance?" matInput type="text" name="review_{{i}}" [(ngModel)]="participant.description"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div mat-dialog-actions class="pull-right" *ngIf="notReviewedParticipantCount > 0">
+      <button mat-raised-button color="primary" (click)="saveReviews()" tabindex="2">Submit</button>
+    </div>
+  </form>
+</div>

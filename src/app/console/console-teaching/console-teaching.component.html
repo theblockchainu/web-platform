@@ -1,0 +1,43 @@
+<div class="row" style="margin-top: 20px;">
+  <div class="col-md-3">
+    <mat-list>
+      <!--<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/all'" [class.bold]="getActiveTab() === 'all'">
+        View All
+      </mat-list-item>-->
+      <!--<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/workshops'" [class.bold]="getActiveTab() === 'workshops'">
+        Workshops
+      </mat-list-item>-->
+      <mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/experiences'" [class.bold]="getActiveTab() === 'experiences'">
+        Experiences
+      </mat-list-item>
+      <!--<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/sessions'" [class.bold]="getActiveTab() === 'sessions'">
+        Sessions
+      </mat-list-item>-->
+      <mat-list-item *ngIf="getActiveTab() === 'workshops' ">
+        <span matTooltip="Please wait for your account to be verified before creating a new workshop." [matTooltipDisabled]="accountVerified">
+          <button mat-raised-button (click)="createWorkshop()" [disabled]="!accountVerified" color="primary">New Workshop</button>
+        </span>
+      </mat-list-item>
+      <mat-list-item *ngIf="activeTab === 'experiences'">
+        <span matTooltip="Please wait for your account to be verified before creating a new experience." [matTooltipDisabled]="accountVerified">
+          <button mat-raised-button (click)="createExperience()" [disabled]="!accountVerified" color="primary">New Experience</button>
+        </span>
+      </mat-list-item>
+      <mat-list-item *ngIf="getActiveTab() === 'sessions'">
+        <span matTooltip="Account Verification Pending!" [matTooltipDisabled]="accountVerified">
+          <button mat-raised-button [disabled]="!accountVerified" color="primary">
+            <span *ngIf="!session" (click)="enableSessions()">
+              Enable Live Session
+            </span>
+            <span *ngIf="session" (click)="editSessions()">
+              Edit live session
+            </span>
+          </button>
+        </span>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <div class="col-md-9">
+    <router-outlet></router-outlet>
+  </div>
+</div>

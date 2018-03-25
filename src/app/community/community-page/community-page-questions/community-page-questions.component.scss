@@ -1,0 +1,74 @@
+.answerButton {
+  border: 1px solid #333;
+  padding: 6px;
+  border-radius: 2px;
+  color: #333;
+}
+
+.upvoteButton {
+  color: #333;
+}
+
+.commentButton {
+  color: #333;
+}
+
+.followButton {
+  color: #333;
+}
+
+.reportButton, .commentButton {
+  color: #333;
+}
+
+.answersBox {
+  border: 1px solid #dbdbdb;
+  padding: 0px 50px 30px;
+}
+
+.commentsBox {
+  border: 1px solid #dbdbdb;
+  padding: 30px 20px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.answerForm, .commentForm {
+  border: 1px solid #dbdbdb;
+  padding: 35px 30px;
+  background-color: #fff;
+}
+
+.hasUpvoted, .hasFollowed {
+  color: #33bd9e !important;
+}
+
+.answerRow {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #dbdbdb;
+  &:last-child {
+    padding-bottom: 0px;
+    border-bottom: 0px;
+  }
+}
+
+.smallSquare {
+  padding: 2px 8px;
+  margin-left: 4px;
+}
+
+.questionCommentContainer {
+  background-color: #f0f0f0;
+  border: 1px solid #dbdbdb;
+}
+
+.questionCommentForm {
+  padding: 35px 30px;
+}
+
+.questionCommentsBox {
+  padding: 30px 20px;
+  margin-left: 0px;
+  margin-right: 0px;
+}

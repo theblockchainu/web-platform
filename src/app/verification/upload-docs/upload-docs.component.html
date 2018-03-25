@@ -1,0 +1,131 @@
+<div class="verification-section margin-top-40" id="content">
+  <div class="main-content hasFixedFooter">
+    <div class="position-relative step-1" [hidden]="step!=1">
+      <form [formGroup]="peer">
+        <div class="col-md-8 col-md-offset-2">
+          <div class="verification-box drop-shadow">
+            <button class="mat-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
+              <i class="fa fa-id-card-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+            </button>
+            <h2 class="headline">Confirm Your Identity</h2>
+            <p class="description1">In order to interact on Peerbuds, we need a digital copy of your government issued identification. This will
+              help us ensure that you don't have multiple profiles on the platform.</p>
+            <p class="description2">This ID must:</p>
+            <p class="description2">
+              <li>Be government-issued (ex. Passport, Drivers License)</li>
+              <li>Clearly show your name, picture and birthday</li>
+              <li>Be in color</li>
+            </p>
+            <div class="margin-bottom-60">
+              <div class="loading-container" [hidden]="!uploadingImage">
+                <ngx-loading [show]="true"></ngx-loading>
+              </div>
+              <p-fileUpload name="image" *ngIf="!uploadingImage" #idproof customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
+                chooseLabel="Upload ID" accept="application/pdf,application/msword,
+                    application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*">
+                <ng-template pTemplate="toolbar">
+                  <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 file</div>
+                </ng-template>
+              </p-fileUpload>
+              <h5>Max File Size
+                <b>10MB</b>
+              </h5>
+              <div *ngIf="verificationIdUrl" class="profilePic icon-remove delete">
+                <img *ngIf="fileType.includes('image')" class="uploaded_picture" src="{{envVariable.apiUrl + verificationIdUrl}}" width="150"
+                  style="border: 0.5px solid #ccc">
+                <mat-icon *ngIf="fileType.includes('image')" (click)="deleteFromContainer(verificationIdUrl, 'image')" class="delete-image">close</mat-icon>
+                <mat-icon *ngIf="fileType.includes('application')" (click)="deleteFromContainer(verificationIdUrl, 'file')" class="delete-file">close</mat-icon>
+                <div *ngIf="fileType.includes('application')" class="uploaded_file">{{ fileName }}</div>
+              </div>
+            </div>
+            <p class="note">To learn more about why we require copy of your ID and what types of ID we accept,
+              <a (click)="openIdPolicy()" style="cursor: pointer;">review our ID policy</a>
+            </p>
+          </div>
+        </div>
+        <div class="fixedFooter col-sm-12">
+          <div class="col-md-8 col-md-offset-2 bottom-section clearfix">
+            <div class="pull-right">
+              <button mat-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
+              <span matTooltip="Please check Verification Id!" [matTooltipDisabled]="this.peer.controls['verificationIdUrl'].value">
+                <button mat-raised-button color="accent" (click)="continue(2)" [disabled]="!this.peer.controls['verificationIdUrl'].value">Continue</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- step 1 ends -->
+    <div class="position-relative step-2" [hidden]="step!=2">
+      <form [formGroup]="peer">
+        <div class="col-md-8 col-md-offset-2">
+          <div class="verification-box drop-shadow">
+            <button class="mat-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
+              <i class="fa fa-envelope-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+            </button>
+            <h2 class="headline">How can we reach you securely?</h2>
+            <p class="description1 margin-bottom-40">Please let us know how can we reach you by email. To help keep your Peerbuds account secure, make sure only you
+              can log into this email address.</p>
+            <mat-form-field [floatLabel]="'always'" style="width:50% !important" class="pb-block margin-bottom-60 margin-top-20">
+              <!-- <input type="text" formControlName="email" class="form-control display-inline-block email-address-input" placeholder="Email Address" /> -->
+              <input type="email" matInput #email formControlName="email" placeholder="Email Address" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="fixedFooter col-sm-12">
+          <div class="col-md-8 col-md-offset-2 bottom-section clearfix">
+            <div class="pull-right">
+              <button mat-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
+              <span matTooltip="Invalid email!" [matTooltipDisabled]="!peer.controls.email.invalid || !peer.controls.email.dirty && email.value.length !== 0">
+                <button mat-raised-button color="accent" (click)="continue(3)" [disabled]="peer.controls['email'].invalid && peer.controls['email'].dirty || email.value.length == 0">Continue</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- step 2 ends -->
+
+    <div class="position-relative step-3" [hidden]="step!=3">
+      <form [formGroup]="otp">
+        <div class="col-md-8 col-md-offset-2 position-relative">
+          <div class="verification-box drop-shadow">
+            <button class="mat-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
+              <i class="fa fa-key fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+            </button>
+            <h2 class="headline">Enter the code sent to your email</h2>
+            <p class="description1 margin-bottom-40">We have sent a 6 digit code to {{email.value}}. Please enter this code or click the link in your email to verify
+              your email address. Users on Peerbuds need to verify their email IDs to receive notifications and updates from
+              the platform.</p>
+            <!-- <div class="margin-bottom-10">
+                <label class="display-block margin-bottom-0"><strong>OTP</strong></label>
+                <input type="text" formControlName = "inputOTP" class="form-control display-inline-block otp-input" />
+              </div> -->
+            <mat-form-field [floatLabel]="'always'" style="width:20% !important" class="margin-bottom-10">
+              <input type="number" matInput #inputOTP formControlName="inputOTP" />
+            </mat-form-field>
+            <span *ngIf="otpError" style="color:red;margin-left:10px;">{{otpError}}</span>
+            <div>
+              <p class="description1">
+                <a (click)="resendOTP()" style="cursor: pointer;">Resend code</a>. Please wait at least 5 minutes before
+                <br/> requesting another code or
+                <a style="cursor: pointer;" (click)="continue(2)">change your email</a>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="fixedFooter col-sm-12">
+          <div class="col-md-8 col-md-offset-2 bottom-section clearfix">
+            <div class="pull-right">
+              <a mat-button style="margin-right:20px; color:#767676" [routerLink]="['/onboarding/1']">Skip</a>
+              <span matTooltip="Please recheck the code you entered." [matTooltipDisabled]="inputOTP.value.length ===6">
+                <button mat-raised-button color="accent" (click)="verifyEmail()" [disabled]="inputOTP.value.length !=6">Verify Email</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- step 3 ends -->
+  </div>
+</div>

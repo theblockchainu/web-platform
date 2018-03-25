@@ -1,0 +1,111 @@
+<div class="loading-container" style="width:60%" [hidden]="!loadingMessages">
+    <ngx-loading [show]="true"></ngx-loading>
+  </div>
+  <div class="row margin-top-20 margin-left-0 margin-right-0" *ngIf="!loadingMessages">
+    <div class="col-md-3 leftCol border-box padding-left-0 padding-right-0 noBorderRight noBorderBottom">
+      <div class="headerChat col-md-12" style="padding-top:5px;padding-bottom:5px">
+        <span class="">
+          <span class="col-md-2" id="demo-2">
+            <i class="material-icons" style="line-height:35px;vertical-align:middle">search</i>
+            <input type="search" placeholder="" name="searchbox">
+          </span>
+          <mat-form-field [floatLabel]="'always'">                 <mat-select class="col-md-8" style="margin-left:30px" [(value)]="selected" (ngModelChange)="getSelectedCollection()"> 
+            <mat-option value="all">All Messages ({{tempJoinedRooms.length}})</mat-option>
+            <mat-option value="experience">Experience ({{experienceCollection.length}})</mat-option>
+            <mat-option value="workshop">Workshop ({{workshopCollection.length}})</mat-option>
+          </mat-select>               </mat-form-field>
+        </span>
+      </div>
+      <div class="col-md-12 padding-left-0 padding-right-0">
+        <!--List of Rooms shown as chats -->
+        <div *ngFor="let rooms of tempJoinedRooms;let i = index" (click)="openChat(rooms)" style="cursor:pointer" [ngClass]="{'padding-top-10':true, 'backgroundColorGray': i===0 || displayNone[rooms.id]}">
+          <div [ngClass]="{'col-md-12' : true, 'padding-left-0': true , 'backgroundColorGray': i===0 || displayNone[rooms.id]}">
+            <span class="col-md-2 padding-right-0" *ngIf="rooms.collection" style="margin-left: 10px">
+              <img src="{{ envVariable.apiUrl + rooms.collection[0].imageUrls}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
+            </span>
+            <span class="col-md-2 padding-right-0" *ngIf="!rooms.collection"  style="margin-left: 10px">
+              <!--dp-->
+            </span>
+            <span class="col-md-7 padding-left-0 mat-caption">
+              <b>{{ rooms.name }}</b>
+            </span>
+            <span class="col-md-2 padding-left-0 padding-right-0 lightText pull-right" style="font-size:0.7rem"><b class="pull-right">{{ rooms.messages[rooms.messages.length - 1].leftColLatestMsgTime }}</b></span>
+            <!--date-->
+          </div>
+          <div [ngClass]="{'col-md-12': true, 'backgroundColorGray': i===0 || displayNone[rooms.id]}">
+            <span *ngIf="rooms.messages" class="lightText" style="padding-left:41px;font-size:0.7rem">{{rooms.messages[rooms.messages.length - 1].text}}</span>
+            <span *ngIf="!rooms.messages"></span>
+            <!-- recent msg-->
+            <a color="secondary" class="pull-right" [matMenuTriggerFor]="showSettingsMenu" style="text-align: right; padding: 0px;">
+              <mat-icon style="color:grey;font-size:15px">settings</mat-icon>
+            </a>
+            <mat-menu #showSettingsMenu>
+              <button mat-menu-item>
+                Mute
+              </button>
+              <button mat-menu-item>
+                Archive
+              </button>
+              <button mat-menu-item>
+                Delete
+              </button>
+              <button mat-menu-item>
+                Mark as unread
+              </button>
+              <button mat-menu-item>
+                Flag
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7 border-box padding-left-0 padding-right-0 noBorderRight noBorderBottom">
+      <div *ngIf="tempJoinedRooms">
+        <div *ngFor="let room of tempJoinedRooms;let i = index" class="border-right">
+          <div [ngClass]="{'headerChat': true, 'center': true, 'displayNone': displayNone[room.id]}" style="padding-top:5px;padding-bottom:10px">
+            <span>{{room.participantTextHeader}} {{room.participantTextHeaderSub}}</span>
+            <span>
+              <a color="secondary" class="pull-right" style="padding-top:10px;padding-right:10px">
+                <mat-icon style="color:grey;font-size:20px">videocam</mat-icon>
+              </a>
+              <a color="secondary" class="pull-right" style="padding-top:10px;">
+                <mat-icon style="color:grey;font-size:20px">phone</mat-icon>
+              </a>
+            </span>
+            <br/>
+            <span><b><h6 class="lightText center" style="margin: 0px !important;line-height: 1.3rem;">{{room.collection[0].type | titlecase }}</h6></b></span>
+          </div>
+          <div class="center" *ngIf="room.messages">
+            <div *ngFor="let message of room.messages;let i=index" class="col-md-12 margin-top-10">
+              <span *ngIf="i==0">{{message.createdAtLocal}}</span>
+              <span *ngIf="i > 0 && room.messages[i].createdAtLocal != room.messages[i-1].createdAtLocal">{{message.createdAtLocal}}</span>
+              <div *ngIf="message.type==='system'" class="center margin-top-10">
+                <h6 style="margin-bottom:0px">
+                  <i class="fa fa-sign-in" aria-hidden="true" style="padding-right:10px"></i>{{message.text}}
+                </h6>
+              </div>
+              <div *ngIf="message.type==='user'" class="margin-top-10">
+                <span [ngClass]="{'col-md-1': true, 'review-thumb': true, 'pull-left': message.peer[0].id != userId, 'pull-right': message.peer[0].id == userId}">
+                  <img src="{{ envVariable.apiUrl + message.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
+                </span>
+                <span class="talk-bubble tri-right left-top round" style="margin-top:3px">
+                  <div class="talktext">
+                    <h6 style="margin-bottom:0px">{{message.text}}</h6>
+                  </div>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-11 chatbox margin-top-40" style="margin-left: 30px">
+              <mat-form-field [floatLabel]="'always'" style="width:100%">
+                <textarea matInput [(ngModel)]="message" rows="9 " cols="100"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="pull-right margin-top-20 margin-bottom-10"> <!--Post Msgs-->
+              <button color="primary" mat-raised-button (click)="postMsg(room.id)" style="margin-right:27px">Send Message</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

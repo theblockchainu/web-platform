@@ -1,0 +1,36 @@
+<div class="main-content">
+  <div class="col-md-10 col-md-offset-1" style="margin-top: 2%; margin-bottom: 0%">
+    <div *ngIf="activeTab === 'homefeed'">
+      <div class="mat-display-1" style="margin-bottom: 5px;">
+        Explore Peerbuds
+      </div>
+      <nav mat-tab-nav-bar disableRipple class="noJustify home">
+        <!--<a mat-tab-link [routerLink]="'/home/homefeed'" routerLinkActive #feedLink="routerLinkActive" [active]="feedLink.isActive">
+              <img src="/assets/images/placeholder-image.jpg" alt="logo" style="height: 100%;">
+              <h3>Explore</h3>
+            </a>-->
+        <!--<a mat-tab-link [routerLink]="'/home/workshops'" routerLinkActive #workshopLink="routerLinkActive" [active]="workshopLink.isActive" >
+                <img src="/assets/images/placeholder-image.jpg" alt="logo" style="height: 100%;">
+                <h3 class="margin-left-10">Workshops</h3>
+            </a>-->
+        <a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive">
+          <img src="/assets/images/experiences_icon.jpeg" alt="logo" style="height: 100%;">
+          <h3 class="margin-left-10">Experiences</h3>
+        </a>
+        <!-- <a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive">
+          <img src="/assets/images/community_icon.jpg" alt="logo" style="height: 100%;">
+          <h3>Communities</h3>
+        </a> -->
+        <!--<a mat-tab-link [routerLink]="'/home/peers'" routerLinkActive #peerLink="routerLinkActive" [active]="peerLink.isActive" >
+                <img src="/assets/images/placeholder-image.jpg" alt="logo" style="height: 100%;">
+                <h3 class="margin-left-10">Peers</h3>
+            </a>-->
+      </nav>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="row" style="margin-top: 20px;">
+  <div class="col-md-3">
+    <mat-list>
+      <mat-list-item [routerLink]="'/console/profile/edit'" [class.bold]="getActiveTab() === 'edit'">
+        Edit Profile
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/profile/photos'" [class.bold]="getActiveTab() === 'photos'">
+        Photos and Video
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/profile/topics'" [class.bold]="getActiveTab() === 'topics'">
+        Topics
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/profile/verification'" [class.bold]="getActiveTab() === 'verification'">
+        Verification
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/profile/reviews'" [class.bold]="getActiveTab() === 'reviews'">
+        Reviews
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button (click)="viewProfile()" class="mat-border-button" color="accent" style="border-color:#ff5b5f !important">View Profile</button>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <div class="col-md-9">
+    <router-outlet></router-outlet>
+  </div>
+</div>

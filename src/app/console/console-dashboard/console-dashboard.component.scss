@@ -1,0 +1,189 @@
+.notificationsRow {
+  background: none;
+  margin-left: 0px;
+  margin-right: 60px;
+  padding: 10px 0px;
+  border-bottom: 0.5px solid #f1f1f1;
+  cursor: pointer;
+}
+
+.teachingContent, .welcome {
+  margin-right: 60px;
+}
+
+.upcomingTeachingEvent {
+  margin-right: 60px;
+}
+
+.upcomingLearningEvent {
+  margin-right: 60px;
+}
+
+.notificationsRowUnread {
+  background: #f3f3f3;
+}
+
+.notificationsImage {
+  margin-left: 0px;
+  width: 45px;
+  height: 45px;
+}
+
+.teachingContentThumb{
+  object-fit: cover;
+  height: 200px;
+  width: 100%;
+  position: relative;
+}
+
+md-icon {
+  position: relative;
+}
+
+.teachingSummary, .userInfo, .verificationInfo {
+  border: 1px solid #dbdbdb;
+  padding: 20px;
+}
+
+.learningSummary {
+  border: 1px solid #dbdbdb;
+  padding: 20px;
+}
+
+.teachingSummaryStats {
+  font-size: 30px;
+  color: #33bd9e;
+}
+
+.learningSummaryStats {
+  font-size: 30px;
+  color: #33bd9e;
+}
+
+.itenary-media{
+  max-height:300px;
+}
+
+hr {
+  border-top: 1px solid #dbdbdb !important;
+}
+
+.upcoming-card{
+  text-align: center;
+  padding: 20px;
+  min-height: 440px;
+}
+
+.collectionTitle{
+  cursor:pointer;
+}
+.draft-card{
+  text-align: center;
+  padding: 20px;
+  height: 310px;
+}
+
+.pastCard {
+  min-height: 465px;
+}
+
+
+.mat-icon-button .mat-icon, .mat-icon-button i {
+  color: #777777;
+}
+
+.disabled {
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  color: lightgray !important;
+}
+
+.participantCount {
+  margin-top: 15px;
+}
+
+.collectionParticipantImageCarousel {
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  margin-top: -30px;
+}
+
+.collectionSubtitle {
+  font-size: 70%;
+  color: #777777;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.collectionTitle {
+  margin-top: 30px;
+  margin-bottom: 10px
+}
+
+.upcomingEventLabel {
+  color: #cccccc;
+  margin-bottom: 1px;
+}
+
+.lighterText {
+  font-size: 70%;
+  color: #cccccc;
+}
+
+.upcomingEventTitle {
+  font-size: 90%;
+  color: #333333;
+  margin-top: 0px;
+}
+
+.upcomingEventTime {
+  font-size: 70%;
+  color: #777777;
+  margin-top: 0px;
+  margin-bottom: 20px;
+}
+
+.cardFooter {
+  border-top: 0.7px solid #eee;
+  padding: 10px;
+}
+
+.cardTypeChip {
+  font-size: 9px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.smallChip {
+  padding: 2px 7px !important;
+  font-size: 9px !important;
+}
+
+.teacherName {
+  font-weight: 500;
+  font-size: 110%;
+  margin-top: 10px;
+}
+
+.teacherHeadline {
+  margin-top: 0px;
+  color: #777777;
+}
+
+.teachingRatingReminder {
+  font-weight: 700;
+  font-size: 12px;
+  margin: 10px 0px;
+}
+
+a{
+  cursor:pointer;
+}
+
+.profileImageLarge {
+  width: 120px;
+  height: 120px;
+  border-radius: 200px;
+}

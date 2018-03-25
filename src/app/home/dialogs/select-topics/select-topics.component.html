@@ -1,0 +1,10 @@
+<div class="dialog-container" style="padding: 20px 25px !important;" mat-dialog-content>
+  <mat-list>
+    <mat-list-item *ngFor="let topicObj of data">
+      <mat-checkbox [(ngModel)]="topicObj.checked">{{topicObj.topic.name | titlecase}}</mat-checkbox>
+    </mat-list-item>
+  </mat-list>
+  <div mat-dialog-actions>
+    <button mat-raised-button [mat-dialog-close]="data" color="accent">Apply</button>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<div class="mat-dialog-focus-trap"></div>
+<section id="content" class="maincontent">
+    <div class="signin-header">
+    </div>
+    <div class="col-md-offset-4 col-md-4 logincontent">
+        <section class="page-padding row">
+            <div class="page-signin">
+                <div class="signin-form mat-whiteframe-z1">
+                    <div class="mat-content__body extra-padding">
+                        <form [formGroup]="loginForm" class="form-horizontal">
+                            <div mat-dialog-content>
+                                <div class="flex-body">
+                                    <div class="flex-column spacer">
+                                        <div class="margin-bottom-20">
+                                            <a mat-raised-button class="btn-width-large btn-block" style="font-size:17px;color:#484848;padding-top:10px;padding-bottom:10px;"
+                                                href="{{envVariable.apiUrl}}/auth/facebook?returnTo=/">
+                                                <i class="fa fa-facebook circle-icon"></i>&nbsp;Continue with Facebook</a>
+                                        </div>
+                                        <div class="margin-bottom-20">
+                                            <a mat-raised-button class="btn-width-large btn-block" style="font-size:17px;color:#484848;padding-top:10px;padding-bottom:10px;"
+                                                href="{{envVariable.apiUrl}}/auth/google?returnTo=/">
+                                                <i class="fa fa-google circle-icon"></i>&nbsp;&nbsp;&nbsp;Continue with Gmail</a>
+                                        </div>
+                                        <div class="btn-hide position-relative margin-bottom-20 text-center">
+                                            <div class="or-seperator-vertical"></div>
+                                            <span class="round-or-text or-text-vertical">or</span>
+                                        </div>
+
+                                        <div class="margin-bottom-20">
+                                            <mat-form-field [floatLabel]="'always'" class="pb-block">
+                                                <input matInput placeholder="Email" formControlName="email">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="margin-bottom-20">
+                                            <mat-form-field [floatLabel]="'always'" class="pb-block">
+                                                <input matInput placeholder="Password" formControlName="password" type="password">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="margin-bottom-20">
+                                            <button mat-raised-button class="loginbtn btn-width-large vertical-bottom" style="font-size:17px;padding-top:10px;padding-bottom:10px;"
+                                                type="submit" (click)="login()">
+                                                <span class="txtcolor">Log In</span>
+                                            </button>
+                                            <br>
+                                            <br>
+                                            <a class="link margin-top-10" (click)="getpwd()" style="font-size: 17px;color: #767676;">Forgot password?</a>&nbsp;
+                                            <a href="/signup.html" style="font-size:17px;">Sign up</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>

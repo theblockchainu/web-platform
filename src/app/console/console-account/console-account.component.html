@@ -1,0 +1,30 @@
+<div class="row" style="margin-top: 20px;">
+  <div class="col-md-3">
+    <mat-list>
+      <mat-list-item [routerLink]="'/console/account/notifications'" [class.bold]="getActiveTab() === 'notifications'">
+        Notifications
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/account/paymentmethods'" [class.bold]="getActiveTab() === 'paymentmethods'">
+        Payment Methods
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/account/payoutmethods'" [class.bold]="getActiveTab() === 'payoutmethods'">
+        Payout Methods
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/account/transactions'" [class.bold]="getActiveTab() === 'transactions'">
+        Transactions
+      </mat-list-item>
+       <!--<mat-list-item [routerLink]="'/console/account/privacy'" [class.bold]="getActiveTab() === 'privacy'">
+        Privacy
+      </mat-list-item>-->
+      <mat-list-item [routerLink]="'/console/account/security'" [class.bold]="getActiveTab() === 'security'">
+        Security
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/account/settings'" [class.bold]="getActiveTab() === 'settings'">
+        Settings
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <div class="col-md-9">
+    <router-outlet></router-outlet>
+  </div>
+</div>

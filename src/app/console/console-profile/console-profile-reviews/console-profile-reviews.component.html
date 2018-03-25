@@ -1,0 +1,157 @@
+<div class="row">
+  <div class="col-md-12">
+    <div *ngIf="loading" class="loading-container">
+      <ngx-loading [show]="true"></ngx-loading>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="!loading">
+  <div class="col-md-12">
+    <div class="row">
+      <div>
+        <div style="margin-top:20px;" class="col-md-12">
+          <div class="row" style="margin-right: 20px;">
+            <mat-tab-group disableRipple>
+              <mat-tab label="Reviews about you">
+                <div style="margin-top: 25px; margin-bottom: 40px;" class="lightText">
+                  Reviews are written at the end of the workshop or experience or session through peerbuds. Reviews you have received will
+                  be visible both here and on your public profile.
+                </div>
+                <div class="mat-body-2">
+                  Received on workshops and experiences ({{profile.peer[0].reviewsAboutYou !== undefined ?  profile.peer[0].reviewsAboutYou.length : '0'}})
+                </div>
+                <div class="review-section" *ngIf="!profile.peer[0].reviewsAboutYou ||profile.peer[0].reviewsAboutYou.length ===0">
+                  <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
+                    No reviews received
+                  </div>
+                </div>
+                <div class="review-section" *ngFor="let review of profile.peer[0].reviewsAboutYou">
+                  <div *ngIf="review.peer !== undefined">
+                    <div class="review-top">
+                      <div class="review-thumb pull-left">
+                        <app-profile-popup [peer]="review.peer[0]"></app-profile-popup>
+                      </div>
+                      <div class="reviewer">
+                        <div class="reviewer-name clickable" (click)="_profileService.viewProfile(review.peer[0])">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name | ucwords }}</div>
+                        <div class="reviewer-headline mat-caption">{{ review.peer[0].profiles[0].headline !== undefined && review.peer[0].profiles[0].headline.length > 0? review.peer[0].profiles[0].headline : 'New User' | ucfirst }}</div>
+                      </div>
+                    </div>
+                    <div class="review-content">
+                      <div class="review-bottom lightText">
+                        <span>{{ getReviewedCollection(profile.peer[0], review.collectionId).type | ucwords}} :
+                          <a class="clickable" (click)="_collectionService.viewCollection(getReviewedCollection(profile.peer[0], review.collectionId))">{{ getReviewedCollection(profile.peer[0], review.collectionId).title | ucwords }}</a>
+                        </span>
+                        <span class="bullet">
+                          <p-rating [(ngModel)]="review.score" [cancel]="false" [readonly]="true"></p-rating>
+                        </span>
+                        <span class="bullet">{{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate | date: 'dd MMM' }} - {{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars, review.collectionCalendarId).endDate | date: 'dd MMM' }}</span>
+                      </div>
+                      <div class="review-desc"><b>{{ review.description | ucfirst }}</b></div>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab label="Reviews by you">
+                <div style="margin-top: 25px; margin-bottom: 40px;" class="lightText">
+                  Reviews are written at the end of the workshop or experience or session through peerbuds. Reviews you have received will
+                  be visible both here and on your public profile.
+                </div>
+                <div class="mat-body-2" *ngIf="pendingReviewCollections && pendingReviewCollections.length > 0">
+                  Reviews to write ({{pendingReviewCollections.length}})
+                </div>
+                <div class="row margin-bottom-50" style="margin-left: -12px;margin-right:12px" *ngIf="pendingReviewCollections && pendingReviewCollections.length > 0">
+                  <div>
+                    <div style="margin-top:20px;" class="col-md-12">
+                      <div class="row">
+                        <div *ngFor="let collection of pendingReviewCollections" [ngSwitch]="collection.status">
+                          <ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
+                          <ng-template #noTopicText>No Topics</ng-template>
+                          <div class="col-md-4" style="margin-top: 20px;">
+                            <mat-card style="text-align: center; padding: 20px;">
+                              <mat-card-content>
+                                <div style="text-align: center">
+                                  <div class="pull-left">
+                                    <mat-chip-list class="cardTypeChip">
+                                      <mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'workshop'">Workshop</mat-chip>
+                                      <mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">Experience</mat-chip>
+                                      <mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">Session</mat-chip>
+                                    </mat-chip-list>
+                                  </div>
+                                </div>
+                                <div class="collectionParticipantImageCarousel">
+                                  <div class="image-inline" *ngFor="let participant of collection.participants">
+                                    <app-profile-popup style="margin-left: -15px;" [peer]="participant"></app-profile-popup>
+                                  </div>
+                                  <div class="image-inline" *ngIf="collection.participants.length === 0">
+                                    <img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb-overlap" (error)="consoleProfileComponent.imgErrorHandler($event)">
+                                  </div>
+                                </div>
+                                <div class="participantCount">
+                                  <span>{{collection.participants.length}} Participants </span>
+                                </div>
+                                <div class="collectionTitle clickable" (click)="_collectionService.viewCollection(collection)">{{ collection.title || 'No Title' | ucwords }} </div>
+                                <mat-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></mat-progress-bar>
+                                <div class="collectionSubtitle">
+                                  {{ _collectionService.calculateNumberOfDays(collection.calendars[0]) }} Days | {{collection.contents.length}} Activity |
+                                  <span *ngIf="collection.topics && collection.topics.length > 0; then topicName else noTopicText"></span>
+                                </div>
+                              </mat-card-content>
+                              <mat-card-actions>
+                                <div [class.disabled]="collection.participants.length === collection.participantReviewCount" class="teachingRatingReminder clickable" (click)="showRateStudentsPopup(collection)">
+                                  Finish rating {{collection.pendingReviewParticipantCount}} students
+                                </div>
+                              </mat-card-actions>
+                              <br>
+                              <br>
+                              <mat-card-footer class="cardFooter">
+                                <button mat-button (click)="_collectionService.viewTransactions()">View Transactions</button>
+                              </mat-card-footer>
+                            </mat-card>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mat-body-2" *ngIf="profile.peer[0].reviewsByYou !== undefined && profile.peer[0].reviewsByYou.length > 0">
+                  Reviews you've written ({{profile.peer[0].reviewsByYou !== undefined ? profile.peer[0].reviewsByYou.length : '0'}})
+                </div>
+                <div class="review-section" *ngIf="!profile.peer[0].reviewsByYou ||profile.peer[0].reviewsByYou.length ===0">
+                  <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
+                    No reviews given
+                  </div>
+                </div>
+                <div class="review-section" *ngFor="let review of profile.peer[0].reviewsByYou">
+                  <div *ngIf="review.reviewedPeer !== undefined">
+                    <div class="review-top">
+                      <div class="review-thumb pull-left">
+                        <app-profile-popup [peer]="review.reviewedPeer[0]"></app-profile-popup>
+                      </div>
+                      <div class="reviewer">
+                        <div class="reviewer-name clickable" (click)="_profileService.viewProfile(review.reviewedPeer[0])">{{ review.reviewedPeer[0].profiles[0].first_name + ' ' + review.reviewedPeer[0].profiles[0].last_name | ucwords}}
+                        </div>
+                        <div class="reviewer-headline mat-caption">{{ review.reviewedPeer[0].profiles[0].headline !== undefined && review.reviewedPeer[0].profiles[0].headline.length > 0 ? review.reviewedPeer[0].profiles[0].headline : 'New User' | titlecase }}</div>
+                      </div>
+                    </div>
+                    <div class="review-content">
+                      <div class="review-bottom lightText">
+                        <span>{{ getReviewedCollection(profile.peer[0], review.collectionId).type | ucwords }} :
+                          <a (click)="_collectionService.viewCollection(getReviewedCollection(profile.peer[0], review.collectionId))">{{ getReviewedCollection(profile.peer[0], review.collectionId).title | ucwords}}</a>
+                        </span>
+                        <span class="bullet">
+                          <p-rating [(ngModel)]="review.score" [cancel]="false" [readonly]="true"></p-rating>
+                        </span>
+                        <span class="bullet">{{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate | date: 'dd MMM' }} - {{ getReviewedCalendar(getReviewedCollection(profile.peer[0], review.collectionId).calendars, review.collectionCalendarId).endDate | date: 'dd MMM' }}</span>
+                      </div>
+                      <div class="review-desc"><b>{{ review.description | ucfirst }}</b></div>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

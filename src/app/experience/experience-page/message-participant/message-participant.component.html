@@ -1,0 +1,20 @@
+<div mat-dialog-content class="container">
+  <div class="row" *ngIf="data">
+    <div class="col-md-12">
+      <h4>Send message to {{data.profiles[0].first_name}}</h4>
+    </div>
+    <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+      <div class="col-md-12">
+        <mat-form-field>
+          <input matInput type="text" formControlName="message" class="form-control" placeholder="Type something to send...">
+        </mat-form-field>
+      </div>
+      <div class="col-md-12">
+        <span matTooltip="Invalid input!" [matTooltipDisabled]="messageForm.valid">
+
+          <button type="submit" [disabled]="!messageForm.valid" mat-button class="pull-right">Submit</button>
+        </span>
+      </div>
+    </form>
+  </div>
+</div>

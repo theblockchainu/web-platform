@@ -1,14 +1,72 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <title>Peerbuds2.0</title>
+  <title>Peerbuds</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <base href="/">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- base url -->
+  <!-- bootstrap css -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="assets/styles/themes/omega/theme.css" />
+  <link rel="stylesheet" type="text/css" href="assets/styles/themes/primeng.min.css" />
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css' />
+  <link rel="stylesheet" type="text/css" href="assets/styles/themes/pbcustom.css">
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="assets/js/moment.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js'></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
 </head>
-<body>
-  <app-root></app-root>
+
+<body class="mat-typography">
+
+<app-root class="content"></app-root>
+
+<script>
+  if (window.location.hash && window.location.hash === "#_=_") {
+    if (window.history && history.pushState) {
+      window.history.pushState("", document.title, window.location.pathname);
+    } else {
+      // Prevent scrolling by storing the page's current scroll offset
+      var _scroll = {
+        top: document.body.scrollTop,
+        left: document.body.scrollLeft
+      };
+      window.location.hash = "";
+      // Restore the scroll offset, should be flicker free
+      document.body.scrollTop = _scroll.top;
+      document.body.scrollLeft = _scroll.left;
+    }
+  }
+</script>
+<script>
+  window.fbAsyncInit = function () {
+    FB.init({
+      appId: '287639704995097',
+      autoLogAppEvents: true,
+      xfbml: true,
+      version: 'v2.10'
+    });
+    FB.AppEvents.logPageView();
+  };
+
+  (function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) { return; }
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
 </body>
+
 </html>

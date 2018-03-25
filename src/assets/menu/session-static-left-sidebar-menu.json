@@ -1,0 +1,149 @@
+[
+    {
+        "title": "Teacher Profile",
+        "active": true,
+        "step": 1,
+        "submenu": [
+            {
+                "title": "Tagline & Description",
+                "step": 2,
+                "active": false,
+                "visible": true,
+                "locked": false,
+                "complete": false
+            },
+            {
+                "title": "Photo",
+                "step": 3,
+                "active": false,
+                "visible": true,
+                "locked": false,
+                "complete": false
+            },
+            {
+                "title": "Language & Location",
+                "step": 4,
+                "active": false,
+                "visible": true,
+                "locked": false,
+                "complete": false
+            },
+            {
+                "title": "Resume",
+                "step": 5,
+                "active": false,
+                "visible": true,
+                "locked": false,
+                "complete": false
+            }
+        ],
+        "visible": true,
+        "locked": false
+    },
+    {
+        "title": "Live Session Page",
+        "active": false,
+        "step": 6,
+        "submenu": [
+            {
+                "title": "Topics",
+                "step": 7,
+                "active": false,
+                "visible": true,
+                "locked": false,
+                "complete": false
+            },
+            {
+                "title": "Experience",
+                "step": 8,
+                "active": false,
+                "visible": true,
+                "locked": false,
+                "complete": false
+            },
+            {
+                "title": "What's included",
+                "step": 9,
+                "active": false,
+                "visible": true,
+                "locked": false,
+                "complete": false
+            },
+            {
+                "title": "Availability",
+                "step": 10,
+                "active": false,
+                "visible": true,
+                "locked": false,
+                "complete": false
+            },
+            {
+                "title": "Price",
+                "step": 11,
+                "active": false,
+                "visible": true,
+                "locked": false,
+                "complete": false
+            }
+        ],
+        "visible": true,
+        "locked": false
+    },
+    {
+        "title": "Preferences",
+        "active": false,
+        "step": 12,
+        "submenu": [
+            {
+                "title": "Reservations",
+                "step": 13,
+                "active": false,
+                "visible": true,
+                "locked": false,
+                "complete": false
+            },
+            {
+                "title": "Custom URL",
+                "step": 14,
+                "active": false,
+                "visible": true,
+                "locked": false,
+                "complete": false
+            }
+        ],
+        "visible": true,
+        "locked": false
+    },
+    {
+        "title": "Review & Submit",
+        "active": false,
+        "step": 15,
+        "visible": true,
+        "locked": false
+    },
+    {
+        "title": "Finishing Touches",
+        "active": false,
+        "visible": false,
+        "step": 16,
+        "submenu": [
+            {
+                "title": "Phone Number",
+                "step": 17,
+                "active": false,
+                "visible": false,
+                "locked": false,
+                "complete": false
+            },
+            {
+                "title": "Payments",
+                "step": 18,
+                "active": false,
+                "visible": false,
+                "locked": false,
+                "complete": false
+            }
+        ],
+        "locked": false
+    }
+]

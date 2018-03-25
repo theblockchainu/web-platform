@@ -1,0 +1,60 @@
+{
+  "_from": "payment-icons",
+  "_id": "payment-icons@0.0.13",
+  "_inBundle": false,
+  "_integrity": "sha1-a3RomX62ZZlDoIkTOPdG4Z1E5Oc=",
+  "_location": "/payment-icons",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "payment-icons",
+    "name": "payment-icons",
+    "escapedName": "payment-icons",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/payment-icons/-/payment-icons-0.0.13.tgz",
+  "_shasum": "6b7468997eb6659943a0891338f746e19d44e4e7",
+  "_spec": "payment-icons",
+  "_where": "D:\\Work Repo\\peerbuds\\peerbuds-client-mlp",
+  "author": {
+    "name": "Stuart Colville"
+  },
+  "bugs": {
+    "url": "https://github.com/muffinresearch/payment-icons/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "payment icon svgs",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-gh-pages": "^2.0.0",
+    "grunt-svg-sprite": "^1.1.2",
+    "grunt-svgmin": "^4.0.0",
+    "load-grunt-tasks": "^3.1.0"
+  },
+  "homepage": "https://github.com/muffinresearch/payment-icons#readme",
+  "keywords": [
+    "icons",
+    "payments",
+    "font",
+    "credit cards"
+  ],
+  "license": "MPL-2.0",
+  "name": "payment-icons",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muffinresearch/payment-icons.git"
+  },
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "version": "0.0.13"
+}

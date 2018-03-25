@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-12">
+    <div *ngIf="!loaded" class="loading-container">
+      <ngx-loading [show]="true"></ngx-loading>
+    </div>
+  </div>
+</div>
+<div class="row margin-top-10" *ngIf="loaded">
+  <div class="col-md-12">
+    <div class="mat-body-2">
+      Change password
+    </div>
+    <form [formGroup]="changePasswordForm" (ngSubmit)="changePassword()" class="margin-top-20">
+      <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
+        <input matInput formControlName="old_password" type="password" placeholder="Old password" required>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+      <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
+        <input matInput formControlName="new_password" type="password" placeholder="New password" required>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+      <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-20">
+        <input matInput formControlName="confirm_password" type="password" placeholder="Confirm password" required>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+    </form>
+    <button mat-button color="accent" (click)="changePassword()" class="mat-border-button">
+      <span *ngIf="!busyChangePassword">Update Password</span>
+      <span *ngIf="busyChangePassword"> </span>
+      <ngx-loading [show]="busyChangePassword"></ngx-loading>
+    </button>
+  </div>
+  <div class="col-md-12">
+    <hr>
+  </div>
+  <div class="col-md-12">
+    <div class="mat-body-2">
+      Session history
+    </div>
+    <mat-list>
+      <div>
+        <mat-list-item>
+          <div class="row full-width notificationsRow">
+            <div class="col-md-12">
+              Your log in session details will show up here
+            </div>
+          </div>
+        </mat-list-item>
+      </div>
+    </mat-list>
+  </div>
+</div>

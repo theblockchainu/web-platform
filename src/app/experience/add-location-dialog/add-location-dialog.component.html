@@ -1,0 +1,73 @@
+<div mat-dialog-content class="dialog-container">
+  <div class="row">
+    <div class="col-md-12 collectionContent">
+      <button disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+        <mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+      </button>
+      <div>
+        <div class="mat-display-1" style="margin-bottom: 20px;">{{getAddOrEditText()}} location for {{contentTitle}}</div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+    </div>
+  </div>
+  <div>
+    <form [formGroup]="locationForm">
+      <div>
+        <div class="row">
+          <div class="col-sm-6 margin-bottom-30">
+            <ng4geo-autocomplete class="geoLocation" required [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ng4geo-autocomplete>
+            <mat-form-field class="pb-block margin-top-20 margin-bottom-20">
+              <input name="country" #country style="border-bottom: 0px;" placeholder="Country" matInput formControlName="country" [matAutocomplete]="auto"
+                [required]="true">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let l of filteredCountryOptions | async" [value]="l" (click)="countryChange(l)">{{l}}</mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field class="pb-block margin-top-20 margin-bottom-20">
+              <input matInput #street_address formControlName="street_address" placeholder="Street Address" [required]="true">
+            </mat-form-field>
+            <mat-form-field class="pb-block margin-top-20 margin-bottom-20">
+              <input matInput #apt_suite formControlName="apt_suite" placeholder="Apt / Suite">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6 margin-bottom-30">
+            <div class="margin-top-20 margin-bottom-20" style="min-height: 300px; border: 1px solid #dbdbdb;">
+              <agm-map [latitude]="lat" [longitude]="lng" [usePanning]="true" [zoom]="14" [scrollwheel]="false" [disableDoubleClickZoom]="true"
+                [zoomControl]="false" [streetViewControl]="false">
+                <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+              </agm-map>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field class="pb-block margin-top-20 margin-bottom-20">
+              <input matInput #city formControlName="city" placeholder="City" [required]="true">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field class="pb-block margin-top-20 margin-bottom-20">
+              <input matInput #state formControlName="state" placeholder="State" [required]="true">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field class="pb-block margin-top-20 margin-bottom-20">
+              <input matInput #zip formControlName="zip" placeholder="Zip" [required]="true">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <mat-dialog-actions>
+        <span *ngIf="!isEdit" matTooltip="Please fill up all details" [matTooltipDisabled]="!busyCountry || country.value.length !== 0 || street_address.value.length !== 0 || city.value.length !== 0 || state.value.length !== 0 || zip.value.length !== 0">
+          <button mat-raised-button [mat-dialog-close]="getSaveDialogData()" color="accent" [disabled]="busyCountry || country.value.length === 0 || street_address.value.length === 0 || city.value.length === 0 || state.value.length === 0 || zip.value.length === 0">Save</button> &emsp;
+        </span>
+        <button mat-raised-button [mat-dialog-close]="getEditDialogData()" color="accent" *ngIf="isEdit" [disabled]="busyCountry || country.value.length === 0 || street_address.value.length === 0 || city.value.length === 0 || state.value.length === 0 || zip.value.length === 0">Update</button> &emsp;
+        <button mat-button [mat-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>
+      </mat-dialog-actions>
+    </form>
+  </div>
+</div>

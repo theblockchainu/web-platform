@@ -1,0 +1,60 @@
+<div class="dialog-container">
+  <div class="verification-section margin-top-20" id="content">
+    <div class="maincontent">
+      <div class="position-relative step-1">
+        <form [formGroup]="peer">
+          <mat-dialog-content>
+            <div class="col-md-12 position-relative">
+              <div class="verification-box drop-shadow">
+                <button class="mat-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
+                  <i class="fa fa-id-card-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+                </button>
+                <h2 class="headline">Confirm Your Identity</h2>
+                <p class="description1">In order to interact on Peerbuds, we need a digital copy of your government issued identification. This will
+                  help us ensure that you don't have multiple profiles in the platform.</p>
+                <p class="description2">This ID must:</p>
+                <p class="description2">
+                  <li>Be a government-issued (ex. Passport, Drivers License)</li>
+                  <li>Clearly show your name, picture and birthday</li>
+                  <li>Be in color</li>
+                </p>
+                <div class="margin-bottom-30">
+                  <div class="loading-container" [hidden]="!uploadingImage">
+                    <ngx-loading [show]="true"></ngx-loading>
+                  </div>
+                  <p-fileUpload name="image" *ngIf="!uploadingImage" #idproof customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
+                    chooseLabel="Upload ID" accept="application/pdf,application/msword,
+                    application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*">
+                    <ng-template pTemplate="toolbar">
+                      <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 file</div>
+                    </ng-template>
+                  </p-fileUpload>
+                  <h5>Max File Size
+                    <b>10MB</b>
+                  </h5>
+                  <div *ngIf="verificationIdUrl" class="profilePic icon-remove delete">
+                    <img *ngIf="fileType.includes('image')" class="uploaded_picture" src="{{envVariable.apiUrl + verificationIdUrl}}" width="150"
+                      style="border: 0.5px solid #ccc">
+                    <mat-icon *ngIf="fileType.includes('image')" (click)="deleteFromContainer(verificationIdUrl, 'image')" class="delete-image">close</mat-icon>
+                    <mat-icon *ngIf="fileType.includes('application')" (click)="deleteFromContainer(verificationIdUrl, 'file')" class="delete-file">close</mat-icon>
+                    <div *ngIf="fileType.includes('application')" class="uploaded_file">{{ fileName }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 position-relative">
+              <div class="pull-right">
+                <!--<button mat-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>-->
+                <span matTooltip="Invalid Verification ID!" [matTooltipDisabled]="this.peer.controls['verificationIdUrl'].value">
+
+                  <button mat-raised-button color="accent" (click)="continue()" [disabled]="!this.peer.controls['verificationIdUrl'].value">Continue</button>
+                </span>
+              </div>
+            </div>
+          </mat-dialog-content>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,134 @@
+.homefeed a{
+    color: black;  
+}
+
+.homefeed{
+    padding-top: 45px;
+}
+
+.recommendation-thumb{
+    object-fit: cover;
+    height: 290px;
+    width: 100%;
+    position: relative;
+}
+
+.community-thumb{
+  object-fit: cover;
+  height: 200px;
+  width: 100%;
+  position: relative;
+}
+
+.community-card{
+  min-height:1px;
+  padding-left: 8px;
+  padding-right: 8px;
+  width: 20%;
+  float: left;
+}
+
+.community-title {
+  padding: 10px;
+  background-color: rgba(0,0,0,0.7);
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  color: white !important;
+  width: 100%;
+}
+
+.community-feed .title {
+  font-size:17px !important;
+  color: #484848 !important;
+}
+
+.community-feed .headline {
+  font-size:16px !important;
+  color: #767676 !important;
+}
+
+.continueLearning-thumb{
+    object-fit: cover;
+    height: 200px;
+    width: 100%;
+}
+
+.peer-recommendation-thumb{
+    object-fit: cover;
+    height: 238px;
+    width: 100%;
+}
+
+.recommendation-card{
+    min-height:1px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 20%;
+    float: left;
+}
+
+.recommendation-city {
+    padding: 7px;
+    background-color: rgba(0,0,0,0.7);
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    color: white;
+    width: 100%;
+}
+
+.recommendation-map {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+agm-map {
+    height: 290px;
+}
+
+.continueLearning-card{
+    min-height:1px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 33.3%;
+    float: left;
+}
+
+.homefeed label{
+    color: #484848;
+    font-size: 12px;
+    font-weight: 400;
+
+}
+
+.peer-recommendation-card{
+    min-height:1px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 16.66%;
+    float: left;
+}
+
+.workshop-feed .title {
+    font-size:17px !important;
+    color: #484848 !important;
+}
+
+.workshop-feed .headline {
+    font-size:16px !important;
+    color: #767676 !important;
+}
+
+.mat-display-1 {
+    margin-bottom: 25px !important;
+}
+
+.communityParticipants {
+  &:not(:first-child) {
+    margin-left: -15px !important;
+  }
+}

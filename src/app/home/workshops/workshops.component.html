@@ -1,0 +1,78 @@
+<div class="feed workshopsFeed">
+  <div class="row workshop-feed">
+    <div class="col-md-12">
+      <div class="row margin-bottom-20 filterRow">
+        <!--<div class="col-md-7">
+          <div class="mat-display-1" *ngIf="!selectedTopics || selectedTopics.length<1">Workshops</div>
+          <div *ngIf="selectedTopics && selectedTopics.length>0">
+            <div class="mat-display-1" style="display:inline-block;">Workshops in <span>{{selectedTopics[0].name | titlecase}}</span></div>
+            <span *ngIf="selectedTopics.length>1" class="mat-h4 lightText">&emsp;  and {{selectedTopics.length-1}} more topics</span>
+          </div>
+        </div>-->
+        <div class="col-md-12">
+          <div class="margin-right-10" style="float: left;">
+            <button mat-button class="mat-border-button" #priceButton (click)="openPriceDialog()" style="color: rgba(0,0,0,0.54) !important;">Price</button>
+          </div>
+          <!--<div style="float: left;">
+            <button mat-button class="mat-border-button" #topicButton (click)="openTopicsDialog()" style="color: rgba(0,0,0,0.54) !important;">Topics</button>
+          </div>-->
+        </div>
+      </div>
+      <div class="mat-display-1" style="margin-bottom: 5px !important; margin-top: 34px;">
+        Explore Peerbuds
+      </div>
+      <app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
+
+      <div class="mat-display-1" style="margin-bottom: 25px !important;">
+        All workshops
+      </div>
+      <div class="loading-container" [hidden]="!loading">
+        <ngx-loading [show]="true"></ngx-loading>
+      </div>
+      <div *ngIf="!loading" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;">
+        <div class="noDataContainer" *ngIf="workshops === undefined || workshops.length === 0">
+          There are no new active workshops to view right now. Browse from within your signed-up workshops
+          <a class="clickable">here</a>.
+        </div>
+        <div class="recommendation-card" *ngFor="let workshop of workshops; let i =index">
+          <span class="share-panel">
+            <button mat-icon-button class="bookmark" (click)="toggleBookmark(i)">
+              <mat-icon *ngIf="!(workshop.bookmarks && workshop.bookmarks[0] && workshop.bookmarks[0].peer && workshop.bookmarks[0].peer[0] && workshop.bookmarks[0].peer[0].id===userId)">
+                bookmark</mat-icon>
+              <mat-icon *ngIf="workshop.bookmarks && workshop.bookmarks[0] && workshop.bookmarks[0].peer && workshop.bookmarks[0].peer[0] && workshop.bookmarks[0].peer[0].id===userId"
+                color="primary">bookmark</mat-icon>
+            </button>
+            <button mat-icon-button class="share" (click)="_dialogsService.shareCollection('workshop',workshop.id,workshop.title)">
+              <mat-icon>share</mat-icon>
+            </button>
+          </span>
+          <a [routerLink]="'/workshop/'+workshop.id">
+            <div class="">
+              <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{envVariable.apiUrl+workshop.imageUrls[0]}}"
+                alt="workshpImg" (error)="_collectionService.imgErrorHandler($event)">
+              <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
+                alt="workshpImg" (error)="_collectionService.imgErrorHandler($event)">
+            </div>
+            <div *ngIf="workshop.currency !== undefined && workshop.currency.length > 0" style="margin-top: 3px;">
+              <span class="mat-body-2">{{workshop.price | convertCurrency: workshop.currency |async}}</span> / person</div>
+            <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" style="margin-top: 3px;">
+              <span class="mat-body-2">{{workshop.price | convertCurrency: 'USD' |async}}</span> / person</div>
+            <div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
+            <div style="margin-top: 0px;">{{workshop.owners[0].profiles[0].first_name + ' ' + workshop.owners[0].profiles[0].last_name | ucwords}}</div>
+            <!--<div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>-->
+            <div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
+              <p-rating class="padding-left-0" style="float: left;" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
+              </p-rating>
+              <span class="padding-left-10" *ngIf="workshop.ratingCount" style="text-align: left">
+                <label>{{workshop.ratingCount}} reviews</label>
+              </span>
+              <span class="padding-left-10" *ngIf="!workshop.ratingCount" style="text-align: left">
+                <label>0 reviews</label>
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

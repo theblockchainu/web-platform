@@ -1,0 +1,156 @@
+input {
+	outline: none;
+}
+
+#demo-2 {
+    position: relative;
+}
+
+#demo-2 i {
+    position: absolute;
+}
+
+/* Demo 2 */
+#demo-2 input[type=search] {
+	width: 15px;
+	padding-left: 15px;
+	color: transparent;
+    cursor: pointer;
+    border: none;
+    
+}
+#demo-2 input[type=search]:hover {
+	background-color: #fff;
+}
+#demo-2 input[type=search]:focus {
+	width: 130px;
+	padding-left: 22px;
+	color: #000;
+	background-color: #fff;
+    cursor: auto;
+    border: none;
+    border-bottom: 2px solid #33bd9e;
+}
+#demo-2 input:-moz-placeholder {
+	color: transparent;
+}
+#demo-2 input::-webkit-input-placeholder {
+	color: transparent;
+}
+
+.border-box {
+    border: 1px solid #ccc;
+}
+
+.mat-select {
+    padding-top: 0px !important;
+}
+
+.headerChat {
+	height: 50px;
+	border-bottom: 1px solid #ccc;
+}
+
+.review-thumb {
+	width: 10%;
+}
+
+.pull-right.review-thumb {
+	padding-right: 0px;
+}
+
+.pull-right .circle-thumb {
+	margin-left: 0px;
+}
+
+.displayNone {
+	display: none;
+}
+
+.noBorderRight {
+	border-right: none !important;
+}
+
+.noBorderBottom {
+	border-bottom: none !important;
+}
+
+.noBorderLeft {
+	border-left: none !important;
+}
+
+.border-right {
+    border-right: 1px solid #d3d3d3;
+}
+
+.backgroundColorGray {
+	background-color: #d3d3d3;
+}
+
+.pull-left + .talk-bubble {
+	float: left;
+	background: none !important;
+    border: 1px solid #d3d3d3;
+}
+
+.pull-right + .talk-bubble {
+	float: right;
+}
+
+.pull-right + .talk-bubble.tri-right.left-top:after {
+	left: auto !important;
+	right: -9px !important;
+	// border: 20px solid;
+	// border-color: #fff transparent transparent #fff;
+	// left: auto;
+    // right: -9px !important;
+    // border: 12px solid;
+    // border-color: #fff transparent transparent #fff;
+    // top: 0px;
+}
+
+.pull-right + .talk-bubble.tri-right.left-top:before{
+	content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 0;
+    left: auto;
+    right: -10px;
+    border: 12px solid;
+    border-color: #d3d3d3 transparent transparent transparent;
+}
+
+.pull-left + .talk-bubble.tri-right.left-top:before{
+	content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: -1px;
+    left: -11px;
+    right: auto;
+    border: 11px solid;
+    border-color: #d3d3d3 transparent transparent transparent;
+}
+
+.pull-left + .talk-bubble.tri-right.left-top:after {
+	content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -9px;
+    right: auto;
+    top: 0px;
+    bottom: auto;
+    border: 14px solid;
+    border-color: #fff transparent transparent transparent;
+}
+
+md-form-field textarea.mat-input-element {
+    resize: none !important;
+}
+
+.chatbox .mat-form-field-wrapper .mat-form-field-underline {
+    display: none !important;
+    background: none !important;
+}

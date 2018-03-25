@@ -1,0 +1,62 @@
+
+.delete-button, .delete-file, .delete .delete-image {
+    position:absolute;
+    height: 20px;
+    width: 20px;
+    color: #33bd9e;
+    cursor: pointer;
+    border: 1px solid #33bd9e;
+    background: white;
+    border-radius: 20px;
+    font-size: 18px;
+}
+
+.loading-container {
+    position: relative;
+    width: 50px;
+    margin: 20px 0px;
+    padding-bottom: 20px;
+}
+
+.pic:before {
+    display: inline-block;
+    content: "";
+    vertical-align: middle;
+  }
+  
+.pic img {
+max-width: 100%;
+max-height: 100%;
+}
+
+.pic .delete-button {
+top:-8px;
+right:6px;
+}
+
+.imageContainer {
+height: auto;
+width: 200px;
+margin-bottom: 30px;
+margin-right: 20px;
+}
+
+.delete .delete-file {
+    top:-10px;
+    right: -10px;
+}
+
+.delete .delete-image {
+    top: -10px;
+    right: 5px; 
+}
+
+.uploaded_file {    
+    width: 200px;
+    height: 100px;
+    border: 1px solid #ccc;
+    text-align: center;
+    margin: auto;
+    vertical-align: middle;
+    line-height: 100px;
+}

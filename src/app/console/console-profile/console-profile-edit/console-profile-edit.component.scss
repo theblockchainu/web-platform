@@ -1,0 +1,87 @@
+md-hint{
+    &.mat-hint{
+        color:#999;
+    }
+}
+
+md-input-container .mat-form-field-infix-override {
+    padding-top: 0.9em !important;
+}
+
+.addPhoneButton .mat-button-focus-overlay {
+    background: none;
+    margin-bottom: 10px;
+    cursor: pointer
+}
+
+.hint {
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+
+.mdiIcon {
+    font-size: 20px;
+}
+.darkColor {
+    color: #484848;
+}
+
+.addPhoneButton .mat-button-focus-overlay {
+    background: none !important;
+}
+
+.addPhoneButton .mat-button-wrapper {
+    font-size: 0.85rem !important;
+}
+
+.alignDelete {
+    line-height: 60px;
+    vertical-align: middle;
+}
+
+.customWidthCode {
+    width: 30% !important;
+}
+
+.customWidthNumber {
+    width: 60% !important;
+    padding-left: 20px;
+}
+
+.disabled {
+    cursor: not-allowed;
+    color: grey;
+}
+
+.max-height-40 {
+    max-height: 40px;
+}
+
+.max-height-25 {
+    max-height: 25px;
+}
+
+.customWidth30 {
+    width: 30%;
+}
+
+.customWidth33 {
+    width: 42%;
+}
+
+.geoLocation .custom-autocomplete .custom-autocomplete__dropdown .currentlocation a {
+    font-size: 0.9rem !important;
+}
+
+.geoLocation .custom-autocomplete .custom-autocomplete__dropdown .heading {
+    font-size: 0.8rem !important;
+}
+
+.geoLocation .custom-autocomplete .custom-autocomplete__dropdown .main-text {
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+}
+
+agm-map {
+    height: 300px;
+  }

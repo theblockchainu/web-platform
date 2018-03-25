@@ -1,0 +1,290 @@
+.outerContainer {
+    border: 0;
+    float: left;
+    position: relative;
+    width: 100%;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.right {
+    right: 0;
+}
+
+.rightRhombus {
+    width: 342px;
+}
+.rightImage {
+    width: 578px;
+    height: auto;
+    z-index: 10;
+}
+
+.wavesPhilosophy {
+    width: 100%;
+    left: 0;
+    z-index: 0;
+    top: 10.5%;
+}
+
+.problem {
+    text-align: center;
+}
+
+.headline {
+    color: black;
+    font-size: 4rem;
+}
+
+.content {
+    word-wrap: break-word;
+    color: #979797 !important;
+}
+
+.quote {
+    width: 87px;
+}
+
+.quoteText, .coreTopic {
+    color:#ff5b5f;
+}
+
+.quoteAuthor {
+    font-size: 16px;
+    font-weight: 400; 
+    color: #979797;
+}
+
+.corevalue {
+    width: 20%;
+    float: left;
+}
+
+.selected1, .selected2,  .selected3, .selected4, .selected5 {
+    width: 13px;
+    top: 112%;
+}
+
+.selected1{
+    left: 11%;
+}
+
+.selected2{
+    left: 30%;
+}
+
+.selected3{
+    left: 50%;
+}
+
+.selected4{
+    left: 69%;
+}
+
+.selected5{
+    left: 88%;
+}
+.default-circle, .active-circle {
+    width: 130px;
+}
+
+.default-transformation {
+    width: 55px;
+    left: 8.5%;
+    top: 38px;
+}
+
+.default-pplFocussed {
+    width: 50px; 
+    left: 28%;
+    top: 35px;
+
+}
+
+.default-courage {
+    width: 60px; 
+    left: 47%;
+    top: 44px;
+
+}
+
+.default-collab {
+    width: 55px;
+    left: 66.5%;
+    top: 42px;
+
+}
+
+.default-optmism {
+    width: 52px;   
+    left: 86%;
+    top: 38px;
+
+}
+
+.coreTopic {
+    font-size: 2.25rem;
+    font-weight: 400;    
+    margin-bottom: 20px;
+}
+
+.view5Image {
+    width: 90%;
+}
+
+.view6Image {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 370px;
+    width: 90%;
+}
+
+.arrow {
+    position: absolute;
+    width: 57px;
+    height: 26px;
+}
+
+.arrow-left{
+    left: 127px;
+    bottom: 1250px;
+}
+
+.text {
+    bottom: 1245px;
+    position: absolute;
+    left: 450px;
+    font-size: 17px;
+    font-style: italic;
+    font-weight: 400;
+    text-align: justify;
+    color: #979797;
+    margin-bottom:0px;
+}
+
+.author {
+    bottom: 1185px;
+    position: absolute;
+    left: 690px;
+    font-size: 16px;
+    font-weight: 400; 
+    color: #484848;
+}
+
+.arrow-right {
+    right: 150px;
+    bottom: 1250px;
+}
+
+.testimonial {
+    position: absolute;
+    bottom: 1350px;
+    width: 64px;
+    height: 64px;
+}
+
+.testimonial1 {
+    left: 600px;
+}
+
+.testimonial2 {
+    left: 700px;
+}
+
+.testimonial3 {
+    left: 800px;
+}
+
+.journey{
+    position: absolute;
+    bottom: 500px;
+    width: 270px;
+    height: 270px;
+}
+
+.journey1 {
+    left: 120px;
+}
+
+.journey2 {
+    left: 430px;
+}
+
+.journey3 {
+    left: 740px;
+}
+
+.journey4 {
+    right: 120px;
+}
+
+.journeyText {
+    bottom: 815px;
+    position: absolute;
+    left: 665px;
+    text-align: justify;
+    color: white;
+    font-weight: 100 !important;
+}
+
+.journeyDesc {
+    bottom: 800px;
+    position: absolute;
+    left: 680px;
+    font-size: 17px;
+    font-weight: 300;
+    text-align: justify;
+    color: #979797;
+}
+
+.footer {
+    position: absolute;
+    bottom: 104px;
+    left: 0;
+}
+
+.oval {
+    bottom: 0;
+    position: absolute;
+    left: 0;
+}
+
+.notif{
+    position: absolute;
+    left: 600px;
+    bottom: 280px;
+    font-size: 16px;
+    color: white;
+}
+
+.mail-bg {
+    position: absolute;
+    bottom: 220px;
+    width: 600px;
+    left: 350px;
+    background: white;
+    line-height: 37px;
+    border: none;
+    padding-left: 10px;
+    font-size: unset;
+}
+
+.email-btn {
+    position: absolute;
+    bottom: 220px;
+    left: 950px;
+    background: black;
+    color: white;
+    line-height: 40px;
+    width: 10%;
+    box-shadow:0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.space{
+    padding: 30px 5px 10p 5px;
+    margin-top: 50px;
+}
+

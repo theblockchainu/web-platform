@@ -1,0 +1,17 @@
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+.accordianContent {
+    padding-bottom: 20px;
+    margin-top: -20px;
+    padding-left: 15px;
+    border-bottom: 1px solid #dbdbdb;
+}
+p-accordion  :focus {
+    outline: none;
+}
+
+.deleteText {
+    text-decoration: line-through;
+}

@@ -1,0 +1,43 @@
+.signup-box {
+    background-color: #fff;
+    padding: 60px 50px;
+    border: 1px solid lightgrey;
+    margin-bottom: 70px;
+    width: 48%;
+    margin-left: 26%;
+    margin-right: 26%;
+    height: auto;
+}
+
+.signup-box.drop-shadow {
+    box-shadow: 0 0 10px #ccc;
+}
+
+.signup-box label {
+    font-weight: normal;
+    color: #666;
+    font-size: 14px;
+}
+
+.promoOptIn{
+    -webkit-appearance: checkbox;
+}
+
+.description1 {
+    font-size: 16px;
+    color: #767676;
+    padding-top:7px;
+    padding-bottom: 30px;
+
+}
+
+.headline {
+    color: #484848;
+}
+
+.signupBtn {
+    width: 35%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 32%
+}

@@ -1,0 +1,70 @@
+.workshopsFeed a{
+    color: black;  
+}
+
+.workshopsFeed{
+    padding-top: 30px;
+}
+
+.workshop-feed label{
+    color: #484848;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.workshop-feed .title {
+    font-size:17px !important;
+    color: #484848 !important;
+}
+
+.workshop-feed .headline {
+    font-size:16px !important;
+    color: #767676 !important;
+
+}
+
+.rightLinks span {
+    color: #767676 !important;
+    font-size:16px !important;
+}
+
+.homefeed {
+    padding-top: 30px;
+}
+
+.recommendation-thumb{
+    object-fit: cover;
+    height: 290px;
+    width: 100%;
+}
+
+.sticky {
+    border-bottom: 1px solid #ddd;
+}
+
+.peer-recommendation-thumb{
+    object-fit: cover;
+    height: 238px;
+    width: 100%;
+}
+
+.recommendation-card{
+    min-height:1px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 20%;
+    float: left;
+    margin-bottom: 25px;
+}
+
+.peer-recommendation-card{
+    min-height:1px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 16.66%;
+    float: left;
+}
+
+.mat-display-1 {
+    margin-bottom: 25px !important;
+}

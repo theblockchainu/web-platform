@@ -1,0 +1,135 @@
+md-dialog-container {
+    padding:10px !important;
+}
+md-input-container md-icon {
+    position: absolute;
+    top: 5px;
+    left: 2px;
+    }
+
+md-dialog-content {
+    display: block;   
+    margin: 0 -67px 0 -67px;
+    max-height: 50vh;
+    overflow: unset;
+}
+
+.page-signin
+{
+    width: 390px;
+    height: 434px;
+  
+}
+.spacer{
+    width: 350px;
+    margin: 47px;
+}
+.logincontent{
+    width: 390px;
+    height: 498px;
+    overflow: disable;
+}
+
+.maincontent{
+    min-height: 50vh;
+}
+
+ .or-seperator-vertical {
+            border-bottom: 1px solid rgba(199, 199, 199, 0.5);
+            content: "";
+            display: inline-block;
+            left: 0;
+            position: relative;
+            top: 9px;
+            width: 100%;
+        }
+
+.round-or-text {
+            border-radius: 24px;
+            color: rgba(74, 74, 74, 0.5);
+            display: inline-block;
+            bottom: 14px;
+            height: 30px;
+            line-height: 30px;
+            width: 50px;
+            font-size: 20px;
+            position:relative;
+        }
+
+.or-text-vertical {
+            background-color: #fff;
+            color: rgba(74, 74, 74, 0.5);
+            position: relative;
+            font-size: 15px;
+            font-weight:800;
+        }
+.check {
+    margin-right: 57% !important;
+}
+.loginbtn{
+    background-color: #ff6d71;
+    font-size:17px;
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
+.txtcolor{
+    color: #fff;
+}
+
+.fa-facebook{
+    background-color: #ffffff;
+    color: #335397!important;
+}
+
+.fa-google{
+    background-color: #ffffff;
+    color: #dd4a38!important;
+}
+
+.circle-icon1 {
+    padding:4px 6px 4px 6px;
+    border-radius: 100%;
+    margin:2px 21px 6px -22px;
+}
+.circle-icon2{
+    padding:4px 5.5px 4px 5.75px;
+    border-radius: 100%;
+    margin:2px 21px 6px -46px;
+}
+
+.dialog-content{
+    width: 45vw;
+    height: 90vh;
+}
+
+.btn-block{
+   font-size:15px;
+   color:#ffffff;
+}
+.invert-fb{
+    background-color: #335397;
+}
+.invert-fb:hover, .invert-fb:active{
+     background-color: #ffffff;
+     color: #335397;
+     .fa-facebook{
+         background-color:#335397;
+         color: #ffffff !important;
+     }
+}
+.invert-google{
+    background-color: #dd4a38;
+}
+.invert-google:hover, .invert-google:active {
+    background-color: #ffffff;
+    color: #dd4a38;
+     .fa-google {
+         background-color: #dd4a38;
+         color: #ffffff !important;
+     }
+}
+.alert{
+    text-align: left;
+    color: #ff0000;
+}

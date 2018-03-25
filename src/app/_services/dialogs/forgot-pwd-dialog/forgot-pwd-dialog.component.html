@@ -1,0 +1,41 @@
+<div class="dialog-container" mat-dialog-content>
+  <div class="mat-dialog-focus-trap"></div>
+  <form [formGroup]="forgotpwdForm" class="form-horizontal">
+    <div>
+      <div class="dialog1">
+        <div *ngIf="showMessage" class="alert alert-success box-msg" role="alert">
+          <i class="fa fa-check-circle fa-lg" aria-hidden="true"></i>
+          <br> Email sent! Please click on the link to change your password
+          <br><br><br>
+          <button mat-dialog-close mat-raised-button class="loginbtn btn-width-large vertical-bottom">
+            <span class="txtcolor">Ok</span>
+          </button>
+        </div>
+        <div *ngIf="showError" class="alert alert-error box-msg" role="alert">
+          <i class="fa fa-close fa-lg" aria-hidden="true"></i>
+          <br>This email does not exist in our database
+          <br><br><br>
+          <button mat-dialog-close mat-raised-button class="loginbtn btn-width-large vertical-bottom">
+            <span class="txtcolor">Ok</span>
+          </button>
+        </div>
+        <div *ngIf="!showMessage && !showError">
+          <div>
+            <mat-form-field [floatLabel]="'always'" class="pb-block">
+              <input matInput #email placeholder="Email" formControlName="email" type="email">
+            </mat-form-field>
+          </div>
+          <div>
+            <span matTooltip="Invalid email" [matTooltipDisabled]="email.value.length != 0 && !email.invalid">
+              <button mat-raised-button class="loginbtn btn-width-large vertical-bottom" type="submit" (click)="sendForgotPwdMail()" [disabled]="email.value.length == 0 || email.invalid">
+                <span class="txtcolor">Request for password</span>
+              </button>
+              <br>
+              <br>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,52 @@
+<div class="feed peerFeed">
+  <div class="row peer-feed">
+    <div class="col-md-12">
+      <!--<div class="row">
+        <div class="col-md-5">
+          <div class="mat-display-1">Peers</div>
+        </div>
+        &lt;!&ndash; <div class="col-md-2 pull-right">
+          <a [routerLink]="'/home/peers'">
+            <div class="col-md-8">
+              <h4 class="pull-right">See all
+              </h4>
+            </div>
+            <div class="col-md-3 pull-right">
+              <div class="col-md-6">
+                <button mat-button #topicButton (click)="openTopicsDialog()">Topics <mat-icon>arrow_drop_down</mat-icon> </button>
+              </div>
+              <div class="col-md-6">
+                <button mat-button #priceButton (click)="openPriceDialog()">Price Range <mat-icon>arrow_drop_down</mat-icon> </button>
+              </div>
+            </div>
+          </a>
+        </div> &ndash;&gt;
+      </div>-->
+      <div class="loading-container" [hidden]="!loading">
+        <ngx-loading [show]="true"></ngx-loading>
+      </div>
+      <div *ngIf="!loading" class="row feed-horizontal margin-bottom-70" style="padding: 0px 7px;">
+        <div class="peer-recommendation-card" *ngFor="let peer of peers">
+          <a [routerLink]="'/profile/'+peer.id">
+            <div class="">
+              <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url}}" alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
+              <img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
+            </div>
+            <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}</div>
+            <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
+            <div class="col-sm-12 padding-left-0" style="margin-top: -2px; font-size: 13px;">
+              <p-rating class="padding-left-0" style="float: left;" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
+              </p-rating>
+              <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length>0" style="text-align: left">
+                <label>{{peer.reviewsAboutYou.length}} reviews</label>
+              </span>
+              <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length==0" style="text-align: left">
+                <label>0 reviews</label>
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

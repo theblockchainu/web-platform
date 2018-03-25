@@ -1,0 +1,32 @@
+md-input-container md-icon {
+    position: absolute;
+    top: 5px;
+    left: 2px;
+    }
+
+.maincontent{
+    min-height: 40vh;
+}
+
+.loginbtn{
+    background-color: #ff5b5f;
+}
+
+.txtcolor{
+    color: #fff;
+}
+
+.dialog1{
+    height: 170px !important; 
+    border-radius: 2px;
+    box-sizing: border-box;
+    overflow: auto;
+    max-width: 80vw;
+    outline: 0;
+    width: 350px !important;
+    margin:30px;
+}
+.box-msg{
+    color: #33bd9e;
+    text-align: center;
+}

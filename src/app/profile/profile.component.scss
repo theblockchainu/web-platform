@@ -1,0 +1,295 @@
+
+.mat-tab-label {
+  padding-left: 0px !important;
+}
+
+.message-item {
+    margin-bottom: 25px;
+    margin-left: 40px;
+    position: relative;
+}
+
+.message-item .message-inner {
+    border-radius: 3px;
+    padding: 10px;
+    position: relative;
+}
+
+.message-item:before {
+    background:#ccc;
+    bottom: -30px;
+    box-shadow: none;
+    content: "";
+    height: 100%;
+    left: -30px;
+    position: absolute;
+    width: 1px;
+}
+
+.message-item:after {
+    background: #000000;
+    border-radius: 50%;
+    box-shadow: none;
+    content: "\2714";
+    position: absolute;
+    font-size: 12px;
+    text-align: center;
+    color:#fff;
+    width: 10px !important;
+    height: 10px !important;
+    left: -35px !important;
+    padding-top: 6px !important;
+    top: 17px !important;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.message-item .message-head {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+}
+
+.message-item .message-head .avatar {
+    margin-right: 20px;
+}
+
+.message-item .message-head .user-detail {
+    overflow: hidden;
+}
+
+.message-item .message-head .user-detail h5 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.message-item .message-head .post-meta {
+    float: left;
+    padding: 0 15px 0 0;
+}
+
+.message-item .message-head .post-meta>div {
+    color: #333;
+    font-weight: bold;
+    text-align: right;
+}
+
+.post-meta>div {
+    color: #777;
+    font-size: 12px;
+    line-height: 22px;
+}
+
+.message-item .message-head .post-meta>div {
+    color: #333;
+    font-weight: bold;
+    text-align: right;
+}
+
+.post-meta>div {
+    color: #777;
+    font-size: 12px;
+    line-height: 22px;
+}
+
+
+.recommendation-thumb{
+    object-fit: cover;
+    height: 290px;
+    width: 100%;
+}
+
+.peer-recommendation-thumb{
+    object-fit: cover;
+    height: 238px;
+    width: 100%;
+}
+
+.recommendation-card{
+    min-height: 1px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 20%;
+    float: left;
+    margin-bottom: 35px;
+}
+
+.peer-recommendation-card{
+    min-height:1px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 16.66%;
+    float: left;
+}
+
+.peer-recommendation-card a , .recommendation-card a{
+    color: black;
+}
+
+.workshop-feed .title {
+    font-size:17px !important;
+    color: #484848 !important;
+}
+
+.workshop-feed .headline {
+    font-size:16px !important;
+    color: #767676 !important;
+}
+
+
+a h4{
+    display:inline;
+    }
+
+.work-title h3{
+    display:inline;    
+}
+
+.education-title h3{
+    display:inline;    
+}
+
+.review h2{
+    display:inline;        
+}
+
+.profile-page{
+    width: 100%;
+    padding-top: 120px;
+}
+
+.profile-pic{
+    object-fit: cover;
+    height: 240px;
+    width: 240px;
+}
+
+.center-feed p{
+    // font-size: 16px;
+}
+
+.center-feed{
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+.center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .side-image{
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+  }
+
+  .left-panel {
+      width: 20%;
+  }
+  .left-panel .mat-button{
+    border: 1.5px solid #1C1D1D;
+    color: #292C2B;
+  }
+
+  .feed-horizontal a{
+    //   color: #1C1D1D
+  }
+
+  .defaultFB {
+    color: #335397;
+  }
+  
+  .defaultGoogle {
+    color: #dd4a38;
+  }
+  
+  .socialIcons {
+    padding-right: 10px;
+    color: #33bd9e !important;
+  }
+
+  .border-top {
+    border-top: 1px solid #dbdbdb;
+    padding: 30px 0px 20px 0px;
+  }
+
+  .resumeText {
+    line-height: 35px;
+    vertical-align: middle;
+  }
+
+  .resumeIcons {
+    font-size: 35px;
+  }
+
+  .reviewer {
+    text-align: left;
+    margin-top: 6px;
+    font-weight: 400;
+  }
+
+  .rating {
+      font-size: 0.8rem;
+  }
+
+  .rating .fa {
+    color: #33bd9e !important;
+
+  }
+
+  .bullet{
+    display:inline-block;
+    position:relative;
+    padding-left: 30px;
+    top: -1px;
+    &:before{
+      display: inline-block;
+      position: absolute;
+      content:"";
+      width:4px;
+      height:4px;
+      background-color: #ccc;
+      border-radius: 50%;
+      top:-5px;
+      left:10px;
+    }
+  }
+
+  .custom-margin-left-20pc {
+      margin-left: 20%;
+  }
+
+  h3 {
+      margin-bottom: 10px;
+  }
+
+  hr {
+      margin-top: 15px;
+      margin-bottom: 15px;
+  }
+
+  .font16 {
+      font-size: 16px;
+  }
+
+  .review-thumb {
+      width: 14%;
+  }
+
+  .reviews:last-child(.review-section) {
+    border-bottom: 0px;
+  }
+
+  .review-section {
+      padding-bottom: 20px;
+      padding-top: 20px;
+      border-bottom: 1px solid #dbdbdb;
+  }
+

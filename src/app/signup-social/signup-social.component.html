@@ -1,0 +1,75 @@
+<div class="main-content">
+    <div class="col-md-12 margin-top-80">
+        <div class="signup-box">
+            <form [formGroup]="signupSocialForm" (ngSubmit)="continueWithSocialSignup(signupSocialForm)" novalidate>
+                <div class="">
+                    <div class="text-center">
+                        <h2 class="headline">Complete your information</h2>
+                        <p class="description1">Please review and provide any missing information to finish signing up.</p>
+                    </div>
+                    <div class="col-md-12 padding-left-0 padding-right-0">
+                        <mat-form-field [floatLabel]="'always'" style="width:48%">
+                            <input matInput placeholder="First Name" formControlName="first_name">
+                        </mat-form-field>
+                        <mat-form-field [floatLabel]="'always'" style="width:48%;margin-left:3%">
+                            <input matInput placeholder="Last Name" formControlName="last_name">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-12 padding-left-0 padding-right-0">
+                        <mat-form-field [floatLabel]="'always'" style="width:100%">
+                            <input matInput placeholder="Email" formControlName="email">
+                            <mat-error *ngIf="signupSocialForm.hasError('pattern')">
+                                Please enter a valid email address
+                            </mat-error>
+                            <mat-error *ngIf="signupSocialForm.hasError('required')">
+                                Email is
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-12 padding-left-0 padding-right-0">
+                        <!-- <mat-form-field [floatLabel]="'always'"> -->
+                        <mat-form-field [floatLabel]="'always'">                 <mat-select class="col-md-4 padding-left-0" placeholder="Month" formControlName="dobMonth" [(ngModel)]="selectedMonth">
+                            <mat-option value="01">January</mat-option>
+                            <mat-option value="02">February</mat-option>
+                            <mat-option value="03">March</mat-option>
+                            <mat-option value="04">April</mat-option>
+                            <mat-option value="05">May</mat-option>
+                            <mat-option value="06">June</mat-option>
+                            <mat-option value="07">July</mat-option>
+                            <mat-option value="08">August</mat-option>
+                            <mat-option value="09">September</mat-option>
+                            <mat-option value="10">October</mat-option>
+                            <mat-option value="11">November</mat-option>
+                            <mat-option value="12">December</mat-option>
+                        </mat-select>               </mat-form-field>
+                        <!-- </mat-form-field> -->
+
+                        <!-- <mat-form-field [floatLabel]="'always'"> -->
+                        <mat-form-field [floatLabel]="'always'">                 <mat-select class="col-md-4" placeholder="Day" formControlName="dobDay" [(ngModel)]="selectedDay">
+                            <mat-option *ngFor="let birthday of dobDay" [value]="birthday">
+                                {{ birthday }}
+                            </mat-option>
+                        </mat-select>               </mat-form-field>
+                        <!-- </mat-form-field> -->
+                        <!-- <mat-form-field [floatLabel]="'always'"> -->
+                        <mat-form-field [floatLabel]="'always'">                 <mat-select class="col-md-4" placeholder="Year" formControlName="dobYear" [(ngModel)]="selectedYear">
+                            <mat-option [value]="birthyear" *ngFor="let birthyear of dobYear">{{ birthyear }}</mat-option>
+                        </mat-select>               </mat-form-field>
+                        <!-- </mat-form-field> -->
+                    </div>
+                    <!-- <div class="checkbox">
+                        <label class="checkbox"><input class="promoOptIn" type="checkbox" formControlName="promoOptIn" [checked]="promoOptIn" (change)="promoOptIn = !promoOptIn" /> I'd like to receive promotional communications, including discuonts, surveys, inspiration, and love from Peerbuds via email, SMS, and phone.</label>
+                    </div> -->
+                    <div>
+                        <span matTooltip="Please check details!" [matTooltipDisabled]="signupSocialForm.valid">
+
+                            <button mat-raised-button type="submit" class="margin-top-40 signupBtn" [disabled]="!signupSocialForm.valid" color="accent">Continue</button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

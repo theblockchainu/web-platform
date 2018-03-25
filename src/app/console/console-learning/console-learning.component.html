@@ -1,0 +1,24 @@
+<div class="row" style="margin-top: 20px;">
+  <div class="col-md-3">
+    <mat-list>
+      <!--<mat-list-item [routerLink]="'/console/learning/all'" [class.bold]="getActiveTab() === 'all'">
+        View All
+      </mat-list-item>-->
+      <!--<mat-list-item [routerLink]="'/console/learning/workshops'" [class.bold]="getActiveTab() === 'workshops'">
+        Workshops
+      </mat-list-item>-->
+      <mat-list-item [routerLink]="'/console/learning/experiences'" [class.bold]="getActiveTab() === 'experiences'">
+        Experiences
+      </mat-list-item>
+      <mat-list-item [routerLink]="'/console/learning/bookmarks'" [class.bold]="getActiveTab() === 'bookmarks'">
+        Bookmarks
+      </mat-list-item>
+      <!--<mat-list-item [routerLink]="'/console/learning/sessions'" [class.bold]="getActiveTab() === 'sessions'">
+        Sessions
+      </mat-list-item>-->
+    </mat-list>
+  </div>
+  <div class="col-md-9">
+    <router-outlet></router-outlet>
+  </div>
+</div>

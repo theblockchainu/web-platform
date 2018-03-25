@@ -1,0 +1,15 @@
+<div mat-dialog-content class="dialog-container">
+  <h3 mat-dialog-title>
+    Add New Language</h3>
+  <form [formGroup]="newLanguage" (ngSubmit)="addNewLanguage()">
+    <mat-form-field [floatLabel]="'always'" class="form-group" [ngClass]="{'has-error':!newLanguage.controls['name'].valid}">
+      <input matInput tabindex="1" formControlName="name">
+    </mat-form-field>
+    <div>
+      <span matTooltip="Invalid Language!" [matTooltipDisabled]="newLanguage.valid">
+        <button mat-button tabindex="2" type="submit" [disabled]="!newLanguage.valid">Add</button>
+      </span>
+      <button mat-button tabindex="-1" type="button" (click)="dialogRef.close()">Cancel</button>
+    </div>
+  </form>
+</div>

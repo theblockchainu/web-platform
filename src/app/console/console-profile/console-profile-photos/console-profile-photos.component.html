@@ -1,0 +1,84 @@
+<div class="row">
+  <div class="col-md-12">
+    <div *ngIf="loadingMediaPage" class="loading-container">
+      <ngx-loading [show]="true"></ngx-loading>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="!loadingMediaPage">
+  <div class="col-md-12">
+    <div class="row">
+      <div>
+        <div style="margin-top:20px;" class="col-md-12">
+          <div class="row" style="margin-right: 20px;">
+            <p class="profilePhotoHeading">
+              Profile Photo
+            </p>
+
+            <div class="loading-container" [hidden]="!uploadingImage">
+              <ngx-loading [show]="true"></ngx-loading>
+            </div>
+            <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
+              accept="image/*" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+              <ng-template pTemplate="toolbar">
+                <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
+              </ng-template>
+            </p-fileUpload>
+            <h5>Max File Size
+              <b>10MB</b>
+            </h5>
+            <!-- <div *ngFor="let pp of profile_picture_array"  class="profilePic"> -->
+            <div *ngIf="picture_url" class="profilePic delete">
+              <img class="uploaded_picture" src="{{envVariable.apiUrl + picture_url}}" width="150" style="border: 0.5px solid #ccc">
+              <mat-icon (click)="deleteFromContainer(picture_url, 'image')" class="delete-button">close</mat-icon>
+              <!-- <button mat-button class="setPP" (click)="setProfilePic(pp, 'image')">Set as profile pic</button> -->
+            </div>
+            <!-- </div> -->
+            <div class="lighterText mat-caption">
+              Clear frontal face is an important way for teachers and learners to know about each other.
+              <br> Its not much fun to teach a landscape. Please load a photo that clearly shows your face.
+            </div>
+
+            <hr>
+
+            <p class="profilePhotoHeading">
+              Profile Video
+            </p>
+            <div class="loading-container" [hidden]="!uploadingVideo">
+              <ngx-loading [show]="true"></ngx-loading>
+            </div>
+            <p-fileUpload *ngIf="!uploadingVideo" #fubauto name="video" customUpload="true" (uploadHandler)="uploadVideo($event)" maxFileSize="10000000"
+              accept="video/*" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+              <ng-template pTemplate="toolbar">
+                <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 videos</div>
+              </ng-template>
+
+            </p-fileUpload>
+             <h5>Max File Size               <b>10MB</b>             </h5>
+
+            <div *ngIf="profile_video" class="profileVideo delete">
+              <video width="150" class="uploaded_picture" preload="metadata">
+                <source src="{{envVariable.apiUrl + profile_video}}"> Your browser does not support the video tag.
+              </video>
+              <mat-icon (click)="deleteFromContainer(profile_video, 'video')" class="delete-button">close</mat-icon>
+            </div>
+            <div class="darkText mat-body-1">
+              Tell the community a bit about yourself
+            </div>
+            <div class="lighterText mat-caption">
+              Start with your name and answer some of the following questions, or make up some of your own.
+
+              <ul>
+                <li>We love close-ups, but we suggest you sit at arm's length.</li>
+                <li>You've got 30 seconds so do your best to be concise.</li>
+                <li>Try to keep the light in front of you, not behind you.</li>
+                <li>Look into the camera to create that personal connection.</li>
+                <li>You'll get a chance to preview your video before it uploads.</li>
+
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

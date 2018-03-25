@@ -1,0 +1,124 @@
+<div id="content" class="onboarding-content">
+  <!--<div class="onboarding step-1" [hidden]="step!=1">
+        <div class="row">
+          <div class="col-sm-4 col-sm-offset-4">
+            <div class="welcome-box text-center">
+              <h1 class="headline">Welcome to Peerbuds</h1>
+              <p class="description1 margin-top-10 margin-bottom-20">You are entering a blockchain based community <br>where peers can teach and learn from one another, while earning</p>
+              <div class="margin-top-40">
+                  <button mat-raised-button class="customBtn" type="button" color="accent" (click)="continue(2)">Yes, that's me</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>-->
+  <!-- step 2-->
+  <div class="step-1 onboarding margin-top-60" style="margin-bottom: 22%" [hidden]="step!=1">
+    <form [formGroup]="interest1" (ngSubmit)="submitInterests(interest1)">
+      <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+          <div class="text-center margin-bottom-50">
+            <h1 class="headline">What are your interests?</h1>
+            <p class="description1 margin-top-20 margin-bottom-20">Choose atleast 3 topics to continue</p>
+          </div>
+
+
+          <div class="row">
+            <div class="col-sm-12 margin-bottom-30">
+              <div class="row margin-left-0">
+                <div class="col-sm-8">
+                  <app-multiselect-autocomplete (queries)="queriesSearched($event)" (active)="userActive($event)" (selectedOutput)="selected($event)"
+                    (removedOutput)="removed($event)" (anyItemNotFound)="requestNewTopicEnabled($event)" [searchUrl]=searchTopicURL
+                    [title]=placeholderStringTopic></app-multiselect-autocomplete>
+                  <!--[maxSelection]=maxTopics-->
+                </div>
+
+                <div class="col-sm-2" style="margin-top:5px">
+                  <div *ngIf="!boolShowConnectedSocials" style="line-height:30px">
+                    <a class="text-right syncSocial" style="cursor: pointer;" (click)="showConnectedSocials()">
+                      <mat-icon class="vAlignTextTop">cached</mat-icon>
+                      &nbsp;&nbsp;&nbsp;&nbsp;Sync Social</a>
+                  </div>
+                  <div *ngIf="boolShowConnectedSocials" style="margin-top:5px">
+                    <i *ngIf="connectedIdentities.fb" class="fa fa-facebook defaultFB socialIcons"></i>
+                    <a *ngIf="!connectedIdentities.fb" href="{{envVariable.apiUrl + '/link/Facebook?returnTo=onboarding/1'}}">
+                      <i class="fa fa-facebook dcSocial socialIcons"></i>
+                    </a>
+                    <i *ngIf="connectedIdentities.google" class="fa fa-google defaultGoogle socialIcons"></i>
+                    <a *ngIf="!connectedIdentities.google" href="{{envVariable.apiUrl + '/link/Google?returnTo=onboarding/1'}}">
+                      <i class="fa fa-google dcSocial socialIcons"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row center" *ngIf="showRequestNewTopic">
+            <div class="col-sm-8">
+              <div class="margin-bottom-20">
+                <i class="mati mati-emoticon-sad mati-48px primaryColor"></i>
+              </div>
+              <div class="margin-bottom-20">
+                <div class="suggestions"> Topic you are looking for cannot be found</div>
+                <button mat-button class="outline-btn margin-top-20" (click)="requestNewTopic(topicForRequest)"> Request for {{topicForRequest}} topic</button>
+              </div>
+            </div>
+          </div>
+          <div class="selected col-sm-8 padding-left-15 padding-right-0pt5" *ngIf="interests.length > 0">
+            <ul *ngFor="let item of interests" style="list-style:none" class="padding-left-0">
+              <li class="captitalise topic" (click)="select(item)">
+                <a>
+                  <img src="/assets/images/onboarding_select_interest.png" class="topic-bg">
+                  <span style="margin-left:20px">{{item.name}}</span>
+                  <span>
+                    <i class="mati mati-check-circle mati-24px primaryColor pull-right" style="margin:18px 10px"></i>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="suggestions col-sm-8 padding-left-15 padding-right-0pt5" *ngIf="suggestedTopics && suggestedTopics.length > 0">
+            <ul *ngFor="let item of suggestedTopics" style="list-style:none" class="padding-left-0">
+              <li class="captitalise topic" (click)="select(item)">
+                <a>
+                  <img src="/assets/images/onboarding_select_interest.png" class="topic-bg">
+                  <span style="margin-left:20px">{{item.name}}</span>
+                  <span>
+                    <i class="mati mati-check-circle-outline mati-24px primaryColor pull-right" style="margin:18px 10px"></i>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="fixedFooter col-sm-12">
+        <div class="col-md-9" style="margin-left:12%">
+          <div class="pull-right">
+            <button mat-button style="margin-right:15px; color:#767676">Back</button>
+            <span matTooltip="Choose more topics!" [matTooltipDisabled]="interests.length >= 3">
+              <button mat-raised-button (click)="continue(2)" color="accent" [disabled]="interests.length < 3">Done</button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="onboarding step-2" style="padding-bottom: 18%; background: url('../../assets/images/onboarding_background_2.jpg'); background-size: cover;"
+    [hidden]="step!=2">
+    <div class="text-center">
+      <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+          <div class="text-center">
+            <h1 class="mat-title title-explore text-center">You're now ready to teach
+              <br> and learn anything to your heart's desires</h1>
+            <div class="checkbox margin-top-50">
+              <a mat-raised-button class="customBtn mat-elevation-z6" type="button" color="accent" href="/home/homefeed">Start Exploring</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

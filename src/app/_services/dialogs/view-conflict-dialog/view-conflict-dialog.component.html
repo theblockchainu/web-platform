@@ -1,0 +1,36 @@
+<div class="dialog-container" mat-dialog-content>
+    <div class="mat-dialog-focus-trap"></div>
+    <form [formGroup]="conflicts">
+        <div class="row margin-bottom-10" style="margin-left:0px">
+            <button mat-button class="col-md-1 mat-icon-button dialog-close-button" type="button" (click)="closeConflictDialog()"><mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon></button>
+            <div class="col-md-6">
+                <mat-icon class="mat-icon material-icons mat-icon-small" style="position: relative; top: 1px;">error_outline</mat-icon>
+                <h3 mat-dialog-title class="conflicts" style="display: inline-block;">Avoid Conflicts</h3>
+                <div>
+                    <span>We have found {{ data.conflicts.length }} conflict/s with your existing calendar</span>
+                </div>
+            </div>
+            <div class="col-md-5" style="padding-top:6px">
+                <mat-dialog-actions class="pull-right">
+                    <button mat-raised-button class="mat-raised-button" (click)="closeConflictDialog()" color="primary">{{proceedButtonText}}</button>
+                </mat-dialog-actions>
+            </div>
+        </div>
+        <hr style="margin-top: 0px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row margin-top-20 margin-bottom-20" *ngFor="let conflict of data.conflicts; let i=index">
+                    <div class="col-md-7">
+                        <span class="mat-body-2">Event on {{ conflict.event.startDateTime | date:'dd MMM' }}, {{ conflict.event.startDateTime | date:'hh:mm a' }} to {{ conflict.event.endDateTime | date:'hh:mm a' }}</span>
+                        <h5>conflicts with <b>{{conflict.conflictWith.contentName | titlecase}}</b> of workshop <b>{{conflict.conflictWith.collectionName | titlecase}}</b> </h5>
+                    </div>
+                    <div class="col-md-offset-1 col-md-3">
+                        <button mat-button *ngIf= "!conflict.markedForDelete" class="mat-border-button" color="warn" (click)="deleteCalendar(i)" style="margin-left:25px">Remove from plan</button>
+                        <button mat-button *ngIf= "conflict.markedForDelete" class="mat-border-button" color="primary" (click)="undoDeleteCalendar(i)" style="margin-left:50px">Include in plan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="mat-dialog-focus-trap"></div>
+</div>

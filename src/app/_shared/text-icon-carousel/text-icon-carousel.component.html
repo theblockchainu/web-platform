@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <span class="testimonial-image" *ngFor="let testimonial of testimonialArray; let i=index" (click)="moveTo(i)">
+          <img class="circle-thumb" src="{{testimonial.pic_url}}" (error)="_collectionService.imgErrorHandler($event)">
+        </span>
+      </div>
+    </div>
+
+    <div class="row carousel-component">
+      <div class="col-md-12">
+        <ngu-carousel [inputs]="carouselBanner">
+          <ngu-item NguCarouselItem class="bannerStyle" *ngFor="let testimonial of testimonialArray">
+            <div class="row">
+              <div class="col-md-12">
+                <p class="text text-center">"{{testimonial.review}}"</p>
+              </div>
+              <div class="col-md-12">
+                <p class="author center">{{testimonial.title}}</p>
+              </div>
+            </div>
+          </ngu-item>
+          <img NguCarouselPrev src="/assets/images/images_landing/arrow-left.png" class="arrow arrow-left" />
+          <img NguCarouselNext src="/assets/images/images_landing/arrow-right.png" class="arrow arrow-right" />
+        </ngu-carousel>
+      </div>
+    </div>
+  </div>
+</div>

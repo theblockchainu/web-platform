@@ -1,0 +1,174 @@
+<header showHeader>
+  <mat-toolbar class="layout-row mat-elevation-header" layout="row" color="white">
+    <span>
+      <a href="javascript:void(0);" class="brand" aria-label="Peerbuds Homepage" (click)="goToHome()">
+        <img src="/assets/images/pb_logo.png" alt="logo">
+      </a>
+    </span>
+    <span style="margin-left: 35px;" *ngIf="(isLoggedIn | async)">
+      <mat-icon>search</mat-icon>
+    </span>
+    <span class="search-form">
+      <mat-form-field style="color:#333333 !important" class="mat-block" *ngIf="(isLoggedIn | async)" [floatLabel]="'never'">
+        <input name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="myControl" [matAutocomplete]="auto"
+          placeholder="Try 'Mumbai' ">
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of options" [value]="_searchService.getSearchOptionText(option)" (click)="_searchService.onSearchOptionClicked(option)">
+              <span class="lightText">
+                {{_searchService.getSearchOptionType(option)}}
+              </span>
+              <span>
+                {{_searchService.getSearchOptionText(option)}}
+              </span>
+            </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </span>
+    <!-- This fills the remaining space of the current row -->
+    <span class="example-spacer"></span>
+    <span>
+      <span class="header-progress-bar" *ngIf="profileCompletionObject  && profileCompletionObject.progress<80 && isLoggedIn | async"
+        [matMenuTriggerFor]="profileCompletionMenu">
+        Complete Profile
+        <div style="line-height: 0rem;">
+          <mat-progress-bar mode="determinate" value="{{profileCompletionObject.progress}}" style="width:70%;display: inline-block"></mat-progress-bar>
+          <span style="margin-left:5px;font-size:10px">{{profileCompletionObject.progress}}%</span>
+        </div>
+      </span>
+      <button mat-button class="headerButtons" style="color: #33bd9e; font-weight: 600;" [routerLink]="['/console/teaching/experiences']"
+        *ngIf="(isLoggedIn | async)">
+        Create an Experience
+      </button>
+      <button mat-button class="headerButtons" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)">
+        Teach
+      </button>
+      <button mat-button class="headerButtons" [matMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async)">
+        Learn
+      </button>
+      <button mat-button class="headerButtons" #notificationsButton (click)="openNotificationsDialog()" *ngIf="(isLoggedIn | async)">
+        <mat-icon *ngIf="!hasNewNotification">notifications_none</mat-icon>
+        <mat-icon *ngIf="hasNewNotification">notifications</mat-icon>
+      </button>
+      <div style="display: inline-block;" *ngIf="(isLoggedIn | async)">
+        <mat-icon class="notifDot" *ngIf="hasNewNotification">fiber_manual_record</mat-icon>
+      </div>
+      <div class="headerButtons" [matMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem; cursor: pointer; display: inline-block; margin: 0 15px;">
+        <div>
+          <img *ngIf="!profile.picture_url" src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb">
+          <img *ngIf="profile.picture_url" src="{{envVariable.apiUrl + profile.picture_url}}" alt="A" class="circle-thumb">
+        </div>
+      </div>
+
+      <span class="example-spacer"></span>
+      <!--<button mat-button class="headerButtons" [routerLink]="['/philosophy']" *ngIf="!(isLoggedIn | async)">
+        Philosophy
+      </button>-->
+      <!--<button mat-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
+      Journey
+    </button>
+    <button mat-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
+      About
+    </button>-->
+      <!--<button mat-button class="headerButtons" [routerLink]="['/white-paper']" *ngIf="!(isLoggedIn | async)">
+        White Paper
+      </button>-->
+      <button mat-button class="headerButtons" [routerLink]="['/home/homefeed']" *ngIf="!(isLoggedIn | async)">
+        Explore
+      </button>
+      <a mat-button class="headerButtons" href="/signup.html" *ngIf="!(isLoggedIn | async)">
+        Sign Up
+      </a>
+      <button mat-button class="headerButtons" (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
+        Log In
+      </button>
+
+    </span>
+  </mat-toolbar>
+</header>
+<mat-menu #headerTeachMenu>
+  <button mat-menu-item [routerLink]="['/console/dashboard']" *ngIf="isTeacher">
+    Dashboard
+  </button>
+  <button mat-menu-item [routerLink]="['/console/teaching/all']" *ngIf="isTeacher">
+    Teaching Journey
+  </button>
+  <button mat-menu-item [routerLink]="['/console/account/transactions']" *ngIf="isTeacher">
+    Transaction History
+  </button>
+  <!--<button mat-menu-item [routerLink]="['/editSessions']">
+      Enable Sessions
+    </button>-->
+  <!--<button mat-menu-item [routerLink]="['/console/teaching/workshops']">
+    Create a Workshop
+  </button>-->
+  <button mat-menu-item [routerLink]="['/console/teaching/experiences']">
+    Create an Experience
+  </button>
+  <!--<button mat-menu-item [routerLink]="['/console/teaching/sessions']">
+    Enable Live Session
+  </button>-->
+  <!--<button mat-menu-item [routerLink]="['/console/calendar']" *ngIf="isTeacher">
+    Calendar
+  </button>-->
+</mat-menu>
+
+<mat-menu #headerLearnMenu>
+  <button mat-menu-item [routerLink]="['/console/dashboard']">
+    Dashboard
+  </button>
+  <button mat-menu-item [routerLink]="['/console/learning/all']">
+    Learning Journey
+  </button>
+  <button mat-menu-item [routerLink]="['/console/account/transactions']">
+    Transaction History
+  </button>
+  <!--<button mat-menu-item [routerLink]="['/console/learning/workshops']">
+    Workshops
+  </button>-->
+  <!--<button mat-menu-item [routerLink]="['/console/calendar']">
+    Calendar
+  </button>-->
+</mat-menu>
+
+<mat-menu #headerUserMenu>
+  <button mat-menu-item [routerLink]="['/profile', userId]">
+    {{profile.first_name | titlecase}} {{profile.last_name | titlecase}}
+  </button>
+  <button mat-menu-item [routerLink]="['/console/profile/edit']">
+    Edit Profile
+  </button>
+  <button mat-menu-item [routerLink]="['/console/account/payoutmethods']">
+    Account Settings
+  </button>
+  <button mat-menu-item [routerLink]="['/console/learning/bookmarks']">
+    Bookmarks
+  </button>
+  <button mat-menu-item (click)="authService.logout()">
+    Logout
+  </button>
+</mat-menu>
+
+<mat-menu #profileCompletionMenu>
+  <span *ngIf="profileCompletionObject">
+    <button mat-menu-item [routerLink]="['/console/profile/edit']">
+      <mat-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['personal']">done</mat-icon>
+      <mat-icon class="profile-check" *ngIf="profileCompletionObject['personal']">check_circle</mat-icon>
+      Personal Details
+    </button>
+    <button mat-menu-item [routerLink]="['/console/profile/edit']">
+      <mat-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['additional']">done</mat-icon>
+      <mat-icon class="profile-check" *ngIf="profileCompletionObject['additional']">check_circle</mat-icon>
+      Additional Details
+    </button>
+    <button mat-menu-item [routerLink]="['/console/profile/photos']">
+      <mat-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['photos']">done</mat-icon>
+      <mat-icon class="profile-check" *ngIf="profileCompletionObject['photos']">check_circle</mat-icon>
+      Photo
+    </button>
+    <button mat-menu-item [routerLink]="['/console/profile/edit']">
+      <mat-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['verification']">done</mat-icon>
+      <mat-icon class="profile-check" *ngIf="profileCompletionObject['verification']">check_circle</mat-icon>
+      Verification
+    </button>
+  </span>
+</mat-menu>

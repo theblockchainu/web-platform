@@ -1,0 +1,16 @@
+<div class="dialog-container" mat-dialog-content>
+  <h3 mat-dialog-title>
+    Add New Topic
+  </h3>
+  <form [formGroup]="newTopic" (ngSubmit)="addNewTopic()">
+    <mat-form-field [floatLabel]="'always'" class="form-group" [ngClass]="{'has-error':!newTopic.controls['topicName'].valid}">
+      <input matInput tabindex="1" formControlName="topicName">
+    </mat-form-field>
+    <div>
+      <span matTooltip="Invalid Topic!" [matTooltipDisabled]="newTopic.valid">
+        <button mat-button tabindex="2" type="submit" [disabled]="!newTopic.valid">Add</button>
+      </span>
+      <button mat-button tabindex="-1" type="button" (click)="dialogRef.close()">Cancel</button>
+    </div>
+  </form>
+</div>

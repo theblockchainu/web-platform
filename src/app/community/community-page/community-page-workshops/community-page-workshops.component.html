@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="loading-container" [hidden]="!loadingWorkshops">
+            <ngx-loading [show]="true"></ngx-loading>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="!loadingWorkshops">
+    <div class="col-md-12">
+        <div class="row margin-top-20">
+            <div class="col-md-12">
+                <div class="mat-body-2">Add your workshop</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-11">
+                <mat-form-field [floatLabel]="'always'">                 <mat-select #selectedWorkshop class="pb-block workshopSelector margin-top-20" placeholder="Select from your existing workshops"  >
+                    <mat-option *ngFor="let workshop of ownedWorkshops" [value]="workshop.id">{{workshop.title | ucwords}}</mat-option>
+                </mat-select>               </mat-form-field>
+            </div>
+            <div class="col-md-1" style="top: 30px;">
+                <mat-icon class="clickable" style="color: #33bd9e;" (click)="addWorkshop(selectedWorkshop.value)">check_circle</mat-icon>
+            </div>
+        </div>
+        <div class="row feed-horizontal margin-top-30 margin-bottom-40" style="padding: 0px 7px;">
+            <div class="recommendation-card" *ngFor="let workshop of workshops; let i =index">
+          <span class="share-panel" style="width: 30% !important;">
+            <button mat-icon-button class="bookmark" (click)="toggleBookmark(i)">
+              <mat-icon *ngIf="!(workshop.bookmarks && workshop.bookmarks[0] && workshop.bookmarks[0].peer && workshop.bookmarks[0].peer[0] && workshop.bookmarks[0].peer[0].id===userId)">
+                bookmark</mat-icon>
+              <mat-icon *ngIf="workshop.bookmarks && workshop.bookmarks[0] && workshop.bookmarks[0].peer && workshop.bookmarks[0].peer[0] && workshop.bookmarks[0].peer[0].id===userId"
+                       color="primary">bookmark</mat-icon>
+            </button>
+            <button mat-icon-button class="share" (click)="_dialogsService.shareCollection('workshop',workshop.id,workshop.title)">
+              <mat-icon>share</mat-icon>
+            </button>
+          </span>
+                <a [routerLink]="'/workshop/'+workshop.id">
+                    <div class="">
+                        <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{envVariable.apiUrl+workshop.imageUrls[0]}}" alt="workshpImg" (error)="_collectionService.imgErrorHandler($event)">
+                        <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg" alt="workshpImg" (error)="_collectionService.imgErrorHandler($event)">
+                    </div>
+                    <div *ngIf="workshop.currency !== undefined && workshop.currency.length > 0" style="margin-top: 3px;"><span class="mat-body-2">{{workshop.price | convertCurrency: workshop.currency |async}}</span> / person</div>
+                    <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" style="margin-top: 3px;"><span class="mat-body-2">{{workshop.price | convertCurrency: 'USD' |async}}</span> / person</div>
+                    <div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
+                    <div style="margin-top: 0px;">{{workshop.owners[0].profiles[0].first_name + ' ' + workshop.owners[0].profiles[0].last_name | ucwords}}</div>
+                    <!--<div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>-->
+                    <div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
+                        <p-rating class="padding-left-0" style="float: left;" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
+                        </p-rating>
+                        <span class="padding-left-10" *ngIf="workshop.ratingCount" style="text-align: left">
+                <label>{{workshop.ratingCount}} reviews</label>
+              </span>
+                        <span class="padding-left-10" *ngIf="!workshop.ratingCount" style="text-align: left">
+                <label>0 reviews</label>
+              </span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

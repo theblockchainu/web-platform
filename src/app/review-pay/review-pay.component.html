@@ -1,0 +1,132 @@
+<!--component html goes here -->
+<div class="main-content" *ngIf="collection">
+    <div class="container-fluid" style="margin: 3% 0px">
+        <div class="row">
+            <div class="col-md-offset-1 col-sm-6">
+                <div class="title">Review and pay</div>
+                <div class="seperate-section margin-bottom-20">
+                    <div class="fw-bold margin-bottom-10">Student requirements / prerequisites</div>
+                    <div class="text-grey" *ngIf="collection.difficultyLevel && collection.difficultyLevel.length > 0">
+                        <b>This {{collection.type}} is of {{collection.difficultyLevel}} level.</b>
+                    </div>
+                    <div class="text-grey margin-top-10 pre-wrapped" *ngIf="collection.notes && collection.notes.length > 0">{{collection.notes | ucfirst}}</div>
+                    <div class="text-grey margin-top-10" *ngIf="!collection.notes">There are no additional requirements to be aware of at this point</div>
+                </div>
+                <div class="loading-container" [hidden]="!loadingCards">
+                    <ngx-loading [show]="true"></ngx-loading>
+                </div>
+                <form [hidden]="loadingCards">
+                    <div class="payment-message margin-top-20 margin-bottom-20 mat-body-2">{{message}}</div>
+                    <div class="margin-bottom-50" *ngIf="isCardExist">
+                        <h3>Select payment method</h3>
+                        <div class="row margin-top-50">
+                            <div class="col-sm-6">
+                                <mat-form-field [floatLabel]="'always'">                 <mat-select placeholder="Select card" (change)="getcardDetails($event)">
+                                    <mat-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand }} {{card.object}} ending with {{card.last4}}</mat-option>
+                                </mat-select>               </mat-form-field>
+                            </div>
+                            <div class="col-sm-6" *ngIf="cardDetails['id']">
+                                <span class="text-grey" *ngIf="cardDetails['brand'] === 'Visa'">
+                                    <i class="fa fa-cc-visa fa-2x"></i>
+                                </span> &emsp;
+                                <div class="display-inline-block fs-12 text-grey">
+                                    <span class="display-block lh-1">Name:
+                                        <span class="text-black">{{cardDetails['name']}}</span>
+                                    </span>
+                                    <span>Expires:
+                                        <span class="text-black">{{cardDetails['exp_month']}}/{{cardDetails['exp_year']}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-top-20">
+                            <div class="col-sm-6">
+                                <mat-checkbox [(ngModel)]="useAnotherCard" [ngModelOptions]="{standalone: true}">Or use another card</mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="margin-bottom-50" [hidden]="isCardExist && !useAnotherCard">
+                            <h3>Enter payment details</h3>
+                            <label>
+                                <input name="cardholder-name" class="field is-empty" placeholder="Jane Doe" />
+                                <span>
+                                    <span>Name</span>
+                                </span>
+                            </label>
+                            <label>
+                                <input class="field is-empty" name="cardholder-phone" type="tel" placeholder="(123) 456-7890" />
+                                <span>
+                                    <span>Phone number</span>
+                                </span>
+                            </label>
+                            <label>
+                                <div id="card-element" class="field is-empty"></div>
+                                <span>
+                                    <span>Credit or debit card number</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="terms-text">
+                        <div class="terms-title">Terms of Service</div>
+                        <p class="text-grey fs-15">By confirming this reservation you are agreeing to Peerbuds additional Terms of Service, Student
+                            Release and Waiver, and the Cancellation Policy.</p>
+                    </div>
+                    <div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards || listAllCards.length < 0 ||  useAnotherCard">
+                        <i class="fa fa-lock"></i> Your Credit card information is encrypted
+                    </div>
+                    <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard"
+                        [disabled]="savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment</button>
+                    <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard"
+                        [disabled]="!cardDetails.id || savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment</button>
+                    <div class="display-inline-block margin-top-10" *ngIf="savingData">
+                        <img src="{{loader}}" alt="loading" style="width:16px;" /> Processing Payment</div>
+                </form>
+            </div>
+            <div class="col-sm-3 col-sm-offset-1">
+                <div class="sidebar-right">
+                    <div class="sidebar-box">
+                        <div class="seperate-section padding-top-0">
+                            <div class="display-table">
+                                <div class="margin-bottom-10">
+                                    <img [src]="(collection.imageUrls && collection.imageUrls.length > 0) ? envVariable.apiUrl+collection.imageUrls[0] : defaultImageUrl"
+                                        alt="image" />
+                                </div>
+                                <div class="fs-17">{{ collection.title | titlecase}}
+                                    <br>
+                                    <span class="fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type }}</span>
+                                    <br>
+                                    <span class="fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by {{collection.owners[0].profiles[0].first_name | titlecase}} {{collection.owners[0].profiles[0].last_name
+                                        | ucwords}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="seperate-section">
+                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate | date: 'EEE,
+                                MMM dd' }}</div>
+                            <div class="" *ngIf="collection.contents">{{collection.contents.length}} Activities</div>
+                            <!--<a href="#">See details</a>-->
+                        </div>
+                        <div class="seperate-section">
+                            <div class="margin-bottom-10">
+                                <span class="text-grey">{{collection.price | convertCurrency: collection.currency |async}} x {{ guestCount }} Student</span>
+                                <span class="pull-right">{{collection.price * guestCount | convertCurrency: collection.currency |async}}</span>
+                            </div>
+                            <!--<a href="#" class="display-inline-block margin-bottom-10">Add coupon</a>-->
+                            <div class="margin-bottom-10">
+                                <span class="fw-bold">Total</span>
+                                <span class="pull-right fw-bold">{{collection.price * guestCount | convertCurrency: collection.currency |async}}</span>
+                            </div>
+                        </div>
+                        <div class="seperate-section">
+                            <div class="fs-18 margin-bottom-10">Cancellation Policy</div>
+                            <div class="fs-14 text-grey">Get a
+                                <span class="text-black">full refund</span> if you cancel within {{collection.cancellationPolicy}} of purchase.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

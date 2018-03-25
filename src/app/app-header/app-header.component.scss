@@ -1,0 +1,48 @@
+.mat-elevation-header .headerButtons {
+    color: #767676;
+    font-size: 1rem;
+    min-width: 20px;
+}
+
+.mat-elevation-header .headerButtons .mat-button-focus-overlay {
+    background: none;
+}
+.mat-dialog-container {
+  padding-bottom: 0 !important;
+}
+
+.notifDot {
+  color: #ff5b5f;
+  font-size: 10px;
+  position: relative;
+  margin-left: -18px;
+  top: -8px;
+}
+
+.mat-focused, .mat-input-placeholder{
+color: #767676 !important;
+}
+
+.input{
+color: #767676 !important;
+}
+
+.header-progress-bar{
+  color: #767676;
+  font-size: 1rem;
+  display: inline-grid; 
+  cursor: pointer;
+  margin-right: 40px;
+} 
+
+.profile-check{
+ color:#33bd9e !important; 
+ font-size: 18px; 
+ font-weight:bold;
+}
+
+.profile-check-disabled{
+  color:#aaaaaa !important;
+  font-size: 18px;
+  font-weight:bold;
+}
