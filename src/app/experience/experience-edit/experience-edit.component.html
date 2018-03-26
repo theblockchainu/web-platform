@@ -323,7 +323,7 @@
                   <p class="subtitle">Start with a level of difficulty</p>
                   <div class="col-sm-12 margin-bottom-30 padding-left-0">
                     <mat-form-field [floatLabel]="'always'">
-                      <mat-select class="margin-bottom-50" formControlName="difficultyLevel">
+                      <mat-select formControlName="difficultyLevel">
                         <mat-option [value]="">--Select--</mat-option>
                         <mat-option *ngFor="let d of difficulties" [value]="d">{{d}}</mat-option>
                       </mat-select>

@@ -47,6 +47,7 @@ import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 import { DeleteCommunityDialogComponent } from './delete-community-dialog/delete-community-dialog.component';
 import { ExitCommunityDialogComponent } from './exit-community-dialog/exit-community-dialog.component';
 import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflict-dialog.component';
+import { EditSubmissionDialogComponent } from './edit-submission-dialog/edit-submission-dialog.component';
 
 @NgModule({
   imports: [
@@ -65,7 +66,8 @@ import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflic
     , VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent],
   declarations: [SignupComponentDialogComponent, LoginComponentDialog, RequestPasswordDialogComponent
     , AddCardDialogComponent, MultiselectTopicDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent
-    , IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent
+    , IdPolicyDialogComponent, VideoDialogComponent,
+    VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent
     , ProfilePopupCardComponent, ExitCollectionDialogComponent, CancelCollectionDialogComponent, DeleteCollectionDialogComponent,
     EditCalendarDialogComponent,
     AddTopicDialogComponent,
@@ -74,7 +76,9 @@ import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflic
     CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
     SubmissionViewComponent,
     SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent, DeleteCohortDialogComponent,
-    CancelCohortDialogComponent, ReportProfileComponent, RateParticipantComponent, ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent
+    CancelCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
+    ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent,
+    DateConflictDialogComponent, EditSubmissionDialogComponent
   ],
   providers: [
     DialogsService,
@@ -82,9 +86,12 @@ import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflic
     ProjectSubmissionService
   ],
   entryComponents: [
-    SignupComponentDialogComponent, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent, MultiselectTopicDialogComponent
-    , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent, VerifyPhoneDialogComponent
-    , LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent, CancelCollectionDialogComponent, ExitCollectionDialogComponent, DeleteCollectionDialogComponent,
+    SignupComponentDialogComponent, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent,
+    MultiselectTopicDialogComponent
+    , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent,
+    VerifyPhoneDialogComponent
+    , LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent, CancelCollectionDialogComponent,
+    ExitCollectionDialogComponent, DeleteCollectionDialogComponent,
     EditCalendarDialogComponent,
     AddTopicDialogComponent,
     AddLanguageDialogComponent,
@@ -92,7 +99,8 @@ import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflic
     CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
     SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent,
     CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
-    ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent
+    ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent,
+    EditSubmissionDialogComponent
   ],
 })
 export class DialogsModule { }

@@ -1040,6 +1040,11 @@ export class ExperiencePageComponent implements OnInit {
             width: '45vw',
             height: '100vh'
           });
+          dialogRef.afterClosed().subscribe(res => {
+            if (res) {
+              this.initializePage();
+            }
+          });
           break;
         }
       default:

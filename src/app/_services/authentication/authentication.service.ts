@@ -93,12 +93,12 @@ export class AuthenticationService {
           (res: any) => {
             console.log(res);
             console.log('Logged out from server');
-            location.reload();
           }, err => {
             console.log(err);
           }
         );
     }
+    location.reload();
   }
 
   public broadcastNewUserId(userId) {
