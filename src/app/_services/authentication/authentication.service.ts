@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import 'rxjs/add/operator/map';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { SocketService } from '../socket/socket.service';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
@@ -27,7 +27,7 @@ export class AuthenticationService {
     public _requestHeaderService: RequestHeaderService,
     private _socketService: SocketService
   ) {
-      this.envVariable = environment;
+    this.envVariable = environment;
     this.options = this._requestHeaderService.getOptions();
   }
 
@@ -67,7 +67,8 @@ export class AuthenticationService {
         const user = response;
         if (user && user.access_token) {
           this.isLoginSubject.next(true);
-          this.getLoggedInUser.emit(user.userId);
+          // this.getLoggedInUser.emit(user.userId);
+          location.reload();
           this._socketService.addUser(user.userId);
         }
       }, (err) => {
@@ -92,6 +93,7 @@ export class AuthenticationService {
           (res: any) => {
             console.log(res);
             console.log('Logged out from server');
+            location.reload();
           }, err => {
             console.log(err);
           }

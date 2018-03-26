@@ -214,10 +214,10 @@ export class ExperiencePageComponent implements OnInit {
 
   ngOnInit() {
     this.initializePage();
-    this._authenticationService.getLoggedInUser.subscribe(res => {
-      delete this.userType;
-      this.initializePage();
-    });
+    // this._authenticationService.getLoggedInUser.subscribe(res => {
+    //   delete this.userType;
+    //   this.initializePage();
+    // });
   }
 
   initializePage() {
