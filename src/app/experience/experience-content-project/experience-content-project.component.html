@@ -30,11 +30,11 @@
 
                         <div formGroupName="schedule" class="margin-top-20 margin-bottom-20">
                             <mat-form-field class="dateStyles">
-                                <input matInput [matDatepicker]="endDayDatePicker" [min]="itenaryForm.value.date" [max]="collectionEndDate" placeholder="Deadline"
+                                <input #deadline matInput [matDatepicker]="endDayDatePicker" [min]="itenaryForm.value.date" placeholder="Deadline"
                                     formControlName="endDay" [required]="true">
                                 <mat-datepicker-toggle matSuffix [for]="endDayDatePicker" class="svgStyle"></mat-datepicker-toggle>
+                              <mat-datepicker touchUi="true" #endDayDatePicker></mat-datepicker>
                             </mat-form-field>
-                            <mat-datepicker touchUi="true" #endDayDatePicker></mat-datepicker>
                         </div>
 
                         <div class="form-group margin-top-40">
@@ -130,8 +130,8 @@
                 </div>
             </div>
             <mat-dialog-actions>
-                <span matTooltip="Recheck the inputs!" [matTooltipDisabled]="title.value.length!==0  || description.value.length !== 0 || prerequisites.value.length !== 0">
-                    <button mat-raised-button [mat-dialog-close]="getSaveDialogData()" color="accent" *ngIf="!isEdit" [disabled]="title.value.length==0 && description.value.length == 0 && prerequisites.value.length == 0">Save</button> &emsp;
+                <span matTooltip="All mandatory fields need to be completed before saving" [matTooltipDisabled]=" title.value.length!==0  && description.value.length !== 0 && prerequisites.value.length !== 0">
+                    <button mat-raised-button [mat-dialog-close]="getSaveDialogData()" color="accent" *ngIf="!isEdit" [disabled]="title.value.length === 0 || description.value.length === 0 || prerequisites.value.length === 0 || deadline.value.length === 0">Save</button> &emsp;
                 </span>
                 <button mat-raised-button [mat-dialog-close]="getEditDialogData()" color="accent" *ngIf="isEdit">Update</button> &emsp;
                 <button mat-button [mat-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>

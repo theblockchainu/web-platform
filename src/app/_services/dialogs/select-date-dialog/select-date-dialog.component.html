@@ -72,7 +72,7 @@
                 <b>({{content.type | ucwords}}) {{ content.title | titlecase}}</b> &emsp; {{content.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.schedules[content.schedules.length-1].endTime | extractTime:'h:mm a'}}
               </div>
               <div *ngIf="content.type === 'project'" style="margin: 3px 0px 10px 0px;">
-                <b>({{content.type | ucwords}}) {{ content.title | titlecase}}</b> &emsp; Entries open until {{content.schedules[content.schedules.length-1].endTime | extractTime:'Do MMM'}}
+                <b>({{content.type | ucwords}}) {{ content.title | titlecase}}</b> &emsp; Entries open until {{calculateDate(itenary.startDate, content.schedules[content.schedules.length-1].endDay) | extractTime:'Do MMM'}}
               </div>
               <div *ngIf="content.type === 'video'" style="margin: 3px 0px 10px 0px;">
                 <b>({{content.type | ucwords}}) {{ content.title | titlecase}}</b> &emsp; Available all day

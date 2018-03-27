@@ -1,15 +1,13 @@
 import {
-  Component, Input, forwardRef, ElementRef, Inject, EventEmitter
-  , HostBinding, HostListener, Output
+  Component, Input, forwardRef, ElementRef, EventEmitter, HostListener, Output, OnInit,
+  OnChanges, SimpleChanges
 } from '@angular/core';
-import {
-  FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR
-  , NG_VALIDATORS, Validator
-} from '@angular/forms';
+import {NG_VALUE_ACCESSOR, NG_VALIDATORS} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import * as _ from 'lodash';
 import {environment} from '../../../environments/environment';
+import {CollectionService} from '../../_services/collection/collection.service';
 
 @Component({
   selector: 'app-multiselect-autocomplete',
@@ -27,8 +25,7 @@ import {environment} from '../../../environments/environment';
   styleUrls: ['./multiselect-autocomplete.component.scss'],
   templateUrl: './multiselect-autocomplete.component.html'
 })
-export class MultiselectAutocompleteComponent {
-  // implements ControlValueAccessor
+export class MultiselectAutocompleteComponent implements OnChanges{
   public query = '';
   public selected = [];
   public removed = [];
@@ -54,6 +51,10 @@ export class MultiselectAutocompleteComponent {
   // Optional Input Parameter
   @Input()
   private multiSelect = true;
+
+  // Optional Input Parameter
+  @Input()
+  private suggestedTopics: any = [];
 
   @Input()
   private create = false;
@@ -90,6 +91,7 @@ export class MultiselectAutocompleteComponent {
 
   constructor(myElement: ElementRef,
     private http: HttpClient,
+    public _collectionService: CollectionService,
     public requestHeaderService: RequestHeaderService) {
     this.elementRef = myElement;
     this.options = requestHeaderService.getOptions();
@@ -109,15 +111,27 @@ export class MultiselectAutocompleteComponent {
     } while (clickedComponent);
     if (!inside) {
       this.filteredList = [];
-
     }
   }
 
-  onChanges() {
-    if (!!this.preSelectedTopics) {
-      console.log(this.preSelectedTopics);
+  ngOnChanges(changes: SimpleChanges) {
+    for (const property in changes) {
+      if (property === 'preSelectedTopics') {
+        this.filteredList = [];
+        this.selected = _.union(this.preSelectedTopics, this.selected);
+        this.selected.forEach(selectedTopic => {
+          selectedTopic['inSelect'] = true;
+          this.filteredList.push(selectedTopic);
+        });
+      } else if (property === 'suggestedTopics') {
+        if (this.query === '' && this.preSelectedTopics.length === 0) {
+          this.filteredList = [];
+          this.suggestedTopics.forEach(suggestedTopic => {
+            this.filteredList.push(suggestedTopic);
+          });
+        }
+      }
     }
-    this.selected = _.union(this.preSelectedTopics, this.selected);
   }
 
   ngViewInitChanges() {
@@ -126,7 +140,6 @@ export class MultiselectAutocompleteComponent {
   }
 
   public filter() {
-    this.loadingSuggestions = true;
     let showItemNotFound = true;
     if (!this.multiSelect) {
       if (this.filteredList.length !== 0) {
@@ -135,6 +148,7 @@ export class MultiselectAutocompleteComponent {
       }
     }
     if (this.query !== '') {
+      this.loadingSuggestions = true;
       this.active.emit(true);
       const query = _.find(this.selectedQueries,
         (entry) => {
@@ -157,11 +171,7 @@ export class MultiselectAutocompleteComponent {
             this.filteredList = [];
             res.map(item => {
               this.entryInSelected = _.find(this.selected, function (entry) { return entry.id === item.id; });
-              if (!this.entryInSelected) {
-                showItemNotFound = true;
-              } else {
-                showItemNotFound = false;
-              }
+              showItemNotFound = !this.entryInSelected;
 
               const obj = {};
               obj['id'] = item.id;
@@ -170,30 +180,19 @@ export class MultiselectAutocompleteComponent {
               obj['createdAt'] = item.createdAt;
               obj['updatedAt'] = item.updatedAt;
               obj['inSelect'] = !!this.entryInSelected;
+              obj['imageUrl'] = item.imageUrl;
               this.filteredList.push(obj);
             });
             if (showItemNotFound) {
               this.emitRequestTopic();
             }
-            // if(this.filteredList.length === 0 && this.create)
-            // {
-            //   //Post the new item into the respective collection
-            //   const body = {
-            //     'name' : this.query,
-            //     'type': 'user'
-            //   };
-            //   this.http.post(this.createURL, body, this.options)
-            //             .map((res:  any) => {
-            //               this.select(res );
-            //             })
-            //             .subscribe();
-            // }
           })
           .subscribe();
       }
     } else {
+      this.loadingSuggestions = false;
       this.active.emit(false);
-      this.filteredList = [];
+      this.filteredList = this.preSelectedTopics.length > 0 ? this.preSelectedTopics : [];
       this.anyItemNotFound.emit('');
       this.selectedOutput.emit(this.selected);
     }
@@ -207,16 +206,17 @@ export class MultiselectAutocompleteComponent {
     }
   }
 
-  private select(item) {
+  public select(item) {
     const itemPresent = _.find(this.selected, function (entry) { return item.id === entry.id; });
     if (itemPresent) {
       this.selected = _.remove(this.selected, function (entry) { return item.id !== entry.id; });
+      if (this.selected.length < this.maxSelection && this.maxSelection !== -1) {
+        this.maxTopicMsg = '';
+      }
       this.removedOutput.emit(this.removed);
     } else {
       if (this.selected.length >= this.maxSelection && this.maxSelection !== -1) {
-        this.query = '';
-        this.filteredList = [];
-        this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
+        this.maxTopicMsg = 'You cannot select more than ' + this.maxSelection + ' topics. Please delete any existing one and then try to add.';
         return;
       }
       if (this.preSelectedTopics.length !== 0) {
@@ -230,8 +230,11 @@ export class MultiselectAutocompleteComponent {
     this.filteredList = [];
   }
 
-  private remove(item) {
+  public remove(item) {
     this.selected.splice(this.selected.indexOf(item), 1);
+    if (this.selected.length < this.maxSelection && this.maxSelection !== -1) {
+      this.maxTopicMsg = '';
+    }
     this.removed.push(item);
     this.selectedOutput.emit(this.selected);
     this.removedOutput.emit(this.removed);

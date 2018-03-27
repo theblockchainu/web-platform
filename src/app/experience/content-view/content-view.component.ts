@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
+import {Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef, AfterViewInit} from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
@@ -18,7 +18,7 @@ declare var moment: any;
   templateUrl: 'content-view.component.html',
   styleUrls: ['./content-view.component.scss']
 })
-export class ContentViewComponent implements OnInit {
+export class ContentViewComponent implements OnInit, AfterViewInit {
   // we will pass in address from App component
   @Input()
   public itenaryForm: FormGroup;
@@ -52,7 +52,8 @@ export class ContentViewComponent implements OnInit {
     private countryPickerService: CountryPickerService,
     private mediaUploader: MediaUploaderService,
     private dialog: MatDialog,
-    public _collectionService: CollectionService
+    public _collectionService: CollectionService,
+    public cd: ChangeDetectorRef
   ) {
       this.envVariable = environment;
     this.countryPickerService.getCountries()
@@ -62,6 +63,10 @@ export class ContentViewComponent implements OnInit {
   ngOnInit() {
     const content = <FormArray>this.itenaryForm.controls.contents;
     this.lastIndex = content.controls.length - 1;
+  }
+
+  ngAfterViewInit() {
+    this.cd.detectChanges();
   }
 
   datePickerFilter = (d: Date): boolean => {

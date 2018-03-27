@@ -74,4 +74,10 @@ export class SelectDateDialogComponent implements OnInit {
     this.dialogRef.close(calendarId);
   }
 
+  public calculateDate(fromDate, day) {
+    const current = moment(fromDate);
+    current.add(day, 'days');
+    return current.toDate();
+  }
+
 }
