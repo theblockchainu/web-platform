@@ -5,7 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommentService } from '../../comment/comment.service';
 import { ProjectSubmissionService } from '../../project-submission/project-submission.service';
 import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
+import { EditSubmissionDialogComponent } from '../edit-submission-dialog/edit-submission-dialog.component';
 
 @Component({
     selector: 'app-submission-view',
@@ -29,10 +30,11 @@ export class SubmissionViewComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public _collectionService: CollectionService,
         public dialogRef: MatDialogRef<SubmissionViewComponent>,
+        public dialog: MatDialog,
         private _fb: FormBuilder,
         private _commentService: CommentService,
         private _submissionService: ProjectSubmissionService,
-        private _cookieUtilsService: CookieUtilsService
+        private _cookieUtilsService: CookieUtilsService,
     ) {
         this.envVariable = environment;
         this.userType = data.userType;
@@ -137,10 +139,10 @@ export class SubmissionViewComponent implements OnInit {
         this._commentService.addCommentUpvote(comment.id, {}).subscribe(
             response => {
                 if (comment.upvotes !== undefined) {
-                    comment.upvotes.push(response );
+                    comment.upvotes.push(response);
                 } else {
                     comment.upvotes = [];
-                    comment.upvotes.push(response );
+                    comment.upvotes.push(response);
                 }
             }, err => {
                 console.log(err);
@@ -152,10 +154,10 @@ export class SubmissionViewComponent implements OnInit {
         this._submissionService.addSubmissionUpvote(submission.id, {}).subscribe(
             response => {
                 if (submission.upvotes !== undefined) {
-                    submission.upvotes.push(response );
+                    submission.upvotes.push(response);
                 } else {
                     submission.upvotes = [];
-                    submission.upvotes.push(response );
+                    submission.upvotes.push(response);
                 }
             }, err => {
                 console.log(err);
@@ -167,10 +169,10 @@ export class SubmissionViewComponent implements OnInit {
         this._commentService.addReplyUpvote(reply.id, {}).subscribe(
             response => {
                 if (reply.upvotes !== undefined) {
-                    reply.upvotes.push(response );
+                    reply.upvotes.push(response);
                 } else {
                     reply.upvotes = [];
-                    reply.upvotes.push(response );
+                    reply.upvotes.push(response);
                 }
             }, err => {
                 console.log(err);
@@ -206,4 +208,21 @@ export class SubmissionViewComponent implements OnInit {
         }
     }
 
+    public editSubmission() {
+        const dialogRef = this.dialog.open(EditSubmissionDialogComponent, {
+            data: {
+                userType: this.data.userType,
+                submission: this.data.submission,
+                peerHasSubmission: this.data.peerHasSubmission,
+                collectionId: this.data.collectionId
+            },
+            width: '45vw',
+            height: '100vh'
+        });
+        dialogRef.afterClosed().subscribe(res => {
+            if (res) {
+                this.dialogRef.close(res);
+            }
+        });
+    }
 }

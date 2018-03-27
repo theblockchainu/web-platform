@@ -39,7 +39,7 @@ import { TopicService } from '../../_services/topic/topic.service';
 import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 declare var FB: any;
 
 const colors: any = {
@@ -132,6 +132,8 @@ export class ExperiencePageComponent implements OnInit {
   public maxLength = 140;
   public editReviewForm: FormGroup;
   public bookmarking = false;
+  public editCommentForm: FormGroup;
+  public editReplyForm: FormGroup;
 
   public replyForm: FormGroup;
   public reviewForm: FormGroup;
@@ -207,15 +209,15 @@ export class ExperiencePageComponent implements OnInit {
     private titleService: Title
     // private location: Location
   ) {
-      this.envVariable = environment;
+    this.envVariable = environment;
   }
 
   ngOnInit() {
     this.initializePage();
-    this._authenticationService.getLoggedInUser.subscribe(res => {
-      delete this.userType;
-      this.initializePage();
-    });
+    // this._authenticationService.getLoggedInUser.subscribe(res => {
+    //   delete this.userType;
+    //   this.initializePage();
+    // });
   }
 
   initializePage() {
@@ -485,7 +487,9 @@ export class ExperiencePageComponent implements OnInit {
               });
             }
 
-            if (contentObj.locations && contentObj.locations.length > 0 && contentObj.locations[0].map_lat !== undefined && contentObj.locations[0].map_lng !== undefined) {
+            if (contentObj.locations && contentObj.locations.length > 0
+              && contentObj.locations[0].map_lat !== undefined
+              && contentObj.locations[0].map_lng !== undefined) {
               this.lat = parseFloat(contentObj.locations[0].map_lat);
               this.lng = parseFloat(contentObj.locations[0].map_lng);
               console.log('Lat is: ' + this.lat + ' & Lng is: ' + this.lng);
@@ -1044,6 +1048,11 @@ export class ExperiencePageComponent implements OnInit {
             width: '45vw',
             height: '100vh'
           });
+          dialogRef.afterClosed().subscribe(res => {
+            if (res) {
+              this.initializePage();
+            }
+          });
           break;
         }
       default:
@@ -1278,6 +1287,7 @@ export class ExperiencePageComponent implements OnInit {
   }
 
   public updateReview() {
+    this.busyReview = true;
     const reviewBody = this.editReviewForm.value;
     const reviewId = reviewBody.id;
     reviewBody.score = this.newUserRating;
@@ -1296,6 +1306,43 @@ export class ExperiencePageComponent implements OnInit {
     );
   }
 
+  public updateComment() {
+    this.busyDiscussion = true;
+    const commentBody = this.editCommentForm.value;
+    const commentId = commentBody.id;
+    delete commentBody.id;
+    this._collectionService.updateComment(commentId, commentBody).subscribe(
+      result => {
+        if (result) {
+          this.busyDiscussion = false;
+          delete this.editCommentForm;
+          this.getDiscussions();
+        }
+      }, err => {
+        this.busyDiscussion = false;
+        console.log(err);
+      }
+    );
+  }
+
+  public updateReply() {
+    this.busyReply = true;
+    const replyBody = this.editReplyForm.value;
+    const replyId = replyBody.id;
+    delete replyBody.id;
+    this._commentService.updateReply(replyId, replyBody).subscribe(
+      result => {
+        if (result) {
+          this.busyReply = false;
+          delete this.editReplyForm;
+          this.getDiscussions();
+        }
+      }, err => {
+        this.busyReply = false;
+        console.log(err);
+      }
+    );
+  }
 
   addCommentUpvote(comment: any) {
     this._commentService.addCommentUpvote(comment.id, {}).subscribe(
@@ -1554,6 +1601,22 @@ export class ExperiencePageComponent implements OnInit {
       id: review.id
     });
     this.newUserRating = review.score;
+  }
+
+  public editComment(comment: any) {
+    this.editCommentForm = this._fb.group({
+      description: [comment.description, Validators.required],
+      isAnnouncement: [comment.isAnnouncement],
+      id: comment.id
+    });
+  }
+
+  public editReply(reply: any) {
+    console.log(reply);
+    this.editReplyForm = this._fb.group({
+      description: reply.description,
+      id: reply.id
+    });
   }
 
 }
