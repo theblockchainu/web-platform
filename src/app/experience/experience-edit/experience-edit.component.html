@@ -79,7 +79,7 @@
                         <div class="col-sm-12">
                           <app-multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
                             [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
-                            [maxSelection]=maxTopics [minSelection]="1"></app-multiselect-autocomplete>
+                            [maxSelection]=maxTopics [minSelection]="1" [suggestedTopics]="suggestedTopics"></app-multiselect-autocomplete>
                         </div>
                       </div>
                       <div class="row">
@@ -322,8 +322,8 @@
                   <h2 class="title">Who should come?</h2>
                   <p class="subtitle">Start with a level of difficulty</p>
                   <div class="col-sm-12 margin-bottom-30 padding-left-0">
-                    <mat-form-field [floatLabel]="'always'">
-                      <mat-select formControlName="difficultyLevel">
+                    <mat-form-field [floatLabel]="'never'">
+                      <mat-select formControlName="difficultyLevel" [placeholder]="'Select difficulty level'">
                         <mat-option [value]="">--Select--</mat-option>
                         <mat-option *ngFor="let d of difficulties" [value]="d">{{d}}</mat-option>
                       </mat-select>
@@ -508,19 +508,19 @@
                   <div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
                     <div class="row" style="margin: 30px 0px 15px -15px;">
                       <div class="col-sm-6">
-                        <mat-form-field [floatLabel]="'always'" class="dateStyles">
-                          <input matInput [matDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate">
+                        <mat-form-field [floatLabel]="'auto'" class="dateStyles">
+                          <input matInput [matDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate" disabled>
                           <mat-datepicker-toggle matSuffix [for]="startDatePicker" class="svgStyle {{activeExperience}}"></mat-datepicker-toggle>
+                          <mat-datepicker touchUi="true" #startDatePicker disabled="false"></mat-datepicker>
                         </mat-form-field>
-                        <mat-datepicker touchUi="true" #startDatePicker></mat-datepicker>
                       </div>
                       <div class="col-sm-6">
-                        <mat-form-field [floatLabel]="'always'" class="dateStyles">
+                        <mat-form-field [floatLabel]="'auto'" class="dateStyles">
                           <input matInput [matDatepicker]="endDatePicker" [min]="timeline.controls['calendar'].value.startDate" placeholder="End date"
-                            formControlName="endDate">
+                            formControlName="endDate" disabled>
                           <mat-datepicker-toggle matSuffix [for]="endDatePicker" class="svgStyle"></mat-datepicker-toggle>
+                          <mat-datepicker touchUi="true" #endDatePicker disabled="false"></mat-datepicker>
                         </mat-form-field>
-                        <mat-datepicker touchUi="true" #endDatePicker></mat-datepicker>
                       </div>
                     </div>
                   </div>

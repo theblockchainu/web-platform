@@ -5,11 +5,13 @@
         <hr>
         <div style="margin-top: -36px; width: fit-content; background-color: #fff; margin-left: auto; margin-right: auto; padding: 0px 20px;">
           <mat-icon>wb_sunny</mat-icon>
-          <input matInput [matDatepicker]="startDatePicker" formControlName="date" [hidden]="true" [min]="collectionStartDate" [max]="collectionEndDate">
+          <input *ngIf="!envVariable.production" matInput #dateInput [matDatepicker]="startDatePicker" formControlName="date" [hidden]="true" [min]="collectionStartDate" [max]="collectionEndDate">
+          <input *ngIf="envVariable.production" matInput #dateInput [matDatepicker]="startDatePicker" formControlName="date" [hidden]="true" [min]="collectionStartDate" [max]="collectionEndDate"
+                 [matDatepickerFilter]="datePickerFilter">
           <a *ngIf="!itenaryForm.value.date" style="cursor: pointer; float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;"
             (click)="startDatePicker.open()">({{showItineraryDate(itenaryForm.value.date)}})</a>
           <a *ngIf="itenaryForm.value.date" style="float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;">({{itenaryForm.value.date| date}})</a>
-          <mat-datepicker touchUi="true" #startDatePicker [startAt]="collectionStartDate"></mat-datepicker>
+          <mat-datepicker #startDatePicker [startAt]="collectionStartDate" touchUi="true"></mat-datepicker>
           <a style="cursor: pointer; float: right; margin: -2px 0 0 10px;font-size:16px;">
             Experience Day {{itenaryId + 1}}
           </a>

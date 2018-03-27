@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/switchMap';
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, AfterViewInit, ChangeDetectorRef} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
@@ -30,7 +30,7 @@ import { PaymentService } from '../../_services/payment/payment.service';
   styleUrls: ['./experience-edit.component.scss']
 })
 
-export class ExperienceEditComponent implements OnInit {
+export class ExperienceEditComponent implements OnInit, AfterViewInit {
   public busySave = false;
   public busyPreview = false;
   public busyInterest = false;
@@ -151,7 +151,8 @@ export class ExperienceEditComponent implements OnInit {
     private _cookieUtilsService: CookieUtilsService,
     private _topicService: TopicService,
     private _paymentService: PaymentService,
-    private location: Location
+    private location: Location,
+    public cd: ChangeDetectorRef
   ) {
       this.envVariable = environment;
     this.activatedRoute.params.subscribe(params => {
@@ -241,6 +242,10 @@ export class ExperienceEditComponent implements OnInit {
 
     this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
     this._VIDEO = document.querySelector('#main-video');
+  }
+
+  ngAfterViewInit() {
+    this.cd.detectChanges();
   }
 
   private extractDate(dateString: string) {
@@ -435,7 +440,7 @@ export class ExperienceEditComponent implements OnInit {
       ]
     };
 
-    this.placeholderStringTopic = 'Search for a topic or enter a new one';
+    this.placeholderStringTopic = 'Start typing to to see a list of suggested topics...';
 
     this.key = 'access_token';
 
@@ -452,9 +457,9 @@ export class ExperienceEditComponent implements OnInit {
       });
 
     if (this.interests.length === 0) {
-      this.http.get(environment.searchUrl + '/api/search/topics')
+      this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics')
         .map((response: any) => {
-          this.suggestedTopics = response.slice(0, 7);
+          this.suggestedTopics = response.slice(0, 5);
         }).subscribe();
     } else {
       this.suggestedTopics = this.interests;

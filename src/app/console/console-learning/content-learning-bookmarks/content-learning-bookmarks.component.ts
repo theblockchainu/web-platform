@@ -42,6 +42,7 @@ export class ContentLearningBookmarksComponent implements OnInit {
         this.userId = _cookieUtilsService.getValue('userId');
     }
 
+
     ngOnInit() {
         this.loaded = false;
         this.fetchBookmarks();

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
+import {Component, Input, OnInit, EventEmitter, Output, AfterViewInit, ChangeDetectorRef} from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import * as _ from 'lodash';
@@ -22,7 +22,7 @@ import {environment} from '../../../environments/environment';
 
 })
 
-export class ExperienceContentComponent implements OnInit {
+export class ExperienceContentComponent implements OnInit, AfterViewInit {
   @Input()
   public myForm: FormGroup;
 
@@ -47,6 +47,7 @@ export class ExperienceContentComponent implements OnInit {
     private requestHeaders: RequestHeaderService,
     private dialog: MatDialog,
     public router: Router,
+    public cd: ChangeDetectorRef,
     public _collectionService: CollectionService,
     private location: Location,
     private _dialogsService: DialogsService
@@ -57,6 +58,10 @@ export class ExperienceContentComponent implements OnInit {
 
   ngOnInit() {
     this.myForm.addControl('itenary', this._fb.array([this.initItenary()]));
+  }
+
+  ngAfterViewInit() {
+    this.cd.detectChanges();
   }
 
   initItenary() {
@@ -243,7 +248,7 @@ export class ExperienceContentComponent implements OnInit {
         schedule.endDay = 0;
       } else {
         const endDate = new Date(schedule.endDay);
-        schedule.endDay = this.numberOfdays(endDate, this.calendar.startDate);
+        schedule.endDay = this.numberOfdays(endDate, scheduleDate);
       }
       schedule.startTime = new Date(0, 0, 0, 1, 0, 0, 0);
       schedule.endTime = new Date(0, 0, 0, 1, 0, 0, 0);

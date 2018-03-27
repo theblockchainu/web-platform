@@ -9,9 +9,13 @@
       </div>
     </div>
     <div class="col-md-10" style="padding-top: 15px;">
-      <span class="mat-body-2">{{_collectionService.getContentTypeFullName(data.content.type) | ucfirst}} by</span>
-      <span>
-        {{calculateDate(data.startDate, data.content.schedules[0].endDay)}}</span>
+      <span class="mat-body-2">{{_collectionService.getContentTypeFullName(data.content.type) | ucfirst}}</span>
+      <span *ngIf="userType !== 'public'">
+        by {{calculateDate(data.startDate, data.content.schedules[0].endDay)}}
+      </span>
+      <span *ngIf="userType === 'public'">
+        (you get {{data.content.schedules[0].endDay}} days)
+      </span>
       <br/> Taught by
       <a [routerLink]="['/profile',data.collection.owners[0]]">{{data.collection.owners[0].profiles[0].first_name | ucwords}}</a>
     </div>

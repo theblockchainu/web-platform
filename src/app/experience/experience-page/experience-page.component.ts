@@ -465,10 +465,11 @@ export class ExperiencePageComponent implements OnInit {
         .subscribe(res => {
           console.log(res);
           this.experience = res;
-          // this.titleService.setTitle(this.experience.title);
           this.setCurrentCalendar();
           this.itenariesObj = {};
           this.itenaryArray = [];
+          // Scan through all contents and group them under their respective start days.
+          // Also scan through all contents and check if the user has made submission for a project.
           this.experience.contents.forEach(contentObj => {
             if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
               this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
@@ -495,6 +496,14 @@ export class ExperiencePageComponent implements OnInit {
             }
           });
           console.log(this.itenariesObj);
+          // Scan through all the start-day-groups of contents
+          // Calculate the calendar start and end date of each content group
+          // Sort the contents inside a group based on their start times
+          // Format the start time and end time of each of the individual content in that group
+          // Calculate the viewing metrics of each individual content
+          // Set hasRSVPd toggle on each of the content
+          // Create an object for the content group with properties: startDay, startDate, endDate and array of contents.
+          // Add content group to itinerary array
           for (const key in this.itenariesObj) {
             if (this.itenariesObj.hasOwnProperty(key)) {
               let startDate, endDate;
@@ -518,17 +527,16 @@ export class ExperiencePageComponent implements OnInit {
               });
               this.setContentViews(this.itenariesObj[key]);
               const contentObj = this.processContent(key);
-              // console.log(contentObj);
               const itenary = {
                 startDay: key,
                 startDate: startDate,
                 endDate: endDate,
                 contents: contentObj
               };
-              // console.log(itenary);
               this.itenaryArray.push(itenary);
             }
           }
+          // Sort itinerary array in ascending order of content group start days.
           this.itenaryArray.sort(function (a, b) {
             return parseFloat(a.startDay) - parseFloat(b.startDay);
           });

@@ -20,6 +20,7 @@
       "prefix": "app",
       "styles": [
         "../node_modules/videogular2/fonts/videogular.css",
+        "../node_modules/font-awesome/css/font-awesome.min.css",
         "styles.scss"
       ],
       "scripts": [],

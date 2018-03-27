@@ -126,13 +126,17 @@ button:focus {
 /* Scroll Bar custom Ends */
 
 mat-icon {
-    position: relative !important;
+    position: relative;
 }
 
 /* Material Classes Starts*/
 
 .mat-caption, .mat-display-1, .mat-display-2, .mat-display-3, .mat-display-4 {
     color: rgba(0,0,0,0.75);
+}
+
+.mat-form-field {
+  line-height: 1.225 !important;
 }
 
 mat-input-container .mat-has-icon {

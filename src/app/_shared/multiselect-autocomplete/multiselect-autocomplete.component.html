@@ -2,7 +2,7 @@
   <ul class="ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all" style="padding-left: 0.0em">
     <li class="ui-autocomplete-input-token col-sm-12">
       <mat-icon icon="search" aria-label="search" role="img" class="vAlignMiddle">search</mat-icon>
-      <input #box id="list" type="text" class="form-control input-topic" [(ngModel)]=query (keyup)=filter() placeholder="{{ title }}">
+      <input #box id="list" type="text" class="form-control input-topic" [(ngModel)]=query (keyup)=filter() placeholder="{{ title }}" autocomplete="off">
     </li>
 
   </ul>
@@ -24,13 +24,13 @@
   <ul *ngFor="let item of filteredList" style="list-style:none" class="padding-left-0">
     <li class="captitalise topic" (click)="select(item)">
       <a>
-        <img src="{{envVariable.apiUrl+ item.imageUrl}}" class="topic-bg">
+        <img src="{{envVariable.apiUrl+ item.imageUrl}}" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
         <span style="margin-left:20px">{{item.name}}</span>
         <span *ngIf="!item.inSelect">
-          <i class="mati mati-check-circle-outline mati-24px primaryColor pull-right" style="margin:18px 10px"></i>
+          <mat-icon class="pull-right" style="top: 1.1em; right: 0.6em; color: #cccccc;">check_circle</mat-icon>
         </span>
         <span *ngIf="item.inSelect">
-          <i class="mati mati-check-circle mati-24px primaryColor pull-right" style="margin:18px 10px"></i>
+          <mat-icon [color]="'primary'" class="pull-right" style="top: 1.1em; right: 0.6em;">check_circle</mat-icon>
         </span>
       </a>
     </li>
