@@ -9,7 +9,7 @@ import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.
 import { SocketService } from '../../../_services/socket/socket.service';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-content-project',
   templateUrl: './content-project.component.html',
@@ -42,7 +42,7 @@ export class ContentProjectComponent implements OnInit {
     public _collectionService: CollectionService,
     public _dialogsService: DialogsService
   ) {
-      this.envVariable = environment;
+    this.envVariable = environment;
     this.userType = data.userType;
     if (data.content.submissions !== undefined) {
       data.content.submissions.forEach(submission => {
@@ -104,7 +104,11 @@ export class ContentProjectComponent implements OnInit {
   }
 
   openSubmitEntryDialog(data: any) {
-    this._dialogsService.submitEntry(data);
+    this._dialogsService.submitEntry(data).subscribe(res => {
+      if (res) {
+        this.dialogRef.close(true);
+      }
+    });
   }
 
   openViewEntryDialog(data: any) {
@@ -116,7 +120,13 @@ export class ContentProjectComponent implements OnInit {
       '{"comments": [{"peer": {"profiles": "work"}}, {"replies": [{"peer": {"profiles": "work"}}]}]}]}';
     this.projectSubmissionService.viewSubmission(submissionId, query).subscribe((response: any) => {
       if (response) {
-        this._dialogsService.submissionView(this.data.userType, response, this.data.peerHasSubmission, this.data.collectionId);
+        this._dialogsService.submissionView(this.data.userType, response, this.data.peerHasSubmission, this.data.collectionId)
+          .subscribe(res => {
+            console.log(res);
+            if (res) {
+              this.dialogRef.close(true);
+            }
+          });
       }
     });
   }

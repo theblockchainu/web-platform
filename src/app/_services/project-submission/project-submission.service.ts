@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { AuthenticationService } from '../authentication/authentication.service';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 @Injectable()
 export class ProjectSubmissionService {
   public key = 'userId';
@@ -18,7 +18,7 @@ export class ProjectSubmissionService {
     private authService: AuthenticationService,
     public _requestHeaderService: RequestHeaderService
   ) {
-      this.envVariable = environment;
+    this.envVariable = environment;
     this.options = this._requestHeaderService.getOptions();
   }
 
@@ -32,6 +32,10 @@ export class ProjectSubmissionService {
     if (contentId) {
       return this.http.put(environment.apiUrl + '/api/contents/' + contentId + '/submissions', body, this.options);
     }
+  }
+
+  public updateSubmission(submissionId: string, body: any) {
+    return this.http.patch(environment.apiUrl + '/api/submissions/' + submissionId, body, this.options);
   }
 
   public saveSubmissionTags(submissionId, body: any) {

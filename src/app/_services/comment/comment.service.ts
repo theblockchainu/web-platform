@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class CommentService {
   constructor(private http: HttpClient,
     private requestHeaderService: RequestHeaderService) {
     this.options = requestHeaderService.getOptions();
-      this.envVariable = environment;
+    this.envVariable = environment;
   }
   /**
    * replyToComment
@@ -52,6 +52,13 @@ export class CommentService {
       .delete(environment.apiUrl + '/api/replies/' + replyId, this.options);
   }
 
+  /**
+    * updateReply
+    */
+  public updateReply(replyId: string, replyBody: any) {
+    return this.http
+      .patch(environment.apiUrl + '/api/replies/' + replyId, replyBody, this.options);
+  }
   /**
    * deleteComment
    */

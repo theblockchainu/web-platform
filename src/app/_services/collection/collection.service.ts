@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { forkJoin } from 'rxjs/observable/forkJoin';
@@ -22,7 +22,7 @@ export class CollectionService {
     private authService: AuthenticationService,
     private requestHeaderService: RequestHeaderService
   ) {
-      this.envVariable = environment;
+    this.envVariable = environment;
     this.options = requestHeaderService.getOptions();
     this.now = new Date();
   }
@@ -908,6 +908,11 @@ collectionID:string,userId:string,calendarId:string   */
   public approveSessionJoinRequest(sessionId) {
     const body = { 'sessionIsApproved': true };
     return this.httpClient.patch(environment.apiUrl + '/api/contents/' + sessionId, body, this.options).map(res => res);
+  }
+
+  public updateComment(commentId: string, commentBody: any) {
+    return this.httpClient
+      .patch(environment.apiUrl + '/api/comments/' + commentId, commentBody, this.options);
   }
 
 }
