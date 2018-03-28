@@ -14,14 +14,14 @@
     &.drop-shadow{
 	    // box-shadow:0 0 10px #e5e5e5;
     }
-    .section-header{ 
+    .section-header{
         font-weight: bold;
         padding-bottom:15px;
         border-bottom:1px solid #ccc;
         margin-bottom:20px;
         font-size:16px;
     }
-    
+
     label{
         font-weight:normal;
         color:#666;
@@ -32,16 +32,17 @@
         // padding-top:22px;
         margin-left: 70% !important;
         margin-top: 20% !important;
-       
+
     }
-  
+
     .roundFab {
         border-radius: 45px;
         background-color: #FFF5F2;
         box-shadow: none;
         border: none;
         padding: 22px;
-        margin-left: 33%;
+        width: auto;
+		height: auto;
     }
 
     .description1 {
@@ -64,15 +65,15 @@
     .step-2{
     padding: 21px;
     }
-   
+
     input[type='number'] {
         -webkit-appearance: textfield;
-    }   
+    }
     input[type='number']::-webkit-inner-spin-button,
     input[type='number']::-webkit-outer-spin-button,
-    input[type='number']:hover::-webkit-inner-spin-button, 
+    input[type='number']:hover::-webkit-inner-spin-button,
     input[type='number']:hover::-webkit-outer-spin-button {
-     -webkit-appearance: none !important; 
-     margin: 0; 
+     -webkit-appearance: none !important;
+     margin: 0;
     }
 }

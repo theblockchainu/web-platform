@@ -37,6 +37,7 @@ export class ProfileComponent implements OnInit {
   public envVariable;
   public urluserId: string;
   public profileObj: any;
+  public peerObj: any;
   public interestsArray: Array<string>;
   public userRating: number;
   public collectionTypes = ['workshops'];
@@ -44,7 +45,8 @@ export class ProfileComponent implements OnInit {
   public recommendedpeers = [];
   public socialIdentities: any = [];
   public maxVisibleInterest = 3;
-  public maxVisibleReviews = 4;
+  public maxVisibleReviewsTeacher = 4;
+  public maxVisibleReviewsLearner = 4;
   public topicsTeaching = [];
   public reviewsFromLearners = [];
   public reviewsFromTeachers = [];
@@ -104,7 +106,14 @@ export class ProfileComponent implements OnInit {
     this.cookieUserId = this._cookieUtilsService.getValue('userId');
     this.loadingProfile = true;
     this.isTeacher = false;
+    this.getPeerData();
     this.getProfileData();
+  }
+  
+  public getPeerData() {
+  	this._profileService.getPeerNode(this.urluserId).subscribe(result => {
+  		this.peerObj = result;
+	});
   }
   private getIdentities() {
     this._profileService.getSocialIdentities(this.queryForSocialIdentities, this.urluserId).subscribe(
@@ -219,7 +228,7 @@ export class ProfileComponent implements OnInit {
         this.profileObj.other_languages = this.profileObj.other_languages.filter(Boolean);
         this.other_languages = this.profileObj.other_languages.join(', ');
       } else {
-        this.other_languages = 'No language provided';
+        this.other_languages = '';
       }
 
       this.setInterests();
@@ -389,13 +398,21 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  public toggleMaxReviews() {
-    if (this.maxVisibleReviews === 4) {
-      this.maxVisibleReviews = 999;
+  public toggleMaxReviewsTeacher() {
+    if (this.maxVisibleReviewsTeacher === 4) {
+      this.maxVisibleReviewsTeacher = 999;
     } else {
-      this.maxVisibleReviews = 4;
+      this.maxVisibleReviewsTeacher = 4;
     }
   }
+
+	public toggleMaxReviewsLearner() {
+		if (this.maxVisibleReviewsLearner === 4) {
+			this.maxVisibleReviewsLearner = 999;
+		} else {
+			this.maxVisibleReviewsLearner = 4;
+		}
+	}
 
   public reportProfile() {
     this._dialogsService.reportProfile().subscribe(result => {

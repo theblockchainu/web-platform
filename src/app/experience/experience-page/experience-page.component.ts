@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, OnDestroy} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar } from '@angular/material';
@@ -40,6 +40,7 @@ import { ContentInpersonComponent } from './content-inperson/content-inperson.co
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { environment } from '../../../environments/environment';
+import {SocketService} from '../../_services/socket/socket.service';
 declare var FB: any;
 
 const colors: any = {
@@ -88,7 +89,7 @@ export class MyCalendarUtils extends CalendarUtils {
     ]),
   ]
 })
-export class ExperiencePageComponent implements OnInit {
+export class ExperiencePageComponent implements OnInit, OnDestroy {
 
   public experienceId: string;
   public envVariable;
@@ -193,6 +194,7 @@ export class ExperiencePageComponent implements OnInit {
   public loadingReviews = true;
   public accountApproved = 'false';
   public carouselBanner: any;
+  public startedView;
 
   constructor(public router: Router,
     private activatedRoute: ActivatedRoute,
@@ -205,6 +207,7 @@ export class ExperiencePageComponent implements OnInit {
     private dialog: MatDialog,
     private dialogsService: DialogsService,
     private snackBar: MatSnackBar,
+    private _socketService: SocketService,
     private _authenticationService: AuthenticationService,
     private titleService: Title
     // private location: Location
@@ -214,10 +217,20 @@ export class ExperiencePageComponent implements OnInit {
 
   ngOnInit() {
     this.initializePage();
-    // this._authenticationService.getLoggedInUser.subscribe(res => {
-    //   delete this.userType;
-    //   this.initializePage();
-    // });
+  }
+
+  ngOnDestroy() {
+  	if (this.startedView) {
+		this.startedView.viewer = {
+			id: this.userId
+		};
+		this.startedView.endTime = new Date();
+		this._socketService.sendEndView(this.startedView);
+		this._socketService.listenForViewEnded().subscribe(endedView => {
+			delete this.startedView;
+			console.log(endedView);
+		});
+	}
   }
 
   initializePage() {
@@ -561,15 +574,12 @@ export class ExperiencePageComponent implements OnInit {
                 });
               });
             } else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
-              const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', {
-                duration: 800
-              });
+              const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay');
               snackBarRef.onAction().subscribe(() => {
                 this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
-                // this.location.replaceState(this.location.host + '/' + 'experience' + '/' +
-                // this.experienceId + '/' + 'calendar' + '/' + this.calendarId);
               });
             }
+            this.recordStartView();
           });
     } else {
       console.log('NO COLLECTION');
@@ -580,6 +590,27 @@ export class ExperiencePageComponent implements OnInit {
     if (this.experience.imageUrls && this.experience.imageUrls.length > 0) {
       this.carouselImages = this.experience.imageUrls.map(url => environment.apiUrl + url);
     }
+  }
+
+  private recordStartView() {
+	  // Send start view msg on socket
+	  const view = {
+		  type: 'user',
+		  url: this.router.url,
+		  ip_address: '',
+		  browser: '',
+		  viewedModelName: 'collection',
+		  startTime: new Date(),
+		  collection: this.experience,
+		  viewer: {
+			  id: this.userId
+		  }
+	  };
+	  this._socketService.sendStartView(view);
+	  this._socketService.listenForViewStarted().subscribe(startedView => {
+		  this.startedView = startedView;
+		  console.log(startedView);
+	  });
   }
 
   private getReviews() {
@@ -1081,7 +1112,7 @@ export class ExperiencePageComponent implements OnInit {
     endMoment.minutes(endTime.minutes());
 
     if (startMoment.diff(currentMoment, 'minutes') < 0) {
-      content.timetoSession = 'Completed ' + endMoment.fromNow();
+      content.timetoSession = 'Ended ' + endMoment.fromNow();
     } else {
       content.timetoSession = 'We will remind you ' + startMoment.fromNow();
     }
@@ -1426,7 +1457,7 @@ export class ExperiencePageComponent implements OnInit {
   }
 
   public isMyComment(comment) {
-    return comment.peer[0].id === this.userId;
+    return comment.peer && comment.peer.length > 0 && comment.peer[0].id === this.userId;
   }
 
   public hasReviewed(reviews) {
@@ -1617,6 +1648,12 @@ export class ExperiencePageComponent implements OnInit {
       description: reply.description,
       id: reply.id
     });
+  }
+
+  public isCancelable() {
+  	if (this.currentCalendar) {
+  		return moment(this.currentCalendar.endDate) > this.today;
+	}
   }
 
 }

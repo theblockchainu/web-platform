@@ -115,7 +115,7 @@ export class DialogsService {
         return dialogRef9.afterClosed();
     }
 
-    public openFollowTopicDialog(type, searchTopicURL) {
+    public openFollowTopicDialog(type, inputs) {
         let dialogRef5: MatDialogRef<MultiselectTopicDialogComponent>;
 
         dialogRef5 = this.dialog.open(MultiselectTopicDialogComponent,
@@ -126,8 +126,13 @@ export class DialogsService {
                 height: '70vh'
             }
         );
+        dialogRef5.componentInstance.searchUrl = inputs.searchTopicURL;
+		dialogRef5.componentInstance.title = inputs.title;
+		dialogRef5.componentInstance.minSelection = inputs.minSelection;
+		dialogRef5.componentInstance.maxSelection = inputs.maxSelection;
+		dialogRef5.componentInstance.suggestedTopics = inputs.suggestedTopics;
         dialogRef5.componentInstance.data = {
-            searchUrl: searchTopicURL,
+            searchUrl: inputs.searchTopicURL,
             selected: []
         };
 

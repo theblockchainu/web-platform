@@ -147,15 +147,15 @@ a h4{
     }
 
 .work-title h3{
-    display:inline;    
+    display:inline;
 }
 
 .education-title h3{
-    display:inline;    
+    display:inline;
 }
 
 .review h2{
-    display:inline;        
+    display:inline;
 }
 
 .profile-page{
@@ -205,18 +205,18 @@ a h4{
   .defaultFB {
     color: #335397;
   }
-  
+
   .defaultGoogle {
     color: #dd4a38;
   }
-  
+
   .socialIcons {
     padding-right: 10px;
     color: #33bd9e !important;
   }
 
   .border-top {
-    border-top: 1px solid #dbdbdb;
+    border-top: 3px solid #eeeeee;
     padding: 30px 0px 20px 0px;
   }
 
@@ -226,7 +226,17 @@ a h4{
   }
 
   .resumeIcons {
-    font-size: 35px;
+    font-size: 24px;
+	  top: 7px;
+  }
+
+  .work-title, .education-title {
+	  line-height: 1em;
+  }
+
+  .emptySectionText {
+	  margin-top: 0px !important;
+	  margin-bottom: 0px !important;
   }
 
   .reviewer {
@@ -273,6 +283,7 @@ a h4{
   hr {
       margin-top: 15px;
       margin-bottom: 15px;
+	  border-top: 3px solid #eeeeee;
   }
 
   .font16 {

@@ -58,10 +58,10 @@ export class SubmitEntryComponent implements OnInit {
 
     ngOnInit() {
         this.submitEntryForm = this._fb.group({
-            name: [''],
+            name: ['', Validators.required],
             picture_url: [],
-            description: [''],
-            isPrivate: [true]
+            description: ['', Validators.required],
+            isPrivate: ['true', Validators.required]
         });
     }
 

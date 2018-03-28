@@ -11,7 +11,7 @@
                 </button>
                 <h2 class="headline">Confirm Your Identity</h2>
                 <p class="description1">In order to interact on Peerbuds, we need a digital copy of your government issued identification. This will
-                  help us ensure that you don't have multiple profiles in the platform.</p>
+                  help us ensure that you don't have multiple profiles on the platform.</p>
                 <p class="description2">This ID must:</p>
                 <p class="description2">
                   <li>Be a government-issued (ex. Passport, Drivers License)</li>
@@ -45,9 +45,7 @@
 
             <div class="col-md-12 position-relative">
               <div class="pull-right">
-                <!--<button mat-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>-->
                 <span matTooltip="Invalid Verification ID!" [matTooltipDisabled]="this.peer.controls['verificationIdUrl'].value">
-
                   <button mat-raised-button color="accent" (click)="continue()" [disabled]="!this.peer.controls['verificationIdUrl'].value">Continue</button>
                 </span>
               </div>

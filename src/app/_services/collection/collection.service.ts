@@ -262,13 +262,13 @@ export class CollectionService {
     let fillerWord = '';
     if (contents[0]) {
       if (contents[0].type === 'online') {
-        fillerWord = 'Session';
+        fillerWord = 'session';
       } else if (contents[0].type === 'video') {
-        fillerWord = 'Recording';
+        fillerWord = 'recording';
       } else if (contents[0].type === 'in-person') {
-        fillerWord = 'Session';
+        fillerWord = 'activity';
       } else if (contents[0].type === 'project') {
-        fillerWord = 'Submission';
+        fillerWord = 'submission';
       }
       const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
       const timeToStart = contentStartDate.diff(moment(), 'days');

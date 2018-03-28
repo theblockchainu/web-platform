@@ -158,8 +158,7 @@
                   {{ getLearnerUpcomingEvent(collection).title | ucwords}}
                 </div>
                 <div class="upcomingEventTime">
-                  {{ getLearnerUpcomingEvent(collection).type | ucfirst}}{{' ' + getLearnerUpcomingEvent(collection).fillerWord + ' in ' +
-                  consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart + ' Days' }}
+                  {{ getLearnerUpcomingEvent(collection).type | ucfirst}}{{' ' + getLearnerUpcomingEvent(collection).fillerWord + ' in ' + getLearnerUpcomingEvent(collection).timeToStart + ' Days' }}
                 </div>
               </mat-card-content>
               <mat-card-actions *ngIf="getLearnerUpcomingEvent(collection).hasStarted">
@@ -243,7 +242,7 @@
                 </div>
               </div>
             </div>
-            <div class="row margin-bottom-20">
+            <div class="row margin-bottom-10">
               <div class="col-md-6">
                 <b>Price</b>
                 <br> {{collection.price | convertCurrency: collection.currency | async}}
@@ -253,7 +252,7 @@
                 <br> {{collection.calendars.length}} batches
               </div>
             </div>
-            <div class="row margin-bottom-20">
+            <div class="row margin-bottom-10">
               <div class="col-md-6">
                 <b>Views</b>
                 <br> {{collection.views.length}}
@@ -313,8 +312,7 @@
               </div>
               <div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
               <div class="cohortDate">
-                <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
-                  MMM' }}</span>
+                <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
               </div>
               <div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
                 {{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
@@ -331,7 +329,7 @@
                   {{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
                 </div>
                 <div class="upcomingEventTime">
-                  {{ _collectionService.getUpcomingEvent(collection).type | titlecase}} today.
+                  {{ _collectionService.getUpcomingEvent(collection).type | titlecase}} {{_collectionService.getUpcomingEvent(collection).fillerWord}} today
                 </div>
               </span>
               <span *ngIf=" _collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart > 0">
@@ -412,8 +410,7 @@
               </div>
               <div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
               <div class="cohortDate">
-                <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
-                  MMM' }}</span>
+                <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
               </div>
               <div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
                 {{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |

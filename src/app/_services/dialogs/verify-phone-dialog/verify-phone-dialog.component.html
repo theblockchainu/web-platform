@@ -7,12 +7,15 @@
                     <mat-dialog-content>
                         <div class="col-md-12">
                             <div class="verification-box drop-shadow">
-                                <button class="mat-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
+                                <button class="mat-fab roundFab margin-bottom-40" type="button">
                                     <i class="fa fa-envelope-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
                                 </button>
                                 <h2 class="headline">How can we reach you securely?</h2>
-                                <p class="description1 margin-bottom-10">Please let us know how we can reach you on phone.</p>
-                                <mat-form-field [floatLabel]="'always'" style="width:50% !important" class="pb-block margin-bottom-60 margin-top-20">
+                                <p class="description1 margin-bottom-10">Please let us know how can we reach you on phone.</p>
+	                            <mat-form-field class="margin-bottom-60 margin-top-20" style="width:20% !important" [floatLabel]="'auto'">
+		                            <input type="tel" matInput #countryCode formControlName="countryCode" placeholder="Country Code">
+	                            </mat-form-field>
+                                <mat-form-field [floatLabel]="'auto'" style="width:50% !important" class="margin-bottom-60 margin-top-20">
                                     <input type="number" matInput #phone formControlName="phone" placeholder="Phone Number" />
                                 </mat-form-field>
                             </div>
@@ -20,8 +23,8 @@
                         <div class="col-sm-12">
                             <div class="col-md-12 bottom-section clearfix margin-top-30">
                                 <div class="pull-right">
-                                    <span matTooltip="Invalid Number!" [matTooltipDisabled]="!peer.controls.phone.invalid || !peer.controls.phone.dirty && phone.value.length !== 0">
-                                        <button mat-raised-button color="accent" (click)="continue(3)" [disabled]="peer.controls['phone'].invalid && peer.controls['phone'].dirty || phone.value.length == 0">Continue</button>
+                                    <span matTooltip="Invalid Number!" [matTooltipDisabled]="peer.valid">
+                                        <button mat-raised-button color="accent" (click)="continue(3)" [disabled]="!peer.valid">Continue</button>
                                     </span>
                                 </div>
                             </div>
@@ -39,7 +42,7 @@
                                     <i class="fa fa-key fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
                                 </button>
 
-                                <h2 class="headline">Enter the OTP sent to your phone</h2>
+                                <h2 class="headline">Enter the code sent to your phone</h2>
                                 <p class="description1 margin-bottom-10">We have sent 4 digit code to {{phone.value}}. Please enter this code to verify your phone
                                     number.</p>
                                 <mat-form-field [floatLabel]="'always'" style="width:30% !important" class="pb-block margin-bottom-10">
@@ -47,9 +50,9 @@
                                 </mat-form-field>
                                 <div>
                                     <p class="description1">
-                                        <a (click)="resendOTP()" style="cursor: pointer;">Resend code</a> please wait at least 5 minutes before
+                                        <a (click)="resendOTP()" style="cursor: pointer;">Resend code?</a> Please wait at least 5 minutes before
                                         <br/> requesting another code or
-                                        <a style="cursor: pointer;" (click)="continue(2)">Change Phone</a>
+                                        <a style="cursor: pointer;" (click)="continue(2)">change your phone number</a>
                                     </p>
                                 </div>
                             </div>

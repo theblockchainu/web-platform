@@ -123,7 +123,7 @@ export class AddLocationDialogComponent implements OnInit {
             this.locationForm.controls['map_lat'].patchValue(data.geometry.location.lat);
             this.locationForm.controls['map_lng'].patchValue(data.geometry.location.lng);
             this.locationForm.controls['country'].patchValue(addressObj.country);
-            this.locationForm.controls['street_address'].patchValue(addressObj.route + ',' + addressObj.neighborhood + ',' + addressObj.locality);
+            this.locationForm.controls['street_address'].patchValue(addressObj.route && addressObj.route.length > 0 ? addressObj.route + ', ' : '' + addressObj.neighborhood && addressObj.neighborhood.length > 0 ? addressObj.neighborhood + ', ' : '' + addressObj.locality && addressObj.locality.length > 0 ? addressObj.locality : '');
             this.locationForm.controls['apt_suite'].patchValue(addressObj.subpremise);
             this.locationForm.controls['city'].patchValue(addressObj.administrative_area_level_2);
             this.locationForm.controls['state'].patchValue(addressObj.administrative_area_level_1);
