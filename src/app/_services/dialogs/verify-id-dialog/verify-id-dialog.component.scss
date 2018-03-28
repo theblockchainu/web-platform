@@ -27,12 +27,12 @@
     .bottom-section{
         //border-top: 1px solid rgba(199, 199, 199, 0.5);
         // padding-top:22px;
-       
+
     }
     .email-address-input, .otp-input{
         width:200px;
     }
-    
+
     .otp-input{
         border:none;
         border-radius:0;
@@ -48,6 +48,8 @@
         box-shadow: none;
         border: none;
         padding: 22px;
+		width: auto;
+		height: auto;
     }
 
     .description1 {
@@ -57,7 +59,7 @@
         padding-bottom: 5px;
 
     }
-    
+
     .note{
         // margin-top: -60px !important;
     }
@@ -84,7 +86,7 @@
     max-height: 200px;
     width: auto;
 }
-  
+
 .profilePic:before {
     display: inline-block;
     content: "";
@@ -125,16 +127,16 @@
 .delete .delete-image {
     top:5px;
 }
-   
+
     input[type='number'] {
         -webkit-appearance: textfield;
-    }   
+    }
     input[type='number']::-webkit-inner-spin-button,
     input[type='number']::-webkit-outer-spin-button,
-    input[type='number']:hover::-webkit-inner-spin-button, 
+    input[type='number']:hover::-webkit-inner-spin-button,
     input[type='number']:hover::-webkit-outer-spin-button {
-     -webkit-appearance: none !important; 
-     margin: 0; 
+     -webkit-appearance: none !important;
+     margin: 0;
     }
     mat-dialog-content{
      max-height: 60px !important;
@@ -153,20 +155,20 @@
         vertical-align: middle;
         // min-height: 210px;
     }
-    
+
     .profilePic {
         max-height: 200px;
         display: inline-block;
         // min-height: 210px;
         // padding: 10px;
     }
-    
+
     .delete {
         position: relative;
         vertical-align: middle;
         display: inline-block;
     }
-    
+
     .delete .delete-file, .delete .delete-image {
         position: absolute!important;
         right:5px;
@@ -179,12 +181,12 @@
         border-radius: 20px;
         font-size: 18px;
     }
-    
+
     .delete .delete-file {
         top:2px;
         left: 0px;
     }
-    
+
     .delete .delete-image {
         right: -7px;
         top: -7px;

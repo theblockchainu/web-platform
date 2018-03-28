@@ -8,46 +8,56 @@
     </div>
     <div class="row" *ngIf="profileObj && !loadingProfile">
         <div class="col-md-3 {{offsetString}} left-panel">
-            <div class="row text-center">
-                <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12" style="padding-left: 0px;">
                     <img class="img-rounded profile-pic" *ngIf="profileObj.picture_url" src="{{envVariable.apiUrl+profileObj.picture_url}}" alt="profile_pic">
                     <img class="img-rounded profile-pic" *ngIf="!profileObj.picture_url" src="/assets/images/user-placeholder.jpg" alt="profile_pic">
                 </div>
-                <div class="col-md-12" style="margin-top: 25px;">
+                <div class="col-md-12" style="margin-top: 25px; padding-left: 0px;">
                     <h2 style="margin-bottom: 0px">{{profileObj.first_name | titlecase}} {{profileObj.last_name | titlecase}}</h2>
                 </div>
-                <div class="col-md-12">
-                    <h4 class="pre-wrapped">{{profileObj.headline | titlecase}}</h4>
+                <div class="col-md-12" style="padding-left: 0px;">
+                    <h4 class="pre-wrapped">{{profileObj.headline ? profileObj.headline : 'new user' | titlecase}}</h4>
                 </div>
                 <!-- <div class="col-md-12">
                     <button mat-button>Message</button>
                 </div> -->
             </div>
-            <div class="row border-top">
-                <div class="col-md-1">
+            <div class="row border-top" *ngIf="other_languages || profileObj.location_string">
+                <div class="col-md-1" style="padding-left: 0px;">
                     <mat-icon>mic_none</mat-icon>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-11">
                     <p>
-                        {{other_languages || 'No language provided'}}
+                        {{other_languages || profileObj.first_name + ' has not added any languages yet'}}
                     </p>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1" style="padding-left: 0px;">
                     <mat-icon>
                         location_on
                     </mat-icon>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-11">
                     <p>
-                        {{profileObj.location_string || 'No location provided'}}
+                        {{'Lives in ' + profileObj.location_string || profileObj.first_name + ' has not provided his location yet'}}
                     </p>
                 </div>
             </div>
-            <div class="row border-top">
-                <div class="col-md-offset-1 col-md-10 padding-left-0">
-                    <div class="mat-title">Social Profiles</div>
+	        <div class="row border-top" *ngIf="peerObj && (peerObj.emailVerified || peerObj.phoneVerified || peerObj.accountVerified)">
+		        <div class="col-md-12 padding-left-0">
+			        <div class="mat-title">Verified Info</div>
+		        </div>
+		        <div class="col-md-12 padding-left-0">
+			        <span *ngIf="peerObj.emailVerified">Email address, </span>
+			        <span *ngIf="peerObj.phoneVerified">Phone number, </span>
+			        <span *ngIf="peerObj.accountVerified">Government ID</span>
+		        </div>
+	        </div>
+            <div class="row border-top" *ngIf="connectedIdentities['facebook'] || connectedIdentities['google']">
+                <div class="col-md-12 padding-left-0">
+                    <div class="mat-title">Connected Accounts</div>
                 </div>
-                <div class="col-md-offset-1 col-md-10 padding-left-0">
+                <div class="col-md-12 padding-left-0">
                     <!--<i *ngIf="!connectedIdentities[ 'facebook'] " class="fa fa-facebook dcSocial socialIcons "></i>-->
                     <i *ngIf="connectedIdentities[ 'facebook'] " class="fa fa-facebook defaultFB socialIcons "></i>
                     <i *ngIf="connectedIdentities[ 'google'] " class="fa fa-google defaultGoogle socialIcons "></i>
@@ -55,10 +65,10 @@
                 </div>
             </div>
             <div class="row border-top " *ngIf="interestsArray.length> 0">
-                <div class="col-md-offset-1 col-md-10 padding-left-0">
+                <div class="col-md-12 padding-left-0">
                     <div class="mat-title">Interest</div>
                 </div>
-                <div class="col-md-offset-1 col-md-10 padding-left-0">
+                <div class="col-md-12 padding-left-0">
                     <mat-chip-list>
                         <span *ngFor="let interest of interestsArray;let i=index" style="margin: 0px 10px 10px 0px">
                             <mat-chip *ngIf="i<maxVisibleInterest">{{interest | titlecase}}</mat-chip>
@@ -66,20 +76,20 @@
                     </mat-chip-list>
                     <span *ngIf="interestsArray.length>3">
                         <span *ngIf="interestsArray.length>maxVisibleInterest">
-                            <a (click)="toggleMaxInterest()">
-                                <strong> + more </strong>
+                            <a (click)="toggleMaxInterest()" class="clickable">
+                                <strong> + show more </strong>
                             </a>
                         </span>
                         <span *ngIf="interestsArray.length<maxVisibleInterest">
-                            <a (click)="toggleMaxInterest()">
-                                <strong> - less </strong>
+                            <a (click)="toggleMaxInterest()" class="clickable">
+                                <strong> - show less </strong>
                             </a>
                         </span>
                     </span>
                 </div>
             </div>
-            <div class="row border-top" *ngIf="urluserId!==cookieUserId" style="padding-top: 20px;text-align:center;cursor:pointer">
-                <div class="col-md-12">
+            <div class="row border-top" *ngIf="urluserId!==cookieUserId" style="padding-top: 20px;cursor:pointer">
+                <div class="col-md-12" style="padding-left: 0px;">
                     <h5 (click)="reportProfile()">Report profile</h5>
                 </div>
             </div>
@@ -87,7 +97,7 @@
         <div class="col-md-5 center-feed">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="mat-title">About Me</div>
+                    <div class="mat-title">About</div>
                 </div>
                 <div class="col-md-12">
                     <p class="alignJustify" *ngIf="profileObj.description">
@@ -96,13 +106,13 @@
                         <span *ngIf="profileObj.description.length >140 && profileObj.description.length <= maxLength" (click)="showAll(profileObj.description.length)"
                             style="color:#33bd9e">show less</span>
                     </p>
-                    <p *ngIf="!profileObj.description">No description provided.
-                        <a [routerLink]="['/','console','profile','edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a>
+                    <p *ngIf="!profileObj.description">Joined peerbuds on {{profileObj.createdAt | date:'dd MMM yyyy'}}
+                        <a [routerLink]="['/','console','profile','edit']" *ngIf="cookieUserId === urluserId">. Add a description to your profile?</a>
                     </p>
                 </div>
             </div>
-            <hr>
-            <div class="row margin-top-20 margin-bottom-20">
+            <hr *ngIf="topicsTeaching && topicsTeaching.length > 0">
+            <div class="row margin-top-40 margin-bottom-20" *ngIf="topicsTeaching && topicsTeaching.length > 0">
                 <div class=col-md-12>
                     <div class="mat-title">Topics I teach</div>
                 </div>
@@ -116,7 +126,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <p class="pre-wrapped alignJustify">{{topic.experience | ucfirst}}</p>
+                                    <p class="pre-wrapped alignJustify">{{topic.experience || profileObj.first_name + ' has not specified their experience in this topic' | ucfirst}}</p>
                                 </div>
                             </div>
                         </div>
@@ -131,19 +141,19 @@
                     </div>
                 </div>
             </div>
-            <hr>
-            <div class="row margin-top-20 margin-bottom-20">
+            <hr *ngIf="(profileObj.work && profileObj.work.length > 0 ) || (profileObj.education && profileObj.education.length > 0)">
+            <div class="row margin-top-20 margin-bottom-20" *ngIf="(profileObj.work && profileObj.work.length > 0 ) || (profileObj.education && profileObj.education.length > 0)">
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="mat-title">My Resume</div>
+                            <div class="mat-title">Institutions</div>
                         </div>
                     </div>
-                    <div class="row" style="padding-top: 20px;">
+                    <div class="row" *ngIf="profileObj.work && profileObj.work.length > 0" style="padding-top: 20px;">
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-1">
-                                    <mat-icon style="font-size: 35px;">work</mat-icon>
+                                    <mat-icon class="resumeIcons">work</mat-icon>
                                 </div>
                                 <div class="col-md-11 resumeText">
                                     <span class="mat-body-2">Work Experience</span>
@@ -157,18 +167,18 @@
                                 </div>
                             </div>
                             <div class="row" style="padding-top: 0px;" *ngFor="let workObj of profileObj.work">
-                                <div class="col-md-11 col-md-offset-1">
+                                <div class="col-md-11 col-md-offset-1 margin-bottom-10">
                                     <div class="row">
                                         <div class="col-md-12 work-title">
-                                            <span style="font-size: 16px;font-weight: bolder;">{{workObj.position}} </span> &emsp;
-                                            <mat-icon style="font-size: 5px;line-height:24px;vertical-align:middle;width: 15px;margin-left: -5px;">fiber_manual_record</mat-icon>
+                                            <span style="font-size: 16px;font-weight: bolder;">{{workObj.position | ucfirst}} </span>  @
+                                            <!--<mat-icon style="font-size: 5px;line-height:24px;vertical-align:middle;width: 15px;margin-left: -5px;">fiber_manual_record</mat-icon>-->
                                             <span class="lighttext" style="font-size: 15px;">
                                                 {{workObj.company | ucfirst}}
                                             </span>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-12 mat-caption">
                                             <span *ngIf="workObj.endDate">{{workObj.startDate | date:'yyyy'}} - {{workObj.endDate | date:'yyyy'}}</span>
                                             <span *ngIf="!workObj.endDate ">{{workObj.startDate | date:'yyyy'}} - Present</span>
                                         </div>
@@ -177,8 +187,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="row" style="padding-top: 20px;">
+                    <div class="row" style="padding-top: 20px;" *ngIf="profileObj.education && profileObj.education.length > 0">
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-1">
@@ -196,17 +205,19 @@
                                 </div>
                             </div>
                             <div class="row" style="padding-top: 0px;" *ngFor="let educationObj of profileObj.education">
-                                <div class="col-md-11 col-md-offset-1">
+                                <div class="col-md-11 col-md-offset-1 margin-bottom-10">
                                     <div class="row">
                                         <div class="col-md-12 education-title">
-                                            <span style="font-size: 16px;font-weight: bolder;">{{educationObj.degree}}</span>
+                                            <span style="font-size: 16px;font-weight: bolder;">{{educationObj.degree}}</span>  @
+	                                        <span class="lighttext" style="font-size: 15px;">
+                                                {{educationObj.school | ucwords}}
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12">
-                                            <!-- <h4 *ngIf="workObj.endDate">{{workObj.startDate | date:'yyyy'}} - {{workObj.endDate | date:'yyyy'}}</h4>
-                                                        <h4 *ngIf="!workObj.endDate ">{{workObj.startDate | date:'yyyy'}} - Present</h4> -->
-                                            <span>{{educationObj.school | titlecase}}</span>
+                                        <div class="col-md-12 mat-caption">
+	                                        <span *ngIf="educationObj.endYear">{{educationObj.startYear}} - {{educationObj.endYear}}</span>
+	                                        <span *ngIf="!educationObj.endYear">{{educationObj.startYear}} - Present</span>
                                         </div>
                                     </div>
                                 </div>
@@ -235,7 +246,7 @@
                         <hr>
                         <div class="col-md-12 text-center reviews">
                             <div *ngFor="let review of reviewsFromLearners; let i=index;">
-                                <div class="review-section" *ngIf="review.peer !== undefined && i < maxVisibleReviews">
+                                <div class="review-section" *ngIf="review.peer !== undefined && i < maxVisibleReviewsLearner">
                                     <div class="row review-top" style="margin-left:0px;">
                                         <div class="col-md-2 padding-left-0 review-thumb pull-left">
                                             <img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)" style="position: relative; top: 7px;">
@@ -250,34 +261,34 @@
 
                                         <div class="col-md-12 review-desc padding-left-0 pre-wrapped" style="text-align:left">{{ review.description }}</div>
                                         <div class="col-md-12 review-bottom padding-left-0 margin-top-10 mat-caption" style="text-align:left; margin-top: 5px !important; font-weight: 400;">
-                                            <span>{{ getReviewedCollection(profileObj.peer[0], review.collectionId).type | titlecase}}
+                                            <span>For {{ getReviewedCollection(profileObj.peer[0], review.collectionId).type}}
                                             </span>
                                             <span class="bullet"></span>
-                                            <span>{{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars,
-                                                review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
-                                            <span class="bullet"></span>
-                                            <span>
-                                                <a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title }}
+	                                        <span>
+                                                <a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title | ucwords }}
                                                 </a>
                                             </span>
+	                                        <span class="bullet"></span>
+                                            <span> in {{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars,
+                                                review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="margin-top-20"></div>
-                            <span *ngIf="reviewsFromLearners && reviewsFromLearners.length > maxVisibleReviews">
-                                <a class="clickable" (click)="toggleMaxReviews()">
+                            <span *ngIf="reviewsFromLearners && reviewsFromLearners.length > maxVisibleReviewsLearner">
+                                <a class="clickable" (click)="toggleMaxReviewsLearner()">
                                     <strong> Show more </strong>
                                 </a>
                             </span>
-                            <span *ngIf="reviewsFromLearners && reviewsFromLearners.length < maxVisibleReviews && reviewsFromLearners.length > 0">
-                                <a class="clickable" (click)="toggleMaxReviews()">
+                            <span *ngIf="reviewsFromLearners && reviewsFromLearners.length < maxVisibleReviewsLearner && reviewsFromLearners.length > 0 && maxVisibleReviewsLearner > 4">
+                                <a class="clickable" (click)="toggleMaxReviewsLearner()">
                                     <strong> Show less </strong>
                                 </a>
                             </span>
                             <!-- <hr> -->
-                            <div class="col-md-12 emptySectionText lightText" style="text-align: left;" *ngIf="!reviewsFromLearners">
-                                <span>This user has not received a review yet</span>
+                            <div class="col-md-12 emptySectionText lightText" style="text-align: left;" *ngIf="!(reviewsFromLearners && reviewsFromLearners.length)">
+                                <span>{{profileObj.first_name | ucwords}} has not received any review from a student yet</span>
                             </div>
                             <hr>
                         </div>
@@ -291,7 +302,7 @@
                         <hr>
                         <div class="col-md-12 text-center reviews">
                             <div *ngFor="let review of reviewsFromTeachers; let i=index;">
-                                <div class="review-section" *ngIf="review.peer !== undefined && i < maxVisibleReviews">
+                                <div class="review-section" *ngIf="review.peer !== undefined && i < maxVisibleReviewsTeacher">
                                     <div class="row review-top" style="margin-left:0px;">
                                         <div class="col-md-2 padding-left-0 review-thumb pull-left">
                                             <img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)" style="position: relative; top: 7px;">
@@ -306,34 +317,34 @@
 
                                         <div class="col-md-12 review-desc padding-left-0 pre-wrapped" style="text-align:left">{{ review.description }}</div>
                                         <div class="col-md-12 review-bottom padding-left-0 margin-top-10 mat-caption" style="text-align:left; margin-top: 5px !important; font-weight: 400;">
-                                            <span>{{ getReviewedCollection(profileObj.peer[0], review.collectionId).type | titlecase}}
+                                            <span>For {{ getReviewedCollection(profileObj.peer[0], review.collectionId).type}}
                                             </span>
                                             <span class="bullet"></span>
-                                            <span>{{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars,
-                                                review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
-                                            <span class="bullet"></span>
-                                            <span>
-                                                <a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title }}
+	                                        <span>
+                                                <a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title | ucwords }}
                                                 </a>
                                             </span>
+	                                        <span class="bullet"></span>
+                                            <span> in {{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars,
+                                                review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="margin-top-20"></div>
-                            <span *ngIf="reviewsFromTeachers && reviewsFromTeachers.length > maxVisibleReviews">
-                                <a class="clickable" (click)="toggleMaxReviews()">
+                            <span *ngIf="reviewsFromTeachers && reviewsFromTeachers.length > maxVisibleReviewsTeacher">
+                                <a class="clickable" (click)="toggleMaxReviewsTeacher()">
                                     <strong> Show more </strong>
                                 </a>
                             </span>
-                            <span *ngIf="reviewsFromTeachers && reviewsFromTeachers.length < maxVisibleReviews && reviewsFromTeachers.length > 0">
-                                <a class="clickable" (click)="toggleMaxReviews()">
+                            <span *ngIf="reviewsFromTeachers && reviewsFromTeachers.length < maxVisibleReviewsTeacher && reviewsFromTeachers.length > 0 && maxVisibleReviewsTeacher > 4">
+                                <a class="clickable" (click)="toggleMaxReviewsTeacher()">
                                     <strong> Show less </strong>
                                 </a>
                             </span>
                             <!-- <hr> -->
-                            <div class="col-md-12 emptySectionText lightText" style="text-align: left;" *ngIf="!reviewsFromTeachers">
-                                <span>This user has not received a review yet</span>
+                            <div class="col-md-12 emptySectionText lightText" style="text-align: left;" *ngIf="!(reviewsFromTeachers && reviewsFromTeachers.length)">
+                                <span>{{profileObj.first_name | ucwords}} has not received any review from a teacher yet</span>
                             </div>
                             <hr>
                         </div>
@@ -464,7 +475,7 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 margin-top-10  margin-bottom-20 center">
+                                    <div class="col-md-12 margin-top-10 center">
                                         <hr>
                                         <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openWorkshopGrid('Upcoming Experiences to be taught', upcomingExperiences)">View all</a>
                                         <hr>
@@ -492,7 +503,7 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 margin-top-10 margin-bottom-20 center">
+                                    <div class="col-md-12 margin-top-10 center">
                                         <hr>
                                         <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)=" openWorkshopGrid('Experiences currently being taught',ongoingExperiences)">View all</a>
                                         <hr>
@@ -528,12 +539,12 @@
                                 </div>
                                 <div *ngIf="upcomingExperiences.length === 0 && ongoingExperiences.length === 0 && pastExperiences.length === 0">
                                     <div class="col-md-12 emptySectionText lightText" style="padding-left: 15px;">
-                                        <span>{{profileObj.first_name | ucwords}} is not teaching any experiences yet</span>
+                                        <span>{{profileObj.first_name | ucwords}} has not started his teaching journey on Peerbuds</span>
                                     </div>
                                 </div>
                             </div>
                         </mat-tab>
-                        <!-- <mat-tab label="Sessions" style="min-width: min-content !important;">
+                         <mat-tab label="Sessions" style="min-width: min-content !important;">
                             <div class="row" style="padding-left: 5px;">
                                 <div *ngIf="availablePackages.length>0">
                                     <div class="col-md-12 mat-subheading-2 margin-top-20">
@@ -562,33 +573,31 @@
                                         <hr>
                                     </div>
                                 </div>
-                                <div *ngIf="upcomingExperiences.length === 0 && availablePackages.length === 0 && pastExperiences.length === 0">
-                                    <div class="col-md-12 emptySectionText lightText" style="padding-left: 15px;">
-                                        <span>{{profileObj.first_name | ucwords}} has not enabled sessions yet</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 margin-top-10  margin-bottom-20 center">
+                                <div class="col-md-12 margin-top-10  margin-bottom-20" *ngIf="availablePackages.length > 0">
                                     <hr>
                                     <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="bookSession()">Book Session</a>
                                     <hr>
                                 </div>
+	                            <div *ngIf="availablePackages.length === 0">
+		                            <div class="col-md-12 emptySectionText lightText" style="padding-left: 15px;">
+			                            <span>{{profileObj.first_name | ucwords}} has not setup their availability calendar yet</span>
+		                            </div>
+	                            </div>
                             </div>
-                        </mat-tab> -->
+                        </mat-tab>
                     </mat-tab-group>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row margin-top-30" style="margin-left:0px;margin-right:0px;" *ngIf="!loadingLearningJourney && !loadingProfile">
+    <div class="row margin-top-30"  *ngIf="!loadingLearningJourney && !loadingProfile">
         <hr class="col-md-10 col-md-offset-1 margin-bottom-30" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || participatingWorkshops">
         <div class="col-md-offset-1 col-md-10" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || participatingWorkshops">
             <div class="row">
                 <div class="col-md-8">
                     <div class="mat-title">Learning Journey</div>
                 </div>
-                <div class="col-md-2" *ngIf="!participatingWorkshops || participatingWorkshops.length < 5">
-
-                </div>
+                <div class="col-md-2" *ngIf="participatingWorkshops"></div>
                 <div class="col-md-2">
                     <mat-form-field [floatLabel]="'never'">
                         <mat-select [(value)]="learningJourneyFilter" placeholder="Filter">
@@ -598,11 +607,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="col-md-2" *ngIf="participatingWorkshops && participatingWorkshops.length > 5">
-                    <a class="pull-right" [routerLink]="'/home/workshops'">
-                        <h4>See all</h4>
-                    </a>
-                </div>
+                <!--TODO: Add button to see all learning journey of another user-->
             </div>
             <div class="row feed-horizontal margin-top-20" style="padding: 0px 7px;">
                 <div *ngFor="let workshop of participatingWorkshops; let i =index">
@@ -643,12 +648,12 @@
         </div>
     </div>
     <br>
-    <div class="row" *ngIf="!loadingPeers && !loadingProfile" style="margin-left:0px;margin-right:0px;">
+    <div class="row" *ngIf="!loadingPeers && !loadingProfile">
         <hr class="col-md-10 col-md-offset-1 margin-bottom-30" *ngIf="!(!participatingWorkshops && cookieUserId === urluserId) || !participatingWorkshops">
         <div class="col-md-offset-1 col-md-10">
             <div class="row">
                 <div class="col-md-10">
-                    <h2>Similar Teachers</h2>
+                    <h2>Similar Peers</h2>
                 </div>
                 <div class="col-md-2">
                     <a class="pull-right" [routerLink]="'/home/peers'" *ngIf="recommendedpeers && recommendedpeers.length > 5">

@@ -9,14 +9,14 @@
         <form [formGroup]="loginForm" class="form-horizontal" style="padding: 0px !important;">
          <mat-dialog-content style="padding: 0px !important;">
              <div class="flex-body">
-               
+
                <div class="margin-bottom-20">
-                 <a mat-raised-button class="invert-fb btn-width-large btn-block" href="{{envVariable.apiUrl}}/auth/facebook?returnTo=/">
+                 <a mat-raised-button class="invert-fb btn-width-large btn-block" href="{{envVariable.apiUrl}}/auth/facebook?returnTo=/" style="padding-top: 4px;">
                    <i class="fa fa-facebook circle-icon1"></i>Continue with Facebook</a>
                  </div>
 
                  <div class="margin-bottom-20">
-                   <a mat-raised-button class="invert-google btn-width-large btn-block" href="{{envVariable.apiUrl}}/auth/google?returnTo=/">
+                   <a mat-raised-button class="invert-google btn-width-large btn-block" href="{{envVariable.apiUrl}}/auth/google?returnTo=/" style="padding-top: 4px;">
                      <i class="fa fa-google circle-icon2"></i>Continue with Gmail</a>
                    </div>
                    <div class="btn-hide position-relative text-center">
@@ -27,7 +27,7 @@
                     <div *ngIf="showError" class="alert alert-success box-msg margin-bottom-10" role="alert">
                       <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Wrong Username/password
                     </div>
-                    
+
                    <div class="margin-bottom-10">
                      <mat-form-field [floatLabel]="'always'" class="pb-block">
                        <input matInput placeholder="Email" formControlName="email" type="email">

@@ -20,7 +20,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
   public profile: any;
   public alreadyVerified: Array<any>;
   public notVerified: Array<any>;
-  private queryForSocialIdentities = { 'include': ['identities', 'credentials'] };
+  private queryForSocialIdentities = { 'include': [{profiles : 'phone_numbers'}, 'identities', 'credentials'] };
   public socialIdentitiesConnected: any = [];
   public boolShowConnectedSocials = false;
   public envVariable;
@@ -72,21 +72,18 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 
   private getProfile() {
     this._profileService.getPeerData(this.userId, this.queryForSocialIdentities).subscribe((peer) => {
-      console.log(peer.email);
-      console.log(peer);
-      // console.log(phone_numbers);
       this.alreadyVerified = [];
       this.notVerified = [];
-      if (peer.phoneVerified && peer.phone) {
+      if (peer.phoneVerified && peer.profiles[0].phone_numbers && peer.profiles[0].phone_numbers.length > 0) {
         this.alreadyVerified.push({
           text: 'Phone Number',
-          value: peer.phone
+          value: '+' + peer.profiles[0].phone_numbers[0].country_code + ' ' +  peer.profiles[0].phone_numbers[0].subscriber_number
         });
       } else {
-        if (peer.phone) {
+        if (peer.profiles[0].phone_numbers && peer.profiles[0].phone_numbers.length > 0) {
           this.notVerified.push({
             text: 'Phone Number',
-            value: peer.phone
+            value: '+' + peer.profiles[0].phone_numbers[0].country_code + ' ' +  peer.profiles[0].phone_numbers[0].subscriber_number
           });
         } else {
           this.notVerified.push({

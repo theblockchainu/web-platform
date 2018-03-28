@@ -43,7 +43,11 @@ export class ConsoleComponent implements OnInit {
   ngOnInit() {
     this._profileService.getPeerData(this.userId).subscribe(
       result => {
-        this.isAdmin = result.isAdmin;
+      	if (result) {
+			this.isAdmin = result.isAdmin;
+		} else {
+      		this.router.navigate(['/home/homefeed']);
+		}
       }, err => {
         console.log(err);
       }

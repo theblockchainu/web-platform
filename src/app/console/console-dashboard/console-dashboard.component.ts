@@ -306,7 +306,7 @@ export class ConsoleDashboardComponent implements OnInit {
         });
 
         if (this.totalTeachingRatingCount > 0) {
-            this.totalTeachingRatingValue = this.totalTeachingRatingValue / this.totalTeachingRatingCount;
+            this.totalTeachingRatingValue = Math.round((this.totalTeachingRatingValue / this.totalTeachingRatingCount) * 100) / 100;
         }
 
         this.drafts.sort((a, b) => {

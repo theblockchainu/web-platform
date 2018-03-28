@@ -189,11 +189,11 @@ export class ProfileService {
       });
 
   }
-  public sendVerifySms(phonenumber) {
+  public sendVerifySms(phonenumber, countryCode) {
     const body = {
     };
     return this.http
-      .post(environment.apiUrl + '/api/peers/sendVerifySms?phone=' + phonenumber, body, this.options)
+      .post(environment.apiUrl + '/api/peers/sendVerifySms?phone=' + phonenumber + '&countryCode=' + countryCode, body, this.options)
       .map((response: any) => response, (err) => {
         console.log('Error: ' + err);
       });
