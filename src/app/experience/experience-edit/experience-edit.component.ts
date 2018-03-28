@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/switchMap';
-import {Component, OnInit, Input, AfterViewInit, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
@@ -17,7 +17,7 @@ import { RequestHeaderService } from '../../_services/requestHeader/request-head
 import * as _ from 'lodash';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { Observable } from 'rxjs/Observable';
 import { TopicService } from '../../_services/topic/topic.service';
@@ -104,7 +104,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
   public _CANVAS;
   public _VIDEO;
   public _CTX;
-    public showBackground = false;
+  public showBackground = false;
   public urlForVideo = [];
   public urlForImages = [];
 
@@ -154,14 +154,14 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
     private location: Location,
     public cd: ChangeDetectorRef
   ) {
-      this.envVariable = environment;
+    this.envVariable = environment;
     this.activatedRoute.params.subscribe(params => {
       this.experienceId = params['collectionId'];
       this.step = params['step'];
       if (this.step && this.step.toString() === '5') {
-          this.showBackground = true;
+        this.showBackground = true;
       } else {
-          this.showBackground = false;
+        this.showBackground = false;
       }
       this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code' +
         '&client_id=' + environment.stripeClientId + '&scope=read_write&redirect_uri=' + environment.clientUrl
@@ -639,6 +639,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
       postcode: ['']
     });
   }
+
   public experienceStepUpdate() {
     if (this.experience.value.stage < this.step) {
       this.experience.patchValue({
@@ -836,11 +837,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
       observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel', body)
         .map(response => response).publishReplay().refCount();
       observable.subscribe((res) => {
-        this.step++;
         this._collectionService.getCollectionDetail(this.experienceId, this.query)
           .subscribe((resData) => {
             this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
           });
+        this.step++;
         this.experienceStepUpdate();
         this.busyInterest = false;
         this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
@@ -1202,5 +1203,10 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
       this.experience.controls['price'].setValue(0);
     }
   }
+
+  back() {
+    this.goto(this.step - 1);
+  }
+
 }
 
