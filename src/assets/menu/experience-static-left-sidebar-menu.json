@@ -117,11 +117,11 @@
     "title": "Finishing Touches",
     "active": false,
     "visible": false,
-    "step": 16,
+    "step": 15,
     "submenu": [
       {
         "title": "Phone Number",
-        "step": 16,
+        "step": 15,
         "active": false,
         "visible": false,
         "locked": false,
@@ -129,7 +129,7 @@
       },
       {
         "title": "Payments",
-        "step": 17,
+        "step": 16,
         "active": false,
         "visible": false,
         "locked": false,
