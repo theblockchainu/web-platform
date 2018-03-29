@@ -8,11 +8,13 @@ import { Observable } from 'rxjs/Observable';
 import { MatDialog } from '@angular/material';
 import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.component';
 import { SelectPriceComponent } from '../dialogs/select-price/select-price.component';
+import { SelectDurationComponentComponent } from '../dialogs/select-duration-component/select-duration-component.component';
 import 'rxjs/add/operator/do';
 import * as moment from 'moment';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { environment } from '../../../environments/environment';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-experiences',
@@ -37,15 +39,29 @@ export class ExperiencesComponent implements OnInit {
 
   public userId;
   public experiences: Array<any>;
+  public experiencesBackup: Array<any>;
   @ViewChild('topicButton') topicButton;
   @ViewChild('priceButton') priceButton;
+  @ViewChild('durationButton') durationButton;
+
   public availableRange: Array<number>;
   public selectedRange: Array<number>;
+
+  public availableDurationRange: Array<number>;
+  public selectedDurationRange: Array<number>;
+
+
   public initialized: boolean;
   public selectedTopics: Array<any>;
   public loading = false;
   public envVariable;
   private today = moment();
+  public filterForm: FormGroup;
+  public languageList: Array<any>;
+  public locationList: Array<any>;
+  public levelList: Array<any>;
+  public ratingList: Array<number>;
+
   constructor(
     public _collectionService: CollectionService,
     public _profileService: ProfileService,
@@ -53,13 +69,98 @@ export class ExperiencesComponent implements OnInit {
     private _topicService: TopicService,
     public dialog: MatDialog,
     public elRef: ElementRef,
-    public _dialogsService: DialogsService
+    public _dialogsService: DialogsService,
+    private _fb: FormBuilder
   ) {
     this.envVariable = environment;
     this.userId = _cookieUtilsService.getValue('userId');
   }
   ngOnInit() {
     this.fetchData();
+    this.initializeFilters();
+  }
+
+  private initializeFilters() {
+    this.filterForm = this._fb.group({
+      language: [],
+      location: [],
+      difficultyLevel: [],
+      rating: []
+    });
+
+    this.filterForm.valueChanges.subscribe(res => {
+      this.fitlerResults();
+    });
+  }
+
+  private fitlerResults() {
+    this.experiences = this.experiencesBackup.filter((val) => {
+      let languageBool = false;
+      let locationBool = false;
+      let priceBool = false;
+      let durationBool = false;
+      let levelBool = false;
+      let ratingBool = false;
+
+      if (this.filterForm.value.language && this.filterForm.value.language.length > 0) {
+        for (let i = 0; (i < this.filterForm.value.language.length && !languageBool); i++) {
+          const language = this.filterForm.value.language[i];
+          if (val.language.includes(language) && !languageBool) {
+            languageBool = true;
+          }
+        }
+      } else {
+        languageBool = true;
+      }
+
+      if (this.filterForm.value.location && this.filterForm.value.location.length > 0) {
+        for (let i = 0; (i < this.filterForm.value.location.length && !locationBool); i++) {
+          const location = this.filterForm.value.location[i];
+          if (val.location === location) {
+            locationBool = true;
+          }
+        }
+      } else {
+        locationBool = true;
+      }
+
+      if (this.filterForm.value.difficultyLevel && this.filterForm.value.difficultyLevel.length > 0) {
+        for (let i = 0; (i < this.filterForm.value.difficultyLevel.length && !levelBool); i++) {
+          const level = this.filterForm.value.difficultyLevel[i];
+          if (val.difficultyLevel === level) {
+            levelBool = true;
+          }
+        }
+      } else {
+        levelBool = true;
+      }
+
+      if (this.filterForm.value.rating && this.filterForm.value.rating.length > 0) {
+        console.log(this.filterForm.value.rating);
+        for (let i = 0; (i < this.filterForm.value.rating.length && !ratingBool); i++) {
+          const rating = this.filterForm.value.rating[i];
+          if (val.rating === rating) {
+            ratingBool = true;
+          }
+        }
+      } else {
+        ratingBool = true;
+      }
+
+      if (this.selectedRange) {
+        priceBool = (val.price >= this.selectedRange[0] && val.price <= this.selectedRange[1]);
+      } else {
+        priceBool = true;
+      }
+
+      if (this.selectedDurationRange) {
+        durationBool = (val.totalHours >= this.selectedDurationRange[0] && val.totalHours <= this.selectedDurationRange[1]);
+      } else {
+        durationBool = true;
+      }
+
+      return languageBool && locationBool && priceBool && durationBool && levelBool && ratingBool;
+    });
   }
 
   fetchData() {
@@ -74,18 +175,6 @@ export class ExperiencesComponent implements OnInit {
         this.loading = false;
         console.log(err);
       });
-  }
-
-  setPriceRange(): void {
-    if (this.experiences.length > 0) {
-      this.availableRange = [
-        _.minBy(this.experiences, function (o) {
-          return o.price;
-        }).price,
-        _.maxBy(this.experiences, function (o) { return o.price; }).price
-      ];
-      this.selectedRange = _.clone(this.availableRange);
-    }
   }
 
   fetchTopics(): Observable<Array<any>> {
@@ -155,13 +244,7 @@ export class ExperiencesComponent implements OnInit {
                   }
                 });
                 if (collection.price !== undefined && hasActiveCalendar) {
-                  if (this.selectedRange) {
-                    if (collection.price >= this.selectedRange[0] && collection.price <= this.selectedRange[1]) {
-                      experiences.push(collection);
-                    }
-                  } else {
-                    experiences.push(collection);
-                  }
+                  experiences.push(collection);
                 } else {
                   console.log('price unavailable');
                 }
@@ -170,14 +253,60 @@ export class ExperiencesComponent implements OnInit {
           }
           this.experiences = _.uniqBy(experiences, 'id');
           this.experiences = _.orderBy(this.experiences, ['createdAt'], ['desc']);
+          this.experiencesBackup = _.cloneDeep(this.experiences);
+
           if (!this.initialized) {
-            this.setPriceRange();
+            console.log(this.experiences);
+            this.setFilterData();
             this.initialized = true;
           }
         }, (err) => {
           console.log(err);
         }
       );
+  }
+
+  private setFilterData() {
+    this.languageList = [];
+    this.locationList = [];
+    this.levelList = [];
+    this.ratingList = [5, 4, 3, 2, 1, 0];
+    let maxPrice = 0;
+    const minPrice = 0;
+
+    let maxDuration = 0;
+    const minDuration = 0;
+
+    this.experiences.forEach(experience => {
+      if (maxPrice < experience.price) {
+        maxPrice = experience.price;
+      }
+      if (maxDuration < experience.totalHours) {
+        maxDuration = experience.totalHours;
+      }
+
+      experience.language.forEach(language => {
+        if (!this.languageList.includes(language)) {
+          this.languageList.push(language);
+        }
+      });
+
+      if (!this.locationList.includes(experience.location)) {
+        this.locationList.push(experience.location);
+      }
+
+      if (!this.levelList.includes(experience.difficultyLevel)) {
+        this.levelList.push(experience.difficultyLevel);
+      }
+
+    });
+
+    this.availableDurationRange = [minDuration, maxDuration];
+    this.selectedDurationRange = _.clone(this.availableDurationRange);
+
+    this.availableRange = [minPrice, maxPrice];
+    this.selectedRange = _.clone(this.availableRange);
+
   }
 
   openTopicsDialog(): void {
@@ -200,7 +329,7 @@ export class ExperiencesComponent implements OnInit {
     });
   }
 
-  openPriceDialog(): void {
+  public openPriceDialog(): void {
     const dialogRef = this.dialog.open(SelectPriceComponent, {
       width: '200px',
       height: '190px',
@@ -218,11 +347,32 @@ export class ExperiencesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.selectedRange = result.selectedRange;
-        this.fetchExperiences();
+        this.fitlerResults();
       }
     });
   }
 
+  public openDurationDialog(): void {
+    const dialogRef = this.dialog.open(SelectDurationComponentComponent, {
+      width: '200px',
+      height: '190px',
+      data: {
+        availableRange: this.availableDurationRange,
+        selectedRange: this.selectedDurationRange
+      },
+      disableClose: true,
+      position: {
+        top: this.durationButton._elementRef.nativeElement.getBoundingClientRect().top + 'px',
+        left: this.durationButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.selectedDurationRange = result.selectedRange;
+        this.fitlerResults();
+      }
+    });
+  }
 
   public toggleBookmark(index: number) {
     if (!(this.experiences[index].bookmarks && this.experiences[index].bookmarks[0] && this.experiences[index].bookmarks[0].peer && this.experiences[index].bookmarks[0].peer[0] && this.experiences[index].bookmarks[0].peer[0].id === this.userId)) {
