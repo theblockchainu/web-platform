@@ -7,7 +7,8 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import * as _ from 'lodash';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import { AddLocationDialogComponent } from '../add-location-dialog/add-location-dialog.component';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
+import { DataSharingService } from '../../_services/data-sharing-service/data-sharing.service';
 @Component({
     selector: 'app-experience-content-inperson',
     templateUrl: './experience-content-inperson.component.html',
@@ -34,6 +35,9 @@ export class ExperienceContentInpersonComponent implements OnInit {
     private options;
     public contentsFArray;
     public contentForm;
+    public usePreviousLocation: FormControl;
+    public hasPreviousLocation: boolean;
+    public previousLocations: Array<any>;
 
     constructor(
         private _fb: FormBuilder,
@@ -44,6 +48,7 @@ export class ExperienceContentInpersonComponent implements OnInit {
         public dialogRef: MatDialogRef<ExperienceContentInpersonComponent>,
         private requestHeaders: RequestHeaderService,
         private dialog: MatDialog,
+        private dataSharingService: DataSharingService
     ) {
         this.envVariable = environment;
         this.options = requestHeaders.getOptions();
@@ -59,13 +64,31 @@ export class ExperienceContentInpersonComponent implements OnInit {
                 this.attachmentUrls.push(res[0]);
             });
         });
-        console.log(this.attachmentUrls);
+
     }
 
     ngOnInit(): void {
         const content = <FormArray>this.itenaryForm.controls.contents;
         this.lastIndex = this.lastIndex !== -1 ? this.lastIndex : content.controls.length - 1;
         this.resultData['data'] = this.lastIndex;
+        this.usePreviousLocation = new FormControl();
+        this.previousLocations = [];
+        this.dataSharingService.data.contentGroup.itenary.forEach(itenary => {
+            itenary.contents.forEach(itenaryContent => {
+                if (itenaryContent.location.map_lat && itenaryContent.location.map_lng && !this.previousLocations.includes(itenaryContent.location)) {
+                    this.previousLocations.push(itenaryContent.location);
+                }
+            });
+        });
+        this.usePreviousLocation.valueChanges.subscribe(res => {
+            if (this.usePreviousLocation.value) {
+                this.itenaryForm.controls['contents']['controls'][this.lastIndex]['controls']['location'].patchValue(
+                    this.previousLocations[this.usePreviousLocation.value]
+                );
+            } else {
+                this.itenaryForm.controls['contents']['controls'][this.lastIndex]['controls']['location'].reset();
+            }
+        });
     }
 
     imageUploadNew(event) {
@@ -113,7 +136,7 @@ export class ExperienceContentInpersonComponent implements OnInit {
      * @returns {any}
      */
     getSaveDialogData() {
-        console.log('changing result data to save');
+        // console.log('changing result data to save');
         this.resultData['status'] = 'save';
         return JSON.stringify(this.resultData);
     }

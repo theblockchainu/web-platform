@@ -22,7 +22,7 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { Observable } from 'rxjs/Observable';
 import { TopicService } from '../../_services/topic/topic.service';
 import { PaymentService } from '../../_services/payment/payment.service';
-
+import { DataSharingService } from '../../_services/data-sharing-service/data-sharing.service';
 
 @Component({
   selector: 'app-experience-edit',
@@ -152,7 +152,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
     private _topicService: TopicService,
     private _paymentService: PaymentService,
     private location: Location,
-    public cd: ChangeDetectorRef
+    public cd: ChangeDetectorRef,
+    private _dataSharingService: DataSharingService
   ) {
     this.envVariable = environment;
     this.activatedRoute.params.subscribe(params => {
@@ -219,6 +220,10 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
       contentGroup: this._fb.group({
         itenary: this._fb.array([])
       })
+    });
+
+    this.timeline.valueChanges.subscribe(res => {
+      this._dataSharingService.data = this.timeline.value;
     });
 
     this.conditions = this._fb.group({

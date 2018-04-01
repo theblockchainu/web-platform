@@ -227,7 +227,7 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
   }
 
   getContentTimeRange(content) {
-    console.log('Start time is: ' + content.controls.schedule.controls.startTime.value);
+    // console.log('Start time is: ' + content.controls.schedule.controls.startTime.value);
     let startTime, endTime;
     if (moment(content.controls.schedule.controls.startTime.value).isValid()) {
       startTime = moment(content.controls.schedule.controls.startTime.value).format('hh:mm a');

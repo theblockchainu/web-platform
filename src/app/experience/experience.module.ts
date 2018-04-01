@@ -9,7 +9,8 @@ import { ContentViewComponent } from './content-view/content-view.component';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 import { ExperienceContentInpersonComponent } from './experience-content-inperson/experience-content-inperson.component';
 import { AddLocationDialogComponent } from './add-location-dialog/add-location-dialog.component';
-import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { DataSharingService } from '../_services/data-sharing-service/data-sharing.service';
 
 @NgModule({
     imports: [
@@ -28,7 +29,7 @@ import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
         ExperienceContentInpersonComponent,
         AddLocationDialogComponent
     ],
-    providers: [],
+    providers: [DataSharingService],
     bootstrap: [],
     entryComponents: [ExperienceContentProjectComponent,
         ExperienceContentVideoComponent, ExperienceContentInpersonComponent, AddLocationDialogComponent]
