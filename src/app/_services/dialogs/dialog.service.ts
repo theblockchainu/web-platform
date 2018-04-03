@@ -241,8 +241,8 @@ export class DialogsService {
         let dialogRef: MatDialogRef<EditCalendarDialogComponent>;
 
         dialogRef = this.dialog.open(EditCalendarDialogComponent, {
-            width: '80vw',
-            height: '100vh'
+            width: '100vw',
+            height: '95vh'
         }
         );
         dialogRef.componentInstance.collection = collection;
