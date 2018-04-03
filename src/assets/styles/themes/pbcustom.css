@@ -1381,7 +1381,8 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 
 .buttonBar{
     position: relative;
-    top: 75%;
+    top: 64%;
+	left: 1%;
     width: min-content;
     z-index: 1001;
 }
@@ -1404,8 +1405,9 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
     z-index: 0;
     height: 96vh;
     position: relative;
-    top: -22%;
+    top: -31%;
     left: 7%;
+	transform: scaleX(-1);
 }
 
 .localStream{
@@ -1671,12 +1673,11 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 }
 
 .filterRow {
-    margin-top: -59px;
+    margin-top: -60px;
     margin-left: -12%;
     width: 125%;
     padding-left: 11%;
     padding-top: 17px;
-    padding-bottom: 17px;
     border-bottom: 1px solid #dddddd;
     position: fixed;
     background: #fff !important;
@@ -1704,4 +1705,26 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 
 .profile-page .mat-tab-header {
 	border-bottom: 3px solid #eeeeee !important;
+}
+
+
+.filterRow .mat-form-field-underline {
+	background: none !important;
+}
+
+.filterRow .mat-form-field-flex {
+	padding: 2px 15px !important;
+	border: 1px solid #cccccc !important;
+	-webkit-border-radius: 2px !important;
+	-moz-border-radius: 2px !important;
+	border-radius: 2px !important;
+
+}
+
+.filterRow .mat-form-field-infix {
+	border-top: 0px !important;
+}
+
+.filterFormField {
+	width: 150px !important;
 }

@@ -29,18 +29,28 @@
 
             <div formGroupName="schedule">
               <mat-form-field class="timeInput margin-top-20 margin-bot-20" style="width:20%">
-                <input matInput #startTime [owlDateTimeTrigger]="startTimePicker" [owlDateTime]="startTimePicker" formControlName="startTime" placeholder="Start Time" [required]="'true'">
-                  <owl-date-time #startTimePicker [hour12Timer]="'true'" [pickerType]="'timer'"></owl-date-time>
+                <input matInput #startTime [owlDateTimeTrigger]="startTimePicker" [owlDateTime]="startTimePicker" formControlName="startTime"
+                  placeholder="Start Time" [required]="'true'">
+                <owl-date-time #startTimePicker [hour12Timer]="'true'" [pickerType]="'timer'"></owl-date-time>
               </mat-form-field>
               <mat-form-field class="timeInput margin-top-20 margin-bot-20" style="margin-left: 20px; width:20%">
-                <input matInput #endTime [owlDateTimeTrigger]="endTimePicker" [owlDateTime]="endTimePicker" formControlName="endTime" placeholder="End Time" [required]="'true'">
-                  <owl-date-time #endTimePicker [hour12Timer]="'true'" [pickerType]="'timer'"></owl-date-time>
+                <input matInput #endTime [owlDateTimeTrigger]="endTimePicker" [owlDateTime]="endTimePicker" formControlName="endTime" placeholder="End Time"
+                  [required]="'true'">
+                <owl-date-time #endTimePicker [hour12Timer]="'true'" [pickerType]="'timer'"></owl-date-time>
               </mat-form-field>
+            </div>
+            <div>
+              <!-- <mat-checkbox [formControl]="usePreviousLocation">Use previous location</mat-checkbox> -->
+              <mat-radio-group [formControl]="usePreviousLocation">
+                <mat-radio-button>New location</mat-radio-button>
+                <mat-radio-button *ngFor="let locationObj of previousLocations;let i=index" value="{{i}}">{{locationObj.location_name}}</mat-radio-button>
+              </mat-radio-group>
             </div>
             <div formGroupName="location" class="margin-top-20 margin-bottom-20">
               <button mat-button color="primary" class="mat-border-button" (click)="openAddLocationDialog()">{{getAddOrEditText()}} location</button>
               <mat-form-field style="display: inline-block; margin-left: 20px; width: 360px;" [floatLabel]="'never'">
-                <input matInput #location formControlName="location_name" placeholder="No location added yet" [disabled]="'true'" [readOnly]="'true'" readonly>
+                <input matInput #location formControlName="location_name" placeholder="No location added yet" [disabled]="'true'" [readOnly]="'true'"
+                  readonly>
               </mat-form-field>
             </div>
             <div class="form-group margin-top-20">

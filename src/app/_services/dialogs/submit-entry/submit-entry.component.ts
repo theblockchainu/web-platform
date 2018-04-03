@@ -77,13 +77,12 @@ export class SubmitEntryComponent implements OnInit {
             if (response) {
                 this.submissionView = response;
                 this.savingDraft = false;
-
                 this.projectSubmissionService.addPeerSubmissionRelation(this.userId, this.submissionView.id).subscribe((res: any) => {
                     if (res) {
                         this.data.peerHasSubmission = true;
+                        this.viewSubmission(this.submissionView.id);
                     }
                 });
-                this.viewSubmission(this.submissionView.id);
             }
         });
     }

@@ -481,7 +481,7 @@ export class BookSessionComponent implements OnInit {
 	public updateSelectedData() {
 		let totalCost = 0;
 		let totalDuration = 0;
-		const bookedSlots = [];
+		let bookedSlots = [];
 		if (this.selectedPackageIndex && this.availability) {
 			const selectedPackage = this.packages[this.selectedPackageIndex];
 			this.availability.forEach(element => {

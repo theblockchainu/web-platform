@@ -287,6 +287,7 @@ export class DialogsService {
             panelClass: 'my-full-screen-dialog',
 			width: '100vw',
 			height: '100vh',
+			maxWidth: '100%',
             data: data
         });
         return dialogRef5.afterClosed();

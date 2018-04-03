@@ -5,23 +5,23 @@
     </div>
     <div *ngIf="room" class="buttonBar">
       <div *ngIf="localAudioTrack && localVideoTrack" class="call-action-buttons">
-        <span class="session_actions">
+        <div class="session_actions">
           <button mat-fab (click)="endCall()">
             <mat-icon>call_end</mat-icon>
           </button>
-        </span>
-        <span class="session_actions">
+        </div>
+        <div class="session_actions">
           <button mat-fab (click)="toggleAudio()">
             <mat-icon *ngIf="this.localAudioTrack.isEnabled">mic</mat-icon>
             <mat-icon *ngIf="!this.localAudioTrack.isEnabled">mic_off</mat-icon>
           </button>
-        </span>
-        <span class="session_actions">
+        </div>
+        <div class="session_actions">
           <button mat-fab (click)="toggleVideo()">
             <mat-icon *ngIf="this.localVideoTrack.isEnabled">videocam</mat-icon>
             <mat-icon *ngIf="!this.localVideoTrack.isEnabled">videocam_off</mat-icon>
           </button>
-        </span>
+        </div>
       </div>
     </div>
     <div class="bottomBar" [hidden]="isTeacherView">
