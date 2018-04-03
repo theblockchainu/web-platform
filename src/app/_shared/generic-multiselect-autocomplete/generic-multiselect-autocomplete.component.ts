@@ -42,30 +42,30 @@ export class GenericMultiselectAutocompleteComponent {
 
     // Input parameter - jsonObject of collection
     @Input()
-    private list: any = {};
+    public list: any = {};
 
     // Optional Input Parameter
     @Input()
-    private searchUrl = '';
+    public searchUrl = '';
 
     // Optional Input Parameter
     @Input()
-    private multiSelect = true;
+    public multiSelect = true;
 
     @Input()
-    private create = false;
+    public create = false;
 
     @Input()
     private createURL = '';
 
     @Input('title')
-    private title = '';
+    public title = '';
 
     @Input()
-    private preSelectedItems = [];
+    public preSelectedItems = [];
 
     @Input('maxSelection')
-    private maxSelection = -1;
+    public maxSelection = -1;
 
     @Output()
     selectedOutput = new EventEmitter<any>();
@@ -116,7 +116,7 @@ export class GenericMultiselectAutocompleteComponent {
         // console.log(this.selected);
     }
 
-    private filter() {
+    public filter() {
         if (!this.multiSelect) {
             if (this.filteredList.length !== 0) {
                 // Force only 1 selection
@@ -186,7 +186,7 @@ export class GenericMultiselectAutocompleteComponent {
         this.filteredList = [];
     }
 
-    private remove(item) {
+    public remove(item) {
         this.selected.splice(this.selected.indexOf(item), 1);
         this.removed.push(item);
         this.selectedOutput.emit(this.selected);
