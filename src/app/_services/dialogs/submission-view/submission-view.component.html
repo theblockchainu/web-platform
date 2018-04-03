@@ -77,96 +77,139 @@
             </div>
           </div>
           <div class="col-md-11">
-            <button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuComment" style="float: right; margin-right: 15px; margin-top: 15px;"
-              tabindex="-1">
-              <mat-icon style="color: #cccccc">more_vert</mat-icon>
-            </button>
-            <mat-menu #menuComment="matMenu">
-              <button *ngIf="userType==='participant'" mat-menu-item>
-                <mat-icon>flag</mat-icon>
-                <span>Flag</span>
-              </button>
-              <button *ngIf="userType==='teacher' || isMyComment(comment)" mat-menu-item>
-                <mat-icon>delete</mat-icon>
-                <span>Delete</span>
-              </button>
-            </mat-menu>
-            <div class="mat-body-1">{{comment.description}}</div>
-            <div style="margin-top: 10px;" class="" *ngIf="comment.peer.length>0">
-              <div style="float: left; margin-left: 15px;">
-                <img *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
-                <img *ngIf="comment.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ comment.peer[0].profiles[0].picture_url}}"
-                  class="circle-thumb margin-top-5" alt="dp">
-              </div>
-              <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
-                <div>
-                  <div>
-                    <span style="font-weight: 500">{{comment.peer[0].profiles[0].first_name}} {{comment.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
-                  </div>
-                </div>
-                <div class="">
-                  <span class="lighterText">{{comment.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
-                </div>
-              </div>
-            </div>
-            <div style="margin-top: 10px;" *ngIf="!(replyForm && replyingToCommentId===comment.id)">
-              <a href="javascript:void(0);" (click)="createReplyForm(comment)">
-                <mat-icon style="top: 5px;">reply</mat-icon> Reply</a>
-            </div>
-            <div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -25px;">
-              <form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
-                <img src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
-                <mat-form-field [floatLabel]="'always'" style="margin-left: 15px; width: 88%;">
-                  <input matInput type="text" formControlName="description" placeholder="Reply to above comment..." tabindex="-1">
-                </mat-form-field>
-                <span matTooltip="Invalid Input!" [matTooltipDisabled]="replyForm.valid">
-                  <button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary" tabindex="-1">Post</button>
-                </span>
-              </form>
-            </div>
-            <div class="col-md-11 col-md-offset-1 margin-top-10">
-              <div class="row margin-top-20" *ngFor="let reply of comment.replies">
-                <button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuReply" style="float: right; margin-right: 15px; margin-top: 15px;"
+            <div class="row" *ngIf="!editCommentForm || (editCommentForm && editCommentForm.value['id']!==comment.id)">
+              <div class="col-md-12">
+                <button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuComment" style="float: right; margin-right: 15px; margin-top: 15px;"
                   tabindex="-1">
-                  <mat-icon style="color: #cccccc;">more_vert</mat-icon>
+                  <mat-icon style="color: #cccccc">more_vert</mat-icon>
                 </button>
-                <mat-menu #menuReply="matMenu">
+                <mat-menu #menuComment="matMenu">
                   <button *ngIf="userType==='participant'" mat-menu-item>
                     <mat-icon>flag</mat-icon>
                     <span>Flag</span>
                   </button>
-                  <button *ngIf="userType==='teacher' || isMyComment(reply)" mat-menu-item>
+                  <button *ngIf="userType==='participant' || isMyComment(comment)" (click)="editComment(comment)" mat-menu-item>
+                    <mat-icon>edit</mat-icon>
+                    <span>edit</span>
+                  </button>
+                  <button *ngIf="userType==='teacher' || isMyComment(comment)" (click)="deleteComment(comment)" mat-menu-item>
                     <mat-icon>delete</mat-icon>
                     <span>Delete</span>
                   </button>
                 </mat-menu>
-                <div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px;"
-                  [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
-                  <mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
-                  <mat-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</mat-icon>
-                  <div>
-                    <span *ngIf="reply.upvotes !== undefined">{{reply.upvotes.length}}</span>
-                    <span *ngIf="reply.upvotes === undefined">0</span>
+                <div class="mat-body-1">{{comment.description}}</div>
+                <div style="margin-top: 10px;" class="" *ngIf="comment.peer.length>0">
+                  <div style="float: left; margin-left: 15px;">
+                    <img *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
+                    <img *ngIf="comment.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ comment.peer[0].profiles[0].picture_url}}"
+                      class="circle-thumb margin-top-5" alt="dp">
+                  </div>
+                  <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
+                    <div>
+                      <div>
+                        <span style="font-weight: 500">{{comment.peer[0].profiles[0].first_name}} {{comment.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+                      </div>
+                    </div>
+                    <div class="">
+                      <span class="lighterText">{{comment.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
+                    </div>
                   </div>
                 </div>
-                <div style="display: inline-block">
-                  <div class="mat-body-1">{{reply.description}}</div>
-                  <div class="" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
-                    <div style="float: left; margin-left: 15px;">
-                      <img *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
-                      <img *ngIf="reply.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ reply.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5"
-                        alt="dp">
-                    </div>
-                    <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
-                      <div>
+                <div style="margin-top: 10px;" *ngIf="!(replyForm && replyingToCommentId===comment.id)">
+                  <a href="javascript:void(0);" (click)="createReplyForm(comment)">
+                    <mat-icon style="top: 5px;">reply</mat-icon> Reply</a>
+                </div>
+                <div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -25px;">
+                  <form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
+                    <img src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
+                    <mat-form-field [floatLabel]="'always'" style="margin-left: 15px; width: 88%;">
+                      <input matInput type="text" formControlName="description" placeholder="Reply to above comment..." tabindex="-1">
+                    </mat-form-field>
+                    <span matTooltip="Invalid Input!" [matTooltipDisabled]="replyForm.valid">
+                      <button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary" tabindex="-1">Post</button>
+                    </span>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+            <div class="row" *ngIf="editCommentForm && editCommentForm.value['id']===comment.id">
+              <div class="col-md-12">
+                <form [formGroup]="editCommentForm" (ngSubmit)="updateComment()">
+                  <mat-form-field class="full-width margin-top-10">
+                    <input matInput type="text" formControlName="description" placeholder="Post your thoughts on this experience">
+                  </mat-form-field>
+                  <button mat-raised-button color="primary" [disabled]="!editCommentForm.valid" class="pull-right">
+                    Update
+                  </button>
+                </form>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-11 col-md-offset-1 margin-top-10">
+                <div class="row margin-top-20" *ngFor="let reply of comment.replies">
+                  <div class="row" *ngIf="!editReplyForm || (editReplyForm && editReplyForm.value['id']!==reply.id)">
+                    <div class="col-md-12">
+                      <button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuReply" style="float: right; margin-right: 15px; margin-top: 15px;"
+                        tabindex="-1">
+                        <mat-icon style="color: #cccccc;">more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menuReply="matMenu">
+                        <button *ngIf="userType==='participant'" mat-menu-item>
+                          <mat-icon>flag</mat-icon>
+                          <span>Flag</span>
+                        </button>
+                        <button *ngIf="userType==='teacher' || isMyComment(reply)" (click)="editReply(reply)" mat-menu-item>
+                          <mat-icon>edit</mat-icon>
+                          <span>edit</span>
+                        </button>
+                        <button *ngIf="userType==='teacher' || isMyComment(reply)" (click)="deleteReply(reply)" mat-menu-item>
+                          <mat-icon>delete</mat-icon>
+                          <span>Delete</span>
+                        </button>
+                      </mat-menu>
+                      <div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px;"
+                        [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
+                        <mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
+                        <mat-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</mat-icon>
                         <div>
-                          <span style="font-weight: 500">{{reply.peer[0].profiles[0].first_name}} {{reply.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+                          <span *ngIf="reply.upvotes !== undefined">{{reply.upvotes.length}}</span>
+                          <span *ngIf="reply.upvotes === undefined">0</span>
                         </div>
                       </div>
-                      <div class="">
-                        <span class="lighterText">{{reply.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
+                      <div style="display: inline-block">
+                        <div class="mat-body-1">{{reply.description}}</div>
+                        <div class="" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
+                          <div style="float: left; margin-left: 15px;">
+                            <img *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
+                            <img *ngIf="reply.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ reply.peer[0].profiles[0].picture_url}}" class="circle-thumb margin-top-5"
+                              alt="dp">
+                          </div>
+                          <div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
+                            <div>
+                              <div>
+                                <span style="font-weight: 500">{{reply.peer[0].profiles[0].first_name}} {{reply.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+                              </div>
+                            </div>
+                            <div class="">
+                              <span class="lighterText">{{reply.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
+                  </div>
+                  <div class="row" *ngIf="editReplyForm && editReplyForm.value['id']===reply.id">
+                    <form [formGroup]="editReplyForm" (ngSubmit)="updateReply()">
+                      <img src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb margin-top-5">
+                      <mat-form-field style="margin-left: 15px; width: 88%;">
+                        <input matInput type="text" formControlName="description" placeholder="Reply to above comment...">
+                      </mat-form-field>
+                      <button [disabled]="!editReplyForm.valid" mat-raised-button class="pull-right" color="primary">
+                        <span *ngIf="!busyReply">update</span>
+                        <ngx-loading [show]="busyReply"></ngx-loading>
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>

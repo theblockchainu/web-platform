@@ -25,6 +25,8 @@ export class SubmissionViewComponent implements OnInit {
     public replyingToCommentId: string;
     public comments: Array<any>;
     public envVariable;
+    public editCommentForm: FormGroup;
+    public editReplyForm: FormGroup;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -225,4 +227,81 @@ export class SubmissionViewComponent implements OnInit {
             }
         });
     }
+
+    public editComment(comment: any) {
+        this.editCommentForm = this._fb.group({
+            description: [comment.description, Validators.required],
+            isAnnouncement: [comment.isAnnouncement],
+            id: comment.id
+        });
+    }
+
+    public updateComment() {
+        const commentBody = this.editCommentForm.value;
+        const commentId = commentBody.id;
+        delete commentBody.id;
+        this._collectionService.updateComment(commentId, commentBody).subscribe(
+            result => {
+                if (result) {
+                    delete this.editCommentForm;
+                    this.getDiscussions();
+                }
+            }, err => {
+                console.log(err);
+            }
+        );
+    }
+
+
+    /**
+     * deleteComment
+     */
+    public deleteComment(comment: any) {
+        this._commentService.deleteComment(comment.id).subscribe(
+            response => {
+                this.getDiscussions();
+            }, err => {
+                console.log(err);
+            }
+        );
+    }
+
+
+    public editReply(reply: any) {
+        console.log(reply);
+        this.editReplyForm = this._fb.group({
+            description: reply.description,
+            id: reply.id
+        });
+    }
+
+    /**
+ * deleteReply
+ */
+    public deleteReply(reply: any) {
+        this._commentService.deleteReply(reply.id).subscribe(
+            response => {
+                this.getDiscussions();
+            }, err => {
+                console.log(err);
+            }
+        );
+    }
+
+    public updateReply() {
+        const replyBody = this.editReplyForm.value;
+        const replyId = replyBody.id;
+        delete replyBody.id;
+        this._commentService.updateReply(replyId, replyBody).subscribe(
+            result => {
+                if (result) {
+                    delete this.editReplyForm;
+                    this.getDiscussions();
+                }
+            }, err => {
+                console.log(err);
+            }
+        );
+    }
+
 }
