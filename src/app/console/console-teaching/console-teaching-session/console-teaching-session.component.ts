@@ -147,5 +147,8 @@ export class ConsoleTeachingSessionComponent implements OnInit {
 		});
 	}
 	
+	public openTransactions() {
+		this.router.navigate(['console', 'account', 'transactions']);
+	}
 	
 }

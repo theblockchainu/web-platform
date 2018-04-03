@@ -110,7 +110,7 @@
                                     </mat-card-content>
 	                                <br>
 	                                <mat-card-footer class="cardFooter">
-		                                <button mat-button (click)="joinLiveSession(session)" *ngIf="session.isPaidFor">View Receipt</button>
+		                                <button mat-button (click)="openTransactions()" *ngIf="session.isPaidFor">View Receipt</button>
 		                                <button mat-button disabled *ngIf="!session.isPaidFor && session.paymentPending !== 0">Awaiting Student Payment</button>
 		                                <button mat-button disabled *ngIf="!session.isPaidFor && session.paymentPending === 0">Free Session Confirmed</button>
 	                                </mat-card-footer>
