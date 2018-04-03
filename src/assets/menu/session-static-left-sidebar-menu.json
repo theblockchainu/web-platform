@@ -5,7 +5,7 @@
         "step": 1,
         "submenu": [
             {
-                "title": "Tagline & Description",
+                "title": "Headline & Description",
                 "step": 2,
                 "active": false,
                 "visible": true,
@@ -54,7 +54,7 @@
                 "complete": false
             },
             {
-                "title": "Experience",
+                "title": "Subject Expertise",
                 "step": 8,
                 "active": false,
                 "visible": true,
@@ -62,7 +62,7 @@
                 "complete": false
             },
             {
-                "title": "What's included",
+                "title": "What's included?",
                 "step": 9,
                 "active": false,
                 "visible": true,
@@ -78,7 +78,7 @@
                 "complete": false
             },
             {
-                "title": "Price",
+                "title": "Price & Packages",
                 "step": 11,
                 "active": false,
                 "visible": true,

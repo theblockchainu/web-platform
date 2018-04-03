@@ -13,6 +13,7 @@ import { AppNotificationDialogComponent } from './dialogs/app-notification-dialo
 import { NotificationService } from '../_services/notification/notification.service';
 import { SearchService } from '../_services/search/search.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
+import {CollectionService} from "../_services/collection/collection.service";
 
 @Component({
   selector: 'app-header',
@@ -38,6 +39,8 @@ export class AppHeaderComponent implements OnInit {
   public isTeacher = false;
   public makeOldNotification = [];
   public profileCompletionObject: any;
+  public isSessionApproved = false;
+  public sessionId = '';
   constructor(public authService: AuthenticationService,
     private http: HttpClient,
     private _cookieService: CookieUtilsService,
@@ -46,6 +49,7 @@ export class AppHeaderComponent implements OnInit {
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private _notificationService: NotificationService,
+    private _collectionService: CollectionService,
     public _searchService: SearchService,
     private dialogsService: DialogsService) {
       this.envVariable = environment;
@@ -59,6 +63,7 @@ export class AppHeaderComponent implements OnInit {
       if (userId !== 0) {
         this.userId = userId;
         this.getProfile();
+        this.checkIfSessionApproved();
         this.getNotifications();
       } else {
         this.loggedIn = false;
@@ -74,6 +79,7 @@ export class AppHeaderComponent implements OnInit {
       this.getProfile();
     });
     this.getProfile();
+	  this.checkIfSessionApproved();
     this.getNotifications();
     this.myControl.valueChanges.subscribe((value) => {
       this._searchService.getAllSearchResults(this.userId, value, (err, result) => {
@@ -165,5 +171,21 @@ export class AppHeaderComponent implements OnInit {
         this.hasNewNotification = false;
       }
     });
+  }
+  
+  public checkIfSessionApproved() {
+  	const query = {
+  		where: {
+  			and: [{status: 'active'}, {type: 'session'}]
+  		}
+  	};
+  	this._collectionService.getOwnedCollections(this.userId, JSON.stringify(query), (err, result) => {
+  		if (!err && result && result.length > 0) {
+  			this.isSessionApproved = true;
+  			this.sessionId = result[0].id;
+		} else {
+  			this.isSessionApproved = false;
+		}
+	});
   }
 }

@@ -65,4 +65,11 @@ export class ContentService {
       .post(environment.apiUrl + '/api/contents/' + contentId + '/rsvps', body, this.options)
       .map((response: any) => response);
   }
+  
+  public deleteContent(contentId) {
+  	return this.http.delete(environment.apiUrl + '/api/contents/' + contentId, this.options)
+		.map((response: any) => response, (err) => {
+			console.log('Error: ' + err);
+		});
+  }
 }

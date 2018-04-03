@@ -8,14 +8,19 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'book/:peerId',
+        path: 'book/:peerId/:mode/:contentId',
         component: BookSessionComponent,
-        canActivateChild: [AuthGuardService]
+        canActivate: [AuthGuardService]
       },
+		{
+			path: 'book/:peerId',
+			component: BookSessionComponent,
+			canActivate: [AuthGuardService]
+		},
       {
         path: ':collectionId/edit/:step',
         component: SessionEditComponent,
-        canActivateChild: [AuthGuardService]
+        canActivate: [AuthGuardService]
       },
 
     ]

@@ -675,6 +675,19 @@ h3.calendarTitle  {
     border: 0px solid #d6d6d6;
 }
 
+.onboarding.step-10 .ui-widget-header {
+	border: 1px solid #eeeeee !important;
+	background: #ffffff !important;
+}
+
+.onboarding.step-10 .ui-widget-content {
+	border: 1px solid #eeeeee !important;
+}
+
+.fc .fc-axis {
+	padding: 5px !important;
+}
+
 .ui-widget-header {
     border: 0px !important;
     background: none !important;
@@ -1368,13 +1381,16 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 
 .buttonBar{
     position: relative;
-    top: 75%;
+    top: 64%;
+	left: 1%;
     width: min-content;
     z-index: 1001;
 }
 .buttonBar .session_actions{
     padding-top: 5px;
     padding-bottom: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 
@@ -1389,8 +1405,9 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
     z-index: 0;
     height: 96vh;
     position: relative;
-    top: -22%;
+    top: -31%;
     left: 7%;
+	transform: scaleX(-1);
 }
 
 .localStream{
@@ -1661,7 +1678,6 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
     width: 125%;
     padding-left: 11%;
     padding-top: 17px;
-    padding-bottom: 17px;
     border-bottom: 1px solid #dddddd;
     position: fixed;
     background: #fff !important;
@@ -1672,4 +1688,43 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
     margin-left: 10px;
     font-size: 1.2rem;
     color:#aaaaaa;
+}
+
+.fc-today {
+	background: #ffffff !important;
+}
+
+.fsCalendarEvent {
+	border-radius: 0px !important;
+}
+
+
+.profile-page .mat-ink-bar {
+	height: 3px !important;
+}
+
+.profile-page .mat-tab-header {
+	border-bottom: 3px solid #eeeeee !important;
+}
+
+
+.filterRow .mat-form-field-underline {
+	background: none !important;
+}
+
+.filterRow .mat-form-field-flex {
+	padding: 2px 15px !important;
+	border: 1px solid #cccccc !important;
+	-webkit-border-radius: 2px !important;
+	-moz-border-radius: 2px !important;
+	border-radius: 2px !important;
+
+}
+
+.filterRow .mat-form-field-infix {
+	border-top: 0px !important;
+}
+
+.filterFormField {
+	width: 150px !important;
 }

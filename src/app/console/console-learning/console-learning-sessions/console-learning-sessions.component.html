@@ -1,19 +1,19 @@
 <div class="row">
-  <div class="col-md-12">
-    <div *ngIf="!loaded" class="loading-container">
-      <ngx-loading [show]="true"></ngx-loading>
-    </div>
-  </div>
+	<div class="col-md-12 margin-top-20">
+		<div *ngIf="!loaded" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
 </div>
 <div class="row">
-  <div class="col-md-12" *ngIf="loaded">
+  <div class="col-md-12 margin-top-10" *ngIf="loaded">
     <div #noContentView *ngIf="upcomingSessions.length === 0 && ongoingSessions.length === 0 && pastSessions.length === 0 && notApproved.length === 0"
       class="center" style="margin-top: 10%">
       <div class="lightText">
         You are not taking any sessions
         <br>
         <br> Start by signing up for a
-        <a color="default" [routerLink]="'/home/peers'">Session </a>
+        <a color="default" [routerLink]="'/home/peers'">session with any of these peers</a>
       </div>
     </div>
     <div *ngIf="upcomingSessions.length > 0 || ongoingSessions.length > 0">
@@ -36,18 +36,17 @@
                     </div>
                     <div class="collectionParticipantImageCarousel">
                       <div class="circle-thumb-big">
-                        <img src="{{envVariable.apiUrl+ session.collections[0].owners[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleLearningComponent.imgErrorHandler($event)">
+	                      <app-profile-popup [peer]="session.collections[0].owners[0]"></app-profile-popup>
                       </div>
                     </div>
                     <div class="teacherName">
-                      <span>{{session.collections[0].owners[0].profiles[0].first_name + ' ' + session.collections[0].owners[0].profiles[0].last_name}}
+                      <span>Session with {{session.collections[0].owners[0].profiles[0].first_name + ' ' + session.collections[0].owners[0].profiles[0].last_name}}
                       </span>
                     </div>
                     <div class="teacherHeadline">
                       <span>{{session.collections[0].owners[0].profiles[0].headline}} </span>
                     </div>
-                    <div class="collectionTitle">Session</div>
-                    <!-- <mat-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></mat-progress-bar> -->
+	                  <div class="collectionTitle">{{session.packages[0].duration}} minute session</div>
                     <p class="upcomingEventLabel">
                       On going
                     </p>
@@ -55,18 +54,16 @@
                       Started {{session.startTime |timeToNow}}
                     </div>
                     <div class="upcomingEventTime">
-                      {{session.startTime |extractTime:'Do MMM, HH:mm'}} - {{session.endTime |extractTime:'Do MMM, HH:mm'}}
+                      {{session.startTime |extractTime:'Do MMM, h:mm a'}} to {{session.endTime |extractTime:'h:mm a'}}
                     </div>
                   </mat-card-content>
                   <br>
                   <mat-card-footer class="cardFooter">
-                    <button mat-button (click)="joinLiveSession(session)">Join</button>
+                    <button mat-button (click)="joinLiveSession(session)" *ngIf="session.isPaidFor">Join</button>
+	                  <button mat-button (click)="makePayment(session)" class="mat-error" *ngIf="!session.isPaidFor">Payment Overdue</button>
                   </mat-card-footer>
                 </mat-card>
                 <mat-menu #ongoingCardMenu>
-                  <!-- <button mat-menu-item>
-                    Cancel
-                  </button> -->
                   <button *ngIf="session.collections" [routerLink]="'/profile/'+session.collections[0].owners[0].id" mat-menu-item>
                     Message Teacher
                   </button>
@@ -84,18 +81,17 @@
                     </div>
                     <div class="collectionParticipantImageCarousel">
                       <div class="circle-thumb-big">
-                        <img src="{{envVariable.apiUrl+session.collections[0].owners[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleLearningComponent.imgErrorHandler($event)">
+	                      <app-profile-popup [peer]="session.collections[0].owners[0]"></app-profile-popup>
                       </div>
                     </div>
                     <div class="teacherName">
-                      <span>{{session.collections[0].owners[0].profiles[0].first_name + ' ' + session.collections[0].owners[0].profiles[0].last_name}}
+                      <span>Session with {{session.collections[0].owners[0].profiles[0].first_name + ' ' + session.collections[0].owners[0].profiles[0].last_name}}
                       </span>
                     </div>
                     <div class="teacherHeadline">
-                      <span>{{session.collections[0].owners[0].profiles[0].headline}} </span>
+                      <span>{{session.collections[0].owners[0].profiles[0].headline}}</span>
                     </div>
-                    <div class="collectionTitle">Session</div>
-                    <!-- <mat-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></mat-progress-bar> -->
+	                  <div class="collectionTitle">{{session.packages[0].duration}} minute session</div>
                     <p class="upcomingEventLabel">
                       Upcoming
                     </p>
@@ -103,9 +99,16 @@
                       Starts {{session.startTime |timeToNow}}
                     </div>
                     <div class="upcomingEventTime">
-                      {{session.startTime |extractTime:'Do MMM, HH:mm'}} - {{session.endTime |extractTime:'Do MMM, HH:mm'}}
+                      {{session.startTime |extractTime:'Do MMM, h:mm a'}} to {{session.endTime |extractTime:'h:mm a'}}
                     </div>
                   </mat-card-content>
+	                <br>
+	                <mat-card-footer class="cardFooter">
+		                <button mat-button (click)="makePayment(session)" *ngIf="!session.isPaidFor && session.paymentPossible && session.pendingAmount !== 0">Pay {{session.pendingAmount | convertCurrency: session.pendingAmountCurrency | async}} in {{session.pendingPaymentTime}}</button>
+		                <button mat-button *ngIf="!session.isPaidFor && session.paymentPossible && session.pendingAmount == 0">Free Session Confirmed</button>
+		                <button mat-button class="mat-error" (click)="makePayment(session)" *ngIf="!session.isPaidFor && !session.paymentPossible">Payment of {{session.pendingAmount | convertCurrency: session.pendingAmountCurrency | async}} overdue</button>
+		                <button mat-button (click)="openTransactions()" *ngIf="session.isPaidFor">View Receipt</button>
+	                </mat-card-footer>
                 </mat-card>
                 <mat-menu #upcomingCardMenu>
                   <!-- <button mat-menu-item>
@@ -143,37 +146,30 @@
                   <span *ngIf="session.collections">
                     <div class="collectionParticipantImageCarousel">
                       <div class="circle-thumb-big">
-                        <img src="{{envVariable.apiUrl+session.collections[0].owners[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleLearningComponent.imgErrorHandler($event)">
+	                      <app-profile-popup style="margin-left: -15px;" [peer]="session.collections[0].owners[0]"></app-profile-popup>
                       </div>
                     </div>
                     <div class="teacherName">
-                      <span>{{session.collections[0].owners[0].profiles[0].first_name + ' ' + session.collections[0].owners[0].profiles[0].last_name}}
+                      <span>Session with {{session.collections[0].owners[0].profiles[0].first_name + ' ' + session.collections[0].owners[0].profiles[0].last_name}}
                       </span>
                     </div>
-                    <div class="teacherHeadline">
-                      <span>{{session.collections[0].owners[0].profiles[0].headline}} </span>
-                    </div>
-                  </span>
-                  <div class="collectionTitle">Session</div>
-                  <!-- <mat-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></mat-progress-bar> -->
-                  <p class="upcomingEventLabel">
-                    Unapproved
-                  </p>
-                  <div class="upcomingEventTime">
-                    Starting {{session.startTime | timeToNow}}
+	                  <div class="upcomingEventTime margin-top-30">
+                    {{session.startTime |extractTime:'Do MMM, h:mm a'}} to {{session.endTime |extractTime:'h:mm a'}}
                   </div>
+                  </span>
+                  <div class="collectionTitle margin-bottom-40" [ngClass]="{'mat-error': session.sessionIsRejected}">{{session.sessionIsRejected ? 'Rejected by teacher' : 'Awaiting teacher approval'}}</div>
                   <div class="upcomingEventTime">
-                    {{session.startTime |extractTime:'Do MMM, HH:mm'}} - {{session.endTime |extractTime:'Do MMM, HH:mm'}}
+                    Requested {{session.createdAt | timeToNow}}
                   </div>
                 </mat-card-content>
               </mat-card>
               <mat-menu #unapprovedCardMenu>
-                <!-- <button mat-menu-item>
-                      Cancel
-                    </button> -->
                 <button *ngIf="session.collections" [routerLink]="'/profile/'+session.collections[0].owners[0].id" mat-menu-item>
                   Message Teacher
                 </button>
+	              <button *ngIf="session.collections" (click)="cancelSessionRequest(session)" mat-menu-item>
+		              Cancel Request
+	              </button>
               </mat-menu>
             </div>
           </div>
@@ -181,7 +177,7 @@
 
       </div>
     </div>
-    <div *ngIf="pastSessions.length > 0">
+    <div *ngIf="pastSessions.length > 0" class="margin-top-30">
       <div style="display:inline;">
         <h2>Past</h2>
       </div>
@@ -200,18 +196,17 @@
                   </div>
                   <div class="collectionParticipantImageCarousel">
                     <div class="circle-thumb-big">
-                      <img src="{{envVariable.apiUrl+session.collections[0].owners[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="consoleLearningComponent.imgErrorHandler($event)">
+	                    <app-profile-popup [peer]="session.collections[0].owners[0]"></app-profile-popup>
                     </div>
                   </div>
                   <div class="teacherName">
-                    <span>{{session.collections[0].owners[0].profiles[0].first_name + ' ' + session.collections[0].owners[0].profiles[0].last_name}}
+                    <span>Session with {{session.collections[0].owners[0].profiles[0].first_name + ' ' + session.collections[0].owners[0].profiles[0].last_name}}
                     </span>
                   </div>
                   <div class="teacherHeadline">
-                    <span>{{session.collections[0].owners[0].profiles[0].headline}} </span>
+                    <span>{{session.collections[0].owners[0].profiles[0].headline | ucwords}} </span>
                   </div>
-                  <div class="collectionTitle">Session</div>
-                  <!-- <mat-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></mat-progress-bar> -->
+	                <div class="collectionTitle">{{session.packages[0].duration}} minute session @ {{session.packages[0].price | convertCurrency: session.packages[0].currency |async}}</div>
                   <p class="upcomingEventLabel">
                     Past
                   </p>
@@ -219,7 +214,7 @@
                     Ended {{session.endTime|timeToNow}}
                   </div>
                   <div class="upcomingEventTime">
-                    {{session.startTime |extractTime:'Do MMM, HH:mm'}} - {{session.endTime |extractTime:'Do MMM, HH:mm'}}
+                    {{session.startTime |extractTime:'Do MMM, h:mm a'}} to {{session.endTime |extractTime:'h:mm a'}}
                   </div>
                 </mat-card-content>
               </mat-card>

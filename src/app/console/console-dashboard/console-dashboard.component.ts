@@ -23,6 +23,7 @@ export class ConsoleDashboardComponent implements OnInit {
     public picture_url = false;
     public notifications = [];
     public notificationsLoaded = false;
+    public loadedTeachingSessions = false;
     public learningCollectionsLoaded = false;
     public profileLoaded = false;
     public collectionsLoaded = false;
@@ -50,6 +51,11 @@ export class ConsoleDashboardComponent implements OnInit {
     public liveLearningCollectionsObject: any;
     public upcomingLearningCollectionsObject: any;
     public learningCollections: Array<any> = [];
+    public pastTeachingSessions = [];
+    public upcomingTeachingSessions = [];
+    public ongoingTeachingSessions = [];
+    public notApprovedTeachingSessions = [];
+    public sessionEnabled = false;
 
     public totalTeachingRatingValue = 0;
     public totalTeachingRatingCount = 0;
@@ -102,6 +108,7 @@ export class ConsoleDashboardComponent implements OnInit {
         this.fetchOwnedCollections();
         this.fetchLearningCollections();
         this.fetchProfileData();
+        this.fetchTeachingSessions();
     }
 
     private fetchProfileData() {
@@ -124,7 +131,7 @@ export class ConsoleDashboardComponent implements OnInit {
                     });
                 }
                 if (this.totalLearningRatingCount > 0) {
-                    this.totalLearningRatingValue = this.totalLearningRatingValue / this.totalLearningRatingCount;
+					this.totalLearningRatingValue = Math.round((this.totalLearningRatingValue / this.totalLearningRatingValue) * 100) / 100;
                 } if (profiles[0].peer[0].topicsLearning) {
                     this.totalLearningTopicCount = profiles[0].peer[0].topicsLearning.length;
                 } if (profiles[0].peer[0].topicsTeaching) {
@@ -133,10 +140,86 @@ export class ConsoleDashboardComponent implements OnInit {
             }
         });
     }
+	
+	private fetchTeachingSessions() {
+    	this.loadedTeachingSessions = false;
+		const filter = {
+			'where': { 'type': 'session' },
+			'include': [
+				{
+					relation: 'contents',
+					scope: {
+						include: [
+							'availabilities',
+							{'peers': 'profiles'},
+							'packages',
+							'payments'
+						],
+						order: 'createdAt DESC'
+					},
+				},
+				{
+					relation: 'owners',
+					scope: {
+						include: {
+							relation: 'profiles'
+						}
+					}
+				}
+			]
+		};
+		this.pastTeachingSessions = [];
+		this.ongoingTeachingSessions = [];
+		this.upcomingTeachingSessions = [];
+		this.notApprovedTeachingSessions = [];
+		this._collectionService.getOwnedCollections(this.userId, JSON.stringify(filter), (err, res) => {
+			if (res[0]) {
+				this.sessionEnabled = true;
+				this.filterSessions(res[0].contents);
+			}
+			this.loadedTeachingSessions = true;
+		});
+	}
+	
+	private filterSessions(contents: Array<any>) {
+		contents.forEach(sessionInstance => {
+			if (sessionInstance.availabilities && sessionInstance.availabilities.length > 0 && sessionInstance.packages && sessionInstance.packages.length > 0) {
+				const availabilities = sessionInstance.availabilities.sort((calEventa, calEventb) => (moment(calEventa.startDateTime).isAfter(moment(calEventb.startDateTime)) ? 1 : -1));
+				const startTime = moment(availabilities[0].startDateTime).local();
+				const endTime = moment(availabilities[availabilities.length - 1].startDateTime).local().add(60, 'minutes');
+				const now = moment();
+				sessionInstance.isPaidFor = false;
+				if (sessionInstance.payments && sessionInstance.payments.length > 0) {
+					let paidAmount = 0;
+					sessionInstance.payments.forEach(payment => {
+						paidAmount += payment.amount;
+					});
+					if (paidAmount >= sessionInstance.packages[0].price) {
+						sessionInstance.isPaidFor = true;
+					}
+				}
+				sessionInstance.startTime = startTime.toDate();
+				sessionInstance.endTime = endTime.toDate();
+				if (sessionInstance.sessionIsApproved) {
+					if (now.isBetween(startTime, endTime)) {
+						this.ongoingTeachingSessions.push(sessionInstance);
+					} else if (now.isBefore(startTime)) {
+						this.upcomingTeachingSessions.push(sessionInstance);
+					} else {
+						this.pastTeachingSessions.push(sessionInstance);
+					}
+				} else if (sessionInstance.sessionIsRejected) {
+					console.log('Found rejected session');
+				} else {
+					this.notApprovedTeachingSessions.push(sessionInstance);
+				}
+			}
+		});
+	}
 
     private fetchNotifications() {
         this._notificationService.getNotifications(this.userId,
-            '{"include": [{"actor":"profiles"}, "collection"], "order": "createdAt DESC" }',
+			'{"include": [{"actor":"profiles"}, "collection", {"content": ["packages", "availabilities", "payments"]}], "order": "createdAt DESC" }',
             (err, result) => {
                 if (err) {
                     console.log(err);
@@ -154,7 +237,7 @@ export class ConsoleDashboardComponent implements OnInit {
     private fetchOwnedCollections() {
         this._collectionService.getOwnedCollections(this.userId,
             '{"include": ["calendars", {"owners": "reviewsAboutYou"}, {"participants": ["reviewsAboutYou", ' +
-            '"ownedCollections", "profiles"]}, "topics", "views", {"contents":"schedules"}] }', (err, result) => {
+            '"ownedCollections", "profiles"]}, "topics", "views", {"contents":"schedules"}], "where": {"type" : {"neq": "session"}} }', (err, result) => {
                 if (err) {
                     console.log(err);
                 } else {
@@ -361,16 +444,20 @@ export class ConsoleDashboardComponent implements OnInit {
     }
 
     public getNotificationText(notification) {
-        const replacements = {
-            '%username%': '<b>' + this.ucwords.transform(notification.actor[0].profiles[0].first_name)
-                + ' ' + this.ucwords.transform(notification.actor[0].profiles[0].last_name) + '</b>',
-            '%collectionTitle%': (notification.collection !== undefined && notification.collection.length > 0)
-                ? this.ucwords.transform(notification.collection[0].title) : '***',
-            '%collectionName%': (notification.collection !== undefined && notification.collection.length > 0)
-                ? '<b>' + this.ucwords.transform(notification.collection[0].title) + '</b>' : '***',
-            '%collectionType%': (notification.collection !== undefined && notification.collection.length > 0)
-                ? this.ucwords.transform(notification.collection[0].type) : '***'
-        },
+		const replacements = {
+				'%username%': '<b>' + this.ucwords.transform(notification.actor[0].profiles[0].first_name) + ' '
+				+ this.ucwords.transform(notification.actor[0].profiles[0].last_name) + '</b>',
+				'%collectionTitle%': (notification.collection !== undefined && notification.collection.length > 0) ?
+					this.ucwords.transform(notification.collection[0].title) : '***',
+				'%collectionName%': (notification.collection !== undefined && notification.collection.length > 0) ?
+					'<b>' + this.ucwords.transform(notification.collection[0].title) + '</b>' : '***',
+				'%collectionType%': (notification.collection !== undefined && notification.collection.length > 0) ?
+					this.ucwords.transform(notification.collection[0].type) : '***',
+				'%sessionDate%': (notification.content !== undefined && notification.content.length > 0) ?
+					'<b>' + moment(notification.content[0].availabilities[0].startDateTime).format('Do MMM') + '</b>' : '***',
+				'%sessionHours%': (notification.content !== undefined && notification.content.length > 0) ?
+					'<b>' + parseInt(notification.content[0].packages[0].duration, 10) / 60 + ' hours</b>' : '***'
+			},
             str = notification.description;
 
         return str.replace(/%\w+%/g, function (all) {
@@ -663,5 +750,17 @@ export class ConsoleDashboardComponent implements OnInit {
         this.learningCollections = _.union(this.ongoingLearningArray, this.upcomingLearningArray, this.pastLearningArray);
 
     }
+	
+	public approveSession(session: any) {
+		this._collectionService.approveSessionJoinRequest(session.id).subscribe(res => {
+			this.fetchTeachingSessions();
+		});
+	}
+	
+	public rejectSession(session: any) {
+		this._collectionService.rejectSessionJoinRequest(session.id).subscribe(res => {
+			this.fetchTeachingSessions();
+		});
+	}
 
 }

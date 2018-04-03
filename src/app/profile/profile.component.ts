@@ -65,9 +65,11 @@ export class ProfileComponent implements OnInit {
   public pastExperiences: Array<any>;
   public ongoingExperiences: Array<any>;
   public upcomingExperiences: Array<any>;
-  public availablePackages: Array<any>;
+  public availablePaidPackages: Array<any>;
+  public availableTrialPackages: Array<any>;
   public maxLength = 140;
   public learningJourneyFilter: string;
+  public sessionId;
 
   constructor(
     public _profileService: ProfileService,
@@ -285,7 +287,8 @@ export class ProfileComponent implements OnInit {
     this.pastExperiences = [];
     this.upcomingExperiences = [];
     this.ongoingExperiences = [];
-    this.availablePackages = [];
+    this.availablePaidPackages = [];
+  	this.availableTrialPackages = [];
     this.profileObj.peer['0'].ownedCollections.forEach(collection => {
       if (collection.status === 'active') {
         collection.totalDuration = this.calculateTotalHours(collection);
@@ -310,8 +313,13 @@ export class ProfileComponent implements OnInit {
           this.ongoingExperiences.push(collection);
         }
         if (collection.type === 'session') {
+        	this.sessionId = collection.id;
           collection.packages.forEach(packageObj => {
-            this.availablePackages.push(packageObj);
+          	if (packageObj.type === 'paid') {
+				this.availablePaidPackages.push(packageObj);
+			} else {
+          		this.availableTrialPackages.push(packageObj);
+			}
           });
         }
       }
@@ -500,5 +508,12 @@ type:string,title:string,collecions   */
   public bookSession() {
     this.router.navigateByUrl('/session/book/' + this.urluserId);
   }
+	
+	/**
+	 * OPen session wizard to update availability
+	 */
+	public updateAvailability() {
+		this.router.navigateByUrl('/session/' + this.sessionId + '/edit/10');
+	}
 
 }

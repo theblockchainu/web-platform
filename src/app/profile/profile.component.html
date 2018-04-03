@@ -357,8 +357,50 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="mat-title" style="padding-left: 5px;">Teaching Journey</div>
-                    <mat-tab-group disableRipple class="noJustify">
-                        <!-- <mat-tab label="Workshops" style="padding-left: 0px !important; min-width: min-content !important;">
+                    <mat-tab-group disableRipple class="noJustify" [selectedIndex]="0">
+	                    <mat-tab label="Sessions" style="min-width: min-content !important;">
+		                    <div class="row" style="padding-left: 5px;">
+			                    <div *ngIf="availableTrialPackages.length > 0">
+				                    <div class="col-md-12 mat-subheading-2 margin-top-20">
+					                    Trial
+				                    </div>
+				                    <div *ngFor="let package of availableTrialPackages ; let i=index">
+					                    <div class="col-md-12 margin-top-10">
+						                    <div>Online session of {{package.duration}} minutes</div>
+						                    <div class="mat-caption" style="text-align: justify">{{package.price | convertCurrency: package.currency |async}}</div>
+					                    </div>
+				                    </div>
+			                    </div>
+			                    <hr *ngIf="availablePaidPackages.length > 0 && availableTrialPackages.length > 0">
+			                    <div *ngIf="availablePaidPackages.length > 0">
+				                    <div class="col-md-12 mat-subheading-2 margin-top-20">
+					                    Paid Packages
+				                    </div>
+				                    <div *ngFor="let package of availablePaidPackages ; let i=index">
+					                    <div class="col-md-12 margin-top-10">
+						                    <div>Online session of {{package.duration}} minutes</div>
+						                    <div class="mat-caption" style="text-align: justify">{{package.price | convertCurrency: package.currency |async}}</div>
+					                    </div>
+				                    </div>
+			                    </div>
+			                    <div class="col-md-12 margin-top-10  margin-bottom-20" *ngIf="(availablePaidPackages.length>0 || availableTrialPackages.length > 0) && urluserId !== cookieUserId">
+				                    <hr>
+				                    <a class="clickable" (click)="bookSession()">Book A Session</a>
+				                    <hr>
+			                    </div>
+			                    <div class="col-md-12 margin-top-10  margin-bottom-20" *ngIf="(availablePaidPackages.length>0 || availableTrialPackages.length > 0) && urluserId === cookieUserId">
+				                    <hr>
+				                    <a class="clickable" (click)="updateAvailability()">Update availability hours</a>
+				                    <hr>
+			                    </div>
+			                    <div *ngIf="availablePaidPackages.length === 0 && availableTrialPackages.length === 0">
+				                    <div class="col-md-12 emptySectionText lightText margin-top-30" style="padding-left: 15px;">
+					                    <span>{{profileObj.first_name | ucwords}}'s profile has not yet been approved for peer sessions</span>
+				                    </div>
+			                    </div>
+		                    </div>
+	                    </mat-tab>
+	                    <!-- <mat-tab label="Workshops" style="padding-left: 0px !important; min-width: min-content !important;">
                             <div class="row" style="padding-left: 5px;">
                                 <div *ngIf="upcomingWorkshops.length>0">
                                     <div class="col-md-12 mat-subheading-2 margin-top-20">
@@ -542,47 +584,6 @@
                                         <span>{{profileObj.first_name | ucwords}} has not started his teaching journey on Peerbuds</span>
                                     </div>
                                 </div>
-                            </div>
-                        </mat-tab>
-                         <mat-tab label="Sessions" style="min-width: min-content !important;">
-                            <div class="row" style="padding-left: 5px;">
-                                <div *ngIf="availablePackages.length>0">
-                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
-                                        Packages ({{availablePackages.length}})
-                                    </div>
-                                    <div *ngFor="let collectionObj of availablePackages ; let i=index">
-                                        <div class="col-md-12 margin-top-10" *ngIf="i<2">
-                                            <a style="color:rgba(0,0,0,0.87)">
-                                                <div class="col-md-3 padding-left-0">
-                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <div class="col-md-12">
-                                                        <b>{{collectionObj.duration}} mins</b>
-                                                    </div>
-                                                    <div class="col-md-12" style="min-height:55px">
-                                                        <p style="text-align: justify">{{collectionObj.price | convertCurrency: collectionObj.currency |async}}</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 margin-top-10  margin-bottom-20 center">
-                                        <hr>
-                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="bookSession()">Book Session</a>
-                                        <hr>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 margin-top-10  margin-bottom-20" *ngIf="availablePackages.length > 0">
-                                    <hr>
-                                    <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="bookSession()">Book Session</a>
-                                    <hr>
-                                </div>
-	                            <div *ngIf="availablePackages.length === 0">
-		                            <div class="col-md-12 emptySectionText lightText" style="padding-left: 15px;">
-			                            <span>{{profileObj.first_name | ucwords}} has not setup their availability calendar yet</span>
-		                            </div>
-	                            </div>
                             </div>
                         </mat-tab>
                     </mat-tab-group>

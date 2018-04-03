@@ -27,10 +27,67 @@
       </div>
       <hr style="margin-top: 30px;">
     </div>
+	  <!--PENDING SESSION REQUESTS-->
+	  <div class="pendingSessionRequest margin-bottom-40" *ngIf="notApprovedTeachingSessions.length > 0">
+		  <div class="mat-body-2">
+			  Pending Requests ({{notApprovedTeachingSessions.length}})
+		  </div>
+		  <div class="row margin-top-20">
+			  <div *ngFor="let session of notApprovedTeachingSessions; let i = index;">
+				  <div *ngIf="i < 3" class="col-md-4" style="margin-top: 20px;">
+					  <mat-card style="text-align: center; padding: 20px;">
+						  <mat-card-content>
+							  <div style="text-align: right">
+								  <div class="pull-right">
+									  <a [matMenuTriggerFor]="notApprovedCardMenu" style="text-align: right; padding: 0px">
+										  <mat-icon>more_vert</mat-icon>
+									  </a>
+								  </div>
+							  </div>
+							  <div class="collectionParticipantImageCarousel">
+								  <div class="circle-thumb-big">
+									  <app-profile-popup style="margin-left: -15px;" [peer]="session.peers[0]"></app-profile-popup>
+								  </div>
+							  </div>
+							  <div class="teacherName">
+                                        <span>Session with {{session.peers[0].profiles[0].first_name + ' ' + session.peers[0].profiles[0].last_name}}
+                                        </span>
+							  </div>
+							  <p class="upcomingEventLabel">
+								  New request
+							  </p>
+							  <div class="upcomingEventTime">
+								  Requested {{session.createdAt | timeToNow}}
+							  </div>
+							  <div class="upcomingEventTime">
+								  {{session.startTime |extractTime:'Do MMM, h:mm a'}} to {{session.endTime |extractTime:'h:mm a'}}
+							  </div>
+						  </mat-card-content>
+						  <mat-card-footer class="cardFooter">
+							  <button mat-button (click)="approveSession(session)">Approve</button>
+							  <button mat-button (click)="rejectSession(session)">Reject</button>
+						  </mat-card-footer>
+					  </mat-card>
+					  <mat-menu #notApprovedCardMenu>
+						  <button mat-menu-item>
+							  View Peer Profile
+						  </button>
+						  <button mat-menu-item>
+							  Message Peer
+						  </button>
+					  </mat-menu>
+				  </div>
+			  </div>
+		  </div>
+		  <div class="text-center margin-top-20">
+			  <button mat-button class="mat-border-button center margin-top-20" [routerLink]="['/console/teaching/sessions']">View all</button>
+		  </div>
+		  <hr style="margin-top: 30px;">
+	  </div>
     <!--UPCOMING LEARNING EVENT-->
     <div class="upcomingLearningEvent margin-bottom-40" *ngIf="learningCollections.length > 0 && (ongoingLearningArray.length > 0 || upcomingLearningArray.length > 0)">
       <div class="mat-body-2">
-        Upcoming learning events ({{ongoingLearningArray.length + upcomingLearningArray.length}})
+        Ongoing + Upcoming learning events ({{ongoingLearningArray.length + upcomingLearningArray.length}})
       </div>
       <div class="row margin-top-20">
         <div *ngFor="let collection of ongoingLearningArray" [ngSwitch]="collection.status">
@@ -273,7 +330,7 @@
     <!--UPCOMING TEACHING EVENT-->
     <div class="upcomingTeachingEvent margin-bottom-40" *ngIf="collections.length > 0 && (ongoingArray.length > 0 || upcomingArray.length > 0)">
       <div class="mat-body-2">
-        Upcoming teaching events ({{ongoingArray.length + upcomingArray.length}})
+        Ongoing & Upcoming teaching events ({{ongoingArray.length + upcomingArray.length}})
       </div>
       <div class="row margin-top-20">
         <div *ngFor="let collection of ongoingArray" class="col-md-5" style="margin-top: 20px;">

@@ -15,7 +15,7 @@ const routes: Routes = [
       {
         path: ':collectionId/edit/:step',
         component: ExperienceEditComponent,
-        canActivateChild: [AuthGuardService]
+        canActivate: [AuthGuardService]
       }
 
     ]

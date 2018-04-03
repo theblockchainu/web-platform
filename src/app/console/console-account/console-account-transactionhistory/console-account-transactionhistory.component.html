@@ -1,182 +1,192 @@
 <div class="row">
-  <div class="col-md-12">
-    <div *ngIf="loadingTransactions" class="loading-container">
-      <ngx-loading [show]="true"></ngx-loading>
-    </div>
-  </div>
+	<div class="col-md-12">
+		<div *ngIf="loadingTransactions" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
 </div>
 <div class="row" *ngIf="!loadingTransactions">
-  <div class="col-md-12">
-    <div class="row">
-      <div>
-        <div style="margin-top:20px;" class="col-md-10">
-          <div class="row" style="margin-right: 15px;">
-            <mat-tab-group disableRipple>
-              <mat-tab label="Completed Transactions">
-                <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
-                  Here you will see all the transactions that were either paid out to your account we have on record or is scheduled to be
-                  paid out on completion of your workshop, experience or session.
-                </div>
-                <h2> Balance : {{totalTransactions | currency: userCurrency: true:'1.0-0'}} </h2>
-                <!-- <a href="#" class="pull-right"> Export to CSV</a> -->
-                <br>
-                <hr>
-                <form [formGroup]="filterForm">
-                  <div class="row">
-                    <div class="col-sm-12">
-                        <mat-form-field>
-                      <mat-select placeholder="Payout Method" formControlName="payout_method">
-                        <mat-option *ngFor="let pm of payment_methods" [value]="pm">
-                          {{ pm }}
-                        </mat-option>
-                      </mat-select>
-                        </mat-form-field>
-                      <mat-form-field>
-                        <input matInput type="text" formControlName="content" placeholder="Content">
-                      </mat-form-field>
-                        <mat-form-field>
-                      <mat-select placeholder="Year" formControlName="year">
-                        <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
-                      </mat-select>
-                        </mat-form-field>
-                        <mat-form-field>
-                      <mat-select placeholder="From Month" formControlName="fromMonth">
-                        <mat-option *ngFor="let month of months;  let idx = index" [value]="idx+1">{{month}}</mat-option>
-                      </mat-select>
-                        </mat-form-field>
-                        <mat-form-field>
-                      <mat-select placeholder="To Month" formControlName="toMonth">
-                        <mat-option *ngFor="let month of months;  let idx = index" [value]="idx+1">{{month}}</mat-option>
-                      </mat-select>
-                        </mat-form-field>
-                    </div>
-                  </div>
-                </form>
+	<div class="col-md-12">
+		<div class="row">
+			<div>
+				<div style="margin-top:20px;" class="col-md-10">
+					<div class="row" style="margin-right: 15px;">
+						<mat-tab-group disableRipple>
+							<mat-tab label="Completed Transactions">
+								<div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
+									Here you will see all the transactions that were either paid out to your account we have on record or is scheduled to be
+									paid out on completion of your workshop, experience or session.
+								</div>
+								<h2 *ngIf="totalTransactions >= 0"> Balance : {{totalTransactions | currency: userCurrency: true:'1.0-0'}} </h2>
+								<h2 *ngIf="totalTransactions < 0" class="mat-error"> Balance : {{makeAbsolute(totalTransactions) | currency: userCurrency: true:'1.0-0'}} </h2>
+								<!-- <a href="#" class="pull-right"> Export to CSV</a> -->
+								<br>
+								<hr>
+								<form [formGroup]="filterForm">
+									<div class="row">
+										<div class="col-sm-12">
+											<mat-form-field style="width: 19%">
+												<mat-select placeholder="Payout Method" formControlName="payout_method">
+													<mat-option *ngFor="let pm of payment_methods" [value]="pm">
+														{{ pm }}
+													</mat-option>
+												</mat-select>
+											</mat-form-field>
+											<mat-form-field style="width: 19%">
+												<input matInput type="text" formControlName="content" placeholder="Content">
+											</mat-form-field>
+											<mat-form-field style="width: 19%">
+												<mat-select placeholder="Year" formControlName="year">
+													<mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+												</mat-select>
+											</mat-form-field>
+											<mat-form-field style="width: 19%">
+												<mat-select placeholder="From Month" formControlName="fromMonth">
+													<mat-option *ngFor="let month of months;  let idx = index" [value]="idx+1">{{month}}</mat-option>
+												</mat-select>
+											</mat-form-field>
+											<mat-form-field style="width: 19%">
+												<mat-select placeholder="To Month" formControlName="toMonth">
+													<mat-option *ngFor="let month of months;  let idx = index" [value]="idx+1">{{month}}</mat-option>
+												</mat-select>
+											</mat-form-field>
+										</div>
+									</div>
+								</form>
 
-                <hr style="border-top: 3px solid #eeeeee;">
-                <div class="row table-header">
-                  <div class="col-md-2">
-                    <h3>Date</h3>
-                  </div>
-                  <div class="col-md-2">
-                    <h3>Type</h3>
-                  </div>
-                  <div class="col-md-4">
-                    <h3>Details</h3>
-                  </div>
-                  <div class="col-md-2">
-                    <h3>Amount</h3>
-                  </div>
-                  <div class="col-md-2">
-                    <h3>Paid Out</h3>
-                  </div>
-                </div>
-                <div class="row table-data">
-                  <div class="col-md-12">
-                    <div class="row text-center" *ngIf="!transactions || transactions.length===0 " style="padding-top: 10px; padding-bottom: 10px;">
-                      <span class="lightText">
-                        Not made any transactions
-                      </span>
-                    </div>
-                    <div class="row" *ngFor="let transaction of transactions" style="padding-top: 10px; padding-bottom: 10px;">
-                      <div class="col-md-2">{{transaction.modified | extractTime:'D/M/YY'}}</div>
-                      <div class="col-md-2">Payment</div>
-                      <div class="col-md-4">
-                        <span *ngIf="transaction.collections && transaction.collections.length>0">{{transaction.collections[0].title | titlecase}} - {{transaction.collections[0].type | ucfirst}}</span>
-                        <span *ngIf="!transaction.collections || transaction.collections.length<=0">{{transaction.description | ucfirst}}</span>
-                      </div>
-                      <div class="col-md-2">{{transaction.amount / 100 | convertCurrency: transaction.currency | async}}</div>
-                      <div class="col-md-2"></div>
-                    </div>
-                  </div>
-                </div>
-              </mat-tab>
-              <mat-tab label="Future Transactions">
-                <div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
-                  Here you will see all the transactions that were either paid out to your account we have on record or is scheduled to be
-                  paid out on completion of your workshop, experience or session.
-                </div>
-                <h2> Booked : {{totalFutureTransactions | currency: userCurrency: true:'1.0-0'}} </h2>
-                <!-- <a href="#" class="pull-right"> Export to CSV</a> -->
-                <br>
-                <hr>
-                <form [formGroup]="filterFutureForm">
-                  <div class="row">
-                    <div class="col-sm-12">
-                        <mat-form-field>
-                      <mat-select placeholder="Payout Method" formControlName="payout_method" >
-                        <mat-option *ngFor="let pm of payment_methods" [value]="pm">
-                          {{ pm }}
-                        </mat-option>
-                      </mat-select>
-                        </mat-form-field>
-                      <mat-form-field>
-                        <input matInput type="text" formControlName="content" placeholder="Content">
-                      </mat-form-field>
-                        <mat-form-field>
-                      <mat-select placeholder="Year" formControlName="year" >
-                        <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
-                      </mat-select>
-                        </mat-form-field>
-                        <mat-form-field>
-                      <mat-select placeholder="From Month" formControlName="fromMonth" >
-                        <mat-option *ngFor="let month of months;  let idx = index" [value]="idx+1">{{month}}</mat-option>
-                      </mat-select>
-                        </mat-form-field>
-                        <mat-form-field>
-                      <mat-select placeholder="To Month" formControlName="toMonth">
-                        <mat-option *ngFor="let month of months;  let idx = index" [value]="idx+1">{{month}}</mat-option>
-                      </mat-select>
-                        </mat-form-field>
-                    </div>
-                  </div>
-                </form>
-                <hr style="border-top: 3px solid #eeeeee;">
-                <div class="row table-header">
-                  <div class="col-md-2">
-                    <h3>Date</h3>
-                  </div>
-                  <div class="col-md-2">
-                    <h3>Type</h3>
-                  </div>
-                  <div class="col-md-4">
-                    <h3>Details</h3>
-                  </div>
-                  <div class="col-md-2">
-                    <h3>Collected</h3>
-                  </div>
-                  <div class="col-md-2">
-                    <h3>Paid Out</h3>
-                  </div>
-                </div>
-                <div class="row table-data">
-                  <div class="col-md-12">
-                    <div class="row text-center" *ngIf="!futureTransactions || futureTransactions.length===0 " style="padding-top: 10px; padding-bottom: 10px;">
-                      <span class="lightText">
-                        No upcoming transactions
-                      </span>
-
-                    </div>
-                    <div class="row" *ngFor="let transaction of futureTransactions" style="padding-top: 10px; padding-bottom: 10px;">
-                      <div class="col-md-2">{{transaction.modified | extractTime:'DD/M/YY'}}</div>
-                      <div class="col-md-2">Payment</div>
-                      <div class="col-md-4">
-                        <span *ngIf="transaction.peers && transaction.peers.length>0 && transaction.peers[0].profiles && transaction.peers[0].profiles.length>0">
-                          {{transaction.peers[0].profiles[0].first_name}} {{transaction.peers[0].profiles[0].last_name}} -
-                          {{transaction.collections[0].title | titlecase}} - {{transaction.collections[0].type | ucfirst}}
-                        </span>
-                        <span *ngIf="!transaction.peers || transaction.peers.length<=0">{{transaction.description | ucfirst}}</span>
-                      </div>
-                      <div class="col-md-2">{{transaction.amount / 100 | convertCurrency: transaction.currency | async}}</div>
-                      <div class="col-md-2"></div>
-                    </div>
-                  </div>
-                </div>
-              </mat-tab>
-            </mat-tab-group>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+								<hr style="border-top: 3px solid #eeeeee;">
+								<div class="row table-header">
+									<div class="col-md-2">
+										<h3>Date</h3>
+									</div>
+									<div class="col-md-2">
+										<h3>Type</h3>
+									</div>
+									<div class="col-md-4">
+										<h3>Details</h3>
+									</div>
+									<div class="col-md-2">
+										<h3>Amount</h3>
+									</div>
+									<div class="col-md-2">
+										<h3>Paid Out</h3>
+									</div>
+								</div>
+								<div class="row table-data">
+									<div class="col-md-12">
+										<div class="row text-center" *ngIf="!transactions || transactions.length===0 " style="padding-top: 10px; padding-bottom: 10px;">
+											<span class="lightText">
+												Not made any transactions
+											</span>
+										</div>
+										<div class="row" *ngFor="let transaction of transactions" style="padding-top: 10px; padding-bottom: 10px;">
+											<div class="col-md-2">{{transaction.modified | extractTime:'D/M/YY'}}</div>
+											<div class="col-md-2">Payment</div>
+											<div class="col-md-4">
+												<span *ngIf="transaction.collections && transaction.collections.length>0">{{transaction.collections[0].title | titlecase}} - {{transaction.collections[0].type | ucfirst}}</span>
+												<span *ngIf="transaction.contents && transaction.contents.length>0">{{transaction.contents[0].title | ucwords}}
+													<span *ngIf="transaction.contents[0].collections && transaction.contents[0].collections.length > 0">
+														with {{transaction.contents[0].collections[0].owners[0].profiles[0].first_name}} {{transaction.contents[0].collections[0].owners[0].profiles[0].last_name}}
+													</span>
+												</span>
+												<span *ngIf="(!transaction.collections || transaction.collections.length<=0) && (!transaction.contents || transaction.contents.length<=0)">{{transaction.description | ucfirst}}</span>
+											</div>
+											<div class="col-md-2">{{transaction.amount / 100 | convertCurrency: transaction.currency | async}}</div>
+											<div class="col-md-2"></div>
+										</div>
+									</div>
+								</div>
+							</mat-tab>
+							<mat-tab label="Future Transactions">
+								<div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
+									Here you will see all the transactions that were either paid out to your account we have on record or is scheduled to be
+									paid out on completion of your workshop, experience or session.
+								</div>
+								<h2> Booked : {{totalFutureTransactions | currency: userCurrency: true:'1.0-0'}} </h2>
+								<!-- <a href="#" class="pull-right"> Export to CSV</a> -->
+								<br>
+								<hr>
+								<form [formGroup]="filterFutureForm">
+									<div class="row">
+										<div class="col-sm-12">
+											<mat-form-field style="width: 19%">
+												<mat-select placeholder="Payout Method" formControlName="payout_method" >
+													<mat-option *ngFor="let pm of payment_methods" [value]="pm">
+														{{ pm }}
+													</mat-option>
+												</mat-select>
+											</mat-form-field>
+											<mat-form-field style="width: 19%">
+												<input matInput type="text" formControlName="content" placeholder="Content">
+											</mat-form-field>
+											<mat-form-field style="width: 19%">
+												<mat-select placeholder="Year" formControlName="year" >
+													<mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+												</mat-select>
+											</mat-form-field>
+											<mat-form-field style="width: 19%">
+												<mat-select placeholder="From Month" formControlName="fromMonth" >
+													<mat-option *ngFor="let month of months;  let idx = index" [value]="idx+1">{{month}}</mat-option>
+												</mat-select>
+											</mat-form-field>
+											<mat-form-field style="width: 19%">
+												<mat-select placeholder="To Month" formControlName="toMonth">
+													<mat-option *ngFor="let month of months;  let idx = index" [value]="idx+1">{{month}}</mat-option>
+												</mat-select>
+											</mat-form-field>
+										</div>
+									</div>
+								</form>
+								<hr style="border-top: 3px solid #eeeeee;">
+								<div class="row table-header">
+									<div class="col-md-2">
+										<h3>Date</h3>
+									</div>
+									<div class="col-md-2">
+										<h3>Type</h3>
+									</div>
+									<div class="col-md-4">
+										<h3>Details</h3>
+									</div>
+									<div class="col-md-2">
+										<h3>Collected</h3>
+									</div>
+									<div class="col-md-2">
+										<h3>Paid Out</h3>
+									</div>
+								</div>
+								<div class="row table-data">
+									<div class="col-md-12">
+										<div class="row text-center" *ngIf="!retrievedFutureTransactions || retrievedFutureTransactions.length===0 " style="padding-top: 10px; padding-bottom: 10px;">
+                                        <span class="lightText">
+	                                        No upcoming transactions
+                                        </span>
+										</div>
+										<div class="row" *ngFor="let transaction of retrievedFutureTransactions" style="padding-top: 10px; padding-bottom: 10px;">
+											<div class="col-md-2">{{transaction.modified | extractTime:'DD/M/YY'}}</div>
+											<div class="col-md-2">Payment</div>
+											<div class="col-md-4">
+												<span *ngIf="transaction.peers && transaction.peers.length>0 && transaction.peers[0].profiles && transaction.peers[0].profiles.length>0">
+													{{transaction.peers[0].profiles[0].first_name}} {{transaction.peers[0].profiles[0].last_name}} -
+													<span *ngIf="transaction.collections && transaction.collections.length > 0">
+														{{transaction.collections[0].title | titlecase}} - {{transaction.collections[0].type | ucfirst}}
+													</span>
+													<span *ngIf="transaction.contents && transaction.contents.length > 0">
+														{{transaction.contents[0].title | titlecase}}
+													</span>
+												</span>
+												<span *ngIf="!transaction.peers || transaction.peers.length<=0">{{transaction.description | ucfirst}}</span>
+											</div>
+											<div class="col-md-2">{{transaction.amount / 100 | convertCurrency: transaction.currency | async}}</div>
+											<div class="col-md-2"></div>
+										</div>
+									</div>
+								</div>
+							</mat-tab>
+						</mat-tab-group>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
