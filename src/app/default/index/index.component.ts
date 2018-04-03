@@ -40,19 +40,19 @@ export class IndexComponent implements OnInit {
     this.isLoggedIn = authenticationService.isLoggedIn();
     authenticationService.isLoggedIn().subscribe((res) => {
       this.loggedIn = res;
-      // if (this.loggedIn) {
-      //   this._router.navigate(['home', 'homefeed']);
-      // }
-    });
-    _activatedRoute.url.subscribe(res => {
-      if (res[0] && res[0].path === 'login') {
-        if (!this.loggedIn) {
-          this.dialogsService.openLogin().subscribe();
-        } else {
-          // this._router.navigate(['home', 'homefeed']);
-        }
+      if (this.loggedIn) {
+        this._router.navigate(['home', 'homefeed']);
       }
     });
+    // _activatedRoute.url.subscribe(res => {
+    //   if (res[0] && res[0].path === 'login') {
+    //     if (!this.loggedIn) {
+    //       this.dialogsService.openLogin().subscribe();
+    //     } else {
+    //       // this._router.navigate(['home', 'homefeed']);
+    //     }
+    //   }
+    // });
   }
   ngOnInit() {
     this.loadingHome = false;
