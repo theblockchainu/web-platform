@@ -293,9 +293,6 @@ div.event span:first-child {
     padding-top: 5px !important;
 }
 
-.editCalendar .calendar {
-    overflow-y: scroll;
-}
 
 .right-border {
     border-right: 1px solid #888686;
@@ -321,7 +318,14 @@ div.event span:first-child {
 }
 
 .rightContent {
-   overflow-y: scroll;
-   height: 500px !important;
+   height: 520px !important;
 }
 
+.leftContent{
+    overflow-y: scroll;
+    height: 500px !important;
+}
+
+.button-bar{
+    padding-top: 15px;
+}
