@@ -38,15 +38,18 @@ const routes: Routes = [{
   children: [
     {
       path: 'dashboard',
-      component: ConsoleDashboardComponent
+      component: ConsoleDashboardComponent,
+		canActivate: [AuthGuardService]
     },
     {
       path: 'inbox',
-      component: ConsoleInboxComponent
+      component: ConsoleInboxComponent,
+		canActivate: [AuthGuardService]
     },
     {
       path: 'learning',
       component: ConsoleLearningComponent,
+		canActivate: [AuthGuardService],
       children: [
         {
           path: 'all',
@@ -77,6 +80,7 @@ const routes: Routes = [{
     {
       path: 'teaching',
       component: ConsoleTeachingComponent,
+		canActivate: [AuthGuardService],
       children: [
         {
           path: 'all',
@@ -103,6 +107,7 @@ const routes: Routes = [{
     {
       path: 'profile',
       component: ConsoleProfileComponent,
+		canActivate: [AuthGuardService],
       children: [
         {
           path: 'edit',
@@ -133,6 +138,7 @@ const routes: Routes = [{
     {
       path: 'account',
       component: ConsoleAccountComponent,
+		canActivate: [AuthGuardService],
       children: [
         {
           path: 'notifications',
@@ -170,6 +176,7 @@ const routes: Routes = [{
     },
     {
       path: 'admin',
+		canActivate: [AuthGuardService],
       component: ConsoleAdminComponent
     }
   ]

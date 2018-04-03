@@ -30,7 +30,7 @@
                     <div class="topic-name pull-left mat-body-2">
                       <span>{{topic['name'] | titlecase}}</span>
                     </div>
-                    <i class="mati mati-close-circle matiIcon pull-right darkColor alignDelete" (click)="unfollowTopic('learning', topic)" style="cursor: pointer;"></i>
+                    <i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="unfollowTopic('learning', topic)" style="cursor: pointer;"></i>
                   </div>
                 </div>
               </div>
@@ -52,9 +52,9 @@
                   <div class="topic-name col-md-8 padding-left-0">
                     <span class="col-md-9 padding-left-0 mat-body-2">{{topic.name |titlecase}}</span>
                   </div>
-                  <i [ngClass]="{'mati mati-content-save matiIcon darkColor pull-left alignDelete':true, 'disabledSpan': (!f.form.controls.experience?.dirty && !f.form.controls.experience?.touched) }"
+                  <i [ngClass]="{'mdi mdi-content-save mdiIcon darkColor pull-left alignDelete':true, 'disabledSpan': (!f.form.controls.experience?.dirty && !f.form.controls.experience?.touched) }"
                     (click)="updateChanges('teaching', topic)" style="cursor: pointer;"></i>
-                  <i class="mati mati-close-circle matiIcon darkColor pull-left alignDelete" (click)="unfollowTopic('teaching', topic)" style="cursor: pointer;"></i>
+                  <i class="mdi mdi-close-circle mdiIcon darkColor pull-left alignDelete" (click)="unfollowTopic('teaching', topic)" style="cursor: pointer;"></i>
 
                   <div class="topic-experience col-md-8 padding-left-0">
                     <mat-form-field [floatLabel]="'always'" style="margin-bottom: 20px; width:100%" #experienceContainer>

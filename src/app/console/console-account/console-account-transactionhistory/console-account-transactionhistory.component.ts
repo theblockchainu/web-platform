@@ -119,7 +119,7 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
 
   private retrieveTransactions() {
     this.loadingTransactions = true;
-    const query1 = { 'include': { 'collections': ['calendars'] }, 'order': 'modified desc' };
+    const query1 = { 'include': [{ 'collections': ['calendars'] }, {'contents': ['availabilities', 'packages', {'collections': {'owners': 'profiles'}}]}], 'order': 'modified desc' };
     this.totalTransactions = 0;
     this._paymentService.getTransactions(this.userId, query1).subscribe(result => {
       this.retrievedTransactions = result;
@@ -133,19 +133,30 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
       console.log(err);
     });
 
-    const query2 = { 'include': [{ 'payments': [{ 'peers': 'profiles' }, 'collections'] }]};
+    const query2 = { 'include': [{ 'payments': [{ 'peers': 'profiles' }, 'collections'] }, {'contents' : [{ 'payments': [{ 'peers': 'profiles' }, 'contents'] }]}]};
     this.futureTransactions = [];
     this._collectionService.getOwnedCollections(this.userId, JSON.stringify(query2), (err, response) => {
       response.forEach(collection => {
-        if (collection.payments && collection.payments.length > 0) {
+        if (collection.type !== 'session' && collection.payments && collection.payments.length > 0) {
           this.futureTransactions = this.futureTransactions.concat(collection.payments);
-        }
+        } else if (collection.type === 'session' && collection.contents && collection.contents.length > 0) {
+			collection.contents.forEach(content => {
+				if (content.payments && content.payments.length > 0) {
+					this.futureTransactions = this.futureTransactions.concat(content.payments);
+				}
+			});
+		}
       });
-      this.retrievedFutureTransactions = this.futureTransactions;
+      this.retrievedFutureTransactions = this.futureTransactions.sort((a, b) => (moment(a.updatedAt).isAfter(moment(b.updatedAt)) ? -1 : 1));
+      console.log(this.retrievedFutureTransactions);
       this.totalFutureTransactions = 0;
       this.retrievedFutureTransactions.forEach(element => {
         this.totalFutureTransactions += (element.amount / 100);
       });
     });
+  }
+  
+  public makeAbsolute(value) {
+  	return Math.abs(value);
   }
 }

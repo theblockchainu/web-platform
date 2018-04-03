@@ -41,6 +41,12 @@ export class PaymentService {
       return this.http.post(environment.apiUrl + '/api/transactions/create-charge/collection/' + collectionId, body, this.options);
     }
   }
+	
+	createContentCharge(userId, contentId: any, body: any) {
+		if (userId) {
+			return this.http.post(environment.apiUrl + '/api/transactions/create-charge/content/' + contentId, body, this.options);
+		}
+	}
 
   listAllCards(userId, customerId: any) {
     if (userId) {
@@ -130,7 +136,7 @@ export class PaymentService {
       .map((response: any) => {
         const res = response;
         console.log(res);
-        if (res.success) {
+        if (res && res.success) {
           return {
             amount: res.result,
             currency: this._cookieUtilsService.getValue('currency')

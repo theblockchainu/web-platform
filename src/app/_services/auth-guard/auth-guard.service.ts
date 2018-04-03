@@ -1,41 +1,40 @@
 import { Injectable } from '@angular/core';
 import {
-  CanActivate, Router,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  CanActivateChild,
-  NavigationExtras,
-  CanLoad, Route
+	CanActivate, Router,
+	CanActivateChild,
+	CanLoad, Route, ActivatedRouteSnapshot, RouterStateSnapshot
 } from '@angular/router';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { HttpClient } from '@angular/common/http';
+import {CookieUtilsService} from '../cookieUtils/cookie-utils.service';
 
 @Injectable()
 export class AuthGuardService implements CanActivate, CanActivateChild, CanLoad {
 
-  constructor(private authService: AuthenticationService, private router: Router) { }
+  constructor(private authService: AuthenticationService, private router: Router,
+			  public _cookieService: CookieUtilsService) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const url: string = state.url;
-    return this.checkLogin(url);
+  canActivate(route: ActivatedRouteSnapshot,
+			  state: RouterStateSnapshot): boolean {
+  	if (!this._cookieService.getValue('userId')) {
+		this.router.navigate(['login']);
+		return false;
+	} else {
+  		return true;
+	}
   }
 
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  canActivateChild(route: ActivatedRouteSnapshot,
+				   state: RouterStateSnapshot): boolean {
     return this.canActivate(route, state);
   }
 
-  canLoad(route: Route): boolean {
-    const url = `/${route.path}`;
-
-    return this.checkLogin(url);
-  }
-
-  checkLogin(url: string): boolean {
-    if (this.authService.isLoggedIn) { return true; }
-
-    // Navigate to the login page with extras
-    // this.router.navigate(['/login'], { queryParams: { returnUrl: url }});
-    return false;
+  canLoad(): boolean {
+	  if (!this._cookieService.getValue('userId')) {
+		  this.router.navigate(['login']);
+		  return false;
+	  } else {
+		  return true;
+	  }
   }
 
 }

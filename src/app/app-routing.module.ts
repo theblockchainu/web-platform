@@ -18,6 +18,7 @@ import { CareerComponent } from './career/career.component';
 import { PolicyComponent } from './policy/policy.component';
 import { TrustComponent } from './trust/trust.component';
 import { PressComponent } from './press/press.component';
+import {AuthGuardService} from './_services/auth-guard/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -95,7 +96,8 @@ const routes: Routes = [
   },
   {
     path: 'console',
-    loadChildren: 'app/console/console.module#ConsoleModule'
+    loadChildren: 'app/console/console.module#ConsoleModule',
+	  canActivateChild: [AuthGuardService]
   },
   {
     path: 'profile',
@@ -119,19 +121,23 @@ const routes: Routes = [
   },
   {
     path: 'app-upload-docs',
-    loadChildren: 'app/verification/verification.module#VerificationModule'
+    loadChildren: 'app/verification/verification.module#VerificationModule',
+	  canActivateChild: [AuthGuardService]
   },
   {
     path: 'onboarding',
-    loadChildren: 'app/onboarding/onboarding.module#OnboardingModule'
+    loadChildren: 'app/onboarding/onboarding.module#OnboardingModule',
+	  canActivateChild: [AuthGuardService]
   },
   {
     path: 'admin',
-    loadChildren: 'app/admin/admin.module#AdminModule'
+    loadChildren: 'app/admin/admin.module#AdminModule',
+	  canActivateChild: [AuthGuardService]
   },
   {
     path: 'review-pay',
-    loadChildren: 'app/review-pay/review-pay.module#ReviewPayModule'
+    loadChildren: 'app/review-pay/review-pay.module#ReviewPayModule',
+	  canActivateChild: [AuthGuardService]
   },
   {
     path: 'access-denied',

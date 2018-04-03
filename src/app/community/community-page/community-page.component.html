@@ -42,13 +42,13 @@
                                 <ngu-carousel [inputs]="carouselBanner">
                                     <ngu-item NguCarouselItem class="bannerStyle" *ngFor="let imageUrl of carouselImages">
                                         <div class="row">
-                                            <div class="col-md-12">
-                                                <img src="{{imageUrl}}">
+                                            <div class="col-md-12" [ngStyle]="{'background': 'url(' + imageUrl + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover', 'height': '300px'}">
+
                                             </div>
                                         </div>
                                     </ngu-item>
-                                    <img NguCarouselPrev src="/assets/images/images_landing/arrow-left.png" class="arrow arrow-left" />
-                                    <img NguCarouselNext src="/assets/images/images_landing/arrow-right.png" class="arrow arrow-right" />
+                                    <img NguCarouselPrev src="../../../assets/images/images_landing/arrow-left.png" class="arrow arrow-left" />
+                                    <img NguCarouselNext src="../../../assets/images/images_landing/arrow-right.png" class="arrow arrow-right" />
                                 </ngu-carousel>
                             </div>
                         </div>
@@ -133,7 +133,7 @@
                         <!--ACTION BUTTONS-->
                         <div class="row" style="margin-top: 15px; text-align: right;" *ngIf="userType === 'public'">
                             <div class="col-md-12">
-                                <button mat-raised-button color="primary" (click)="joinCommunity()" *ngIf="userType === 'public'">Join</button>
+                                <button mat-raised-button class="pb-block" color="primary" (click)="joinCommunity()" *ngIf="userType === 'public'">Join Community</button>
                                 <hr>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
                         </div>
                         <div class="row margin-bottom-20">
                             <div class="col-md-12">
-                                <mat-form-field [floatLabel]="'always'" style="color:#767676 !important" placeholder="never" class="pb-block">
+                                <mat-form-field [floatLabel]="'auto'" style="color:#767676 !important" class="pb-block">
                                     <input name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="searchControl"
                                         [matAutocomplete]="auto" placeholder="Search in the community...">
                                 </mat-form-field>

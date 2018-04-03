@@ -165,7 +165,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
       type: 'user',
       url: this.router.url,
       ip_address: '',
-      browser: '', // this.deviceService.getDeviceInfo().browser,
+      browser: '',
       viewedModelName: 'content',
       startTime: new Date(),
       content: this.dialogData.content,

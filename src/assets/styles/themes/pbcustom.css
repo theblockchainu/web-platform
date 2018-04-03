@@ -675,6 +675,19 @@ h3.calendarTitle  {
     border: 0px solid #d6d6d6;
 }
 
+.onboarding.step-10 .ui-widget-header {
+	border: 1px solid #eeeeee !important;
+	background: #ffffff !important;
+}
+
+.onboarding.step-10 .ui-widget-content {
+	border: 1px solid #eeeeee !important;
+}
+
+.fc .fc-axis {
+	padding: 5px !important;
+}
+
 .ui-widget-header {
     border: 0px !important;
     background: none !important;
@@ -1375,6 +1388,8 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 .buttonBar .session_actions{
     padding-top: 5px;
     padding-bottom: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 
@@ -1672,4 +1687,21 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
     margin-left: 10px;
     font-size: 1.2rem;
     color:#aaaaaa;
+}
+
+.fc-today {
+	background: #ffffff !important;
+}
+
+.fsCalendarEvent {
+	border-radius: 0px !important;
+}
+
+
+.profile-page .mat-ink-bar {
+	height: 3px !important;
+}
+
+.profile-page .mat-tab-header {
+	border-bottom: 3px solid #eeeeee !important;
 }

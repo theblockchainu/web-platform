@@ -95,18 +95,18 @@
   <button mat-menu-item [routerLink]="['/console/account/transactions']" *ngIf="isTeacher">
     Transaction History
   </button>
-  <!--<button mat-menu-item [routerLink]="['/editSessions']">
-      Enable Sessions
-    </button>-->
+  <button mat-menu-item [routerLink]="['session', sessionId,'edit','10']" *ngIf="isSessionApproved && sessionId.length > 5">
+      Available Hours
+    </button>
   <!--<button mat-menu-item [routerLink]="['/console/teaching/workshops']">
     Create a Workshop
   </button>-->
   <button mat-menu-item [routerLink]="['/console/teaching/experiences']">
     Create an Experience
   </button>
-  <!--<button mat-menu-item [routerLink]="['/console/teaching/sessions']">
+  <button mat-menu-item [routerLink]="['/console/teaching/sessions']" *ngIf="!isSessionApproved">
     Enable Live Session
-  </button>-->
+  </button>
   <!--<button mat-menu-item [routerLink]="['/console/calendar']" *ngIf="isTeacher">
     Calendar
   </button>-->

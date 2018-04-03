@@ -34,7 +34,7 @@ export class AppNotificationDialogComponent implements OnInit {
     ngOnInit() {
         this.loaded = false;
         this._notificationService.getNotifications(this.userId,
-            '{"include": [{"actor":"profiles"}, "collection"], "order": "createdAt DESC" }',
+            '{"include": [{"actor":"profiles"}, "collection", {"content": ["packages", "availabilities", "payments"]}], "order": "createdAt DESC" }',
             (err, result) => {
                 if (err) {
                     console.log(err);
@@ -58,7 +58,11 @@ export class AppNotificationDialogComponent implements OnInit {
             '%collectionName%': (notification.collection !== undefined && notification.collection.length > 0) ?
                 '<b>' + this.ucwords.transform(notification.collection[0].title) + '</b>' : '***',
             '%collectionType%': (notification.collection !== undefined && notification.collection.length > 0) ?
-                this.ucwords.transform(notification.collection[0].type) : '***'
+                this.ucwords.transform(notification.collection[0].type) : '***',
+			'%sessionDate%': (notification.content !== undefined && notification.content.length > 0) ?
+				'<b>' + moment(notification.content[0].availabilities[0].startDateTime).format('Do MMM') + '</b>' : '***',
+			'%sessionHours%': (notification.content !== undefined && notification.content.length > 0) ?
+				'<b>' + parseInt(notification.content[0].packages[0].duration, 10) / 60 + ' hours</b>' : '***'
         },
             str = notification.description;
 

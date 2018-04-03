@@ -54,8 +54,7 @@
     </div>
     <div class="row" style="padding-top: 20px;">
       <div class="col-md-3">
-        <a href="{{'https://connect.stripe.com/express/oauth/authorize?redirect_uri='+envVariable.clientUrl+'/console/account/payoutmethods&client_id='+envVariable.stripeClientId}}"
-          mat-button>Add Payout Method</a>
+        <a href="{{'https://connect.stripe.com/express/oauth/authorize?redirect_uri='+envVariable.clientUrl+'/console/account/payoutmethods&client_id='+envVariable.stripeClientId}}" mat-button>Add Payout Method</a>
       </div>
     </div>
     <br>
@@ -82,9 +81,12 @@
             <ng-container *ngIf="ownedCollections">
               <div *ngFor="let collection of ownedCollections">
                   <div class="row"  *ngIf="collection.payoutrules && collection.payoutrules.length > 0 && collection.payoutrules[0].external_account" style="padding-top: 5px; padding-bottom: 5px">
-                      <div class="col-md-6">
-                          {{collection.type|titlecase}} : <b>{{collection.title}}</b>
+                      <div class="col-md-6" *ngIf="collection.type !== 'session'">
+                          {{collection.type|titlecase}} : <b>{{collection.title | ucwords}}</b>
                       </div>
+	                  <div class="col-md-6" *ngIf="collection.type === 'session'">
+		                  Peer Sessions
+	                  </div>
                       <div class="col-md-4">
                           <span>{{collection.payoutrules[0].external_account.object | titlecase}} **** **** {{collection.payoutrules[0].external_account.last4}}</span>
                       </div>

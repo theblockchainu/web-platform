@@ -6,6 +6,7 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 
 import { ConsoleComponent } from '../console.component';
+import {ProfileService} from "../../_services/profile/profile.service";
 
 declare var moment: any;
 @Component({
@@ -22,11 +23,13 @@ export class ConsoleTeachingComponent implements OnInit {
     public userId;
     public accountVerified: boolean;
     public session: any;
+    public profile: any;
     constructor(
         private activatedRoute: ActivatedRoute,
         public router: Router,
         public _collectionService: CollectionService,
         private _cookieUtilsService: CookieUtilsService,
+        private _profileService: ProfileService,
         public consoleComponent: ConsoleComponent,
         private dialogsService: DialogsService) {
         activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
@@ -40,22 +43,22 @@ export class ConsoleTeachingComponent implements OnInit {
 
     ngOnInit() {
         this.loaded = false;
-        this.accountVerified = (this._cookieUtilsService.getValue('accountApproved') === 'true') ? true : false;
+        this.accountVerified = (this._cookieUtilsService.getValue('accountApproved') === 'true');
         this.getSessions();
+        this._profileService.getProfileData(this.userId, {}).subscribe(res => {
+        	this.profile = res[0];
+		});
     }
 
     public getSessions() {
         const option = {
-            'where': {
-                'type': 'session'
-            }
+			where: {type: 'session'}
         };
-        this._collectionService.getAllCollections(option).subscribe((res: any) => {
-            if (res && res.length > 0) {
-                console.log(res);
-                this.session = res;
-            }
-        });
+        this._collectionService.getOwnedCollections(this.userId, JSON.stringify(option), (err, res) => {
+			if (res && res.length > 0) {
+				this.session = res[0];
+			}
+		});
     }
 
     /**
@@ -80,7 +83,11 @@ export class ConsoleTeachingComponent implements OnInit {
      * createSessions
      */
     public enableSessions() {
-        this._collectionService.postCollection(this.userId, 'session').subscribe((sessionObject: any) => {
+    	const body = {
+    		type: 'session',
+			title: (this.profile) ? this.profile.first_name + ' ' + this.profile.last_name : 'Peerbuds User'
+		};
+        this._collectionService.postCollectionWithData(this.userId, body).subscribe((sessionObject: any) => {
             this.router.navigate(['session', sessionObject.id, 'edit', 1]);
         });
     }
@@ -187,8 +194,7 @@ export class ConsoleTeachingComponent implements OnInit {
     }
 
     public editSessions() {
-        console.log(this.session);
-        this.router.navigateByUrl('/session/' + this.session[0].id + '/edit/' + 1);
+        this.router.navigateByUrl('/session/' + this.session.id + '/edit/' + 1);
     }
 
 }

@@ -19,6 +19,10 @@
     margin-bottom:20px;
   }
 }
+
+.uploaded_picture {
+	max-width: 200px;
+}
 .text-agree{
   font-size:15px;
   i{
@@ -93,7 +97,7 @@ cursor: pointer;
         height:100px;
         left:50%;
         top:50%;
-        margin:-50px 0 0 -50px;  
+        margin:-50px 0 0 -50px;
  }
 
 .lookingForTitle{
@@ -256,6 +260,8 @@ a:hover {
   background: white;
   border-radius: 20px;
   font-size: 18px;
+	right: -7px;
+	top: -7px;
 }
 
 .profileVideo .delete-video {
@@ -310,7 +316,7 @@ md-input-container .mat-form-field-infix-override {
 
 .addPhoneButton .mat-button-focus-overlay {
   background: none;
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
   cursor: pointer
 }
 
@@ -335,8 +341,9 @@ md-input-container .mat-form-field-infix-override {
 }
 
 .alignDelete {
-  line-height: 60px;
-  vertical-align: middle;
+  position: relative	;
+	right: 0px;
+	top: -35px;
 }
 
 .customWidthCode {
@@ -384,4 +391,10 @@ md-input-container .mat-form-field-infix-override {
 
 agm-map {
   height: 300px;
+}
+
+.trialPackageContainer, .paidPackageContainer {
+	border: 1px solid #dddddd;
+	padding: 10px 30px;
+	margin-top: 15px;
 }

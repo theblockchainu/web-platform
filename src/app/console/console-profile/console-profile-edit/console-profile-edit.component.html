@@ -97,7 +97,7 @@
 
                     </mat-form-field>
                   </div>
-                  <i class="mati mati-close-circle matiIcon pull-right darkColor alignDelete" (click)="clearEntry(i, profileForm.controls['phones'].controls[i].controls['isPrimary'].value)"
+                  <i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="clearEntry(i, profileForm.controls['phones'].controls[i].controls['isPrimary'].value)"
                     style="cursor: pointer;"></i>
 
                 </div>
@@ -181,7 +181,7 @@
                     <mat-datepicker #endPicker></mat-datepicker>
                   </mat-form-field>
                   <mat-checkbox [hidden]="i>0" class="presentlyWorking" formControlName="presentlyWorking" (click)="toggleEndDate()">Presently working</mat-checkbox>
-                  <i class="mati mati-close-circle matiIcon pull-right darkColor" (click)="deleteWork(i)" style="cursor: pointer;"></i>
+                  <i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deleteWork(i)" style="cursor: pointer;"></i>
                 </div>
               </div>
               <div style="margin-top:-5px;margin-bottom:5px; cursor: pointer" (click)="addWork()">
@@ -213,7 +213,7 @@
                   </mat-form-field>
                   <mat-checkbox [hidden]="i>0" class="presentlyWorking" formControlName="presentlyPursuing" (click)="disableEndYear()">Presently pursuing</mat-checkbox>
 
-                  <i class="mati mati-close-circle matiIcon pull-right darkColor" (click)="deleteEducation(i)" style="cursor: pointer;"></i>
+                  <i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deleteEducation(i)" style="cursor: pointer;"></i>
                 </div>
               </div>
 
@@ -258,7 +258,7 @@
                       <input matInput formControlName="subscriber_number" type="tel" required>
                     </mat-form-field>
                   </div>
-                  <i class="mati mati-close-circle matiIcon pull-right darkColor alignDelete" (click)="deleteEmergencyContact(i)" style="cursor: pointer;"></i>
+                  <i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="deleteEmergencyContact(i)" style="cursor: pointer;"></i>
 
                 </div>
                 <mat-hint class="hint" align="start">Give our Customer Experience team a trusted contact we can alert in an urgent situation.</mat-hint>
