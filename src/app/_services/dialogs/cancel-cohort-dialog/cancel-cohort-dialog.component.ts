@@ -26,7 +26,7 @@ export class CancelCohortDialogComponent implements OnInit {
       }
     }, err => {
       this.snackBar.open('Cohort Couldn&#39;t be canceled', 'Retry', {
-        duration: 800
+        duration: 5000
       }).onAction().subscribe(res => {
         this.cancelCohort();
       });

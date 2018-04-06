@@ -44,15 +44,15 @@ export class IndexComponent implements OnInit {
         this._router.navigate(['home', 'homefeed']);
       }
     });
-    // _activatedRoute.url.subscribe(res => {
-    //   if (res[0] && res[0].path === 'login') {
-    //     if (!this.loggedIn) {
-    //       this.dialogsService.openLogin().subscribe();
-    //     } else {
-    //       // this._router.navigate(['home', 'homefeed']);
-    //     }
-    //   }
-    // });
+     _activatedRoute.url.subscribe(res => {
+       if (res[0] && res[0].path === 'login') {
+         if (!this.loggedIn) {
+           this.dialogsService.openLogin().subscribe();
+         } else {
+           // this._router.navigate(['home', 'homefeed']);
+         }
+       }
+     });
   }
   ngOnInit() {
     this.loadingHome = false;
@@ -72,7 +72,7 @@ export class IndexComponent implements OnInit {
         // (response) => {this.snackBar.open('Email Subscribed', 'OK'); });
       );
     this.snackBar.open('Email Subscribed', 'OK', {
-      duration: 800
+      duration: 5000
     });
   }
 }

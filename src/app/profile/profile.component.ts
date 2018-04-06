@@ -432,11 +432,11 @@ export class ProfileComponent implements OnInit {
         }).subscribe((respone) => {
           console.log(respone);
           this.snackBar.open('Profile Reported', 'Close', {
-            duration: 800
+            duration: 5000
           });
         }, (err) => {
           this.snackBar.open('Profile Reported Failed', 'Retry', {
-            duration: 800
+            duration: 5000
           }).onAction().subscribe(() => {
             this.reportProfile();
           });
@@ -514,6 +514,14 @@ type:string,title:string,collecions   */
 	 */
 	public updateAvailability() {
 		this.router.navigateByUrl('/session/' + this.sessionId + '/edit/10');
+	}
+	
+	public openMessageDialog() {
+		this.peerObj.profiles = [];
+		this.peerObj.profiles.push(this.profileObj);
+		this._dialogsService.messageParticipant(this.peerObj).subscribe(result => {
+			console.log(result);
+		});
 	}
 
 }

@@ -687,13 +687,16 @@
 									<mat-radio-group>
 										<mat-radio-button class="pb-block margin-bottom-20" name="phone" value="1" (click)="toggleChoice(1)" *ngIf="!isPhoneVerified">Yes</mat-radio-button>
 										<div *ngIf="selectedOption === 1 || isPhoneVerified" style="margin: 20px 0px 30px 0px;">
-											<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin: 20px 0px;">
-												<input type="tel" matInput #phoneNo formControlName="phoneNo" placeholder="Enter Phone Number" disabled [readOnly]="true">
+											<mat-form-field [floatLabel]="'always'" style="margin: 20px 0px;">
+												<input type="tel" matInput #countryCode formControlName="countryCode" placeholder="Country Code" [readOnly]="true">
+											</mat-form-field>
+											<mat-form-field [floatLabel]="'auto'" class="pb-block" style="margin: 20px 0px;">
+												<input type="tel" matInput #phoneNo formControlName="phoneNo" placeholder="Phone number from profile" [readOnly]="true" disabled>
 												<mat-hint *ngIf="!isPhoneVerified">We will send the confirmation code on your mobile</mat-hint>
 												<mat-hint *ngIf="isPhoneVerified">Update your phone number from profile to change it for this session</mat-hint>
 											</mat-form-field>
-											<button mat-raised-button #sendOtpButton color="accent" (click)="submitPhoneNo($event.target, 'Sending OTP...')" *ngIf="!isPhoneVerified">
-												Send OTP
+											<button mat-raised-button #sendOtpButton color="accent" (click)="submitPhoneNo($event.target, 'Sending code to phone...')" *ngIf="!isPhoneVerified">
+												Send Code as SMS
 											</button>
 											<button mat-raised-button #sendOtpButton color="accent" *ngIf="isPhoneVerified">
 												<mat-icon mat-prefix style="margin-top: -12px; margin-right: 5px; color: white;">check_circle</mat-icon> Phone Verified
@@ -702,9 +705,9 @@
 										<div *ngIf="otpSent && !isPhoneVerified" style="margin: 20px 0px 50px 0px;">
 											<p>Type the 4 digit verification code</p>
 											<mat-form-field [floatLabel]="'always'" class="pb-block inputOTP" style="margin: 20px 0px;">
-												<input type="text" style="border-bottom: 0px;" matInput #inputOTP formControlName="inputOTP" placeholder="OTP">
+												<input type="text" style="border-bottom: 0px;" matInput #inputOTP formControlName="inputOTP" placeholder="Code">
 											</mat-form-field>
-											<button mat-raised-button color="accent" (click)="submitOTP()">Confirm OTP</button>
+											<button mat-raised-button color="accent" (click)="submitOTP()">Confirm Code</button>
 										</div>
 										<mat-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</mat-radio-button>
 									</mat-radio-group>

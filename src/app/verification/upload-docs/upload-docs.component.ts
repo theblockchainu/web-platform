@@ -99,7 +99,7 @@ export class UploadDocsComponent implements OnInit {
     this._profileService.sendVerifyEmail(this.userId, this.peer.controls.email.value)
       .subscribe((response) => {
         this.snackBar.open('Code Resent', 'OK', {
-          duration: 800
+          duration: 5000
         });
       });
   }

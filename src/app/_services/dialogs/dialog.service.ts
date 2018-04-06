@@ -39,6 +39,7 @@ import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 import { DeleteCommunityDialogComponent } from './delete-community-dialog/delete-community-dialog.component';
 import { ExitCommunityDialogComponent } from './exit-community-dialog/exit-community-dialog.component';
 import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflict-dialog.component';
+import {MessageParticipantDialogComponent} from "./message-participant-dialog/message-participant-dialog.component";
 @Injectable()
 export class DialogsService {
 
@@ -372,6 +373,14 @@ export class DialogsService {
             height: '80vh'
         }).afterClosed();
     }
+	
+	public messageParticipant(data) {
+		return this.dialog.open(MessageParticipantDialogComponent, {
+			data: data,
+			width: '50vw',
+			height: '60vh'
+		}).afterClosed();
+	}
 
     public shareCollection(type: string, Id: string, title: string, cohortId?: string) {
         return this.dialog.open(ShareDialogComponent,

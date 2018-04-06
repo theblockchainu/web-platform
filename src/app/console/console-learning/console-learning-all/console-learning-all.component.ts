@@ -153,7 +153,7 @@ export class ConsoleLearningAllComponent implements OnInit {
             if (result) {
                 this.fetchCollections();
                 this.snackBar.open('You have dropped out of the ' + collection.type, 'Close', {
-                    duration: 800
+                    duration: 5000
                 });
             } else {
                 console.log(result);

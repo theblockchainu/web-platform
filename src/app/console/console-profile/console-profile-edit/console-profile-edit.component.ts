@@ -414,13 +414,13 @@ export class ConsoleProfileEditComponent implements OnInit {
       }).subscribe((response) => {
         this.busyUpdate = false;
         this.snackBar.open('Profile Updated', 'Close', {
-          duration: 800
+          duration: 5000
         });
       }, (err) => {
         console.log('Error updating Peer: ');
         console.log(err);
         this.snackBar.open('Profile Update Failed', 'Retry', {
-          duration: 800
+          duration: 5000
         }).onAction().subscribe((response) => {
           this.busyUpdate = false;
           this.saveProfile();

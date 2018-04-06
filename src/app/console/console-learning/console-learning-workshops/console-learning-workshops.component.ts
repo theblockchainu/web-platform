@@ -154,7 +154,7 @@ export class ConsoleLearningWorkshopsComponent implements OnInit {
       if (result) {
         this.fetchWorkshop();
         this.snackBar.open('You have dropped out of the ' + collection.type, 'Close', {
-          duration: 800
+          duration: 5000
         });
       } else {
         console.log(result);

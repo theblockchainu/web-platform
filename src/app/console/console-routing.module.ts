@@ -46,6 +46,11 @@ const routes: Routes = [{
       component: ConsoleInboxComponent,
 		canActivate: [AuthGuardService]
     },
+	  {
+		  path: 'inbox/:roomId',
+		  component: ConsoleInboxComponent,
+		  canActivate: [AuthGuardService]
+	  },
     {
       path: 'learning',
       component: ConsoleLearningComponent,
