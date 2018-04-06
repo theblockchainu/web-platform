@@ -6,7 +6,7 @@
                 <mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
             </button>
             <div class="col-md-4">
-                <h3 mat-dialog-title>Add more cohorts your {{ duration }} day workshop</h3>
+                <h3 mat-dialog-title>Add more cohorts your {{ duration }} day {{collection.type}}</h3>
                 <div>
                     <span>You have
                         <b>{{calendars.length}}</b> existing cohorts</span> &emsp;
@@ -20,7 +20,7 @@
                         <b>{{ recurringCount }}</b> recurring sessions</label>
                 </div>
                 <div style="margin-top:5px">
-                    <label>Your workshop will run for
+                    <label>Your {{collection.type}} will run for
                         <b>{{ totalRunningDays }}</b> of the next
                         <b>{{nextDays}}</b> days</label>
                 </div>
@@ -33,18 +33,18 @@
                     <div class="leftContent">
                         <p class="mat-caption" *ngIf="calendars.length === 1">
                             <mat-icon style="vertical-align:sub;font-size: 16px;">info</mat-icon>
-                            Your first cohort was automatically created when this Workshop was approved. You can add more Cohorts to your workshop at
-                            any time.
+                            Your first cohort was automatically created when this {{collection.type | titlecase}} was approved. You can add more Cohorts
+                            to your {{collection.type}} at any time.
                         </p>
                         <br>
                         <label *ngIf="calendars.length > 0">After your last existing cohort ends, the next cohort starts...</label>
                         <br>
                         <br>
-                        <mat-radio-group class="repeat-workshop-group" formControlName="repeatWorkshopGroupOption" (change)="repeatFrequency($event.value)">
-                            <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="immediate">
+                        <mat-radio-group class="repeat-{{collection.type}}-group" formControlName="repeatWorkshopGroupOption" (change)="repeatFrequency($event.value)">
+                            <mat-radio-button class="repeat-{{collection.type}}-button margin-bottom-10" value="immediate">
                                 <span>Immediately</span>
                             </mat-radio-button>
-                            <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="days">
+                            <mat-radio-button class="repeat-{{collection.type}}-button margin-bottom-10" value="days">
                                 <span class="valignMiddle">after</span>
                                 &nbsp;&nbsp;
                                 <mat-form-field [floatLabel]="'always'">
@@ -54,7 +54,7 @@
                                 </mat-form-field>
                                 <span class="valignMiddle">&nbsp;&nbsp;days</span>
                             </mat-radio-button>
-                            <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="weekdays">
+                            <mat-radio-button class="repeat-{{collection.type}}-button margin-bottom-10" value="weekdays">
                                 <span class="valignMiddle">from the next</span>
                                 &nbsp;&nbsp;
                                 <mat-form-field [floatLabel]="'always'">
@@ -67,8 +67,8 @@
                         <div class="margin-top-40 flex-column">
                             <label>It will continue repeating up to..</label>
                             <br>
-                            <mat-radio-group class="repeat-workshop-group" formControlName="repeatTillOption" (change)="repeatTill($event.value)">
-                                <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="daysRepeat">
+                            <mat-radio-group class="repeat-{{collection.type}}-group" formControlName="repeatTillOption" (change)="repeatTill($event.value)">
+                                <mat-radio-button class="repeat-{{collection.type}}-button margin-bottom-10" value="daysRepeat">
                                     &nbsp;&nbsp;
                                     <mat-form-field [floatLabel]="'always'">
                                         <mat-select formControlName="daysRepeat" class="widthDays padding-top-0" (change)="repeatTillTrigger()">
@@ -77,7 +77,7 @@
                                     </mat-form-field>
                                     <span class="valignMiddle">&nbsp;&nbsp;more sessions</span>
                                 </mat-radio-button>
-                                <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="monthsRepeat">
+                                <mat-radio-button class="repeat-{{collection.type}}-button margin-bottom-10" value="monthsRepeat">
                                     &nbsp;&nbsp;
                                     <mat-form-field [floatLabel]="'always'">
                                         <mat-select formControlName="monthsRepeat" class="widthDays padding-top-0" (change)="repeatTillTrigger()">
@@ -86,7 +86,7 @@
                                     </mat-form-field>
                                     <span class="valignMiddle">&nbsp;&nbsp;more months</span>
                                 </mat-radio-button>
-                                <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="dateRepeat">
+                                <mat-radio-button class="repeat-{{collection.type}}-button margin-bottom-10" value="dateRepeat">
                                     <span class="valignMiddle">the date</span>
                                     &nbsp;&nbsp;
                                     <mat-form-field [floatLabel]="'always'">
@@ -98,20 +98,16 @@
                             </mat-radio-group>
                         </div>
                     </div>
-                    <div class="button-bar">
-                        <span matTooltip="Solve Conflicts!" [matTooltipDisabled]="recurringCount !== 0 && (computedConflict.length <= 0 || acceptConflicts)">
-                            <button mat-raised-button color="primary" (click)="saveCalendar()" [disabled]="recurringCount == 0 || (computedConflict.length > 0 && !acceptConflicts)">Save Workshop Batches</button>
-                        </span>
-                    </div>
                 </div>
                 <div class="editCalendar col-md-4 rightContent">
-                    <div class="mat-content calendar" style="margin-right:10px;height: 195px;">
+                    <div class="mat-content calendar" style="margin-right:10px;height: 520px;">
                         <h3>Preview Cohorts</h3>
                         <div *ngIf="(recurringCalendar && recurringCalendar.length > 0) || computedConflict.length > 0">
                             <div class="margin-top-30 flex-column" *ngIf="computedConflict.length > 0">
                                 <h3>Avoid Conflicts</h3>
                                 <div>
-                                    <label>{{computedConflict.length}} of your workshop sessions will have conflicts with
+                                    <label>{{computedConflict.length}} of your {{collection.type}} sessions will have conflicts
+                                        with
                                         <br/> existing calendar events.</label>
                                 </div>
                                 <div class="margin-top-20 margin-bottom-20">
@@ -164,9 +160,13 @@
                                 </p-accordionTab>
                             </p-accordion>
                         </div>
-
+                        <div class="button-bar">
+                            <span matTooltip="Solve Conflicts!" [matTooltipDisabled]="recurringCount !== 0 && (computedConflict.length <= 0 || acceptConflicts)">
+                                <button mat-raised-button color="primary" (click)="saveCalendar()" [disabled]="recurringCount == 0 || (computedConflict.length > 0 && !acceptConflicts)">Save {{collection.type | titlecase}} Batches</button>
+                            </span>
+                        </div>
                     </div>
-                    <div class="mat-content border-calendar calendar">
+                    <!-- <div class="mat-content border-calendar calendar">
                         <div class="flex flexContainer">
                             <div class="col-md-7">
                                 <h3 class="calendarTitle">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
@@ -206,7 +206,7 @@
                             </div>
                             <hr>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
