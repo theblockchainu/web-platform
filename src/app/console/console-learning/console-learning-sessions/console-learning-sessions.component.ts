@@ -50,6 +50,7 @@ export class ConsoleLearningSessionsComponent implements OnInit {
 	}
 	
 	private refreshData() {
+		this.loaded = false;
 		this.pastSessions = [];
 		this.ongoingSessions = [];
 		this.upcomingSessions = [];
@@ -76,6 +77,7 @@ export class ConsoleLearningSessionsComponent implements OnInit {
 		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
 			this.participant = res;
 			this.filterSessions(res.contents);
+			this.loaded = true;
 		});
 	}
 	

@@ -1,130 +1,167 @@
 <div class="row">
-  <div class="col-md-12">
-    <div *ngIf="!collectionsLoaded" class="loading-container">
-      <ngx-loading [show]="true"></ngx-loading>
-    </div>
-  </div>
-  <div class="col-md-12 margin-top-10" *ngIf="collectionsLoaded">
-    <div style="display:inline;">
-      <h2>Collection Approvals</h2>
-    </div>
-    <div #noContentView *ngIf="unapprovedCollections.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
-      <div class="lightText">
-        No Approval Pending !
-      </div>
-    </div>
-    <div *ngIf="unapprovedCollections.length > 0">
-      <div class="row">
-        <div>
-          <div style="margin-top:20px;" class="col-md-12">
-            <div class="row">
-              <div *ngFor="let collection of unapprovedCollections">
-                <div class="col-md-3" style="margin-top: 20px;">
-                  <mat-card style="text-align: center; padding: 20px;height: 220px">
-                    <mat-card-content style="height: 130px">
-                      <div style="text-align: right">
-                        <div class="pull-right">
-                          <a mat-icon-button [matMenuTriggerFor]="approvalCardMenu" style="text-align: right; padding: 0px">
-                            <mat-icon>more_vert</mat-icon>
-                          </a>
-                        </div>
-                      </div>
-                      <div class="mat-body-2">
-                        {{collection.type | ucfirst}}
-                      </div>
-                      <div class="cohortDate" style="padding-top: 10px" *ngIf="collection.calendars && collection.calendars[0]">
+	<div class="col-md-12">
+		<div *ngIf="!collectionsLoaded" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+	<div class="col-md-12 margin-top-10" *ngIf="collectionsLoaded">
+		<div style="display:inline;">
+			<h2>Collection Approvals</h2>
+		</div>
+		<div #noContentView *ngIf="unapprovedCollections.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
+			<div class="lightText">
+				No Approval Pending !
+			</div>
+		</div>
+		<div *ngIf="unapprovedCollections.length > 0">
+			<div class="row">
+				<div>
+					<div style="margin-top:20px;" class="col-md-12">
+						<div class="row">
+							<div *ngFor="let collection of unapprovedCollections">
+								<div *ngIf="collection.type !== 'session'" class="col-md-3" style="margin-top: 20px;">
+									<mat-card style="text-align: center; padding: 20px;height: 220px">
+										<mat-card-content style="height: 130px">
+											<div style="text-align: right">
+												<div class="pull-right">
+													<a mat-icon-button [matMenuTriggerFor]="approvalCardMenu" style="text-align: right; padding: 0px">
+														<mat-icon>more_vert</mat-icon>
+													</a>
+												</div>
+											</div>
+											<div class="mat-body-2">
+												{{collection.type | ucfirst}}
+											</div>
+											<div class="cohortDate" style="padding-top: 10px" *ngIf="collection.calendars && collection.calendars[0]">
                         <span>{{collection.calendars[0].startDate |extractTime:'Do MMMM'}} - {{ collection.calendars[0].endDate
                           |extractTime:'Do MMMM' }}</span>
-                      </div>
-                      <br>
-                      <div class="collectionTitle" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
-                    </mat-card-content>
-                    <mat-menu #approvalCardMenu>
-                      <button mat-menu-item>
-                        Delete
-                      </button>
-                      <button *ngIf="collection.type ==='workshop'" mat-menu-item [routerLink]="['/workshop/'+collection.id]">
-                        View Workshop
-                      </button>
-                      <button *ngIf="collection.type ==='experience'" mat-menu-item [routerLink]="['/experience/'+collection.id]">
-                        View Experience
-                      </button>
-                    </mat-menu>
-                    <mat-card-footer class="cardFooter" style="line-height: 30px">
-                      <button mat-button (click)="approveWorkshop(collection)">Approve</button>
-                    </mat-card-footer>
-                  </mat-card>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br>
-      <br>
-    </div>
-  </div>
+											</div>
+											<br>
+											<div class="collectionTitle" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+										</mat-card-content>
+										<mat-menu #approvalCardMenu>
+											<button mat-menu-item>
+												Delete
+											</button>
+											<button *ngIf="collection.type ==='workshop'" mat-menu-item [routerLink]="['/workshop/'+collection.id]">
+												View Workshop
+											</button>
+											<button *ngIf="collection.type ==='experience'" mat-menu-item [routerLink]="['/experience/'+collection.id]">
+												View Experience
+											</button>
+										</mat-menu>
+										<mat-card-footer class="cardFooter" style="line-height: 30px">
+											<button mat-button (click)="approveWorkshop(collection)">Approve</button>
+										</mat-card-footer>
+									</mat-card>
+								</div>
+								<div *ngIf="collection.type === 'session'" class="col-md-3" style="margin-top: 20px;">
+									<mat-card style="text-align: center; padding: 20px;height: 220px">
+										<mat-card-content style="height: 130px">
+											<div style="text-align: right">
+												<div class="pull-right">
+													<a mat-icon-button [matMenuTriggerFor]="approvalCardMenu" style="text-align: right; padding: 0px">
+														<mat-icon>more_vert</mat-icon>
+													</a>
+												</div>
+											</div>
+											<div class="mat-body-2">
+												Peer {{collection.type | ucfirst}}
+											</div>
+											<br>
+											<div class="collectionTitle" (click)="_profileService.viewProfile(collection.owners[0])">{{collection.owners[0].profiles[0].first_name}} {{collection.owners[0].profiles[0].last_name}}</div>
+											<div>
+												<span *ngFor="let topic of collection.owners[0].topicsTeaching">
+													{{topic}},&nbsp;
+												</span>
+											</div>
+										</mat-card-content>
+										<mat-menu #approvalCardMenu>
+											<button mat-menu-item>
+												Delete
+											</button>
+											<button *ngIf="collection.type ==='workshop'" mat-menu-item [routerLink]="['/workshop/'+collection.id]">
+												View Workshop
+											</button>
+											<button *ngIf="collection.type ==='experience'" mat-menu-item [routerLink]="['/experience/'+collection.id]">
+												View Experience
+											</button>
+										</mat-menu>
+										<mat-card-footer class="cardFooter" style="line-height: 30px">
+											<button mat-button (click)="approveWorkshop(collection)">Approve</button>
+										</mat-card-footer>
+									</mat-card>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
+	</div>
 </div>
 
 <div class="row">
-  <div class="col-md-12 margin-top-40">
-    <div *ngIf="!peersLoaded" class="loading-container">
-      <ngx-loading [show]="true"></ngx-loading>
-    </div>
-  </div>
-  <div class="col-md-12 margin-top-10" *ngIf="peersLoaded">
-    <div style="display:inline;">
-      <h2>Peer Approvals</h2>
-    </div>
-    <div #noContentView *ngIf="unapprovedPeers.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
-      <div class="lightText">
-        No Approval Pending !
-      </div>
-    </div>
-    <div *ngIf="unapprovedPeers.length > 0">
-      <div class="row">
-        <div>
-          <div style="margin-top:20px;" class="col-md-12">
-            <div class="row">
-              <div *ngFor="let peer of unapprovedPeers">
-                <div class="col-md-3" style="margin-top: 20px;">
-                  <mat-card style="text-align: center; padding: 20px;height: 200px">
-                    <mat-card-content style="height: 110px">
-                      <div style="text-align: right">
-                        <div class="pull-right">
-                          <a mat-icon-button [matMenuTriggerFor]="approvalCardMenu" style="text-align: right; padding: 0px">
-                            <mat-icon>more_vert</mat-icon>
-                          </a>
-                        </div>
-                      </div>
-                      <br>
-                      <div class="collectionTitle" [routerLink]="['/profile/'+peer.id]">{{ peer.profiles[0].first_name + ' ' + peer.profiles[0].last_name || 'No name' | ucwords }} </div>
-                      <br><br>
-                      <div class="mat-body-2">
-                        <a href="{{envVariable.apiUrl + peer.verificationIdUrl}}" target="_blank" *ngIf="peer.verificationIdUrl !== undefined">View ID</a>
-                        <span *ngIf="peer.verificationIdUrl === undefined">No ID submitted</span>
-                      </div>
-                    </mat-card-content>
-                    <mat-menu #approvalCardMenu>
-                      <button mat-menu-item>
-                        Delete
-                      </button>
-                      <button mat-menu-item [routerLink]="['/profile/'+peer.id]">
-                        View Profile
-                      </button>
-                    </mat-menu>
-                    <mat-card-footer class="cardFooter" style="line-height: 30px">
-                      <button (click)="approvePeer(peer)" mat-button>Approve</button>
-                    </mat-card-footer>
-                  </mat-card>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br>
-      <br>
-    </div>
-  </div>
+	<div class="col-md-12 margin-top-40">
+		<div *ngIf="!peersLoaded" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+	<div class="col-md-12 margin-top-10" *ngIf="peersLoaded">
+		<div style="display:inline;">
+			<h2>Peer Approvals</h2>
+		</div>
+		<div #noContentView *ngIf="unapprovedPeers.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
+			<div class="lightText">
+				No Approval Pending !
+			</div>
+		</div>
+		<div *ngIf="unapprovedPeers.length > 0">
+			<div class="row">
+				<div>
+					<div style="margin-top:20px;" class="col-md-12">
+						<div class="row">
+							<div *ngFor="let peer of unapprovedPeers">
+								<div class="col-md-3" style="margin-top: 20px;">
+									<mat-card style="text-align: center; padding: 20px;height: 200px">
+										<mat-card-content style="height: 110px">
+											<div style="text-align: right">
+												<div class="pull-right">
+													<a mat-icon-button [matMenuTriggerFor]="approvalCardMenu" style="text-align: right; padding: 0px">
+														<mat-icon>more_vert</mat-icon>
+													</a>
+												</div>
+											</div>
+											<br>
+											<div class="collectionTitle" [routerLink]="['/profile/'+peer.id]">{{ peer.profiles[0].first_name + ' ' + peer.profiles[0].last_name || 'No name' | ucwords }} </div>
+											<br><br>
+											<div class="mat-body-2">
+												<a href="{{envVariable.apiUrl + peer.verificationIdUrl}}" target="_blank" *ngIf="peer.verificationIdUrl !== undefined">View ID</a>
+												<span *ngIf="peer.verificationIdUrl === undefined">No ID submitted</span>
+											</div>
+										</mat-card-content>
+										<mat-menu #approvalCardMenu>
+											<button mat-menu-item>
+												Delete
+											</button>
+											<button mat-menu-item [routerLink]="['/profile/'+peer.id]">
+												View Profile
+											</button>
+										</mat-menu>
+										<mat-card-footer class="cardFooter" style="line-height: 30px">
+											<button (click)="approvePeer(peer)" mat-button>Approve</button>
+										</mat-card-footer>
+									</mat-card>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
+	</div>
 </div>

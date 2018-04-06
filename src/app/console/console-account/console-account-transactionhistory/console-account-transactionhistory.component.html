@@ -17,8 +17,8 @@
 									Here you will see all the transactions that were either paid out to your account we have on record or is scheduled to be
 									paid out on completion of your workshop, experience or session.
 								</div>
-								<h2 *ngIf="totalTransactions >= 0"> Balance : {{totalTransactions | currency: userCurrency: true:'1.0-0'}} </h2>
-								<h2 *ngIf="totalTransactions < 0" class="mat-error"> Balance : {{makeAbsolute(totalTransactions) | currency: userCurrency: true:'1.0-0'}} </h2>
+								<h2 *ngIf="totalTransactions >= 0"> Balance : {{totalTransactions | convertCurrency : userCurrency | async}} </h2>
+								<h2 *ngIf="totalTransactions < 0" class="mat-error"> Balance : {{makeAbsolute(totalTransactions) | convertCurrency: userCurrency | async}} </h2>
 								<!-- <a href="#" class="pull-right"> Export to CSV</a> -->
 								<br>
 								<hr>
@@ -102,7 +102,7 @@
 									Here you will see all the transactions that were either paid out to your account we have on record or is scheduled to be
 									paid out on completion of your workshop, experience or session.
 								</div>
-								<h2> Booked : {{totalFutureTransactions | currency: userCurrency: true:'1.0-0'}} </h2>
+								<h2> Booked : {{totalFutureTransactions | convertCurrency: userCurrency | async}} </h2>
 								<!-- <a href="#" class="pull-right"> Export to CSV</a> -->
 								<br>
 								<hr>

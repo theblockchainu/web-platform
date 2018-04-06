@@ -33,7 +33,7 @@ export class DeleteCommunityDialogComponent implements OnInit {
             }
         }, err => {
             this.snackBar.open('Community couldn&#39;t be deleted', 'Retry', {
-                duration: 800
+                duration: 5000
             }).onAction().subscribe(res => {
                 this.delete();
             });

@@ -31,7 +31,7 @@ export class CancelCollectionDialogComponent implements OnInit {
       }
     }, err => {
       this.snackBar.open('Workshop Couldn&#39;t be Cancelled', 'Retry', {
-        duration: 800
+        duration: 5000
       }).onAction().subscribe(res => {
         this.cancel();
       });

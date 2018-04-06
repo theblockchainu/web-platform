@@ -217,7 +217,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
 			if (result) {
 				this.fetchData();
 				this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Deleted', 'Close', {
-					duration: 800
+					duration: 5000
 				});
 			}
 		});
@@ -231,7 +231,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
 			if (result) {
 				this.fetchData();
 				this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Cancelled', 'Close', {
-					duration: 800
+					duration: 5000
 				});
 			}
 		});

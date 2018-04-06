@@ -253,30 +253,30 @@ export class WorkshopEditComponent implements OnInit {
         if (res) {
           this.payoutLoading = false;
           this.payoutRuleAccountId = newPayoutId;
-          this.snackBar.open('Payout account updated', 'close', {
-            duration: 500
+          this.snackBar.open('Payout account updated', 'Close', {
+            duration: 5000
           });
         }
       }, err => {
         this.payoutLoading = false;
-        this.snackBar.open('Unable to update account', 'close', {
-          duration: 500
+        this.snackBar.open('Unable to update account', 'Close', {
+          duration: 5000
         });
       });
     } else {
       this._paymentService.postPayoutRule(this.workshopId, newPayoutId).subscribe((res: any) => {
         if (res) {
           this.payoutLoading = false;
-          this.snackBar.open('Payout account added', 'close', {
-            duration: 500
+          this.snackBar.open('Payout account added', 'Close', {
+            duration: 5000
           });
           this.payoutRuleNodeId = res.id;
           this.payoutRuleAccountId = newPayoutId;
         }
       }, err => {
         this.payoutLoading = false;
-        this.snackBar.open('Unable to add account', 'close', {
-          duration: 500
+        this.snackBar.open('Unable to add account', 'Close', {
+          duration: 5000
         });
       });
 
@@ -743,8 +743,8 @@ export class WorkshopEditComponent implements OnInit {
         this.addImageUrl(response.url);
         this.uploadingImage = false;
       }, err => {
-        this.snackBar.open(err.message, 'close', {
-          duration: 900
+        this.snackBar.open(err.message, 'Close', {
+          duration: 5000
         });
         this.uploadingImage = false;
       });
@@ -790,8 +790,8 @@ export class WorkshopEditComponent implements OnInit {
           return true;
         }
       }
-      this.snackBar.open('Workshop should contain atleast 1 online session!', 'close', {
-        duration: 800
+      this.snackBar.open('Workshop should contain atleast 1 online session!', 'Close', {
+        duration: 5000
       });
       return false;
     }
@@ -804,14 +804,14 @@ export class WorkshopEditComponent implements OnInit {
     const endMoment = moment(calendarGroup.controls['endDate'].value).local();
     if (startMoment.diff(endMoment) > 0) {
       this.snackBar.open('Start date cannot be after end date!', 'Close', {
-        duration: 800
+        duration: 5000
       });
       return false;
     }
     console.log(startMoment.diff(moment()));
     if (startMoment.diff(moment()) < 0) {
       this.snackBar.open('Start date cannot be in the past!', 'Close', {
-        duration: 800
+        duration: 5000
       });
       return false;
     }
@@ -1168,14 +1168,14 @@ export class WorkshopEditComponent implements OnInit {
   submitOTP() {
     this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
       .subscribe((res) => {
-        this.snackBar.open('Token Verified', 'close', {
-          duration: 500
+        this.snackBar.open('Token Verified', 'Close', {
+          duration: 5000
         });
         this.step++;
       },
         (error) => {
-          this.snackBar.open(error.message, 'close', {
-            duration: 500
+          this.snackBar.open(error.message, 'Close', {
+            duration: 5000
           });
         });
   }

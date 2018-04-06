@@ -3,6 +3,7 @@ import * as io from 'socket.io-client';
 import { Observable } from 'rxjs/Observable';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 import {environment} from '../../../environments/environment';
+import {InboxService} from '../inbox/inbox.service';
 @Injectable()
 export class SocketService {
 
@@ -11,15 +12,15 @@ export class SocketService {
     public envVariable;
 
     constructor(
-        private _cookieUtilsService: CookieUtilsService
+        private _cookieUtilsService: CookieUtilsService,
+		private _inboxService: InboxService
     ) {
         this.envVariable = environment;
         this.userId = _cookieUtilsService.getValue('userId');
         this.socket = io(environment.apiUrl);
-        this.addUser(this.userId);
-        this.listenForNewMessage().subscribe(message => {
-            console.log(message);
-        });
+        if (this.userId) {
+			this.addUser(this.userId);
+		}
         this.listenForCookieUpdate().subscribe(message => {
             console.log('cookie updated: ' + message );
             if (message.hasOwnProperty('accountApproved')) {
@@ -34,6 +35,13 @@ export class SocketService {
                 id: userId
             };
             this.socket.emit('addUser', user);
+            this._inboxService.getRoomData().subscribe(joinedRooms => {
+            	if (joinedRooms) {
+            		joinedRooms.forEach(joinedRoom => {
+            			this.joinRoom(joinedRoom.id);
+					});
+				}
+			});
         }
     }
 
@@ -72,6 +80,10 @@ export class SocketService {
     public listenForNewMessage() {
         return new Observable(observer => {
             this.socket.on('message', (data) => {
+            	// set delivery for this message
+				this._inboxService.postMessageDeliveryReceipt(data['id'], {}).subscribe(res => {
+					console.log(res);
+				});
                 observer.next(data);
             });
             return;

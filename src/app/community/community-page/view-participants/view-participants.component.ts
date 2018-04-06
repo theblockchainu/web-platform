@@ -61,11 +61,11 @@ export class ViewParticipantsComponent implements OnInit {
         }).subscribe((respone) => {
           console.log(respone);
           this.snackBar.open('Profile Reported', 'Close', {
-            duration: 800
+            duration: 5000
           });
         }, (err) => {
           this.snackBar.open('Profile Reported Failed', 'Retry', {
-            duration: 800
+            duration: 5000
           }).onAction().subscribe(() => {
             this.reportProfile(participantId);
           });

@@ -25,7 +25,7 @@ export class InviteFriendsDialogComponent implements OnInit {
 
   public onCopySuccess() {
     this.snackBar.open('Copied to clipboard', 'Close', {
-      duration: 800
+      duration: 5000
     });
   }
 

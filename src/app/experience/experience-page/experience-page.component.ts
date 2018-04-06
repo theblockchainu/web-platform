@@ -9,7 +9,7 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { CollectionService } from '../../_services/collection/collection.service';
 import { ContentService } from '../../_services/content/content.service';
 import { CommentService } from '../../_services/comment/comment.service';
-import { ViewParticipantsComponent } from './view-participants/view-participants.component';
+import { ViewParticipantsComponent } from '../../_services/dialogs/view-participants/view-participants.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
 import { ShowRSVPPopupComponent } from './show-rsvp-participants-dialog/show-rsvp-dialog.component';
@@ -468,7 +468,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
               'submissions': [{ 'upvotes': 'peer' },
               { 'peer': 'profiles' }]
             }]
-        }
+        },
+		  'rooms'
       ],
       'relInclude': 'calendarId'
     };
@@ -857,8 +858,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
         if (err) {
           console.log(err);
         } else {
-          this.snackBar.open('Bookmarked', 'close', {
-            duration: 800
+          this.snackBar.open('Bookmarked', 'Close', {
+            duration: 5000
           });
           this.getBookmarks();
           this.bookmarking = false;
@@ -869,8 +870,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
         if (err) {
           console.log(err);
         } else {
-          this.snackBar.open('Removed Bookmark', 'close', {
-            duration: 800
+          this.snackBar.open('Removed Bookmark', 'Close', {
+            duration: 5000
           });
           this.getBookmarks();
           this.bookmarking = false;
@@ -1502,7 +1503,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
       const cohortStartDate = moment(calendar.startDate);
       const cohortEndDate = moment(calendar.endDate);
       const currentMoment = moment();
-      result = cohortStartDate.diff(currentMoment, 'seconds') > 0;
+      if (cohortStartDate.diff(currentMoment, 'seconds') > 0) {
+      	result = true;
+	  }
     });
     return result;
   }
@@ -1653,6 +1656,16 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
   public isCancelable() {
   	if (this.currentCalendar) {
   		return moment(this.currentCalendar.endDate) > this.today;
+	}
+  }
+  
+  public openGroupChat() {
+  	if (this.experience.rooms && this.experience.rooms.length > 0) {
+		this.router.navigate(['console', 'inbox', this.experience.rooms[0].id]);
+	} else {
+  		this.snackBar.open('Looks like you have not been subscribed to this experience\'s group chat. If this is unintentional, contact support.', 'Close', {
+  			duration: 5000
+		});
 	}
   }
 

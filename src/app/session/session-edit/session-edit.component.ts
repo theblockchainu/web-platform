@@ -246,9 +246,9 @@ export class SessionEditComponent implements OnInit {
 		this.selectedTopic = new FormGroup({});
 		
 		this.phoneDetails = this._fb.group({
-			phoneNo: '',
+			phoneNo: [{value: '', disabled: true}],
 			inputOTP: '',
-			countryCode: ''
+			countryCode: [{value: '', disabled: true}]
 		});
 		
 		
@@ -421,30 +421,30 @@ export class SessionEditComponent implements OnInit {
 				if (res) {
 					this.payoutLoading = false;
 					this.payoutRuleAccountId = newPayoutId;
-					this.snackBar.open('Payout account updated', 'close', {
-						duration: 500
+					this.snackBar.open('Payout account updated', 'Close', {
+						duration: 5000
 					});
 				}
 			}, err => {
 				this.payoutLoading = false;
-				this.snackBar.open('Unable to update account', 'close', {
-					duration: 500
+				this.snackBar.open('Unable to update account', 'Close', {
+					duration: 5000
 				});
 			});
 		} else {
 			this._paymentService.postPayoutRule(this.sessionId, newPayoutId).subscribe((res: any) => {
 				if (res) {
 					this.payoutLoading = false;
-					this.snackBar.open('Payout account added', 'close', {
-						duration: 500
+					this.snackBar.open('Payout account added', 'Close', {
+						duration: 5000
 					});
 					this.payoutRuleNodeId = res.id;
 					this.payoutRuleAccountId = newPayoutId;
 				}
 			}, err => {
 				this.payoutLoading = false;
-				this.snackBar.open('Unable to add account', 'close', {
-					duration: 500
+				this.snackBar.open('Unable to add account', 'Close', {
+					duration: 5000
 				});
 			});
 			
@@ -668,6 +668,7 @@ export class SessionEditComponent implements OnInit {
 		
 		if (res.owners[0].profiles[0].phone_numbers && res.owners[0].profiles[0].phone_numbers.length) {
 			this.phoneDetails.controls.phoneNo.patchValue(res.owners[0].profiles[0].phone_numbers[0].subscriber_number);
+			this.phoneDetails.controls.countryCode.patchValue(res.owners[0].profiles[0].phone_numbers[0].country_code);
 		}
 		
 		const provisions = <FormArray>this.provisionForm.controls['provisions'];
@@ -928,21 +929,22 @@ export class SessionEditComponent implements OnInit {
 			.subscribe((res) => {
 				this.otpSent = true;
 				this.phoneDetails.controls.phoneNo.disable();
-				element.textContent = 'OTP Sent';
+				this.phoneDetails.controls.countryCode.disable();
+				element.textContent = 'Verification code Sent';
 			});
 	}
 	
 	submitOTP() {
 		this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
 			.subscribe((res) => {
-					this.snackBar.open('Token Verified', 'close', {
-						duration: 500
+					this.snackBar.open('Token Verified', 'Close', {
+						duration: 5000
 					});
 					this.step++;
 				},
 				(error) => {
-					this.snackBar.open(error.message, 'close', {
-						duration: 500
+					this.snackBar.open(error.message, 'Close', {
+						duration: 5000
 					});
 				});
 	}
@@ -1196,7 +1198,7 @@ export class SessionEditComponent implements OnInit {
 			this._profileService.updateTeachingTopic(this.userId, topic.id, { 'experience': topic['experience'] })
 				.subscribe(response => {
 					this.snackBar.open('Topic Updated', 'Close', {
-						duration: 800
+						duration: 5000
 					});
 				}, err => {
 					console.log(err);

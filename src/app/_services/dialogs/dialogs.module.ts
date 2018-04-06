@@ -38,7 +38,6 @@ import { SubmitEntryComponent } from './submit-entry/submit-entry.component';
 import { ViewEntryDialogComponent } from './view-entry-dialog/view-entry-dialog.component';
 import { InviteFriendsDialogComponent } from './invite-friends-dialog/invite-friends-dialog.component';
 import { ReportProfileComponent } from './report-profile/report-profile.component';
-
 import { ProjectSubmissionService } from '../project-submission/project-submission.service';
 import { DeleteCohortDialogComponent } from './delete-cohort-dialog/delete-cohort-dialog.component';
 import { CancelCohortDialogComponent } from './cancel-cohort-dialog/cancel-cohort-dialog.component';
@@ -48,59 +47,62 @@ import { DeleteCommunityDialogComponent } from './delete-community-dialog/delete
 import { ExitCommunityDialogComponent } from './exit-community-dialog/exit-community-dialog.component';
 import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflict-dialog.component';
 import { EditSubmissionDialogComponent } from './edit-submission-dialog/edit-submission-dialog.component';
+import { InboxDialogComponent } from './inbox-dialog/inbox-dialog.component';
+import {MessageParticipantDialogComponent} from './message-participant-dialog/message-participant-dialog.component';
+import {ViewParticipantsComponent} from './view-participants/view-participants.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    VgCoreModule,
-    VgControlsModule,
-    VgOverlayPlayModule,
-    VgBufferingModule,
-    ClipboardModule
-  ],
-  exports: [SignupComponentDialogComponent, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent
-    , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent
-    , VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent],
-  declarations: [SignupComponentDialogComponent, LoginComponentDialog, RequestPasswordDialogComponent
-    , AddCardDialogComponent, MultiselectTopicDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent
-    , IdPolicyDialogComponent, VideoDialogComponent,
-    VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent
-    , ProfilePopupCardComponent, ExitCollectionDialogComponent, CancelCollectionDialogComponent, DeleteCollectionDialogComponent,
-    EditCalendarDialogComponent,
-    AddTopicDialogComponent,
-    AddLanguageDialogComponent,
-    ViewConflictDialogComponent, SelectDateDialogComponent,
-    CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
-    SubmissionViewComponent,
-    SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent, DeleteCohortDialogComponent,
-    CancelCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
-    ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent,
-    DateConflictDialogComponent, EditSubmissionDialogComponent
-  ],
-  providers: [
-    DialogsService,
-    TwilioServicesService,
-    ProjectSubmissionService
-  ],
-  entryComponents: [
-    SignupComponentDialogComponent, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent,
-    MultiselectTopicDialogComponent
-    , VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent,
-    VerifyPhoneDialogComponent
-    , LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent, CancelCollectionDialogComponent,
-    ExitCollectionDialogComponent, DeleteCollectionDialogComponent,
-    EditCalendarDialogComponent,
-    AddTopicDialogComponent,
-    AddLanguageDialogComponent,
-    ViewConflictDialogComponent, SelectDateDialogComponent,
-    CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
-    SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent,
-    CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
-    ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent,
-    EditSubmissionDialogComponent
-  ],
+	imports: [
+		CommonModule,
+		FormsModule,
+		ReactiveFormsModule,
+		SharedModule,
+		VgCoreModule,
+		VgControlsModule,
+		VgOverlayPlayModule,
+		VgBufferingModule,
+		ClipboardModule
+	],
+	exports: [SignupComponentDialogComponent, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent
+		, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent
+		, VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent],
+	declarations: [SignupComponentDialogComponent, LoginComponentDialog, RequestPasswordDialogComponent
+		, AddCardDialogComponent, MultiselectTopicDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent
+		, IdPolicyDialogComponent, VideoDialogComponent,
+		VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent
+		, ProfilePopupCardComponent, ExitCollectionDialogComponent, CancelCollectionDialogComponent, DeleteCollectionDialogComponent,
+		EditCalendarDialogComponent,
+		AddTopicDialogComponent,
+		AddLanguageDialogComponent,
+		ViewConflictDialogComponent, SelectDateDialogComponent,
+		CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
+		SubmissionViewComponent,
+		SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent, DeleteCohortDialogComponent,
+		CancelCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
+		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent,
+		DateConflictDialogComponent, EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent
+	],
+	providers: [
+		DialogsService,
+		TwilioServicesService,
+		ProjectSubmissionService
+	],
+	entryComponents: [
+		SignupComponentDialogComponent, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent,
+		MultiselectTopicDialogComponent
+		, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent,
+		VerifyPhoneDialogComponent
+		, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent, CancelCollectionDialogComponent,
+		ExitCollectionDialogComponent, DeleteCollectionDialogComponent,
+		EditCalendarDialogComponent,
+		AddTopicDialogComponent,
+		AddLanguageDialogComponent,
+		ViewConflictDialogComponent, SelectDateDialogComponent,
+		CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
+		SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent,
+		CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
+		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent,
+		EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent
+	],
 })
 export class DialogsModule { }

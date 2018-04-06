@@ -22,8 +22,23 @@
 }
 
 .upcomingEventLabel {
-  color: #cccccc;
-  margin-bottom: 1px;
+	color: #333333;
+	border-radius: 20px;
+	width: fit-content;
+	padding: 3px 10px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 10px;
+	background: #ffffff;
+	border: 2px solid #333333;
+	&.green {
+		border: 2px solid #33bd9e;
+		color: #33b09e;
+	}
+	&.pink {
+		border: 2px solid #FF6D71;
+		color: #ff6071;
+	}
 }
 
 .lighterText {
@@ -38,7 +53,7 @@
 }
 
 .upcomingEventTime {
-  font-size: 90%;
+  font-weight: 500;
   color: #777777;
   margin-top: 0px;
   margin-bottom: 20px;
@@ -65,6 +80,7 @@
   font-weight: 500;
   font-size: 110%;
   margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .teacherHeadline {

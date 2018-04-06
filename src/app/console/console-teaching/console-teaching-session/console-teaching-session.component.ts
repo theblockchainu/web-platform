@@ -46,6 +46,7 @@ export class ConsoleTeachingSessionComponent implements OnInit {
 	}
 	
 	private fetchCollections() {
+		this.loaded = false;
 		const filter = {
 			'where': { 'type': 'session' },
 			'include': [

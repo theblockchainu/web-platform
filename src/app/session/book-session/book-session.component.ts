@@ -434,6 +434,7 @@ export class BookSessionComponent implements OnInit {
 	
 	public joinSession(e?: Event) {
 		e.preventDefault();
+		this.savingData = true;
 		if (this.displayMode === 'request') {
 			const selectedSlots: Array<any> = this.availability.filter(element => element.booked);
 			const sortedSlots = selectedSlots.sort((calEventa, calEventb) => calEventa.start - calEventb.start);

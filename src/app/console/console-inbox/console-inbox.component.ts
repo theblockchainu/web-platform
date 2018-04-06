@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {AfterViewChecked, Component, DoCheck, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import { ConsoleComponent } from '../console.component';
 import { InboxService } from '../../_services/inbox/inbox.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
@@ -7,139 +7,204 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import {SocketService} from '../../_services/socket/socket.service';
 import {environment} from '../../../environments/environment';
+import {ProfileService} from '../../_services/profile/profile.service';
+import {CollectionService} from '../../_services/collection/collection.service';
+import {ViewParticipantsComponent} from '../../_services/dialogs/view-participants/view-participants.component';
+import {MatDialog} from '@angular/material';
 
 @Component({
-  selector: 'app-console-inbox',
-  templateUrl: './console-inbox.component.html',
-  styleUrls: ['./console-inbox.component.scss']
+	selector: 'app-console-inbox',
+	templateUrl: './console-inbox.component.html',
+	styleUrls: ['./console-inbox.component.scss']
 })
-export class ConsoleInboxComponent implements OnInit {
-  public loadingMessages = false;
-  public joinedRooms = [];
-  public tempJoinedRooms = [];
-  public experienceCollection = [];
-  public workshopCollection = [];
-  public defaultLoadedChat;
-  public userId;
-  private key = 'userId';
-  public displayNone = [];
-  public selected = '';
-  public message = '';
-  public envVariable;
-
-  constructor(
-    public activatedRoute: ActivatedRoute,
-    public consoleComponent: ConsoleComponent,
-    public _inboxService: InboxService,
-    public _socketService: SocketService,
-    private _cookieUtilsService: CookieUtilsService
-  ) {
-      this.envVariable = environment;
-    activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
-      console.log(urlSegment[0].path);
-      consoleComponent.setActiveTab(urlSegment[0].path);
-    });
-    this.userId = this._cookieUtilsService.getValue(this.key);
-  }
-
-  ngOnInit() {
-    this._inboxService.getRoomData()
-      .subscribe((response) => {
-        console.log(response);
-        this.joinedRooms = response;
-
-        this.joinedRooms.sort((a, b) => {
-          return moment(b.updatedAt).diff(moment(a.updatedAt), 'days');
-        });
-        console.log(this.joinedRooms);
-        if (this.joinedRooms) {
-          let room = this.joinedRooms[0];
-          room = this.formatDateTime(room);
-          this.displayNone.push[room.id] = false;
-          this.defaultLoadedChat = room;
-          this._socketService.joinRoom(room.id);
-        }
-        this.tempJoinedRooms = this.joinedRooms;
-        this.getCollections();
-        this.selected = 'all';
-      });
-  }
-
-  public openChat(room) {
-    room = this.formatDateTime(room);
-    this.defaultLoadedChat = room;
-    this.displayNone.push[room.id] = false;
-    this._socketService.joinRoom(room.id);
-  }
-
-  private formatDateTime(room) {
-    let participantTextHeader = '';
-    const participantTextHeaderSub = '';
-    if (room.participants) {
-      if (room.participants.length > 2) {
-        for (let i = 0; i < room.participants.length; i++) {
-          if ( i < 2) {
-            participantTextHeader += room.participants[i].profiles[0].first_name + ' ' + room.participants[i].profiles[0].last_name + ', ';
-          }
-        }
-        participantTextHeader = participantTextHeader.trim().slice(0, -1);
-        participantTextHeaderSub.concat(' + ');
-        participantTextHeaderSub.concat(room.participants.length - 2 + ' more');
-      } else {
-        for (let i = 0; i < room.participants.length; i++) {
-          participantTextHeader += room.participants[i].profiles[0].first_name + ' ' + room.participants[i].profiles[0].last_name + ', ';
-        }
-        participantTextHeader = participantTextHeader.trim().slice(0, -1);
-      }
-      room.participantTextHeader = participantTextHeader;
-      room.participantTextHeaderSub = participantTextHeaderSub;
-    }
-    if (room.messages) {
-      room.messages.forEach(msg => {
-        if (moment(msg.createdAt).format('MMM D YYYY') === moment().format('MMM D YYYY')) {
-          msg.createdAtLocal = 'Today';
-          msg.leftColLatestMsgTime = moment(msg.createdAt).format('LT');
-        } else {
-          msg.createdAtLocal = moment(msg.createdAt).format('ddd, MMM D YYYY');
-          msg.leftColLatestMsgTime = moment(msg.createdAt).format('ddd');
-        }
-      });
-    }
-    return room;
-  }
-
-  public postMsg(roomId) {
-    const body = {
-      'text' : this.message,
-      'type' : 'user'
-    };
-    this._inboxService.postMessage(roomId, body)
-      .subscribe((response) => {
-        console.log('Posted');
-      });
-  }
-
-  public imgErrorHandler(event) {
-    event.target.src = '/assets/images/placeholder-image.jpg';
-  }
-
-  public getCollections() {
-    this.joinedRooms.forEach(element => {
-      this.experienceCollection = _.filter(element.collection, function(o) { return o.type === 'experience'; });
-    });
-
-    this.joinedRooms.forEach(element => {
-      this.workshopCollection = _.filter(element.collection, function(o) { return o.type === 'workshop'; });
-    });
-  }
-
-  public getSelectedCollection() {
-    if (this.selected === 'workshop') {
-      this.tempJoinedRooms = this.workshopCollection;
-    } else if (this.selected === 'experience') {
-      this.tempJoinedRooms = this.experienceCollection;
-    } else {
-      this.tempJoinedRooms = this.joinedRooms;
-    }
-  }
+export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
+	public loadingMessages = false;
+	public joinedRooms = [];
+	public tempJoinedRooms = [];
+	public experienceCollection = [];
+	public workshopCollection = [];
+	public selectedRoom;
+	public userId;
+	private key = 'userId';
+	public selected = '';
+	public message = '';
+	public envVariable;
+	public loggedInPeer;
+	public urlRoomId;
+	@ViewChild('chatInputBox') chatInputBox;
+	@ViewChild('messageContainer') private messageContainer: ElementRef;
+	@ViewChild('scrollMe') private myScrollContainer: ElementRef;
+	
+	constructor(
+		public activatedRoute: ActivatedRoute,
+		public consoleComponent: ConsoleComponent,
+		public _inboxService: InboxService,
+		public _socketService: SocketService,
+		public _profileService: ProfileService,
+		public _collectionService: CollectionService,
+		private _cookieUtilsService: CookieUtilsService,
+		public router: Router,
+		private dialog: MatDialog
+	) {
+		this.envVariable = environment;
+		activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
+			console.log(urlSegment[0].path);
+			consoleComponent.setActiveTab(urlSegment[0].path);
+		});
+		activatedRoute.params.subscribe(params => {
+			this.urlRoomId = params['roomId'];
+		});
+		this.userId = this._cookieUtilsService.getValue(this.key);
+	}
+	
+	ngOnInit() {
+		this.loadingMessages = true;
+		this._inboxService.getRoomData()
+			.subscribe((response) => {
+				if (response) {
+					this.getPeerDataAndInitialize(response);
+				} else {
+					console.log('No joined rooms!');
+					this.loadingMessages = false;
+				}
+			});
+	}
+	
+	public initializeInbox(response) {
+		this.sortFilterJoinedRooms(response);
+		if (this.urlRoomId) {
+			const urlRoomIndex = this.joinedRooms.findIndex(room => (room.id === this.urlRoomId));
+			if (urlRoomIndex !== -1) {
+				this.enterRoom(this.joinedRooms[urlRoomIndex]);
+			} else {
+				this.enterRoom(this.joinedRooms[0]);
+			}
+		} else {
+			this.enterRoom(this.joinedRooms[0]);
+		}
+		this.tempJoinedRooms = this.joinedRooms;
+		this.getCollections();
+		this.selected = 'all';
+		this._socketService.listenForNewMessage().subscribe(newMessage => {
+			const receivedInRoomIndex = this.joinedRooms.findIndex(room => (room.id === newMessage['roomId']));
+			// If this room exists for the user and the message hasnt already been added to array
+			if (receivedInRoomIndex !== -1 && !this.joinedRooms[receivedInRoomIndex].messages.find(message => (message.id === newMessage['id']))) {
+				this.joinedRooms[receivedInRoomIndex].messages.push(newMessage);
+				this.sortFilterJoinedRooms(this.joinedRooms);
+			}
+		});
+		this.scrollToBottom();
+		this.loadingMessages = false;
+	}
+	
+	ngAfterViewChecked() {
+		this.scrollToBottom();
+	}
+	
+	public sortFilterJoinedRooms(response) {
+		// this.joinedRooms = response.filter(room => (room.collection && room.collection.length > 0));
+		this.joinedRooms = response;
+		this.joinedRooms.sort((a, b) => {
+			return moment(b.messages[b.messages.length - 1].updatedAt).diff(moment(a.messages[a.messages.length - 1].updatedAt), 'seconds');
+		});
+		this.joinedRooms.forEach(joinedRoom => {
+			return this._inboxService.formatDateTime(joinedRoom, this.userId);
+		});
+		this.tempJoinedRooms = this.joinedRooms;
+	}
+	
+	public enterRoom(room) {
+		this.selectedRoom = room;
+		this.router.navigate(['console', 'inbox', room.id]);
+		if (room && room.unread && room.messages) {
+			room.messages.forEach(message => {
+				if (!message.read && message.peer && message.peer.length > 0 && message.peer[0].id !== this.loggedInPeer.id) {
+					this._inboxService.postMessageReadReceipt(message.id, {}).subscribe(readReceipt => {
+						readReceipt['peer'] = this.loggedInPeer;
+						if (message.readReceipts) {
+							message['readReceipts'].push(readReceipt);
+						} else {
+							message.readReceipts = [];
+							message['readReceipts'].push(readReceipt);
+						}
+						message.read = true;
+						room.unreadCount--;
+						if (room.unreadCount <= 0) {
+							room.unread = false;
+						}
+					});
+				}
+			});
+		}
+	}
+	
+	public getPeerDataAndInitialize(response) {
+		this._profileService.getPeerData(this.userId, {include: 'profiles'}).subscribe(result => {
+			this.loggedInPeer = result;
+			this.initializeInbox(response);
+		});
+	}
+	
+	public postMsg(event, roomId) {
+		event.preventDefault();
+		const body = {
+			'text' : this.message,
+			'type' : 'user'
+		};
+		this.message = '';
+		this._inboxService.postMessage(roomId, body)
+			.subscribe((response) => {
+				response['peer'] = [];
+				response['peer'].push(this.loggedInPeer);
+				console.log(response);
+				if (!this.selectedRoom.messages.find(message => (message.id === response['id']))) {
+					this.selectedRoom.messages.push(response);
+					this.sortFilterJoinedRooms(this.joinedRooms);
+				}
+				this.scrollToBottom();
+			});
+	}
+	
+	public imgErrorHandler(event) {
+		event.target.src = '/assets/images/placeholder-image.jpg';
+	}
+	
+	public getCollections() {
+		this.joinedRooms.forEach(element => {
+			this.experienceCollection = _.filter(element.collection, function(o) { return o.type === 'experience'; });
+		});
+		
+		this.joinedRooms.forEach(element => {
+			this.workshopCollection = _.filter(element.collection, function(o) { return o.type === 'workshop'; });
+		});
+	}
+	
+	public getSelectedCollection() {
+		if (this.selected === 'workshop') {
+			this.tempJoinedRooms = this.workshopCollection;
+		} else if (this.selected === 'experience') {
+			this.tempJoinedRooms = this.experienceCollection;
+		} else {
+			this.tempJoinedRooms = this.joinedRooms;
+		}
+	}
+	
+	public scrollToBottom() {
+		try {
+			this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+		} catch (err) { }
+	}
+	
+	public viewAllParticipants() {
+		const dialogRef = this.dialog.open(ViewParticipantsComponent, {
+			data: {
+				participants: this.selectedRoom.participants,
+				experienceId: this.selectedRoom.collection[0].id,
+				userType: this.selectedRoom.belongsToUser ? 'teacher' : 'participant'
+			},
+			width: '45vw',
+			height: '100vh'
+		});
+	}
 }
+

@@ -63,13 +63,13 @@ export class AuthenticationService {
       .map((response: any) => {
         console.log(response);
         // if res code is xxx and response "error"
-        // login successful if there's a jwt token in the respon  se
+        // login successful if there's a jwt token in the response
         const user = response;
         if (user && user.access_token) {
           this.isLoginSubject.next(true);
           // this.getLoggedInUser.emit(user.userId);
-          location.reload();
           this._socketService.addUser(user.userId);
+			location.reload();
         }
       }, (err) => {
         console.log('Error: ' + err);
