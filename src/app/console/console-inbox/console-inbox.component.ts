@@ -34,6 +34,7 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 	@ViewChild('chatInputBox') chatInputBox;
 	@ViewChild('messageContainer') private messageContainer: ElementRef;
 	@ViewChild('scrollMe') private myScrollContainer: ElementRef;
+	@ViewChild('messageNotification') messageNotification;
 	
 	constructor(
 		public activatedRoute: ActivatedRoute,
@@ -88,9 +89,32 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 		this._socketService.listenForNewMessage().subscribe(newMessage => {
 			const receivedInRoomIndex = this.joinedRooms.findIndex(room => (room.id === newMessage['roomId']));
 			// If this room exists for the user and the message hasnt already been added to array
-			if (receivedInRoomIndex !== -1 && !this.joinedRooms[receivedInRoomIndex].messages.find(message => (message.id === newMessage['id']))) {
-				this.joinedRooms[receivedInRoomIndex].messages.push(newMessage);
-				this.sortFilterJoinedRooms(this.joinedRooms);
+			if (receivedInRoomIndex !== -1 && !this.joinedRooms[receivedInRoomIndex].messages.find(message => (message.localId === newMessage['localId']))) {
+				if (this.joinedRooms[receivedInRoomIndex].id === this.selectedRoom.id) {
+					// Messaged received in current room. Send read receipts
+					this._inboxService.postMessageReadReceipt(newMessage['id'], {}).subscribe(readReceipt => {
+						readReceipt['peer'] = [];
+						readReceipt['peer'].push(this.loggedInPeer);
+						if (newMessage['readReceipts']) {
+							newMessage['readReceipts'].push(readReceipt);
+						} else {
+							newMessage['readReceipts'] = [];
+							newMessage['readReceipts'].push(readReceipt);
+						}
+						// newMessage['read'] = true;
+						this.joinedRooms[receivedInRoomIndex].messages.push(newMessage);
+						this.messageNotification.nativeElement.play();
+						/*this.joinedRooms[receivedInRoomIndex].unreadCount--;
+						if (this.joinedRooms[receivedInRoomIndex].unreadCount <= 0) {
+							this.joinedRooms[receivedInRoomIndex].unread = false;
+						}*/
+						this.sortFilterJoinedRooms(this.joinedRooms);
+					});
+				} else {
+					this.joinedRooms[receivedInRoomIndex].messages.push(newMessage);
+					this.messageNotification.nativeElement.play();
+					this.sortFilterJoinedRooms(this.joinedRooms);
+				}
 			}
 		});
 		this.scrollToBottom();
@@ -107,6 +131,7 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 		this.joinedRooms.sort((a, b) => {
 			return moment(b.messages[b.messages.length - 1].updatedAt).diff(moment(a.messages[a.messages.length - 1].updatedAt), 'seconds');
 		});
+		console.log(this.joinedRooms);
 		this.joinedRooms.forEach(joinedRoom => {
 			return this._inboxService.formatDateTime(joinedRoom, this.userId);
 		});
@@ -120,18 +145,15 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 			room.messages.forEach(message => {
 				if (!message.read && message.peer && message.peer.length > 0 && message.peer[0].id !== this.loggedInPeer.id) {
 					this._inboxService.postMessageReadReceipt(message.id, {}).subscribe(readReceipt => {
-						readReceipt['peer'] = this.loggedInPeer;
+						readReceipt['peer'] = [];
+						readReceipt['peer'].push(this.loggedInPeer);
 						if (message.readReceipts) {
 							message['readReceipts'].push(readReceipt);
 						} else {
 							message.readReceipts = [];
 							message['readReceipts'].push(readReceipt);
 						}
-						message.read = true;
-						room.unreadCount--;
-						if (room.unreadCount <= 0) {
-							room.unread = false;
-						}
+						this.sortFilterJoinedRooms(this.joinedRooms);
 					});
 				}
 			});
@@ -149,15 +171,29 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 		event.preventDefault();
 		const body = {
 			'text' : this.message,
-			'type' : 'user'
+			'type' : 'user',
+			'localId': moment().unix()
 		};
 		this.message = '';
+		const tempMessage = _.clone(body);
+		tempMessage['peer'] = [];
+		tempMessage['peer'].push(this.loggedInPeer);
+		tempMessage['updatedAt'] = moment().format();
+		tempMessage['delivered'] = false;
+		console.log(tempMessage);
+		this.selectedRoom.messages.push(tempMessage);
 		this._inboxService.postMessage(roomId, body)
 			.subscribe((response) => {
 				response['peer'] = [];
 				response['peer'].push(this.loggedInPeer);
 				console.log(response);
-				if (!this.selectedRoom.messages.find(message => (message.id === response['id']))) {
+				const foundMsgIndex = this.selectedRoom.messages.findIndex(message => (message.localId === response['localId']));
+				if (foundMsgIndex !== -1) {
+					console.log('found undelivered message. Updating it. ');
+					this.selectedRoom.messages.splice(foundMsgIndex, 1);
+					this.selectedRoom.messages.push(response);
+					this.sortFilterJoinedRooms(this.joinedRooms);
+				} else {
 					this.selectedRoom.messages.push(response);
 					this.sortFilterJoinedRooms(this.joinedRooms);
 				}

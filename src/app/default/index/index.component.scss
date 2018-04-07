@@ -11,6 +11,7 @@
     margin-left: 25%;
     width: auto;
     height: 400px;
+	border-radius: 50px;
 }
 
 .centerPlayButton {
@@ -18,7 +19,7 @@
     height: 40px;
     position: absolute;
     top: 335px;
-    left: 30px;
+    left: 0px;
     right: 0;
     bottom: 0;
     margin-left: auto;
@@ -137,22 +138,25 @@
 }
 
 .journeyText {
-    bottom: 815px;
-    position: absolute;
-    left: 665px;
-    text-align: justify;
-    color: white;
-    font-weight: 100 !important;
+	bottom: 683px;
+	position: absolute;
+	left: 85px;
+	text-align: justify;
+	color: white;
+	font-weight: 100 !important;
 }
 
 .journeyDesc {
-    bottom: 800px;
-    position: absolute;
-    left: 680px;
-    font-size: 17px;
-    font-weight: 300;
-    text-align: justify;
-    color: #979797;
+	bottom: 800px;
+	position: absolute;
+	left: 520px;
+	font-size: 17px;
+	font-weight: 300;
+	text-align: justify;
+	color: #ffffff;
+	background: #979797;
+	padding: 10px 20px;
+	cursor: pointer;
 }
 
 .footer {

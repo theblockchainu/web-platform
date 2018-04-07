@@ -38,6 +38,7 @@
             float: right;
             padding: 5px 10px 0px 10px;
             width: 30%;
+	        text-align: right;
         }
 
         .mat-button,
@@ -120,7 +121,7 @@
         }
 
         .login-section {
-            margin: -3%;
+            margin: -3% 0%;
             height: 83vh;
         }
 
@@ -515,7 +516,7 @@
         }
 
         header {
-            padding: 3.9em;
+            padding: 3.9em 1em;
             color: white;
             background-color: #fff;
             clear: left;
@@ -557,7 +558,7 @@
             height: 1px;
             border: 0;
             box-shadow: inset 0 1px 1px 0.001px rgba(0, 0, 0, 0.3);
-            width: 103%;
+            width: 100%;
             margin-top: 8%;
         }
 
@@ -676,7 +677,7 @@
 
         }
         function signup(cFuntion) {
-            // $('#signupForm').submit();  
+            // $('#signupForm').submit();
             var formElement = document.querySelector("form");
             var formData = {};
             for (var field in formElement) {
@@ -731,18 +732,18 @@
                 </span>
                 <span class="example-spacer"></span>
                 <span class="rightSpan">
-                    <button class="headerButtons mat-button" onclick="goToPhilosophy()" *ngIf="!(isLoggedIn | async)">
+                    <!--<button class="headerButtons mat-button" onclick="goToPhilosophy()" *ngIf="!(isLoggedIn | async)">
                         Philosophy
-                    </button>
+                    </button>-->
                     <!-- <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
                     Journey
                 </button>
                 <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
                 About
                 </button>-->
-                    <button class="headerButtons mat-button" onclick="goToWhitePaper()" *ngIf="!(isLoggedIn | async)">
+                    <!--<button class="headerButtons mat-button" onclick="goToWhitePaper()" *ngIf="!(isLoggedIn | async)">
                         White Paper
-                    </button>
+                    </button>-->
 
                     <a class="headerButtons mat-button" href="/signup.html" *ngIf="!(isLoggedIn | async)">
                         Sign Up
@@ -890,17 +891,17 @@
     <footer *ngIf="!(isLoggedIn | async)">
         <div class="layout-row footer col-md-offset-2 col-md-8 margin-bottom-20" layout="row" color="white">
             <div layout="row" class="col-sm-12" style="cursor: pointer;">
-                <a class="footer-btn footerButtons col-sm-2" mat-button href="/philosophy"> About Us </a>
+                <a class="footer-btn footerButtons col-sm-2" mat-button href="/about-us"> About Us </a>
                 <a class="footer-btn footerButtons col-sm-2" mat-button href="/contact">
                     Contact Us
                 </a>
                 <span class="center">
                     <a onclick="goToHome()" class="brand col-sm-2" aria-label="Peerbuds Homepage" style="margin-top: -1%;">
-                        <img style="width: 150px" src="assets/images/images_landing/Pb_logo.png" alt="logo">
+                        <img style="width: 100px" src="assets/images/images_landing/Pb_logo.png" alt="logo">
                     </a>
                 </span>
-                <a class="footer-btn footerButtons col-sm-2" mat-button href="/white-paper">
-                    White Paper
+                <a class="footer-btn footerButtons col-sm-2" mat-button href="/trust">
+                    Trust & Safety
                 </a>
                 <a class="footer-btn footerButtons col-sm-2" mat-button href="/privacy-policy">
                     Privacy Policy

@@ -1,7 +1,5 @@
 import {BrowserModule, Title} from '@angular/platform-browser';
 import {ErrorHandler, NgModule} from '@angular/core';
-
-
 import { AppComponent } from './app.component';
 import {AppNotificationDialogComponent} from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 import {GlobalErrorHandlerComponent} from './error-handler/globalerrorhandler';
@@ -39,6 +37,24 @@ import {MatTooltipModule} from '@angular/material';
 import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
 import {CookieService} from 'ngx-cookie-service';
 import {UcWordsPipe} from 'ngx-pipes';
+import * as Raven from 'raven-js';
+import {environment} from '../environments/environment';
+
+Raven
+	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
+	.install();
+
+Raven.setExtraContext({
+	environment: (environment.production) ? 'production' : 'development'
+});
+
+export class RavenErrorHandler implements ErrorHandler {
+	handleError(err: any): void {
+		Raven.captureException(err);
+	}
+}
+
+
 
 
 @NgModule({
@@ -98,7 +114,7 @@ import {UcWordsPipe} from 'ngx-pipes';
 	  UcWordsPipe,
     {
       provide: ErrorHandler,
-      useClass: GlobalErrorHandlerComponent
+      useClass: RavenErrorHandler
     },
     Title
   ],
