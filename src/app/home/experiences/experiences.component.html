@@ -21,28 +21,28 @@
           </div>-->
           <form [formGroup]="filterForm">
             <div class="margin-right-10" style="float: left;">
-              <mat-form-field class="filterFormField">
+              <mat-form-field class="filterFormField" [floatLabel]="'never'">
                 <mat-select placeholder="Languages" formControlName="language" multiple>
                   <mat-option *ngFor="let language of languageList" [value]="language">{{language}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
             <div class="margin-right-10" style="float: left;">
-              <mat-form-field class="filterFormField">
+              <mat-form-field class="filterFormField" [floatLabel]="'never'">
                 <mat-select placeholder="Location" formControlName="location" multiple>
                   <mat-option *ngFor="let location of locationList" [value]="location">{{location}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
             <div class="margin-right-10" style="float: left;">
-              <mat-form-field class="filterFormField">
+              <mat-form-field class="filterFormField" [floatLabel]="'never'">
                 <mat-select placeholder="Difficulty Level" formControlName="difficultyLevel" multiple>
                   <mat-option *ngFor="let level of levelList" [value]="level">{{level}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
             <div class="margin-right-10" style="float: left;">
-              <mat-form-field class="filterFormField">
+              <mat-form-field class="filterFormField" [floatLabel]="'never'">
                 <mat-select placeholder="Rating" formControlName="rating" multiple>
                   <mat-option *ngFor="let rating of ratingList" [value]="rating">
                     <p-rating class="padding-left-0" style="float: left;" [ngModelOptions]="{standalone: true}" [ngModel]="rating" readonly="true"

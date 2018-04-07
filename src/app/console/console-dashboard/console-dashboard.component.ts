@@ -489,7 +489,7 @@ export class ConsoleDashboardComponent implements OnInit {
             if (result) {
                 this.fetchOwnedCollections();
                 this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Deleted', 'Close', {
-                    duration: 800
+                    duration: 5000
                 });
             }
         });
@@ -503,7 +503,7 @@ export class ConsoleDashboardComponent implements OnInit {
             if (result) {
                 this.fetchOwnedCollections();
                 this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Cancelled', 'Close', {
-                    duration: 800
+                    duration: 5000
                 });
             }
         });
@@ -517,7 +517,7 @@ export class ConsoleDashboardComponent implements OnInit {
             if (result) {
                 this.fetchLearningCollections();
                 this.snackBar.open('You have dropped out of the ' + collection.type, 'Close', {
-                    duration: 800
+                    duration: 5000
                 });
             } else {
                 console.log(result);

@@ -88,7 +88,7 @@ export class VerifyPhoneDialogComponent implements OnInit {
 		this._profileService.sendVerifySms(this.peer.controls.phone.value, this.peer.controls.countryCode.value)
 			.subscribe((response) => {
 				this.snackBar.open('Code sent again', 'OK', {
-					duration: 2000
+					duration: 5000
 				});
 			});
 	}

@@ -234,9 +234,9 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
     this.selectedTopic = new FormGroup({});
 
     this.phoneDetails = this._fb.group({
-      phoneNo: '',
+      phoneNo: [{value: '', disabled: true}],
       inputOTP: '',
-      countryCode: ''
+      countryCode: [{value: '', disabled: true}]
     });
 
     this.paymentInfo = this._fb.group({
@@ -694,8 +694,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
         this.addImageUrl(response.url);
         this.uploadingImage = false;
       }, err => {
-        this.snackBar.open(err.message, 'close', {
-          duration: 900
+        this.snackBar.open(err.message, 'Close', {
+          duration: 5000
         });
         this.uploadingImage = false;
       });
@@ -734,14 +734,14 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
     const endMoment = moment(calendarGroup.controls['endDate'].value).local();
     if (startMoment.diff(endMoment) > 0) {
       this.snackBar.open('Start date cannot be after end date!', 'Close', {
-        duration: 800
+        duration: 5000
       });
       return false;
     }
     console.log(startMoment.diff(moment()));
     if (startMoment.diff(moment()) < 0) {
       this.snackBar.open('Start date cannot be in the past!', 'Close', {
-        duration: 800
+        duration: 5000
       });
       return false;
     }
@@ -812,11 +812,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
       console.log('No date selected or no content added to itinerary! - ' + JSON.stringify(itinerary));
       if (!itinerary || itinerary.length === 0) {
         this.snackBar.open('You need to add at least 1 activity to your experience to proceed.', 'Close', {
-          duration: 900
+          duration: 5000
         });
       } else {
         this.snackBar.open('No dates have been selected for your experience.', 'Close', {
-          duration: 900
+          duration: 5000
         });
       }
     }
@@ -1111,14 +1111,14 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
     this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
       .subscribe((res) => {
         console.log(res);
-        this.snackBar.open('Token Verified', 'close', {
-          duration: 900
+        this.snackBar.open('Token Verified', 'Close', {
+          duration: 5000
         });
         this.step++;
       },
         (error) => {
-          this.snackBar.open(error.message, 'close', {
-            duration: 900
+          this.snackBar.open(error.message, 'Close', {
+            duration: 5000
           });
         });
   }
@@ -1173,14 +1173,14 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
         if (res) {
           this.payoutLoading = false;
           this.payoutRuleAccountId = newPayoutId;
-          this.snackBar.open('Payout Account Updated', 'close', {
-            duration: 900
+          this.snackBar.open('Payout Account Updated', 'Close', {
+            duration: 5000
           });
         }
       }, err => {
         this.payoutLoading = false;
-        this.snackBar.open('Unable to update account', 'close', {
-          duration: 900
+        this.snackBar.open('Unable to update account', 'Close', {
+          duration: 5000
         });
       });
     } else {
@@ -1188,15 +1188,15 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
         if (res) {
           this.payoutLoading = false;
           this.payoutRuleAccountId = newPayoutId;
-          this.snackBar.open('Payout Account Added', 'close', {
-            duration: 900
+          this.snackBar.open('Payout Account Added', 'Close', {
+            duration: 5000
           });
           this.payoutRuleNodeId = res.id;
         }
       }, err => {
         this.payoutLoading = false;
-        this.snackBar.open('Unable to Add account', 'close', {
-          duration: 900
+        this.snackBar.open('Unable to Add account', 'Close', {
+          duration: 5000
         });
       });
 

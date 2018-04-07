@@ -653,7 +653,7 @@ export class CommunityEditComponent implements OnInit {
         this.uploadingImage = false;
       }, err => {
         this.snackBar.open(err.message, 'close', {
-          duration: 900
+          duration: 5000
         });
         this.uploadingImage = false;
       });
@@ -1042,13 +1042,13 @@ export class CommunityEditComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         this.snackBar.open('Token Verified', 'close', {
-          duration: 500
+          duration: 5000
         });
         this.step++;
       },
         (error) => {
           this.snackBar.open(error.message, 'close', {
-            duration: 500
+            duration: 5000
           });
         });
   }
@@ -1103,14 +1103,14 @@ export class CommunityEditComponent implements OnInit {
         if (res) {
           this.payoutLoading = false;
           this.payoutRuleAccountId = newPayoutId;
-          this.snackBar.open('Payout Account Updated', 'close', {
-            duration: 500
+          this.snackBar.open('Payout Account Updated', 'Close', {
+            duration: 5000
           });
         }
       }, err => {
         this.payoutLoading = false;
-        this.snackBar.open('Unable to update account', 'close', {
-          duration: 500
+        this.snackBar.open('Unable to update account', 'Close', {
+          duration: 5000
         });
       });
     } else {
@@ -1118,15 +1118,15 @@ export class CommunityEditComponent implements OnInit {
         if (res) {
           this.payoutLoading = false;
           this.payoutRuleAccountId = newPayoutId;
-          this.snackBar.open('Payout Account Added', 'close', {
-            duration: 500
+          this.snackBar.open('Payout Account Added', 'Close', {
+            duration: 5000
           });
           this.payoutRuleNodeId = res.id;
         }
       }, err => {
         this.payoutLoading = false;
-        this.snackBar.open('Unable to Add account', 'close', {
-          duration: 500
+        this.snackBar.open('Unable to Add account', 'Close', {
+          duration: 5000
         });
       });
 

@@ -488,7 +488,7 @@ export class WorkshopPageComponent implements OnInit {
               });
             } else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
               const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', {
-                duration: 800
+                duration: 5000
               });
               snackBarRef.onAction().subscribe(() => {
                 this.router.navigate(['workshop', this.workshopId, 'calendar', this.calendarId]);

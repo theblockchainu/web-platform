@@ -657,9 +657,9 @@ h3.calendarTitle  {
 
 /* Bootstrap Starts */
 .ui-accordion .ui-accordion-header{
-    background:rgba(255, 255, 255, 0.00);
-    border-bottom: 0.5px solid #eeeeee;
-    border-top: 0px;
+    background:rgba(255, 255, 255, 0.00) !important;
+    border-bottom: 0.5px solid #eeeeee !important;
+    border-top: 0px !important;
 
 }
 
@@ -668,11 +668,16 @@ h3.calendarTitle  {
 }
 
 .ui-accordion .ui-accordion-header .fa-caret-right,.ui-accordion .ui-accordion-header .fa-caret-down{
-    display: none;
+    display: none !important;
+}
+
+.ui-accordion-content {
+	padding-top: 20px !important;
+	padding-bottom: 20px !important;
 }
 
 .ui-state-default {
-    border: 0px solid #d6d6d6;
+    border: 0px solid #d6d6d6 !important;
 }
 
 .onboarding.step-10 .ui-widget-header {
@@ -719,7 +724,7 @@ h3.calendarTitle  {
 }
 
 .ui-accordion .ui-accordion-header a:focus {
-    outline: none;
+    outline: none !important;
 }
 
 .ui-accordion {
@@ -1427,7 +1432,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 
 .bottomBar{
     position: relative;
-    top: 52%;
+    top: 44%;
     left: 5%;
     width: 88%;
     height: 23%;
@@ -1592,7 +1597,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
     position: relative;
 	max-width: 80%;
 	height: auto;
-    background-color: #d3d3d3;
+    background-color: #eeeeee;
 }
 /* .border {
     border: 8px solid #666;
@@ -1615,7 +1620,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
     top: 0px;
 	bottom: auto;
 	border: 22px solid;
-	border-color: #d3d3d3 transparent transparent transparent;
+	border-color: #eeeeee transparent transparent transparent;
 }
 
 /* talk bubble contents */
@@ -1623,6 +1628,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
     padding: 1em;
     text-align: left;
     line-height: 1.5em;
+	white-space: pre-wrap;
 }
 .talktext h6{
     /* remove webkit p margins */
@@ -1633,10 +1639,10 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 /* Chat Bubble Ends */
 
 .chatbox {
-    height: 200px; /* reasonable estimate */
     overflow-y: auto; /* show scrollbar only when text overflows vertically */
     position: relative;
-    border: 1px solid #d3d3d3;
+    border: 1px solid #dbdbdb;
+	border-radius: 2px;
 }
 
 .chatbox > p {
@@ -1647,6 +1653,18 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 .chatbox .mat-form-field-wrapper .mat-form-field-underline {
     display: none !important;
     background: none !important;
+}
+
+.chatbox .mat-form-field-wrapper {
+	padding-bottom: 4px !important;
+}
+
+.chatbox .mat-input-placeholder {
+	color: #bbbbbb !important;
+}
+
+.chatbox .mat-form-field-infix {
+	border-top: 4px solid transparent !important;
 }
 
 .topic-bar button{
@@ -1727,4 +1745,18 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 
 .filterFormField {
 	width: 150px !important;
+}
+
+
+
+.headerChat .mat-form-field-underline {
+	background: none !important;
+}
+
+.headerChat .mat-form-field-flex {
+	padding: 2px 15px !important;
+}
+
+.headerChat .mat-form-field-infix {
+	border-top: 0px !important;
 }

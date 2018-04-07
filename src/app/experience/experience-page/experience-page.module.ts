@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../_shared/_shared.module';
-import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
-import { MessageParticipantComponent } from './message-participant/message-participant.component';
 import { ShowRSVPPopupComponent } from './show-rsvp-participants-dialog/show-rsvp-dialog.component';
 import { ExperiencePageRoutingModule } from './experience-page-routing.module';
 import { ExperiencePageComponent } from './experience-page.component';
@@ -37,8 +35,8 @@ import { ContentInpersonComponent } from './content-inperson/content-inperson.co
     StickyModule
   ],
 
-  declarations: [ExperiencePageComponent, ViewParticipantsComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, MessageParticipantComponent, ShowRSVPPopupComponent],
-  bootstrap: [ViewParticipantsComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, MessageParticipantComponent, ShowRSVPPopupComponent],
+  declarations: [ExperiencePageComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
+  bootstrap: [ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
   providers: [ProjectSubmissionService]
 
 })

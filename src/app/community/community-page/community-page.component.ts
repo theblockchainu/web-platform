@@ -339,7 +339,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
                 this.router.navigate(['community', this.communityId]);
                 this.snackBar.open('Thanks for joining the community. Ask questions or share your' +
                     ' find partners for your learning journey.', 'Close', {
-                        duration: 800
+                        duration: 5000
                     });
             }
         });

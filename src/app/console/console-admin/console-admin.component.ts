@@ -63,7 +63,8 @@ export class ConsoleAdminComponent implements OnInit {
     const query = {
       'where': { 'isApproved': false, 'status': 'submitted' },
       'include': [
-        'calendars'
+        'calendars',
+		  {'owners': ['profiles', 'topicsTeaching']}
       ]
     };
     this._collectionService.getAllCollections(query).subscribe(
@@ -86,7 +87,7 @@ export class ConsoleAdminComponent implements OnInit {
         if (result) {
           this.fetchCollections();
           this.snackBar.open(result.result, 'Close', {
-            duration: 800
+            duration: 5000
           }).onAction().subscribe();
         }
       }, err => {
@@ -103,7 +104,7 @@ export class ConsoleAdminComponent implements OnInit {
       if (result) {
         this.fetchPeers();
         this.snackBar.open(result.result, 'Close', {
-          duration: 800
+          duration: 5000
         }).onAction().subscribe();
       }
 

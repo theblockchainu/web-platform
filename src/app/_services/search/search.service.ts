@@ -73,6 +73,37 @@ export class SearchService {
                 return;
         }
     }
+	
+	
+	public getSearchOptionImage(option) {
+		switch (option.index.split('_')[1]) {
+			case 'collection':
+				switch (option.data.type) {
+					case 'workshop':
+						return environment.apiUrl + option.data.imageUrls[0];
+					case 'experience':
+						return environment.apiUrl + option.data.imageUrls[0];
+					default:
+						return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] : '/assets/images/placeholder-image.jpg';
+				}
+			case 'topic':
+				return environment.apiUrl + option.data.imageUrl;
+			case 'community':
+				return environment.apiUrl + option.data.imageUrls[0];
+			case 'question':
+				return '/assets/images/placeholder-image.jpg';
+			case 'peer':
+				if (option.data.profiles[0] === undefined) {
+					return '/assets/images/user-placeholder.jpg';
+				} else if (option.data.profiles[0] !== undefined && option.data.profiles[0].picture_url === undefined) {
+					return '/assets/images/user-placeholder.jpg';
+				} else {
+					return environment.apiUrl + option.data.profiles[0].picture_url;
+				}
+			default:
+				return;
+		}
+	}
 
     public getSearchOptionType(option) {
         switch (option.index.split('_')[1]) {

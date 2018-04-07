@@ -1,7 +1,5 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {AuthGuardService} from '../_services/auth-guard/auth-guard.service';
-
 import {HomeComponent} from './home.component';
 import {HomefeedComponent} from './homefeed/homefeed.component';
 import {WorkshopsComponent} from './workshops/workshops.component';
@@ -12,7 +10,6 @@ import {CommunitiesComponent} from './communities/communities.component';
 const routes: Routes = [{
     path: '',
     component: HomeComponent,
-    canActivate: [AuthGuardService],
     children: [
         {
             path: 'homefeed',

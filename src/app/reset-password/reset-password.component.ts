@@ -68,12 +68,12 @@ export class ResetPasswordComponent implements OnInit {
         (data) => {
           if (data.success) {
             this.snackBar.open(data.message + ', redirecting...', 'Ok', {
-              duration: 800
+              duration: 5000
             });
             this.router.navigateByUrl('');
           } else {
-            this.snackBar.open(data.message, 'close', {
-              duration: 800
+            this.snackBar.open(data.message, 'Close', {
+              duration: 5000
             });
           }
         },

@@ -95,7 +95,7 @@
           </div>
           <div class="col-md-4">
             <div class="row" style="margin-top: 15px; text-align: right" *ngIf="userType==='teacher' || userType==='participant'">
-              <!--<button mat-raised-button class="" color="primary" (click)="joinGroupChat()">Join Group Chat</button> &emsp;-->
+              <button class="mat-button mat-border-button" color="primary" (click)="openGroupChat()">Group Chat</button> &emsp;
               <button mat-button class="mat-border-button" *ngIf="userType ==='participant' || userType === 'teacher'" (click)="scrollToDiscussion()">Discussion</button> &emsp;
               <button mat-button class="mat-border-button" *ngIf="userType==='teacher'" (click)="gotoEdit()">Edit</button>&emsp;
               <mat-icon [matMenuTriggerFor]="menu" style="cursor: pointer;top: 5px; color: #ccc;">more_vert</mat-icon>

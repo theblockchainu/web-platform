@@ -153,12 +153,12 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 				.subscribe(response => {
 					console.log(response);
 					this.snackBar.open('Topic Updated', 'Close', {
-						duration: 800
+						duration: 5000
 					});
 				}, err => {
 					console.log(err);
 					this.snackBar.open('Topic Update Failed', 'Retry', {
-						duration: 800
+						duration: 5000
 					}).onAction().subscribe(() => {
 						this.updateChanges(type, topic);
 					});

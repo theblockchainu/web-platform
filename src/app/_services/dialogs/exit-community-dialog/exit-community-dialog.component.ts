@@ -24,7 +24,7 @@ export class ExitCommunityDialogComponent implements OnInit {
             }
         }, err => {
             this.snackBar.open('Couldn&#39;t cancel membership', 'Retry', {
-                duration: 800
+                duration: 5000
             }).onAction().subscribe(res => {
                 this.dropOut();
             });

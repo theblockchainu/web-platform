@@ -38,6 +38,7 @@ import {MatButtonModule} from '@angular/material';
 import {MatTooltipModule} from '@angular/material';
 import {ANIMATION_TYPES, LoadingModule} from 'ngx-loading';
 import {CookieService} from 'ngx-cookie-service';
+import {UcWordsPipe} from 'ngx-pipes';
 
 
 @NgModule({
@@ -94,6 +95,7 @@ import {CookieService} from 'ngx-cookie-service';
   ],
   providers: [
     CookieService,
+	  UcWordsPipe,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandlerComponent
