@@ -470,7 +470,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
               { 'peer': 'profiles' }]
             }]
         },
-		  'rooms'
+        'rooms'
       ],
       'relInclude': 'calendarId'
     };
@@ -1514,8 +1514,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
       const cohortEndDate = moment(calendar.endDate);
       const currentMoment = moment();
       if (cohortStartDate.diff(currentMoment, 'seconds') > 0) {
-      	result = true;
-	  }
+        result = true;
+      }
     });
     return result;
   }
@@ -1526,7 +1526,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
       action_type: 'og.shares',
       action_properties: JSON.stringify({
         object: {
-          'og:url': environment.clientUrl + this.activatedRoute.pathFromRoot, // your url to share
+          'og:url': environment.clientUrl + this.router.url, // your url to share
           'og:title': this.experience.title,
           'og:site_name': 'Peerbuds',
           'og:description': this.experience.description,
@@ -1679,15 +1679,15 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
       return moment(this.currentCalendar.endDate) > this.today;
     }
   }
-  
+
   public openGroupChat() {
-  	if (this.experience.rooms && this.experience.rooms.length > 0) {
-		this.router.navigate(['console', 'inbox', this.experience.rooms[0].id]);
-	} else {
-  		this.snackBar.open('Looks like you have not been subscribed to this experience\'s group chat. If this is unintentional, contact support.', 'Close', {
-  			duration: 5000
-		});
-	}
+    if (this.experience.rooms && this.experience.rooms.length > 0) {
+      this.router.navigate(['console', 'inbox', this.experience.rooms[0].id]);
+    } else {
+      this.snackBar.open('Looks like you have not been subscribed to this experience\'s group chat. If this is unintentional, contact support.', 'Close', {
+        duration: 5000
+      });
+    }
   }
 
 }
