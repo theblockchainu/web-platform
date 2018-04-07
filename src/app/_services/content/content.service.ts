@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ContentService {
@@ -16,7 +16,7 @@ export class ContentService {
     public router: Router,
     private requestHeaderService: RequestHeaderService) {
     this.options = requestHeaderService.getOptions();
-      this.envVariable = environment;
+    this.envVariable = environment;
   }
 
   public getEvents(userId: string) {
@@ -54,7 +54,10 @@ export class ContentService {
       );
   }
 
-
+  public deleteRSVP(rsvpId) {
+    return this.http
+      .delete(environment.apiUrl + '/api/rsvps/' + rsvpId, this.options);
+  }
 
   public createRSVP(contentId, calendarId) {
     const body = {
@@ -65,11 +68,11 @@ export class ContentService {
       .post(environment.apiUrl + '/api/contents/' + contentId + '/rsvps', body, this.options)
       .map((response: any) => response);
   }
-  
+
   public deleteContent(contentId) {
-  	return this.http.delete(environment.apiUrl + '/api/contents/' + contentId, this.options)
-		.map((response: any) => response, (err) => {
-			console.log('Error: ' + err);
-		});
+    return this.http.delete(environment.apiUrl + '/api/contents/' + contentId, this.options)
+      .map((response: any) => response, (err) => {
+        console.log('Error: ' + err);
+      });
   }
 }
