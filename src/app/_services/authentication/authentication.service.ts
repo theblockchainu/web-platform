@@ -66,6 +66,7 @@ export class AuthenticationService {
         // login successful if there's a jwt token in the response
         const user = response;
         if (user && user.access_token) {
+			(<any>window).ga('user_id', user.userId);
           this.isLoginSubject.next(true);
           // this.getLoggedInUser.emit(user.userId);
           this._socketService.addUser(user.userId);
