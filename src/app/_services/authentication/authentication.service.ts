@@ -84,6 +84,7 @@ export class AuthenticationService {
     this.removeCookie(this.key);
     this.removeCookie('userId');
     this.removeCookie('accountApproved');
+	  this.removeCookie('access_token');
     this.isLoginSubject.next(false);
     this.getLoggedInUser.emit(0);
     if (this.getCookie(this.key)) {

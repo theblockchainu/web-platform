@@ -36,6 +36,7 @@ export class AppHeaderComponent implements OnInit {
 	public myControl = new FormControl('');
 	@ViewChild('notificationsButton') notificationsButton;
 	@ViewChild('searchInputBar') searchInputBar;
+	@ViewChild('messageNotification') messageNotification;
 	public userId;
 	public userIdObservable;
 	public envVariable;
@@ -177,6 +178,7 @@ export class AppHeaderComponent implements OnInit {
 									});
 									this.joinedRooms[receivedInRoomIndex].messages.push(newMessage);
 									this.sortFilterJoinedRooms(this.joinedRooms);
+									this.messageNotification.nativeElement.play();
 								}
 							}
 						});

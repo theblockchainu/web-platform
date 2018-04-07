@@ -81,9 +81,11 @@ export class SocketService {
         return new Observable(observer => {
             this.socket.on('message', (data) => {
             	// set delivery for this message
-				this._inboxService.postMessageDeliveryReceipt(data['id'], {}).subscribe(res => {
-					console.log(res);
-				});
+				if (data['peer'] && data['peer'][0].id !== this.userId) {
+					this._inboxService.postMessageDeliveryReceipt(data['id'], {}).subscribe(res => {
+						console.log(res);
+					});
+				}
                 observer.next(data);
             });
             return;
