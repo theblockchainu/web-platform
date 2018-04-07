@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, OnDestroy} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar } from '@angular/material';
@@ -40,7 +40,7 @@ import { ContentInpersonComponent } from './content-inperson/content-inperson.co
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { environment } from '../../../environments/environment';
-import {SocketService} from '../../_services/socket/socket.service';
+import { SocketService } from '../../_services/socket/socket.service';
 declare var FB: any;
 
 const colors: any = {
@@ -220,17 +220,17 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-  	if (this.startedView) {
-		this.startedView.viewer = {
-			id: this.userId
-		};
-		this.startedView.endTime = new Date();
-		this._socketService.sendEndView(this.startedView);
-		this._socketService.listenForViewEnded().subscribe(endedView => {
-			delete this.startedView;
-			console.log(endedView);
-		});
-	}
+    if (this.startedView) {
+      this.startedView.viewer = {
+        id: this.userId
+      };
+      this.startedView.endTime = new Date();
+      this._socketService.sendEndView(this.startedView);
+      this._socketService.listenForViewEnded().subscribe(endedView => {
+        delete this.startedView;
+        console.log(endedView);
+      });
+    }
   }
 
   initializePage() {
@@ -442,6 +442,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
               const peer = _.find(rsvp.peer, function (o) { return o.id === self.userId; });
               if (peer) {
                 content.hasRSVPd = true;
+                content.rsvpId = rsvp.id;
                 return;
               }
             }
@@ -594,24 +595,24 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
   }
 
   private recordStartView() {
-	  // Send start view msg on socket
-	  const view = {
-		  type: 'user',
-		  url: this.router.url,
-		  ip_address: '',
-		  browser: '',
-		  viewedModelName: 'collection',
-		  startTime: new Date(),
-		  collection: this.experience,
-		  viewer: {
-			  id: this.userId
-		  }
-	  };
-	  this._socketService.sendStartView(view);
-	  this._socketService.listenForViewStarted().subscribe(startedView => {
-		  this.startedView = startedView;
-		  console.log(startedView);
-	  });
+    // Send start view msg on socket
+    const view = {
+      type: 'user',
+      url: this.router.url,
+      ip_address: '',
+      browser: '',
+      viewedModelName: 'collection',
+      startTime: new Date(),
+      collection: this.experience,
+      viewer: {
+        id: this.userId
+      }
+    };
+    this._socketService.sendStartView(view);
+    this._socketService.listenForViewStarted().subscribe(startedView => {
+      this.startedView = startedView;
+      console.log(startedView);
+    });
   }
 
   private getReviews() {
@@ -933,6 +934,15 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 
   rsvpContent(contentId) {
     this._contentService.createRSVP(contentId, this.calendarId)
+      .subscribe((response: any) => {
+        console.log(response);
+        this.initializeExperience();
+      });
+  }
+
+  cancelRSVP(content) {
+    console.log(content);
+    this._contentService.deleteRSVP(content.rsvpId)
       .subscribe((response: any) => {
         console.log(response);
         this.initializeExperience();
@@ -1512,10 +1522,21 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 
   public shareOnFb() {
     FB.ui({
-      method: 'share'
+      method: 'share_open_graph',
+      action_type: 'og.shares',
+      action_properties: JSON.stringify({
+        object: {
+          'og:url': environment.clientUrl + this.activatedRoute.pathFromRoot, // your url to share
+          'og:title': this.experience.title,
+          'og:site_name': 'Peerbuds',
+          'og:description': this.experience.description,
+          'og:image': this.experience.imageUrls[0],
+          'og:image:width': '250',
+          'og:image:height': '257'
+        }
+      })
     }, function (response) {
-      // Debug response (optional)
-      console.log(response);
+      console.log('response is ', response);
     });
   }
 
@@ -1654,9 +1675,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
   }
 
   public isCancelable() {
-  	if (this.currentCalendar) {
-  		return moment(this.currentCalendar.endDate) > this.today;
-	}
+    if (this.currentCalendar) {
+      return moment(this.currentCalendar.endDate) > this.today;
+    }
   }
   
   public openGroupChat() {
