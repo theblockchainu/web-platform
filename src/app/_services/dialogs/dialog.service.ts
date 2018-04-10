@@ -20,8 +20,6 @@ import { DeleteCollectionDialogComponent } from './delete-collection-dialog/dele
 import { EditCalendarDialogComponent } from './edit-calendar-dialog/edit-calendar-dialog.component';
 import { AddTopicDialogComponent } from './add-topic-dialog/add-topic-dialog.component';
 import { AddLanguageDialogComponent } from './add-language-dialog/add-language-dialog.component';
-import { ViewConflictDialogComponent } from './view-conflict-dialog/view-conflict-dialog.component';
-import { } from './';
 import {
     CalendarEvent
 } from 'angular-calendar';
@@ -39,7 +37,7 @@ import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 import { DeleteCommunityDialogComponent } from './delete-community-dialog/delete-community-dialog.component';
 import { ExitCommunityDialogComponent } from './exit-community-dialog/exit-community-dialog.component';
 import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflict-dialog.component';
-import {MessageParticipantDialogComponent} from "./message-participant-dialog/message-participant-dialog.component";
+import {MessageParticipantDialogComponent} from './message-participant-dialog/message-participant-dialog.component';
 @Injectable()
 export class DialogsService {
 

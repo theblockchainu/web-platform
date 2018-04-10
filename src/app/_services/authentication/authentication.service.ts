@@ -66,6 +66,7 @@ export class AuthenticationService {
         // login successful if there's a jwt token in the response
         const user = response;
         if (user && user.access_token) {
+			(<any>window).ga('user_id', user.userId);
           this.isLoginSubject.next(true);
           // this.getLoggedInUser.emit(user.userId);
           this._socketService.addUser(user.userId);
@@ -84,6 +85,7 @@ export class AuthenticationService {
     this.removeCookie(this.key);
     this.removeCookie('userId');
     this.removeCookie('accountApproved');
+	  this.removeCookie('access_token');
     this.isLoginSubject.next(false);
     this.getLoggedInUser.emit(0);
     if (this.getCookie(this.key)) {
