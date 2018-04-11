@@ -104,6 +104,12 @@
     width: 100%;
 }
 
+.community-thumb{
+    object-fit: cover;
+    height: 200px;
+    width: 100%;
+}
+
 .peer-recommendation-thumb{
     object-fit: cover;
     height: 238px;
@@ -119,8 +125,25 @@
     margin-bottom: 35px;
 }
 
+.community-card{
+    min-height: 1px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 20%;
+    float: left;
+    margin-bottom: 35px;
+}
+
 .empty-card{
     height: 290px;
+}
+
+.empty-community-card{
+    height: 200px;
+}
+
+.community-card a{
+    color: black;
 }
 
 .blank-card{

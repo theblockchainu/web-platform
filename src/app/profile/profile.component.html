@@ -657,6 +657,45 @@
             </div>
         </div>
     </div>
+    <div class="row margin-top-30" *ngIf="!loadingCommunities && !loadingProfile">
+        <div class="col-md-offset-1 col-md-10" *ngIf="(!pariticipatingCommunities && cookieUserId === urluserId) || pariticipatingCommunities">
+            <div class="row">
+                <div class="col-md-8">
+                    <span class="mat-title">Communtities</span>
+                    <!-- <button (click)="openCollectionGrid('Learning Journey',participatingWorkshops)" mat-button>See all</button> -->
+                </div>
+            </div>
+            <div class="row feed-horizontal margin-top-20" style="padding: 0px 7px;">
+                <div *ngFor="let community of pariticipatingCommunities; let i =index">
+                    <div class="community-card" *ngIf="i<5">
+                        <a [routerLink]="'/community/'+community.id">
+                            <div class="">
+                                <img class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" src="{{envVariable.apiUrl+community.imageUrls[0]}}"
+                                    alt="workshpImg">
+                                <img class="community-thumb" *ngIf="!community.imageUrls || community.imageUrls.length<=0" src="/assets/images/no-image.jpg"
+                                    alt="workshpImg">
+                            </div>
+                            <div class="mat-body-2" style="margin-top: -3px;">{{community.title | titlecase}}</div>
+                            <span *ngFor="let participant of community.participants; let i=index">
+                                <div *ngIf="i<7" class="image-inline">
+                                    <app-profile-popup style="margin-left: -15px;" [peer]="participant"></app-profile-popup>
+                                </div>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div *ngFor="let blankCardIndex of blankCardArray">
+                    <div *ngIf="blankCardIndex>=pariticipatingCommunities.length" class="blank-card">
+                        <mat-card class="empty-community-card">
+                        </mat-card>
+                    </div>
+                </div>
+                <div *ngIf="!pariticipatingCommunities">
+                    <a class="col-md-3 default" [routerLink]="['/','home', 'communities']" *ngIf="cookieUserId === urluserId">Join a community</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <br>
     <div class="row" *ngIf="!loadingPeers && !loadingProfile">
         <hr class="col-md-10 col-md-offset-1 margin-bottom-30" *ngIf="!(!participatingWorkshops && cookieUserId === urluserId) || !participatingWorkshops">

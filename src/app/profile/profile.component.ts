@@ -8,7 +8,6 @@ import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.servic
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { environment } from '../../environments/environment';
-
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -68,6 +67,9 @@ export class ProfileComponent implements OnInit {
   public learningJourneyFilter: string;
   public sessionId;
   public blankCardArray: Array<number>;
+  public loadingCommunities: boolean;
+  public pariticipatingCommunities: any;
+
   constructor(
     public _profileService: ProfileService,
     private _cookieUtilsService: CookieUtilsService,
@@ -196,17 +198,27 @@ export class ProfileComponent implements OnInit {
       this.loadingProfile = false;
       this.loadingLearningJourney = true;
       if (this.profileObj.peer[0].collections) {
-        this.getRecommendedWorkshops(this.profileObj.peer[0].collections);
+        this.getParticipatingWorkshops(this.profileObj.peer[0].collections);
       } else {
         this.loadingLearningJourney = false;
         this.loadingPeers = true;
-        this.getRecommendedPeers();
-
       }
+      this.getRecommendedPeers();
+      this.getParticipatingCommunities(this.profileObj.peer[0].id);
     });
   }
 
-  private getRecommendedWorkshops(response: Array<any>) {
+  private getParticipatingCommunities(peerId: string) {
+    const query = {
+      'include': { 'participants': 'profiles' }
+    };
+    this._profileService.getJoinedCommunities(peerId, query).subscribe(res => {
+      this.pariticipatingCommunities = res;
+    });
+  }
+
+
+  private getParticipatingWorkshops(response: Array<any>) {
     response.forEach(collection => {
       if (collection.reviews) {
         collection.rating = this._collectionService.calculateRating(collection.reviews);
@@ -216,7 +228,6 @@ export class ProfileComponent implements OnInit {
     this.participatingWorkshops = _.uniqBy(this.participatingWorkshops, 'id');
     this.loadingLearningJourney = false;
     this.loadingPeers = true;
-    this.getRecommendedPeers();
   }
 
   private getProfileData() {
