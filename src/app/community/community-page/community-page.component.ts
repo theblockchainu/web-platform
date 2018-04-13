@@ -262,7 +262,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 		});
 		this.metaService.updateTag({
 			property: 'og:url',
-			content: this.router.url
+			content: environment.clientUrl + this.router.url
 		});
 	}
 	

@@ -610,7 +610,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		});
 		this.metaService.updateTag({
 			property: 'og:url',
-			content: this.router.url
+			content: environment.clientUrl + this.router.url
 		});
 	}
 	
