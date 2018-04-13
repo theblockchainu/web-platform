@@ -1760,3 +1760,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 .headerChat .mat-form-field-infix {
 	border-top: 0px !important;
 }
+
+.mat-fab .mat-button-wrapper {
+	padding: 0 !important;
+}

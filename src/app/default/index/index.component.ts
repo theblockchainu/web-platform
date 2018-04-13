@@ -69,4 +69,8 @@ export class IndexComponent implements OnInit {
 	public openSignup() {
 		window.location.href = environment.clientUrl + '/signup.html';
 	}
+	
+	public openTelegram() {
+		window.location.href = 'https://t.me/peerbuds';
+	}
 }
