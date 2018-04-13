@@ -592,21 +592,22 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 
   private setTags() {
     this.titleService.setTitle(this.experience.title);
-    this.metaService.addTags([
-      {
-        property: 'og:title',
+    this.metaService.updateTag({
+		property: 'og:title',
         content: this.experience.title
-      }, {
-        property: 'og:description',
-        content: this.experience.description
-      }, {
-        property: 'og:site_name',
-        content: 'peerbuds.com'
-      }, {
-        property: 'og:image',
-        content: environment.apiUrl + this.experience.imageUrls[0]
-      }
-    ]);
+    });
+    this.metaService.updateTag({
+		property: 'og:description',
+		content: this.experience.description
+	});
+    this.metaService.updateTag({
+		property: 'og:site_name',
+		content: 'peerbuds.com'
+	});
+    this.metaService.updateTag({
+		property: 'og:image',
+		content: environment.apiUrl + this.experience.imageUrls[0]
+	});
   }
 
   private setUpCarousel() {

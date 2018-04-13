@@ -1,4 +1,4 @@
-import {BrowserModule, Title} from '@angular/platform-browser';
+import {BrowserModule, Meta, Title} from '@angular/platform-browser';
 import {ErrorHandler, NgModule} from '@angular/core';
 import { AppComponent } from './app.component';
 import {AppNotificationDialogComponent} from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
@@ -126,7 +126,8 @@ export class RavenErrorHandler implements ErrorHandler {
 			provide: ErrorHandler,
 			useClass: RavenErrorHandler
 		},
-		Title
+		Title,
+		Meta
 	],
 	bootstrap: [AppComponent],
 	entryComponents: [AppNotificationDialogComponent]
