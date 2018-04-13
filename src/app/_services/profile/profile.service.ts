@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
@@ -20,7 +20,7 @@ export class ProfileService {
     public _requestHeaderService: RequestHeaderService,
     private _cookieUtilsService: CookieUtilsService
   ) {
-      this.envVariable = environment;
+    this.envVariable = environment;
     this.options = this._requestHeaderService.getOptions();
   }
 
@@ -607,5 +607,9 @@ export class ProfileService {
 
   public imgErrorHandler(event) {
     event.target.src = '/assets/images/user-placeholder.jpg';
+  }
+
+  public getJoinedCommunities(peerId: string, filter: any) {
+    return this.http.get(environment.apiUrl + '/api/peers/' + peerId + '/communities?filter=' + JSON.stringify(filter));
   }
 }

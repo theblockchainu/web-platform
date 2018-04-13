@@ -7,8 +7,7 @@ import { TopicService } from '../_services/topic/topic.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import {environment} from '../../environments/environment';
-
+import { environment } from '../../environments/environment';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -31,34 +30,31 @@ import * as _ from 'lodash';
 })
 export class ProfileComponent implements OnInit {
   public cookieUserId;
-  public loadingProfile = false;
-  public loadingLearningJourney = true;
-  public loadingPeers = true;
+  public loadingProfile;
+  public loadingLearningJourney;
+  public loadingPeers;
   public envVariable;
   public urluserId: string;
   public profileObj: any;
   public peerObj: any;
   public interestsArray: Array<string>;
   public userRating: number;
-  public collectionTypes = ['workshops'];
+  public collectionTypes: Array<string>;
   public participatingWorkshops: Array<any>;
-  public recommendedpeers = [];
-  public socialIdentities: any = [];
-  public maxVisibleInterest = 3;
-  public maxVisibleReviewsTeacher = 4;
-  public maxVisibleReviewsLearner = 4;
-  public topicsTeaching = [];
-  public reviewsFromLearners = [];
-  public reviewsFromTeachers = [];
+  public recommendedpeers: Array<any>;
+  public socialIdentities: any;
+  public maxVisibleInterest: number;
+  public maxVisibleReviewsTeacher: number;
+  public maxVisibleReviewsLearner: number;
+  public topicsTeaching: Array<any>;
+  public reviewsFromLearners: Array<any>;
+  public reviewsFromTeachers: Array<any>;
   public isTeacher: boolean;
   public offsetString: string;
-  private queryForSocialIdentities = { 'include': ['identities', 'credentials'] };
-  public connectedIdentities = {
-    'facebook': false,
-    'google': false
-  };
+  private queryForSocialIdentities: any;
+  public connectedIdentities: any;
   public other_languages;
-  public today = new Date();
+  public today: Date;
   public pastWorkshops: Array<any>;
   public ongoingWorkshops: Array<any>;
   public upcomingWorkshops: Array<any>;
@@ -67,9 +63,12 @@ export class ProfileComponent implements OnInit {
   public upcomingExperiences: Array<any>;
   public availablePaidPackages: Array<any>;
   public availableTrialPackages: Array<any>;
-  public maxLength = 140;
+  public maxLength: number;
   public learningJourneyFilter: string;
   public sessionId;
+  public blankCardArray: Array<number>;
+  public loadingCommunities: boolean;
+  public pariticipatingCommunities: any;
 
   constructor(
     public _profileService: ProfileService,
@@ -82,7 +81,7 @@ export class ProfileComponent implements OnInit {
     public snackBar: MatSnackBar,
     public _dialogsService: DialogsService
   ) {
-      this.envVariable = environment;
+    this.envVariable = environment;
     this.activatedRoute.params.subscribe((param) => {
       const calledUserId = param['profileId'];
       if (this.urluserId !== calledUserId) {
@@ -108,14 +107,35 @@ export class ProfileComponent implements OnInit {
     this.cookieUserId = this._cookieUtilsService.getValue('userId');
     this.loadingProfile = true;
     this.isTeacher = false;
+    this.loadingProfile = false;
+    this.loadingLearningJourney = true;
+    this.loadingPeers = true;
+    this.collectionTypes = ['workshops'];
+    this.recommendedpeers = [];
+    this.socialIdentities = {};
+    this.maxVisibleInterest = 3;
+    this.maxVisibleReviewsTeacher = 4;
+    this.maxVisibleReviewsLearner = 4;
+    this.topicsTeaching = [];
+    this.reviewsFromLearners = [];
+    this.reviewsFromTeachers = [];
+    this.queryForSocialIdentities = { 'include': ['identities', 'credentials'] };
+    this.participatingWorkshops = [];
+    this.connectedIdentities = {
+      'facebook': false,
+      'google': false
+    };
+    this.today = new Date();
+    this.maxLength = 140;
+    this.blankCardArray = [4, 3, 2, 1, 0];
     this.getPeerData();
     this.getProfileData();
   }
-  
+
   public getPeerData() {
-  	this._profileService.getPeerNode(this.urluserId).subscribe(result => {
-  		this.peerObj = result;
-	});
+    this._profileService.getPeerNode(this.urluserId).subscribe(result => {
+      this.peerObj = result;
+    });
   }
   private getIdentities() {
     this._profileService.getSocialIdentities(this.queryForSocialIdentities, this.urluserId).subscribe(
@@ -158,7 +178,7 @@ export class ProfileComponent implements OnInit {
     this._profileService.getAllPeers(query).subscribe((result: any) => {
       this.recommendedpeers = [];
       for (const responseObj of result) {
-        console.log(responseObj);
+        // console.log(responseObj);
         responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
         this.recommendedpeers.push(responseObj);
       }
@@ -173,24 +193,32 @@ export class ProfileComponent implements OnInit {
       'relInclude': 'experience'
     };
     this._profileService.getTeachingExternalTopics(this.urluserId, queryTeaching).subscribe((response: any) => {
-      console.log(response);
+      // console.log(response);
       this.topicsTeaching = response;
       this.loadingProfile = false;
       this.loadingLearningJourney = true;
       if (this.profileObj.peer[0].collections) {
-        this.getRecommendedWorkshops(this.profileObj.peer[0].collections);
+        this.getParticipatingWorkshops(this.profileObj.peer[0].collections);
       } else {
         this.loadingLearningJourney = false;
         this.loadingPeers = true;
-        this.getRecommendedPeers();
-
       }
+      this.getRecommendedPeers();
+      this.getParticipatingCommunities(this.profileObj.peer[0].id);
     });
   }
 
-  private getRecommendedWorkshops(response: Array<any>) {
-    this.participatingWorkshops = [];
-    console.log(response);
+  private getParticipatingCommunities(peerId: string) {
+    const query = {
+      'include': { 'participants': 'profiles' }
+    };
+    this._profileService.getJoinedCommunities(peerId, query).subscribe(res => {
+      this.pariticipatingCommunities = res;
+    });
+  }
+
+
+  private getParticipatingWorkshops(response: Array<any>) {
     response.forEach(collection => {
       if (collection.reviews) {
         collection.rating = this._collectionService.calculateRating(collection.reviews);
@@ -200,7 +228,6 @@ export class ProfileComponent implements OnInit {
     this.participatingWorkshops = _.uniqBy(this.participatingWorkshops, 'id');
     this.loadingLearningJourney = false;
     this.loadingPeers = true;
-    this.getRecommendedPeers();
   }
 
   private getProfileData() {
@@ -225,7 +252,7 @@ export class ProfileComponent implements OnInit {
     };
     this._profileService.getExternalProfileData(this.urluserId, query).subscribe((response) => {
       this.profileObj = response[0];
-      console.log(this.profileObj);
+      // console.log(this.profileObj);
       if (this.profileObj.other_languages) {
         this.profileObj.other_languages = this.profileObj.other_languages.filter(Boolean);
         this.other_languages = this.profileObj.other_languages.join(', ');
@@ -288,7 +315,7 @@ export class ProfileComponent implements OnInit {
     this.upcomingExperiences = [];
     this.ongoingExperiences = [];
     this.availablePaidPackages = [];
-  	this.availableTrialPackages = [];
+    this.availableTrialPackages = [];
     this.profileObj.peer['0'].ownedCollections.forEach(collection => {
       if (collection.status === 'active') {
         collection.totalDuration = this.calculateTotalHours(collection);
@@ -313,13 +340,13 @@ export class ProfileComponent implements OnInit {
           this.ongoingExperiences.push(collection);
         }
         if (collection.type === 'session') {
-        	this.sessionId = collection.id;
+          this.sessionId = collection.id;
           collection.packages.forEach(packageObj => {
-          	if (packageObj.type === 'paid') {
-				this.availablePaidPackages.push(packageObj);
-			} else {
-          		this.availableTrialPackages.push(packageObj);
-			}
+            if (packageObj.type === 'paid') {
+              this.availablePaidPackages.push(packageObj);
+            } else {
+              this.availableTrialPackages.push(packageObj);
+            }
           });
         }
       }
@@ -414,23 +441,23 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-	public toggleMaxReviewsLearner() {
-		if (this.maxVisibleReviewsLearner === 4) {
-			this.maxVisibleReviewsLearner = 999;
-		} else {
-			this.maxVisibleReviewsLearner = 4;
-		}
-	}
+  public toggleMaxReviewsLearner() {
+    if (this.maxVisibleReviewsLearner === 4) {
+      this.maxVisibleReviewsLearner = 999;
+    } else {
+      this.maxVisibleReviewsLearner = 4;
+    }
+  }
 
   public reportProfile() {
     this._dialogsService.reportProfile().subscribe(result => {
       if (result) {
-        console.log('report' + result);
+        // console.log('report' + result);
         this._profileService.reportProfile(this.urluserId, {
           'description': result,
           'is_active': true
         }).subscribe((respone) => {
-          console.log(respone);
+          // console.log(respone);
           this.snackBar.open('Profile Reported', 'Close', {
             duration: 5000
           });
@@ -494,10 +521,10 @@ export class ProfileComponent implements OnInit {
   /**
    * openCollectionGrid
 type:string,title:string,collecions   */
-  public openWorkshopGrid(title: string, collections: Array<any>) {
+  public openCollectionGrid(title: string, collections: Array<any>) {
     this._dialogsService.openCollectionGrid(title, collections).subscribe(result => {
       if (result) {
-        this.router.navigateByUrl('/workshop/' + result);
+        this.router.navigateByUrl('/' + collections[0].type + '/' + result);
       }
     });
   }
@@ -508,20 +535,20 @@ type:string,title:string,collecions   */
   public bookSession() {
     this.router.navigateByUrl('/session/book/' + this.urluserId);
   }
-	
+
 	/**
 	 * OPen session wizard to update availability
 	 */
-	public updateAvailability() {
-		this.router.navigateByUrl('/session/' + this.sessionId + '/edit/10');
-	}
-	
-	public openMessageDialog() {
-		this.peerObj.profiles = [];
-		this.peerObj.profiles.push(this.profileObj);
-		this._dialogsService.messageParticipant(this.peerObj).subscribe(result => {
-			console.log(result);
-		});
-	}
+  public updateAvailability() {
+    this.router.navigateByUrl('/session/' + this.sessionId + '/edit/10');
+  }
+
+  public openMessageDialog() {
+    this.peerObj.profiles = [];
+    this.peerObj.profiles.push(this.profileObj);
+    this._dialogsService.messageParticipant(this.peerObj).subscribe(result => {
+      // console.log(result);
+    });
+  }
 
 }
