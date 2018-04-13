@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router
 import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar } from '@angular/material';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { Title } from '@angular/platform-browser';
+import { Title, Meta } from '@angular/platform-browser';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { ContentService } from '../../_services/content/content.service';
@@ -209,7 +209,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private _socketService: SocketService,
     private _authenticationService: AuthenticationService,
-    private titleService: Title
+    private titleService: Title,
+    private metaService: Meta
     // private location: Location
   ) {
     this.envVariable = environment;
@@ -480,6 +481,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
         .subscribe(res => {
           console.log(res);
           this.experience = res;
+          this.setTags();
           this.setCurrentCalendar();
           this.itenariesObj = {};
           this.itenaryArray = [];
@@ -586,6 +588,25 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
     } else {
       console.log('NO COLLECTION');
     }
+  }
+
+  private setTags() {
+    this.titleService.setTitle(this.experience.title);
+    this.metaService.addTags([
+      {
+        property: 'og:title',
+        content: this.experience.title
+      }, {
+        property: 'og:description',
+        content: this.experience.description
+      }, {
+        property: 'og:site_name',
+        content: 'peerbuds.com'
+      }, {
+        property: 'og:image',
+        content: environment.apiUrl + this.experience.imageUrls[0]
+      }
+    ]);
   }
 
   private setUpCarousel() {
