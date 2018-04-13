@@ -33,6 +33,7 @@
     "mdi": "^2.2.43",
     "moment": "^2.21.0",
     "ng-pick-datetime": "^5.2.3",
+    "ng2-pdf-viewer": "^4.1.2",
     "ng2-sticky-kit": "^5.3.0",
     "ng4-geoautocomplete": "^0.1.0",
     "ngx-bootstrap": "^2.0.3",

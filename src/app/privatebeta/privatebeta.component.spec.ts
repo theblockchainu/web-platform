@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WhitePaperComponent } from './white-paper.component';
+import { PrivatebetaComponent } from './privatebeta.component';
 
-describe('WhitePaperComponent', () => {
-  let component: WhitePaperComponent;
-  let fixture: ComponentFixture<WhitePaperComponent>;
+describe('PrivatebetaComponent', () => {
+  let component: PrivatebetaComponent;
+  let fixture: ComponentFixture<PrivatebetaComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WhitePaperComponent ]
+      declarations: [ PrivatebetaComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WhitePaperComponent);
+    fixture = TestBed.createComponent(PrivatebetaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
