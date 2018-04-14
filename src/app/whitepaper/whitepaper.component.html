@@ -1,7 +1,6 @@
-<div class="main-content no-content-setion">
-	<div class="container-fluid text-center">
-		<img src="assets/images/404.png" alt="Coming Soon image" />
-		<h1>Oops!</h1>
-		<p class="text-grey">Dinner's not ready yet! <a [routerLink]="['']">Come back later.</a></p>
-	</div>
+<div class="main-content" style="background: #333333;">
+	<pdf-viewer [src]="pdfSrc"
+	            [render-text]="true"
+	            style="display: block; margin-top: 20px;"
+	></pdf-viewer>
 </div>

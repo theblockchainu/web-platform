@@ -4,11 +4,14 @@ import {WhyTeachComponent} from './why-teach/why-teach.component';
 import {TeachingBenefitsComponent} from './teaching-benefits/teaching-benefits.component';
 import {ResponsibleTeachingComponent} from './responsible-teaching/responsible-teaching.component';
 import {AuthGuardService} from '../_services/auth-guard/auth-guard.service';
+import {ExperienceIntroComponent} from './experience-intro/experience-intro.component';
+import {WorkshopIntroComponent} from './workshop-intro/workshop-intro.component';
+import {CommunityIntroComponent} from './community-intro/community-intro.component';
+import {PeerIntroComponent} from './peer-intro/peer-intro.component';
 
 const routes: Routes = [
     {
         path: '',
-        canActivate: [AuthGuardService],
         children: [
             {
                 path: 'whyTeach',
@@ -21,7 +24,23 @@ const routes: Routes = [
             {
                 path: 'responsibleTeaching',
                 component: ResponsibleTeachingComponent
-            }
+            },
+			{
+				path: 'experiences',
+				component: ExperienceIntroComponent
+			},
+			{
+				path: 'classes',
+				component: WorkshopIntroComponent
+			},
+			{
+				path: 'communities',
+				component: CommunityIntroComponent
+			},
+			{
+				path: 'peers',
+				component: PeerIntroComponent
+			}
 
         ]
     }

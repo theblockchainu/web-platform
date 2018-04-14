@@ -1764,3 +1764,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 .mat-fab .mat-button-wrapper {
 	padding: 0 !important;
 }
+
+.workshopSelector .mat-form-field-underline {
+	height: 0px;
+}

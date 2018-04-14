@@ -1556,7 +1556,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 					'og:title': this.experience.title,
 					'og:site_name': 'Peerbuds',
 					'og:description': this.experience.description,
-					'og:image': this.experience.imageUrls[0],
+					'og:image': environment.apiUrl + this.experience.imageUrls[0],
 					'og:image:width': '250',
 					'og:image:height': '257'
 				}
