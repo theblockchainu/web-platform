@@ -1542,23 +1542,27 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
   }
 
   public shareOnFb() {
+    // FB.ui({
+    //   method: 'share_open_graph',
+    //   action_type: 'og.shares',
+    //   action_properties: JSON.stringify({
+    //     object: {
+    //       'og:url': environment.clientUrl + this.router.url, // your url to share
+    //       'og:title': this.experience.title,
+    //       'og:site_name': 'Peerbuds',
+    //       'og:description': this.experience.description,
+    //       'og:image': this.experience.imageUrls[0],
+    //       'og:image:width': '250',
+    //       'og:image:height': '257'
+    //     }
+    //   })
+    // }, function (response) {
+    //   console.log('response is ', response);
+    // });
     FB.ui({
-      method: 'share_open_graph',
-      action_type: 'og.shares',
-      action_properties: JSON.stringify({
-        object: {
-          'og:url': environment.clientUrl + this.router.url, // your url to share
-          'og:title': this.experience.title,
-          'og:site_name': 'Peerbuds',
-          'og:description': this.experience.description,
-          'og:image': this.experience.imageUrls[0],
-          'og:image:width': '250',
-          'og:image:height': '257'
-        }
-      })
-    }, function (response) {
-      console.log('response is ', response);
-    });
+      method: 'share',
+      href: environment.clientUrl + this.router.url,
+    }, function (response) { });
   }
 
   public shareOnTwitter() {
