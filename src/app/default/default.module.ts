@@ -5,10 +5,12 @@ import { IndexComponent } from './index/index.component';
 import { IndexPhilComponent } from './index-philosophy/index-philosophy.component';
 
 import { SharedModule } from '../_shared/_shared.module';
+import {RouterModule} from '@angular/router';
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+	  RouterModule
   ],
   declarations: [IndexComponent,
     IndexPhilComponent]

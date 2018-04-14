@@ -4,14 +4,17 @@
 			<div class="center margin-top-100">
 				<p class="mat-display-3 margin-bottom-20" style="color:black">the knowledge economy</p>
 				<p class="mat-headline margin-bottom-20" style="color:#33bd9e;">makes it possible to get credits for learning that happens anywhere<br/>even when you're just doing the things you love</p>
-				<p class="mat-subheading-2" style="color:rgba(0,0,0,0.54)">White Paper Coming Soon</p>
+				<p class="mat-subheading-2 margin-top-80">
+					<button mat-button [routerLink]="['/whitepaper']" class="mat-border-button" color="accent" style="border-color: #ff6d71;">Read White Paper</button>
+					<button mat-button (click)="openTelegram()" class="mat-border-button" color="accent"><i class="fa fa-telegram" style="top: -2px;position: relative;font-size: 20px;left: -5px;"></i> Join Telegram</button>
+				</p>
 			</div>
 		</div>
 	</div>
 	
 	<div class="row">
 		<div class="col-md-12">
-			<div class="margin-top-100 outerContainer videoContainer">
+			<div class="margin-top-60 outerContainer videoContainer">
 				<img src="/assets/images/images_landing/Waves_above_the_fold.png" />
 				<a (click)="openVideo()">
 					<img src="/assets/images/homepageVideoPlaceholder01.png" class="col-md-offset-2 centerVideo" style="cursor:pointer;" />
@@ -68,5 +71,8 @@
 				<img src="/assets/images/images_landing/oval-footer.png" class="oval" />
 			</div>
 		</div>
+	</div>
+	<div style="position: fixed; bottom: 40px; right: 40px;">
+		<button mat-fab color="white" (click)="openTelegram()"><i class="fa fa-telegram" style="font-size: 56px; color: #0088cc;"></i></button>
 	</div>
 </div>

@@ -8,7 +8,9 @@ import * as moment from 'moment';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { CommunityService } from '../../_services/community/community.service';
-import {environment} from "../../../environments/environment";
+import {environment} from '../../../environments/environment';
+import {Meta, Title} from '@angular/platform-browser';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-feed',
@@ -56,7 +58,10 @@ export class HomefeedComponent implements OnInit {
         private _cookieUtilsService: CookieUtilsService,
         private _topicService: TopicService,
         public _dialogsService: DialogsService,
-        public _communityService: CommunityService
+        public _communityService: CommunityService,
+		private titleService: Title,
+		private metaService: Meta,
+		private router: Router
     ) {
         this.envVariable = environment;
         this.userId = _cookieUtilsService.getValue('userId');
@@ -68,7 +73,32 @@ export class HomefeedComponent implements OnInit {
         this.fetchExperiences();
         this.fetchPeers();
         this.fetchCommunities();
+        this.setTags();
     }
+	
+	private setTags() {
+		this.titleService.setTitle('Homefeed');
+		this.metaService.updateTag({
+			property: 'og:title',
+			content: 'Explore Peerbuds'
+		});
+		this.metaService.updateTag({
+			property: 'og:description',
+			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+		});
+		this.metaService.updateTag({
+			property: 'og:site_name',
+			content: 'peerbuds.com'
+		});
+		this.metaService.updateTag({
+			property: 'og:image',
+			content: 'https://peerbuds.com/pb_logo_square.png'
+		});
+		this.metaService.updateTag({
+			property: 'og:url',
+			content: environment.clientUrl + this.router.url
+		});
+	}
 
     private fetchContinueLearning() {
         this.loadingContinueLearning = true;

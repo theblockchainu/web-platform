@@ -77,17 +77,23 @@
 		  <button mat-button class="headerButtons" *ngIf="!(isLoggedIn | async)">
 			About
 		  </button>-->
-			<!--<button mat-button class="headerButtons" [routerLink]="['/white-paper']" *ngIf="!(isLoggedIn | async)">
-			  White Paper
-			</button>-->
-			<button mat-button class="headerButtons" [routerLink]="['/home/homefeed']" *ngIf="!(isLoggedIn | async)">
-				Explore
+			<button mat-button class="headerButtons" [routerLink]="['/whitepaper']" *ngIf="!(isLoggedIn | async)">
+				White Paper
 			</button>
-			<a mat-button class="headerButtons" href="/signup.html" *ngIf="!(isLoggedIn | async)">
+			<button mat-button class="headerButtons" [routerLink]="['/shortread']" *ngIf="!(isLoggedIn | async)">
+				Short Paper
+			</button>
+			<button mat-button class="headerButtons" [routerLink]="['/privatebeta']" *ngIf="!(isLoggedIn | async)">
+				Private Beta
+			</button>
+			<!--<button mat-button class="headerButtons" [routerLink]="['/home/homefeed']" *ngIf="!(isLoggedIn | async)">
+				Explore
+			</button>-->
+			<!--<a mat-button class="headerButtons" href="/signup.html" *ngIf="!(isLoggedIn | async)">
 				Sign Up
-			</a>
-			<button mat-button class="headerButtons" (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
-				Log In
+			</a>-->
+			<button mat-button class="headerButtons mat-border-button" color="accent" style="border: 2px solid #FF6D71 !important;color: #ff6d71 !important;" (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
+				Test Alpha
 			</button>
 		
 		</span>

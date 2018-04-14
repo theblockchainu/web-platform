@@ -1,4 +1,4 @@
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule, Meta, Title } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
@@ -15,7 +15,6 @@ import { PressComponent } from './press/press.component';
 import { CareerComponent } from './career/career.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
-import { WhitePaperComponent } from './white-paper/white-paper.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactComponent } from './contact-us/contact-us.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
@@ -27,9 +26,9 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { NoContentComponent } from './no-content/no-content.component';
 import { DefaultComponent } from './default/default.component';
 import {
-  MatAutocompleteModule, MatCardModule, MatIconModule, MatInputModule, MatMenuModule, MatNativeDateModule,
-  MatToolbarModule, MatProgressBarModule,
-  MatProgressSpinnerModule,
+	MatAutocompleteModule, MatCardModule, MatIconModule, MatInputModule, MatMenuModule, MatNativeDateModule,
+	MatToolbarModule, MatProgressBarModule,
+	MatProgressSpinnerModule,
 } from '@angular/material';
 import { MatListModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material';
@@ -39,89 +38,99 @@ import { CookieService } from 'ngx-cookie-service';
 import { UcWordsPipe } from 'ngx-pipes';
 import * as Raven from 'raven-js';
 import { environment } from '../environments/environment';
-
+import { TokenflowComponent } from './tokenflow/tokenflow.component';
+import { WhitepaperComponent } from './whitepaper/whitepaper.component';
+import { KnowledgeeconomyComponent } from './knowledgeeconomy/knowledgeeconomy.component';
+import { ShortreadComponent } from './shortread/shortread.component';
+import { PrivatebetaComponent } from './privatebeta/privatebeta.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { LandingPageModule } from './landing-page/landing-page.module';
-
 Raven
-  .config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
-  .install();
+	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
+	.install();
 
 Raven.setExtraContext({
-  environment: (environment.production) ? 'production' : 'development'
+	environment: (environment.production) ? 'production' : 'development'
 });
 
 export class RavenErrorHandler implements ErrorHandler {
-  handleError(err: any): void {
-    Raven.captureException(err);
-  }
+	handleError(err: any): void {
+		Raven.captureException(err);
+	}
 }
 
 
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DefaultComponent,
-    NoContentComponent,
-    AppHeaderComponent,
-    AccessDeniedComponent,
-    LoginComponent,
-    SignupComponent,
-    AppDesignComponent,
-    GlobalErrorHandlerComponent,
-    AppNotificationDialogComponent,
-    ResetPasswordComponent,
-    ContactComponent,
-    AboutUsComponent,
-    WhitePaperComponent,
-    PrivacyPolicyComponent,
-    TermsOfServiceComponent,
-    CareerComponent,
-    PressComponent,
-    PolicyComponent,
-    TrustComponent
-  ],
-  imports: [
-    BrowserModule,
-    CoreModule,
-    AppFooterModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    MatNativeDateModule,
-    MatProgressSpinnerModule,
-    MatProgressBarModule,
-    MatTooltipModule,
-    MatListModule,
-    DialogsModule,
-    AppRoutingModule,
-    DefaultModule,
-    LoadingModule.forRoot({
-      animationType: ANIMATION_TYPES.threeBounce,
-      backdropBackgroundColour: 'rgba(0,0,0,0)',
-      backdropBorderRadius: '0px',
-      primaryColour: '#33bd9e',
-      secondaryColour: '#ff5b5f',
-      tertiaryColour: '#ff6d71'
-    }),
-    LandingPageModule
-  ],
-  providers: [
-    CookieService,
-    UcWordsPipe,
-    {
-      provide: ErrorHandler,
-      useClass: RavenErrorHandler
-    },
-    Title
-  ],
-  bootstrap: [AppComponent],
-  entryComponents: [AppNotificationDialogComponent]
+	declarations: [
+		AppComponent,
+		DefaultComponent,
+		NoContentComponent,
+		AppHeaderComponent,
+		AccessDeniedComponent,
+		LoginComponent,
+		SignupComponent,
+		AppDesignComponent,
+		GlobalErrorHandlerComponent,
+		AppNotificationDialogComponent,
+		ResetPasswordComponent,
+		ContactComponent,
+		AboutUsComponent,
+		PrivacyPolicyComponent,
+		TermsOfServiceComponent,
+		CareerComponent,
+		PressComponent,
+		PolicyComponent,
+		TrustComponent,
+		TokenflowComponent,
+		WhitepaperComponent,
+		KnowledgeeconomyComponent,
+		ShortreadComponent,
+		PrivatebetaComponent
+	],
+	imports: [
+		BrowserModule,
+		CoreModule,
+		AppFooterModule,
+		BrowserAnimationsModule,
+		MatCardModule,
+		MatButtonModule,
+		MatMenuModule,
+		MatToolbarModule,
+		MatIconModule,
+		MatAutocompleteModule,
+		MatInputModule,
+		MatNativeDateModule,
+		MatProgressSpinnerModule,
+		MatProgressBarModule,
+		MatTooltipModule,
+		MatListModule,
+		DialogsModule,
+		AppRoutingModule,
+		DefaultModule,
+		PdfViewerModule,
+		LoadingModule.forRoot({
+			animationType: ANIMATION_TYPES.threeBounce,
+			backdropBackgroundColour: 'rgba(0,0,0,0)',
+			backdropBorderRadius: '0px',
+			primaryColour: '#33bd9e',
+			secondaryColour: '#ff5b5f',
+			tertiaryColour: '#ff6d71'
+		}),
+		LandingPageModule
+	],
+	providers: [
+		CookieService,
+		UcWordsPipe,
+		{
+			provide: ErrorHandler,
+			useClass: RavenErrorHandler
+		},
+		Title,
+		Meta
+	],
+	bootstrap: [AppComponent],
+	entryComponents: [AppNotificationDialogComponent]
 })
 export class AppModule { }

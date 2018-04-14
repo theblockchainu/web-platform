@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import {environment} from '../../../environments/environment';
+import {Meta, Title} from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-index',
@@ -25,6 +26,8 @@ export class IndexComponent implements OnInit {
 		public dialog: MatDialog,
 		private http: HttpClient,
 		public snackBar: MatSnackBar,
+		private titleService: Title,
+		private metaService: Meta,
 		private dialogsService: DialogsService,
 		private _activatedRoute: ActivatedRoute) {
 		this.isLoggedIn = authenticationService.isLoggedIn();
@@ -49,6 +52,7 @@ export class IndexComponent implements OnInit {
 		this.notifyForm = this._fb.group(
 			{ email: ['', Validators.requiredTrue] }
 		);
+		this.setTags();
 	}
 	public openVideo() {
 		const url = '/assets/video/homepageExplainer.mp4';
@@ -68,5 +72,33 @@ export class IndexComponent implements OnInit {
 	
 	public openSignup() {
 		window.location.href = environment.clientUrl + '/signup.html';
+	}
+	
+	public openTelegram() {
+		window.location.href = 'https://t.me/peerbuds';
+	}
+	
+	private setTags() {
+		this.titleService.setTitle('Peerbuds');
+		this.metaService.updateTag({
+			property: 'og:title',
+			content: 'Peerbuds'
+		});
+		this.metaService.updateTag({
+			property: 'og:description',
+			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+		});
+		this.metaService.updateTag({
+			property: 'og:site_name',
+			content: 'peerbuds.com'
+		});
+		this.metaService.updateTag({
+			property: 'og:image',
+			content: 'https://peerbuds.com/pb_logo_square.png'
+		});
+		this.metaService.updateTag({
+			property: 'og:url',
+			content: environment.clientUrl + this._router.url
+		});
 	}
 }
