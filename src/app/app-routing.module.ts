@@ -17,17 +17,22 @@ import { CareerComponent } from './career/career.component';
 import { PolicyComponent } from './policy/policy.component';
 import { TrustComponent } from './trust/trust.component';
 import { PressComponent } from './press/press.component';
-import {AuthGuardService} from './_services/auth-guard/auth-guard.service';
-import {ShortreadComponent} from './shortread/shortread.component';
-import {PrivatebetaComponent} from './privatebeta/privatebeta.component';
-import {KnowledgeeconomyComponent} from './knowledgeeconomy/knowledgeeconomy.component';
-import {TokenflowComponent} from './tokenflow/tokenflow.component';
-import {WhitepaperComponent} from './whitepaper/whitepaper.component';
-
+import { AuthGuardService } from './_services/auth-guard/auth-guard.service';
+import { ShortreadComponent } from './shortread/shortread.component';
+import { PrivatebetaComponent } from './privatebeta/privatebeta.component';
+import { KnowledgeeconomyComponent } from './knowledgeeconomy/knowledgeeconomy.component';
+import { TokenflowComponent } from './tokenflow/tokenflow.component';
+import { WhitepaperComponent } from './whitepaper/whitepaper.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 const routes: Routes = [
 	{
 		path: '',
 		component: IndexComponent,
+		pathMatch: 'full'
+	},
+	{
+		path: 'landing',
+		component: LandingPageComponent,
 		pathMatch: 'full'
 	},
 	{
