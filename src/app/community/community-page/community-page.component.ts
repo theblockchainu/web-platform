@@ -397,7 +397,19 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	
 	public shareOnFb() {
 		FB.ui({
-			method: 'share'
+			method: 'share_open_graph',
+			action_type: 'og.shares',
+			action_properties: JSON.stringify({
+				object: {
+					'og:url': environment.clientUrl + this.router.url, // your url to share
+					'og:title': this.community.title,
+					'og:site_name': 'Peerbuds',
+					'og:description': this.community.description,
+					'og:image': environment.apiUrl + this.community.imageUrls[0],
+					'og:image:width': '250',
+					'og:image:height': '257'
+				}
+			})
 		}, function (response) {
 			// Debug response (optional)
 			console.log(response);

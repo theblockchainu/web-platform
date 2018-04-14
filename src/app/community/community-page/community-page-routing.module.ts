@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {AuthGuardService} from '../../_services/auth-guard/auth-guard.service';
 import {CommunityPageComponent} from './community-page.component';
 import {CommunityPageQuestionsComponent} from './community-page-questions/community-page-questions.component';
 import {CommunityPageWorkshopsComponent} from './community-page-workshops/community-page-workshops.component';
@@ -11,32 +10,26 @@ const routes: Routes = [
     {
         path: '',
         component: CommunityPageComponent,
-        canActivate: [AuthGuardService],
         children: [
             {
                 path: 'questions',
-                component: CommunityPageQuestionsComponent,
-                canActivateChild: [AuthGuardService]
+                component: CommunityPageQuestionsComponent
             },
             {
                 path: 'workshops',
-                component: CommunityPageWorkshopsComponent,
-                canActivateChild: [AuthGuardService]
+                component: CommunityPageWorkshopsComponent
             },
             {
                 path: 'experiences',
-                component: CommunityPageExperiencesComponent,
-                canActivateChild: [AuthGuardService]
+                component: CommunityPageExperiencesComponent
             },
             {
                 path: 'links',
-                component: CommunityPageLinksComponent,
-                canActivateChild: [AuthGuardService]
+                component: CommunityPageLinksComponent
             },
             {
                 path: '',
-                component: CommunityPageQuestionsComponent,
-                canActivateChild: [AuthGuardService]
+                component: CommunityPageQuestionsComponent
             }
         ]
     }

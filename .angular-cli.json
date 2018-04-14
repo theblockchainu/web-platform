@@ -11,7 +11,8 @@
 				"assets",
 				"favicon.png",
 				"signup.html",
-				"pb_logo_square.png"
+				"pb_logo_square.png",
+				"sitemap.xml"
 			],
 			"index": "index.html",
 			"main": "main.ts",

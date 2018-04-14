@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import {Meta, Title} from '@angular/platform-browser';
 import {Router} from '@angular/router';
-import {environment} from '../../environments/environment';
+import {environment} from '../../../environments/environment';
 
 @Component({
-	selector: 'app-about-us-design',
-	templateUrl: './about-us.component.html',
-	styleUrls: ['./about-us.component.scss']
+	selector: 'app-experience-intro',
+	templateUrl: './experience-intro.component.html',
+	styleUrls: ['./experience-intro.component.scss']
 })
-export class AboutUsComponent implements OnInit {
+export class ExperienceIntroComponent implements OnInit {
 	
 	constructor(
 		private titleService: Title,
@@ -21,10 +21,10 @@ export class AboutUsComponent implements OnInit {
 	}
 	
 	private setTags() {
-		this.titleService.setTitle('About Us');
+		this.titleService.setTitle('Experiences');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'About Peerbuds'
+			content: 'Peerbuds Experiences'
 		});
 		this.metaService.updateTag({
 			property: 'og:description',
@@ -43,7 +43,5 @@ export class AboutUsComponent implements OnInit {
 			content: environment.clientUrl + this.router.url
 		});
 	}
-	
-	
 	
 }

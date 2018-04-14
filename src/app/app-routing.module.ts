@@ -31,7 +31,7 @@ const routes: Routes = [
 		pathMatch: 'full'
 	},
 	{
-		path: 'about-us',
+		path: 'about',
 		component: AboutUsComponent
 	},
 	{
