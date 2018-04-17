@@ -23,7 +23,7 @@ import { TopicService } from '../../_services/topic/topic.service';
 import { PaymentService } from '../../_services/payment/payment.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Component({
 	selector: 'app-session-edit',
@@ -43,9 +43,9 @@ export class SessionEditComponent implements OnInit {
 	public sidebarFilePath = 'assets/menu/session-static-left-sidebar-menu.json';
 	public sidebarMenuItems;
 	public itenariesForMenu = [];
-	
+
 	public profile: any;
-	
+
 	public interest1: FormGroup;
 	public newTopic: FormGroup;
 	public session: FormGroup;
@@ -53,13 +53,13 @@ export class SessionEditComponent implements OnInit {
 	public conditions: FormGroup;
 	public phoneDetails: FormGroup;
 	public workForm: FormGroup;
-	
+
 	public profileForm: FormGroup;
-	
+
 	public supplementUrls = new FormArray([]);
 	public uploadingImage = false;
 	public uploadingVideo = false;
-	
+
 	private sessionId: string;
 	public sessionData: any;
 	public isWorkShopActive = false;
@@ -71,13 +71,13 @@ export class SessionEditComponent implements OnInit {
 	public userId;
 	public selectedValues: boolean[] = [false, false];
 	public selectedOption = -1;
-	
+
 	public searchTopicURL = '';
 	public createTopicURL = '';
 	public placeholderStringTopic = 'Search for a topic ';
 	public maxTopicMsg = 'Choose max 3 related topics';
-	
-	
+
+
 	public difficulties = [];
 	public cancellationPolicies = [];
 	public contentComplete = false;
@@ -85,14 +85,14 @@ export class SessionEditComponent implements OnInit {
 	public key;
 	public maxTopics = 3;
 	public otpSent = false;
-	
+
 	private options;
-	
+
 	profileImagePending: Boolean;
 	sessionVideoPending: Boolean;
 	sessionImage1Pending: Boolean;
 	sessionImage2Pending: Boolean;
-	
+
 	public step = 1;
 	public max = 14;
 	public learnerType_array;
@@ -103,16 +103,16 @@ export class SessionEditComponent implements OnInit {
 	public relTopics = [];
 	public dirtyEvents = [];
 	public newEvents = [];
-	
+
 	public days;
-	
+
 	public _CANVAS;
 	public _VIDEO;
 	public _CTX;
-	
+
 	public urlForVideo = [];
 	public urlForImages = [];
-	
+
 	public datesEditable = false;
 	public isPhoneVerified = false;
 	public isSubmitted = false;
@@ -133,10 +133,10 @@ export class SessionEditComponent implements OnInit {
 			'provisions',
 			'packages',
 			'preferences',
-			{'availability' : {'contents' : 'peers'} }
+			{ 'availability': { 'contents': 'peers' } }
 		]
 	};
-	
+
 	// Geo Location
 	public userSettings: any = {
 		geoLocation: [37.76999, -122.44696],
@@ -144,7 +144,7 @@ export class SessionEditComponent implements OnInit {
 		inputPlaceholderText: 'Where do you live?',
 		showSearchButton: false,
 	};
-	
+
 	public paymentInfo: FormGroup;
 	private payoutRuleNodeId: string;
 	private payoutRuleAccountId: string;
@@ -200,19 +200,19 @@ export class SessionEditComponent implements OnInit {
 		this.options = requestHeaderService.getOptions();
 		this.currentDate = moment().toDate();
 	}
-	
+
 	public ngOnInit() {
 		this.interest1 = new FormGroup({
 		});
-		
+
 		this.newTopic = this._fb.group({
 			topicName: ['', Validators.requiredTrue]
 		});
-		
+
 		this.paymentInfo = this._fb.group({
 			id: ''
 		});
-		
+
 		this.session = this._fb.group({
 			type: 'session',
 			title: '',
@@ -237,21 +237,21 @@ export class SessionEditComponent implements OnInit {
 			canceledBy: '',
 			status: 'draft'
 		});
-		
+
 		this.conditions = this._fb.group({
 			standards: '',
 			terms: ''
 		});
-		
+
 		this.selectedTopic = new FormGroup({});
-		
+
 		this.phoneDetails = this._fb.group({
-			phoneNo: [{value: '', disabled: true}],
+			phoneNo: [{ value: '', disabled: true }],
 			inputOTP: '',
-			countryCode: [{value: '', disabled: true}]
+			countryCode: [{ value: '', disabled: true }]
 		});
-		
-		
+
+
 		this.profileForm = this._fb.group(
 			{
 				headline: '',
@@ -270,7 +270,7 @@ export class SessionEditComponent implements OnInit {
 				description: ''
 			}
 		);
-		
+
 		this.workForm = this._fb.group({
 			education: this._fb.array([
 				this.initializeEducationForm()
@@ -279,12 +279,12 @@ export class SessionEditComponent implements OnInit {
 				this.initializeWorkForm()
 			])
 		});
-		
-		
+
+
 		this.provisionForm = this._fb.group({
 			provisions: this._fb.array([])
 		});
-		
+
 		this.packageForm = this._fb.group(
 			{
 				trialPackage: this._fb.group({
@@ -300,12 +300,12 @@ export class SessionEditComponent implements OnInit {
 				])
 			}
 		);
-		
+
 		this.preferencesForm = this._fb.group({
 			bookingProcess: 'auto',
 			customUrl: ''
 		});
-		
+
 		this.initializeFormFields();
 		this.initializeProfile();
 		this.initializeSession();
@@ -318,7 +318,7 @@ export class SessionEditComponent implements OnInit {
 		this.years = this.getYearsArray();
 		this.events = [];
 	}
-	
+
 	private getTeachingTopics() {
 		const queryTeaching = {
 			'relInclude': 'experience'
@@ -328,12 +328,16 @@ export class SessionEditComponent implements OnInit {
 			// Topics
 			this.relTopics = _.uniqBy(response, 'id');
 			this.interests = this.relTopics;
+
+			this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
+				{ topicsObject: this.interests.length > 0 });
+
 			if (this.interests) {
 				this.suggestedTopics = this.interests;
 			}
 		});
 	}
-	
+
 	private initializeProfile() {
 		const query = {
 			'include': [
@@ -352,16 +356,17 @@ export class SessionEditComponent implements OnInit {
 			this.setFormValues(profiles);
 		});
 	}
-	
+
 	private setFormValues(profiles: Array<any>) {
 		if (profiles.length > 0) {
 			this.profileForm.patchValue(profiles[0]);
+			this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
+				{ profileObject: profiles[0] });
 			if (profiles[0].other_languages && profiles[0].other_languages.length > 0) {
 				this.profileForm.setControl('other_languages', this._fb.array(
 					profiles[0].other_languages
 				));
 			}
-			
 			if (profiles[0].location_string) {
 				this.userSettings['inputString'] = profiles[0].location_string;
 			}
@@ -371,7 +376,7 @@ export class SessionEditComponent implements OnInit {
 				this.userSettings.geoLocation = [profiles[0].location_lat, profiles[0].location_lng];
 			}
 			this.userSettings = Object.assign({}, this.userSettings);
-			
+
 			if (profiles[0].work && profiles[0].work.length > 0) {
 				this.workForm.setControl('work', this._fb.array([]));
 				const workArray = <FormArray>this.workForm.controls['work'];
@@ -401,19 +406,21 @@ export class SessionEditComponent implements OnInit {
 						})
 					);
 				});
+				this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
+					{ educationObject: profiles[0].education });
 			}
 		}
 	}
-	
+
 	private extractDate(dateString: string) {
 		return moment.utc(dateString).local().toDate();
 	}
-	
+
 	private extractTime(dateString: string) {
 		const time = moment.utc(dateString).local().format('HH:mm:ss');
 		return time;
 	}
-	
+
 	private updatePayoutRule(newPayoutId) {
 		if (this.payoutRuleNodeId) {
 			this.payoutLoading = true;
@@ -447,19 +454,19 @@ export class SessionEditComponent implements OnInit {
 					duration: 5000
 				});
 			});
-			
+
 		}
 	}
-	
-	
+
+
 	private initializeFormFields() {
 		this.difficulties = ['Beginner', 'Intermediate', 'Advanced'];
-		
+
 		this.cancellationPolicies = ['24 Hours', '3 Days', '1 Week'];
-		
+
 		this.currencies = ['USD', 'INR', 'GBP'];
-		
-		
+
+
 		this.learnerType_array = {
 			learner_type: [
 				{ id: 'auditory', display: 'Auditory' }
@@ -468,21 +475,21 @@ export class SessionEditComponent implements OnInit {
 				, { id: 'kinesthetic', display: 'Kinesthetic' }
 			]
 		};
-		
+
 		this.availableDurations = [
 			{ value: 60, text: '1 hour' },
 			{ value: 120, text: '2 hour' },
 			{ value: 180, text: '3 hour' },
 			{ value: 240, text: '4 hour' }
 		];
-		
+
 		this.placeholderStringTopic = 'Search for a topic or enter a new one';
-		
+
 		this.key = 'access_token';
-		
+
 		this.countryPickerService.getCountries()
 			.subscribe((countries) => this.countries = countries);
-		
+
 		this.languagePickerService.getLanguages()
 			.subscribe((languages) => {
 				this.languagesArray = _.map(languages, 'name');
@@ -490,7 +497,7 @@ export class SessionEditComponent implements OnInit {
 					.startWith(null)
 					.map(val => val ? this.filter(val) : this.languagesArray.slice());
 			});
-		
+
 		if (this.interests.length === 0) {
 			this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics')
 				.map((response: any) => {
@@ -499,45 +506,44 @@ export class SessionEditComponent implements OnInit {
 		} else {
 			this.suggestedTopics = this.interests;
 		}
-		
+
 		this.profileImagePending = true;
 		this.sessionVideoPending = true;
 		this.sessionImage1Pending = true;
 	}
-	
+
 	filter(val: string): string[] {
 		return this.languagesArray.filter(option =>
 			option.toLowerCase().indexOf(val.toLowerCase()) === 0);
 	}
-	
+
 	private initializeSession() {
 		if (this.sessionId) {
 			this._collectionService.getCollectionDetail(this.sessionId, this.query)
 				.subscribe((res) => {
-						this.sessionData = res;
-						if (this.sessionData.payoutrules && this.sessionData.payoutrules.length > 0) {
-							this.payoutRuleNodeId = this.sessionData.payoutrules[0].id;
-							this.payoutRuleAccountId = this.sessionData.payoutrules[0].payoutId1;
-						}
-						this.retrieveAccounts();
-						this.initializeFormValues(res);
-						if (res.status === 'active' && this.sidebarMenuItems) {
-							this.sidebarMenuItems[3].visible = false;
-							this.sidebarMenuItems[4].visible = true;
-							this.sidebarMenuItems[4].active = true;
-							this.sidebarMenuItems[4].submenu[0].visible = true;
-							this.sidebarMenuItems[4].submenu[1].visible = true;
-						}
-						
-					},
+					this.sessionData = res;
+					if (this.sessionData.payoutrules && this.sessionData.payoutrules.length > 0) {
+						this.payoutRuleNodeId = this.sessionData.payoutrules[0].id;
+						this.payoutRuleAccountId = this.sessionData.payoutrules[0].payoutId1;
+					}
+					this.retrieveAccounts();
+					this.initializeFormValues(res);
+					if (res.status === 'active' && this.sidebarMenuItems) {
+						this.sidebarMenuItems[3].visible = false;
+						this.sidebarMenuItems[4].visible = true;
+						this.sidebarMenuItems[4].active = true;
+						this.sidebarMenuItems[4].submenu[0].visible = true;
+						this.sidebarMenuItems[4].submenu[1].visible = true;
+					}
+				},
 					err => console.log('error'),
 					() => console.log('Completed!'));
-			
+
 		} else {
 			console.log('NO COLLECTION');
 		}
 	}
-	
+
 	public languageChange(event) {
 		this.busyLanguage = true;
 		if (event) {
@@ -546,9 +552,9 @@ export class SessionEditComponent implements OnInit {
 			// this.session.controls.selectedLanguage.setValue(event.value);
 		}
 	}
-	
-	
-	
+
+
+
 	private retrieveAccounts() {
 		this.payoutAccounts = [];
 		this._paymentService.retrieveConnectedAccount().subscribe(result => {
@@ -581,7 +587,7 @@ export class SessionEditComponent implements OnInit {
 		  this.payoutLoading = false;
 		});*/
 	}
-	
+
 	public selected(event) {
 		if (event.length > 3) {
 			this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
@@ -593,7 +599,7 @@ export class SessionEditComponent implements OnInit {
 			return obj;
 		});
 	}
-	
+
 	public removed(event) {
 		const body = {};
 		const options = {};
@@ -604,15 +610,15 @@ export class SessionEditComponent implements OnInit {
 					.map((response) => {
 					}).subscribe();
 			});
-			
+
 		}
 	}
-	
+
 	public getMenuArray(event) {
 		this.sidebarMenuItems = event;
 	}
-	
-	
+
+
 	private initializeFormValues(res) {
 		// Language
 		if (res.language && res.language.length > 0) {
@@ -621,25 +627,25 @@ export class SessionEditComponent implements OnInit {
 		}
 		// aboutHost TBD
 		this.session.controls.aboutHost.patchValue(res.aboutHost);
-		
+
 		// Title
 		this.session.controls.title.patchValue(res.title);
-		
+
 		// Headline
 		this.session.controls.headline.patchValue(res.headline);
-		
+
 		// Description
 		this.session.controls.description.patchValue(res.description);
-		
+
 		// Difficulty Level
 		this.session.controls.difficultyLevel.patchValue(res.difficultyLevel);
-		
+
 		// Notes
 		this.session.controls.notes.patchValue(res.notes);
-		
+
 		// Seats
 		this.session.controls.maxSpots.patchValue(res.maxSpots);
-		
+
 		// Photos and Videos
 		if (res.videoUrls && res.videoUrls.length > 0) {
 			this.session.controls['videoUrls'].patchValue(res.videoUrls);
@@ -649,7 +655,7 @@ export class SessionEditComponent implements OnInit {
 			this.session.controls['imageUrls'].patchValue(res.imageUrls);
 			this.urlForImages = res.imageUrls;
 		}
-		
+
 		// Currency, Amount, Cancellation Policy
 		this.session.controls.price.patchValue(res.price);
 		if (res.currency) {
@@ -658,24 +664,27 @@ export class SessionEditComponent implements OnInit {
 		if (res.cancellationPolicy) {
 			this.session.controls.cancellationPolicy.setValue(res.cancellationPolicy);
 		}
-		
+
 		// Status
 		this.session.controls.status.setValue(res.status);
-		
+
 		this.isPhoneVerified = res.owners[0].phoneVerified;
-		
+
 		this.isSubmitted = this.session.controls.status.value === 'submitted';
-		
+
 		if (res.owners[0].profiles[0].phone_numbers && res.owners[0].profiles[0].phone_numbers.length) {
 			this.phoneDetails.controls.phoneNo.patchValue(res.owners[0].profiles[0].phone_numbers[0].subscriber_number);
 			this.phoneDetails.controls.countryCode.patchValue(res.owners[0].profiles[0].phone_numbers[0].country_code);
 		}
-		
+
 		const provisions = <FormArray>this.provisionForm.controls['provisions'];
 		res.provisions.forEach(provision => {
 			provisions.push(this.initializeProvisionForm(provision.text));
 		});
-		
+
+		this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
+			{ provisionObject: res.provisions });
+
 		res.packages.forEach(packageObj => {
 			const sanitizedPackageObj = this._collectionService.sanitize(packageObj);
 			if (sanitizedPackageObj.type === 'trial') {
@@ -689,11 +698,17 @@ export class SessionEditComponent implements OnInit {
 				paidPackages.push(this.initializePaidPackageForm(sanitizedPackageObj));
 			}
 		});
-		
+
+		this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
+			{ priceObject: res.packages });
+
 		if (res.preferences.length > 0) {
 			this.preferencesForm.patchValue(this._collectionService.sanitize(res.preferences[0]));
+			this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
+				{ preferenceObject: res.preferences[0] });
+
 		}
-		
+
 		if (res.availability.length > 0) {
 			res.availability.forEach(element => {
 				this.events.push(
@@ -709,28 +724,31 @@ export class SessionEditComponent implements OnInit {
 					}
 				);
 			});
+			this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
+				{ availabilityObject: res.availability });
+
 		}
-		
+
 		console.log(res);
-		
+
 	}
-	
+
 	public sessionStepUpdate() {
 		if (this.session.value.stage < this.step) {
 			this.session.patchValue({
 				'stage': this.step
 			});
 		}
-		
+
 	}
-	
+
 	public nextStep() {
 		this.step++;
 		this.sessionStepUpdate();
 		this.router.navigate(['session', this.sessionId, 'edit', this.step]);
 	}
-	
-	
+
+
 	public changeInterests(topic: any) {
 		const index = this.interests.indexOf(topic);
 		if (index > -1) {
@@ -739,7 +757,7 @@ export class SessionEditComponent implements OnInit {
 			this.interests.push(topic); // Otherwise add this topic.
 		}
 	}
-	
+
 	public submitInterests() {
 		this.busyInterest = true;
 		let body = {};
@@ -747,28 +765,28 @@ export class SessionEditComponent implements OnInit {
 		this.interests.forEach((topic) => {
 			topicArray.push(topic.id);
 		});
-		console.log(topicArray);
 		this.relTopics.forEach((topic) => {
 			topicArray = _.without(topicArray, topic.id);
 		});
 		body = {
 			'targetIds': topicArray
 		};
+		console.log('topics');
 		if (topicArray.length !== 0) {
 			this.http.patch(environment.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel', body)
-				.map(response => response).publishReplay().refCount().subscribe((res) => {
-				// this._collectionService.getCollectionDetail(this.sessionId, this.query)
-				//   .subscribe((resData) => {
-				//     this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
-				//   });
-				this.nextStep();
-				this.busyInterest = false;
-			});
+				.subscribe((response) => {
+					console.log('topics');
+					this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
+						{ topicsObject: response });
+					this.getTeachingTopics();
+					this.nextStep();
+					this.busyInterest = false;
+				});
 		} else {
 			this.nextStep();
 		}
 	}
-	
+
 	/**
 	 * goto(toggleStep)  */
 	public goto(toggleStep) {
@@ -784,9 +802,9 @@ export class SessionEditComponent implements OnInit {
 			this.busySessionPage = true;
 		}
 	}
-	
-	
-	
+
+
+
 	submitForReview() {
 		// Post Session for review
 		this._collectionService.submitForReview(this.sessionId)
@@ -796,7 +814,7 @@ export class SessionEditComponent implements OnInit {
 				this.dialogsService.openCollectionSubmitDialog({
 					type: 'session'
 				});
-				
+
 				// call to get status of session
 				if (this.session.controls.status.value === 'active') {
 					this.sidebarMenuItems[3].visible = false;
@@ -804,12 +822,12 @@ export class SessionEditComponent implements OnInit {
 					this.sidebarMenuItems[4].active = true;
 					this.sidebarMenuItems[4].submenu[0].visible = true;
 					this.sidebarMenuItems[4].submenu[1].visible = true;
-					
+
 				}
 			});
-		
+
 	}
-	
+
 	saveandexit() {
 		this.busySave = true;
 		this.sessionStepUpdate();
@@ -824,11 +842,11 @@ export class SessionEditComponent implements OnInit {
 				this.router.navigate(['console/teaching/sessions']);
 			}).subscribe();
 	}
-	
+
 	exit() {
 		this.router.navigate(['console/teaching/sessions']);
 	}
-	
+
 	addNewTopic() {
 		let tempArray = [];
 		tempArray = _.union(this.interests, tempArray);
@@ -845,7 +863,7 @@ export class SessionEditComponent implements OnInit {
 				}
 			});
 	}
-	
+
 	addNewLanguage() {
 		this.dialogsService
 			.addNewLanguage()
@@ -855,42 +873,42 @@ export class SessionEditComponent implements OnInit {
 					this.session.controls.selectedLanguage.patchValue(res.name);
 				}
 			});
-		
+
 	}
-	
+
 	uploadImage1(event) {
 		if (event.target.files == null || event.target.files === undefined) {
 			document.write('This Browser has no support for HTML5 FileReader yet!');
 			return false;
 		}
-		
+
 		for (let i = 0; i < event.target.files.length; i++) {
 			const file = event.target.files[i];
 			const imageType = /image.*/;
-			
+
 			if (!file.type.match(imageType)) {
 				continue;
-				
+
 			}
-			
+
 			const reader = new FileReader();
-			
+
 			if (reader != null) {
-				
+
 				reader.onload = this.GetThumbnail;
 				reader.readAsDataURL(file);
 			}
-			
-			
+
+
 		}
 	}
-	
+
 	GetThumbnail(e) {
 		const myCan = document.createElement('canvas');
 		const img = new Image();
 		img.src = e.target.result;
 		img.onload = function () {
-			
+
 			myCan.id = 'myTempCanvas';
 			const tsize = 100;
 			myCan.width = Number(tsize);
@@ -899,31 +917,31 @@ export class SessionEditComponent implements OnInit {
 				const cntxt = myCan.getContext('2d');
 				cntxt.drawImage(img, 0, 0, myCan.width, myCan.height);
 				const dataURL = myCan.toDataURL();
-				
-				
+
+
 				if (dataURL != null && dataURL !== undefined) {
 					const nImg = document.createElement('img');
 					nImg.src = dataURL;
 					document.getElementById('image-holder').appendChild(nImg);
-					
+
 				} else {
 					alert('unable to get context');
 				}
-				
+
 			}
 		};
-		
+
 	}
-	
+
 	toggleChoice(choice) {
 		this.selectedOption = choice;
 	}
-	
-	
+
+
 	submitPhoneNo(element, text) {
 		// Call the OTP service
 		// Post Session for review
-		
+
 		element.textContent = text;
 		this._collectionService.sendVerifySMS(this.phoneDetails.controls.phoneNo.value, this.phoneDetails.controls.countryCode.value)
 			.subscribe((res) => {
@@ -933,57 +951,59 @@ export class SessionEditComponent implements OnInit {
 				element.textContent = 'Verification code Sent';
 			});
 	}
-	
+
 	submitOTP() {
 		this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
 			.subscribe((res) => {
-					this.snackBar.open('Token Verified', 'Close', {
-						duration: 5000
-					});
-					this.step++;
-				},
+				this.snackBar.open('Token Verified', 'Close', {
+					duration: 5000
+				});
+				this.step++;
+			},
 				(error) => {
 					this.snackBar.open(error.message, 'Close', {
 						duration: 5000
 					});
 				});
 	}
-	
+
 	takeToPayment() {
 		this.busyPayment = true;
 		this.step++;
 		this.router.navigate(['session', this.sessionId, 'edit', this.step]);
 	}
-	
+
 	/**
 	 * Make the dates section of this page editable
 	 */
 	makeDatesEditable() {
 		this.datesEditable = true;
 	}
-	
+
 	openSession() {
 		this.busyPreview = true;
 		this.router.navigate(['profile', this.userId]);
 		this.busyPreview = false;
 	}
-	
+
 	sort(calendars, param1, param2) {
 		return _.sortBy(calendars, [param1, param2]);
 	}
-	
+
 	onFreeChange(event, packageObj) {
 		if (event) {
 			packageObj.controls['price'].setValue(0);
 		}
 	}
-	
+
 	/**
 	 * saveProfile
 	 */
 	public saveProfile() {
 		this._profileService.updateProfile(this.userId, this.profileForm.value)
 			.subscribe((response) => {
+				this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
+					{ profileObject: response });
 				this.nextStep();
 			}, (err) => {
 				console.log('Error updating Peer: ');
@@ -993,22 +1013,24 @@ export class SessionEditComponent implements OnInit {
 				});
 			});
 	}
-	
+
 	public saveWorkEducation() {
 		this._profileService.updateWork(this.userId, this.profile.id, this.workForm.controls['work'].value)
 			.flatMap((response) => {
 				return this._profileService.updateEducation(this.userId, this.profile.id, this.workForm.controls['education'].value);
 			}).subscribe((response) => {
-			this.nextStep();
-		}, (err) => {
-			console.log('Error updating Peer: ');
-			console.log(err);
-			this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe((response) => {
-				this.saveProfile();
+				this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
+					{ educationObject: response });
+				this.nextStep();
+			}, (err) => {
+				console.log('Error updating Peer: ');
+				console.log(err);
+				this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe((response) => {
+					this.saveProfile();
+				});
 			});
-		});
 	}
-	
+
 	private initializeEducationForm(): FormGroup {
 		return this._fb.group({
 			degree: '',
@@ -1018,7 +1040,7 @@ export class SessionEditComponent implements OnInit {
 			presentlyPursuing: false
 		});
 	}
-	
+
 	private initializeWorkForm(): FormGroup {
 		return this._fb.group({
 			position: ['', Validators.requiredTrue],
@@ -1028,7 +1050,7 @@ export class SessionEditComponent implements OnInit {
 			presentlyWorking: false
 		});
 	}
-	
+
 	uploadVideo(event) {
 		this.uploadingVideo = true;
 		for (const file of event.files) {
@@ -1047,7 +1069,7 @@ export class SessionEditComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	uploadImage(event) {
 		this.uploadingImage = true;
 		for (const file of event.files) {
@@ -1058,6 +1080,9 @@ export class SessionEditComponent implements OnInit {
 				}).subscribe(res => {
 					this.picture_url = res.picture_url;
 					this.uploadingImage = false;
+					this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems, {
+						profileObject: res
+					});
 				}, err => {
 					console.log(err);
 				});
@@ -1067,7 +1092,7 @@ export class SessionEditComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	setProfilePic(image, type) {
 		this._profileService.updateProfile(this.userId, {
 			'picture_url': image
@@ -1077,12 +1102,12 @@ export class SessionEditComponent implements OnInit {
 			console.log(err);
 		});
 	}
-	
-	
+
+
 	deleteFromContainerArr(event) {
 		console.log(event);
 	}
-	
+
 	deleteFromContainer(url: string, type: string) {
 		if (type === 'image') {
 			this._profileService.updateProfile(this.userId, {
@@ -1098,10 +1123,10 @@ export class SessionEditComponent implements OnInit {
 			});
 		} else {
 			console.log('error');
-			
+
 		}
 	}
-	
+
 	autoCompleteCallback(callbackData: any): any {
 		if (callbackData.response) {
 			const data = callbackData.data;
@@ -1110,8 +1135,8 @@ export class SessionEditComponent implements OnInit {
 			this.profileForm.controls['location_lng'].patchValue(Number(data.geometry.location.lng));
 		}
 	}
-	
-	
+
+
 	getLanguages() {
 		this.languagePickerService.getLanguages().subscribe(data => {
 			this.languages = data;
@@ -1119,19 +1144,19 @@ export class SessionEditComponent implements OnInit {
 			this.profileForm.controls['preferred_language'].valueChanges
 				.startWith(null)
 				.subscribe(val => {
-						if (val) {
-							this.filteredOptions = _.filter(this.languages, (item) => {
-								return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
-							});
-						} else {
-							this.languages.slice();
-						}
+					if (val) {
+						this.filteredOptions = _.filter(this.languages, (item) => {
+							return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
+						});
+					} else {
+						this.languages.slice();
 					}
+				}
 				);
 		}, error => console.log('Could not load languages.'));
 	}
-	
-	
+
+
 	addLanguageField() {
 		const otherLanguages = <FormArray>this.profileForm.controls['other_languages'];
 		otherLanguages.push(
@@ -1139,12 +1164,12 @@ export class SessionEditComponent implements OnInit {
 		);
 		console.log(this.profileForm.controls['other_languages']);
 	}
-	
+
 	removeControl(i: number) {
 		const otherLanguages = <FormArray>this.profileForm.controls['other_languages'];
 		otherLanguages.removeAt(i);
 	}
-	
+
 	public deleteWork(index: number) {
 		const work = <FormArray>this.workForm.controls['work'];
 		if (index > 0) {
@@ -1152,18 +1177,18 @@ export class SessionEditComponent implements OnInit {
 			return;
 		}
 	}
-	
+
 	toggleEndDate() {
 		this.disableEndDate = !this.disableEndDate;
 	}
-	
+
 	public addWork() {
 		const work = <FormArray>this.workForm.controls['work'];
 		work.push(
 			this.initializeWorkForm()
 		);
 	}
-	
+
 	public getYearsArray() {
 		const years = [];
 		for (let i = moment().year(); i >= 1917; i--) {
@@ -1171,11 +1196,11 @@ export class SessionEditComponent implements OnInit {
 		}
 		return years;
 	}
-	
+
 	disableEndYear() {
 		this.disableEndYearBool = !this.disableEndYearBool;
 	}
-	
+
 	/**
 	 * deleteeducation(index)  */
 	public deleteEducation(index: number) {
@@ -1185,14 +1210,14 @@ export class SessionEditComponent implements OnInit {
 			return;
 		}
 	}
-	
+
 	public addEducation() {
 		const education = <FormArray>this.workForm.controls['education'];
 		education.push(
 			this.initializeEducationForm()
 		);
 	}
-	
+
 	public updateChanges(type, topic) {
 		if (topic['experience']) {
 			this._profileService.updateTeachingTopic(this.userId, topic.id, { 'experience': topic['experience'] })
@@ -1208,7 +1233,7 @@ export class SessionEditComponent implements OnInit {
 				});
 		}
 	}
-	
+
 	public unfollowTopic(type, topic: any) {
 		this._profileService.unfollowTopic(this.userId, type, topic.id).subscribe((response) => {
 			this.getTeachingTopics();
@@ -1216,13 +1241,16 @@ export class SessionEditComponent implements OnInit {
 			console.log(err);
 		});
 	}
-	
+
 	/**
 	 * saveProvision
 	 */
 	public saveProvision() {
 		this._collectionService.updateProvisions(this.sessionId, this.provisionForm.controls['provisions'].value)
 			.subscribe((response) => {
+				this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems, {
+					provisionObject: response
+				});
 				this.nextStep();
 			}, (err) => {
 				console.log('Error updating Provision');
@@ -1232,20 +1260,20 @@ export class SessionEditComponent implements OnInit {
 				});
 			});
 	}
-	
+
 	addProvisionField() {
 		const provisions = <FormArray>this.provisionForm.controls['provisions'];
 		provisions.push(
 			this.initializeProvisionForm()
 		);
 	}
-	
+
 	private initializeProvisionForm(value?: string) {
 		return this._fb.group({
 			text: value !== undefined ? value : ''
 		});
 	}
-	
+
 	public handleDayClick(e) {
 		if (this.calendarEvent === 'add') {
 			const startDate = e.date;
@@ -1262,7 +1290,7 @@ export class SessionEditComponent implements OnInit {
 			this.newEvents.push(event);
 		}
 	}
-	
+
 	public handleEventClick(eventHandle) {
 		if (!eventHandle.calEvent.booked) {
 			this.events.forEach((eventObj, index) => {
@@ -1278,12 +1306,12 @@ export class SessionEditComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	public submitAvailability() {
 		// Delete dirty availability
-		this.dirtyEvents.forEach( event => {
+		this.dirtyEvents.forEach(event => {
 			if (event.id && event.id.length > 10) {
-				this._collectionService.deleteAvailability(this.sessionId, event.id).subscribe( res1 => {
+				this._collectionService.deleteAvailability(this.sessionId, event.id).subscribe(res1 => {
 				});
 			}
 		});
@@ -1300,11 +1328,14 @@ export class SessionEditComponent implements OnInit {
 		});
 		console.log(availability);
 		this._collectionService.addAvailability(this.sessionId, availability).subscribe(res => {
+			this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems, {
+				availabilityObject: res
+			});
 			this.newEvents = [];
 			this.nextStep();
 		});
 	}
-	
+
 	public initializePaidPackageForm(packageObj?: any) {
 		return this._fb.group({
 			type: 'paid',
@@ -1316,7 +1347,7 @@ export class SessionEditComponent implements OnInit {
 			isFree: packageObj !== undefined && packageObj.price === 0
 		});
 	}
-	
+
 	public submitPackages() {
 		const packagesArray = [];
 		if (this.packageForm.value.trialPackage.isFree) {
@@ -1325,34 +1356,40 @@ export class SessionEditComponent implements OnInit {
 		delete this.packageForm.value.trialPackage.isFree;
 		packagesArray.push(this.packageForm.value.trialPackage);
 		this.packageForm.value.paidPackages.map(packageObj => {
-				if (packageObj.isFree) {
-					packageObj.price = 0;
-				}
-				delete packageObj.isFree;
-				packagesArray.push(packageObj);
+			if (packageObj.isFree) {
+				packageObj.price = 0;
 			}
+			delete packageObj.isFree;
+			packagesArray.push(packageObj);
+		}
 		);
 		this._collectionService.postPackages(this.sessionId, packagesArray).subscribe(res => {
+			this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems, {
+				priceObject: res
+			});
 			this.nextStep();
 		});
 	}
-	
+
 	public addPackages() {
 		const paidpckg = <FormArray>this.packageForm.controls['paidPackages'];
 		paidpckg.push(this.initializePaidPackageForm());
 	}
-	
+
 	public deletePackage(index: number) {
 		const paidpckg = <FormArray>this.packageForm.controls['paidPackages'];
 		paidpckg.removeAt(index);
 	}
-	
+
 	public savePreferences() {
 		this._collectionService.postPreferences(this.sessionId, this.preferencesForm.value).subscribe(res => {
+			this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems, {
+				preferenceObject: res
+			});
 			this.nextStep();
 		});
 	}
-	
+
 	public updateEvent(eventHandle) {
 		this.newEvents.forEach((availability, index) => {
 			if (availability.id === eventHandle.event.id) {
@@ -1371,6 +1408,6 @@ export class SessionEditComponent implements OnInit {
 			}
 		});
 	}
-	
+
 }
 

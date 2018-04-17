@@ -43,8 +43,8 @@ export class LeftSidebarComponent implements OnInit {
   public sidebarMenuItems;
 
   // Input Parameter
-  @Input('menuFile')
-  private menuFile = '';
+  @Input()
+  private menuFile;
 
   @Output()
   private menuArray = new EventEmitter<any>();
