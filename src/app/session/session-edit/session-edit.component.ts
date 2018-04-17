@@ -601,14 +601,10 @@ export class SessionEditComponent implements OnInit {
 	}
 
 	public removed(event) {
-		const body = {};
-		const options = {};
 		this.removedInterests = event;
 		if (this.removedInterests.length !== 0) {
 			this.removedInterests.forEach((topic) => {
-				this.http.delete(environment.apiUrl + '/api/collections/' + this.sessionId + '/topics/rel/' + topic.id, options)
-					.map((response) => {
-					}).subscribe();
+				this.unfollowTopic('teaching', topic);
 			});
 
 		}
@@ -775,9 +771,12 @@ export class SessionEditComponent implements OnInit {
 		if (topicArray.length !== 0) {
 			this.http.patch(environment.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel', body)
 				.subscribe((response) => {
-					console.log('topics');
 					this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
 						{ topicsObject: response });
+					this._collectionService.patchCollection(this.sessionId, {
+						status: 'draft',
+						isApproved: false
+					});
 					this.getTeachingTopics();
 					this.nextStep();
 					this.busyInterest = false;
@@ -1236,6 +1235,12 @@ export class SessionEditComponent implements OnInit {
 
 	public unfollowTopic(type, topic: any) {
 		this._profileService.unfollowTopic(this.userId, type, topic.id).subscribe((response) => {
+			this._collectionService.patchCollection(this.sessionId, {
+				status: 'draft',
+				isApproved: false
+			}).subscribe(res => {
+				console.log(res);
+			});
 			this.getTeachingTopics();
 		}, (err) => {
 			console.log(err);
