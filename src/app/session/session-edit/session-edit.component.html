@@ -37,20 +37,19 @@
 				<div class="row">
 					<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 						<h2 class="title">Peerbuds Session Guidelines</h2>
-						<p class="subtitle">Peerbuds is a platform dedicated to connecting people who are forward thinking, passionate about education,
-							and open-minded in general. We're pretty sure that each individual who joins our community is a cool, high-caliber
-							person with unique talents and knowledge to share. That said, we'd like to establish just a few common-sense
-							expectations so our platform can continue to be as high quality as possible.
+						<p class="subtitle">Peerbuds is a platform dedicated to connecting people who are forward thinking, passionate about education, and open-minded
+							in general. We're pretty sure that each individual who joins our community is a cool, high-caliber person with unique
+							talents and knowledge to share. That said, we'd like to establish just a few common-sense expectations so our platform
+							can continue to be as high quality as possible.
 						</p>
 						<ul class="guideline-points text-grey">
-							<li>Respect others and their differences. Not everyone on Peerbuds is going to have the same worldview, and that's
-								actually a good thing. It's how we can learn from each other. Keep all comments and observations fair,
-								controlled and as positive as possible.</li>
+							<li>Respect others and their differences. Not everyone on Peerbuds is going to have the same worldview, and that's actually
+								a good thing. It's how we can learn from each other. Keep all comments and observations fair, controlled and as positive
+								as possible.</li>
 							<li>Take your responsibilities seriously. Whether you sign up to learn or to teach (or both!), be sure to communicate
 								with all your peers as necessary and always be on time to events.</li>
-							<li>You can't go wrong with the "golden rule." Treat everyone you meet on Peerbuds with the same basic courtesy
-								and friendliness you'd like to be shown and you're pretty much good to go. Good vibes are infectious -
-								everybody wins.
+							<li>You can't go wrong with the "golden rule." Treat everyone you meet on Peerbuds with the same basic courtesy and friendliness
+								you'd like to be shown and you're pretty much good to go. Good vibes are infectious - everybody wins.
 							</li>
 						</ul>
 						<div class="margin-top-20">
@@ -102,12 +101,12 @@
 								<div style="margin-top:60px;">
 									<button mat-button (click)=goto(1)>Back</button>
 									<span class="pull-right" matTooltip="A brief description about yourself is mandatory to continue" [matTooltipDisabled]="profileForm.controls['headline'].value.length !== 0 && profileForm.controls['description'].value.length !== 0  ">
-					                    <button mat-raised-button color="accent" type="Submit" [disabled]="profileForm.controls['headline'].value.length === 0 || profileForm.controls['description'].value.length === 0  ">
-					                      <span *ngIf="!busyHost">Continue</span>
-					                      <span *ngIf="busyHost"> </span>
-					                      <ngx-loading [show]="busyHost"></ngx-loading>
-					                    </button>
-                                    </span>
+										<button mat-raised-button color="accent" type="Submit" [disabled]="profileForm.controls['headline'].value.length === 0 || profileForm.controls['description'].value.length === 0  ">
+											<span *ngIf="!busyHost">Continue</span>
+											<span *ngIf="busyHost"> </span>
+											<ngx-loading [show]="busyHost"></ngx-loading>
+										</button>
+									</span>
 								</div>
 							</form>
 						</div>
@@ -126,7 +125,7 @@
 									<ngx-loading [show]="true"></ngx-loading>
 								</div>
 								<p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
-								              accept="image/*" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+								 accept="image/*" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
 									<ng-template pTemplate="toolbar">
 										<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
 									</ng-template>
@@ -155,7 +154,7 @@
 									<ngx-loading [show]="true"></ngx-loading>
 								</div>
 								<p-fileUpload *ngIf="!uploadingVideo" #fubauto name="video" customUpload="true" (uploadHandler)="uploadVideo($event)" maxFileSize="10000000"
-								              accept="video/*" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+								 accept="video/*" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
 									<ng-template pTemplate="toolbar">
 										<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 videos</div>
 									</ng-template>
@@ -189,12 +188,12 @@
 							</div>
 							<button mat-button (click)=goto(2)>Back</button>
 							<span class="pull-right" matTooltip="You must upload both a photo and a video to comtinue" [matTooltipDisabled]="picture_url || profile_video">
-				                <button mat-raised-button color="accent" (click)="nextStep()" [disabled]="!picture_url && !profile_video">
-				                  <span *ngIf="!busyHost">Continue</span>
-				                  <span *ngIf="busyHost"> </span>
-				                  <ngx-loading [show]="busyHost"></ngx-loading>
-				                </button>
-                            </span>
+								<button mat-raised-button color="accent" (click)="nextStep()" [disabled]="!picture_url && !profile_video">
+									<span *ngIf="!busyHost">Continue</span>
+									<span *ngIf="busyHost"> </span>
+									<ngx-loading [show]="busyHost"></ngx-loading>
+								</button>
+							</span>
 						</div>
 					</div>
 				</div>
@@ -207,8 +206,7 @@
 							<ng4geo-autocomplete class="geoLocation" required [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ng4geo-autocomplete>
 							<div class="pb-block">
 								<agm-map [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"
-								         [usePanning]="true" [zoom]="14" [scrollwheel]="false" [disableDoubleClickZoom]="true" [zoomControl]="false"
-								         [streetViewControl]="false">
+								 [usePanning]="true" [zoom]="14" [scrollwheel]="false" [disableDoubleClickZoom]="true" [zoomControl]="false" [streetViewControl]="false">
 									<agm-marker [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"></agm-marker>
 								</agm-map>
 							</div>
@@ -229,12 +227,12 @@
 								<div style="margin-top:100px;">
 									<button mat-button (click)=goto(3)>Back</button>
 									<span class="pull-right">
-					                    <button mat-raised-button color="accent" type="Submit">
-						                      <span *ngIf="!busyLanguage">Continue</span>
-						                      <span *ngIf="busyLanguage"> </span>
-						                      <ngx-loading [show]="busyLanguage"></ngx-loading>
-					                    </button>
-                                    </span>
+										<button mat-raised-button color="accent" type="Submit">
+											<span *ngIf="!busyLanguage">Continue</span>
+											<span *ngIf="busyLanguage"> </span>
+											<ngx-loading [show]="busyLanguage"></ngx-loading>
+										</button>
+									</span>
 								</div>
 							</form>
 						</div>
@@ -329,8 +327,8 @@
 					<div class="row">
 						<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Update your profile sections that peers will see when booking sessions</h2>
-							<p class="subtitle">Write in a clear, straightforward and friendly way. We will give you tips on when to show off your personality
-								and be more descriptive.</p>
+							<p class="subtitle">Write in a clear, straightforward and friendly way. We will give you tips on when to show off your personality and
+								be more descriptive.</p>
 							<button mat-raised-button color="accent" (click)="nextStep()">
 								Continue
 							</button>
@@ -353,8 +351,8 @@
 										<div class="row">
 											<div class="col-sm-12">
 												<app-multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
-												                              [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
-												                              [maxSelection]=maxTopics [minSelection]="1"></app-multiselect-autocomplete>
+												 [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic [maxSelection]=maxTopics
+												 [minSelection]="1"></app-multiselect-autocomplete>
 											</div>
 										</div>
 										<div class="row">
@@ -363,14 +361,14 @@
 									</div>
 								</div>
 								<div style="margin-top:60px;">
-									 <button mat-button (click)=goto(6)>Back</button>
+									<button mat-button (click)=goto(6)>Back</button>
 									<span class="pull-right" matTooltip="Add at least one interest to continue" [matTooltipDisabled]="interests.length !== 0">
-					                    <button mat-raised-button color="accent" (click)="interests.length === 0 || submitInterests()" [disabled]="interests.length == 0">
-					                      <span *ngIf="!busyInterest">Continue</span>
-					                      <span *ngIf="busyInterest"> </span>
-					                      <ngx-loading [show]="busyInterest"></ngx-loading>
-					                    </button>
-                                    </span>
+										<button mat-raised-button color="accent" [disabled]="interests.length == 0">
+											<span *ngIf="!busyInterest">Continue</span>
+											<span *ngIf="busyInterest"> </span>
+											<ngx-loading [show]="busyInterest"></ngx-loading>
+										</button>
+									</span>
 								</div>
 							</form>
 						</div>
@@ -388,11 +386,12 @@
 											<span class="col-md-9 padding-left-0 mat-body-2">{{topic.name |titlecase}}</span>
 										</div>
 										<i [ngClass]="{'mdi mdi-content-save mdiIcon darkColor pull-left':true, 'disabledSpan': (!f.form.controls.experience?.dirty && !f.form.controls.experience?.touched) }"
-										   (click)="updateChanges('teaching', topic)" style="cursor: pointer;"></i>
+										 (click)="updateChanges('teaching', topic)" style="cursor: pointer;"></i>
 										<i class="mdi mdi-close-circle mdiIcon darkColor pull-left" (click)="unfollowTopic('teaching', topic)" style="cursor: pointer;"></i>
 										<div class="topic-experience col-md-8">
 											<mat-form-field [floatLabel]="'always'" style="margin-bottom: 20px; width:100%" #experienceContainer>
-												<textarea matInput #experience name="experience" rows="3" class="form-control" [(ngModel)]="topic.experience" placeholder="How much do you know this topic?" required></textarea>
+												<textarea matInput #experience name="experience" rows="3" class="form-control" [(ngModel)]="topic.experience" placeholder="How much do you know this topic?"
+												 required></textarea>
 												<mat-error>This field is required</mat-error>
 												<mat-hint align="end">{{experience.value.length}} / 1000</mat-hint>
 											</mat-form-field>
@@ -403,10 +402,10 @@
 							<div class="row" style="margin-top:100px;">
 								<button mat-button (click)=goto(7)>Back</button>
 								<span class="pull-right" matTooltip="Please fill all the details" [matTooltipDisabled]="true">
-                                    <button mat-raised-button color="accent" (click)="nextStep()">
-                                        Continue
-                                    </button>
-                                </span>
+									<button mat-raised-button color="accent" (click)="nextStep()">
+										Continue
+									</button>
+								</span>
 							</div>
 						</div>
 					</div>
@@ -416,7 +415,8 @@
 					<div class="row">
 						<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">What i'll provide? </h2>
-							<p class="subtitle">Let your peers know about specific items you would provide in your sessions. These could include things like software licenses, or workstation or food etc.</p>
+							<p class="subtitle">Let your peers know about specific items you would provide in your sessions. These could include things like software
+								licenses, or workstation or food etc.</p>
 							<form class="margin-top-50" [formGroup]="provisionForm" (ngSubmit)="saveProvision()">
 								<div formArrayName="provisions">
 									<div *ngFor="let provisionObj of provisionForm.controls['provisions']['controls']; let i=index" [formGroupName]="i" class="margin-bottom-10">
@@ -428,9 +428,9 @@
 								<a mat-button (click)="addProvisionField()" class="mat-border-button margin-top-20">+ Add an item</a>
 								<div style="margin-top:100px;">
 									<span class="pull-right">
-					                    <button mat-raised-button color="accent" type="submit">
-					                      Continue
-					                    </button>
+										<button mat-raised-button color="accent" type="submit">
+											Continue
+										</button>
 									</span>
 								</div>
 							</form>
@@ -443,7 +443,8 @@
 					<div class="row">
 						<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Set your availability</h2>
-							<p class="subtitle margin-bottom-60">Select all those 60 minute time slots when you will be available to take sessions with other peers. You can always keep adding more availability slots in the future.</p>
+							<p class="subtitle margin-bottom-60">Select all those 60 minute time slots when you will be available to take sessions with other peers. You can always
+								keep adding more availability slots in the future.</p>
 							<!--<div class="margin-bottom-10">You can change the calendar click mode to either </div>
 							<mat-radio-group [(ngModel)]="calendarEvent">
 								<mat-radio-button value="add">Add new slot</mat-radio-button> &emsp;
@@ -451,7 +452,8 @@
 							</mat-radio-group>
 							<div class="margin-bottom-60"></div>-->
 							<p-schedule [events]="events" [eventOverlap]="false" [defaultView]="'agendaWeek'" [editable]="true" (onDayClick)="handleDayClick($event)"
-							            (onEventClick)="handleEventClick($event)" (onEventDrop)="updateEvent($event)" (onEventResize)="updateEvent($event)" [height]="500" [allDaySlot]="false" [slotDuration]="'01:00:00'" [nowIndicator]="true" [scrollTime]="nowTime"></p-schedule>
+							 (onEventClick)="handleEventClick($event)" (onEventDrop)="updateEvent($event)" (onEventResize)="updateEvent($event)"
+							 [height]="500" [allDaySlot]="false" [slotDuration]="'01:00:00'" [nowIndicator]="true" [scrollTime]="nowTime"></p-schedule>
 
 							<div class="row margin-top-60">
 								<button class="pull-right" mat-raised-button color="accent" (click)="submitAvailability()">
@@ -467,7 +469,8 @@
 						<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 							<form [formGroup]="packageForm" (ngSubmit)="submitPackages()">
 								<h2 class="title">Set your pricing</h2>
-								<p class="subtitle">Setup a trial package and as many paid packages for your peer sessions. Learners can only select from within these packages when booking.</p>
+								<p class="subtitle">Setup a trial package and as many paid packages for your peer sessions. Learners can only select from within these
+									packages when booking.</p>
 								<h3 class="margin-top-50">Trial Package</h3>
 								<div class="trialPackageContainer" formGroupName="trialPackage">
 									<div class="title mat-subheading-2">Price</div>
@@ -480,9 +483,9 @@
 									<div class="row margin-left-0" *ngIf="!packageForm.controls['trialPackage']['controls']['isFree'].value">
 										<div class="col-md-2 padding-left-0">
 											<mat-form-field class="pb-block" [floatLabel]="'never'">
-						                      <span matPrefix>
-						                        {{0 | currency: packageForm.controls['trialPackage']['controls']['currency'].value : 'symbol' | slice:0:1}} &nbsp;
-						                      </span>
+												<span matPrefix>
+													{{0 | currency: packageForm.controls['trialPackage']['controls']['currency'].value : 'symbol' | slice:0:1}} &nbsp;
+												</span>
 												<input type="number" matInput #price formControlName="price" placeholder="0" min="1" required>
 											</mat-form-field>
 										</div>
@@ -494,7 +497,9 @@
 											</mat-form-field>
 										</div>
 									</div>
-									<div class="title mat-subheading-2">Hours  <mat-icon class="lightText" style="top: 7px;" [matTooltip]="'Select the length of your trial package and optionally put a price on it. Peers are more likely to book free trial packages.'">info_outline</mat-icon></div>
+									<div class="title mat-subheading-2">Hours
+										<mat-icon class="lightText" style="top: 7px;" [matTooltip]="'Select the length of your trial package and optionally put a price on it. Peers are more likely to book free trial packages.'">info_outline</mat-icon>
+									</div>
 									<div class="row margin-left-0">
 										<div class="col-sm-12 padding-left-0">
 											<mat-form-field [floatLabel]="'never'">
@@ -519,7 +524,8 @@
 								</div>
 								<h3 class="margin-top-50">Paid Packages</h3>
 								<div formArrayName="paidPackages">
-									<div class="paidPackageContainer" *ngFor="let formObj of packageForm.controls['paidPackages']['controls']; let i = index" [formGroupName]="i">
+									<div class="paidPackageContainer" *ngFor="let formObj of packageForm.controls['paidPackages']['controls']; let i = index"
+									 [formGroupName]="i">
 										<div class="title mat-subheading-2">Price</div>
 										<i class="mdi mdi-close-circle mdiIcon darkColor pull-right alignDelete" (click)="deletePackage(i)" style="cursor: pointer;"></i>
 										<div class="row">
@@ -532,7 +538,8 @@
 											<div class="col-md-2 padding-left-0">
 												<mat-form-field class="pb-block" [floatLabel]="'never'">
 													<span matPrefix>
-								                        {{0 | currency: packageForm.controls['paidPackages']['controls'][i]['controls']['currency'].value : 'symbol' | slice:0:1}} &nbsp;
+														{{0 | currency: packageForm.controls['paidPackages']['controls'][i]['controls']['currency'].value : 'symbol' | slice:0:1}}
+														&nbsp;
 													</span>
 													<input type="number" matInput #price formControlName="price" placeholder="0" min="1" required>
 												</mat-form-field>
@@ -545,7 +552,9 @@
 												</mat-form-field>
 											</div>
 										</div>
-										<div class="title mat-subheading-2">Hours <mat-icon class="lightText" style="top: 7px;" [matTooltip]="'You can create paid session packages of different hours with custom pricing for your peers to select.'">info_outline</mat-icon></div>
+										<div class="title mat-subheading-2">Hours
+											<mat-icon class="lightText" style="top: 7px;" [matTooltip]="'You can create paid session packages of different hours with custom pricing for your peers to select.'">info_outline</mat-icon>
+										</div>
 										<div class="row margin-left-0">
 											<div class="col-sm-12 padding-left-0">
 												<mat-form-field [floatLabel]="'never'">
@@ -567,9 +576,9 @@
 												&nbsp; of signing up.
 											</div>
 										</div>
-										<span class="pull-right" matTooltip="Enter a price you wish to charge for this session and its cancellation policy" [matTooltipDisabled]="session.controls['price'].value && session.controls['currency'].value  && session.controls['cancellationPolicy'].value">
-                                            <a (click)="deletePackage(i)"></a>
-                                        </span>
+										<span class="pull-right" matTooltip="Enter a price you wish to charge for this session and its cancellation policy">
+											<a (click)="deletePackage(i)"></a>
+										</span>
 									</div>
 								</div>
 								<div class="row">
@@ -578,10 +587,10 @@
 									</div>
 								</div>
 								<div style="margin-top:100px;">
-									 <a mat-button (click)=goto(10)>Back</a>
+									<a mat-button (click)=goto(10)>Back</a>
 									<span class="pull-right">
-                                        <button mat-raised-button color="accent" type="Submit">Continue</button>
-                                    </span>
+										<button mat-raised-button color="accent" type="Submit">Continue</button>
+									</span>
 								</div>
 							</form>
 						</div>
@@ -592,12 +601,10 @@
 					<div class="row">
 						<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Setup your live session preferences</h2>
-							<form [formGroup]="session">
-								<p class="subtitle">Receive reservations in the most suitable manner and market your profile with a custom URL.</p>
-								<div style="margin-top:60px;">
-									<button class="pull-right" mat-raised-button color="accent" (click)="goto(13)">Continue</button>
-								</div>
-							</form>
+							<p class="subtitle">Receive reservations in the most suitable manner and market your profile with a custom URL.</p>
+							<div style="margin-top:60px;">
+								<button class="pull-right" mat-raised-button color="accent" (click)="goto(13)">Continue</button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -611,7 +618,8 @@
 							</p>
 							<form class="margin-top-50" [formGroup]="preferencesForm" (ngSubmit)="savePreferences()">
 								<mat-radio-group formControlName="bookingProcess">
-									<mat-radio-button value="auto">Book Instantly</mat-radio-button><br/>
+									<mat-radio-button value="auto">Book Instantly</mat-radio-button>
+									<br/>
 									<mat-radio-button value="manual">Allow me to approve requests</mat-radio-button>
 								</mat-radio-group>
 								<button class="pull-right margin-top-100" mat-raised-button color="accent" type="submit">Continue</button>
@@ -647,10 +655,11 @@
 								<div style="margin-top:20px;">
 									<mat-checkbox value="val2" [(ngModel)]="selectedValues[1]">You agree to our terms and conditions.</mat-checkbox>
 								</div>
-								<span class="pull-right margin-top-50" matTooltip="You need to agree to Peerbuds community terms to submit this session for approval" [matTooltipDisabled]="selectedValues[0] && selectedValues[1]">
-					                  <button mat-raised-button color="accent" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
-					                    Submit for Review</button>
-                                </span>
+								<span class="pull-right margin-top-50" matTooltip="You need to agree to Peerbuds community terms to submit this session for approval"
+								 [matTooltipDisabled]="selectedValues[0] && selectedValues[1]">
+									<button mat-raised-button color="accent" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
+										Submit for Review</button>
+								</span>
 							</div>
 							<div *ngIf="isSubmitted" style="margin-top: 70px;">
 								Your session has been submitted for review and is awaiting approval from Peerbuds team.
@@ -695,7 +704,8 @@
 												<mat-hint *ngIf="!isPhoneVerified">We will send the confirmation code on your mobile</mat-hint>
 												<mat-hint *ngIf="isPhoneVerified">Update your phone number from profile to change it for this session</mat-hint>
 											</mat-form-field>
-											<button mat-raised-button #sendOtpButton color="accent" (click)="submitPhoneNo($event.target, 'Sending code to phone...')" *ngIf="!isPhoneVerified">
+											<button mat-raised-button #sendOtpButton color="accent" (click)="submitPhoneNo($event.target, 'Sending code to phone...')"
+											 *ngIf="!isPhoneVerified">
 												Send Code as SMS
 											</button>
 											<button mat-raised-button #sendOtpButton color="accent" *ngIf="isPhoneVerified">
@@ -714,11 +724,11 @@
 								</div>
 								<span class="pull-right" matTooltip="Please verify your phone number to continue" [matTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
 									<button mat-raised-button (click)="takeToPayment()" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
-					                    <span *ngIf="!busyPayment">Continue</span>
-					                    <span *ngIf="busyPayment"> </span>
-					                    <ngx-loading [show]="busyPayment"></ngx-loading>
+										<span *ngIf="!busyPayment">Continue</span>
+										<span *ngIf="busyPayment"> </span>
+										<ngx-loading [show]="busyPayment"></ngx-loading>
 									</button>
-                                </span>
+								</span>
 							</form>
 						</div>
 					</div>
@@ -732,9 +742,9 @@
 								<ngx-loading [show]="true"></ngx-loading>
 							</div>
 							<div class="margin-top-30" *ngIf="!payoutLoading && payoutAccounts && payoutAccounts.length > 0" style="padding-top: 5px; padding-bottom: 15px">
-				                <span class="mat-body-2">
-				                  Connect existing account
-				                </span>
+								<span class="mat-body-2">
+									Connect existing account
+								</span>
 							</div>
 							<div class="row table" *ngIf="!payoutLoading && payoutAccounts && payoutAccounts.length > 0">
 								<div class="col-md-10">
@@ -763,7 +773,7 @@
 															<div class="col-md-3" [ngSwitch]="account.external_accounts.data[0].object">
 																<span *ngSwitchCase="'card'">**** **** **** {{account.external_accounts.data[0].last4}}</span>
 																<span *ngSwitchCase="'bank_account'">{{account.external_accounts.data[0].account_holder_name}}
-                                                                    <br>{{account.external_accounts.data[0].bank_name}}
+																	<br>{{account.external_accounts.data[0].bank_name}}
 																</span>
 															</div>
 															<div class="col-md-3">
@@ -784,9 +794,9 @@
 								</div>
 							</div>
 							<div class="margin-top-30" style="padding-top: 5px; padding-bottom: 15px" *ngIf="!payoutLoading">
-				                <span class="mat-body-2 clickable">
-					                + Add new payout account
-				                </span>
+								<span class="mat-body-2 clickable">
+									+ Add new payout account
+								</span>
 							</div>
 							<!-- <form [formGroup]="paymentInfo "> -->
 							<div style="margin-top:10px; " *ngIf="!payoutLoading">
