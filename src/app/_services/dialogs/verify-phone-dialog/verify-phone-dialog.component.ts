@@ -56,8 +56,10 @@ export class VerifyPhoneDialogComponent implements OnInit {
 		};
 		this._profileService.getPeerData(this.userId, filter)
 			.subscribe((res) => {
-				this.peer.controls.phone.setValue(res.profiles[0].phone_numbers[0].subscriber_number);
-				this.peer.controls.countryCode.setValue(res.profiles[0].phone_numbers[0].country_code);
+				if (res && res.profiles && res.profiles.length > 0 && res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0) {
+					this.peer.controls.phone.setValue(res.profiles[0].phone_numbers[0].subscriber_number);
+					this.peer.controls.countryCode.setValue(res.profiles[0].phone_numbers[0].country_code);
+				}
 				this.profileId = res.profiles[0].id;
 			});
 	}

@@ -74,13 +74,13 @@ export class ConsoleProfileVerificationComponent implements OnInit {
     this._profileService.getPeerData(this.userId, this.queryForSocialIdentities).subscribe((peer) => {
       this.alreadyVerified = [];
       this.notVerified = [];
-      if (peer.phoneVerified && peer.profiles[0].phone_numbers && peer.profiles[0].phone_numbers.length > 0) {
+      if (peer.phoneVerified && peer.profiles && peer.profiles.length > 0 && peer.profiles[0].phone_numbers && peer.profiles[0].phone_numbers.length > 0) {
         this.alreadyVerified.push({
           text: 'Phone Number',
           value: '+' + peer.profiles[0].phone_numbers[0].country_code + ' ' +  peer.profiles[0].phone_numbers[0].subscriber_number
         });
       } else {
-        if (peer.profiles[0].phone_numbers && peer.profiles[0].phone_numbers.length > 0) {
+        if (peer.profiles && peer.profiles.length > 0 && peer.profiles[0].phone_numbers && peer.profiles[0].phone_numbers.length > 0) {
           this.notVerified.push({
             text: 'Phone Number',
             value: '+' + peer.profiles[0].phone_numbers[0].country_code + ' ' +  peer.profiles[0].phone_numbers[0].subscriber_number

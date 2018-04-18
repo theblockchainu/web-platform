@@ -178,7 +178,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 			.openFollowTopicDialog(type, inputs)
 			.subscribe(res => {
 				const topicArray = [];
-				if (res.selected) {
+				if (res && res.selected) {
 					if (type === 'learning') {
 						this.selectedTopicsLearning = res.selected;
 						
