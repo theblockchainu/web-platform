@@ -104,6 +104,10 @@ const routes: Routes = [
 		component: ShortreadComponent
 	},
 	{
+		path: 'shortpaper',
+		component: ShortreadComponent
+	},
+	{
 		path: 'privatebeta',
 		component: PrivatebetaComponent
 	},
