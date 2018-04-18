@@ -7,6 +7,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { environment } from '../../../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { TopicService } from '../../_services/topic/topic.service';
+import * as _ from 'lodash';
 
 @Component({
 	selector: 'app-peers',
@@ -27,10 +29,14 @@ import { Router } from '@angular/router';
 })
 export class PeersComponent implements OnInit {
 	public peers: Array<any>;
+	public peersbackup: Array<any>;
+
 	public availableTopics: Array<any>;
 	public userId;
 	public loading = false;
 	public envVariable;
+	public topicsBackup: Array<any>;
+	public selectedTopics: Array<any>;
 
 	@ViewChild('topicButton') topicButton;
 	@ViewChild('priceButton') priceButton;
@@ -41,14 +47,19 @@ export class PeersComponent implements OnInit {
 		private titleService: Title,
 		private metaService: Meta,
 		private router: Router,
-		public dialog: MatDialog
+		public dialog: MatDialog,
+		private _topicService: TopicService
 	) {
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
 
 	ngOnInit() {
-		this.fetchPeers();
+		this.fetchData();
+	}
+
+	private fetchData() {
+		this.fetchTopics();
 		this.setTags();
 	}
 
@@ -77,35 +88,116 @@ export class PeersComponent implements OnInit {
 	}
 
 	fetchPeers() {
-		const query = {
-			'include': [
-				'reviewsAboutYou',
-				'profiles',
-				'ownedCollections'
-			],
-			'limit': 50
-		};
-		this.loading = true;
-		this._profileService.getAllPeers(query).subscribe((result: any) => {
-			this.loading = false;
-			this.peers = [];
-			for (const responseObj of result) {
-				if (responseObj.id !== this.userId) {
-					let hasSession = false;
-					responseObj.ownedCollections.forEach(collection => {
-						console.log('checking');
-						if (collection.type === 'session') {
-							hasSession = true;
-						}
-					});
-					if (hasSession) {
-						responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
-						this.peers.push(responseObj);
-					}
-				}
+
+		this.selectedTopics = [];
+		for (const topicObj of this.availableTopics) {
+			if (topicObj['checked']) {
+				this.selectedTopics.push({ 'name': topicObj['topic'].name });
 			}
-		}, (err) => {
-			console.log(err);
+		}
+
+		let query;
+
+		if (this.selectedTopics.length < 1) {
+			query = {
+				'include': [
+					{
+						'relation': 'peersTeaching',
+						'scope':
+							{
+								'include':
+									[
+										{
+											'relation': 'ownedCollections',
+											'scope': {
+												'where': { 'type': 'session' }
+											}
+										},
+										'reviewsAboutYou',
+										'profiles',
+										'topicsTeaching'
+									]
+
+							}
+					}
+				],
+				'limit': 50
+			};
+		} else {
+			query = {
+				'include': [
+					{
+						'relation': 'peersTeaching',
+						'scope':
+							{
+								'include':
+									[
+										{
+											'relation': 'ownedCollections',
+											'scope': {
+												'where': { 'type': 'session' }
+											}
+										},
+										'reviewsAboutYou',
+										'profiles',
+										'topicsTeaching'
+									]
+
+							}
+					}
+				],
+				'where': { or: this.selectedTopics },
+				'limit': 50,
+			};
+		}
+
+		this.loading = true;
+		this._topicService.getTopics(query)
+			.subscribe(
+				(response) => {
+					console.log(response);
+					const peers = [];
+					response.forEach(topic => {
+						topic.peersTeaching.forEach(peer => {
+							if (peer.id !== this.userId && peer.ownedCollections && peer.ownedCollections.length > 0) {
+								peer.rating = this._collectionService.calculateRating(peer.reviewsAboutYou);
+								peers.push(peer);
+							}
+						});
+					});
+					this.peers = _.uniqBy(peers, 'id');
+					this.peersbackup = _.cloneDeep(this.peers);
+					this.loading = false;
+				}, (err) => {
+					console.log(err);
+				}
+			);
+	}
+
+	fetchTopics() {
+		const query = {};
+		this._topicService.getTopics(query).map(
+			(response) => {
+				const availableTopics = [];
+				response.forEach(topic => {
+					availableTopics.push({ 'topic': topic, 'checked': false });
+				});
+				return availableTopics;
+			}, (err) => {
+				console.log(err);
+			}
+		).subscribe(response => {
+			this.loading = false;
+			this.availableTopics = response;
+			this.topicsBackup = _.cloneDeep(response);
+			this.fetchPeers();
 		});
 	}
+
+	public filterClickedTopic(index) {
+		this.availableTopics = _.cloneDeep(this.topicsBackup);
+		this.availableTopics[index]['checked'] = true;
+		this.fetchPeers();
+	}
+
 }
