@@ -4,9 +4,9 @@ import { ProfileService } from '../../_services/profile/profile.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { MatDialog } from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import {environment} from '../../../environments/environment';
-import {Meta, Title} from '@angular/platform-browser';
-import {Router} from '@angular/router';
+import { environment } from '../../../environments/environment';
+import { Meta, Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-peers',
@@ -31,7 +31,7 @@ export class PeersComponent implements OnInit {
 	public userId;
 	public loading = false;
 	public envVariable;
-	
+
 	@ViewChild('topicButton') topicButton;
 	@ViewChild('priceButton') priceButton;
 	constructor(
@@ -46,12 +46,12 @@ export class PeersComponent implements OnInit {
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.fetchPeers();
 		this.setTags();
 	}
-	
+
 	private setTags() {
 		this.titleService.setTitle('Peers');
 		this.metaService.updateTag({
@@ -75,12 +75,13 @@ export class PeersComponent implements OnInit {
 			content: environment.clientUrl + this.router.url
 		});
 	}
-	
+
 	fetchPeers() {
 		const query = {
 			'include': [
 				'reviewsAboutYou',
-				'profiles'
+				'profiles',
+				'ownedCollections'
 			],
 			'limit': 50
 		};
@@ -90,8 +91,17 @@ export class PeersComponent implements OnInit {
 			this.peers = [];
 			for (const responseObj of result) {
 				if (responseObj.id !== this.userId) {
-					responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
-					this.peers.push(responseObj);
+					let hasSession = false;
+					responseObj.ownedCollections.forEach(collection => {
+						console.log('checking');
+						if (collection.type === 'session') {
+							hasSession = true;
+						}
+					});
+					if (hasSession) {
+						responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
+						this.peers.push(responseObj);
+					}
 				}
 			}
 		}, (err) => {
