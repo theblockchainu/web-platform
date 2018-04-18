@@ -121,7 +121,74 @@ export class LeftSidebarService {
         if (collection.owners !== undefined && collection.owners[0].phoneVerified) {
             sidebarMenuItems[4].submenu[0].complete = true;
         }
-        console.log(sidebarMenuItems);
         return sidebarMenuItems;
     }
+
+
+    public updateSessionMenu(sidebarMenuItems, dataToUpdate: SessionConfigObject) {
+        let completedSections = 0;
+        if (dataToUpdate.profileObject) {
+            if (dataToUpdate.profileObject.headline && dataToUpdate.profileObject.description) {
+                sidebarMenuItems[0].submenu[0].complete = true;
+                completedSections++;
+            }
+
+            if (dataToUpdate.profileObject.picture_url) {
+                sidebarMenuItems[0].submenu[1].complete = true;
+                completedSections++;
+            }
+
+            if (dataToUpdate.profileObject.location_lat && dataToUpdate.profileObject.other_languages
+                && dataToUpdate.profileObject.other_languages.length > 0) {
+                sidebarMenuItems[0].submenu[2].complete = true;
+                completedSections++;
+            }
+
+
+        }
+
+        if (dataToUpdate.educationObject && dataToUpdate.educationObject.length > 0) {
+            sidebarMenuItems[0].submenu[3].complete = true;
+        }
+
+        if (dataToUpdate.topicsObject) {
+            sidebarMenuItems[1].submenu[0].complete = true;
+            sidebarMenuItems[1].submenu[1].complete = true;
+        }
+
+        if (dataToUpdate.provisionObject && dataToUpdate.provisionObject.length > 0) {
+            sidebarMenuItems[1].submenu[2].complete = true;
+        }
+
+        if (dataToUpdate.availabilityObject && dataToUpdate.availabilityObject.length > 0) {
+            sidebarMenuItems[1].submenu[3].complete = true;
+        }
+
+        if (dataToUpdate.priceObject && dataToUpdate.priceObject.length > 0) {
+            sidebarMenuItems[1].submenu[4].complete = true;
+        }
+
+        if (dataToUpdate.preferenceObject) {
+            if (dataToUpdate.preferenceObject.bookingProcess) {
+                sidebarMenuItems[2].submenu[0].complete = true;
+            }
+            if (dataToUpdate.preferenceObject.customUrl) {
+                sidebarMenuItems[2].submenu[1].complete = true;
+            }
+        }
+        return sidebarMenuItems;
+    }
+
+}
+
+
+interface SessionConfigObject {
+    sessionObject?: any;
+    profileObject?: any;
+    educationObject?: any;
+    topicsObject?: any;
+    provisionObject?: any;
+    availabilityObject?: any;
+    priceObject?: any;
+    preferenceObject?: any;
 }
