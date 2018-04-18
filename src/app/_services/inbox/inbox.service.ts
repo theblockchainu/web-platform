@@ -56,6 +56,8 @@ export class InboxService {
 				.map(
 					(response: any) => response
 				);
+		} else {
+			return null;
 		}
 	}
 	

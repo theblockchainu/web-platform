@@ -21,7 +21,11 @@ export class ConvertCurrencyPipe implements PipeTransform {
     } else {
       return this._paymentService.convertCurrency(amount, fromCurrency).map(
         res => {
-          return this._currencyPipe.transform(res.amount, res.currency.toUpperCase(), 'symbol', '1.0-0');
+        	if (res && res.currency) {
+				return this._currencyPipe.transform(res.amount, res.currency.toUpperCase(), 'symbol', '1.0-0');
+			} else {
+				return this._currencyPipe.transform(amount, 'USD', 'symbol', '1.0-0');
+			}
         }
       );
     }
