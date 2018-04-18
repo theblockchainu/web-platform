@@ -58,12 +58,11 @@ export class IndexComponent implements OnInit {
 		const url = '/assets/video/homepageExplainer.mp4';
 		this.dialogsService.openVideo(url).subscribe();
 	}
-	public sendEmailSubscriptions(message: string, action: string) {
+	public sendEmailSubscriptions() {
 		// this.loading = true;
 		this.email = this.notifyForm.controls['email'].value;
 		this.authenticationService.sendEmailSubscriptions(this.email)
 			.subscribe(
-				// (response) => {this.snackBar.open('Email Subscribed', 'OK'); });
 			);
 		this.snackBar.open('We have registered your email for all our future updates leading to the official Karma launch later this year', 'Thanks', {
 			duration: 5000

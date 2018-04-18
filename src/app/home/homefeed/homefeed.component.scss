@@ -1,5 +1,5 @@
 .homefeed a{
-    color: black;  
+    color: black;
 }
 
 .homefeed{
@@ -131,4 +131,75 @@ agm-map {
   &:not(:first-child) {
     margin-left: -15px !important;
   }
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.recommendation-thumb{
+		object-fit: cover;
+		height: 145px;
+		width: 100%;
+		position: relative;
+	}
+
+	.community-thumb{
+		object-fit: cover;
+		height: 145px;
+		width: 100%;
+		position: relative;
+	}
+
+	.community-card{
+		min-height:1px;
+		padding-left: 8px;
+		padding-right: 8px;
+		width: 50%;
+		float: left;
+	}
+
+	.continueLearning-thumb{
+		object-fit: cover;
+		height: 145px;
+		width: 100%;
+	}
+
+	.peer-recommendation-thumb{
+		object-fit: cover;
+		height: 145px;
+		width: 100%;
+	}
+
+	.recommendation-card{
+		min-height:1px;
+		padding-left: 8px;
+		padding-right: 8px;
+		width: 50%;
+		float: left;
+	}
+
+	agm-map {
+		height: 145px;
+	}
+
+	.continueLearning-card{
+		min-height:1px;
+		padding-left: 8px;
+		padding-right: 8px;
+		width: 25%;
+		float: left;
+	}
+
+	.peer-recommendation-card{
+		min-height:1px;
+		padding-left: 8px;
+		padding-right: 8px;
+		width: 50%;
+		float: left;
+	}
+
+	.communityParticipants {
+		&:not(:first-child) {
+			margin-left: 0px !important;
+		}
+	}
 }

@@ -192,6 +192,7 @@ export class ProfileComponent implements OnInit {
 	}
 	
 	private getTeachingTopics() {
+		this.loadingLearningJourney = true;
 		const queryTeaching = {
 			'relInclude': 'experience'
 		};
@@ -199,7 +200,6 @@ export class ProfileComponent implements OnInit {
 			// console.log(response);
 			this.topicsTeaching = response;
 			this.loadingProfile = false;
-			this.loadingLearningJourney = true;
 			if (this.profileObj.peer[0].collections) {
 				this.getParticipatingWorkshops(this.profileObj.peer[0].collections);
 			} else {
@@ -212,11 +212,13 @@ export class ProfileComponent implements OnInit {
 	}
 	
 	private getParticipatingCommunities(peerId: string) {
+		this.loadingCommunities = true;
 		const query = {
 			'include': { 'participants': 'profiles' }
 		};
 		this._profileService.getJoinedCommunities(peerId, query).subscribe(res => {
 			this.pariticipatingCommunities = res;
+			this.loadingCommunities = false;
 		});
 	}
 	
@@ -281,14 +283,20 @@ export class ProfileComponent implements OnInit {
 	}
 	
 	private setTags() {
-		this.titleService.setTitle(this.profileObj.first_name + ' ' + this.profileObj.last_name);
+		let peerName = '';
+		if (this.profileObj.first_name !== undefined) {
+			peerName = this.profileObj.first_name + ' ' + this.profileObj.last_name;
+		} else {
+			peerName = 'New user';
+		}
+		this.titleService.setTitle(peerName);
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: this.profileObj.first_name + ' ' + this.profileObj.last_name
+			content: peerName
 		});
 		this.metaService.updateTag({
 			property: 'og:description',
-			content: this.profileObj.headline
+			content: this.profileObj.headline || 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

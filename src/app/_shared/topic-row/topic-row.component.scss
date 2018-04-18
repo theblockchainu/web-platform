@@ -27,7 +27,7 @@
     display: inline-block !important;
     vertical-align: top !important;
     white-space: normal !important;
-} 
+}
 
 .floating-button-left{
     position: absolute;
@@ -45,4 +45,21 @@
 
 .mat-button-focus-overlay {
   background-color: #fff !important;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.floating-button-left{
+		position: absolute;
+		z-index: 1;
+		left: 5px;
+		top: 414px;
+	}
+
+	.floating-button-right{
+		position: absolute;
+		z-index: 1;
+		right: 5px;
+		top: 414px;
+	}
 }

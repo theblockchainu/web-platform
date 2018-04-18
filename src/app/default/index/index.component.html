@@ -2,8 +2,8 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="center margin-top-100">
-				<p class="mat-display-3 margin-bottom-20" style="color:black">the knowledge economy</p>
-				<p class="mat-headline margin-bottom-20" style="color:#33bd9e;">makes it possible to get credits for learning that happens anywhere<br/>even when you're just doing the things you love</p>
+				<p class="mat-display-3 margin-bottom-20 homepageTitle" style="color:black">the knowledge economy</p>
+				<p class="mat-headline margin-bottom-20 homepageTitle" style="color:#33bd9e;">makes it possible to get credits for learning that happens anywhere<br/>even when you're just doing the things you love</p>
 				<p class="mat-subheading-2 margin-top-80">
 					<button mat-button [routerLink]="['/whitepaper']" class="mat-border-button" color="accent" style="border-color: #ff6d71;">Read White Paper</button>
 					<button mat-button (click)="openTelegram()" class="mat-border-button" color="accent"><i class="fa fa-telegram" style="top: -2px;position: relative;font-size: 20px;left: -5px;"></i> Join Telegram</button>
@@ -13,63 +13,75 @@
 	</div>
 	
 	<div class="row">
+		<div class="col-md-12 margin-top-60">
+			<img src="/assets/images/images_landing/Waves_above_the_fold.png" />
+			<a (click)="openVideo()">
+				<img src="/assets/images/homepageVideoPlaceholder01.png" class="videoContainer" />
+				<img src="/assets/images/images_landing/Play_button.png" class="videoPlayButton" />
+			</a>
+		</div>
+	</div>
+	<div class="row margin-top-150">
+		<div class="col-md-5 col-md-offset-1">
+			<img src="/assets/images/images_landing/Illustration_1.png" />
+		</div>
+		<div class="col-md-4 col-md-offset-1 margin-top-60 homepageTitle">
+			<p class="mat-display-1">Learning is continuous, not episodic</p>
+			<p class="mat-subheading-1 lightText">Education is no longer episodic that could be gained from 15 years of school. Most people now learn their entire lives even from individuals or informal groups like a community center or an app.</p>
+		</div>
+	</div>
+	<div class="row margin-top-150">
+		<div class="col-md-4 col-md-offset-1 margin-top-60 homepageTitle">
+			<p class="mat-display-1">From degrees to reputation metrics</p>
+			<p class="mat-subheading-1 lightText">Degrees do not do justice to the modern day learner. 'Gyan' is an objective measure of your knowledge that gets continuously recorded on a global distributed ledger.</p>
+		</div>
+		<div class="col-md-5 col-md-offset-1">
+			<img src="/assets/images/images_landing/Illustration_2.png" />
+		</div>
+	</div>
+	<div class="row margin-top-150">
+		<div class="col-md-5 col-md-offset-1">
+			<img src="/assets/images/images_landing/Illustration_3.png" />
+		</div>
+		<div class="col-md-4 col-md-offset-1 margin-top-60 homepageTitle">
+			<p class="mat-display-1" style="color: #484848;margin-bottom: 20px;">Teach for free, earn back Karma as rewards</p>
+			<p class="mat-subheading-1 lightText">'Gyan' is your stake in the economy. 'Karma' is your earning through weekly rewards or payments. All your earning from every Gyan is tracked to give feedback on your teachers.</p>
+		</div>
+	</div>
+	<div class="row margin-top-350">
 		<div class="col-md-12">
-			<div class="margin-top-60 outerContainer videoContainer">
-				<img src="/assets/images/images_landing/Waves_above_the_fold.png" />
-				<a (click)="openVideo()">
-					<img src="/assets/images/homepageVideoPlaceholder01.png" class="col-md-offset-2 centerVideo" style="cursor:pointer;" />
-					<img src="/assets/images/images_landing/Play_button.png" style="cursor: pointer" class="centerPlayButton" />
-				</a>
-				<div class="margin-top-270">
-					<img src="/assets/images/images_landing/Illustration_1.png" class="view2Image" />
-					<div class="col-md-4 margin-right-100 margin-top-60 pull-right">
-						<p class="mat-display-1" style="color: #484848;margin-bottom: 20px;">Learning is continuous, not episodic</p>
-						<p class="content mat-subheading-2">Education is no longer episodic that could be gained from 15 years of school. Most people now learn their entire lives even from individuals or informal groups like a community center or an app.</p>
-					</div>
-				</div>
-				<div>
-					<div class="col-md-4 col-md-offset-1 margin-top-100 margin-left-120">
-						<p class="mat-display-1" style="color: #484848;margin-bottom: 20px;">From degrees to reputation metrics</p>
-						<p class="col-md-10 padding-left-0 content mat-subheading-2">Degrees do not do justice to the modern day learner. 'Gyan' is an objective measure of your knowledge that gets continuously recorded on a global distributed ledger.</p>
-					</div>
-					<img src="/assets/images/images_landing/Illustration_2.png" class="col-md-2 view3Image" />
-				</div>
-				<div>
-					<img src="/assets/images/images_landing/Illustration_3.png" class="view4Image" />
-					<div class="col-md-4 margin-right-100 margin-top-100 pull-right" style="padding-top:25px">
-						<p class="mat-display-1" style="color: #484848;margin-bottom: 20px;">Teach for free, earn back Karma as rewards</p>
-						<p class="content mat-subheading-2">'Gyan' is your stake in the economy. 'Karma' is your earning through weekly rewards or payments. All your earning from every Gyan is tracked to give feedback on your teachers.</p>
-					</div>
-				</div>
-				<!-- carousal -->
-				<div style="position: absolute;margin-top: 367px;">
-					<app-text-icon-carousel></app-text-icon-carousel>
-				</div>
-				<img src="/assets/images/images_landing/Shape_testimoni.png" class="pull-right view5Image" />
-				<img src="/assets/images/images_landing/shape_journey.png" class="view6Image" />
-				<div>
-					<h1 class="journeyText col-md-10 center mat-display-1" style="margin-bottom:20px">Free education was possible. We made it sustainable at scale.</h1>
-					<p class="mat-subheading-2" class="journeyDesc" (click)="openSignup()">Join Now to start earning 'Gyan'</p>
-					<!--<p class="journeyDesc center"></p>
-					<img src="/assets/images/images_landing/Journey_1.png" class="journey journey1" />
-					<img src="/assets/images/images_landing/Journey_2.png" class="journey journey2" />
-					<img src="/assets/images/images_landing/Journey_3.png" class="journey journey3" />
-					<img src="/assets/images/images_landing/Journey_4.png" class="journey journey4" />-->
-				</div>
-				<img src="/assets/images/images_landing/shape_footer.png" class="footer" />
-				<div>
-					<p class="notif center"> Sign up to receive all our latest developments </p>
-					<form [formGroup]="notifyForm">
-						<div class="center">
-							<input matInput type="text" placeholder="Your email here" formControlName="email" class="mail-bg emailInput">
-							<div id="emailBase">
-								<button mat-button class="mat-raised email-btn" (click)="sendEmailSubscriptions()">Notify me!</button>
-							</div>
-						</div>
-					</form>
-				</div>
-				<img src="/assets/images/images_landing/oval-footer.png" class="oval" />
+			<div class="faqCarousel">
+				<app-text-icon-carousel></app-text-icon-carousel>
 			</div>
+			<img src="/assets/images/images_landing/Shape_testimoni.png" class="faqBackground"  />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 ctaContainer">
+			<img src="/assets/images/images_landing/shape_journey.png" class="ctaBackground" />
+			<div class="center mat-headline ctaTitle">Free education was possible. We made it sustainable at scale.</div>
+			<div class="center ctaSubtitle margin-top-60" (click)="openSignup()">
+				<span class="mat-subheading-1">Join Now to start earning 'Gyan'</span>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 newsletterBackground">
+			<img class="newsLetterBackgroundImg" src="/assets/images/images_landing/shape_footer.png" />
+		</div>
+		<div class="col-md-12 newsLetterForm">
+			<p class="center newsLetterTitle margin-bottom-40"> Sign up to receive all our latest developments </p>
+			<form [formGroup]="notifyForm">
+				<div class="center">
+					<input matInput class="newsLetterInput" type="text" placeholder="Your email here" formControlName="email">
+					<div id="emailBase" class="newsLetterButtonContainer">
+						<button mat-button class="mat-raised-button newsLetterButton" (click)="sendEmailSubscriptions()">Notify me!</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-12 newsLetterBottomBackground">
+			<img src="/assets/images/images_landing/oval-footer.png" class="oval" />
 		</div>
 	</div>
 	<div style="position: fixed; bottom: 40px; right: 40px;">

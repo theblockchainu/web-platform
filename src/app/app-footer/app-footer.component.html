@@ -29,7 +29,7 @@ y  <div class="layout-row footer" layout="row" color="white">
 	  <a href="http://www.peerbudsilab.com">Community</a>
 	</div> -->
 	<div class="row mat-body-1">
-		<div class="col-md-3 center">
+		<div class="col-md-3">
 			<mat-form-field>
 				<mat-select [(value)]="selectedCurrency" (valueChange)="updateCurrencyCookie()">
 					<mat-option [value]="'INR'"> INR </mat-option>
@@ -95,10 +95,10 @@ y  <div class="layout-row footer" layout="row" color="white">
 	</div>
 	<hr style="margin-left: -2%; width: 104%;">
 	<div class="row">
-		<div class="col-md-4">
-			<img style="width: 14%;" src="/assets/images/pb_logo.png" alt="logo">
+		<div class="col-md-4 footerBottomLeft">
+			<img class="footerBrandImage" src="/assets/images/pb_logo.png" alt="logo">
 		</div>
-		<div class="col-md-4" style="text-align: center">
+		<div class="col-md-4 footerBottomCenter">
 			<a class="footer-social-link" href="https://www.facebook.com/peerbuds"><i class="fa fa-facebook-square"></i></a>
 			<a class="footer-social-link" href="https://www.twitter.com/peerbuds"><i class="fa fa-twitter-square"></i></a>
 			<a class="footer-social-link" href="https://www.instagram.com/peerbuds"><i class="fa fa-instagram"></i></a>
@@ -110,7 +110,7 @@ y  <div class="layout-row footer" layout="row" color="white">
 			<a class="footer-social-link" href="https://t.me/peerbuds"><i class="fa fa-telegram"></i></a>
 			<a class="footer-social-link" href="https://join.slack.com/t/peerbudsofficial/shared_invite/enQtMzMxODE5OTAxNjM4LWU0ZDNhYmU2ZTliNDBjOGE4ZDA0MTdhYWZlMWJjNGIyZTFlMWMyZjA5MjI0ZmU5Mjk2Njc5ZmNkNTAwYmM4NmM"><i class="fa fa-slack"></i></a>
 		</div>
-		<div class="col-md-4" style="text-align: end">
+		<div class="col-md-4 footerBottomRight">
 			<a class="footer-link" href="/terms-of-service">Terms</a>
 			<a class="footer-link" href="/privacy-policy">Privacy</a>
 			<a class="footer-link" href="/sitemap.xml">Site Map</a>

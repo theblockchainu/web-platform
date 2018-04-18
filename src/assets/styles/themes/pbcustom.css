@@ -1768,3 +1768,32 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 .workshopSelector .mat-form-field-underline {
 	height: 0px;
 }
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.circle-thumb {
+		margin-left: 0;
+	}
+
+	.filterRow {
+		margin-top: 15px;
+		margin-left: 0;
+		width: 100%;
+		padding-left: 10%;
+		padding-top: 17px;
+		border-bottom: 1px solid #dddddd;
+		position: inherit;
+		background: #fff !important;
+		z-index: 2;
+	}
+
+	.mobile-margin-bottom-20 {
+		margin-bottom: 20px;
+	}
+	.cdk-overlay-pane.video-popup {
+		max-width: 95vw !important;
+	}
+
+
+}
