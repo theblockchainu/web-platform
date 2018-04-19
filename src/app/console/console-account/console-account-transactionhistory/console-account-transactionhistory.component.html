@@ -10,7 +10,7 @@
 		<div class="row">
 			<div>
 				<div style="margin-top:20px;" class="col-md-10">
-					<div class="row" style="margin-right: 15px;">
+					<div class="row consoleTransactionsContainer">
 						<mat-tab-group disableRipple>
 							<mat-tab label="Completed Transactions">
 								<div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
@@ -56,33 +56,33 @@
 
 								<hr style="border-top: 3px solid #eeeeee;">
 								<div class="row table-header">
-									<div class="col-md-2">
+									<div class="col-xs-2">
 										<h3>Date</h3>
 									</div>
-									<div class="col-md-2">
+									<div class="col-xs-2">
 										<h3>Type</h3>
 									</div>
-									<div class="col-md-4">
+									<div class="col-xs-4">
 										<h3>Details</h3>
 									</div>
-									<div class="col-md-2">
+									<div class="col-xs-2">
 										<h3>Amount</h3>
 									</div>
-									<div class="col-md-2">
+									<div class="col-xs-2">
 										<h3>Paid Out</h3>
 									</div>
 								</div>
 								<div class="row table-data">
-									<div class="col-md-12">
+									<div class="col-md-12 transactionTableData">
 										<div class="row text-center" *ngIf="!transactions || transactions.length===0 " style="padding-top: 10px; padding-bottom: 10px;">
 											<span class="lightText">
 												Not made any transactions
 											</span>
 										</div>
 										<div class="row" *ngFor="let transaction of transactions" style="padding-top: 10px; padding-bottom: 10px;">
-											<div class="col-md-2">{{transaction.modified | extractTime:'D/M/YY'}}</div>
-											<div class="col-md-2">Payment</div>
-											<div class="col-md-4">
+											<div class="col-xs-2">{{transaction.modified | extractTime:'D/M/YY'}}</div>
+											<div class="col-xs-2">Payment</div>
+											<div class="col-xs-4">
 												<span *ngIf="transaction.collections && transaction.collections.length>0">{{transaction.collections[0].title | titlecase}} - {{transaction.collections[0].type | ucfirst}}</span>
 												<span *ngIf="transaction.contents && transaction.contents.length>0">{{transaction.contents[0].title | ucwords}}
 													<span *ngIf="transaction.contents[0].collections && transaction.contents[0].collections.length > 0">
@@ -91,8 +91,8 @@
 												</span>
 												<span *ngIf="(!transaction.collections || transaction.collections.length<=0) && (!transaction.contents || transaction.contents.length<=0)">{{transaction.description | ucfirst}}</span>
 											</div>
-											<div class="col-md-2">{{transaction.amount / 100 | convertCurrency: transaction.currency | async}}</div>
-											<div class="col-md-2"></div>
+											<div class="col-xs-2">{{transaction.amount / 100 | convertCurrency: transaction.currency | async}}</div>
+											<div class="col-xs-2"></div>
 										</div>
 									</div>
 								</div>
@@ -139,33 +139,33 @@
 								</form>
 								<hr style="border-top: 3px solid #eeeeee;">
 								<div class="row table-header">
-									<div class="col-md-2">
+									<div class="col-xs-2">
 										<h3>Date</h3>
 									</div>
-									<div class="col-md-2">
+									<div class="col-xs-2">
 										<h3>Type</h3>
 									</div>
-									<div class="col-md-4">
+									<div class="col-xs-4">
 										<h3>Details</h3>
 									</div>
-									<div class="col-md-2">
+									<div class="col-xs-2">
 										<h3>Collected</h3>
 									</div>
-									<div class="col-md-2">
+									<div class="col-xs-2">
 										<h3>Paid Out</h3>
 									</div>
 								</div>
 								<div class="row table-data">
-									<div class="col-md-12">
+									<div class="col-md-12 transactionTableData">
 										<div class="row text-center" *ngIf="!retrievedFutureTransactions || retrievedFutureTransactions.length===0 " style="padding-top: 10px; padding-bottom: 10px;">
                                         <span class="lightText">
 	                                        No upcoming transactions
                                         </span>
 										</div>
 										<div class="row" *ngFor="let transaction of retrievedFutureTransactions" style="padding-top: 10px; padding-bottom: 10px;">
-											<div class="col-md-2">{{transaction.modified | extractTime:'DD/M/YY'}}</div>
-											<div class="col-md-2">Payment</div>
-											<div class="col-md-4">
+											<div class="col-xs-2">{{transaction.modified | extractTime:'DD/M/YY'}}</div>
+											<div class="col-xs-2">Payment</div>
+											<div class="col-xs-4">
 												<span *ngIf="transaction.peers && transaction.peers.length>0 && transaction.peers[0].profiles && transaction.peers[0].profiles.length>0">
 													{{transaction.peers[0].profiles[0].first_name}} {{transaction.peers[0].profiles[0].last_name}} -
 													<span *ngIf="transaction.collections && transaction.collections.length > 0">
@@ -177,8 +177,8 @@
 												</span>
 												<span *ngIf="!transaction.peers || transaction.peers.length<=0">{{transaction.description | ucfirst}}</span>
 											</div>
-											<div class="col-md-2">{{transaction.amount / 100 | convertCurrency: transaction.currency | async}}</div>
-											<div class="col-md-2"></div>
+											<div class="col-xs-2">{{transaction.amount / 100 | convertCurrency: transaction.currency | async}}</div>
+											<div class="col-xs-2"></div>
 										</div>
 									</div>
 								</div>

@@ -5,19 +5,19 @@
             <button mat-button class="col-md-1 mat-icon-button dialog-close-button" type="button" (click)="addDeleteEvents()">
                 <mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
             </button>
-            <div class="col-md-4">
-                <h3 mat-dialog-title>Add more cohorts your {{ duration }} day {{collection.type}}</h3>
+            <div class="col-md-5">
+                <h3 mat-dialog-title>Add more cohorts to your {{ duration }} day {{collection.type}}</h3>
                 <div>
                     <span>You have
                         <b>{{calendars.length}}</b> existing cohorts</span> &emsp;
                     <a href="javascript:void(0);" (click)="viewCohorts()">View and manage</a>
                 </div>
             </div>
-            <div class="col-md-4 pull-right" *ngIf="recurringCount">
+            <div class="col-md-6 pull-right" style="text-align: right;" *ngIf="recurringCount">
                 <h3 style="margin-bottom:10px">Peerbuds Insights</h3>
                 <div>
                     <label>You will have total of
-                        <b>{{ recurringCount }}</b> recurring sessions</label>
+                        <b>{{ recurringCount }}</b> cohorts</label>
                 </div>
                 <div style="margin-top:5px">
                     <label>Your {{collection.type}} will run for
@@ -28,23 +28,22 @@
         </div>
         <hr style="margin-top: 0px;">
         <div class="content">
-            <div class="row margin-bottom-20 wrapper">
-                <div class="col-md-5 right-border">
+            <div class="row margin-bottom-20">
+                <div class="col-md-6 right-border">
                     <div class="leftContent">
                         <p class="mat-caption" *ngIf="calendars.length === 1">
                             <mat-icon style="vertical-align:sub;font-size: 16px;">info</mat-icon>
-                            Your first cohort was automatically created when this {{collection.type | titlecase}} was approved. You can add more Cohorts
-                            to your {{collection.type}} at any time.
+                            Your first cohort was automatically created when this {{collection.type}} was approved. You can add more cohorts to your {{collection.type}} at any time.
                         </p>
                         <br>
                         <label *ngIf="calendars.length > 0">After your last existing cohort ends, the next cohort starts...</label>
                         <br>
                         <br>
-                        <mat-radio-group class="repeat-{{collection.type}}-group" formControlName="repeatWorkshopGroupOption" (change)="repeatFrequency($event.value)">
-                            <mat-radio-button class="repeat-{{collection.type}}-button margin-bottom-10" value="immediate">
+                        <mat-radio-group class="repeat-workshop-group" formControlName="repeatWorkshopGroupOption" (change)="repeatFrequency($event.value)">
+                            <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="immediate">
                                 <span>Immediately</span>
                             </mat-radio-button>
-                            <mat-radio-button class="repeat-{{collection.type}}-button margin-bottom-10" value="days">
+                            <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="days">
                                 <span class="valignMiddle">after</span>
                                 &nbsp;&nbsp;
                                 <mat-form-field [floatLabel]="'always'">
@@ -54,7 +53,7 @@
                                 </mat-form-field>
                                 <span class="valignMiddle">&nbsp;&nbsp;days</span>
                             </mat-radio-button>
-                            <mat-radio-button class="repeat-{{collection.type}}-button margin-bottom-10" value="weekdays">
+                            <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="weekdays">
                                 <span class="valignMiddle">from the next</span>
                                 &nbsp;&nbsp;
                                 <mat-form-field [floatLabel]="'always'">
@@ -67,8 +66,8 @@
                         <div class="margin-top-40 flex-column">
                             <label>It will continue repeating up to..</label>
                             <br>
-                            <mat-radio-group class="repeat-{{collection.type}}-group" formControlName="repeatTillOption" (change)="repeatTill($event.value)">
-                                <mat-radio-button class="repeat-{{collection.type}}-button margin-bottom-10" value="daysRepeat">
+                            <mat-radio-group class="repeat-workshop-group" formControlName="repeatTillOption" (change)="repeatTill($event.value)">
+                                <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="daysRepeat">
                                     &nbsp;&nbsp;
                                     <mat-form-field [floatLabel]="'always'">
                                         <mat-select formControlName="daysRepeat" class="widthDays padding-top-0" (change)="repeatTillTrigger()">
@@ -77,7 +76,7 @@
                                     </mat-form-field>
                                     <span class="valignMiddle">&nbsp;&nbsp;more sessions</span>
                                 </mat-radio-button>
-                                <mat-radio-button class="repeat-{{collection.type}}-button margin-bottom-10" value="monthsRepeat">
+                                <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="monthsRepeat">
                                     &nbsp;&nbsp;
                                     <mat-form-field [floatLabel]="'always'">
                                         <mat-select formControlName="monthsRepeat" class="widthDays padding-top-0" (change)="repeatTillTrigger()">
@@ -86,7 +85,7 @@
                                     </mat-form-field>
                                     <span class="valignMiddle">&nbsp;&nbsp;more months</span>
                                 </mat-radio-button>
-                                <mat-radio-button class="repeat-{{collection.type}}-button margin-bottom-10" value="dateRepeat">
+                                <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="dateRepeat">
                                     <span class="valignMiddle">the date</span>
                                     &nbsp;&nbsp;
                                     <mat-form-field [floatLabel]="'always'">
@@ -99,9 +98,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="editCalendar col-md-4 rightContent">
-                    <div class="mat-content calendar" style="margin-right:10px;height: 520px;">
+                <div class="editCalendar col-md-6 rightContent">
+                    <div class="mat-content calendar" style="margin-right:10px;">
                         <h3>Preview Cohorts</h3>
+	                    <div class="caption margin-top-20 margin-bottom-20" *ngIf="(!recurringCalendar || recurringCalendar.length === 0) || computedConflict.length === 0">
+		                    Select from the options on the left and we will show you a list of all cohorts that will be added based on your selection.
+	                    </div>
                         <div *ngIf="(recurringCalendar && recurringCalendar.length > 0) || computedConflict.length > 0">
                             <div class="margin-top-30 flex-column" *ngIf="computedConflict.length > 0">
                                 <h3>Avoid Conflicts</h3>
@@ -149,9 +151,7 @@
                                                 </div>
                                                 <div class="col-md-12 padding-left-0" *ngFor="let content of content.contents">
                                                     <div class="col-md-12 padding-left-0" style="margin: 3px 0px 10px 0px;">
-                                                        <b>{{ content.title | titlecase}}</b> - {{content.schedules[0].startTime
-                                                        | extractTime:'hh:mm a'}} to {{content.schedules[0].endTime | extractTime:'h:mm
-                                                        a'}}
+                                                        <b>{{ content.title | titlecase}}</b> - {{content.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.schedules[0].endTime | extractTime:'h:mm a'}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -161,8 +161,8 @@
                             </p-accordion>
                         </div>
                         <div class="button-bar">
-                            <span matTooltip="Solve Conflicts!" [matTooltipDisabled]="recurringCount !== 0 && (computedConflict.length <= 0 || acceptConflicts)">
-                                <button mat-raised-button color="primary" (click)="saveCalendar()" [disabled]="recurringCount == 0 || (computedConflict.length > 0 && !acceptConflicts)">Save {{collection.type | titlecase}} Batches</button>
+                            <span matTooltip="Select options or solve all date conflicts before adding these cohorts" [matTooltipDisabled]="recurringCount !== 0 && (computedConflict.length <= 0 || acceptConflicts)">
+                                <button mat-raised-button color="primary" (click)="saveCalendar()" [disabled]="recurringCount == 0 || (computedConflict.length > 0 && !acceptConflicts)">Add these cohorts to my {{collection.type}}</button>
                             </span>
                         </div>
                     </div>

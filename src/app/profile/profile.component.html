@@ -1,752 +1,742 @@
-<div class="profile-page main-content">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="loading-container  margin-top-20 margin-left-50" [hidden]="!loadingProfile">
-                <ngx-loading [show]="true"></ngx-loading>
-            </div>
-        </div>
-    </div>
-    <div class="row" *ngIf="profileObj && !loadingProfile">
-        <div class="col-md-3 {{offsetString}} left-panel">
-            <div class="row padding-bottom-30">
-                <div class="col-md-12" style="padding-left: 0px;">
-                    <img class="img-rounded profile-pic" *ngIf="profileObj.picture_url" src="{{envVariable.apiUrl+profileObj.picture_url}}" alt="profile_pic">
-                    <img class="img-rounded profile-pic" *ngIf="!profileObj.picture_url" src="/assets/images/user-placeholder.jpg" alt="profile_pic">
-                </div>
-                <div class="col-md-6" style="margin-top: 25px; padding-left: 0px;">
-                    <h2 style="margin-bottom: 0px">{{profileObj.first_name | titlecase}} {{profileObj.last_name | titlecase}}</h2>
-                    <h4 class="pre-wrapped">{{profileObj.headline ? profileObj.headline : 'new user' | titlecase}}</h4>
-                </div>
-                <div class="col-md-6" style="margin-top: 25px; padding-left: 0px;" *ngIf="cookieUserId && urluserId !== cookieUserId">
-                    <button mat-button (click)="openMessageDialog()">Message</button>
-                </div>
-            </div>
-            <div class="row border-top" *ngIf="other_languages || profileObj.location_string">
-                <div class="col-xs-1" style="padding-left: 0px;">
-                    <mat-icon>mic_none</mat-icon>
-                </div>
-                <div class="col-xs-11">
-                    <p>
-                        {{other_languages || profileObj.first_name + ' has not added any languages yet'}}
-                    </p>
-                </div>
-                <div class="col-xs-1" style="padding-left: 0px;">
-                    <mat-icon>
-                        location_on
-                    </mat-icon>
-                </div>
-                <div class="col-xs-11">
-                    <p>
-                        {{'Lives in ' + profileObj.location_string || profileObj.first_name + ' has not provided his location yet'}}
-                    </p>
-                </div>
-            </div>
-            <div class="row border-top" *ngIf="peerObj && (peerObj.emailVerified || peerObj.phoneVerified || peerObj.accountVerified)">
-                <div class="col-md-12 padding-left-0">
-                    <div class="mat-title">Verified Info</div>
-                </div>
-                <div class="col-md-12 padding-left-0">
-                    <span *ngIf="peerObj.emailVerified">Email address, </span>
-                    <span *ngIf="peerObj.phoneVerified">Phone number, </span>
-                    <span *ngIf="peerObj.accountVerified">Government ID</span>
-                </div>
-            </div>
-            <div class="row border-top" *ngIf="connectedIdentities['facebook'] || connectedIdentities['google']">
-                <div class="col-md-12 padding-left-0">
-                    <div class="mat-title">Connected Accounts</div>
-                </div>
-                <div class="col-md-12 padding-left-0">
-                    <!--<i *ngIf="!connectedIdentities[ 'facebook'] " class="fa fa-facebook dcSocial socialIcons "></i>-->
-                    <i *ngIf="connectedIdentities[ 'facebook'] " class="fa fa-facebook defaultFB socialIcons "></i>
-                    <i *ngIf="connectedIdentities[ 'google'] " class="fa fa-google defaultGoogle socialIcons "></i>
-                    <!--<i *ngIf="!connectedIdentities[ 'google'] " class="fa fa-google dcSocial socialIcons "></i>-->
-                </div>
-            </div>
-            <div class="row border-top " *ngIf="interestsArray.length> 0">
-                <div class="col-md-12 padding-left-0">
-                    <div class="mat-title">Interest</div>
-                </div>
-                <div class="col-md-12 padding-left-0">
-                    <mat-chip-list>
-                        <span *ngFor="let interest of interestsArray;let i=index" style="margin: 0px 10px 10px 0px">
-                            <mat-chip *ngIf="i<maxVisibleInterest">{{interest | titlecase}}</mat-chip>
-                        </span>
-                    </mat-chip-list>
-                    <span *ngIf="interestsArray.length>3">
-                        <span *ngIf="interestsArray.length>maxVisibleInterest">
-                            <a (click)="toggleMaxInterest()" class="clickable">
-                                <strong> + show more </strong>
-                            </a>
-                        </span>
-                        <span *ngIf="interestsArray.length<maxVisibleInterest">
-                            <a (click)="toggleMaxInterest()" class="clickable">
-                                <strong> - show less </strong>
-                            </a>
-                        </span>
-                    </span>
-                </div>
-            </div>
-            <div class="row border-top" *ngIf="urluserId!==cookieUserId" style="padding-top: 20px;cursor:pointer">
-                <div class="col-md-12" style="padding-left: 0px;">
-                    <h5 (click)="reportProfile()">Report profile</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-5 center-feed">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="mat-title">About</div>
-                </div>
-                <div class="col-md-12">
-                    <p class="alignJustify" *ngIf="profileObj.description">
-                        <span class="pre-wrapped alignJustify">{{profileObj.description | ucfirst | shorten: maxLength : '...'}}</span>
-                        <span *ngIf="profileObj.description.length > maxLength" (click)="showAll(profileObj.description.length)" style="color:#33bd9e">read more</span>
-                        <span *ngIf="profileObj.description.length >140 && profileObj.description.length <= maxLength" (click)="showAll(profileObj.description.length)"
-                            style="color:#33bd9e">show less</span>
-                    </p>
-                    <p *ngIf="!profileObj.description">Joined peerbuds on {{profileObj.createdAt | date:'dd MMM yyyy'}}
-                        <a [routerLink]="['/','console','profile','edit']" *ngIf="cookieUserId === urluserId">. Add a description to your profile?</a>
-                    </p>
-                </div>
-            </div>
-            <hr *ngIf="topicsTeaching && topicsTeaching.length > 0">
-            <div class="row margin-top-40 margin-bottom-20" *ngIf="topicsTeaching && topicsTeaching.length > 0">
-                <div class=col-md-12>
-                    <div class="mat-title">Topics I teach</div>
-                </div>
-                <div class="col-md-12">
-                    <div class="row" *ngFor="let topic of topicsTeaching">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="mat-body-2">{{topic.name | titlecase}}</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p class="pre-wrapped alignJustify">{{topic.experience || profileObj.first_name + ' has not specified their experience in
-                                        this topic' | ucfirst}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" *ngIf="topicsTeaching.length === 0">
-                        <div class="col-md-12">
-                            <p style="text-align: left" *ngIf="cookieUserId !== urluserId">This user is not teaching yet.</p>
-                            <p style="text-align: left" *ngIf="cookieUserId === urluserId">You are not teaching yet.
-                                <a [routerLink]="['/','console','teaching', 'workshops']">Start Teaching</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr *ngIf="(profileObj.work && profileObj.work.length > 0 ) || (profileObj.education && profileObj.education.length > 0)">
-            <div class="row margin-top-20 margin-bottom-20" *ngIf="(profileObj.work && profileObj.work.length > 0 ) || (profileObj.education && profileObj.education.length > 0)">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="mat-title">Institutions</div>
-                        </div>
-                    </div>
-                    <div class="row" *ngIf="profileObj.work && profileObj.work.length > 0" style="padding-top: 20px;">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-1">
-                                    <mat-icon class="resumeIcons">work</mat-icon>
-                                </div>
-                                <div class="col-md-11 resumeText">
-                                    <span class="mat-body-2">Work Experience</span>
-                                </div>
-                            </div>
-                            <div class="row" *ngIf="profileObj.work && profileObj.work.length === 0">
-                                <div class="col-md-11 col-md-offset-1">
-                                    <p style="text-align: left">No details provided.
-                                        <a [routerLink]="['/','console','profile', 'edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="row" style="padding-top: 0px;" *ngFor="let workObj of profileObj.work">
-                                <div class="col-md-11 col-md-offset-1 margin-bottom-10">
-                                    <div class="row">
-                                        <div class="col-md-12 work-title">
-                                            <span style="font-size: 16px;font-weight: bolder;">{{workObj.position | ucfirst}} </span> @
-                                            <!--<mat-icon style="font-size: 5px;line-height:24px;vertical-align:middle;width: 15px;margin-left: -5px;">fiber_manual_record</mat-icon>-->
-                                            <span class="lighttext" style="font-size: 15px;">
-                                                {{workObj.company | ucfirst}}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12 mat-caption">
-                                            <span *ngIf="workObj.endDate">{{workObj.startDate | date:'yyyy'}} - {{workObj.endDate | date:'yyyy'}}</span>
-                                            <span *ngIf="!workObj.endDate ">{{workObj.startDate | date:'yyyy'}} - Present</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="padding-top: 20px;" *ngIf="profileObj.education && profileObj.education.length > 0">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-1">
-                                    <mat-icon class="resumeIcons">school</mat-icon>
-                                </div>
-                                <div class="col-md-11 resumeText">
-                                    <span class="mat-body-2">Education</span>
-                                </div>
-                            </div>
-                            <div class="row" *ngIf="profileObj.education && profileObj.education.length === 0">
-                                <div class="col-md-11 col-md-offset-1">
-                                    <p style="text-align: left">No details provided.
-                                        <a [routerLink]="['/','console','profile', 'edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="row" style="padding-top: 0px;" *ngFor="let educationObj of profileObj.education">
-                                <div class="col-md-11 col-md-offset-1 margin-bottom-10">
-                                    <div class="row">
-                                        <div class="col-md-12 education-title">
-                                            <span style="font-size: 16px;font-weight: bolder;">{{educationObj.degree}}</span> @
-                                            <span class="lighttext" style="font-size: 15px;">
-                                                {{educationObj.school | ucwords}}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12 mat-caption">
-                                            <span *ngIf="educationObj.endYear">{{educationObj.startYear}} - {{educationObj.endYear}}</span>
-                                            <span *ngIf="!educationObj.endYear">{{educationObj.startYear}} - Present</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <div class="row margin-top-20 margin-bottom-20">
-                <div class=col-md-12>
-                    <div class="row">
-                        <div class="col-md-12 review">
-                            <div class="mat-title" style="display:inline-block">Reviews</div>
-                            &emsp;
-                            <p-rating style="display: inline-block;" [ngModel]="userRating" readonly="true" stars="5" [cancel]="false">
-                            </p-rating>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="mat-body-2">
-                                <span>From Learners ({{reviewsFromLearners ? reviewsFromLearners.length : '0'}})</span>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <hr>
-                        </div>
-                        <div class="col-md-12 text-center reviews">
-                            <div *ngFor="let review of reviewsFromLearners; let i=index;">
-                                <div class="review-section" *ngIf="review.peer !== undefined && i < maxVisibleReviewsLearner">
-                                    <div class="row review-top" style="margin-left:0px;">
-                                        <div class="col-md-2 padding-left-0 review-thumb pull-left">
-                                            <img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)" style="position: relative; top: 7px;">
-                                        </div>
-                                        <div class="col-md-4 reviewer padding-left-0">
-                                            <div class="reviewer-name">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name}}
-                                            </div>
-                                            <p-rating class="rating" [(ngModel)]="review.score" [cancel]="false" [readonly]="true"></p-rating>
-                                        </div>
-                                    </div>
-                                    <div class="row review-content mat-body-1 margin-top-10" style="margin-left:0px;">
-
-                                        <div class="col-md-12 review-desc padding-left-0 pre-wrapped" style="text-align:left">{{ review.description }}</div>
-                                        <div class="col-md-12 review-bottom padding-left-0 margin-top-10 mat-caption" style="text-align:left; margin-top: 5px !important; font-weight: 400;">
-                                            <span>For {{ getReviewedCollection(profileObj.peer[0], review.collectionId).type}}
-                                            </span>
-                                            <span class="bullet"></span>
-                                            <span>
-                                                <a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title |
-                                                    ucwords }}
-                                                </a>
-                                            </span>
-                                            <span class="bullet"></span>
-                                            <span> in {{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars,
-                                                review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="margin-top-20"></div>
-                            <span *ngIf="reviewsFromLearners && reviewsFromLearners.length > maxVisibleReviewsLearner">
-                                <a class="clickable" (click)="toggleMaxReviewsLearner()">
-                                    <strong> Show more </strong>
-                                </a>
-                            </span>
-                            <span *ngIf="reviewsFromLearners && reviewsFromLearners.length < maxVisibleReviewsLearner && reviewsFromLearners.length > 0 && maxVisibleReviewsLearner > 4">
-                                <a class="clickable" (click)="toggleMaxReviewsLearner()">
-                                    <strong> Show less </strong>
-                                </a>
-                            </span>
-                            <!-- <hr> -->
-                            <div class="col-md-12 emptySectionText lightText" style="text-align: left;" *ngIf="!(reviewsFromLearners && reviewsFromLearners.length)">
-                                <span>{{profileObj.first_name | ucwords}} has not received any review from a student yet</span>
-                            </div>
-                            <hr>
-                        </div>
-                    </div>
-                    <div class="row" style="padding-top: 20px;">
-                        <div class="col-md-12">
-                            <div class="mat-body-2">
-                                <span>From Teachers ({{reviewsFromTeachers ? reviewsFromTeachers.length : '0'}})</span>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <hr>
-                        </div>
-                        <div class="col-md-12 text-center reviews">
-                            <div *ngFor="let review of reviewsFromTeachers; let i=index;">
-                                <div class="review-section" *ngIf="review.peer !== undefined && i < maxVisibleReviewsTeacher">
-                                    <div class="row review-top" style="margin-left:0px;">
-                                        <div class="col-md-2 padding-left-0 review-thumb pull-left">
-                                            <img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)" style="position: relative; top: 7px;">
-                                        </div>
-                                        <div class="col-md-4 reviewer padding-left-0">
-                                            <div class="reviewer-name">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name}}
-                                            </div>
-                                            <p-rating class="rating" [(ngModel)]="review.score" [cancel]="false" [readonly]="true"></p-rating>
-                                        </div>
-                                    </div>
-                                    <div class="row review-content mat-body-1 margin-top-10" style="margin-left:0px;">
-
-                                        <div class="col-md-12 review-desc padding-left-0 pre-wrapped" style="text-align:left">{{ review.description }}</div>
-                                        <div class="col-md-12 review-bottom padding-left-0 margin-top-10 mat-caption" style="text-align:left; margin-top: 5px !important; font-weight: 400;">
-                                            <span>For {{ getReviewedCollection(profileObj.peer[0], review.collectionId).type}}
-                                            </span>
-                                            <span class="bullet"></span>
-                                            <span>
-                                                <a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title |
-                                                    ucwords }}
-                                                </a>
-                                            </span>
-                                            <span class="bullet"></span>
-                                            <span> in {{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars,
-                                                review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="margin-top-20"></div>
-                            <span *ngIf="reviewsFromTeachers && reviewsFromTeachers.length > maxVisibleReviewsTeacher">
-                                <a class="clickable" (click)="toggleMaxReviewsTeacher()">
-                                    <strong> Show more </strong>
-                                </a>
-                            </span>
-                            <span *ngIf="reviewsFromTeachers && reviewsFromTeachers.length < maxVisibleReviewsTeacher && reviewsFromTeachers.length > 0 && maxVisibleReviewsTeacher > 4">
-                                <a class="clickable" (click)="toggleMaxReviewsTeacher()">
-                                    <strong> Show less </strong>
-                                </a>
-                            </span>
-                            <!-- <hr> -->
-                            <div class="col-md-12 emptySectionText lightText" style="text-align: left;" *ngIf="!(reviewsFromTeachers && reviewsFromTeachers.length)">
-                                <span>{{profileObj.first_name | ucwords}} has not received any review from a teacher yet</span>
-                            </div>
-                            <hr>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 right-panel" *ngIf="isTeacher">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="mat-title" style="padding-left: 5px;">Teaching Journey</div>
-                    <mat-tab-group disableRipple class="noJustify" [selectedIndex]="0">
-                        <mat-tab label="Sessions" style="min-width: min-content !important;">
-                            <div class="row" style="padding-left: 5px;">
-                                <div *ngIf="availableTrialPackages.length > 0">
-                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
-                                        Trial
-                                    </div>
-                                    <div *ngFor="let package of availableTrialPackages ; let i=index">
-                                        <div class="col-md-12 margin-top-10">
-                                            <div>Online session of {{package.duration}} minutes</div>
-                                            <div class="mat-body-2" style="text-align: justify">{{package.price | convertCurrency: package.currency |async}}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr *ngIf="availablePaidPackages.length > 0 && availableTrialPackages.length > 0">
-                                <div *ngIf="availablePaidPackages.length > 0">
-                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
-                                        Paid Packages
-                                    </div>
-                                    <div *ngFor="let package of availablePaidPackages ; let i=index">
-                                        <div class="col-md-12 margin-top-10">
-                                            <div>Online session of {{package.duration}} minutes</div>
-                                            <div class="mat-body-2" style="text-align: justify;">{{package.price | convertCurrency: package.currency |async}}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 margin-top-10  margin-bottom-20" *ngIf="(availablePaidPackages.length>0 || availableTrialPackages.length > 0) && urluserId !== cookieUserId">
-                                    <hr>
-                                    <a class="clickable mat-body-2" (click)="bookSession()">Book A Session</a>
-                                    <hr>
-                                </div>
-                                <div class="col-md-12 margin-top-10  margin-bottom-20" *ngIf="(availablePaidPackages.length>0 || availableTrialPackages.length > 0) && urluserId === cookieUserId">
-                                    <hr>
-                                    <a class="clickable" (click)="updateAvailability()">Update availability hours</a>
-                                    <hr>
-                                </div>
-                                <div *ngIf="availablePaidPackages.length === 0 && availableTrialPackages.length === 0">
-                                    <div class="col-md-12 emptySectionText lightText margin-top-30" style="padding-left: 15px;">
-                                        <span>{{profileObj.first_name | ucwords}}'s profile has not yet been approved for peer
-                                            sessions
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </mat-tab>
-                        <!-- <mat-tab label="Workshops" style="padding-left: 0px !important; min-width: min-content !important;">
-                            <div class="row" style="padding-left: 5px;">
-                                <div *ngIf="upcomingWorkshops.length>0">
-                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
-                                        Upcoming ({{upcomingWorkshops.length}})
-                                    </div>
-                                    <div *ngFor="let collectionObj of upcomingWorkshops ; let i=index">
-                                        <div class="col-md-12 margin-top-10" *ngIf="i<2">
-                                            <a [routerLink]="['/workshop',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
-                                                <div class="col-md-3 padding-left-0">
-                                                    <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
-                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <div class="col-md-12">
-                                                        <b>{{collectionObj.title | ucwords}}</b>
-                                                    </div>
-                                                    <div class="col-md-12" style="min-height:55px">
-                                                        <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 margin-top-10  margin-bottom-20 center">
-                                        <hr>
-                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openCollectionGrid('Upcoming Workshops to be taught', upcomingWorkshops)">View all</a>
-                                        <hr>
-                                    </div>
-                                </div>
-                                <div *ngIf="ongoingWorkshops.length>0">
-                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
-                                        Currently Running ({{ongoingWorkshops.length}})
-                                    </div>
-                                    <div *ngFor="let collectionObj of ongoingWorkshops ; let i=index">
-                                        <div class="col-md-12 margin-top-10" *ngIf="i<2">
-                                            <a [routerLink]="['/workshop',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
-                                                <div class="col-md-3 padding-left-0">
-                                                    <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
-                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <div class="col-md-12">
-                                                        <b>{{collectionObj.title | ucwords}}</b>
-                                                    </div>
-                                                    <div class="col-md-12" style="min-height:55px">
-                                                        <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 margin-top-10 margin-bottom-20 center">
-                                        <hr>
-                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)=" openCollectionGrid('Workshops currently being taught',ongoingWorkshops)">View all</a>
-                                        <hr>
-                                    </div>
-                                </div>
-                                <div *ngIf="pastWorkshops.length>0">
-                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
-                                        Past ({{pastWorkshops.length}})
-                                    </div>
-                                    <div *ngFor="let collectionObj of pastWorkshops ; let i=index">
-                                        <div class="col-md-12 margin-top-10" *ngIf="i<2">
-                                            <a [routerLink]="['/workshop',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
-                                                <div class="col-md-3 padding-left-0">
-                                                    <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
-                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <div class="col-md-12">
-                                                        <b>{{collectionObj.title | ucwords}}</b> {{'('+collectionObj.pastCohortCount+')'}}
-                                                    </div>
-                                                    <div class="col-md-12" style="min-height:55px">
-                                                        <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 margin-top-10  margin-bottom-20 center">
-                                        <hr>
-                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openCollectionGrid('Workshops taught in the past',pastWorkshops)">View all</a>
-                                        <hr>
-                                    </div>
-                                </div>
-                                <div *ngIf="upcomingWorkshops.length === 0 && ongoingWorkshops.length === 0 && pastWorkshops.length === 0">
-                                    <div class="col-md-12 emptySectionText lightText" style="padding-left: 15px;">
-                                        <span>{{profileObj.first_name | ucwords}} is not teaching any workshops yet</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </mat-tab> -->
-                        <mat-tab label="Experiences" style="min-width: min-content !important;">
-                            <div class="row" style="padding-left: 5px;">
-                                <div *ngIf="upcomingExperiences.length>0">
-                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
-                                        Upcoming ({{upcomingExperiences.length}})
-                                    </div>
-                                    <div *ngFor="let collectionObj of upcomingExperiences ; let i=index">
-                                        <div class="col-md-12 margin-top-10" *ngIf="i<2">
-                                            <a [routerLink]="['/experience',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
-                                                <div class="col-md-3 padding-left-0">
-                                                    <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
-                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <div class="col-md-12">
-                                                        <b>{{collectionObj.title | ucwords}}</b>
-                                                    </div>
-                                                    <div class="col-md-12" style="min-height:55px">
-                                                        <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 margin-top-10 center">
-                                        <hr>
-                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openCollectionGrid('Upcoming Experiences to be taught', upcomingExperiences)">View all</a>
-                                        <hr>
-                                    </div>
-                                </div>
-                                <div *ngIf="ongoingExperiences.length>0">
-                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
-                                        Currently Running ({{ongoingExperiences.length}})
-                                    </div>
-                                    <div *ngFor="let collectionObj of ongoingExperiences ; let i=index">
-                                        <div class="col-md-12 margin-top-10" *ngIf="i<2">
-                                            <a [routerLink]="['/experience',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
-                                                <div class="col-md-3 padding-left-0">
-                                                    <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
-                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <div class="col-md-12">
-                                                        <b>{{collectionObj.title | ucwords}}</b>
-                                                    </div>
-                                                    <div class="col-md-12" style="min-height:55px">
-                                                        <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 margin-top-10 center">
-                                        <hr>
-                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)=" openCollectionGrid('Experiences currently being taught',ongoingExperiences)">View all</a>
-                                        <hr>
-                                    </div>
-                                </div>
-                                <div *ngIf="pastExperiences.length>0">
-                                    <div class="col-md-12 mat-subheading-2 margin-top-20">
-                                        Past ({{pastExperiences.length}})
-                                    </div>
-                                    <div *ngFor="let collectionObj of pastExperiences ; let i=index">
-                                        <div class="col-md-12 margin-top-10" *ngIf="i<2">
-                                            <a [routerLink]="['/experience',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
-                                                <div class="col-md-3 padding-left-0">
-                                                    <img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
-                                                    <img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <div class="col-md-12">
-                                                        <b>{{collectionObj.title | ucwords}}</b> {{'('+collectionObj.pastCohortCount+')'}}
-                                                    </div>
-                                                    <div class="col-md-12" style="min-height:55px">
-                                                        <p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 margin-top-10  margin-bottom-20 center">
-                                        <hr>
-                                        <a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openCollectionGrid('Experiences taught in the past',pastExperiences)">View all</a>
-                                        <hr>
-                                    </div>
-                                </div>
-                                <div *ngIf="upcomingExperiences.length === 0 && ongoingExperiences.length === 0 && pastExperiences.length === 0">
-                                    <div class="col-md-12 emptySectionText lightText" style="padding-left: 15px;">
-                                        <span>{{profileObj.first_name | ucwords}} has not started his teaching journey on Peerbuds</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </mat-tab>
-                    </mat-tab-group>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row bottom-panel margin-top-30" *ngIf="!loadingLearningJourney && !loadingProfile">
-        <hr class="col-md-10 col-md-offset-1 margin-bottom-30" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || (participatingWorkshops && participatingWorkshops.length > 0)">
-        <div class="col-md-offset-1 col-md-10" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || (participatingWorkshops && participatingWorkshops.length > 0)">
-            <div class="row">
-                <div class="col-md-8">
-                    <span class="mat-title">Learning Journey</span>
-                    <button (click)="openCollectionGrid('Learning Journey',participatingWorkshops)" mat-button>See all</button>
-                </div>
-                <div class="col-md-2" *ngIf="participatingWorkshops"></div>
-                <div class="col-md-2">
-                    <mat-form-field [floatLabel]="'never'">
-                        <mat-select [(value)]="learningJourneyFilter" placeholder="Filter">
-                            <mat-option>All</mat-option>
-                            <mat-option value="workshop">Workshop</mat-option>
-                            <mat-option value="experience">Experience</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <!--TODO: Add button to see all learning journey of another user-->
-            </div>
-            <div class="row feed-horizontal margin-top-20" style="padding: 0px 7px;">
-                <div *ngFor="let workshop of participatingWorkshops; let i =index">
-                    <div class="recommendation-card" *ngIf="i<5 && (!learningJourneyFilter || workshop.type===learningJourneyFilter) ">
-                        <a [routerLink]="'/workshop/'+workshop.id">
-                            <div class="">
-                                <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{envVariable.apiUrl+workshop.imageUrls[0]}}"
-                                    alt="workshpImg">
-                                <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
-                                    alt="workshpImg">
-                            </div>
-                            <div *ngIf="workshop.currency !== undefined && workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}}</div>
-                            <!--{{workshop.price | currency: workshop.currency: true:'1.0-0'}}-->
-                            <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}}</div>
-                            <!--{{workshop.price | currency: 'USD': true: '1.0-0'}}-->
-                            <div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
-                            <!--<div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>-->
-                            <div *ngIf="workshop.owners" style="margin-top: 0px;">{{workshop.owners[0].profiles[0].first_name + ' ' + workshop.owners[0].profiles[0].last_name
-                                | ucwords}}</div>
-                            <div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
-                                <p-rating class="padding-left-0" style="float: left;" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
-                                </p-rating>
-                                <span class="padding-left-10" *ngIf="workshop.ratingCount" style="text-align: left">
-                                    <label>{{workshop.ratingCount}} reviews</label>
-                                </span>
-                                <span class="padding-left-10" *ngIf="!workshop.ratingCount" style="text-align: left">
-                                    <label>0 reviews</label>
-                                </span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div *ngFor="let blankCardIndex of blankCardArray">
-                    <div *ngIf="blankCardIndex>=participatingWorkshops.length" class="blank-card">
-                        <mat-card class="empty-card">
-                        </mat-card>
-                    </div>
-                </div>
-                <div *ngIf="!participatingWorkshops">
-                    <a class="col-md-3 default" [routerLink]="['/','home', 'workshops']" *ngIf="cookieUserId === urluserId">Start Learning</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row bottom-panel margin-top-30" *ngIf="!loadingCommunities && !loadingProfile">
-        <div class="col-md-offset-1 col-md-10" *ngIf="(!pariticipatingCommunities && cookieUserId === urluserId) || (pariticipatingCommunities && pariticipatingCommunities.length > 0)">
-            <div class="row">
-                <div class="col-md-8">
-                    <span class="mat-title">Communities</span>
-                </div>
-            </div>
-            <div class="row feed-horizontal margin-top-20" style="padding: 0px 7px;">
-                <div *ngFor="let community of pariticipatingCommunities; let i =index">
-                    <div class="community-card" *ngIf="i<5">
-                        <a [routerLink]="'/community/'+community.id">
-                            <div class="">
-                                <img class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" src="{{envVariable.apiUrl+community.imageUrls[0]}}"
-                                    alt="workshpImg">
-                                <img class="community-thumb" *ngIf="!community.imageUrls || community.imageUrls.length<=0" src="/assets/images/no-image.jpg"
-                                    alt="workshpImg">
-                            </div>
-                            <div class="mat-body-2" style="margin-top: -3px;">{{community.title | titlecase}}</div>
-                            <span *ngFor="let participant of community.participants; let i=index">
-                                <div *ngIf="i<7" class="image-inline">
-                                    <app-profile-popup class="communityCardProfileImages" [peer]="participant"></app-profile-popup>
-                                </div>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-                <div *ngFor="let blankCardIndex of blankCardArray">
-                    <div *ngIf="blankCardIndex>=pariticipatingCommunities.length" class="blank-card">
-                        <mat-card class="empty-community-card">
-                        </mat-card>
-                    </div>
-                </div>
-                <div *ngIf="!pariticipatingCommunities">
-                    <a class="col-md-3 default" [routerLink]="['/','home', 'communities']" *ngIf="cookieUserId === urluserId">Join a community</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="row bottom-panel" *ngIf="!loadingPeers && !loadingProfile">
-        <hr class="col-md-10 col-md-offset-1 margin-bottom-30" *ngIf="!(!participatingWorkshops && cookieUserId === urluserId) || !participatingWorkshops">
-        <div class="col-md-offset-1 col-md-10">
-            <div class="row">
-                <div class="col-md-10">
-                    <h2>Similar Peers</h2>
-                </div>
-                <div class="col-md-2">
-                    <a class="pull-right" [routerLink]="'/home/peers'" *ngIf="recommendedpeers && recommendedpeers.length > 5">
-                        <h4>See all</h4>
-                    </a>
-                </div>
-            </div>
-            <div class="row feed-horizontal margin-top-20 margin-bottom-50" style="padding: 0px 7px;">
-                <div class="peer-recommendation-card" *ngFor="let peer of recommendedpeers; let i =index">
-                    <a *ngIf="i<6" [routerLink]="'/profile/'+peer.id">
-                        <div class="">
-                            <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url}}"
-                                alt="peerImg">
-                            <img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="peerImg">
-                        </div>
-                        <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}</div>
-                        <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
-                        <div class="col-sm-12 padding-left-0">
-                            <span *ngIf="peer.topics.length<=2">
-                                {{peer.topics}}
-                            </span>
-                            <span *ngIf="peer.topics.length>2">
-                                {{peer.topics | initial: 1}}
-                                <b matTooltip="{{peer.topics}}">
-                                    +{{peer.topics.length-2}} more
-                                </b>
-                            </span>
-                        </div>
-                        <div class="col-sm-12 padding-left-0" style="margin-top: -2px; font-size: 13px;">
-                            <p-rating class="padding-left-0" style="float: left;" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
-                            </p-rating>
-                            <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length>0" style="text-align: left">
-                                <label>{{peer.reviewsAboutYou.length}} reviews</label>
-                            </span>
-                            <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length==0" style="text-align: left">
-                                <label>0 reviews</label>
-                            </span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="main-content">
+	<div class="profile-page">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="loading-container  margin-top-20 margin-left-50" [hidden]="!loadingProfile">
+					<ngx-loading [show]="true"></ngx-loading>
+				</div>
+			</div>
+		</div>
+		<div class="row" *ngIf="profileObj && !loadingProfile">
+			<div class="col-md-3 {{offsetString}} left-panel">
+				<div class="row padding-bottom-30">
+					<div class="col-md-12" style="padding-left: 0px;">
+						<img class="img-rounded profile-pic" *ngIf="profileObj.picture_url" src="{{envVariable.apiUrl+profileObj.picture_url}}" alt="profile_pic">
+						<img class="img-rounded profile-pic" *ngIf="!profileObj.picture_url" src="/assets/images/user-placeholder.jpg" alt="profile_pic">
+					</div>
+					<div class="col-md-6" style="margin-top: 25px; padding-left: 0px;">
+						<h2 style="margin-bottom: 0px">{{profileObj.first_name | titlecase}} {{profileObj.last_name | titlecase}}</h2>
+						<h4 class="pre-wrapped">{{profileObj.headline ? profileObj.headline : 'new user' | titlecase}}</h4>
+					</div>
+					<div class="col-md-6" style="margin-top: 25px; padding-left: 0px;" *ngIf="cookieUserId && urluserId !== cookieUserId">
+						<button mat-button (click)="openMessageDialog()">Message</button>
+					</div>
+				</div>
+				<div class="row border-top" *ngIf="other_languages || profileObj.location_string">
+					<div class="col-xs-1" style="padding-left: 0px;">
+						<mat-icon>mic_none</mat-icon>
+					</div>
+					<div class="col-xs-11">
+						<p>
+							{{other_languages || profileObj.first_name + ' has not added any languages yet'}}
+						</p>
+					</div>
+					<div class="col-xs-1" style="padding-left: 0px;">
+						<mat-icon>
+							location_on
+						</mat-icon>
+					</div>
+					<div class="col-xs-11">
+						<p>
+							{{'Lives in ' + profileObj.location_string || profileObj.first_name + ' has not provided his location yet'}}
+						</p>
+					</div>
+				</div>
+				<div class="row border-top" *ngIf="peerObj && (peerObj.emailVerified || peerObj.phoneVerified || peerObj.accountVerified)">
+					<div class="col-md-12 padding-left-0">
+						<div class="mat-title">Verified Info</div>
+					</div>
+					<div class="col-md-12 padding-left-0">
+						<span *ngIf="peerObj.emailVerified">Email address, </span>
+						<span *ngIf="peerObj.phoneVerified">Phone number, </span>
+						<span *ngIf="peerObj.accountVerified">Government ID</span>
+					</div>
+				</div>
+				<div class="row border-top" *ngIf="connectedIdentities['facebook'] || connectedIdentities['google']">
+					<div class="col-md-12 padding-left-0">
+						<div class="mat-title">Connected Accounts</div>
+					</div>
+					<div class="col-md-12 padding-left-0">
+						<!--<i *ngIf="!connectedIdentities[ 'facebook'] " class="fa fa-facebook dcSocial socialIcons "></i>-->
+						<i *ngIf="connectedIdentities[ 'facebook'] " class="fa fa-facebook defaultFB socialIcons "></i>
+						<i *ngIf="connectedIdentities[ 'google'] " class="fa fa-google defaultGoogle socialIcons "></i>
+						<!--<i *ngIf="!connectedIdentities[ 'google'] " class="fa fa-google dcSocial socialIcons "></i>-->
+					</div>
+				</div>
+				<div class="row border-top " *ngIf="interestsArray.length> 0">
+					<div class="col-md-12 padding-left-0">
+						<div class="mat-title">Interest</div>
+					</div>
+					<div class="col-md-12 padding-left-0">
+						<mat-chip-list>
+							<span *ngFor="let interest of interestsArray;let i=index" style="margin: 0px 10px 10px 0px">
+								<mat-chip *ngIf="i<maxVisibleInterest">{{interest | titlecase}}</mat-chip>
+							</span>
+						</mat-chip-list>
+						<span *ngIf="interestsArray.length>3">
+							<span *ngIf="interestsArray.length>maxVisibleInterest">
+								<a (click)="toggleMaxInterest()" class="clickable">
+									<strong> + show more </strong>
+								</a>
+							</span>
+							<span *ngIf="interestsArray.length<maxVisibleInterest">
+								<a (click)="toggleMaxInterest()" class="clickable">
+									<strong> - show less </strong>
+								</a>
+							</span>
+						</span>
+					</div>
+				</div>
+				<div class="row border-top" *ngIf="urluserId!==cookieUserId" style="padding-top: 20px;cursor:pointer">
+					<div class="col-md-12" style="padding-left: 0px;">
+						<h5 (click)="reportProfile()">Report profile</h5>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-5 center-feed">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="mat-title">About</div>
+					</div>
+					<div class="col-md-12">
+						<p class="alignJustify" *ngIf="profileObj.description">
+							<span class="pre-wrapped alignJustify">{{profileObj.description | ucfirst | shorten: maxLength : '...'}}</span>
+							<span *ngIf="profileObj.description.length > maxLength" (click)="showAll(profileObj.description.length)" style="color:#33bd9e">read more</span>
+							<span *ngIf="profileObj.description.length >140 && profileObj.description.length <= maxLength" (click)="showAll(profileObj.description.length)"
+							      style="color:#33bd9e">show less</span>
+						</p>
+						<p *ngIf="!profileObj.description">Joined peerbuds on {{profileObj.createdAt | date:'dd MMM yyyy'}}
+							<a [routerLink]="['/','console','profile','edit']" *ngIf="cookieUserId === urluserId">. Add a description to your profile?</a>
+						</p>
+					</div>
+				</div>
+				<hr *ngIf="topicsTeaching && topicsTeaching.length > 0">
+				<div class="row margin-top-40 margin-bottom-20" *ngIf="topicsTeaching && topicsTeaching.length > 0">
+					<div class=col-md-12>
+						<div class="mat-title">Topics I teach</div>
+					</div>
+					<div class="col-md-12">
+						<div class="row" *ngFor="let topic of topicsTeaching">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="mat-body-2">{{topic.name | titlecase}}</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<p class="alignJustify">{{topic.experience || profileObj.first_name + ' has not specified their experience in
+										                        this topic' | ucfirst}}</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" *ngIf="topicsTeaching.length === 0">
+							<div class="col-md-12">
+								<p style="text-align: left" *ngIf="cookieUserId !== urluserId">This user is not teaching yet.</p>
+								<p style="text-align: left" *ngIf="cookieUserId === urluserId">You are not teaching yet.
+									<a [routerLink]="['/','console','teaching', 'workshops']">Start Teaching</a>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr *ngIf="(profileObj.work && profileObj.work.length > 0 ) || (profileObj.education && profileObj.education.length > 0)">
+				<div class="row margin-top-20 margin-bottom-20" *ngIf="(profileObj.work && profileObj.work.length > 0 ) || (profileObj.education && profileObj.education.length > 0)">
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="mat-title">Institutions</div>
+							</div>
+						</div>
+						<div class="row" *ngIf="profileObj.work && profileObj.work.length > 0" style="padding-top: 20px;">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-1">
+										<mat-icon class="resumeIcons">work</mat-icon>
+									</div>
+									<div class="col-md-11 resumeText">
+										<span class="mat-body-2">Work Experience</span>
+									</div>
+								</div>
+								<div class="row" *ngIf="profileObj.work && profileObj.work.length === 0">
+									<div class="col-md-11 col-md-offset-1">
+										<p style="text-align: left">No details provided.
+											<a [routerLink]="['/','console','profile', 'edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a>
+										</p>
+									</div>
+								</div>
+								<div class="row" style="padding-top: 0px;" *ngFor="let workObj of profileObj.work">
+									<div class="col-md-11 col-md-offset-1 margin-bottom-10">
+										<div class="row">
+											<div class="col-md-12 work-title">
+												<span style="font-size: 16px;font-weight: bolder;">{{workObj.position | ucfirst}} </span> @
+												                                                                                          <!--<mat-icon style="font-size: 5px;line-height:24px;vertical-align:middle;width: 15px;margin-left: -5px;">fiber_manual_record</mat-icon>-->
+												<span class="lighttext" style="font-size: 15px;">
+													{{workObj.company | ucfirst}}
+												</span>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 mat-caption">
+												<span *ngIf="workObj.endDate">{{workObj.startDate | date:'yyyy'}} - {{workObj.endDate | date:'yyyy'}}</span>
+												<span *ngIf="!workObj.endDate ">{{workObj.startDate | date:'yyyy'}} - Present</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" style="padding-top: 20px;" *ngIf="profileObj.education && profileObj.education.length > 0">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-1">
+										<mat-icon class="resumeIcons">school</mat-icon>
+									</div>
+									<div class="col-md-11 resumeText">
+										<span class="mat-body-2">Education</span>
+									</div>
+								</div>
+								<div class="row" *ngIf="profileObj.education && profileObj.education.length === 0">
+									<div class="col-md-11 col-md-offset-1">
+										<p style="text-align: left">No details provided.
+											<a [routerLink]="['/','console','profile', 'edit']" *ngIf="cookieUserId === urluserId">Complete your profile</a>
+										</p>
+									</div>
+								</div>
+								<div class="row" style="padding-top: 0px;" *ngFor="let educationObj of profileObj.education">
+									<div class="col-md-11 col-md-offset-1 margin-bottom-10">
+										<div class="row">
+											<div class="col-md-12 education-title">
+												<span style="font-size: 16px;font-weight: bolder;">{{educationObj.degree}}</span> @
+												<span class="lighttext" style="font-size: 15px;">
+													{{educationObj.school | ucwords}}
+												</span>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 mat-caption">
+												<span *ngIf="educationObj.endYear">{{educationObj.startYear}} - {{educationObj.endYear}}</span>
+												<span *ngIf="!educationObj.endYear">{{educationObj.startYear}} - Present</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="row margin-top-20 margin-bottom-20">
+					<div class=col-md-12>
+						<div class="row">
+							<div class="col-md-12 review">
+								<div class="mat-title" style="display:inline-block">Reviews</div>
+								&emsp;
+								<p-rating style="display: inline-block;" [ngModel]="userRating" readonly="true" stars="5" [cancel]="false">
+								</p-rating>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="mat-body-2">
+									<span>From Learners ({{reviewsFromLearners ? reviewsFromLearners.length : '0'}})</span>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<hr>
+							</div>
+							<div class="col-md-12 text-center reviews">
+								<div *ngFor="let review of reviewsFromLearners; let i=index;">
+									<div class="review-section" *ngIf="review.peer !== undefined && i < maxVisibleReviewsLearner">
+										<div class="row review-top" style="margin-left:0px;">
+											<div class="col-md-2 padding-left-0 review-thumb pull-left">
+												<img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)" style="position: relative; top: 7px;">
+											</div>
+											<div class="col-md-4 reviewer padding-left-0">
+												<div class="reviewer-name">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name}}
+												</div>
+												<p-rating class="rating" [(ngModel)]="review.score" [cancel]="false" [readonly]="true"></p-rating>
+											</div>
+										</div>
+										<div class="row review-content mat-body-1 margin-top-10" style="margin-left:0px;">
+											
+											<div class="col-md-12 review-desc padding-left-0 pre-wrapped" style="text-align:left">{{ review.description }}</div>
+											<div class="col-md-12 review-bottom padding-left-0 margin-top-10 mat-caption" style="text-align:left; margin-top: 5px !important; font-weight: 400;">
+												<span>For {{ getReviewedCollection(profileObj.peer[0], review.collectionId).type}}
+												</span>
+												<span class="bullet"></span>
+												<span>
+													<a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title |
+													                                                                                                             ucwords }}
+													</a>
+												</span>
+												<span class="bullet"></span>
+												<span> in {{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars,
+												       review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="margin-top-20"></div>
+								<span *ngIf="reviewsFromLearners && reviewsFromLearners.length > maxVisibleReviewsLearner">
+									<a class="clickable" (click)="toggleMaxReviewsLearner()">
+										<strong> Show more </strong>
+									</a>
+								</span>
+								<span *ngIf="reviewsFromLearners && reviewsFromLearners.length < maxVisibleReviewsLearner && reviewsFromLearners.length > 0 && maxVisibleReviewsLearner > 4">
+									<a class="clickable" (click)="toggleMaxReviewsLearner()">
+										<strong> Show less </strong>
+									</a>
+								</span>
+								<!-- <hr> -->
+								<div class="col-md-12 emptySectionText lightText" style="text-align: left;" *ngIf="!(reviewsFromLearners && reviewsFromLearners.length)">
+									<span>{{profileObj.first_name | ucwords}} has not received any review from a student yet</span>
+								</div>
+								<hr>
+							</div>
+						</div>
+						<div class="row" style="padding-top: 20px;">
+							<div class="col-md-12">
+								<div class="mat-body-2">
+									<span>From Teachers ({{reviewsFromTeachers ? reviewsFromTeachers.length : '0'}})</span>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<hr>
+							</div>
+							<div class="col-md-12 text-center reviews">
+								<div *ngFor="let review of reviewsFromTeachers; let i=index;">
+									<div class="review-section" *ngIf="review.peer !== undefined && i < maxVisibleReviewsTeacher">
+										<div class="row review-top" style="margin-left:0px;">
+											<div class="col-md-2 padding-left-0 review-thumb pull-left">
+												<img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)" style="position: relative; top: 7px;">
+											</div>
+											<div class="col-md-4 reviewer padding-left-0">
+												<div class="reviewer-name">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name}}
+												</div>
+												<p-rating class="rating" [(ngModel)]="review.score" [cancel]="false" [readonly]="true"></p-rating>
+											</div>
+										</div>
+										<div class="row review-content mat-body-1 margin-top-10" style="margin-left:0px;">
+											
+											<div class="col-md-12 review-desc padding-left-0 pre-wrapped" style="text-align:left">{{ review.description }}</div>
+											<div class="col-md-12 review-bottom padding-left-0 margin-top-10 mat-caption" style="text-align:left; margin-top: 5px !important; font-weight: 400;">
+												<span>For {{ getReviewedCollection(profileObj.peer[0], review.collectionId).type}}
+												</span>
+												<span class="bullet"></span>
+												<span>
+													<a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title |
+													                                                                                                             ucwords }}
+													</a>
+												</span>
+												<span class="bullet"></span>
+												<span> in {{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars,
+												       review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="margin-top-20"></div>
+								<span *ngIf="reviewsFromTeachers && reviewsFromTeachers.length > maxVisibleReviewsTeacher">
+									<a class="clickable" (click)="toggleMaxReviewsTeacher()">
+										<strong> Show more </strong>
+									</a>
+								</span>
+								<span *ngIf="reviewsFromTeachers && reviewsFromTeachers.length < maxVisibleReviewsTeacher && reviewsFromTeachers.length > 0 && maxVisibleReviewsTeacher > 4">
+									<a class="clickable" (click)="toggleMaxReviewsTeacher()">
+										<strong> Show less </strong>
+									</a>
+								</span>
+								<!-- <hr> -->
+								<div class="col-md-12 emptySectionText lightText" style="text-align: left;" *ngIf="!(reviewsFromTeachers && reviewsFromTeachers.length)">
+									<span>{{profileObj.first_name | ucwords}} has not received any review from a teacher yet</span>
+								</div>
+								<hr>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-3 right-panel" *ngIf="isTeacher">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="mat-title" style="padding-left: 5px;">Teaching Journey</div>
+						<mat-tab-group disableRipple class="noJustify" [selectedIndex]="0">
+							<mat-tab label="Sessions" style="min-width: min-content !important;">
+								<div class="row" style="padding-left: 5px;">
+									<div *ngIf="availableTrialPackages.length > 0">
+										<div class="col-md-12 mat-subheading-2 margin-top-20">
+											Trial
+										</div>
+										<div *ngFor="let package of availableTrialPackages ; let i=index">
+											<div class="col-md-12 margin-top-10">
+												<div>Online session of {{package.duration}} minutes</div>
+												<div class="mat-body-2" style="text-align: justify">{{package.price | convertCurrency: package.currency |async}}</div>
+											</div>
+										</div>
+									</div>
+									<hr *ngIf="availablePaidPackages.length > 0 && availableTrialPackages.length > 0">
+									<div *ngIf="availablePaidPackages.length > 0">
+										<div class="col-md-12 mat-subheading-2 margin-top-20">
+											Paid Packages
+										</div>
+										<div *ngFor="let package of availablePaidPackages ; let i=index">
+											<div class="col-md-12 margin-top-10">
+												<div>Online session of {{package.duration}} minutes</div>
+												<div class="mat-body-2" style="text-align: justify;">{{package.price | convertCurrency: package.currency |async}}</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12 margin-top-10  margin-bottom-20" *ngIf="(availablePaidPackages.length>0 || availableTrialPackages.length > 0) && urluserId !== cookieUserId">
+										<hr>
+										<a class="clickable mat-body-2" (click)="bookSession()">Book A Session</a>
+										<hr>
+									</div>
+									<div class="col-md-12 margin-top-10  margin-bottom-20" *ngIf="(availablePaidPackages.length>0 || availableTrialPackages.length > 0) && urluserId === cookieUserId">
+										<hr>
+										<a class="clickable" (click)="updateAvailability()">Update availability hours</a>
+										<hr>
+									</div>
+									<div *ngIf="availablePaidPackages.length === 0 && availableTrialPackages.length === 0">
+										<div class="col-md-12 emptySectionText lightText margin-top-30" style="padding-left: 15px;">
+											<span>{{profileObj.first_name | ucwords}}'s profile has not yet been approved for peer
+											      sessions
+											</span>
+										</div>
+									</div>
+								</div>
+							</mat-tab>
+							<!-- <mat-tab label="Workshops" style="padding-left: 0px !important; min-width: min-content !important;">
+								<div class="row" style="padding-left: 5px;">
+									<div *ngIf="upcomingWorkshops.length>0">
+										<div class="col-md-12 mat-subheading-2 margin-top-20">
+											Upcoming ({{upcomingWorkshops.length}})
+										</div>
+										<div *ngFor="let collectionObj of upcomingWorkshops ; let i=index">
+											<div class="col-md-12 margin-top-10" *ngIf="i<2">
+												<a [routerLink]="['/workshop',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
+													<div class="col-md-3 padding-left-0">
+														<img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
+														<img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+													</div>
+													<div class="col-md-9">
+														<div class="col-md-12">
+															<b>{{collectionObj.title | ucwords}}</b>
+														</div>
+														<div class="col-md-12" style="min-height:55px">
+															<p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+														</div>
+													</div>
+												</a>
+											</div>
+										</div>
+										<div class="col-md-12 margin-top-10  margin-bottom-20 center">
+											<hr>
+											<a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openCollectionGrid('Upcoming Workshops to be taught', upcomingWorkshops)">View all</a>
+											<hr>
+										</div>
+									</div>
+									<div *ngIf="ongoingWorkshops.length>0">
+										<div class="col-md-12 mat-subheading-2 margin-top-20">
+											Currently Running ({{ongoingWorkshops.length}})
+										</div>
+										<div *ngFor="let collectionObj of ongoingWorkshops ; let i=index">
+											<div class="col-md-12 margin-top-10" *ngIf="i<2">
+												<a [routerLink]="['/workshop',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
+													<div class="col-md-3 padding-left-0">
+														<img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
+														<img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+													</div>
+													<div class="col-md-9">
+														<div class="col-md-12">
+															<b>{{collectionObj.title | ucwords}}</b>
+														</div>
+														<div class="col-md-12" style="min-height:55px">
+															<p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+														</div>
+													</div>
+												</a>
+											</div>
+										</div>
+										<div class="col-md-12 margin-top-10 margin-bottom-20 center">
+											<hr>
+											<a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)=" openCollectionGrid('Workshops currently being taught',ongoingWorkshops)">View all</a>
+											<hr>
+										</div>
+									</div>
+									<div *ngIf="pastWorkshops.length>0">
+										<div class="col-md-12 mat-subheading-2 margin-top-20">
+											Past ({{pastWorkshops.length}})
+										</div>
+										<div *ngFor="let collectionObj of pastWorkshops ; let i=index">
+											<div class="col-md-12 margin-top-10" *ngIf="i<2">
+												<a [routerLink]="['/workshop',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
+													<div class="col-md-3 padding-left-0">
+														<img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
+														<img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+													</div>
+													<div class="col-md-9">
+														<div class="col-md-12">
+															<b>{{collectionObj.title | ucwords}}</b> {{'('+collectionObj.pastCohortCount+')'}}
+														</div>
+														<div class="col-md-12" style="min-height:55px">
+															<p style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+														</div>
+													</div>
+												</a>
+											</div>
+										</div>
+										<div class="col-md-12 margin-top-10  margin-bottom-20 center">
+											<hr>
+											<a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openCollectionGrid('Workshops taught in the past',pastWorkshops)">View all</a>
+											<hr>
+										</div>
+									</div>
+									<div *ngIf="upcomingWorkshops.length === 0 && ongoingWorkshops.length === 0 && pastWorkshops.length === 0">
+										<div class="col-md-12 emptySectionText lightText" style="padding-left: 15px;">
+											<span>{{profileObj.first_name | ucwords}} is not teaching any workshops yet</span>
+										</div>
+									</div>
+								</div>
+							</mat-tab> -->
+							<mat-tab label="Experiences" style="min-width: min-content !important;">
+								<div class="row" style="padding-left: 5px;">
+									<div *ngIf="upcomingExperiences.length>0">
+										<div class="col-xs-12 mat-subheading-2 margin-top-20">
+											Upcoming ({{upcomingExperiences.length}})
+										</div>
+										<div *ngFor="let collectionObj of upcomingExperiences ; let i=index">
+											<div class="col-xs-12 margin-top-10" *ngIf="i<2">
+												<a [routerLink]="['/experience',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
+													<div class="col-xs-3 padding-left-0">
+														<img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
+														<img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+													</div>
+													<div class="col-xs-9">
+														<div class="col-md-12">
+															<b>{{collectionObj.title | ucwords}}</b>
+														</div>
+														<div class="col-md-12" style="min-height:55px">
+															<p class="pre-wrapped" style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+														</div>
+													</div>
+												</a>
+											</div>
+										</div>
+										<div class="col-xs-12 margin-top-10 center">
+											<hr>
+											<a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openCollectionGrid('Upcoming Experiences to be taught', upcomingExperiences)">View all</a>
+											<hr>
+										</div>
+									</div>
+									<div *ngIf="ongoingExperiences.length>0">
+										<div class="col-xs-12 mat-subheading-2 margin-top-20">
+											Currently Running ({{ongoingExperiences.length}})
+										</div>
+										<div *ngFor="let collectionObj of ongoingExperiences ; let i=index">
+											<div class="col-xs-12 margin-top-10" *ngIf="i<2">
+												<a [routerLink]="['/experience',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
+													<div class="col-xs-3 padding-left-0">
+														<img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
+														<img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+													</div>
+													<div class="col-xs-9">
+														<div class="col-md-12">
+															<b>{{collectionObj.title | ucwords}}</b>
+														</div>
+														<div class="col-md-12" style="min-height:55px">
+															<p class="pre-wrapped" style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+														</div>
+													</div>
+												</a>
+											</div>
+										</div>
+										<div class="col-xs-12 margin-top-10 center">
+											<hr>
+											<a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)=" openCollectionGrid('Experiences currently being taught',ongoingExperiences)">View all</a>
+											<hr>
+										</div>
+									</div>
+									<div *ngIf="pastExperiences.length>0">
+										<div class="col-xs-12 mat-subheading-2 margin-top-20">
+											Past ({{pastExperiences.length}})
+										</div>
+										<div *ngFor="let collectionObj of pastExperiences ; let i=index">
+											<div class="col-xs-12 margin-top-10" *ngIf="i<2">
+												<a [routerLink]="['/experience',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
+													<div class="col-xs-3 padding-left-0">
+														<img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
+														<img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
+													</div>
+													<div class="col-xs-9">
+														<div class="col-md-12">
+															<b>{{collectionObj.title | ucwords}}</b> {{'('+collectionObj.pastCohortCount+')'}}
+														</div>
+														<div class="col-md-12" style="min-height:55px">
+															<p class="pre-wrapped" style="text-align: justify">{{collectionObj.description | ucfirst | shorten: 60: '....'}}</p>
+														</div>
+													</div>
+												</a>
+											</div>
+										</div>
+										<div class="col-xs-12 margin-top-10  margin-bottom-20 center">
+											<hr>
+											<a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openCollectionGrid('Experiences taught in the past',pastExperiences)">View all</a>
+											<hr>
+										</div>
+									</div>
+									<div *ngIf="upcomingExperiences.length === 0 && ongoingExperiences.length === 0 && pastExperiences.length === 0">
+										<div class="col-md-12 emptySectionText lightText" style="padding-left: 15px;">
+											<span>{{profileObj.first_name | ucwords}} has not started his teaching journey on Peerbuds</span>
+										</div>
+									</div>
+								</div>
+							</mat-tab>
+						</mat-tab-group>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row bottom-panel margin-top-30" *ngIf="!loadingLearningJourney && !loadingProfile">
+			<hr class="col-md-10 col-md-offset-1 margin-bottom-30" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || (participatingWorkshops && participatingWorkshops.length > 0)">
+			<div class="col-md-offset-1 col-md-10" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || (participatingWorkshops && participatingWorkshops.length > 0)">
+				<div class="row">
+					<div class="col-md-8">
+						<span class="mat-title">Learning Journey</span>
+						<button (click)="openCollectionGrid('Learning Journey',participatingWorkshops)" mat-button>See all</button>
+					</div>
+					<div class="col-md-2" *ngIf="participatingWorkshops"></div>
+					<div class="col-md-2">
+						<mat-form-field [floatLabel]="'never'">
+							<mat-select [(value)]="learningJourneyFilter" placeholder="Filter">
+								<mat-option>All</mat-option>
+								<mat-option value="workshop">Workshop</mat-option>
+								<mat-option value="experience">Experience</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<!--TODO: Add button to see all learning journey of another user-->
+				</div>
+				<div class="row feed-horizontal margin-top-20" style="padding: 0px 7px;">
+					<div *ngFor="let workshop of participatingWorkshops; let i =index">
+						<div class="recommendation-card" *ngIf="i<5 && (!learningJourneyFilter || workshop.type===learningJourneyFilter) ">
+							<a [routerLink]="'/workshop/'+workshop.id">
+								<div class="">
+									<img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{envVariable.apiUrl+workshop.imageUrls[0]}}"
+									     alt="workshpImg">
+									<img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
+									     alt="workshpImg">
+								</div>
+								<div *ngIf="workshop.currency !== undefined && workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}}</div>
+								<!--{{workshop.price | currency: workshop.currency: true:'1.0-0'}}-->
+								<div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}}</div>
+								<!--{{workshop.price | currency: 'USD': true: '1.0-0'}}-->
+								<div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
+								<!--<div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>-->
+								<div *ngIf="workshop.owners" style="margin-top: 0px;">{{workshop.owners[0].profiles[0].first_name + ' ' + workshop.owners[0].profiles[0].last_name | ucwords}}</div>
+								<div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
+									<p-rating class="padding-left-0" style="float: left;" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
+									</p-rating>
+									<span class="padding-left-10" *ngIf="workshop.ratingCount" style="text-align: left">
+										<label>{{workshop.ratingCount}} reviews</label>
+									</span>
+									<span class="padding-left-10" *ngIf="!workshop.ratingCount" style="text-align: left">
+										<label>0 reviews</label>
+									</span>
+								</div>
+							</a>
+						</div>
+					</div>
+					<div *ngFor="let blankCardIndex of blankCardArray">
+						<div *ngIf="blankCardIndex>=participatingWorkshops.length" class="blank-card">
+							<mat-card class="empty-card">
+							</mat-card>
+						</div>
+					</div>
+					<div *ngIf="!participatingWorkshops">
+						<a class="col-md-3 default" [routerLink]="['/','home', 'workshops']" *ngIf="cookieUserId === urluserId">Start Learning</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row bottom-panel margin-top-30" *ngIf="!loadingCommunities && !loadingProfile">
+			<div class="col-md-offset-1 col-md-10" *ngIf="(!pariticipatingCommunities && cookieUserId === urluserId) || (pariticipatingCommunities && pariticipatingCommunities.length > 0)">
+				<div class="row">
+					<div class="col-md-8">
+						<span class="mat-title">Communities</span>
+					</div>
+				</div>
+				<div class="row feed-horizontal margin-top-20" style="padding: 0px 7px;">
+					<div *ngFor="let community of pariticipatingCommunities; let i =index">
+						<div class="community-card" *ngIf="i<5">
+							<a [routerLink]="'/community/'+community.id">
+								<div class="">
+									<img class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" src="{{envVariable.apiUrl+community.imageUrls[0]}}"
+									     alt="workshpImg">
+									<img class="community-thumb" *ngIf="!community.imageUrls || community.imageUrls.length<=0" src="/assets/images/no-image.jpg"
+									     alt="workshpImg">
+								</div>
+								<div class="mat-body-2" style="margin-top: -3px;">{{community.title | titlecase}}</div>
+								<span *ngFor="let participant of community.participants; let i=index">
+									<div *ngIf="i<7" class="image-inline">
+										<app-profile-popup class="communityCardProfileImages" [peer]="participant"></app-profile-popup>
+									</div>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div *ngFor="let blankCardIndex of blankCardArray">
+						<div *ngIf="pariticipatingCommunities && blankCardIndex>=pariticipatingCommunities.length" class="blank-card">
+							<mat-card class="empty-community-card">
+							</mat-card>
+						</div>
+					</div>
+					<div *ngIf="!pariticipatingCommunities">
+						<a class="col-md-3 default" [routerLink]="['/','home', 'communities']" *ngIf="cookieUserId === urluserId">Join a community</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="row bottom-panel" *ngIf="!loadingPeers && !loadingProfile">
+			<hr class="col-md-10 col-md-offset-1 margin-bottom-30" *ngIf="!(!participatingWorkshops && cookieUserId === urluserId) || !participatingWorkshops">
+			<div class="col-md-offset-1 col-md-10">
+				<div class="row">
+					<div class="col-md-10">
+						<h2>Similar Peers</h2>
+					</div>
+					<div class="col-md-2">
+						<a class="pull-right" [routerLink]="'/home/peers'" *ngIf="recommendedpeers && recommendedpeers.length > 5">
+							<h4>See all</h4>
+						</a>
+					</div>
+				</div>
+				<div class="row feed-horizontal margin-top-20 margin-bottom-50" style="padding: 0px 7px;">
+					<div class="peer-recommendation-card" *ngFor="let peer of recommendedpeers; let i =index">
+						<a *ngIf="i<6" [routerLink]="'/profile/'+peer.id">
+							<div class="">
+								<img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url}}"
+								     alt="peerImg">
+								<img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="peerImg">
+							</div>
+							<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}</div>
+							<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
+							<div class="col-sm-12 padding-left-0" style="margin-top: -2px; font-size: 13px;">
+								<p-rating class="padding-left-0" style="float: left;" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
+								</p-rating>
+								<span class="padding-left-10" *ngIf="peer.reviewsAboutYou && peer.reviewsAboutYou.length>0" style="text-align: left">
+									<label>{{peer.reviewsAboutYou.length}} reviews</label>
+								</span>
+								<span class="padding-left-10" *ngIf="!peer.reviewsAboutYou || peer.reviewsAboutYou.length === 0" style="text-align: left">
+									<label>0 reviews</label>
+								</span>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

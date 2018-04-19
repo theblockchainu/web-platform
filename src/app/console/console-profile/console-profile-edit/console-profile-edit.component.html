@@ -1,279 +1,279 @@
 <div class="row">
-  <div class="loading-container" [hidden]="!loadingProfile">
-    <ngx-loading [show]="true"></ngx-loading>
-  </div>
+	<div class="loading-container" [hidden]="!loadingProfile">
+		<ngx-loading [show]="true"></ngx-loading>
+	</div>
 </div>
 <div class="row" *ngIf="!loadingProfile">
-  <div class="col-md-7" style="position: fixed">
-    <button mat-raised-button color="accent" (click)="saveProfile()" class="pull-right">
-      <span *ngIf="!busyUpdate">Update Profile</span>
-      <span *ngIf="busyUpdate"> </span>
-      <ngx-loading [show]="busyUpdate"></ngx-loading>
-    </button>
-  </div>
+	<div class="col-md-7" style="position: fixed">
+		<button mat-raised-button color="accent" (click)="saveProfile()" class="pull-right">
+			<span *ngIf="!busyUpdate">Update Profile</span>
+			<span *ngIf="busyUpdate"> </span>
+			<ngx-loading [show]="busyUpdate"></ngx-loading>
+		</button>
+	</div>
 </div>
 <div class="row" *ngIf="!loadingProfile">
-  <div class="col-md-8">
-    <div class="row">
-      <div>
-        <div style="margin-top:20px;" class="col-md-12">
-          <div class="row" style="margin-right: 110px; line-height: 120%">
-            <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
-              <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
-                <input matInput formControlName="first_name" type="text" placeholder="First Name" required>
-                <mat-error>This field is required</mat-error>
-                <mat-hint align="start">Your public profile only shows your first name.</mat-hint>
-              </mat-form-field>
-              <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
-                <input matInput formControlName="last_name" type="text" placeholder="Last Name" required>
-                <mat-error>This field is required</mat-error>
-                <mat-hint align="start"> When you request a booking, your host will see your first and last name.</mat-hint>
-              </mat-form-field>
-              <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-20">
-                <textarea matInput rows="1" formControlName="headline" type="text" placeholder="Profile Credential" required></textarea>
-                <mat-error>This field is required</mat-error>
-                <mat-hint align="start">Ex. mechanical engineer, electric car enthusiast</mat-hint>
-                <mat-hint align="end">{{profileForm.value.headline.length}} / 200</mat-hint>
-              </mat-form-field>
-              <br>
-              <mat-form-field [floatLabel]="'always'">
-                <mat-select placeholder="Gender" formControlName="gender">
-                  <mat-option [value]="'Male'">Male</mat-option>
-                  <mat-option [value]="'Female'">Female</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <br>
-              <mat-form-field [floatLabel]="'always'" style="width: 30%">
-                <mat-select placeholder="Birth Month" style="margin-right:10px;" formControlName="dobMonth">
-                  <!-- <mat-option *ngFor="let month of months;let i = index" [value]="i+1">{{month}}</mat-option> -->
-                  <mat-option value="01">January</mat-option>
-                  <mat-option value="02">February</mat-option>
-                  <mat-option value="03">March</mat-option>
-                  <mat-option value="04">April</mat-option>
-                  <mat-option value="05">May</mat-option>
-                  <mat-option value="06">June</mat-option>
-                  <mat-option value="07">July</mat-option>
-                  <mat-option value="08">August</mat-option>
-                  <mat-option value="09">September</mat-option>
-                  <mat-option value="10">October</mat-option>
-                  <mat-option value="11">November</mat-option>
-                  <mat-option value="12">December</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field [floatLabel]="'always'" style="width: 30%">
-                <mat-select placeholder="Day" style="margin-right:10px;" formControlName="dobDay">
-                  <mat-option *ngFor="let day of days" [value]="day">{{day}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field [floatLabel]="'always'" style="width: 30%">
-                <mat-select placeholder="Year" style="margin-right:10px;" formControlName="dobYear">
-                  <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <br>
-              <br>
-              <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-20 margin-top-10">
-                <input matInput formControlName="email" type="email" placeholder="Email Address" required>
-                <mat-error>This field is required</mat-error>
-                <mat-hint align="start">We wonʼt share your private email address with other peerbuds users.</mat-hint>
-                <!--Learn more.-->
-              </mat-form-field>
-              <div formArrayName="phone_numbers" class="margin-top-40">
-                <p style="color:#767676;font-weight:400">Phone Numbers</p>
-                <div *ngFor="let phoneNumber of profileForm.controls['phone_numbers'].controls; let i=index" class="row">
-                  <!-- <mat-icon (click)="deletePhoneNumber(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
-                    close
-                  </mat-icon> -->
-                  <div [formGroupName]="i" class="col-md-11">
-                    <mat-form-field [floatLabel]="'always'" class="customWidthCode">
-                      <input matInput formControlName="country_code" type="tel" placeholder="Country Code" required>
-                      <!-- <mat-error [hidden]="profileForm.controls['phone_numbers'].controls[i].controls.country_code.valid">This field is required</mat-error> -->
-
-                    </mat-form-field>
-                    <mat-form-field [floatLabel]="'always'" class="customWidthNumber">
-                      <input *ngIf="i==0" matInput formControlName="subscriber_number" type="tel" placeholder="Primary Phone" required>
-                      <input *ngIf="i==1" matInput formControlName="subscriber_number" type="tel" placeholder="Secondary Phone" required>
-                      <!-- <mat-error [hidden]="profileForm.controls['phone_numbers'].controls[i].controls.subscriber_number.valid">This field is required</mat-error> -->
-
-                    </mat-form-field>
-                  </div>
-                  <i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="clearEntry(i, profileForm.controls['phones'].controls[i].controls['isPrimary'].value)"
-                    style="cursor: pointer;"></i>
-
-                </div>
-              </div>
-              <div style="margin-top:-5px;margin-bottom:5px; cursor: pointer" (click)="addPhoneControl()">
-                <a [ngClass]="{'disabled': profileForm.controls['phone_numbers'].controls.length == 2}" style="font-size: 12px">+ Add Secondary Phone</a>
-              </div>
-              <mat-hint class="hint" align="start">This is only shared once you have a confirmed booking with another peerbuds user. This is how we can all get
-                in touch.</mat-hint>
-              <br>
-              <mat-form-field [floatLabel]="'always'" placeholder="never" class="pb-block margin-top-30 max-height-40">
-                <input type="text" placeholder="Preferred Language" matInput formControlName="preferred_language" [matAutocomplete]="auto">
-              <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let language of filteredOptions" [value]="language.name">
-                  {{ language.name }}
-                </mat-option>
-              </mat-autocomplete>
-              <mat-hint class="hint" align="start">We'll send you messages in this language.</mat-hint>
-              </mat-form-field>
-              <br>
-              <br>
-              <br>
-              <mat-form-field [floatLabel]="'always'" placeholder="never" class="pb-block max-height-40">
-                <input type="text" placeholder="Preferred Currency" matInput formControlName="currency" [matAutocomplete]="auto2">
-              <mat-autocomplete #auto2="matAutocomplete">
-                <mat-option *ngFor="let currency of filteredCurrencies" [value]="currency.code">
-                  {{ currency.name }}
-                </mat-option>
-              </mat-autocomplete>
-              <mat-hint class="hint" align="start">Weʼll show you prices in this currency.</mat-hint>
-              </mat-form-field>
-              <br>
-              <br>
-              <ng4geo-autocomplete class="geoLocation" required [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ng4geo-autocomplete>
-              <div class="pb-block">
-                <agm-map [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"
-                  [usePanning]="true" [zoom]="14" [scrollwheel]="false" [disableDoubleClickZoom]="true" [zoomControl]="false"
-                  [streetViewControl]="false">
-                  <agm-marker [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"></agm-marker>
-                </agm-map>
-              </div>
-              <mat-form-field [floatLabel]="'always'" class="pb-block margin-top-30" style="margin-bottom: 20px">
-                <textarea matInput #description formControlName="description" rows="2" placeholder="Describe yourself" required></textarea>
-                <mat-error>This field is required</mat-error>
-                <mat-hint align="start" class="col-md-10 padding-left-0">Peerbuds is built on relationships. Help other people get to know you. Tell them about the things you like:
-                  What are 5 things you canʼt live without? Share your favorite travel destinations, books, movies, shows,
-                  music, food. Tell them what itʼs like to have you as a learner or teacher: Whatʼs your style of learning?
-                  Of peerbuds teaching? Tell them about you: Do you have a life motto?</mat-hint>
-                <mat-hint class="hint" align="end">{{description.value.length}} / 1000</mat-hint>
-              </mat-form-field>
-
-              <div class="mat-subheading-2 margin-top-90" style="color:#767676">
-                Additional Details
-              </div>
-              <div class="mat-body-2" style="margin-bottom: 25px;">
-                Work Experience
-              </div>
-
-              <div formArrayName="work">
-                <div *ngFor="let workObj of profileForm.controls['work'].controls; let i=index" [formGroupName]="i" class="margin-bottom-10">
-                  <mat-form-field [floatLabel]="'always'" style="margin-right:10px;">
-                    <input matInput formControlName="position" type="text" placeholder="Position">
-                    <!-- <mat-error>This field is required</mat-error> -->
-                  </mat-form-field>
-                  <mat-form-field [floatLabel]="'always'">
-                    <input matInput formControlName="company" type="text" placeholder="Company">
-                    <!-- <mat-error>This field is required</mat-error> -->
-                  </mat-form-field>
-                  <mat-form-field [floatLabel]="'always'" style="margin-right:10px;" [ngClass]="{'customWidth30': i == 0, 'customWidth33': i > 0}">
-                    <input matInput formControlName="startDate" [matDatepicker]="startPicker" placeholder="Start Date">
-                    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-                    <mat-datepicker #startPicker></mat-datepicker>
-                  </mat-form-field>
-                  <!-- <mat-error>This field is required</mat-error> -->
-                  <mat-form-field [floatLabel]="'always'" style="margin-right:10px;" [ngClass]="{ 'customWidth30': i == 0, 'customWidth33': i > 0}">
-                    <!--'disabled': disableEndDate,-->
-                    <input matInput formControlName="endDate" [matDatepicker]="endPicker" placeholder="End Date">
-                    <!--[ngClass]="{'disabled': disableEndDate}"-->
-                    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-                    <!--[ngClass]="{'disabled': disableEndDate}"-->
-                    <mat-datepicker #endPicker></mat-datepicker>
-                  </mat-form-field>
-                  <mat-checkbox [hidden]="i>0" class="presentlyWorking" formControlName="presentlyWorking" (click)="toggleEndDate()">Presently working</mat-checkbox>
-                  <i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deleteWork(i)" style="cursor: pointer;"></i>
-                </div>
-              </div>
-              <div style="margin-top:-5px;margin-bottom:5px; cursor: pointer" (click)="addWork()">
-                <a style="font-size: 12px">+ Add another work detail</a>
-              </div>
-              <div style="margin-bottom: 25px;" class="mat-body-2 margin-top-40">
-                Education
-              </div>
-              <div formArrayName="education">
-                <div *ngFor="let educationObj of profileForm.controls['education'].controls; let i = index" [formGroupName]="i" class="margin-bottom-10">
-                  <mat-form-field [floatLabel]="'always'" style="margin-right:10px;">
-                    <input matInput formControlName="degree" type="text" placeholder="Degree">
-                    <!-- <mat-error>This field is required</mat-error> -->
-                  </mat-form-field>
-                  <mat-form-field [floatLabel]="'always'" style="margin-right:10px;">
-                    <input matInput formControlName="school" type="text" placeholder="School / College">
-                    <!-- <mat-error>This field is required</mat-error> -->
-                  </mat-form-field>
-                  <mat-form-field [floatLabel]="'always'">
-                    <mat-select placeholder="Start Year" style="margin-right:10px;" formControlName="startYear" [ngClass]="{'customWidth30': i == 0, 'customWidth33': i > 0}">
-                      <mat-option *ngFor="let syear of years" [value]="syear">{{syear}}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-form-field [floatLabel]="'always'">
-                    <mat-select placeholder="End Year" style="margin-right:10px;" formControlName="endYear" [ngClass]="{'customWidth30': i == 0, 'customWidth33': i > 0}">
-                      <!--'disabled': disableEndYearBool,-->
-                      <mat-option *ngFor="let eyear of years" [value]="eyear">{{eyear}}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-checkbox [hidden]="i>0" class="presentlyWorking" formControlName="presentlyPursuing" (click)="disableEndYear()">Presently pursuing</mat-checkbox>
-
-                  <i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deleteEducation(i)" style="cursor: pointer;"></i>
-                </div>
-              </div>
-
-              <div style="margin-top:-5px;margin-bottom:5px; cursor: pointer" (click)="addEducation()">
-                <a style="font-size: 12px">+ Add another education detail</a>
-              </div>
-
-              <mat-form-field [floatLabel]="'always'" placeholder="never" class="pb-block margin-top-30 max-height-25">
-                <input type="text" placeholder="Timezone" matInput formControlName="timezone" [matAutocomplete]="auto3">
-              <mat-autocomplete #auto3="matAutocomplete">
-                <mat-option *ngFor="let timezone of filteredTimezones" [value]="timezone.value">
-                  {{ timezone.text }}
-                </mat-option>
-              </mat-autocomplete>
-              <mat-hint class="hint" align="start">Your home time zone.</mat-hint>
-              </mat-form-field>
-              <div formArrayName="other_languages" class="margin-top-60 other_languages">
-                <p class="mat-body-2">Other languages</p>
-                <app-generic-multiselect-autocomplete [list]="languages" [preSelectedItems]="profileForm.controls['other_languages'].value"
-                  (selectedOutput)="selected($event)" (removedOutput)="removed($event)"></app-generic-multiselect-autocomplete>
-              </div>
-              <mat-hint class="hint" align="start">Add any languages that others can use to speak with you on peerbuds.</mat-hint>
-
-              <mat-form-field [floatLabel]="'always'" style="margin-bottom: 20px" class="pb-block margin-top-20" style="padding-top:0px;">
-                <input matInput formControlName="vat_number" type="text" placeholder="VAT Number">
-                <mat-error>This field is required</mat-error>
-                <mat-hint align="start">For European Union users or users in other countries for which VAT applies, VAT will be assessed on our Service
-                  Fees. If you live in a country where we need to charge VAT, you will not be charged VAT if you enter a
-                  valid VAT ID Number. Visit VAT FAQs »</mat-hint>
-              </mat-form-field>
-
-
-              <div formArrayName="emergency_contacts" class="margin-top-40">
-                <p style="color:#767676;font-weight:400">Emergency Contact</p>
-                <div *ngFor="let emergency_contact_number of profileForm.controls['emergency_contacts'].controls; let i = index;" class="row">
-
-                  <div [formGroupName]="i" class="col-md-11">
-                    <mat-form-field [floatLabel]="'always'" class="customWidthCode">
-                      <input matInput formControlName="country_code" type="tel" placeholder="Country Code" required>
-                    </mat-form-field>
-                    <mat-form-field [floatLabel]="'always'" class="customWidthNumber">
-                      <input matInput formControlName="subscriber_number" type="tel" required>
-                    </mat-form-field>
-                  </div>
-                  <i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="deleteEmergencyContact(i)" style="cursor: pointer;"></i>
-
-                </div>
-                <mat-hint class="hint" align="start">Give our Customer Experience team a trusted contact we can alert in an urgent situation.</mat-hint>
-
-              </div>
-
-              <div style="margin-top:-5px;margin-bottom:5px; cursor: pointer" (click)="addEmergencyContact()">
-                <a style="font-size: 12px">+ Add Emergency Contact Number</a>
-              </div>
-
-
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="col-md-8">
+		<div class="row">
+			<div>
+				<div style="margin-top:20px;" class="col-md-12">
+					<div class="row profileFormContainer">
+						<form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+							<mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
+								<input matInput formControlName="first_name" type="text" placeholder="First Name" required>
+								<mat-error>This field is required</mat-error>
+								<mat-hint align="start">Your public profile only shows your first name.</mat-hint>
+							</mat-form-field>
+							<mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
+								<input matInput formControlName="last_name" type="text" placeholder="Last Name" required>
+								<mat-error>This field is required</mat-error>
+								<mat-hint align="start"> When you request a booking, your host will see your first and last name.</mat-hint>
+							</mat-form-field>
+							<mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-20">
+								<textarea matInput rows="1" formControlName="headline" type="text" placeholder="Profile Credential" required></textarea>
+								<mat-error>This field is required</mat-error>
+								<mat-hint align="start">Ex. mechanical engineer, electric car enthusiast</mat-hint>
+								<mat-hint align="end">{{profileForm.value.headline.length}} / 200</mat-hint>
+							</mat-form-field>
+							<br>
+							<mat-form-field [floatLabel]="'always'">
+								<mat-select placeholder="Gender" formControlName="gender">
+									<mat-option [value]="'Male'">Male</mat-option>
+									<mat-option [value]="'Female'">Female</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<br>
+							<mat-form-field [floatLabel]="'always'" style="width: 30%">
+								<mat-select placeholder="Birth Month" style="margin-right:10px;" formControlName="dobMonth">
+									<!-- <mat-option *ngFor="let month of months;let i = index" [value]="i+1">{{month}}</mat-option> -->
+									<mat-option value="01">January</mat-option>
+									<mat-option value="02">February</mat-option>
+									<mat-option value="03">March</mat-option>
+									<mat-option value="04">April</mat-option>
+									<mat-option value="05">May</mat-option>
+									<mat-option value="06">June</mat-option>
+									<mat-option value="07">July</mat-option>
+									<mat-option value="08">August</mat-option>
+									<mat-option value="09">September</mat-option>
+									<mat-option value="10">October</mat-option>
+									<mat-option value="11">November</mat-option>
+									<mat-option value="12">December</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<mat-form-field [floatLabel]="'always'" style="width: 30%">
+								<mat-select placeholder="Day" style="margin-right:10px;" formControlName="dobDay">
+									<mat-option *ngFor="let day of days" [value]="day">{{day}}</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<mat-form-field [floatLabel]="'always'" style="width: 30%">
+								<mat-select placeholder="Year" style="margin-right:10px;" formControlName="dobYear">
+									<mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<br>
+							<br>
+							<mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-20 margin-top-10">
+								<input matInput formControlName="email" type="email" placeholder="Email Address" required>
+								<mat-error>This field is required</mat-error>
+								<mat-hint align="start">We wonʼt share your private email address with other peerbuds users.</mat-hint>
+								<!--Learn more.-->
+							</mat-form-field>
+							<div formArrayName="phone_numbers" class="margin-top-40">
+								<p style="color:#767676;font-weight:400">Phone Numbers</p>
+								<div *ngFor="let phoneNumber of profileForm.controls['phone_numbers'].controls; let i=index" class="row">
+									<!-- <mat-icon (click)="deletePhoneNumber(i)" style="cursor: pointer;font-size: 100%;" class="lighterText pull-right">
+									  close
+									</mat-icon> -->
+									<div [formGroupName]="i" class="col-md-11">
+										<mat-form-field [floatLabel]="'always'" class="customWidthCode">
+											<input matInput formControlName="country_code" type="tel" placeholder="Country Code" required>
+											<!-- <mat-error [hidden]="profileForm.controls['phone_numbers'].controls[i].controls.country_code.valid">This field is required</mat-error> -->
+										
+										</mat-form-field>
+										<mat-form-field [floatLabel]="'always'" class="customWidthNumber">
+											<input *ngIf="i==0" matInput formControlName="subscriber_number" type="tel" placeholder="Primary Phone" required>
+											<input *ngIf="i==1" matInput formControlName="subscriber_number" type="tel" placeholder="Secondary Phone" required>
+											<!-- <mat-error [hidden]="profileForm.controls['phone_numbers'].controls[i].controls.subscriber_number.valid">This field is required</mat-error> -->
+										
+										</mat-form-field>
+									</div>
+									<i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="clearEntry(i, profileForm.controls['phones'].controls[i].controls['isPrimary'].value)"
+									   style="cursor: pointer;"></i>
+								
+								</div>
+							</div>
+							<div style="margin-top:-5px;margin-bottom:5px; cursor: pointer" (click)="addPhoneControl()">
+								<a [ngClass]="{'disabled': profileForm.controls['phone_numbers'].controls.length == 2}" style="font-size: 12px">+ Add Secondary Phone</a>
+							</div>
+							<mat-hint class="hint" align="start">This is only shared once you have a confirmed booking with another peerbuds user. This is how we can all get
+							                                     in touch.</mat-hint>
+							<br>
+							<mat-form-field [floatLabel]="'always'" placeholder="never" class="pb-block margin-top-30 max-height-40">
+								<input type="text" placeholder="Preferred Language" matInput formControlName="preferred_language" [matAutocomplete]="auto">
+								<mat-autocomplete #auto="matAutocomplete">
+									<mat-option *ngFor="let language of filteredOptions" [value]="language.name">
+										{{ language.name }}
+									</mat-option>
+								</mat-autocomplete>
+								<mat-hint class="hint" align="start">We'll send you messages in this language.</mat-hint>
+							</mat-form-field>
+							<br>
+							<br>
+							<br>
+							<mat-form-field [floatLabel]="'always'" placeholder="never" class="pb-block max-height-40">
+								<input type="text" placeholder="Preferred Currency" matInput formControlName="currency" [matAutocomplete]="auto2">
+								<mat-autocomplete #auto2="matAutocomplete">
+									<mat-option *ngFor="let currency of filteredCurrencies" [value]="currency.code">
+										{{ currency.name }}
+									</mat-option>
+								</mat-autocomplete>
+								<mat-hint class="hint" align="start">Weʼll show you prices in this currency.</mat-hint>
+							</mat-form-field>
+							<br>
+							<br>
+							<ng4geo-autocomplete class="geoLocation" required [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ng4geo-autocomplete>
+							<div class="pb-block">
+								<agm-map [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"
+								         [usePanning]="true" [zoom]="14" [scrollwheel]="false" [disableDoubleClickZoom]="true" [zoomControl]="false"
+								         [streetViewControl]="false">
+									<agm-marker [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"></agm-marker>
+								</agm-map>
+							</div>
+							<mat-form-field [floatLabel]="'always'" class="pb-block margin-top-30" style="margin-bottom: 20px">
+								<textarea matInput #description formControlName="description" rows="2" placeholder="Describe yourself" required></textarea>
+								<mat-error>This field is required</mat-error>
+								<mat-hint align="start" class="col-md-10 padding-left-0">Peerbuds is built on relationships. Help other people get to know you. Tell them about the things you like:
+								                                                         What are 5 things you canʼt live without? Share your favorite travel destinations, books, movies, shows,
+								                                                         music, food. Tell them what itʼs like to have you as a learner or teacher: Whatʼs your style of learning?
+								                                                         Of peerbuds teaching? Tell them about you: Do you have a life motto?</mat-hint>
+								<mat-hint class="hint" align="end">{{description.value.length}} / 1000</mat-hint>
+							</mat-form-field>
+							
+							<div class="mat-subheading-2 margin-top-90" style="color:#767676">
+								Additional Details
+							</div>
+							<div class="mat-body-2" style="margin-bottom: 25px;">
+								Work Experience
+							</div>
+							
+							<div formArrayName="work">
+								<div *ngFor="let workObj of profileForm.controls['work'].controls; let i=index" [formGroupName]="i" class="margin-bottom-10">
+									<mat-form-field [floatLabel]="'always'" style="margin-right:10px;">
+										<input matInput formControlName="position" type="text" placeholder="Position">
+										<!-- <mat-error>This field is required</mat-error> -->
+									</mat-form-field>
+									<mat-form-field [floatLabel]="'always'">
+										<input matInput formControlName="company" type="text" placeholder="Company">
+										<!-- <mat-error>This field is required</mat-error> -->
+									</mat-form-field>
+									<mat-form-field [floatLabel]="'always'" style="margin-right:10px;" [ngClass]="{'customWidth30': i == 0, 'customWidth33': i > 0}">
+										<input matInput formControlName="startDate" [matDatepicker]="startPicker" placeholder="Start Date">
+										<mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+										<mat-datepicker #startPicker></mat-datepicker>
+									</mat-form-field>
+									<!-- <mat-error>This field is required</mat-error> -->
+									<mat-form-field [floatLabel]="'always'" style="margin-right:10px;" [ngClass]="{ 'customWidth30': i == 0, 'customWidth33': i > 0}">
+										<!--'disabled': disableEndDate,-->
+										<input matInput formControlName="endDate" [matDatepicker]="endPicker" placeholder="End Date">
+										<!--[ngClass]="{'disabled': disableEndDate}"-->
+										<mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+										<!--[ngClass]="{'disabled': disableEndDate}"-->
+										<mat-datepicker #endPicker></mat-datepicker>
+									</mat-form-field>
+									<mat-checkbox [hidden]="i>0" class="presentlyWorking" formControlName="presentlyWorking" (click)="toggleEndDate()">Presently working</mat-checkbox>
+									<i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deleteWork(i)" style="cursor: pointer;"></i>
+								</div>
+							</div>
+							<div style="margin-top:-5px;margin-bottom:5px; cursor: pointer" (click)="addWork()">
+								<a style="font-size: 12px">+ Add another work detail</a>
+							</div>
+							<div style="margin-bottom: 25px;" class="mat-body-2 margin-top-40">
+								Education
+							</div>
+							<div formArrayName="education">
+								<div *ngFor="let educationObj of profileForm.controls['education'].controls; let i = index" [formGroupName]="i" class="margin-bottom-10">
+									<mat-form-field [floatLabel]="'always'" style="margin-right:10px;">
+										<input matInput formControlName="degree" type="text" placeholder="Degree">
+										<!-- <mat-error>This field is required</mat-error> -->
+									</mat-form-field>
+									<mat-form-field [floatLabel]="'always'" style="margin-right:10px;">
+										<input matInput formControlName="school" type="text" placeholder="School / College">
+										<!-- <mat-error>This field is required</mat-error> -->
+									</mat-form-field>
+									<mat-form-field [floatLabel]="'always'">
+										<mat-select placeholder="Start Year" style="margin-right:10px;" formControlName="startYear" [ngClass]="{'customWidth30': i == 0, 'customWidth33': i > 0}">
+											<mat-option *ngFor="let syear of years" [value]="syear">{{syear}}</mat-option>
+										</mat-select>
+									</mat-form-field>
+									<mat-form-field [floatLabel]="'always'">
+										<mat-select placeholder="End Year" style="margin-right:10px;" formControlName="endYear" [ngClass]="{'customWidth30': i == 0, 'customWidth33': i > 0}">
+											<!--'disabled': disableEndYearBool,-->
+											<mat-option *ngFor="let eyear of years" [value]="eyear">{{eyear}}</mat-option>
+										</mat-select>
+									</mat-form-field>
+									<mat-checkbox [hidden]="i>0" class="presentlyWorking" formControlName="presentlyPursuing" (click)="disableEndYear()">Presently pursuing</mat-checkbox>
+									
+									<i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deleteEducation(i)" style="cursor: pointer;"></i>
+								</div>
+							</div>
+							
+							<div style="margin-top:-5px;margin-bottom:5px; cursor: pointer" (click)="addEducation()">
+								<a style="font-size: 12px">+ Add another education detail</a>
+							</div>
+							
+							<mat-form-field [floatLabel]="'always'" placeholder="never" class="pb-block margin-top-30 max-height-25">
+								<input type="text" placeholder="Timezone" matInput formControlName="timezone" [matAutocomplete]="auto3">
+								<mat-autocomplete #auto3="matAutocomplete">
+									<mat-option *ngFor="let timezone of filteredTimezones" [value]="timezone.value">
+										{{ timezone.text }}
+									</mat-option>
+								</mat-autocomplete>
+								<mat-hint class="hint" align="start">Your home time zone.</mat-hint>
+							</mat-form-field>
+							<div formArrayName="other_languages" class="margin-top-60 other_languages">
+								<p class="mat-body-2">Other languages</p>
+								<app-generic-multiselect-autocomplete [list]="languages" [preSelectedItems]="profileForm.controls['other_languages'].value"
+								                                      (selectedOutput)="selected($event)" (removedOutput)="removed($event)"></app-generic-multiselect-autocomplete>
+							</div>
+							<mat-hint class="hint" align="start">Add any languages that others can use to speak with you on peerbuds.</mat-hint>
+							
+							<mat-form-field [floatLabel]="'always'" style="margin-bottom: 20px" class="pb-block margin-top-20" style="padding-top:0px;">
+								<input matInput formControlName="vat_number" type="text" placeholder="VAT Number">
+								<mat-error>This field is required</mat-error>
+								<mat-hint align="start">For European Union users or users in other countries for which VAT applies, VAT will be assessed on our Service
+								                        Fees. If you live in a country where we need to charge VAT, you will not be charged VAT if you enter a
+								                        valid VAT ID Number. Visit VAT FAQs »</mat-hint>
+							</mat-form-field>
+							
+							
+							<div formArrayName="emergency_contacts" class="margin-top-40">
+								<p style="color:#767676;font-weight:400">Emergency Contact</p>
+								<div *ngFor="let emergency_contact_number of profileForm.controls['emergency_contacts'].controls; let i = index;" class="row">
+									
+									<div [formGroupName]="i" class="col-md-11">
+										<mat-form-field [floatLabel]="'always'" class="customWidthCode">
+											<input matInput formControlName="country_code" type="tel" placeholder="Country Code" required>
+										</mat-form-field>
+										<mat-form-field [floatLabel]="'always'" class="customWidthNumber">
+											<input matInput formControlName="subscriber_number" type="tel" required>
+										</mat-form-field>
+									</div>
+									<i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="deleteEmergencyContact(i)" style="cursor: pointer;"></i>
+								
+								</div>
+								<mat-hint class="hint" align="start">Give our Customer Experience team a trusted contact we can alert in an urgent situation.</mat-hint>
+							
+							</div>
+							
+							<div style="margin-top:-5px;margin-bottom:5px; cursor: pointer" (click)="addEmergencyContact()">
+								<a style="font-size: 12px">+ Add Emergency Contact Number</a>
+							</div>
+						
+						
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

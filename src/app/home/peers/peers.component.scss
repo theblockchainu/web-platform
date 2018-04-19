@@ -1,9 +1,8 @@
 .peerFeed a{
-    color: black;  
+    color: black;
 }
 
 .peerFeed{
-    padding-top: 45px;
 }
 
 .recommendation-thumb{
@@ -59,4 +58,39 @@
 
 .mat-display-1 {
     margin-bottom: 25px !important;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.recommendation-thumb{
+		object-fit: cover;
+		height: 145px;
+		width: 100%;
+	}
+
+	.peer-recommendation-thumb{
+		object-fit: cover;
+		height: 145px;
+		width: 100%;
+	}
+
+	.recommendation-card{
+		min-height:1px;
+		padding-left: 8px;
+		padding-right: 8px;
+		width: 50%;
+		float: left;
+	}
+
+	.peer-recommendation-card{
+		min-height:1px;
+		padding-left: 8px;
+		padding-right: 8px;
+		width: 50%;
+		float: left;
+		margin-bottom: 25px;
+	}
+	.peerFeed {
+		padding-top: 10px;
+	}
 }

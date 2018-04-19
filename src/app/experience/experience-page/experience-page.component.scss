@@ -246,7 +246,7 @@ agm-map {
 // }
 
 .full-width{
-    width: 100%;    
+    width: 100%;
 }
 
 .profile-thumb{
@@ -423,6 +423,11 @@ h3 {
     background-color: #f17d7d;
 }
 
+.commentProfilePic {
+	float: left;
+	margin-left: 15px;
+}
+
 .timelineRowItem {
     border-left: 0px;
     padding-top: 40px;
@@ -524,4 +529,73 @@ h3 {
 
 .textJustify {
     text-align: justify;
+}
+
+.expHeaderHrParticipant {
+	margin: 0px 0px 15px 0px;
+}
+.expHeaderHrPublic {
+	margin: 0px 43% 15px 0px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.experiencePageContainer {
+		padding: 0 20px;
+	}
+	.expHeaderHrParticipant, .expHeaderHrPublic {
+		margin: 20px 0px 15px 0px;
+	}
+	.recommendation-thumb{
+		object-fit: cover;
+		max-height: 145px;
+		max-width: 145px;
+	}
+
+	.recommendation-card {
+		width: 145px;
+	}
+	.recommendation-thumb{
+		object-fit: cover;
+		height: 145px;
+		width: 100%;
+		position: relative;
+	}
+
+	.peer-recommendation-thumb{
+		object-fit: cover;
+		height: 145px;
+		width: 145px;
+	}
+
+	.recommendation-card{
+		width: 145px;
+		height: 145px;
+	}
+
+	.recommendation-thumb{
+		object-fit: cover;
+		height: 145px;
+		width: 100%;
+	}
+
+	.recommendation-card{
+		min-height:1px;
+		padding-left: 8px;
+		padding-right: 8px;
+		width: 50%;
+		float: left;
+	}
+	.right-content {
+		padding-right: 0;
+	}
+	.commentContainer {
+		padding-left: 30px;
+	}
+	.commentProfilePic {
+		margin-left: 0;
+	}
+	.commentUpvoteCount {
+		padding-left: 10px;
+	}
 }

@@ -196,10 +196,7 @@ agm-map {
 		width: 50%;
 		float: left;
 	}
-
-	.communityParticipants {
-		&:not(:first-child) {
-			margin-left: 0px !important;
-		}
+	.homefeed {
+		padding-top: 10px;
 	}
 }

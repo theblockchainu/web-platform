@@ -98,7 +98,7 @@ export class PeersComponent implements OnInit {
 
 		let query;
 
-		if (this.selectedTopics.length < 1) {
+		if (this.selectedTopics && this.selectedTopics.length < 1) {
 			query = {
 				'include': [
 					{
