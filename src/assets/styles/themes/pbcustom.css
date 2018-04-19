@@ -1764,11 +1764,6 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	display: none !important;
 }
 
-.hide-small {
-	display: block !important;
-}
-
-
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	.circle-thumb {
