@@ -38,7 +38,7 @@
             float: right;
             padding: 5px 10px 0px 10px;
             width: 30%;
-	        text-align: right;
+            text-align: right;
         }
 
         .mat-button,
@@ -341,10 +341,12 @@
             color: #999;
         }
 
-        .container {
-            width: 600px;
-            padding-right: 10px;
-            padding-left: 10px;
+        @media only screen and (min-width: 600px) {
+            .container {
+                width: 600px;
+                padding-right: 10px;
+                padding-left: 10px;
+            }
         }
 
         .col-md-offset-3,
@@ -385,12 +387,14 @@
             box-sizing: border-box;
         }
 
-        body .container {
-            width: 600px;
-            margin: 30px auto 0;
-            display: block;
-            background: #FFF;
-            padding: 8px 50px 50px;
+        @media only screen and (min-width: 600px) {
+            body .container {
+                width: 600px;
+                margin: 30px auto 0;
+                display: block;
+                background: #FFF;
+                padding: 8px 50px 50px;
+            }
         }
 
         input {
@@ -589,6 +593,61 @@
         .align {
             padding-right: 21px;
         }
+
+        .input-box {
+            width: 250px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .signup-box {
+                background-color: #fff;
+                padding: 6vh 5vw;
+                width: 83vw;
+                height: 373px;
+                border: 1px solid lightgrey;
+                margin-bottom: 70px;
+                position: relative;
+                left: 5vw;
+            }
+
+            .rightSpan {
+                float: right;
+                padding: 0px;
+                width: 60%;
+                text-align: right;
+            }
+
+            .signup-box2 {
+                padding: 3vh 3vw;
+                width: 98vw;
+                height: 72vh;
+                background-color: #fff;
+                border: 1px solid lightgrey;
+                margin-top: -13vh;
+                margin-left: -13vw;
+            }
+
+            .input-box {
+                width: 90vw;
+            }
+
+            .input-group input {
+                width: 90vw;
+            }
+
+            .form-group .btn {
+                margin-left: 22%;
+            }
+
+            .fr {
+                height: 6vh;
+            }
+
+            .btn-email {
+                height: 6vh;
+                width: 72vw;
+            }
+        }
     </style>
 
     <script>
@@ -757,132 +816,133 @@
             </header>
             <div class="hr"></div>
             <div class="container">
+                <div class="row">
+                    <div class="col-md-12 margin-top-40">
+                        <div class="signup-box drop-shadow">
 
-                <div class="col-md-12 margin-top-40">
-                    <div class="signup-box drop-shadow">
+                            <form id="signupForm" name="form" method="POST" onsubmit="signup(this); return false;">
 
-                        <form id="signupForm" name="form" method="POST" onsubmit="signup(this); return false;">
-
-                            <div class="margin-bottom-20">
-                                <a class="btn-social btn-fb pi-margin-bottom-20" href="https://localhost:3000/auth/facebook?returnTo=signup-social">
-                                    <i class="fa fa-facebook circle-icon"></i>
-                                    <span style="font-size:16px">Continue with Facebook</span>
-                                </a>
-                            </div>
-                            <div class="margin-bottom-20">
-                                <a class="btn-social btn-ggl pi-margin-bottom-20" href="https://localhost:3000/auth/google?returnTo=signup-social">
-                                    <i class="fa fa-google circle-icon"></i>
-                                    <span style="font-size:16px">Continue with Google</span>
-                                </a>
-                            </div>
-                            <div class="btn-hide position-relative margin-bottom-20 text-center">
-                                <div class="or-seperator-vertical"></div>
-                                <span class="round-or-text or-text-vertical">or</span>
-                            </div>
-                            <div class="margin-bottom-20 btnSignupEmail">
-                                <a class="btn-social btn-email pi-margin-bottom-20" style="font-size:16px;" href="javascript:;" onclick="signupEmail()">
-                                    Continue with email</a>
-                            </div>
-                            <div class="small-font btn-hide text-center">Have an account already?
-                                <a class="btn-link link margin-top-10" style="cursor: pointer;" onclick="goToLogin()" style="font-size:14px;text-decoration: none;">Log in</a>
-                            </div>
-
-
-                            <div class="signupEmail hide signup-box2">
-                                <div class="text-center">Sign up with
-                                    <a href="https://localhost:3000/auth/facebook?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Facebook</a> or
-                                    <a href="https://localhost:3000/auth/google?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">
-                                        Google</a>
+                                <div class="margin-bottom-20">
+                                    <a class="btn-social btn-fb pi-margin-bottom-20" href="https://localhost:3000/auth/facebook?returnTo=signup-social">
+                                        <i class="fa fa-facebook circle-icon"></i>
+                                        <span style="font-size:16px">Continue with Facebook</span>
+                                    </a>
                                 </div>
-
-
-                                <div class="position-relative margin-bottom-20 text-center">
+                                <div class="margin-bottom-20">
+                                    <a class="btn-social btn-ggl pi-margin-bottom-20" href="https://localhost:3000/auth/google?returnTo=signup-social">
+                                        <i class="fa fa-google circle-icon"></i>
+                                        <span style="font-size:16px">Continue with Google</span>
+                                    </a>
+                                </div>
+                                <div class="btn-hide position-relative margin-bottom-20 text-center">
                                     <div class="or-seperator-vertical"></div>
                                     <span class="round-or-text or-text-vertical">or</span>
                                 </div>
+                                <div class="margin-bottom-20 btnSignupEmail">
+                                    <a class="btn-social btn-email pi-margin-bottom-20" style="font-size:16px;" href="javascript:;" onclick="signupEmail()">
+                                        Continue with email</a>
+                                </div>
+                                <div class="small-font btn-hide text-center">Have an account already?
+                                    <a class="btn-link link margin-top-10" style="cursor: pointer;" onclick="goToLogin()" style="font-size:14px;text-decoration: none;">Log in</a>
+                                </div>
 
-                                <div class="group">
-                                    <div class="row col-sm-6">
-                                        <div class="input-group input-group-first-name">
-                                            <input type="text" name="first_name" required style="width: 250px">
+
+                                <div class="signupEmail hide signup-box2">
+                                    <div class="text-center">Sign up with
+                                        <a href="https://localhost:3000/auth/facebook?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Facebook</a> or
+                                        <a href="https://localhost:3000/auth/google?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">
+                                            Google</a>
+                                    </div>
+
+
+                                    <div class="position-relative margin-bottom-20 text-center">
+                                        <div class="or-seperator-vertical"></div>
+                                        <span class="round-or-text or-text-vertical">or</span>
+                                    </div>
+
+                                    <div class="group">
+                                        <div class="row col-sm-6">
+                                            <div class="input-group input-group-first-name">
+                                                <input type="text" name="first_name" required class="input-box">
+                                                <span class="highlight"></span>
+                                                <span class="bar"></span>
+                                                <label style="color:#999 !important;">First Name</label>
+
+                                            </div>
+                                        </div>
+                                        <div class="row col-sm-6">
+                                            <div class="input-group input-group-last-name">
+                                                <input type="text" name="last_name" required class="input-box">
+                                                <span class="highlight"></span>
+                                                <span class="bar"></span>
+                                                <label style="color:#999 !important;">Last Name</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="group">
+                                        <div class="input-group input-group-email">
+                                            <input type="text" name="email" id="email" required>
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
-                                            <label style="color:#999 !important;">First Name</label>
-
+                                            <label style="color:#999 !important;">Email</label>
                                         </div>
                                     </div>
-                                    <div class="row col-sm-6">
-                                        <div class="input-group input-group-last-name">
-                                            <input type="text" name="last_name" required style="width: 295px">
+
+                                    <div class="group">
+                                        <div class="input-group input-group-password">
+                                            <input type="password" name="password" required>
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
-                                            <label style="color:#999 !important;">Last Name</label>
+                                            <label style="color:#999 !important;">Password</label>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="group">
-                                    <div class="input-group input-group-email">
-                                        <input type="text" name="email" id="email" required>
-                                        <span class="highlight"></span>
-                                        <span class="bar"></span>
-                                        <label style="color:#999 !important;">Email</label>
-                                    </div>
-                                </div>
 
-                                <div class="group">
-                                    <div class="input-group input-group-password">
-                                        <input type="password" name="password" required>
-                                        <span class="highlight"></span>
-                                        <span class="bar"></span>
-                                        <label style="color:#999 !important;">Password</label>
-                                    </div>
-                                </div>
+                                    <div class="margin-bottom-20">
+                                        <p class="p-1">Birthday</p>
+                                        <!--<p class="fs-13">To sign up, you must be 18 or older. Other people won't see your birthday.</p>-->
 
-                                <div class="margin-bottom-20">
-                                    <p class="p-1">Birthday</p>
-                                    <!--<p class="fs-13">To sign up, you must be 18 or older. Other people won't see your birthday.</p>-->
-
-                                    <div class="row">
-                                        <div class="col-sm-4" style="color:#999 !important;">
-                                            <select class="form-control birthDetails" name="dobMonth" id="dobMonth">
-                                                <option value="" selected style="color:#999 !important;">Month</option>
-                                                <option value="01">January</option>
-                                                <option value="02">February</option>
-                                                <option value="03">March</option>
-                                                <option value="04">April</option>
-                                                <option value="05">May</option>
-                                                <option value="06">June</option>
-                                                <option value="07">July</option>
-                                                <option value="08">August</option>
-                                                <option value="09">September</option>
-                                                <option value="10">October</option>
-                                                <option value="11">November</option>
-                                                <option value="12">December</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-sm-4" style="color:#999 !important;">
-                                            <select class="form-control birthDetails" name="dobDay" id="dobDay">
-                                                <option value="" selected>Day</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-sm-4" style="color:#999 !important;">
-                                            <select class="form-control birthDetails" name="dobYear" id="dobYear">
-                                                <option value="" selected>Year</option>
-                                            </select>
+                                        <div class="row">
+                                            <div class="col-xs-4" style="color:#999 !important;">
+                                                <select class="form-control birthDetails" name="dobMonth" id="dobMonth">
+                                                    <option value="" selected style="color:#999 !important;">Month</option>
+                                                    <option value="01">January</option>
+                                                    <option value="02">February</option>
+                                                    <option value="03">March</option>
+                                                    <option value="04">April</option>
+                                                    <option value="05">May</option>
+                                                    <option value="06">June</option>
+                                                    <option value="07">July</option>
+                                                    <option value="08">August</option>
+                                                    <option value="09">September</option>
+                                                    <option value="10">October</option>
+                                                    <option value="11">November</option>
+                                                    <option value="12">December</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-xs-4" style="color:#999 !important;">
+                                                <select class="form-control birthDetails" name="dobDay" id="dobDay">
+                                                    <option value="" selected>Day</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-xs-4" style="color:#999 !important;">
+                                                <select class="form-control birthDetails" name="dobYear" id="dobYear">
+                                                    <option value="" selected>Year</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary" type="submit">Continue</button>
+                                    </div>
+                                    <div class="align text-center small-font">Have an account already?
+                                        <a href="/login" class="btn-link link margin-top-10" onclick="openLogin()" style="font-size:14px;text-decoration: none;">Log in</a>
+                                    </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary" type="submit">Continue</button>
-                                </div>
-                                <div class="align text-center small-font">Have an account already?
-                                    <a href="/login" class="btn-link link margin-top-10" onclick="openLogin()" style="font-size:14px;text-decoration: none;">Log in</a>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
