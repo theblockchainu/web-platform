@@ -16,12 +16,22 @@
 					<a [routerLink]="'/profile/'+peer.id">
 						<div class="">
 							<img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url}}"
-							     alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
+							 alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
 							<img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="workshpImg"
-							     (error)="_collectionService.userImgErrorHandler($event)">
+							 (error)="_collectionService.userImgErrorHandler($event)">
 						</div>
 						<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}</div>
 						<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
+						<div class="col-sm-12 padding-left-0 ">
+							<span *ngIf="!peer.topics || peer.topics.length<=2 ">
+								{{peer.topics}}
+							</span>
+							<span *ngIf="peer.topics && peer.topics.length>2"> {{peer.topics | initial: 1}}
+								<b matTooltip="{{peer.topics}}">
+									+{{peer.topics.length-2}} more
+								</b>
+							</span>
+						</div>
 						<div class="col-sm-12 padding-left-0" style="margin-top: -2px; font-size: 13px;">
 							<p-rating class="padding-left-0" style="float: left;" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
 							</p-rating>
