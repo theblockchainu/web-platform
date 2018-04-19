@@ -50,6 +50,7 @@ export class AppHeaderComponent implements OnInit {
 	public profileCompletionObject: any;
 	public isSessionApproved = false;
 	public sessionId = '';
+	public isSearchBarVisible = false;
 	constructor(public authService: AuthenticationService,
 				private http: HttpClient,
 				private _cookieService: CookieUtilsService,
@@ -268,5 +269,13 @@ export class AppHeaderComponent implements OnInit {
 	public onSearchOptionClicked(option) {
 		this.searchInputBar.value = '';
 		this._searchService.onSearchOptionClicked(option);
+	}
+	
+	public showSearchBar() {
+		if (this.isSearchBarVisible) {
+			this.isSearchBarVisible = false;
+		} else {
+			this.isSearchBarVisible = true;
+		}
 	}
 }

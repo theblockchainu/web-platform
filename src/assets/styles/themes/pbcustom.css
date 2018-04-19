@@ -1764,6 +1764,13 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	display: none !important;
 }
 
+.navProgressBar {
+	top: 63px;
+	position: fixed !important;
+	z-index: 10000;
+	height: 2px !important;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	.circle-thumb {
@@ -1802,15 +1809,33 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 		display: block !important;
 	}
 	.main-content {
-		padding-top: 150px !important;
+		padding-top: 100px !important;
 	}
 
 	.show-small .headerButtons {
 		flex: 1;
     }
-    
+
     .search-form .mat-input-container {
         display: inline-block;
+    }
+
+    .search-form {
+	    margin: 0 2rem;
+	    width: 85%;
+	    height: 100%;
+    }
+    .navProgressBar {
+	    top: 56px;
+    }
+    .searchBar {
+	    height: 0 !important;
+	    overflow: hidden;
+	    transition: height 0.2s !important;
+    }
+    .searchBarHeight {
+	    height: auto !important;
+	    transition: height 0.2s !important;
     }
 
 }
