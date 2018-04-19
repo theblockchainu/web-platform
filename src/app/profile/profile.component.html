@@ -103,7 +103,7 @@
 							<span class="pre-wrapped alignJustify">{{profileObj.description | ucfirst | shorten: maxLength : '...'}}</span>
 							<span *ngIf="profileObj.description.length > maxLength" (click)="showAll(profileObj.description.length)" style="color:#33bd9e">read more</span>
 							<span *ngIf="profileObj.description.length >140 && profileObj.description.length <= maxLength" (click)="showAll(profileObj.description.length)"
-							      style="color:#33bd9e">show less</span>
+							 style="color:#33bd9e">show less</span>
 						</p>
 						<p *ngIf="!profileObj.description">Joined peerbuds on {{profileObj.createdAt | date:'dd MMM yyyy'}}
 							<a [routerLink]="['/','console','profile','edit']" *ngIf="cookieUserId === urluserId">. Add a description to your profile?</a>
@@ -125,8 +125,7 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<p class="alignJustify">{{topic.experience || profileObj.first_name + ' has not specified their experience in
-										                        this topic' | ucfirst}}</p>
+										<p class="alignJustify">{{topic.experience || profileObj.first_name + ' has not specified their experience in this topic' | ucfirst}}</p>
 									</div>
 								</div>
 							</div>
@@ -171,7 +170,7 @@
 										<div class="row">
 											<div class="col-md-12 work-title">
 												<span style="font-size: 16px;font-weight: bolder;">{{workObj.position | ucfirst}} </span> @
-												                                                                                          <!--<mat-icon style="font-size: 5px;line-height:24px;vertical-align:middle;width: 15px;margin-left: -5px;">fiber_manual_record</mat-icon>-->
+												<!--<mat-icon style="font-size: 5px;line-height:24px;vertical-align:middle;width: 15px;margin-left: -5px;">fiber_manual_record</mat-icon>-->
 												<span class="lighttext" style="font-size: 15px;">
 													{{workObj.company | ucfirst}}
 												</span>
@@ -260,20 +259,19 @@
 											</div>
 										</div>
 										<div class="row review-content mat-body-1 margin-top-10" style="margin-left:0px;">
-											
+
 											<div class="col-md-12 review-desc padding-left-0 pre-wrapped" style="text-align:left">{{ review.description }}</div>
 											<div class="col-md-12 review-bottom padding-left-0 margin-top-10 mat-caption" style="text-align:left; margin-top: 5px !important; font-weight: 400;">
 												<span>For {{ getReviewedCollection(profileObj.peer[0], review.collectionId).type}}
 												</span>
 												<span class="bullet"></span>
 												<span>
-													<a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title |
-													                                                                                                             ucwords }}
+													<a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title | ucwords }}
 													</a>
 												</span>
 												<span class="bullet"></span>
-												<span> in {{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars,
-												       review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
+												<span> in {{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate
+													| date: 'MMMM y' }}</span>
 											</div>
 										</div>
 									</div>
@@ -319,20 +317,19 @@
 											</div>
 										</div>
 										<div class="row review-content mat-body-1 margin-top-10" style="margin-left:0px;">
-											
+
 											<div class="col-md-12 review-desc padding-left-0 pre-wrapped" style="text-align:left">{{ review.description }}</div>
 											<div class="col-md-12 review-bottom padding-left-0 margin-top-10 mat-caption" style="text-align:left; margin-top: 5px !important; font-weight: 400;">
 												<span>For {{ getReviewedCollection(profileObj.peer[0], review.collectionId).type}}
 												</span>
 												<span class="bullet"></span>
 												<span>
-													<a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title |
-													                                                                                                             ucwords }}
+													<a [routerLink]="redirectToCollection(profileObj.peer[0], review.collectionId, review.collectionCalendarId)">{{ getReviewedCollection(profileObj.peer[0], review.collectionId).title | ucwords }}
 													</a>
 												</span>
 												<span class="bullet"></span>
-												<span> in {{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars,
-												       review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
+												<span> in {{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate
+													| date: 'MMMM y' }}</span>
 											</div>
 										</div>
 									</div>
@@ -358,7 +355,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="col-md-3 right-panel" *ngIf="isTeacher">
 				<div class="row">
 					<div class="col-md-12">
@@ -401,8 +398,7 @@
 									</div>
 									<div *ngIf="availablePaidPackages.length === 0 && availableTrialPackages.length === 0">
 										<div class="col-md-12 emptySectionText lightText margin-top-30" style="padding-left: 15px;">
-											<span>{{profileObj.first_name | ucwords}}'s profile has not yet been approved for peer
-											      sessions
+											<span>{{profileObj.first_name | ucwords}}'s profile has not yet been approved for peer sessions
 											</span>
 										</div>
 									</div>
@@ -625,9 +621,9 @@
 							<a [routerLink]="'/workshop/'+workshop.id">
 								<div class="">
 									<img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{envVariable.apiUrl+workshop.imageUrls[0]}}"
-									     alt="workshpImg">
+									 alt="workshpImg">
 									<img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
-									     alt="workshpImg">
+									 alt="workshpImg">
 								</div>
 								<div *ngIf="workshop.currency !== undefined && workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}}</div>
 								<!--{{workshop.price | currency: workshop.currency: true:'1.0-0'}}-->
@@ -674,9 +670,9 @@
 							<a [routerLink]="'/community/'+community.id">
 								<div class="">
 									<img class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" src="{{envVariable.apiUrl+community.imageUrls[0]}}"
-									     alt="workshpImg">
+									 alt="workshpImg">
 									<img class="community-thumb" *ngIf="!community.imageUrls || community.imageUrls.length<=0" src="/assets/images/no-image.jpg"
-									     alt="workshpImg">
+									 alt="workshpImg">
 								</div>
 								<div class="mat-body-2" style="margin-top: -3px;">{{community.title | titlecase}}</div>
 								<span *ngFor="let participant of community.participants; let i=index">
@@ -718,11 +714,21 @@
 						<a *ngIf="i<6" [routerLink]="'/profile/'+peer.id">
 							<div class="">
 								<img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url}}"
-								     alt="peerImg">
+								 alt="peerImg">
 								<img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="peerImg">
 							</div>
 							<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}</div>
 							<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
+							<div class="col-sm-12 padding-left-0 ">
+								<span *ngIf="!peer.topics || peer.topics.length<=2 ">
+									{{peer.topics}}
+								</span>
+								<span *ngIf="peer.topics && peer.topics.length>2"> {{peer.topics | initial: 1}}
+									<b matTooltip="{{peer.topics}}">
+										+{{peer.topics.length-2}} more
+									</b>
+								</span>
+							</div>
 							<div class="col-sm-12 padding-left-0" style="margin-top: -2px; font-size: 13px;">
 								<p-rating class="padding-left-0" style="float: left;" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
 								</p-rating>

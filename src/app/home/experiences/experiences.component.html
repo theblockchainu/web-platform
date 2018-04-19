@@ -39,7 +39,7 @@
 								<mat-select placeholder="Rating" formControlName="rating" multiple>
 									<mat-option *ngFor="let rating of ratingList" [value]="rating">
 										<p-rating class="padding-left-0" style="float: left;" [ngModelOptions]="{standalone: true}" [ngModel]="rating" readonly="true"
-										          stars="5" [cancel]="false">
+										 stars="5" [cancel]="false">
 										</p-rating>
 									</mat-option>
 								</mat-select>
@@ -53,7 +53,16 @@
 			</div>
 			<app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
 			<div class="mat-display-1" style="margin-bottom: 25px !important;">
-				All experiences
+				Experiences
+				<span class="mat-subheading-2" *ngIf="this.selectedTopics.length!==0">
+					in
+					<span *ngFor="let topicObj of this.selectedTopics;let i=index">
+						{{topicObj.name}}
+					</span>
+					<mat-icon class="clickable" (click)="resetTopics()">
+						close
+					</mat-icon>
+				</span>
 			</div>
 			<div class="loading-container" [hidden]="!loading">
 				<ngx-loading [show]="true"></ngx-loading>
@@ -69,7 +78,7 @@
 							<mat-icon *ngIf="!(experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId)">
 								bookmark</mat-icon>
 							<mat-icon *ngIf="experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId"
-							          color="primary">bookmark</mat-icon>
+							 color="primary">bookmark</mat-icon>
 						</button>
 						<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.id,experience.title)">
 							<mat-icon>share</mat-icon>
