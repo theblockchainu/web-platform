@@ -155,12 +155,16 @@ export class PeersComponent implements OnInit {
 		this._topicService.getTopics(query)
 			.subscribe(
 				(response) => {
-					console.log(response);
 					const peers = [];
 					response.forEach(topic => {
 						topic.peersTeaching.forEach(peer => {
 							if (peer.id !== this.userId && peer.ownedCollections && peer.ownedCollections.length > 0) {
 								peer.rating = this._collectionService.calculateRating(peer.reviewsAboutYou);
+								const topics = [];
+								peer.topicsTeaching.forEach(topicObj => {
+									topics.push(topicObj.name);
+								});
+								peer.topics = topics;
 								peers.push(peer);
 							}
 						});
@@ -197,6 +201,11 @@ export class PeersComponent implements OnInit {
 	public filterClickedTopic(index) {
 		this.availableTopics = _.cloneDeep(this.topicsBackup);
 		this.availableTopics[index]['checked'] = true;
+		this.fetchPeers();
+	}
+
+	public resetTopics() {
+		this.availableTopics = _.cloneDeep(this.topicsBackup);
 		this.fetchPeers();
 	}
 
