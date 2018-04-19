@@ -54,12 +54,12 @@
 			<app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
 			<div class="mat-display-1" style="margin-bottom: 25px !important;">
 				Experiences
-				<span class="mat-subheading-2" *ngIf="this.selectedTopics.length!==0">
+				<span class="mat-display-1" *ngIf="selectedTopics && selectedTopics.length !== 0">
 					in
-					<span *ngFor="let topicObj of this.selectedTopics;let i=index">
+					<span *ngFor="let topicObj of selectedTopics;let i=index">
 						{{topicObj.name}}
 					</span>
-					<mat-icon class="clickable" (click)="resetTopics()">
+					<mat-icon class="clickable" style="font-size: 12px; font-weight: 200;" (click)="resetTopics()">
 						close
 					</mat-icon>
 				</span>
