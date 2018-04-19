@@ -5,15 +5,10 @@ md-input-container md-icon {
     }
 
 md-dialog-content {
-    display: block;   
+    display: block;
     margin: 0 -67px 0 -67px;
     max-height: 50vh;
     overflow: unset;
-}
-
-.page-signin
-{
-    height: 450px;
 }
 
 .logincontent{
@@ -77,5 +72,5 @@ md-dialog-content {
 .circle-icon {
     padding:6px;
     border-radius: 50%;
-    
+
 }

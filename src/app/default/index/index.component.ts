@@ -50,7 +50,7 @@ export class IndexComponent implements OnInit {
 	ngOnInit() {
 		this.loadingHome = false;
 		this.notifyForm = this._fb.group(
-			{ email: ['', Validators.requiredTrue] }
+			{ email: ['', [Validators.requiredTrue, Validators.email]] }
 		);
 		this.setTags();
 	}
@@ -59,14 +59,19 @@ export class IndexComponent implements OnInit {
 		this.dialogsService.openVideo(url).subscribe();
 	}
 	public sendEmailSubscriptions() {
-		// this.loading = true;
-		this.email = this.notifyForm.controls['email'].value;
-		this.authenticationService.sendEmailSubscriptions(this.email)
-			.subscribe(
-			);
-		this.snackBar.open('We have registered your email for all our future updates leading to the official Karma launch later this year', 'Thanks', {
-			duration: 5000
-		});
+		if (this.notifyForm.valid) {
+			this.email = this.notifyForm.controls['email'].value;
+			this.authenticationService.sendEmailSubscriptions(this.email)
+				.subscribe(
+				);
+			this.snackBar.open('We have registered your email for all our future updates leading to the official Karma launch later this year', 'Thanks', {
+				duration: 5000
+			});
+		} else {
+			this.snackBar.open('Please enter a valid email address', 'Ok', {
+				duration: 5000
+			});
+		}
 	}
 	
 	public openSignup() {

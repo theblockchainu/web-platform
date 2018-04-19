@@ -1,42 +1,42 @@
 <div class="row">
-  <div class="col-md-12">
-    <div *ngIf="!loaded" class="loading-container">
-      <ngx-loading [show]="true"></ngx-loading>
-    </div>
-  </div>
+	<div class="col-md-12">
+		<div *ngIf="!loaded" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
 </div>
 <div class="row margin-top-10" *ngIf="loaded">
-  <div class="col-md-12">
-    <div>
-      <div *ngIf="notifications.length === 0">
-        <div>
-          <div class="row full-width notificationsRow">
-            <div class="col-md-12">
-              You have no notifications to show
-            </div>
-          </div>
-        </div>
-      </div>
-      <div *ngFor="let notification of notifications">
-        <div *ngIf="!notification.hidden">
-          <div [ngClass]="{'row': true, 'full-width': true, 'notificationsRow': true, 'notificationsRowUnread': !notification.seen}"
-            (click)="onNotificationClick(notification)">
-            <div class="col-md-1">
-              <img *ngIf="!notification.actor[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb notificationsImage">
-              <img *ngIf="notification.actor[0].profiles[0].picture_url" src="{{envVariable.apiUrl + notification.actor[0].profiles[0].picture_url}}"
-                alt="A" class="circle-thumb notificationsImage">
-            </div>
-            <div class="col-md-10" style="padding-left: 25px;">
-              <!--Content here-->
-              <div innerHTML="{{getNotificationText(notification) | ucfirst}}"></div>
-              <h6 class="mat-caption" style="margin-top: 0px;">{{getNotificationTime(notification)}}</h6>
-            </div>
-            <div class="col-md-1" style="top: 10px;">
-              <mat-icon class="lightText" style="font-size: 10px; cursor: pointer;" (click)="hideNotification(notification)">close</mat-icon>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="col-md-12">
+		<div>
+			<div *ngIf="notifications.length === 0">
+				<div>
+					<div class="row full-width notificationsRow">
+						<div class="col-md-12">
+							You have no notifications to show
+						</div>
+					</div>
+				</div>
+			</div>
+			<div *ngFor="let notification of notifications">
+				<div *ngIf="!notification.hidden">
+					<div [ngClass]="{'row': true, 'full-width': true, 'notificationsRow': true, 'notificationsRowUnread': !notification.seen}"
+					     (click)="onNotificationClick(notification)">
+						<div class="col-xs-1">
+							<img *ngIf="!notification.actor[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb notificationsImage">
+							<img *ngIf="notification.actor[0].profiles[0].picture_url" src="{{envVariable.apiUrl + notification.actor[0].profiles[0].picture_url}}"
+							     alt="A" class="circle-thumb notificationsImage">
+						</div>
+						<div class="col-xs-10" style="padding-left: 25px;">
+							<!--Content here-->
+							<div innerHTML="{{getNotificationText(notification) | ucfirst}}"></div>
+							<h6 class="mat-caption" style="margin-top: 0px;">{{getNotificationTime(notification)}}</h6>
+						</div>
+						<div class="col-xs-1" style="top: 10px;">
+							<mat-icon class="lightText" style="font-size: 10px; cursor: pointer;" (click)="hideNotification(notification)">close</mat-icon>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

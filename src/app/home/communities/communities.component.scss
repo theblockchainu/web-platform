@@ -55,3 +55,25 @@
     margin-left: -15px !important;
   }
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.community-thumb{
+		object-fit: cover;
+		height: 145px;
+		width: 100%;
+		position: relative;
+	}
+
+	.community-card{
+		min-height:1px;
+		padding-left: 8px;
+		padding-right: 8px;
+		width: 50%;
+		float: left;
+	}
+
+	.communityFeed {
+		padding-top: 0px;
+	}
+}

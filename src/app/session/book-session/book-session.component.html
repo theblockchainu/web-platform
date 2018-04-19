@@ -121,13 +121,13 @@
 					</form>
 				</div>
 			</div>
-			<div class="col-sm-3 col-sm-offset-1" *ngIf="session">
+			<div class="col-sm-3 col-sm-offset-1 bookSessionRightContainer" *ngIf="session">
 				<div class="sidebar-right">
 					<div class="sidebar-box">
 						<div class="seperate-section padding-top-0">
 							<div class="display-table">
 								<div class="margin-bottom-10">
-									<img [src]="envVariable.apiUrl + session.owners[0].profiles[0].picture_url" alt="image" (error)="_collectionService.userImgErrorHandler($event)" style="width: 100%;" />
+									<img class="bookSessionPeerImage" [src]="envVariable.apiUrl + session.owners[0].profiles[0].picture_url" alt="image" (error)="_collectionService.userImgErrorHandler($event)" />
 								</div>
 								<div class="fs-17">Peer Session
 									<br>

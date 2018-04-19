@@ -50,16 +50,16 @@
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	.floating-button-left{
-		position: absolute;
+		position: relative;
 		z-index: 1;
 		left: 5px;
-		top: 414px;
+		top: 71px;
 	}
 
 	.floating-button-right{
-		position: absolute;
+		position: relative;
 		z-index: 1;
-		right: 5px;
-		top: 414px;
+		left: 87%;
+		top: -61px;
 	}
 }

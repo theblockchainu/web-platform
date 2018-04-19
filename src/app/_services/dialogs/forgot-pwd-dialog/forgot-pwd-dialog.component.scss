@@ -17,14 +17,12 @@ md-input-container md-icon {
 }
 
 .dialog1{
-    height: 170px !important; 
+    min-height: 170px !important;
     border-radius: 2px;
     box-sizing: border-box;
     overflow: auto;
     max-width: 80vw;
     outline: 0;
-    width: 350px !important;
-    margin:30px;
 }
 .box-msg{
     color: #33bd9e;

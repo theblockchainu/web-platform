@@ -210,3 +210,22 @@ button:active {
     font-weight: 500;
     font-size: 15px;
 }
+.bookSessionPeerImage {
+	width: 100%;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.title {
+		line-height: 1.4;
+	}
+	.onboarding {
+		padding-top: 60px;
+	}
+	.bookSessionRightContainer {
+		padding-top: 90px;
+	}
+	.bookSessionPeerImage {
+		width: 50%;
+	}
+}

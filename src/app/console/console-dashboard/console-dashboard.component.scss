@@ -187,3 +187,10 @@ a{
   height: 120px;
   border-radius: 200px;
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.teachingContent {
+		margin-right: 0;
+	}
+}

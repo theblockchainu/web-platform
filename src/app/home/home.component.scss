@@ -1,5 +1,5 @@
 .homefeed a{
-    color: black;  
+    color: black;
 }
 
 .homefeed{
@@ -25,7 +25,7 @@
 
 .homefeed label{
     color: #484848;
-    font-size: 13px;    
+    font-size: 13px;
 }
 
 .peer-recommendation-card{
@@ -80,4 +80,20 @@ padding-top: 15px
 
 .mat-tab-group.mat-primary .mat-tab-label:focus, .mat-tab-group.mat-primary .mat-tab-link:focus, .mat-tab-nav-bar.mat-primary .mat-tab-label:focus, .mat-tab-nav-bar.mat-primary .mat-tab-link:focus {
     background: none;
+}
+
+.homeContainer {
+	margin-top: 2%;
+	margin-bottom: 0%;
+}
+
+.homeFeedContainer {
+	margin-top: 0;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.homefeedContainer {
+		margin-top: 10%;
+	}
 }

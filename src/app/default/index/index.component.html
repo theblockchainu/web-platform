@@ -71,11 +71,11 @@
 		</div>
 		<div class="col-md-12 newsLetterForm">
 			<p class="center newsLetterTitle margin-bottom-40"> Sign up to receive all our latest developments </p>
-			<form [formGroup]="notifyForm">
+			<form [formGroup]="notifyForm" (submit)="sendEmailSubscriptions()">
 				<div class="center">
 					<input matInput class="newsLetterInput" type="text" placeholder="Your email here" formControlName="email">
 					<div id="emailBase" class="newsLetterButtonContainer">
-						<button mat-button class="mat-raised-button newsLetterButton" (click)="sendEmailSubscriptions()">Notify me!</button>
+						<button mat-button class="mat-raised-button newsLetterButton" type="submit">Notify me!</button>
 					</div>
 				</div>
 			</form>

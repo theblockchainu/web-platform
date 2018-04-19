@@ -85,3 +85,17 @@ md-input-container .mat-form-field-infix-override {
 agm-map {
     height: 300px;
   }
+
+.profileFormContainer {
+	margin-right: 110px;
+	line-height: 120%
+}
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.profileFormContainer {
+		margin-right: 0;
+		padding: 0 20px;
+	}
+}

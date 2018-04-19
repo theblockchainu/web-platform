@@ -434,11 +434,16 @@ hr {
 	}
 
 	.profile-page {
-		padding-top: 90px;
+		padding-top: 40px;
 	}
 
 	.communityCardProfileImages {
-		margin-left: 0px;
+		margin-left: 0 !important;
+		&:not(:first-child) {
+			margin-left: -15px !important;
+		}
 	}
+
+
 
 }
