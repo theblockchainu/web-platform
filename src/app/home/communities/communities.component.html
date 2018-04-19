@@ -21,7 +21,7 @@
             <app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
             <div class="mat-display-1" style="margin-bottom: 25px !important;">
                 Communities
-                <span class="mat-subheading-2" *ngIf="this.selectedTopics.length!==this.availableTopics.length">
+                <span class="mat-subheading-2" *ngIf="this.selectedTopics && this.availableTopics && this.selectedTopics.length !== this.availableTopics.length">
                     in
                     <span *ngFor="let topicObj of this.selectedTopics;let i=index">
                         {{topicObj.name}}
