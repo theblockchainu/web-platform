@@ -11,12 +11,13 @@
 			</span>
 			<span class="search-form hide-small">
 				<mat-form-field style="color:#333333 !important" class="mat-block" *ngIf="(isLoggedIn | async)" [floatLabel]="'never'">
-					<input #searchInputBar name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="myControl" [matAutocomplete]="auto"
-					       placeholder="Try 'Mumbai' ">
+					<input #searchInputBar name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="myControl"
+					 [matAutocomplete]="auto" placeholder="Try 'Mumbai' ">
 					<mat-autocomplete #auto="matAutocomplete">
 						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)">
 							<span>
-								<img src="{{_searchService.getSearchOptionImage(option)}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;" (error)="_collectionService.imgErrorHandler($event)" />
+								<img src="{{_searchService.getSearchOptionImage(option)}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
+								 (error)="_collectionService.imgErrorHandler($event)" />
 							</span>
 							<span>
 								{{_searchService.getSearchOptionText(option)}}
@@ -29,7 +30,7 @@
 			<span class="example-spacer"></span>
 			<span>
 				<span class="header-progress-bar hide-small" *ngIf="profileCompletionObject  && profileCompletionObject.progress<80 && isLoggedIn | async"
-				      [matMenuTriggerFor]="profileCompletionMenu">
+				 [matMenuTriggerFor]="profileCompletionMenu">
 					Complete Profile
 					<div style="line-height: 0rem;">
 						<mat-progress-bar mode="determinate" value="{{profileCompletionObject.progress}}" style="width:70%;display: inline-block"></mat-progress-bar>
@@ -37,7 +38,7 @@
 					</div>
 				</span>
 				<button mat-button class="headerButtons hide-small" style="color: #33bd9e; font-weight: 600;" [routerLink]="['/console/teaching/experiences']"
-				        *ngIf="(isLoggedIn | async)">
+				 *ngIf="(isLoggedIn | async)">
 					Create an Experience
 				</button>
 				<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)">
@@ -53,23 +54,23 @@
 				<div style="display: inline-block;" *ngIf="(isLoggedIn | async)">
 					<mat-icon class="notifDot" *ngIf="hasNewNotification">fiber_manual_record</mat-icon>
 				</div>
-				
+
 				<button mat-button class="headerButtons" #messagesButton (click)="openMessagesDialog()" *ngIf="(isLoggedIn | async)">
 					<mat-icon>chat</mat-icon>
 				</button>
 				<div style="display: inline-block;" *ngIf="(isLoggedIn | async)">
 					<mat-icon class="notifDot" *ngIf="hasNewMessage">fiber_manual_record</mat-icon>
 				</div>
-				
+
 				<div class="headerButtons" [matMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem; cursor: pointer; display: inline-block; margin: 0 15px;">
 					<div>
 						<img *ngIf="!profile.picture_url" src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb">
 						<img *ngIf="profile.picture_url" src="{{envVariable.apiUrl + profile.picture_url}}" alt="A" class="circle-thumb">
 					</div>
 				</div>
-				
+
 				<span class="example-spacer hide-small"></span>
-				
+
 				<button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']" *ngIf="!(isLoggedIn | async)">
 					White Paper
 				</button>
@@ -85,9 +86,32 @@
 				<!--<a mat-button class="headerButtons" href="/signup.html" *ngIf="!(isLoggedIn | async)">
 					Sign Up
 				</a>-->
-				<button mat-button class="headerButtons mat-border-button" color="accent" style="border: 2px solid #FF6D71 !important;color: #ff6d71 !important;" (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
+				<button mat-button class="headerButtons mat-border-button" color="accent" style="border: 2px solid #FF6D71 !important;color: #ff6d71 !important;"
+				 (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
 					Test Alpha
 				</button>
+			</span>
+		</mat-toolbar-row>
+		<mat-toolbar-row class="show-small" *ngIf="(isLoggedIn | async)">
+			<span class="search-form">
+				<mat-form-field style="color:#333333 !important" class="mat-block" *ngIf="(isLoggedIn | async)" [floatLabel]="'never'">
+					<input #searchInputBar name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="myControl"
+					 [matAutocomplete]="auto">
+					<mat-placeholder>
+						<mat-icon>search</mat-icon>Try 'Mumbai'
+					</mat-placeholder>
+					<mat-autocomplete #auto="matAutocomplete">
+						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)">
+							<span>
+								<img src="{{_searchService.getSearchOptionImage(option)}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
+								 (error)="_collectionService.imgErrorHandler($event)" />
+							</span>
+							<span>
+								{{_searchService.getSearchOptionText(option)}}
+							</span>
+						</mat-option>
+					</mat-autocomplete>
+				</mat-form-field>
 			</span>
 		</mat-toolbar-row>
 		<mat-toolbar-row class="show-small" style="border-top: 1px solid #ddd;">
