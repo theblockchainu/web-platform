@@ -20,7 +20,16 @@
             </div>
             <app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
             <div class="mat-display-1" style="margin-bottom: 25px !important;">
-                All communities
+                Communities
+                <span class="mat-subheading-2" *ngIf="this.selectedTopics.length!==this.availableTopics.length">
+                    in
+                    <span *ngFor="let topicObj of this.selectedTopics;let i=index">
+                        {{topicObj.name}}
+                    </span>
+                    <mat-icon class="clickable" (click)="resetTopics()">
+                        close
+                    </mat-icon>
+                </span>
             </div>
             <div class="loading-container" [hidden]="!loading">
                 <ngx-loading [show]="true"></ngx-loading>
@@ -55,7 +64,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="community.participants !== undefined && community.participants.length > 0" style="margin-top: 3px;">
+                        <div *ngIf="community.participants  && community.participants.length > 0" style="margin-top: 3px;">
                             <div *ngFor="let participant of community.participants" class="communityParticipants" style="display: inline-block;">
                                 <app-profile-popup [peer]="participant"></app-profile-popup>
                             </div>

@@ -15,8 +15,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { environment } from '../../../environments/environment';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import {Meta, Title} from '@angular/platform-browser';
-import {Router} from '@angular/router';
+import { Meta, Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-experiences',
@@ -38,21 +38,21 @@ import {Router} from '@angular/router';
 export class ExperiencesComponent implements OnInit {
 	public availableTopics: Array<any>;
 	public topicsBackup: Array<any>;
-	
+
 	public userId;
 	public experiences: Array<any>;
 	public experiencesBackup: Array<any>;
 	@ViewChild('topicButton') topicButton;
 	@ViewChild('priceButton') priceButton;
 	@ViewChild('durationButton') durationButton;
-	
+
 	public availableRange: Array<number>;
 	public selectedRange: Array<number>;
-	
+
 	public availableDurationRange: Array<number>;
 	public selectedDurationRange: Array<number>;
-	
-	
+
+
 	public initialized: boolean;
 	public selectedTopics: Array<any>;
 	public loading = false;
@@ -63,7 +63,7 @@ export class ExperiencesComponent implements OnInit {
 	public locationList: Array<any>;
 	public levelList: Array<any>;
 	public ratingList: Array<number>;
-	
+
 	constructor(
 		public _collectionService: CollectionService,
 		public _profileService: ProfileService,
@@ -85,7 +85,7 @@ export class ExperiencesComponent implements OnInit {
 		this.initializeFilters();
 		this.setTags();
 	}
-	
+
 	private setTags() {
 		this.titleService.setTitle('Experiences');
 		this.metaService.updateTag({
@@ -109,7 +109,7 @@ export class ExperiencesComponent implements OnInit {
 			content: environment.clientUrl + this.router.url
 		});
 	}
-	
+
 	private initializeFilters() {
 		this.filterForm = this._fb.group({
 			language: [],
@@ -117,12 +117,12 @@ export class ExperiencesComponent implements OnInit {
 			difficultyLevel: [],
 			rating: []
 		});
-		
+
 		this.filterForm.valueChanges.subscribe(res => {
 			this.fitlerResults();
 		});
 	}
-	
+
 	private fitlerResults() {
 		this.experiences = this.experiencesBackup.filter((val) => {
 			let languageBool = false;
@@ -131,7 +131,7 @@ export class ExperiencesComponent implements OnInit {
 			let durationBool = false;
 			let levelBool = false;
 			let ratingBool = false;
-			
+
 			if (this.filterForm.value.language && this.filterForm.value.language.length > 0) {
 				for (let i = 0; (i < this.filterForm.value.language.length && !languageBool); i++) {
 					const language = this.filterForm.value.language[i];
@@ -142,7 +142,7 @@ export class ExperiencesComponent implements OnInit {
 			} else {
 				languageBool = true;
 			}
-			
+
 			if (this.filterForm.value.location && this.filterForm.value.location.length > 0) {
 				for (let i = 0; (i < this.filterForm.value.location.length && !locationBool); i++) {
 					const location = this.filterForm.value.location[i];
@@ -153,7 +153,7 @@ export class ExperiencesComponent implements OnInit {
 			} else {
 				locationBool = true;
 			}
-			
+
 			if (this.filterForm.value.difficultyLevel && this.filterForm.value.difficultyLevel.length > 0) {
 				for (let i = 0; (i < this.filterForm.value.difficultyLevel.length && !levelBool); i++) {
 					const level = this.filterForm.value.difficultyLevel[i];
@@ -164,7 +164,7 @@ export class ExperiencesComponent implements OnInit {
 			} else {
 				levelBool = true;
 			}
-			
+
 			if (this.filterForm.value.rating && this.filterForm.value.rating.length > 0) {
 				console.log(this.filterForm.value.rating);
 				for (let i = 0; (i < this.filterForm.value.rating.length && !ratingBool); i++) {
@@ -176,23 +176,23 @@ export class ExperiencesComponent implements OnInit {
 			} else {
 				ratingBool = true;
 			}
-			
+
 			if (this.selectedRange) {
 				priceBool = (val.price >= this.selectedRange[0] && val.price <= this.selectedRange[1]);
 			} else {
 				priceBool = true;
 			}
-			
+
 			if (this.selectedDurationRange) {
 				durationBool = (val.totalHours >= this.selectedDurationRange[0] && val.totalHours <= this.selectedDurationRange[1]);
 			} else {
 				durationBool = true;
 			}
-			
+
 			return languageBool && locationBool && priceBool && durationBool && levelBool && ratingBool;
 		});
 	}
-	
+
 	fetchData() {
 		this.loading = true;
 		this.fetchTopics().subscribe(
@@ -206,7 +206,7 @@ export class ExperiencesComponent implements OnInit {
 				console.log(err);
 			});
 	}
-	
+
 	fetchTopics(): Observable<Array<any>> {
 		const query = {};
 		return this._topicService.getTopics(query).map(
@@ -221,7 +221,7 @@ export class ExperiencesComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	fetchExperiences(): void {
 		let query;
 		this.selectedTopics = [];
@@ -244,8 +244,8 @@ export class ExperiencesComponent implements OnInit {
 				'where': { or: this.selectedTopics }
 			};
 		}
-		
-		
+
+
 		this._topicService.getTopics(query)
 			.subscribe(
 				(response) => {
@@ -284,7 +284,7 @@ export class ExperiencesComponent implements OnInit {
 					this.experiences = _.uniqBy(experiences, 'id');
 					this.experiences = _.orderBy(this.experiences, ['createdAt'], ['desc']);
 					this.experiencesBackup = _.cloneDeep(this.experiences);
-					
+
 					if (!this.initialized) {
 						console.log(this.experiences);
 						this.setFilterData();
@@ -295,7 +295,7 @@ export class ExperiencesComponent implements OnInit {
 				}
 			);
 	}
-	
+
 	private setFilterData() {
 		this.languageList = [];
 		this.locationList = [];
@@ -303,10 +303,10 @@ export class ExperiencesComponent implements OnInit {
 		this.ratingList = [5, 4, 3, 2, 1, 0];
 		let maxPrice = 0;
 		const minPrice = 0;
-		
+
 		let maxDuration = 0;
 		const minDuration = 0;
-		
+
 		this.experiences.forEach(experience => {
 			if (maxPrice < experience.price) {
 				maxPrice = experience.price;
@@ -314,31 +314,31 @@ export class ExperiencesComponent implements OnInit {
 			if (maxDuration < experience.totalHours) {
 				maxDuration = experience.totalHours;
 			}
-			
+
 			experience.language.forEach(language => {
 				if (!this.languageList.includes(language)) {
 					this.languageList.push(language);
 				}
 			});
-			
+
 			if (!this.locationList.includes(experience.location)) {
 				this.locationList.push(experience.location);
 			}
-			
+
 			if (!this.levelList.includes(experience.difficultyLevel)) {
 				this.levelList.push(experience.difficultyLevel);
 			}
-			
+
 		});
-		
+
 		this.availableDurationRange = [minDuration, maxDuration];
 		this.selectedDurationRange = _.clone(this.availableDurationRange);
-		
+
 		this.availableRange = [minPrice, maxPrice];
 		this.selectedRange = _.clone(this.availableRange);
-		
+
 	}
-	
+
 	openTopicsDialog(): void {
 		const dialogRef = this.dialog.open(SelectTopicsComponent, {
 			width: '250px',
@@ -350,7 +350,7 @@ export class ExperiencesComponent implements OnInit {
 				left: this.topicButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
 			}
 		});
-		
+
 		dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				this.availableTopics = result;
@@ -358,7 +358,7 @@ export class ExperiencesComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public openPriceDialog(): void {
 		const dialogRef = this.dialog.open(SelectPriceComponent, {
 			width: '200px',
@@ -373,7 +373,7 @@ export class ExperiencesComponent implements OnInit {
 				left: this.priceButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
 			}
 		});
-		
+
 		dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				this.selectedRange = result.selectedRange;
@@ -381,7 +381,7 @@ export class ExperiencesComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public openDurationDialog(): void {
 		const dialogRef = this.dialog.open(SelectDurationComponentComponent, {
 			width: '200px',
@@ -403,7 +403,7 @@ export class ExperiencesComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public toggleBookmark(index: number) {
 		if (!(this.experiences[index].bookmarks && this.experiences[index].bookmarks[0] && this.experiences[index].bookmarks[0].peer && this.experiences[index].bookmarks[0].peer[0] && this.experiences[index].bookmarks[0].peer[0].id === this.userId)) {
 			this._collectionService.saveBookmark(this.experiences[index].id, (err, response) => {
@@ -415,10 +415,15 @@ export class ExperiencesComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	public filterClickedTopic(index) {
 		this.availableTopics = _.cloneDeep(this.topicsBackup);
 		this.availableTopics[index]['checked'] = true;
+		this.fetchExperiences();
+	}
+
+	public resetTopics() {
+		this.availableTopics = _.cloneDeep(this.topicsBackup);
 		this.fetchExperiences();
 	}
 }
