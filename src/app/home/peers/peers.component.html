@@ -22,6 +22,9 @@
           </a>
         </div> &ndash;&gt;
       </div>-->
+
+      <app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
+
       <div class="loading-container" [hidden]="!loading">
         <ngx-loading [show]="true"></ngx-loading>
       </div>
@@ -29,8 +32,10 @@
         <div class="peer-recommendation-card" *ngFor="let peer of peers">
           <a [routerLink]="'/profile/'+peer.id">
             <div class="">
-              <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url}}" alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
-              <img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
+              <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url}}"
+                alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
+              <img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="workshpImg"
+                (error)="_collectionService.userImgErrorHandler($event)">
             </div>
             <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}</div>
             <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
