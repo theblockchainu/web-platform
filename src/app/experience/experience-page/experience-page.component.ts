@@ -1000,6 +1000,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				attendies: attendies,
 				experience: this.experienceId
 			},
+			panelClass: 'responsive-dialog',
 			width: '45vw',
 			height: '90vh'
 		});
@@ -1044,6 +1045,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				experienceId: this.experienceId,
 				userType: this.userType
 			},
+			panelClass: 'responsive-dialog',
 			width: '45vw',
 			height: '100vh'
 		});
@@ -1055,6 +1057,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				participants: this.allParticipants,
 				experienceId: this.experienceId
 			},
+			panelClass: 'responsive-dialog',
 			width: '45vw',
 			height: '100vh'
 		});
@@ -1078,6 +1081,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 							collection: this.experience,
 							calendarId: this.calendarId
 						},
+						panelClass: 'responsive-dialog',
 						width: '45vw',
 						height: '100vh'
 					});
@@ -1095,6 +1099,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 							collection: this.experience,
 							calendarId: this.calendarId
 						},
+						panelClass: 'responsive-dialog',
 						width: '45vw',
 						height: '100vh'
 					});
@@ -1113,6 +1118,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 							collection: this.experience,
 							calendarId: this.calendarId
 						},
+						panelClass: 'responsive-dialog',
 						width: '45vw',
 						height: '100vh'
 					});

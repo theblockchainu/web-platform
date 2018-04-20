@@ -239,7 +239,9 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 				userType: this.selectedRoom.belongsToUser ? 'teacher' : 'participant'
 			},
 			width: '45vw',
-			height: '100vh'
+			height: '100vh',
+			panelClass: 'responsive-dialog',
+			
 		});
 	}
 }

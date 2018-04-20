@@ -219,7 +219,8 @@ export class SubmissionViewComponent implements OnInit {
                 collectionId: this.data.collectionId
             },
             width: '45vw',
-            height: '100vh'
+            height: '100vh',
+            panelClass: 'responsive-dialog',
         });
         dialogRef.afterClosed().subscribe(res => {
             if (res) {

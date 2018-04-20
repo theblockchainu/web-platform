@@ -598,6 +598,7 @@ export class EditCalendarDialogComponent implements OnInit {
         const dialogRef = this.dialog.open(ViewConflictDialogComponent, {
             width: '50vw',
             height: '90vh',
+            panelClass: 'responsive-dialog',
             data: {
                 conflicts: this.computedConflict,
                 id: this.collection.id
@@ -627,6 +628,7 @@ export class EditCalendarDialogComponent implements OnInit {
         this.dialog.open(SelectDateDialogComponent, {
             width: '70vw',
             height: '90vh',
+            panelClass: 'responsive-dialog',
             data: { itineraries: this.allItenaries, mode: 'editDelete', participants: this.participants, userType: 'teacher' }
         }).afterClosed()
             .subscribe((data) => {

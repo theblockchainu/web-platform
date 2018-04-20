@@ -47,8 +47,8 @@
           <div class="col-md-8 col-md-offset-2 bottom-section clearfix">
             <div class="pull-right">
               <button mat-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
-              <span matTooltip="Please check Verification Id!" [matTooltipDisabled]="this.peer.controls['verificationIdUrl'].value">
-                <button mat-raised-button color="accent" (click)="continue(2)" [disabled]="!this.peer.controls['verificationIdUrl'].value">Continue</button>
+              <span matTooltip="Please check Verification Id!" [matTooltipDisabled]="peer.controls['verificationIdUrl'].value">
+                <button mat-raised-button color="accent" (click)="continue(2)" [disabled]="!peer.controls['verificationIdUrl'].value">Continue</button>
               </span>
             </div>
           </div>

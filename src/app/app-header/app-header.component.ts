@@ -3,21 +3,21 @@ import { AuthenticationService } from '../_services/authentication/authenticatio
 import { Observable } from 'rxjs/Observable';
 import { ProfileService } from '../_services/profile/profile.service';
 import { FormControl } from '@angular/forms';
-import {environment} from '../../environments/environment';
+import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import {MatDialog, MatSnackBar} from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { DialogsService } from '../_services/dialogs/dialog.service';
 import { AppNotificationDialogComponent } from './dialogs/app-notification-dialog/app-notification-dialog.component';
 import { NotificationService } from '../_services/notification/notification.service';
 import { SearchService } from '../_services/search/search.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
-import {CollectionService} from '../_services/collection/collection.service';
-import {InboxService} from '../_services/inbox/inbox.service';
+import { CollectionService } from '../_services/collection/collection.service';
+import { InboxService } from '../_services/inbox/inbox.service';
 import * as moment from 'moment';
-import {InboxDialogComponent} from '../_services/dialogs/inbox-dialog/inbox-dialog.component';
-import {SocketService} from '../_services/socket/socket.service';
-import {UcWordsPipe} from 'ngx-pipes';
+import { InboxDialogComponent } from '../_services/dialogs/inbox-dialog/inbox-dialog.component';
+import { SocketService } from '../_services/socket/socket.service';
+import { UcWordsPipe } from 'ngx-pipes';
 
 @Component({
 	selector: 'app-header',
@@ -51,27 +51,27 @@ export class AppHeaderComponent implements OnInit {
 	public isSessionApproved = false;
 	public sessionId = '';
 	constructor(public authService: AuthenticationService,
-				private http: HttpClient,
-				private _cookieService: CookieUtilsService,
-				public _profileService: ProfileService,
-				private router: Router,
-				private dialog: MatDialog,
-				private activatedRoute: ActivatedRoute,
-				private _notificationService: NotificationService,
-				public _collectionService: CollectionService,
-				public _searchService: SearchService,
-				public _inboxService: InboxService,
-				public ucwords: UcWordsPipe,
-				public _socketService: SocketService,
-				public snackBar: MatSnackBar,
-				private dialogsService: DialogsService) {
+		private http: HttpClient,
+		private _cookieService: CookieUtilsService,
+		public _profileService: ProfileService,
+		private router: Router,
+		private dialog: MatDialog,
+		private activatedRoute: ActivatedRoute,
+		private _notificationService: NotificationService,
+		public _collectionService: CollectionService,
+		public _searchService: SearchService,
+		public _inboxService: InboxService,
+		public ucwords: UcWordsPipe,
+		public _socketService: SocketService,
+		public snackBar: MatSnackBar,
+		private dialogsService: DialogsService) {
 		this.envVariable = environment;
 		this.profile = {};
 		this.isLoggedIn = authService.isLoginSubject.asObservable();
 		authService.isLoggedIn().subscribe((res) => {
 			this.loggedIn = res;
 		});
-		
+
 		authService.getLoggedInUser.subscribe((userId) => {
 			if (userId !== 0) {
 				this.userId = userId;
@@ -86,7 +86,7 @@ export class AppHeaderComponent implements OnInit {
 		});
 		this.userId = this.userIdObservable || this._cookieService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this._profileService.profileSubject.subscribe(res => {
 			this.getProfile();
@@ -105,7 +105,7 @@ export class AppHeaderComponent implements OnInit {
 			});
 		});
 	}
-	
+
 	getProfile() {
 		if (this.loggedIn) {
 			this._profileService.getCompactProfile(this.userId).subscribe(profile => {
@@ -122,17 +122,17 @@ export class AppHeaderComponent implements OnInit {
 			return null;
 		}
 	}
-	
+
 	public openSignup() {
 		this.dialogsService.openSignup().subscribe();
 	}
-	
-	
+
+
 	public openLogin() {
 		console.log('openLogin');
 		this.dialogsService.openLogin().subscribe();
 	}
-	
+
 	public goToHome() {
 		if (this.loggedIn) {
 			this.router.navigate(['home', 'homefeed']);
@@ -140,7 +140,7 @@ export class AppHeaderComponent implements OnInit {
 			this.router.navigate(['/']);
 		}
 	}
-	
+
 	public getNotifications() {
 		this._notificationService.getNotifications(this.userId, '{}', (err, result) => {
 			if (err) {
@@ -159,7 +159,7 @@ export class AppHeaderComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public getMessages() {
 		if (this.userId) {
 			this._inboxService.getRoomData()
@@ -188,7 +188,7 @@ export class AppHeaderComponent implements OnInit {
 				});
 		}
 	}
-	
+
 	public sortFilterJoinedRooms(response) {
 		this.joinedRooms = response;
 		this.joinedRooms.sort((a, b) => {
@@ -203,11 +203,12 @@ export class AppHeaderComponent implements OnInit {
 		});
 		this.tempJoinedRooms = this.joinedRooms;
 	}
-	
+
 	public openNotificationsDialog(): void {
 		const dialogRef = this.dialog.open(AppNotificationDialogComponent, {
 			width: '350px',
 			height: '70vh',
+			panelClass: ['responsive-dialog', 'responsive-fixed-position'],
 			data: {
 			},
 			disableClose: false,
@@ -216,7 +217,7 @@ export class AppHeaderComponent implements OnInit {
 				left: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().left - 220 + 'px'
 			}
 		});
-		
+
 		dialogRef.afterClosed().subscribe(result => {
 			if (this.makeOldNotification.length > 0) {
 				this.makeOldNotification.forEach(notifItem => {
@@ -230,11 +231,12 @@ export class AppHeaderComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public openMessagesDialog(): void {
 		const dialogRef = this.dialog.open(InboxDialogComponent, {
 			width: '350px',
 			height: '70vh',
+			panelClass: ['responsive-dialog', 'responsive-fixed-position'],
 			data: {
 			},
 			disableClose: false,
@@ -243,16 +245,16 @@ export class AppHeaderComponent implements OnInit {
 				left: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().left - 220 + 'px'
 			}
 		});
-		
+
 		dialogRef.afterClosed().subscribe(result => {
 			this.getMessages();
 		});
 	}
-	
+
 	public checkIfSessionApproved() {
 		const query = {
 			where: {
-				and: [{status: 'active'}, {type: 'session'}]
+				and: [{ status: 'active' }, { type: 'session' }]
 			}
 		};
 		this._collectionService.getOwnedCollections(this.userId, JSON.stringify(query), (err, result) => {
@@ -264,7 +266,7 @@ export class AppHeaderComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public onSearchOptionClicked(option) {
 		this.searchInputBar.value = '';
 		this._searchService.onSearchOptionClicked(option);
