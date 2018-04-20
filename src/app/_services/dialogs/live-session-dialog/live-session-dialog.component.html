@@ -12,14 +12,14 @@
         </div>
         <div class="session_actions">
           <button mat-fab (click)="toggleAudio()">
-            <mat-icon *ngIf="this.localAudioTrack.isEnabled">mic</mat-icon>
-            <mat-icon *ngIf="!this.localAudioTrack.isEnabled">mic_off</mat-icon>
+            <mat-icon *ngIf="localAudioTrack.isEnabled">mic</mat-icon>
+            <mat-icon *ngIf="!localAudioTrack.isEnabled">mic_off</mat-icon>
           </button>
         </div>
         <div class="session_actions">
           <button mat-fab (click)="toggleVideo()">
-            <mat-icon *ngIf="this.localVideoTrack.isEnabled">videocam</mat-icon>
-            <mat-icon *ngIf="!this.localVideoTrack.isEnabled">videocam_off</mat-icon>
+            <mat-icon *ngIf="localVideoTrack.isEnabled">videocam</mat-icon>
+            <mat-icon *ngIf="!localVideoTrack.isEnabled">videocam_off</mat-icon>
           </button>
         </div>
       </div>

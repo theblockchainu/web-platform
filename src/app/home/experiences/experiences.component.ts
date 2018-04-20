@@ -344,6 +344,7 @@ export class ExperiencesComponent implements OnInit {
 			width: '250px',
 			height: '300px',
 			data: this.availableTopics,
+			panelClass: ['responsive-dialog', 'responsive-fixed-position'],
 			disableClose: true,
 			position: {
 				top: this.topicButton._elementRef.nativeElement.getBoundingClientRect().top + 'px',
@@ -363,6 +364,7 @@ export class ExperiencesComponent implements OnInit {
 		const dialogRef = this.dialog.open(SelectPriceComponent, {
 			width: '200px',
 			height: '190px',
+			panelClass: ['responsive-dialog', 'responsive-fixed-position'],
 			data: {
 				availableRange: this.availableRange,
 				selectedRange: this.selectedRange
@@ -385,7 +387,8 @@ export class ExperiencesComponent implements OnInit {
 	public openDurationDialog(): void {
 		const dialogRef = this.dialog.open(SelectDurationComponentComponent, {
 			width: '200px',
-			height: '190px',
+			height: '190px', 
+			panelClass: ['responsive-dialog', 'responsive-fixed-position'],
 			data: {
 				availableRange: this.availableDurationRange,
 				selectedRange: this.selectedDurationRange

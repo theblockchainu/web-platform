@@ -34,12 +34,6 @@
             margin-left: 20px;
         }
 
-        .rightSpan {
-            float: right;
-            padding: 5px 10px 0px 10px;
-            width: 30%;
-            text-align: right;
-        }
 
         .mat-button,
         .mat-fab,
@@ -89,25 +83,11 @@
         }
 
         .signup-box {
-            background-color: #fff;
-            padding: 60px 50px;
-            width: 415px;
-            height: 373px;
             border: 1px solid lightgrey;
-
-            margin-bottom: 70px;
         }
 
-        .signup-box2 {
-            padding: 30px 30px;
-            width: 630px;
-            height: 495px;
-            background-color: #fff;
+        .signupEmail {
             border: 1px solid lightgrey;
-
-            margin-top: -102px;
-            margin-left: -158px;
-            margin-bottom: 70px;
         }
 
         .margin-top-40 {
@@ -118,11 +98,6 @@
             font-weight: normal;
             color: #666 !important;
             font-size: 14px;
-        }
-
-        .login-section {
-            margin: -3% 0%;
-            height: 83vh;
         }
 
         .form-control {
@@ -149,19 +124,13 @@
             outline-color: transparent;
         }
 
-        .input-group {
-            width: 100%;
-        }
-
         .form-control[readonly] {
             background-color: inherit!important;
         }
 
         .btn {
-            height: 45px;
-            width: 208px;
-            margin-left: 30%;
-            margin-top: 14px;
+            height: 80%;
+            width: 80%;
             background-color: #ff6d71 !important;
             border-radius: 3px;
         }
@@ -228,15 +197,15 @@
             color: #666;
             background-color: #fff;
             border: 1px solid #d3d3d3;
-            height: 45px;
-            width: 299px;
+            height: min-content;
+            width: 80%;
         }
 
         .btn-email {
             background-color: #ff6d71;
             color: #fff!important;
-            height: 45px;
-            width: 299px;
+            height: min-content;
+            width: 80%;
         }
 
         .btn-ggl:hover i {
@@ -341,25 +310,6 @@
             color: #999;
         }
 
-        @media only screen and (min-width: 600px) {
-            .container {
-                width: 600px;
-                padding-right: 10px;
-                padding-left: 10px;
-            }
-        }
-
-        .col-md-offset-3,
-        .col-md-6 {
-            margin-left: 15%;
-            margin-right: 10%;
-        }
-
-        .col-sm-6 {
-            margin-left: 0%;
-            width: 50%;
-            padding: 0;
-        }
 
         .p-1 {
             color: #999 !important;
@@ -387,21 +337,11 @@
             box-sizing: border-box;
         }
 
-        @media only screen and (min-width: 600px) {
-            body .container {
-                width: 600px;
-                margin: 30px auto 0;
-                display: block;
-                background: #FFF;
-                padding: 8px 50px 50px;
-            }
-        }
-
         input {
             font-size: 16px;
             padding: 8px 5px 10px 2px;
             display: block;
-            width: 568px;
+            width: 100%;
             border: none;
             border-bottom: 1px solid #d3d3d3;
             margin-bottom: 19px;
@@ -421,7 +361,6 @@
             font-weight: normal;
             position: absolute;
             pointer-events: none;
-            left: 5px;
             top: 10px;
             bottom: 10px;
             transition: 0.2s ease all;
@@ -519,21 +458,6 @@
             }
         }
 
-        header {
-            padding: 3.9em 1em;
-            color: white;
-            background-color: #fff;
-            clear: left;
-            text-align: center;
-        }
-
-        footer {
-            padding: 0em;
-            background-color: #fff;
-            clear: left;
-            text-align: center;
-            /* margin-left:9%; */
-        }
 
         .btn-login {
             float: right;
@@ -549,7 +473,6 @@
 
         .logo {
             width: 39px;
-            float: left;
             padding: 3px;
         }
 
@@ -558,20 +481,8 @@
             background: #dbdbdb;
         }
 
-        .fr {
-            height: 1px;
-            border: 0;
-            box-shadow: inset 0 1px 1px 0.001px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            margin-top: 8%;
-        }
-
         .footer-btn {
             color: #999;
-        }
-
-        .col-sm-2 {
-            padding-top: 35px;
         }
 
         .header-btn {
@@ -582,71 +493,17 @@
             color: #999 !important;
         }
 
-        .col-md-1 {
-            margin-top: 1%;
-            float: right;
-            text-align: right;
-            padding-right: 0px;
-            margin-right: 3%;
-        }
-
         .align {
             padding-right: 21px;
         }
 
-        .input-box {
-            width: 250px;
-        }
 
-        @media only screen and (max-width: 600px) {
-            .signup-box {
-                background-color: #fff;
-                padding: 6vh 5vw;
-                width: 83vw;
-                height: 373px;
-                border: 1px solid lightgrey;
-                margin-bottom: 70px;
-                position: relative;
-                left: 5vw;
-            }
-
-            .rightSpan {
-                float: right;
-                padding: 0px;
-                width: 60%;
-                text-align: right;
-            }
-
-            .signup-box2 {
-                padding: 3vh 3vw;
-                width: 98vw;
-                height: 72vh;
-                background-color: #fff;
-                border: 1px solid lightgrey;
-                margin-top: -13vh;
-                margin-left: -13vw;
-            }
-
-            .input-box {
-                width: 90vw;
-            }
-
-            .input-group input {
-                width: 90vw;
-            }
-
-            .form-group .btn {
-                margin-left: 22%;
-            }
-
-            .fr {
-                height: 6vh;
-            }
-
-            .btn-email {
-                height: 6vh;
-                width: 72vw;
-            }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
         }
     </style>
 
@@ -730,11 +587,14 @@
 
         function signupEmail() {
             $(".signupEmail").removeClass("hide");
-            $(".btnSignupEmail").addClass("hide");
-            $(".btn-social").addClass("hide");
-            $(".btn-hide").addClass("hide");
-
+            $(".signup-box").addClass("hide");
         }
+
+        function back() {
+            $(".signupEmail").addClass("hide");
+            $(".signup-box").removeClass("hide");
+        }
+
         function signup(cFuntion) {
             // $('#signupForm').submit();
             var formElement = document.querySelector("form");
@@ -782,191 +642,193 @@
 </head>
 
 <body>
+    <div class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="logo" onclick="goToHome()">
+                        <img style="width: 150px" src="assets/images/images_landing/Pb_logo.png" alt="logo">
+                    </span>
+                    <span class="pull-right">
+                        <!--<button class="headerButtons mat-button" onclick="goToPhilosophy()" *ngIf="!(isLoggedIn | async)">
+                                            Philosophy
+                                        </button>-->
+                        <!-- <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
+                                        Journey
+                                    </button>
+                                    <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
+                                    About
+                                    </button>-->
+                        <!--<button class="headerButtons mat-button" onclick="goToWhitePaper()" *ngIf="!(isLoggedIn | async)">
+                                            White Paper
+                                        </button>-->
 
-    <div class="main-content">
-        <div class="login-section" id="content">
-            <header>
-                <span class="logo" onclick="goToHome()">
-                    <img style="width: 150px" src="assets/images/images_landing/Pb_logo.png" alt="logo">
-                </span>
-                <span class="example-spacer"></span>
-                <span class="rightSpan">
-                    <!--<button class="headerButtons mat-button" onclick="goToPhilosophy()" *ngIf="!(isLoggedIn | async)">
-                        Philosophy
-                    </button>-->
-                    <!-- <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
-                    Journey
-                </button>
-                <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
-                About
-                </button>-->
-                    <!--<button class="headerButtons mat-button" onclick="goToWhitePaper()" *ngIf="!(isLoggedIn | async)">
-                        White Paper
-                    </button>-->
+                        <a class="headerButtons mat-button" href="/signup.html" *ngIf="!(isLoggedIn | async)">
+                            Sign Up
+                        </a>
+                        <!-- trying dialog-->
+                        <button class="headerButtons mat-button" onclick="goToLogin()" *ngIf="!(isLoggedIn | async)">
+                            Log In
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
 
-                    <a class="headerButtons mat-button" href="/signup.html" *ngIf="!(isLoggedIn | async)">
-                        Sign Up
-                    </a>
-
-                    <!-- trying dialog-->
-                    <button class="headerButtons mat-button" onclick="goToLogin()" *ngIf="!(isLoggedIn | async)">
-                        Log In
-                    </button>
-                </span>
-            </header>
-            <div class="hr"></div>
-            <div class="container">
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4 col-xs-12 signup-box">
+                <div class="row margin-bottom-20">
+                </div>
                 <div class="row">
-                    <div class="col-md-12 margin-top-40">
-                        <div class="signup-box drop-shadow">
-
-                            <form id="signupForm" name="form" method="POST" onsubmit="signup(this); return false;">
-
-                                <div class="margin-bottom-20">
-                                    <a class="btn-social btn-fb pi-margin-bottom-20" href="https://localhost:3000/auth/facebook?returnTo=signup-social">
-                                        <i class="fa fa-facebook circle-icon"></i>
-                                        <span style="font-size:16px">Continue with Facebook</span>
-                                    </a>
-                                </div>
-                                <div class="margin-bottom-20">
-                                    <a class="btn-social btn-ggl pi-margin-bottom-20" href="https://localhost:3000/auth/google?returnTo=signup-social">
-                                        <i class="fa fa-google circle-icon"></i>
-                                        <span style="font-size:16px">Continue with Google</span>
-                                    </a>
-                                </div>
-                                <div class="btn-hide position-relative margin-bottom-20 text-center">
-                                    <div class="or-seperator-vertical"></div>
-                                    <span class="round-or-text or-text-vertical">or</span>
-                                </div>
-                                <div class="margin-bottom-20 btnSignupEmail">
-                                    <a class="btn-social btn-email pi-margin-bottom-20" style="font-size:16px;" href="javascript:;" onclick="signupEmail()">
-                                        Continue with email</a>
-                                </div>
-                                <div class="small-font btn-hide text-center">Have an account already?
-                                    <a class="btn-link link margin-top-10" style="cursor: pointer;" onclick="goToLogin()" style="font-size:14px;text-decoration: none;">Log in</a>
-                                </div>
-
-
-                                <div class="signupEmail hide signup-box2">
-                                    <div class="text-center">Sign up with
-                                        <a href="https://localhost:3000/auth/facebook?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Facebook</a> or
-                                        <a href="https://localhost:3000/auth/google?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">
-                                            Google</a>
-                                    </div>
-
-
-                                    <div class="position-relative margin-bottom-20 text-center">
-                                        <div class="or-seperator-vertical"></div>
-                                        <span class="round-or-text or-text-vertical">or</span>
-                                    </div>
-
-                                    <div class="group">
-                                        <div class="row col-sm-6">
-                                            <div class="input-group input-group-first-name">
-                                                <input type="text" name="first_name" required class="input-box">
-                                                <span class="highlight"></span>
-                                                <span class="bar"></span>
-                                                <label style="color:#999 !important;">First Name</label>
-
-                                            </div>
-                                        </div>
-                                        <div class="row col-sm-6">
-                                            <div class="input-group input-group-last-name">
-                                                <input type="text" name="last_name" required class="input-box">
-                                                <span class="highlight"></span>
-                                                <span class="bar"></span>
-                                                <label style="color:#999 !important;">Last Name</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="group">
-                                        <div class="input-group input-group-email">
-                                            <input type="text" name="email" id="email" required>
-                                            <span class="highlight"></span>
-                                            <span class="bar"></span>
-                                            <label style="color:#999 !important;">Email</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="group">
-                                        <div class="input-group input-group-password">
-                                            <input type="password" name="password" required>
-                                            <span class="highlight"></span>
-                                            <span class="bar"></span>
-                                            <label style="color:#999 !important;">Password</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="margin-bottom-20">
-                                        <p class="p-1">Birthday</p>
-                                        <!--<p class="fs-13">To sign up, you must be 18 or older. Other people won't see your birthday.</p>-->
-
-                                        <div class="row">
-                                            <div class="col-xs-4" style="color:#999 !important;">
-                                                <select class="form-control birthDetails" name="dobMonth" id="dobMonth">
-                                                    <option value="" selected style="color:#999 !important;">Month</option>
-                                                    <option value="01">January</option>
-                                                    <option value="02">February</option>
-                                                    <option value="03">March</option>
-                                                    <option value="04">April</option>
-                                                    <option value="05">May</option>
-                                                    <option value="06">June</option>
-                                                    <option value="07">July</option>
-                                                    <option value="08">August</option>
-                                                    <option value="09">September</option>
-                                                    <option value="10">October</option>
-                                                    <option value="11">November</option>
-                                                    <option value="12">December</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-xs-4" style="color:#999 !important;">
-                                                <select class="form-control birthDetails" name="dobDay" id="dobDay">
-                                                    <option value="" selected>Day</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-xs-4" style="color:#999 !important;">
-                                                <select class="form-control birthDetails" name="dobYear" id="dobYear">
-                                                    <option value="" selected>Year</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary" type="submit">Continue</button>
-                                    </div>
-                                    <div class="align text-center small-font">Have an account already?
-                                        <a href="/login" class="btn-link link margin-top-10" onclick="openLogin()" style="font-size:14px;text-decoration: none;">Log in</a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="col-xs-10 col-xs-offset-2 margin-bottom-20">
+                        <a class="btn-social btn-fb pi-margin-bottom-20" href="https://localhost:3000/auth/facebook?returnTo=signup-social">
+                            <i class="fa fa-facebook circle-icon"></i>
+                            <span style="font-size:16px;margin-left: 8%;">Continue with Facebook</span>
+                        </a>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-xs-10 col-xs-offset-2 margin-bottom-20">
+                        <a class="btn-social btn-ggl pi-margin-bottom-20" href="https://localhost:3000/auth/google?returnTo=signup-social">
+                            <i class="fa fa-google circle-icon"></i>
+                            <span style="font-size:16px;margin-left: 8%;">Continue with Google</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col-xs-10 col-xs-offset-1 btn-hide position-relative margin-bottom-20 text-center">
+                        <div class="or-seperator-vertical"></div>
+                        <span class="round-or-text or-text-vertical">or</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col-xs-10 col-xs-offset-2 margin-bottom-20 btnSignupEmail">
+                        <a class="btn-social btn-email pi-margin-bottom-20" style="font-size:16px;" href="javascript:;" onclick="signupEmail()">
+                            Continue with email</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col-xs-10 col-xs-offset-1  margin-bottom-20 small-font btn-hide text-center">Have an account already?
+                        <a class="btn-link link margin-top-10" style="cursor: pointer;" onclick="goToLogin()" style="font-size:14px;text-decoration: none;">Log in</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-sm-offset-3 col-xs-12 signupEmail hide">
+                <form id="signupForm" name="form" method="POST" onsubmit="signup(this); return false;">
+                    <div class="margin-bottom-20"> </div>
+                    <div class="text-center">Sign up with
+                        <a href="https://localhost:3000/auth/facebook?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Facebook</a> or
+                        <a href="https://localhost:3000/auth/google?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">
+                            Google</a>
+                    </div>
+                    <div class="position-relative margin-bottom-20 text-center">
+                        <div class="or-seperator-vertical"></div>
+                        <span class="round-or-text or-text-vertical">or</span>
+                    </div>
 
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-12">
+                            <input type="text" name="first_name" required class="input-box">
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label style="color:#999 !important;">First Name</label>
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <input type="text" name="last_name" required class="input-box">
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label style="color:#999 !important;">Last Name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <input type="text" name="email" id="email" required>
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label style="color:#999 !important;">Email</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <input type="password" name="password" required>
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label style="color:#999 !important;">Password</label>
+                        </div>
+                    </div>
+
+                    <div class="row margin-bottom-20">
+                        <p class="p-1">Birthday</p>
+
+                        <div class="col-xs-4" style="color:#999 !important;">
+                            <select class="form-control birthDetails" name="dobMonth" id="dobMonth">
+                                <option value="" selected style="color:#999 !important;">Month</option>
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4" style="color:#999 !important;">
+                            <select class="form-control birthDetails" name="dobDay" id="dobDay">
+                                <option value="" selected>Day</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4" style="color:#999 !important;">
+                            <select class="form-control birthDetails" name="dobYear" id="dobYear">
+                                <option value="" selected>Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row margin-bottom-20">
+                        <div class="col-xs-5 col-xs-offset-1">
+                            <button class="btn btn-primary" type="submit">Continue</button>
+                        </div>
+                        <div class="col-xs-5">
+                            <button class="btn btn-primary" type="button" onclick="back()">Back</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="align text-center small-font">Have an account already?
+                    <a href="/login" class="btn-link link margin-top-10" onclick="openLogin()" style="font-size:14px;text-decoration: none;">Log in</a>
+                </div>
             </div>
         </div>
     </div>
-    <div class="fr"></div>
-
-    <footer *ngIf="!(isLoggedIn | async)">
-        <div class="layout-row footer col-md-offset-2 col-md-8 margin-bottom-20" layout="row" color="white">
-            <div layout="row" class="col-sm-12" style="cursor: pointer;">
-                <a class="footer-btn footerButtons col-sm-2" mat-button href="/about-us"> About Us </a>
-                <a class="footer-btn footerButtons col-sm-2" mat-button href="/contact">
-                    Contact Us
-                </a>
-                <span class="center">
-                    <a onclick="goToHome()" class="brand col-sm-2" aria-label="Peerbuds Homepage" style="margin-top: -1%;">
-                        <img style="width: 100px" src="assets/images/images_landing/Pb_logo.png" alt="logo">
-                    </a>
-                </span>
-                <a class="footer-btn footerButtons col-sm-2" mat-button href="/trust">
-                    Trust & Safety
-                </a>
-                <a class="footer-btn footerButtons col-sm-2" mat-button href="/privacy-policy">
-                    Privacy Policy
-                </a>
-
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <hr>
+                <div class="col-md-offset-2 col-md-8 margin-bottom-20">
+                    <div layout="row" class="col-sm-12" style="cursor: pointer;">
+                        <a class="footer-btn footerButtons col-sm-2" mat-button href="/about-us"> About Us </a>
+                        <a class="footer-btn footerButtons col-sm-2" mat-button href="/contact">
+                            Contact Us
+                        </a>
+                        <span class="center">
+                            <a onclick="goToHome()" class="brand col-sm-2" aria-label="Peerbuds Homepage" style="margin-top: -1%;">
+                                <img style="width: 100px" src="assets/images/images_landing/Pb_logo.png" alt="logo">
+                            </a>
+                        </span>
+                        <a class="footer-btn footerButtons col-sm-2" mat-button href="/trust">
+                            Trust & Safety
+                        </a>
+                        <a class="footer-btn footerButtons col-sm-2" mat-button href="/privacy-policy">
+                            Privacy Policy
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>

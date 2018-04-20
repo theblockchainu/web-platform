@@ -266,13 +266,13 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
     let dialogRef: any;
     switch (contentType) {
       case 'in-person':
-        dialogRef = this.dialog.open(ExperienceContentInpersonComponent, { data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit }, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh' });
+      dialogRef = this.dialog.open(ExperienceContentInpersonComponent, { panelClass: 'responsive-dialog',data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit }, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh' });
         break;
       case 'project':
-        dialogRef = this.dialog.open(ExperienceContentProjectComponent, { data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit, collectionStartDate: this.collectionStartDate, collectionEndDate: this.collectionEndDate }, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh' });
+        dialogRef = this.dialog.open(ExperienceContentProjectComponent, { panelClass: 'responsive-dialog',data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit, collectionStartDate: this.collectionStartDate, collectionEndDate: this.collectionEndDate }, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh' });
         break;
       case 'video':
-        dialogRef = this.dialog.open(ExperienceContentVideoComponent, { data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit }, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh' });
+        dialogRef = this.dialog.open(ExperienceContentVideoComponent, { panelClass: 'responsive-dialog',data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit }, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh' });
         break;
       default:
         break;

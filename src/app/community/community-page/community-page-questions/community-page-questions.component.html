@@ -7,15 +7,15 @@
 </div>
 <div *ngIf="!loadingUser">
 	<div class="row margin-top-20">
-		<div class="col-md-1">
+		<div class="col-xs-1">
 			<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
 		</div>
-		<div class="col-md-8">
+		<div class="col-xs-8">
 			<div class="mat-title" style="margin-bottom: 0px; line-height: 50px;">
 				What is your question?
 			</div>
 		</div>
-		<div class="col-md-3" style="text-align: right">
+		<div class="col-xs-3" style="text-align: right">
 			<mat-form-field class="pb-block" [floatLabel]="'always'">
 				<mat-select [(value)]="questionsFilter" placeholder="Sort">
 					<mat-option value="descending">Descending</mat-option>
@@ -119,14 +119,14 @@
 							</form>
 						</div>
 						<div class="row margin-top-20 questionCommentsBox" *ngFor="let comment of question.comments">
-							<div class="col-md-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
+							<div class="col-xs-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
 								<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
 								<mat-icon *ngIf="hasUpvoted(comment.upvotes)">arrow_drop_up</mat-icon>
 								<div>
 									{{(comment.upvotes) ? comment.upvotes.length : '0'}}
 								</div>
 							</div>
-							<div class="col-md-11">
+							<div class="col-xs-11">
 								<button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuComment" style="float: right; margin-right: 15px; margin-top: 15px;">
 									<mat-icon style="color: #cccccc">more_vert</mat-icon>
 								</button>
@@ -282,14 +282,14 @@
 								</div>
 								<!--LIST OF COMMENTS FOR ANSWER-->
 								<div class="row margin-top-20 commentsBox" *ngFor="let comment of answer.comments">
-									<div class="col-md-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
+									<div class="col-xs-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
 										<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
 										<mat-icon *ngIf="hasUpvoted(comment.upvotes)">arrow_drop_up</mat-icon>
 										<div>
 											{{(comment.upvotes) ? comment.upvotes.length : '0'}}
 										</div>
 									</div>
-									<div class="col-md-11">
+									<div class="col-xs-11">
 										<button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuComment" style="float: right; margin-right: 15px; margin-top: 15px;">
 											<mat-icon style="color: #cccccc">more_vert</mat-icon>
 										</button>

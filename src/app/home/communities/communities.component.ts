@@ -182,7 +182,8 @@ export class CommunitiesComponent implements OnInit {
     openTopicsDialog(): void {
         const dialogRef = this.dialog.open(SelectTopicsComponent, {
             width: '250px',
-            height: '300px',
+            height: '300px', 
+            panelClass: ['responsive-dialog', 'responsive-fixed-position'],
             data: this.availableTopics,
             disableClose: true,
             position: {

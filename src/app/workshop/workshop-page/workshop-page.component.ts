@@ -35,7 +35,7 @@ import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialo
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { TopicService } from '../../_services/topic/topic.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 declare var FB: any;
 
 const colors: any = {
@@ -195,7 +195,7 @@ export class WorkshopPageComponent implements OnInit {
     private snackBar: MatSnackBar,
     // private location: Location
   ) {
-      this.envVariable = environment;
+    this.envVariable = environment;
     this.activatedRoute.params.subscribe(params => {
       if (this.initialised && (this.workshopId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
         location.reload();
@@ -816,7 +816,8 @@ export class WorkshopPageComponent implements OnInit {
         workshopId: this.workshopId
       },
       width: '45vw',
-      height: '100vh'
+      height: '100vh',
+      panelClass: 'responsive-dialog',
     });
   }
 
@@ -827,7 +828,8 @@ export class WorkshopPageComponent implements OnInit {
         workshopId: this.workshopId
       },
       width: '45vw',
-      height: '100vh'
+      height: '100vh',
+      panelClass: 'responsive-dialog'
     });
   }
 
@@ -850,7 +852,8 @@ export class WorkshopPageComponent implements OnInit {
               calendarId: this.calendarId
             },
             width: '45vw',
-            height: '100vh'
+            height: '100vh',
+            panelClass: 'responsive-dialog',
           });
           break;
         }
@@ -867,7 +870,8 @@ export class WorkshopPageComponent implements OnInit {
               calendarId: this.calendarId
             },
             width: '45vw',
-            height: '100vh'
+            height: '100vh',
+            panelClass: 'responsive-dialog',
           });
           break;
         }
@@ -885,7 +889,8 @@ export class WorkshopPageComponent implements OnInit {
               calendarId: this.calendarId
             },
             width: '45vw',
-            height: '100vh'
+            height: '100vh',
+            panelClass: 'responsive-dialog',
           });
           break;
         }
