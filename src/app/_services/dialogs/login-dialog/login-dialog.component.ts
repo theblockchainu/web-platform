@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatDialogConfig } from '@angular/material';
 import { RequestPasswordDialogComponent } from '../forgot-pwd-dialog/forgot-pwd-dialog.component';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 @Component({
 	selector: 'app-login-dialog',  // <login></login>
@@ -34,7 +34,7 @@ export class LoginComponentDialog implements OnInit {
 	public showError = false;
 	public envVariable;
 	public loadingHttp = false;
-	
+
 	constructor(
 		private route: ActivatedRoute,
 		public router: Router,
@@ -48,7 +48,7 @@ export class LoginComponentDialog implements OnInit {
 		this.envVariable = environment;
 		this.isLoggedIn = this.authenticationService.isLoggedIn();
 	}
-	
+
 	public ngOnInit() {
 		// reset login status
 		// get return url from route parameters or default to '/'
@@ -61,11 +61,11 @@ export class LoginComponentDialog implements OnInit {
 			email: ['', Validators.email] /* putting reg ex as well */
 		});
 	}
-	
+
 	public toggle() {
 		this.isChecked = !(this.isChecked);
 	}
-	
+
 	public login() {
 		this.email = this.loginForm.controls['email'].value;
 		this.passWord = this.loginForm.controls['password'].value;
@@ -83,7 +83,9 @@ export class LoginComponentDialog implements OnInit {
 				});
 	}
 	public openForgotPwd() {
-		const dialogRef = this.dialog.open(RequestPasswordDialogComponent, {});
+		const dialogRef = this.dialog.open(RequestPasswordDialogComponent, {
+			panelClass: 'responsive-dialog'
+		});
 		return dialogRef.afterClosed();
 	}
 	onNoClick(): void {

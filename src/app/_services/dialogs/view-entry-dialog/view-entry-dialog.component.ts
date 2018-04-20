@@ -46,6 +46,7 @@ export class ViewEntryDialogComponent implements OnInit {
                         peerHasSubmission: this.data.peerHasSubmission,
                         collectionId: this.data.collectionId
                     },
+                    panelClass: 'responsive-dialog',
                     width: '45vw',
                     height: '100vh'
                 });

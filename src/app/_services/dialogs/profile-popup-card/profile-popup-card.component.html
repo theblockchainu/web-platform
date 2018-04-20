@@ -30,18 +30,18 @@
         </div>
       </div>
       <hr style="margin-top: 10px; margin-bottom: 10px;">
-      <div class="row" *ngIf="this.ownedCollections && this.ownedCollections.length>0">
+      <div class="row" *ngIf="ownedCollections && ownedCollections.length>0">
         <div class="col-md-12">
-          <b>Workshops & Experiences ({{this.ownedCollections.length}})</b>
+          <b>Workshops & Experiences ({{ownedCollections.length}})</b>
         </div>
       </div>
-      <div class="row" *ngIf="this.ownedCollections.length === 0">
+      <div class="row" *ngIf="ownedCollections.length === 0">
         <div class="col-md-12">
           <b>{{data.profiles[0].first_name | ucwords}} hasn't started teaching yet</b>
         </div>
       </div>
-      <div class="row" *ngIf="this.ownedCollections && this.ownedCollections.length>0" style="margin-top: 5px;">
-        <div style="padding-left: 10px; padding-right: 10px;" *ngFor="let workshop of this.ownedCollections; let i=index">
+      <div class="row" *ngIf="ownedCollections && ownedCollections.length>0" style="margin-top: 5px;">
+        <div style="padding-left: 10px; padding-right: 10px;" *ngFor="let workshop of ownedCollections; let i=index">
           <div class="col-md-4" style="padding-left: 5px; padding-right: 5px;" *ngIf="i<3">
             <img style="width: 100%; height: auto; max-height: 80px;" src="{{envVariable.apiUrl+ workshop.imageUrls[0]}}" (error)="_collectionService.imgErrorHandler($event)">
           </div>

@@ -1802,7 +1802,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 		display: block !important;
 	}
 	.main-content {
-		padding-top: 150px !important;
+		padding-top: 190px !important;
 	}
 
 	.show-small .headerButtons {
@@ -1813,4 +1813,18 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
         display: inline-block;
     }
 
+    .center-small{
+        text-align: center;
+    }
+
+    .responsive-dialog{
+        max-width: 90% !important;
+        width: 100% !important;
+        max-height: 90% !important;
+    }
+
+    .responsive-fixed-position{
+        margin-left: 5vw !important;
+        margin-top: 10vw !important;
+    }
 }

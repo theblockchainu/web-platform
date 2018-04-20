@@ -26,7 +26,8 @@ export class ViewParticipantsComponent implements OnInit {
     console.log(participant);
     const dialogRef = this.dialog.open(MessageParticipantComponent, {
       data: participant,
-      width: '600px'
+      width: '600px',
+      panelClass: 'responsive-dialog'
     });
   }
 

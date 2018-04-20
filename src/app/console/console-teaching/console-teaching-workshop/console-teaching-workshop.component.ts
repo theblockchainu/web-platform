@@ -191,7 +191,9 @@ export class ConsoleTeachingWorkshopComponent implements OnInit {
     cohortData['status'] = status;
     const dialogRef = this.dialog.open(CohortDetailDialogComponent, {
       width: '45vw',
-      data: cohortData
+      data: cohortData,
+			panelClass: 'responsive-dialog',
+      
     });
   }
 

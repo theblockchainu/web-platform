@@ -8,7 +8,7 @@ import { WorkshopContentOnlineComponent } from '../workshop-content-online/works
 import { WorkshopContentProjectComponent } from '../workshop-content-project/workshop-content-project.component';
 import { WorkshopContentVideoComponent } from '../workshop-content-video/workshop-content-video.component';
 import { CollectionService } from '../../_services/collection/collection.service';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 declare var moment: any;
 
@@ -50,7 +50,7 @@ export class ContentViewComponent implements OnInit {
     private dialog: MatDialog,
     public _collectionService: CollectionService
   ) {
-      this.envVariable = environment;
+    this.envVariable = environment;
     this.countryPickerService.getCountries()
       .subscribe((countries) => this.countries = countries);
   }
@@ -245,6 +245,7 @@ export class ContentViewComponent implements OnInit {
       case 'online':
         dialogRef = this.dialog.open(WorkshopContentOnlineComponent,
           {
+            panelClass: 'responsive-dialog',
             data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit },
             disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh'
           });
@@ -252,6 +253,7 @@ export class ContentViewComponent implements OnInit {
       case 'project':
         dialogRef = this.dialog.open(WorkshopContentProjectComponent,
           {
+            panelClass: 'responsive-dialog',
             data: {
               itenaryForm: this.itenaryForm, index: index, isEdit: isEdit,
               collectionStartDate: this.collectionStartDate, collectionEndDate: this.collectionEndDate
@@ -261,6 +263,7 @@ export class ContentViewComponent implements OnInit {
       case 'video':
         dialogRef = this.dialog.open(WorkshopContentVideoComponent,
           {
+            panelClass: 'responsive-dialog',
             data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit },
             disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh'
           });

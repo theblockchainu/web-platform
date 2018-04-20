@@ -354,6 +354,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 				participants: this.participants,
 				communityId: this.communityId
 			},
+			panelClass: 'responsive-dialog',			
 			width: '45vw',
 			height: '100vh'
 		});

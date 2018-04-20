@@ -45,8 +45,8 @@
 
             <div class="col-md-12 position-relative">
               <div class="pull-right">
-                <span matTooltip="Invalid Verification ID!" [matTooltipDisabled]="this.peer.controls['verificationIdUrl'].value">
-                  <button mat-raised-button color="accent" (click)="continue()" [disabled]="!this.peer.controls['verificationIdUrl'].value">Continue</button>
+                <span matTooltip="Invalid Verification ID!" [matTooltipDisabled]="peer.controls['verificationIdUrl'].value">
+                  <button mat-raised-button color="accent" (click)="continue()" [disabled]="!peer.controls['verificationIdUrl'].value">Continue</button>
                 </span>
               </div>
             </div>

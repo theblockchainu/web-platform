@@ -35,15 +35,15 @@
         <div class="row margin-top-40">
             <div class="col-md-10 col-md-offset-1">
                 <div class="row community-content">
-                    <div class="col-md-7 left-content">
+                    <div class="col-md-7 col-xs-12 left-content">
                         <!--COVER IMAGE-->
                         <div class="row coverImage">
                             <div class="col-md-12">
                                 <ngu-carousel [inputs]="carouselBanner">
                                     <ngu-item NguCarouselItem class="bannerStyle" *ngFor="let imageUrl of carouselImages">
                                         <div class="row">
-                                            <div class="col-md-12" [ngStyle]="{'background': 'url(' + imageUrl + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover', 'height': '300px'}">
-
+                                            <div class="col-md-12" [ngStyle]="{'background': 'url(' + imageUrl + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}"
+                                                [ngClass]="'community-banner'">
                                             </div>
                                         </div>
                                     </ngu-item>
@@ -129,7 +129,7 @@
                     </div>
 
                     <!--RIGHT SIDEBAR-->
-                    <div class="col-md-4 col-md-offset-1 right-content">
+                    <div class="col-md-4 col-md-offset-1 col-xs-12 col-xs-offset-0 right-content">
                         <!--ACTION BUTTONS-->
                         <div class="row" style="margin-top: 15px; text-align: right;" *ngIf="userType === 'public'">
                             <div class="col-md-12">

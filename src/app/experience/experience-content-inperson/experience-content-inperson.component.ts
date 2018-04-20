@@ -280,7 +280,7 @@ export class ExperienceContentInpersonComponent implements OnInit {
                     contentFormArray: _.cloneDeep(this.contentsFArray),
                     contentForm: _.cloneDeep(this.contentForm),
                     isEdit: this.isEdit
-                },
+                },panelClass: 'responsive-dialog',
                 disableClose: true,
                 hasBackdrop: true,
                 width: '45vw',
