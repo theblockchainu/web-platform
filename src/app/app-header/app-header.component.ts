@@ -50,6 +50,7 @@ export class AppHeaderComponent implements OnInit {
 	public profileCompletionObject: any;
 	public isSessionApproved = false;
 	public sessionId = '';
+	public isSearchBarVisible = false;
 	constructor(public authService: AuthenticationService,
 		private http: HttpClient,
 		private _cookieService: CookieUtilsService,
@@ -208,7 +209,7 @@ export class AppHeaderComponent implements OnInit {
 		const dialogRef = this.dialog.open(AppNotificationDialogComponent, {
 			width: '350px',
 			height: '70vh',
-			panelClass: ['responsive-dialog', 'responsive-fixed-position'],
+			panelClass: 'responsive-fixed-position',
 			data: {
 			},
 			disableClose: false,
@@ -236,7 +237,7 @@ export class AppHeaderComponent implements OnInit {
 		const dialogRef = this.dialog.open(InboxDialogComponent, {
 			width: '350px',
 			height: '70vh',
-			panelClass: ['responsive-dialog', 'responsive-fixed-position'],
+			panelClass: 'responsive-fixed-position',
 			data: {
 			},
 			disableClose: false,
@@ -270,5 +271,13 @@ export class AppHeaderComponent implements OnInit {
 	public onSearchOptionClicked(option) {
 		this.searchInputBar.value = '';
 		this._searchService.onSearchOptionClicked(option);
+	}
+	
+	public showSearchBar() {
+		if (this.isSearchBarVisible) {
+			this.isSearchBarVisible = false;
+		} else {
+			this.isSearchBarVisible = true;
+		}
 	}
 }

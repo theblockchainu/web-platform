@@ -21,12 +21,12 @@
             <app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
             <div class="mat-display-1" style="margin-bottom: 25px !important;">
                 Communities
-                <span class="mat-subheading-2" *ngIf="selectedTopics.length!==availableTopics.length">
+                <span class="mat-display-1" *ngIf="selectedTopics && availableTopics && selectedTopics.length !== availableTopics.length">
                     in
                     <span *ngFor="let topicObj of selectedTopics;let i=index">
                         {{topicObj.name}}
                     </span>
-                    <mat-icon class="clickable" (click)="resetTopics()">
+                    <mat-icon class="clickable" style="font-size: 12px; font-weight: 200;" (click)="resetTopics()">
                         close
                     </mat-icon>
                 </span>
