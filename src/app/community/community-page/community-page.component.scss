@@ -525,3 +525,11 @@ h3 {
 .textJustify {
     text-align: justify;
 }
+.community-banner{
+    height: 300px;
+}
+@media only screen and (max-width: 600px) {
+.community-banner{
+    height: 25vh;
+}
+}
