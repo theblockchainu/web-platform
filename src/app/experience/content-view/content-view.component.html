@@ -3,11 +3,12 @@
     <div class="col-md-12">
       <div style="text-align: center; margin-top: 0px; margin-bottom: 10px;">
         <hr>
-        <div style="margin-top: -36px; width: fit-content; background-color: #fff; margin-left: auto; margin-right: auto; padding: 0px 20px;">
+        <div class="date-select">
           <mat-icon>wb_sunny</mat-icon>
-          <input *ngIf="!envVariable.production" matInput #dateInput [matDatepicker]="startDatePicker" formControlName="date" [hidden]="true" [min]="collectionStartDate" [max]="collectionEndDate">
-          <input *ngIf="envVariable.production" matInput #dateInput [matDatepicker]="startDatePicker" formControlName="date" [hidden]="true" [min]="collectionStartDate" [max]="collectionEndDate"
-                 [matDatepickerFilter]="datePickerFilter">
+          <input *ngIf="!envVariable.production" matInput #dateInput [matDatepicker]="startDatePicker" formControlName="date" [hidden]="true"
+            [min]="collectionStartDate" [max]="collectionEndDate">
+          <input *ngIf="envVariable.production" matInput #dateInput [matDatepicker]="startDatePicker" formControlName="date" [hidden]="true"
+            [min]="collectionStartDate" [max]="collectionEndDate" [matDatepickerFilter]="datePickerFilter">
           <a *ngIf="!itenaryForm.value.date" style="cursor: pointer; float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;"
             (click)="startDatePicker.open()">({{showItineraryDate(itenaryForm.value.date)}})</a>
           <a *ngIf="itenaryForm.value.date" style="float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;">({{itenaryForm.value.date| date}})</a>
@@ -82,15 +83,20 @@
         </span>
         <br>
         <br>
-        <button mat-button type="button" (click)="addContent('in-person'); findAndOpenDialog(-1);" style="padding-left: 0px">
-          <mat-icon color="primary" style="font-size: 20px">add_circle</mat-icon>
-          In-person Activity
-        </button>&emsp;
-
-        <button mat-button type="button" (click)="addContent('project'); findAndOpenDialog(-1);">
-          <mat-icon color="primary" style="font-size: 20px">add_circle</mat-icon>
-          Project Activity
-        </button>&emsp;
+        <div class="row">
+          <div class="col-md-3 col-xs-6">
+            <button mat-button type="button" (click)="addContent('in-person'); findAndOpenDialog(-1);">
+              <mat-icon color="primary" style="font-size: 20px">add_circle</mat-icon>
+              In-person Activity
+            </button>&emsp;
+          </div>
+          <div class="col-md-3 col-xs-6">
+            <button mat-button type="button" (click)="addContent('project'); findAndOpenDialog(-1);">
+              <mat-icon color="primary" style="font-size: 20px">add_circle</mat-icon>
+              Project Activity
+            </button>&emsp;
+          </div>
+        </div>
       </div>
     </div>
   </div>
