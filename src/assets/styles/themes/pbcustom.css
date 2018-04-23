@@ -1771,6 +1771,14 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	height: 2px !important;
 }
 
+.navbar-page-content{
+    background: #fff;
+    padding: 25px 50px 25px 100px; 
+    max-height: 100vh;
+     min-height: 100vh; 
+     overflow-y: scroll
+  }
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	.circle-thumb {
@@ -1854,4 +1862,25 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
         margin-left: 5vw !important;
         margin-top: 10vw !important;
     }
+
+    .navbar-page-content{
+        padding: 5% !important; 
+     }
+
+    .date-select{
+    margin-top: 0px !important; 
+    padding: 0px 0px !important;
+   }
+
+   .dateStyles .mat-form-field-infix {
+    width: 140px !important;
+}
+ 
+  .mobile-main-content {
+    min-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 64px;
+  }
+
 }

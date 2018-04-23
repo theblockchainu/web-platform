@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/switchMap';
-import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
@@ -23,6 +23,7 @@ import { Observable } from 'rxjs/Observable';
 import { TopicService } from '../../_services/topic/topic.service';
 import { PaymentService } from '../../_services/payment/payment.service';
 import { DataSharingService } from '../../_services/data-sharing-service/data-sharing.service';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-experience-edit',
@@ -30,7 +31,7 @@ import { DataSharingService } from '../../_services/data-sharing-service/data-sh
   styleUrls: ['./experience-edit.component.scss']
 })
 
-export class ExperienceEditComponent implements OnInit, AfterViewInit {
+export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public busySave = false;
   public busyPreview = false;
   public busyInterest = false;
@@ -132,6 +133,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
   public payoutAccounts: Array<any>;
   public freeExperience = false;
   public currentDate: Date;
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
 
   // TypeScript public modifiers
   constructor(
@@ -153,7 +156,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
     private _paymentService: PaymentService,
     private location: Location,
     public cd: ChangeDetectorRef,
-    private _dataSharingService: DataSharingService
+    private _dataSharingService: DataSharingService,
+    private media: MediaMatcher
   ) {
     this.envVariable = environment;
     this.activatedRoute.params.subscribe(params => {
@@ -234,9 +238,9 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
     this.selectedTopic = new FormGroup({});
 
     this.phoneDetails = this._fb.group({
-      phoneNo: [{value: '', disabled: true}],
+      phoneNo: [{ value: '', disabled: true }],
       inputOTP: '',
-      countryCode: [{value: '', disabled: true}]
+      countryCode: [{ value: '', disabled: true }]
     });
 
     this.paymentInfo = this._fb.group({
@@ -247,6 +251,16 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
 
     this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
     this._VIDEO = document.querySelector('#main-video');
+
+
+    this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => this.cd.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
   ngAfterViewInit() {
