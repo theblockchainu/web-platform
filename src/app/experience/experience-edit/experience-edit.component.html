@@ -1,6 +1,6 @@
 <div style="background: #fff; padding: 0px; min-height: 100vh;" [class.main-content]="!mobileQuery.matches" [class.mobile-main-content]="mobileQuery.matches">
   <mat-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: scroll; background: #ffffff;">
-    <mat-sidenav #snav [mode]="mobileQuery.matches === true ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" [(opened)]="!mobileQuery.matches">
+    <mat-sidenav #snav [mode]="mobileQuery.matches === true ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" [opened]="!mobileQuery.matches">
       <app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
     </mat-sidenav>
     <!-- Page Content -->

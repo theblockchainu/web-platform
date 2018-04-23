@@ -1163,15 +1163,18 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.payoutAccounts = [];
     this._paymentService.retrieveConnectedAccount().subscribe(result => {
       console.log(result);
-      this.payoutAccounts = result;
-      result.forEach(account => {
-        if (this.payoutRuleNodeId && this.payoutRuleAccountId && account.payoutaccount.id === this.payoutRuleAccountId) {
-          this.paymentInfo.controls['id'].patchValue(this.payoutRuleAccountId);
-        }
-      });
+      if (result.length > 0) {
+        this.payoutAccounts = result;
+        this.payoutAccounts.forEach(account => {
+          if (this.payoutRuleNodeId && this.payoutRuleAccountId && account.payoutaccount.id === this.payoutRuleAccountId) {
+            this.paymentInfo.controls['id'].patchValue(this.payoutRuleAccountId);
+          }
+        });
+      }
       this.paymentInfo.controls['id'].valueChanges.subscribe(res => {
         this.updatePayoutRule(res);
       });
+
       this.payoutLoading = false;
     }, err => {
       console.log(err);
