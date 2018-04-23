@@ -91,11 +91,22 @@ agm-map {
 	line-height: 120%
 }
 
+.profileUpdateButton {
+	position: fixed;
+}
+
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	.profileFormContainer {
 		margin-right: 0;
 		padding: 0 20px;
+	}
+	.profileUpdateButton {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		z-index: 1000;
 	}
 }

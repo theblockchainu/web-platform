@@ -4,8 +4,8 @@
 	</div>
 </div>
 <div class="row" *ngIf="!loadingProfile">
-	<div class="col-md-7" style="position: fixed">
-		<button mat-raised-button color="accent" (click)="saveProfile()" class="pull-right">
+	<div class="col-md-7">
+		<button mat-raised-button color="accent" (click)="saveProfile()" class="pull-right profileUpdateButton">
 			<span *ngIf="!busyUpdate">Update Profile</span>
 			<span *ngIf="busyUpdate"> </span>
 			<ngx-loading [show]="busyUpdate"></ngx-loading>
@@ -268,8 +268,7 @@
 							<div style="margin-top:-5px;margin-bottom:5px; cursor: pointer" (click)="addEmergencyContact()">
 								<a style="font-size: 12px">+ Add Emergency Contact Number</a>
 							</div>
-						
-						
+							
 						</form>
 					</div>
 				</div>

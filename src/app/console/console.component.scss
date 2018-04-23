@@ -1,24 +1,24 @@
 .participantCount {
-  margin-top: 15px;
+	margin-top: 15px;
 }
 
 .collectionParticipantImageCarousel {
-  width: 100%;
-  text-align: center;
-  display: inline-block;
-  margin-top: -30px;
+	width: 100%;
+	text-align: center;
+	display: inline-block;
+	margin-top: -30px;
 }
 
 .collectionSubtitle {
-  font-size: 70%;
-  color: #777777;
-  margin-top: 10px;
-  margin-bottom: 20px;
+	font-size: 70%;
+	color: #777777;
+	margin-top: 10px;
+	margin-bottom: 20px;
 }
 
 .collectionTitle {
-  margin-top: 30px;
-  margin-bottom: 10px
+	margin-top: 30px;
+	margin-bottom: 10px
 }
 
 .upcomingEventLabel {
@@ -42,62 +42,69 @@
 }
 
 .lighterText {
-  font-size: 70%;
-  color: #cccccc;
+	font-size: 70%;
+	color: #cccccc;
 }
 
 .upcomingEventTitle {
-  font-size: 90%;
-  color: #333333;
-  margin-top: 0px;
+	font-size: 90%;
+	color: #333333;
+	margin-top: 0px;
 }
 
 .upcomingEventTime {
-  font-weight: 500;
-  color: #777777;
-  margin-top: 0px;
-  margin-bottom: 20px;
+	font-weight: 500;
+	color: #777777;
+	margin-top: 0px;
+	margin-bottom: 20px;
 }
 
 .cardFooter {
-  border-top: 0.7px solid #eee;
-  padding: 10px;
+	border-top: 0.7px solid #eee;
+	padding: 10px;
 }
 
 .cardTypeChip {
-  font-size: 9px;
-  position: absolute;
-  top: 10px;
-  left: 10px;
+	font-size: 9px;
+	position: absolute;
+	top: 10px;
+	left: 10px;
 }
 
 .smallChip {
-  padding: 2px 7px !important;
-  font-size: 9px !important;
+	padding: 2px 7px !important;
+	font-size: 9px !important;
 }
 
 .teacherName {
-  font-weight: 500;
-  font-size: 110%;
-  margin-top: 10px;
+	font-weight: 500;
+	font-size: 110%;
+	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
 .teacherHeadline {
-  margin-top: 0px;
-  color: #777777;
+	margin-top: 0px;
+	color: #777777;
 }
 
 .teachingRatingReminder {
-  font-weight: 700;
-  font-size: 12px;
-  margin: 10px 0px;
-  color: #33bd9e;
-  &.disabled {
-    color: #aaaaaa;
-  }
+	font-weight: 700;
+	font-size: 12px;
+	margin: 10px 0px;
+	color: #33bd9e;
+	&.disabled {
+		color: #aaaaaa;
+	}
 }
 
 a{
 	cursor:pointer;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.mat-tab-nav-bar {
+		overflow-x: scroll;
+	}
 }

@@ -246,17 +246,17 @@
 					<div *ngIf="!notification.hidden && i <= 3">
 						<div [ngClass]="{'row': true, 'full-width': true, 'notificationsRow': true, 'notificationsRowUnread': !notification.seen}"
 						     (click)="onNotificationClick(notification)">
-							<div class="col-xs-1">
+							<div class="col-md-1 col-xs-2">
 								<img *ngIf="!notification.actor[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb notificationsImage">
 								<img *ngIf="notification.actor[0].profiles[0].picture_url" src="{{envVariable.apiUrl + notification.actor[0].profiles[0].picture_url}}"
 								     alt="A" class="circle-thumb notificationsImage">
 							</div>
-							<div class="col-xs-10">
+							<div class="col-md-10 col-xs-9">
 								<!--Content here-->
 								<div innerHTML="{{getNotificationText(notification) | ucfirst}}"></div>
 								<h6 class="mat-caption" style="margin-top: 0px;">{{getNotificationTime(notification)}}</h6>
 							</div>
-							<div class="col-xs-1" style="top: 10px;">
+							<div class="col-md-1 col-xs-1" style="top: 10px;">
 								<mat-icon class="lightText" style="font-size: 10px; cursor: pointer;" (click)="hideNotification(notification)">close</mat-icon>
 							</div>
 						</div>

@@ -3,3 +3,14 @@
     pointer-events: none !important;
     color: lightgray !important;
 }
+
+.consoleProfileReviewsContainer {
+
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.consoleProfileReviewsContainer {
+		padding: 0 20px;
+	}
+}
