@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, NgSwitch, CurrencyPipe, TitleCasePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
     MatChipsModule,
@@ -60,7 +60,6 @@ import { NotificationService } from '../_services/notification/notification.serv
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { ExtractTimePipe } from './extract-time/extract-time.pipe';
 import { SocketService } from '../_services/socket/socket.service';
-import { DeviceDetectorModule } from 'ngx-device-detector';
 import { StickyModule } from 'ng2-sticky-kit';
 import { ConvertCurrencyPipe } from './convert-currency/convert-currency.pipe';
 import { TrimPipe } from './trim/trim.pipe';
@@ -77,12 +76,12 @@ import { TopicRowComponent } from './topic-row/topic-row.component';
 
 @NgModule({
     imports: [
+    	CommonModule,
         ProgressbarModule.forRoot(),
         ModalModule.forRoot(),
         TabsModule.forRoot(),
         BsDropdownModule.forRoot(),
         FileUploadModule,
-        CommonModule,
         PopoverModule.forRoot(),
         CalendarModule.forRoot(),
         LoadingModule.forRoot({
@@ -93,7 +92,6 @@ import { TopicRowComponent } from './topic-row/topic-row.component';
             secondaryColour: '#ff5b5f',
             tertiaryColour: '#ff6d71'
         }),
-        // DeviceDetectorModule.forRoot(),
         StickyModule,
         NguCarouselModule,
         AgmCoreModule.forRoot({
@@ -105,11 +103,15 @@ import { TopicRowComponent } from './topic-row/topic-row.component';
         MatIconModule,
         MatButtonModule
     ],
-    declarations:
-        [ExtractTimePipe,
-            ConvertCurrencyPipe, ProfilePopupComponent,
-            TrimPipe, TextIconCarouselComponent, TimeToNowPipe, TopicRowComponent
-        ],
+    declarations: [
+    	ExtractTimePipe,
+		ConvertCurrencyPipe,
+		ProfilePopupComponent,
+		TrimPipe,
+		TextIconCarouselComponent,
+		TimeToNowPipe,
+		TopicRowComponent
+	],
     providers: [
         CollectionService,
         CountryPickerService,
@@ -159,14 +161,42 @@ import { TopicRowComponent } from './topic-row/topic-row.component';
         TimepickerModule,
         NgPipesModule,
         AccordionModule,
-        MatChipsModule, MatDialogModule, MatMenuModule, MatButtonModule,
-        MatCardModule, MatToolbarModule, MatIconModule, MatProgressBarModule,
-        MatListModule, MatTabsModule, MatTableModule, MatInputModule, MatCheckboxModule,
-        MatSidenavModule, MatSelectModule, MatDatepickerModule, MatGridListModule, MatRadioModule,
-        MatNativeDateModule, MatSliderModule, MatAutocompleteModule,
-        SliderModule, MatProgressSpinnerModule, MatExpansionModule, MatSnackBarModule, ExtractTimePipe,
-        LoadingModule, MatTooltipModule, ConvertCurrencyPipe, ProfilePopupComponent, TrimPipe, TitleCasePipe
-        , TextIconCarouselComponent, Ng4GeoautocompleteModule, AgmCoreModule, TimeToNowPipe, TopicRowComponent,
+        MatChipsModule,
+		MatDialogModule,
+		MatMenuModule,
+		MatButtonModule,
+        MatCardModule,
+		MatToolbarModule,
+		MatIconModule,
+		MatProgressBarModule,
+        MatListModule,
+		MatTabsModule,
+		MatTableModule,
+		MatInputModule,
+		MatCheckboxModule,
+        MatSidenavModule,
+		MatSelectModule,
+		MatDatepickerModule,
+		MatGridListModule,
+		MatRadioModule,
+        MatNativeDateModule,
+		MatSliderModule,
+		MatAutocompleteModule,
+		MatProgressSpinnerModule,
+		MatExpansionModule,
+		MatSnackBarModule,
+		MatTooltipModule,
+		SliderModule,
+		ExtractTimePipe,
+		LoadingModule,
+		ConvertCurrencyPipe,
+		ProfilePopupComponent,
+		TrimPipe,
+		TextIconCarouselComponent,
+		Ng4GeoautocompleteModule,
+		AgmCoreModule,
+		TimeToNowPipe,
+		TopicRowComponent,
         NguCarouselModule
     ]
 })

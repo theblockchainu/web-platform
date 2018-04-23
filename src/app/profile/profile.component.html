@@ -11,7 +11,7 @@
 			<div class="col-md-3 {{offsetString}} left-panel">
 				<div class="row padding-bottom-30">
 					<div class="col-md-12" style="padding-left: 0px;">
-						<img class="img-rounded profile-pic" *ngIf="profileObj.picture_url" src="{{envVariable.apiUrl+profileObj.picture_url}}" alt="profile_pic">
+						<img class="img-rounded profile-pic" *ngIf="profileObj.picture_url" src="{{envVariable.apiUrl+profileObj.picture_url + '/300'}}" alt="profile_pic">
 						<img class="img-rounded profile-pic" *ngIf="!profileObj.picture_url" src="/assets/images/user-placeholder.jpg" alt="profile_pic">
 					</div>
 					<div class="col-md-6" style="margin-top: 25px; padding-left: 0px;">
@@ -250,7 +250,7 @@
 									<div class="review-section" *ngIf="review.peer !== undefined && i < maxVisibleReviewsLearner">
 										<div class="row review-top" style="margin-left:0px;">
 											<div class="col-md-2 padding-left-0 review-thumb pull-left">
-												<img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)" style="position: relative; top: 7px;">
+												<img src="{{ review.peer[0].profiles[0].picture_url + '/100'}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)" style="position: relative; top: 7px;">
 											</div>
 											<div class="col-md-4 reviewer padding-left-0">
 												<div class="reviewer-name">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name}}
@@ -308,7 +308,7 @@
 									<div class="review-section" *ngIf="review.peer !== undefined && i < maxVisibleReviewsTeacher">
 										<div class="row review-top" style="margin-left:0px;">
 											<div class="col-md-2 padding-left-0 review-thumb pull-left">
-												<img src="{{ review.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)" style="position: relative; top: 7px;">
+												<img src="{{ review.peer[0].profiles[0].picture_url  + '/100'}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)" style="position: relative; top: 7px;">
 											</div>
 											<div class="col-md-4 reviewer padding-left-0">
 												<div class="reviewer-name">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name}}
@@ -507,7 +507,7 @@
 											<div class="col-xs-12 margin-top-10" *ngIf="i<2">
 												<a [routerLink]="['/experience',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
 													<div class="col-xs-3 padding-left-0">
-														<img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
+														<img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0] + '/100'}}">
 														<img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
 													</div>
 													<div class="col-xs-9">
@@ -535,7 +535,7 @@
 											<div class="col-xs-12 margin-top-10" *ngIf="i<2">
 												<a [routerLink]="['/experience',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
 													<div class="col-xs-3 padding-left-0">
-														<img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
+														<img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0] + '/100'}}">
 														<img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
 													</div>
 													<div class="col-xs-9">
@@ -563,7 +563,7 @@
 											<div class="col-xs-12 margin-top-10" *ngIf="i<2">
 												<a [routerLink]="['/experience',collectionObj.id]" style="color:rgba(0,0,0,0.87)">
 													<div class="col-xs-3 padding-left-0">
-														<img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0]}}">
+														<img class="img-rounded side-image" *ngIf="collectionObj.imageUrls && collectionObj.imageUrls.length>0" src="{{envVariable.apiUrl+collectionObj.imageUrls[0] + '/100'}}">
 														<img class="img-rounded side-image" *ngIf="!collectionObj.imageUrls || collectionObj.imageUrls.length<=0" src="./assets/images/placeholder-image.jpg">
 													</div>
 													<div class="col-xs-9">
@@ -620,7 +620,7 @@
 						<div class="recommendation-card" *ngIf="i<5 && (!learningJourneyFilter || workshop.type===learningJourneyFilter) ">
 							<a [routerLink]="'/workshop/'+workshop.id">
 								<div class="">
-									<img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{envVariable.apiUrl+workshop.imageUrls[0]}}"
+									<img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{envVariable.apiUrl+workshop.imageUrls[0] + '/300'}}"
 									 alt="workshpImg">
 									<img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
 									 alt="workshpImg">
@@ -669,7 +669,7 @@
 						<div class="community-card" *ngIf="i<5">
 							<a [routerLink]="'/community/'+community.id">
 								<div class="">
-									<img class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" src="{{envVariable.apiUrl+community.imageUrls[0]}}"
+									<img class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" src="{{envVariable.apiUrl+community.imageUrls[0] + '/300'}}"
 									 alt="workshpImg">
 									<img class="community-thumb" *ngIf="!community.imageUrls || community.imageUrls.length<=0" src="/assets/images/no-image.jpg"
 									 alt="workshpImg">
@@ -713,7 +713,7 @@
 					<div class="peer-recommendation-card" *ngFor="let peer of recommendedpeers; let i =index">
 						<a *ngIf="i<6" [routerLink]="'/profile/'+peer.id">
 							<div class="">
-								<img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url}}"
+								<img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url + '/300'}}"
 								 alt="peerImg">
 								<img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="peerImg">
 							</div>

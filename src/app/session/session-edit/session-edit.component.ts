@@ -499,7 +499,7 @@ export class SessionEditComponent implements OnInit {
 			});
 
 		if (this.interests.length === 0) {
-			this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics')
+			this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.options)
 				.map((response: any) => {
 					this.suggestedTopics = response.slice(0, 7);
 				}).subscribe();
@@ -769,7 +769,7 @@ export class SessionEditComponent implements OnInit {
 		};
 		console.log('topics');
 		if (topicArray.length !== 0) {
-			this.http.patch(environment.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel', body)
+			this.http.patch(environment.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel', body, this.options)
 				.subscribe((response) => {
 					this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
 						{ topicsObject: response });

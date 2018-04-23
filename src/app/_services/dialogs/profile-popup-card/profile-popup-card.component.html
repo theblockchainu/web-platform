@@ -43,7 +43,7 @@
       <div class="row" *ngIf="ownedCollections && ownedCollections.length>0" style="margin-top: 5px;">
         <div style="padding-left: 10px; padding-right: 10px;" *ngFor="let workshop of ownedCollections; let i=index">
           <div class="col-md-4" style="padding-left: 5px; padding-right: 5px;" *ngIf="i<3">
-            <img style="width: 100%; height: auto; max-height: 80px;" src="{{envVariable.apiUrl+ workshop.imageUrls[0]}}" (error)="_collectionService.imgErrorHandler($event)">
+            <img style="width: 100%; height: auto; max-height: 80px;" src="{{envVariable.apiUrl+ workshop.imageUrls[0] + '/100'}}" (error)="_collectionService.imgErrorHandler($event)">
           </div>
         </div>
       </div>

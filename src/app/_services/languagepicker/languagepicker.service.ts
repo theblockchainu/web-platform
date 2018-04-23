@@ -3,19 +3,25 @@ import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
 import {environment} from '../../../environments/environment';
+import {RequestHeaderService} from '../requestHeader/request-header.service';
 
 @Injectable()
 export class LanguagePickerService {
     public envVariable;
-
-    constructor(private http: HttpClient
-        , private route: ActivatedRoute, public router: Router) {
+	private options;
+    constructor(
+    	private http: HttpClient,
+		private route: ActivatedRoute,
+		public router: Router,
+		private requestHeaderService: RequestHeaderService
+	) {
         this.envVariable = environment;
+        this.options = this.requestHeaderService.getOptions();
     }
 
     public getLanguages() {
 
-        return this.http.get(environment.apiUrl + '/api/languages')
+        return this.http.get(environment.apiUrl + '/api/languages', this.options)
             .map((response: any) => {
                 return response;
             });

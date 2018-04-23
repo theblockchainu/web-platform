@@ -1760,7 +1760,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	height: 0px;
 }
 
-.show-small {
+.show-small, .show-small-inline {
 	display: none !important;
 }
 
@@ -1769,6 +1769,10 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	position: fixed !important;
 	z-index: 10000;
 	height: 2px !important;
+}
+
+.footerCurrencyContainer {
+	text-align: center;
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -1808,6 +1812,14 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	.show-small {
 		display: block !important;
 	}
+
+	.show-small-inline {
+		display: inline-block !important;
+	}
+	.show-small-inline .headerButtons {
+		flex: 1;
+	}
+
 	.main-content {
 		padding-top: 100px !important;
 	}
@@ -1853,5 +1865,8 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
     .responsive-fixed-position{
         margin-left: 5vw !important;
         margin-top: 10vw !important;
+    }
+    .footerCurrencyContainer {
+	    text-align: left;
     }
 }

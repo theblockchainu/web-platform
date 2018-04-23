@@ -131,7 +131,7 @@ export class GenericMultiselectAutocompleteComponent {
             }
             if (this.searchUrl) {
                 const finalSearchURL = this.searchUrl + this.query;
-                this.http.get(finalSearchURL)
+                this.http.get(finalSearchURL, this.options)
                     .map((res: any) => {
                         this.filteredList = [];
                         res.map(item => {

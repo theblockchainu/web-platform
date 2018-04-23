@@ -10,6 +10,7 @@ import 'rxjs/add/operator/map';
 import { ContentService } from '../../content/content.service';
 import { environment } from '../../../../environments/environment';
 import * as _ from 'lodash';
+import {RequestHeaderService} from '../../requestHeader/request-header.service';
 
 @Component({
     selector: 'app-submit-entry',
@@ -36,6 +37,7 @@ export class SubmitEntryComponent implements OnInit {
     public createTopicURL;
     public placeholderStringTopic = 'Submission Tag';
     public maxTopicMsg = 'Choose max 3 related tags';
+    private options;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -44,6 +46,7 @@ export class SubmitEntryComponent implements OnInit {
         public http: HttpClient,
         private mediaUploader: MediaUploaderService,
         public projectSubmissionService: ProjectSubmissionService,
+        private requestHeaderService: RequestHeaderService,
         private _cookieUtilsService: CookieUtilsService,
         private _contentService: ContentService,
         public dialogRef: MatDialogRef<SubmitEntryComponent>
@@ -53,7 +56,7 @@ export class SubmitEntryComponent implements OnInit {
         this.searchTopicURL = environment.searchUrl + '/api/search/'
             + environment.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
         this.createTopicURL = environment.apiUrl + '/api/' + environment.uniqueDeveloperCode + '_topics';
-
+		this.options = this.requestHeaderService.getOptions();
     }
 
     ngOnInit() {
@@ -90,7 +93,8 @@ export class SubmitEntryComponent implements OnInit {
     public viewSubmission(submissionId) {
         const query = '{"include":[{"upvotes":"peer"}, {"peer": "profiles"}, ' +
             '{"comments": [{"peer": {"profiles": "work"}}, {"replies": [{"peer": {"profiles": "work"}}]}]}]}';
-        this.projectSubmissionService.viewSubmission(submissionId, query).subscribe((response: Response) => {
+        this.projectSubmissionService.viewSubmission(submissionId, query)
+			.subscribe((response) => {
             if (response) {
                 const dialogRef = this.dialog.open(SubmissionViewComponent, {
                     data: {
@@ -113,7 +117,7 @@ export class SubmitEntryComponent implements OnInit {
     public deleteFromContainer(fileUrl, fileType) {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
-        this.http.delete(environment.apiUrl + fileUrl)
+        this.http.delete(environment.apiUrl + fileUrl, this.options)
             .map((response) => {
                 console.log(response);
                 this.urlForImages = [];

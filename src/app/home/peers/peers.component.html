@@ -26,7 +26,7 @@
 				<div class="peer-recommendation-card" *ngFor="let peer of peers">
 					<a [routerLink]="'/profile/'+peer.id">
 						<div class="">
-							<img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url}}"
+							<img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url + '/300'}}"
 							 alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
 							<img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="workshpImg"
 							 (error)="_collectionService.userImgErrorHandler($event)">

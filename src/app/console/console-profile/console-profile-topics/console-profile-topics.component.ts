@@ -7,6 +7,7 @@ import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import {environment} from '../../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
+import {RequestHeaderService} from '../../../_services/requestHeader/request-header.service';
 @Component({
 	selector: 'app-console-profile-topics',
 	templateUrl: './console-profile-topics.component.html',
@@ -20,6 +21,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 	public topicsLearning: Array<any> = [];
 	public topicsTeaching: Array<any> = [];
 	public searchTopicURL = '';
+	private options;
 	public placeholderStringTopic = 'Search for a topic ';
 	private newTopics: Array<any>;
 	private selectedTopicsLearning = [];
@@ -35,7 +37,8 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 		public snackBar: MatSnackBar,
 		public _dialogService: DialogsService,
 		public http: HttpClient,
-		private _cookieUtilsService: CookieUtilsService
+		private _cookieUtilsService: CookieUtilsService,
+		private requestHeaderService: RequestHeaderService
 	) {
 		this.envVariable = environment;
 		activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
@@ -44,6 +47,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 		});
 		this.userId = _cookieUtilsService.getValue('userId');
 		this.searchTopicURL = environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
+		this.options = this.requestHeaderService.getOptions();
 	}
 	
 	ngOnInit() {
@@ -101,7 +105,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 	}
 	
 	public getSuggestedTopics() {
-		this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics')
+		this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.options)
 			.map((response: any) => {
 				this.suggestedTopics = response.slice(0, 5);
 			}).subscribe();

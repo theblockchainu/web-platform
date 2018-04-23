@@ -270,7 +270,7 @@
 															</div>
 															<a style="cursor:pointer;color:rgba(0,0,0,0.87)" (click)="openDialog(content, itenary.startDate, itenary.endDate)">
 																<div class="col-md-5">
-																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{envVariable.apiUrl+content.imageUrl}}"
+																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{envVariable.apiUrl+content.imageUrl + '/300'}}"
 																	     (error)="_collectionService.imgErrorHandler($event)">
 																	<video #videoContent width="100%" height="auto" *ngIf="content.type==='video'" class="itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg">
 																		<source src="{{envVariable.apiUrl+content.imageUrl}}">
@@ -423,7 +423,7 @@
 													<div class="clickable commentProfilePic">
 														<img (click)="openProfilePage(comment.peer[0].id)" *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/user-placeholder.jpg"
 														     alt="A" class="circle-thumb margin-top-5">
-														<img (click)="openProfilePage(comment.peer[0].id)" *ngIf="comment.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ comment.peer[0].profiles[0].picture_url}}"
+														<img (click)="openProfilePage(comment.peer[0].id)" *ngIf="comment.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ comment.peer[0].profiles[0].picture_url + '/100'}}"
 														     class="circle-thumb margin-top-5" alt="dp">
 													</div>
 													<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
@@ -505,7 +505,7 @@
 																	<div class="clickable" style="float: left; margin-left: 15px;">
 																		<img (click)="openProfilePage(reply.peer[0].id)" *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/user-placeholder.jpg"
 																		     alt="A" class="clickable circle-thumb margin-top-5">
-																		<img (click)="openProfilePage(reply.peer[0].id)" *ngIf="reply.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ reply.peer[0].profiles[0].picture_url}}"
+																		<img (click)="openProfilePage(reply.peer[0].id)" *ngIf="reply.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ reply.peer[0].profiles[0].picture_url + '/100'}}"
 																		     class="clickable circle-thumb margin-top-5" alt="dp">
 																	</div>
 																	<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
@@ -613,7 +613,7 @@
 																		<img (click)="openProfilePage(review.peer[0].id)" *ngIf="!review.peer || !review.peer[0].profiles[0].picture_url" src="/assets/images/user-placeholder.jpg"
 																		     alt="A" class="clickable circle-thumb margin-top-5" (error)="_collectionService.imgErrorHandler($event)"
 																		     style="margin-left: 10px;">
-																		<img (click)="openProfilePage(review.peer[0].id)" *ngIf=" review.peer && review.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ review.peer[0].profiles[0].picture_url}}"
+																		<img (click)="openProfilePage(review.peer[0].id)" *ngIf=" review.peer && review.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ review.peer[0].profiles[0].picture_url + '/100'}}"
 																		     class="clickable circle-thumb margin-top-5" alt="dp" (error)="_collectionService.imgErrorHandler($event)"
 																		     style="margin-left: 10px;">
 																	</div>
@@ -882,7 +882,7 @@
 												<ngu-item NguCarouselItem class="bannerStyle" *ngFor="let imageUrl of carouselImages">
 													<div class="row">
 														<div class="col-md-12">
-															<img src="{{imageUrl}}">
+															<img src="{{imageUrl + '/500'}}">
 														</div>
 													</div>
 												</ngu-item>
@@ -971,7 +971,7 @@
 							<div class="recommendation-card" *ngFor="let experience of recommendations.collections; let i =index">
 								<a [routerLink]="'/experience/'+experience.id">
 									<div class="">
-										<div class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + experience.imageUrls[0] + '), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
+										<div class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + experience.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
 											<div class="recommendation-city">
 												<mat-icon style="top: 2px; position: relative; color: white; font-size: 15px;">place</mat-icon>
 												<b>{{experience.location | ucwords}}</b>

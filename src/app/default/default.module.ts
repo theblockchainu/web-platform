@@ -7,12 +7,14 @@ import { IndexPhilComponent } from './index-philosophy/index-philosophy.componen
 import { SharedModule } from '../_shared/_shared.module';
 import {RouterModule} from '@angular/router';
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-	  RouterModule
-  ],
-  declarations: [IndexComponent,
-    IndexPhilComponent]
+	imports: [
+		CommonModule,
+		SharedModule,
+		RouterModule
+	],
+	declarations: [
+		IndexComponent,
+		IndexPhilComponent
+	]
 })
 export class DefaultModule { }

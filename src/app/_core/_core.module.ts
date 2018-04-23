@@ -10,31 +10,31 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProfileService } from '../_services/profile/profile.service';
 import { PaymentService } from '../_services/payment/payment.service';
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [],
-  exports: [
-    CommonModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
-  providers: [
-    AuthGuardService,
-    AuthService,
-    AlertService,
-    AuthenticationService,
-    ProfileService,
-    PaymentService
-  ]
+	imports: [
+		CommonModule
+	],
+	declarations: [],
+	exports: [
+		CommonModule,
+		HttpClientModule,
+		BrowserAnimationsModule,
+		FormsModule,
+		ReactiveFormsModule
+	],
+	providers: [
+		AuthGuardService,
+		AuthService,
+		AlertService,
+		AuthenticationService,
+		ProfileService,
+		PaymentService
+	]
 })
 export class CoreModule {
-  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
-    if (parentModule) {
-      throw new Error(
-        'CoreModule is already loaded. Import it in the AppModule only');
-    }
-  }
+	constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
+		if (parentModule) {
+			throw new Error(
+				'CoreModule is already loaded. Import it in the AppModule only');
+		}
+	}
 }

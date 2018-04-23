@@ -462,7 +462,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
       });
 
     if (this.interests.length === 0) {
-      this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics')
+      this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.options)
         .map((response: any) => {
           this.suggestedTopics = response.slice(0, 5);
         }).subscribe();
@@ -539,11 +539,10 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
 
   public removed(event) {
     const body = {};
-    const options = {};
     this.removedInterests = event;
     if (this.removedInterests.length !== 0) {
       this.removedInterests.forEach((topic) => {
-        this.http.delete(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel/' + topic.id, options)
+        this.http.delete(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel/' + topic.id, this.options)
           .map((response) => {
             console.log(response);
           }).subscribe();
@@ -802,7 +801,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
     const body = data.value.calendar;
     const itinerary = data.controls.contentGroup.value.itenary;
     if (body.startDate && body.endDate && itinerary && itinerary.length > 0) {
-      this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body)
+      this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body, this.options)
         .subscribe((response) => {
           this.step++;
           this.experienceStepUpdate();
@@ -839,7 +838,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
 
     if (topicArray.length !== 0) {
       let observable: Observable<any>;
-      observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel', body)
+      observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel', body, this.options)
         .map(response => response).publishReplay().refCount();
       observable.subscribe((res) => {
         this._collectionService.getCollectionDetail(this.experienceId, this.query)
@@ -1045,7 +1044,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
   deleteFromContainer(fileUrl, fileType) {
     const fileurl = fileUrl;
     fileUrl = _.replace(fileUrl, 'download', 'files');
-    this.http.delete(environment.apiUrl + fileUrl)
+    this.http.delete(environment.apiUrl + fileUrl, this.options)
       .map((response) => {
         console.log(response);
         if (fileType === 'video') {
@@ -1069,7 +1068,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit {
       let file = event.target.files[i];
       const fileurl = file;
       file = _.replace(file, 'download', 'files');
-      this.http.delete(environment.apiUrl + file)
+      this.http.delete(environment.apiUrl + file, this.options)
         .map((response) => {
           console.log(response);
           if (fileType === 'video') {

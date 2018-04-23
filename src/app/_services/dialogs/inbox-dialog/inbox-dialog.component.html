@@ -11,10 +11,10 @@
 			<div class="row chatListItemContainer clickable">
 				<div [ngClass]="{'col-md-12' : true, 'padding-left-0': true}">
 					<div class="col-md-2 padding-right-0" *ngIf="room.collection && room.collection.length > 0" style="margin-left: 10px">
-						<img src="{{ envVariable.apiUrl + room.collection[0].imageUrls}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
+						<img src="{{ envVariable.apiUrl + room.collection[0].imageUrls + '/100'}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
 					</div>
 					<div class="col-md-2 padding-right-0" *ngIf="room.type === 'peer'"  style="margin-left: 10px">
-						<img src="{{ envVariable.apiUrl + room.participatingPeerImage}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
+						<img src="{{ envVariable.apiUrl + room.participatingPeerImage + '/100'}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
 					</div>
 					<div class="col-md-7 padding-left-10 padding-right-0 mat-body-2">
 						<div>{{ room.name | ucwords | shorten: 18 : '...' }}</div>

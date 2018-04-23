@@ -31,7 +31,7 @@ export class CollectionService {
 		const collections = [];
 		if (userId) {
 			this.httpClient
-				.get(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections')
+				.get(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections', this.options)
 				.subscribe(
 					(response: any) => {
 						const responseObj = response;
@@ -52,7 +52,7 @@ export class CollectionService {
 	public getOwnedCollections(userId, options: string, cb) {
 		if (userId) {
 			this.httpClient
-				.get(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections?' + 'filter=' + options)
+				.get(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections?' + 'filter=' + options, this.options)
 				.subscribe(res => {
 					cb(null, res);
 				}, err => {
@@ -64,7 +64,7 @@ export class CollectionService {
 	public getParticipatingCollections(userId, options: any, cb) {
 		if (userId) {
 			this.httpClient
-				.get(environment.apiUrl + '/api/peers/' + userId + '/collections?' + 'filter=' + options)
+				.get(environment.apiUrl + '/api/peers/' + userId + '/collections?' + 'filter=' + options, this.options)
 				.map((response) => {
 					console.log(response);
 					cb(null, response);
@@ -76,13 +76,13 @@ export class CollectionService {
 	
 	public getAllCollections(options: any) {
 		return this.httpClient
-			.get(environment.apiUrl + '/api/collections?' + 'filter=' + JSON.stringify(options))
+			.get(environment.apiUrl + '/api/collections?' + 'filter=' + JSON.stringify(options), this.options)
 			.map(response => response);
 	}
 	
 	public getCollectionDetails(id: string) {
 		return this.httpClient
-			.get(environment.apiUrl + '/api/collections/' + id)
+			.get(environment.apiUrl + '/api/collections/' + id, this.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -92,7 +92,7 @@ export class CollectionService {
 	public getCollectionDetail(id: string, param: any) {
 		const filter = JSON.stringify(param);
 		return this.httpClient
-			.get(environment.apiUrl + '/api/collections/' + id + '?filter=' + filter)
+			.get(environment.apiUrl + '/api/collections/' + id + '?filter=' + filter, this.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -106,8 +106,8 @@ export class CollectionService {
 		const body = {
 			'type': type
 		};
-		return this.httpClient.post(environment.apiUrl + '/api/peers/'
-			+ userId + '/ownedCollections', body, this.options).map(
+		return this.httpClient.post(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections', body, this.options)
+			.map(
 			(response) => response, (err) => {
 				console.log('Error: ' + err);
 			}
@@ -118,8 +118,8 @@ export class CollectionService {
 	 * postCollection
 	 */
 	public postCollectionWithData(userId, data: any) {
-		return this.httpClient.post(environment.apiUrl + '/api/peers/'
-			+ userId + '/ownedCollections', data, this.options).map(
+		return this.httpClient.post(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections', data, this.options)
+			.map(
 			(response) => response, (err) => {
 				console.log('Error: ' + err);
 			}
@@ -130,32 +130,28 @@ export class CollectionService {
 	 * patchCollection
 	 */
 	public patchCollection(collectionId: string, body: any) {
-		return this.httpClient.patch(environment.apiUrl +
-			'/api/collections/' + collectionId, body, this.options);
+		return this.httpClient.patch(environment.apiUrl + '/api/collections/' + collectionId, body, this.options);
 	}
 	
 	/**
 	 * patchCalendar
 	 */
 	public patchCalendar(calendarId: string, body: any) {
-		return this.httpClient.patch(environment.apiUrl +
-			'/api/calendars/' + calendarId, body, this.options);
+		return this.httpClient.patch(environment.apiUrl + '/api/calendars/' + calendarId, body, this.options);
 	}
 	
 	/**
 	 * deleteCollection
 	 */
 	public deleteCollection(collectionId: string) {
-		return this.httpClient.delete(environment.apiUrl +
-			'/api/collections/' + collectionId);
+		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId, this.options);
 	}
 	
 	/**
 	 * delete Calendar
 	 */
 	public deleteCalendar(calendarId: string) {
-		return this.httpClient.delete(environment.apiUrl +
-			'/api/calendars/' + calendarId);
+		return this.httpClient.delete(environment.apiUrl + '/api/calendars/' + calendarId, this.options);
 	}
 	
 	/**
@@ -175,8 +171,7 @@ export class CollectionService {
 	 * removeParticipant
 	 */
 	public removeParticipant(collectionId: string, participantId: string) {
-		return this.httpClient.delete(environment.apiUrl +
-			'/api/collections/' + collectionId + '/participants/rel/' + participantId);
+		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/participants/rel/' + participantId, this.options);
 	}
 	/* Submit workshop for Review */
 	public submitForReview(id: string) {
@@ -878,7 +873,8 @@ export class CollectionService {
 	}
 	
 	public updateAvailability(collectionId: string, body: any) {
-		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/availability').flatMap(
+		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/availability', this.options)
+			.flatMap(
 			res => {
 				return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/availability', body, this.options)
 					.map((response: any) => response);
@@ -887,7 +883,7 @@ export class CollectionService {
 	}
 	
 	public deleteAvailability(collectionId: string, availabilityId: any) {
-		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/availability/' + availabilityId);
+		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/availability/' + availabilityId, this.options);
 	}
 	
 	public addAvailability(collectionId: string, body: any) {
@@ -919,8 +915,7 @@ export class CollectionService {
 					// Each of the created content node is linked to all of the Availabilities (time slots) of that request
 					availabilities[index].forEach(element => {
 						availabilityLinkRequestArray.push(
-							this.httpClient.put(environment.apiUrl + '/api/contents/'
-								+ savedContent.id + '/availabilities/rel/' + element.id, this.options)
+							this.httpClient.put(environment.apiUrl + '/api/contents/' + savedContent.id + '/availabilities/rel/' + element.id, this.options)
 						);
 					});
 					// The created content nodes are linked to the logged In user as the owner of this request
