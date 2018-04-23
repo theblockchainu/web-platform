@@ -1,11 +1,14 @@
-<div class="main-content" style="background: #fff; padding: 0px; min-height: 100vh;">
+<div style="background: #fff; padding: 0px; min-height: 100vh;" [class.main-content]="!mobileQuery.matches" [class.mobile-main-content]="mobileQuery.matches">
   <mat-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: scroll; background: #ffffff;">
-    <mat-sidenav mode="side" opened>
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" [(opened)]="!mobileQuery.matches">
       <app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
     </mat-sidenav>
     <!-- Page Content -->
     <mat-sidenav-content>
-      <div class="navbar-page-content" [ngClass]="{'step5Background': showBackground}" style="padding: 25px 50px 25px 100px; max-height: 100vh; min-height: 100vh; overflow-y: scroll">
+      <div class="navbar-page-content" [ngClass]="{'step5Background': showBackground}">
+        <button *ngIf="mobileQuery.matches" class="side-nav-toggle-button pull-left" mat-icon-button (click)="snav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
         <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && experience.controls['status'].value !== 'active'">
           <button mat-button (click)="saveandexit()">
             <span *ngIf="!busySave">Save &amp; Exit</span>
@@ -36,7 +39,7 @@
         <!--Disclaimer-->
         <div class="onboarding step-1" [hidden]="step!=1">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Peerbuds Experience Guidelines</h2>
               <p class="subtitle">Peerbuds is a platform dedicated to connecting people who are forward thinking, passionate about education,
                 and open-minded in general. We're pretty sure that each individual who joins our community is a cool, high-caliber
@@ -67,7 +70,7 @@
         <!-- step 1 starts here -->
         <div class="onboarding step-2" [hidden]="step!=2">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">What topics does this experience cover?</h2>
               <p class="subtitle">Select topics that this experience covers</p>
               <br/>
@@ -140,7 +143,7 @@
 
         <div class="onboarding step-3" [hidden]="step!=3">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Which language will you host in?</h2>
               <p class="subtitle">You will write your descriptions and present your experience in this language. Guests will be notified of this
                 in your experience description.</p>
@@ -174,7 +177,7 @@
         <!-- step 4 ends here  -->
         <div class="onboarding step-4" [hidden]="step!=4">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Introduce yourself as a Host</h2>
               <p class="subtitle">Describe yourself and tell guests how you came to be passionate about hosting this experience.</p>
 
@@ -206,7 +209,7 @@
         <!--Disclaimer-->
         <div class="onboarding step-5" [hidden]="step!=5">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="background: #eeeeeedd; padding: 20px;">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8" style="background: #eeeeeedd; padding: 20px;">
               <h2 class="title">Create the page learners will see</h2>
               <p class="subtitle" style="color: #333333;">Write in a clear, straightforward and friendly way. We'll prompt you on when to show off your personality and
                 be more descriptive.
@@ -228,7 +231,7 @@
         <!-- Step 6 - Title -->
         <div class="onboarding step-6" [hidden]="step!=6">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
                 <div class="row">
                   <div class="col-sm-12 margin-bottom-30">
@@ -302,7 +305,7 @@
         <!-- step 7 - Description  -->
         <div class="onboarding step-7" [hidden]="step!=7">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
                 <div class="row">
                   <div class="col-sm-12 margin-bottom-30">
@@ -329,7 +332,7 @@
         <!-- step 8 Difficulty Level-->
         <div class="onboarding step-8" [hidden]="step!=8">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
                 <h2 class="title">Who should come?</h2>
                 <p class="subtitle">Start with a level of difficulty</p>
@@ -364,7 +367,7 @@
         <!-- Step 9 - Max Spots -->
         <div class="onboarding step-9" [hidden]="step!=9">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">How many seats are available in each cohort? </h2>
               <p class="subtitle">
                 Remember to keep your experience as personal as possible.
@@ -398,7 +401,7 @@
         <!-- step 10 Photos -->
         <div class="onboarding step-10" [hidden]="step!=10">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Showcase your experience</h2>
               <p class="subtitle">
                 Give the world a taste of your experience by showcasing captivating videos and/or photos
@@ -450,7 +453,7 @@
         <!-- step 11 - Price -->
         <div class="onboarding step-11" [hidden]="step!=11">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
                 <h2 class="title">Set a price per student</h2>
                 <p class="subtitle">
@@ -465,7 +468,7 @@
                 </div>
                 <br/>
                 <div class="row margin-left-0" *ngIf="!freeExperience">
-                  <div class="col-md-3 padding-left-0">
+                  <div class="col-md-3 col-xs-2 padding-left-0">
                     <mat-form-field [floatLabel]="'never'" class="margin-top-20">
                       <span matPrefix>
                         {{0 | currency: experience.controls['currency'].value : 'symbol' | slice:0:1}} &nbsp;
@@ -473,7 +476,7 @@
                       <input type="number" matInput #price formControlName="price" placeholder="0" min="1" required>
                     </mat-form-field>
                   </div>
-                  <div class="col-md-2 col-md-offset-2">
+                  <div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-4">
                     <mat-form-field [floatLabel]="'never'">
                       <mat-select formControlName="currency" class="padding-top-0 margin-top-20" placeholder="USD">
                         <mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
@@ -485,7 +488,7 @@
                 <div class="row margin-left-0">
                   <div class="col-sm-12 padding-left-0">
                     Students will get a full refund if they cancel within &nbsp;
-                    <mat-form-field [floatLabel]="'never'" style="width: 15%;">
+                    <mat-form-field [floatLabel]="'never'">
                       <mat-select formControlName="cancellationPolicy" placeholder="3 Days">
                         <mat-option *ngFor="let cp of cancellationPolicies" [value]="cp">{{cp}}</mat-option>
                       </mat-select>
@@ -508,7 +511,7 @@
         <!--Step 12 - Disclaimer-->
         <div class="onboarding step-12" [hidden]="step!=12">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Add content to your Experience</h2>
               <form [formGroup]="experience">
                 <p class="subtitle">Create a detailed timeline of your experience and add content for every event in your itinerary. Learners
@@ -526,7 +529,7 @@
         <!--Step 13 - Itinerary-->
         <div class="onboarding step-13" [hidden]="step!=13">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Set your default timelime</h2>
               <p class="subtitle">
                 Create a default timeline for your experience and add activities to it. Later on, you can create as many cohorts with specific
@@ -536,14 +539,14 @@
                 <!--(ngSubmit)="submitTimeline(timeline)" -->
                 <div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
                   <div class="row" style="margin: 30px 0px 15px -15px;">
-                    <div class="col-sm-6">
+                    <div class="col-xs-6">
                       <mat-form-field [floatLabel]="'auto'" class="dateStyles">
                         <input matInput [matDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate" disabled>
                         <mat-datepicker-toggle matSuffix [for]="startDatePicker" class="svgStyle {{activeExperience}}"></mat-datepicker-toggle>
                         <mat-datepicker touchUi="true" #startDatePicker disabled="false"></mat-datepicker>
                       </mat-form-field>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-xs-6">
                       <mat-form-field [floatLabel]="'auto'" class="dateStyles">
                         <input matInput [matDatepicker]="endDatePicker" [min]="timeline.controls['calendar'].value.startDate" placeholder="End date"
                           formControlName="endDate" disabled>
@@ -587,7 +590,7 @@
         <!--Step 14 - Submit for review-->
         <div class="onboarding step-14" [hidden]="step!=14">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Review and submit</h2>
               <div *ngIf="!isSubmitted">
                 <div style="margin-top:40px;">
@@ -619,7 +622,7 @@
         </div>
         <div class="onboarding step-15" [hidden]="step!=15">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Do you want to provide your phone number to learners?</h2>
               <div class="subtitle">Phone numbers make it easy for learners to reach out to you in case of urgent queries.</div>
               <form [formGroup]="phoneDetails">
@@ -668,7 +671,7 @@
         </div>
         <div class="onboarding step-16" [hidden]="step!=16">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Connect Payment Option</h2>
               <div class="subtitle">Choose from available payout options or add a new one</div>
               <div class="row loading-container" style="padding-top: 10px; padding-bottom: 10px;" *ngIf="payoutLoading">

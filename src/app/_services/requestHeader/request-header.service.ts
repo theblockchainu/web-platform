@@ -42,4 +42,14 @@ export class RequestHeaderService {
 		return options;
 	}
 	
+	getMediaOptions() {
+		const headers = new HttpHeaders({
+			'access_token': this.access_token
+		});
+		const options = new RequestOptions();
+		options.headers = headers;
+		options.withCredentials = true;
+		return options;
+	}
+	
 }

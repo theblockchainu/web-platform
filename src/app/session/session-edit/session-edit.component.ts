@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import 'rxjs/add/operator/switchMap';
@@ -24,6 +24,7 @@ import { PaymentService } from '../../_services/payment/payment.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { environment } from '../../../environments/environment';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
 	selector: 'app-session-edit',
@@ -168,6 +169,11 @@ export class SessionEditComponent implements OnInit {
 	public preferencesForm: FormGroup;
 	public calendarEvent = 'add';
 	public nowTime = moment().format('hh:mm:ss');
+
+	mobileQuery: MediaQueryList;
+	private _mobileQueryListener: () => void;
+
+
 	constructor(
 		public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -187,6 +193,8 @@ export class SessionEditComponent implements OnInit {
 		private _paymentService: PaymentService,
 		private location: Location,
 		public _profileService: ProfileService,
+		private media: MediaMatcher,
+		private cd: ChangeDetectorRef
 	) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
@@ -317,6 +325,13 @@ export class SessionEditComponent implements OnInit {
 		this._VIDEO = document.querySelector('#main-video');
 		this.years = this.getYearsArray();
 		this.events = [];
+
+
+		this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
+		this._mobileQueryListener = () => this.cd.detectChanges();
+		this.mobileQuery.addListener(this._mobileQueryListener);
+
+
 	}
 
 	private getTeachingTopics() {
@@ -559,7 +574,7 @@ export class SessionEditComponent implements OnInit {
 		this.payoutAccounts = [];
 		this._paymentService.retrieveConnectedAccount().subscribe(result => {
 			this.payoutAccounts = result;
-			result.forEach(account => {
+			Array.from(this.payoutAccounts).forEach(account => {
 				if (this.payoutRuleNodeId && this.payoutRuleAccountId && account.payoutaccount.id === this.payoutRuleAccountId) {
 					this.paymentInfo.controls['id'].patchValue(this.payoutRuleAccountId);
 				}

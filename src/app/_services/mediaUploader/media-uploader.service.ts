@@ -15,7 +15,8 @@ export class MediaUploaderService {
 		private requestHeaderService: RequestHeaderService
 	) {
 		this.envVariable = environment;
-		this.options = this.requestHeaderService.getOptions();
+		this.options = this.requestHeaderService.getMediaOptions();
+		delete this.options.headers['Content-type'];
 	}
 	
 	public upload(file) {
