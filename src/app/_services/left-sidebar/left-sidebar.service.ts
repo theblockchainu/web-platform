@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
+import {RequestHeaderService} from '../requestHeader/request-header.service';
 
 export class SideBarMenuItem {
     active: boolean;
@@ -16,14 +17,17 @@ export class SideBarMenuItem {
 export class LeftSidebarService {
 
     sidebarMenuItems: Observable<SideBarMenuItem>;
-
+	private options;
     constructor(
         private http: HttpClient,
-        private route: ActivatedRoute, public router: Router
-    ) { }
+        public router: Router,
+		private requestHeaderService: RequestHeaderService
+    ) {
+    	this.options = this.requestHeaderService.getOptions();
+	}
 
     public getMenuItems(fileLocation: string): Observable<SideBarMenuItem> {
-        return this.http.get(fileLocation)
+        return this.http.get(fileLocation, this.options)
             .map((response: any) => {
                 return response;
             });

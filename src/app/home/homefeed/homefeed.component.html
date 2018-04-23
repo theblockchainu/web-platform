@@ -21,7 +21,7 @@
                 <div class="continueLearning-card" *ngFor="let collection of ongoingArray; let i =index">
                     <a *ngIf="i<3" [routerLink]="'/workshop/'+collection.id+'/calendar/' + getLearnerCalendar(collection).id + '/' + getLearnerUpcomingEvent(collection).id">
                         <div class="">
-                            <img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl !== undefined" src="{{envVariable.apiUrl+getLearnerUpcomingEvent(collection).imageUrl}}"
+                            <img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl !== undefined" src="{{envVariable.apiUrl+getLearnerUpcomingEvent(collection).imageUrl + '/500'}}"
                                 alt="workshpImg">
                             <img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl === undefined" src="/assets/images/no-image.jpg"
                                 alt="workshpImg">
@@ -150,7 +150,7 @@
                     </span>
                     <a *ngIf="i<5" [routerLink]="'/experience/'+experience.id">
                         <div class="">
-                            <div class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + experience.imageUrls[0] + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
+                            <div class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + experience.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
                                 <div class="recommendation-city" [ngClass]="{'hidden': cardInFocus}">
                                     <mat-icon style="top: 2px; position: relative; color: white; font-size: 15px;">
                                         place
@@ -237,7 +237,7 @@
                     </span>
                     <a *ngIf="i<5" [routerLink]="'/community/'+community.id">
                         <div class="">
-                            <div class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + community.imageUrls[0] + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
+                            <div class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + community.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
                                 <div class="community-title">
                                     <div class="mat-headline" style="color: #ffffff; margin-bottom: 0px;">{{community.title | ucwords}}</div>
                                 </div>
@@ -280,7 +280,7 @@
                 <div class="peer-recommendation-card" *ngFor="let peer of peers">
                     <a [routerLink]="'/profile/'+peer.id">
                         <div class="">
-                            <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url}}"
+                            <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url + '/300'}}"
                                 alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
                             <img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="workshpImg"
                                 (error)="_collectionService.userImgErrorHandler($event)">

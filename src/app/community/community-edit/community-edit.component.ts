@@ -422,7 +422,7 @@ export class CommunityEditComponent implements OnInit {
       });
 
     if (this.interests.length === 0) {
-      this.http.get(environment.searchUrl + '/api/search/topics')
+      this.http.get(environment.searchUrl + '/api/search/topics', this.options)
         .map((response: any) => {
           this.suggestedTopics = response.slice(0, 7);
         }).subscribe();
@@ -499,11 +499,10 @@ export class CommunityEditComponent implements OnInit {
 
   public removed(event) {
     const body = {};
-    const options = {};
     this.removedInterests = event;
     if (this.removedInterests.length !== 0) {
       this.removedInterests.forEach((topic) => {
-        this.http.delete(environment.apiUrl + '/api/collections/' + this.communityId + '/topics/rel/' + topic.id, options)
+        this.http.delete(environment.apiUrl + '/api/collections/' + this.communityId + '/topics/rel/' + topic.id, this.options)
           .map((response) => {
             console.log(response);
           }).subscribe();
@@ -739,7 +738,7 @@ export class CommunityEditComponent implements OnInit {
   public submitTimeline(collectionId, data: FormGroup) {
     const body = data.value.calendar;
     if (body.startDate && body.endDate) {
-      this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body)
+      this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body, this.options)
         .map((response) => {
           // console.log(this.step);
           // this.step++;
@@ -772,7 +771,7 @@ export class CommunityEditComponent implements OnInit {
 
     if (topicArray.length !== 0) {
       let observable: Observable<any>;
-      observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.communityId + '/topics/rel', body)
+      observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.communityId + '/topics/rel', body, this.options)
         .map(response => response).publishReplay().refCount();
       observable.subscribe((res) => {
         this.step++;
@@ -976,7 +975,7 @@ export class CommunityEditComponent implements OnInit {
   deleteFromContainer(fileUrl, fileType) {
     const fileurl = fileUrl;
     fileUrl = _.replace(fileUrl, 'download', 'files');
-    this.http.delete(environment.apiUrl + fileUrl)
+    this.http.delete(environment.apiUrl + fileUrl, this.options)
       .map((response) => {
         console.log(response);
         if (fileType === 'video') {
@@ -1000,7 +999,7 @@ export class CommunityEditComponent implements OnInit {
       let file = event.target.files[i];
       const fileurl = file;
       file = _.replace(file, 'download', 'files');
-      this.http.delete(environment.apiUrl + file)
+      this.http.delete(environment.apiUrl + file, this.options)
         .map((response) => {
           console.log(response);
           if (fileType === 'video') {

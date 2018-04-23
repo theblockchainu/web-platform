@@ -182,7 +182,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
 	}
 	
 	public onSelect(collection) {
-		this.router.navigate([collection.type, collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
+		this.router.navigate([collection.type, collection.id, 'edit', collection.stage && collection.stage.length > 0 ? collection.stage : 1]);
 	}
 	
 	/**

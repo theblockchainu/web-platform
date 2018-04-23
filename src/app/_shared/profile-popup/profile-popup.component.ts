@@ -33,7 +33,7 @@ export class ProfilePopupComponent implements OnInit {
       hasBackdrop: false,
       width: '250px',
       data: this.peer,
-      panelClass: ['responsive-dialog', 'responsive-fixed-position'],
+      panelClass: 'responsive-fixed-position',
       position: {
         left: (event.x + 20) + 'px',
         top: (event.y - 220) + 'px'

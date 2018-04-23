@@ -127,7 +127,7 @@
 						<div class="seperate-section padding-top-0">
 							<div class="display-table">
 								<div class="margin-bottom-10">
-									<img class="bookSessionPeerImage" [src]="envVariable.apiUrl + session.owners[0].profiles[0].picture_url" alt="image" (error)="_collectionService.userImgErrorHandler($event)" />
+									<img class="bookSessionPeerImage" [src]="envVariable.apiUrl + session.owners[0].profiles[0].picture_url + '/300'" alt="image" (error)="_collectionService.userImgErrorHandler($event)" />
 								</div>
 								<div class="fs-17">Peer Session
 									<br>

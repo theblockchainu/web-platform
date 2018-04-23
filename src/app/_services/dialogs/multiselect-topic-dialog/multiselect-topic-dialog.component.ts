@@ -153,7 +153,7 @@ export class MultiselectTopicDialogComponent implements OnInit {
 			}
 			if (this.searchUrl) {
 				const finalSearchURL = this.searchUrl + this.query;
-				this.http.get(finalSearchURL)
+				this.http.get(finalSearchURL, this.options)
 					.map((res: any) => {
 						this.loadingSuggestions = false;
 						this.filteredList = [];

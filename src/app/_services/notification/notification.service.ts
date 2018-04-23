@@ -26,7 +26,7 @@ export class NotificationService {
     public getNotifications(userId, options: any, cb) {
         if (userId) {
             this.http
-                .get(environment.apiUrl + '/api/peers/' + userId + '/notifications?' + 'filter=' + options)
+                .get(environment.apiUrl + '/api/peers/' + userId + '/notifications?' + 'filter=' + options, this.options)
                 .map((response) => {
                     console.log(response);
                     cb(null, response);

@@ -29,7 +29,7 @@ export class CommunityService {
     public getCommunityDetail(id: string, param: any) {
         const filter = JSON.stringify(param);
         return this.http
-            .get(environment.apiUrl + '/api/communities/' + id + '?filter=' + filter)
+            .get(environment.apiUrl + '/api/communities/' + id + '?filter=' + filter, this.options)
             .map((response: any) => response, (err) => {
                 console.log('Error: ' + err);
             });
@@ -64,8 +64,7 @@ export class CommunityService {
      * removeParticipant
      */
     public removeParticipant(communityId: string, participantId: string) {
-        return this.http.delete(environment.apiUrl +
-            '/api/communities/' + communityId + '/participants/rel/' + participantId);
+        return this.http.delete(environment.apiUrl + '/api/communities/' + communityId + '/participants/rel/' + participantId, this.options);
     }
 
     /**
@@ -251,8 +250,7 @@ export class CommunityService {
      * @returns {Observable<any>}
      */
     public deleteCommunity(communityId: string) {
-        return this.http.delete(environment.apiUrl +
-            '/api/communities/' + communityId);
+        return this.http.delete(environment.apiUrl + '/api/communities/' + communityId, this.options);
     }
 
     public getActiveTab() {

@@ -53,7 +53,7 @@
                     </span>
                     <a *ngIf="i<5" [routerLink]="'/community/'+community.id">
                         <div class="">
-                            <div class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + community.imageUrls[0] + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
+                            <div class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + community.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
                                 <div class="community-title">
                                     <div class="mat-headline" style="color: #ffffff; margin-bottom: 0px;">{{community.title | ucwords}}</div>
                                 </div>

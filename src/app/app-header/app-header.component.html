@@ -47,7 +47,7 @@
 				<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async)">
 					Learn
 				</button>
-				<button mat-button class="headerButtons show-small" (click)="showSearchBar()" *ngIf="(isLoggedIn | async)" style="display: inline-block !important;">
+				<button mat-button class="headerButtons show-small-inline" (click)="showSearchBar()" *ngIf="(isLoggedIn | async)">
 					<mat-icon>search</mat-icon>
 				</button>
 				<button mat-button class="headerButtons" #notificationsButton (click)="openNotificationsDialog()" *ngIf="(isLoggedIn | async)">
@@ -68,7 +68,7 @@
 				<div class="headerButtons" [matMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem; cursor: pointer; display: inline-block; margin: 0 15px;">
 					<div>
 						<img *ngIf="!profile.picture_url" src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb">
-						<img *ngIf="profile.picture_url" src="{{envVariable.apiUrl + profile.picture_url}}" alt="A" class="circle-thumb">
+						<img *ngIf="profile.picture_url" src="{{envVariable.apiUrl + profile.picture_url + '/100'}}" alt="A" class="circle-thumb">
 					</div>
 				</div>
 

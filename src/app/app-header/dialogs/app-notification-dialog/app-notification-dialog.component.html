@@ -27,7 +27,7 @@
             <div [ngClass]="{'row': true, 'notificationsRow': true, 'notificationsRowUnread': !notification.seen}" (click)="onNotificationClick(notification)">
               <div class="col-md-2">
                 <img *ngIf="!notification.actor[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb notificationsImage">
-                <img *ngIf="notification.actor[0].profiles[0].picture_url" src="{{envVariable.apiUrl + notification.actor[0].profiles[0].picture_url}}"
+                <img *ngIf="notification.actor[0].profiles[0].picture_url" src="{{envVariable.apiUrl + notification.actor[0].profiles[0].picture_url + '/100'}}"
                   alt="A" class="circle-thumb notificationsImage">
               </div>
               <div class="col-md-8" style="padding-left: 25px;">

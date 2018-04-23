@@ -1,22 +1,22 @@
 <div class="topics-section" style="overflow: hidden; margin-bottom: 40px;">
-  <span class="floating-button-left">
-    <button color="none" (click)="translate(true)" mat-mini-fab>
-      <mat-icon>keyboard_arrow_left </mat-icon>
-    </button>
-  </span>
-  <div class="topic-bar" [ngStyle]="transformStyle">
-    <div class="topic-div" *ngFor="let topicObj of availableTopics;let i =index" id="topic{{i}}">
-      <button mat-button class="mat-border-button" #topicButton (click)="topicClicked(i)">
-          <div class="mat-button-table">
-              <img src="{{envVariable.apiUrl + topicObj.topic.imageUrl}}" alt="logo" (error)="_collectionService.imgErrorHandler($event)">
-              <h3>{{topicObj.topic.name | titlecase}}</h3>
-          </div>
-      </button>
-    </div>
-  </div>
-  <span class="floating-button-right">
-    <button color="none" (click)="translate(false)" mat-mini-fab>
-      <mat-icon>keyboard_arrow_right </mat-icon>
-    </button>
-  </span>
+	<span class="floating-button-left">
+		<button color="none" (click)="translate(true)" mat-mini-fab>
+			<mat-icon>keyboard_arrow_left </mat-icon>
+		</button>
+	</span>
+	<div class="topic-bar" [ngStyle]="transformStyle">
+		<div class="topic-div" *ngFor="let topicObj of availableTopics;let i =index" id="topic{{i}}">
+			<button mat-button class="mat-border-button" #topicButton (click)="topicClicked(i)">
+				<div class="mat-button-table">
+					<img src="{{envVariable.apiUrl + topicObj.topic.imageUrl + '/100'}}" alt="logo" (error)="_collectionService.imgErrorHandler($event)">
+					<h3>{{topicObj.topic.name | titlecase}}</h3>
+				</div>
+			</button>
+		</div>
+	</div>
+	<span class="floating-button-right">
+		<button color="none" (click)="translate(false)" mat-mini-fab>
+			<mat-icon>keyboard_arrow_right </mat-icon>
+		</button>
+	</span>
 </div>

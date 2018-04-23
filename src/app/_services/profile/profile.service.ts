@@ -80,8 +80,7 @@ export class ProfileService {
 						(response: any) => response
 					);
 			} else {
-				return this.http.get(environment.apiUrl + '/api/peers/' +
-					this._cookieUtilsService.getValue(this.key) + '?filter=' + JSON.stringify(filter), this.options)
+				return this.http.get(environment.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue(this.key) + '?filter=' + JSON.stringify(filter), this.options)
 					.map(
 						(response: any) => response
 					);
@@ -173,7 +172,7 @@ export class ProfileService {
 	/* Signup Verification Methods Starts*/
 	public getPeerNode(userId) {
 		return this.http
-			.get(environment.apiUrl + '/api/peers/' + userId)
+			.get(environment.apiUrl + '/api/peers/' + userId, this.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -205,8 +204,7 @@ export class ProfileService {
 		const redirect = 'onboarding';
 		console.log(inputToken);
 		return this.http
-			.post(environment.apiUrl + '/api/peers/confirmEmail?uid=' + userId +
-				'&token=' + inputToken + '&redirect=' + redirect, body, this.options)
+			.post(environment.apiUrl + '/api/peers/confirmEmail?uid=' + userId + '&token=' + inputToken + '&redirect=' + redirect, body, this.options)
 			.map((response: any) => response);
 		
 	}
@@ -243,8 +241,7 @@ export class ProfileService {
 	public getCollections(userId, filter?: any) {
 		if (userId) {
 			if (filter) {
-				return this.http.get(environment.apiUrl + '/api/peers/' + userId
-					+ '/ownedCollections?filter=' + JSON.stringify(filter), this.options)
+				return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections?filter=' + JSON.stringify(filter), this.options)
 					.map((response: any) => response, (err) => {
 						console.log('Error: ' + err);
 					});
@@ -318,8 +315,7 @@ export class ProfileService {
 				.flatMap(
 					(response) => {
 						return this.http
-							.post(environment.apiUrl + '/api/profiles/' + profileId +
-								'/emergency_contacts', this.sanitize(emergency_contact), this.options);
+							.post(environment.apiUrl + '/api/profiles/' + profileId + '/emergency_contacts', this.sanitize(emergency_contact), this.options);
 					}
 				).map((response) => response);
 		}
@@ -412,7 +408,7 @@ export class ProfileService {
 	 * getAllPeers
 	 */
 	public getAllPeers(query: any) {
-		return this.http.get(environment.apiUrl + '/api/peers?filter=' + JSON.stringify(query));
+		return this.http.get(environment.apiUrl + '/api/peers?filter=' + JSON.stringify(query), this.options);
 	}
 	
 	/**
@@ -420,22 +416,22 @@ export class ProfileService {
 	 */
 	public getLearningTopics(userId, query?: any) {
 		if (query) {
-			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/topicsLearning?filter=' + JSON.stringify(query))
+			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/topicsLearning?filter=' + JSON.stringify(query), this.options)
 				.map(response => response);
 		} else {
-			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/topicsLearning')
+			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/topicsLearning', this.options)
 				.map(response => response);
 		}
 		
 	}
 	
 	public getTeachingTopics(userId, query: any) {
-		return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching?filter=' + JSON.stringify(query))
+		return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching?filter=' + JSON.stringify(query), this.options)
 			.map(response => response);
 	}
 	
 	public getTeachingExternalTopics(userId: string, query: any) {
-		return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching?filter=' + JSON.stringify(query))
+		return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching?filter=' + JSON.stringify(query), this.options)
 			.map(response => response);
 	}
 	/**
@@ -443,14 +439,14 @@ export class ProfileService {
 	 */
 	public unfollowTopic(userId, type, topicId: string) {
 		if (type === 'learning') {
-			return this.http.delete(environment.apiUrl + '/api/peers/' + userId + '/topicsLearning/rel/' + topicId);
+			return this.http.delete(environment.apiUrl + '/api/peers/' + userId + '/topicsLearning/rel/' + topicId, this.options);
 		} else {
-			return this.http.delete(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId);
+			return this.http.delete(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId, this.options);
 		}
 	}
 	
 	public stopTeachingTopic(userId, topicId: string) {
-		return this.http.delete(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId);
+		return this.http.delete(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId, this.options);
 	}
 	/**
 	 * followTopic
@@ -503,7 +499,7 @@ export class ProfileService {
 	 * reportProfile
 	 */
 	public reportProfile(userId: string, body: any) {
-		return this.http.post(environment.apiUrl + '/api/peers/' + userId + '/flags', body)
+		return this.http.post(environment.apiUrl + '/api/peers/' + userId + '/flags', body, this.options)
 			.map(response => response);
 	}
 	
@@ -511,7 +507,7 @@ export class ProfileService {
 	 * approvePeer
 	 */
 	public approvePeer(peer: any) {
-		return this.http.post(environment.apiUrl + '/api/peers/' + peer.id + '/approve', {})
+		return this.http.post(environment.apiUrl + '/api/peers/' + peer.id + '/approve', {}, this.options)
 			.map(response => response);
 	}
 	
@@ -519,7 +515,7 @@ export class ProfileService {
 	 * approvePeer
 	 */
 	public rejectPeer(peer: any) {
-		return this.http.post(environment.apiUrl + '/api/peers/' + peer.id + '/reject', {})
+		return this.http.post(environment.apiUrl + '/api/peers/' + peer.id + '/reject', {}, this.options)
 			.map(response => response);
 	}
 	
@@ -620,6 +616,6 @@ export class ProfileService {
 	}
 	
 	public getJoinedCommunities(peerId: string, filter: any) {
-		return this.http.get(environment.apiUrl + '/api/peers/' + peerId + '/communities?filter=' + JSON.stringify(filter));
+		return this.http.get(environment.apiUrl + '/api/peers/' + peerId + '/communities?filter=' + JSON.stringify(filter), this.options);
 	}
 }

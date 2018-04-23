@@ -2,26 +2,31 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import {environment} from '../../../environments/environment';
+import {RequestHeaderService} from '../requestHeader/request-header.service';
 
 @Injectable()
 export class SearchService {
 
     public httpSubscription: any;
     public envVariable;
+    private options;
 
-    constructor(private router: Router,
-        private http: HttpClient) {
+    constructor(
+    	private router: Router,
+        private http: HttpClient,
+		private requestHeaderService: RequestHeaderService
+	) {
         this.envVariable = environment;
+        this.options = this.requestHeaderService.getOptions();
     }
-
-
+    
     public getAllSearchResults(userId, query: any, cb) {
         if (userId) {
             if (this.httpSubscription) {
                 this.httpSubscription.unsubscribe();
             }
             this.httpSubscription = this.http
-                .get(environment.searchUrl + '/searchAll?' + 'query=' + query)
+                .get(environment.searchUrl + '/searchAll?' + 'query=' + query, this.options)
                 .map((response) => {
                     console.log(response);
                     cb(null, response);
@@ -34,7 +39,7 @@ export class SearchService {
     public getCommunitySearchResults(userId, query: any, cb) {
         if (userId) {
             this.http
-                .get(environment.searchUrl + '/searchCommunity?' + 'query=' + query)
+                .get(environment.searchUrl + '/searchCommunity?' + 'query=' + query, this.options)
                 .map((response) => {
                     console.log(response);
                     cb(null, response);
@@ -80,16 +85,16 @@ export class SearchService {
 			case 'collection':
 				switch (option.data.type) {
 					case 'workshop':
-						return environment.apiUrl + option.data.imageUrls[0];
+						return environment.apiUrl + option.data.imageUrls[0] + '/100';
 					case 'experience':
-						return environment.apiUrl + option.data.imageUrls[0];
+						return environment.apiUrl + option.data.imageUrls[0] + '/100';
 					default:
-						return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] : '/assets/images/placeholder-image.jpg';
+						return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
 				}
 			case 'topic':
-				return environment.apiUrl + option.data.imageUrl;
+				return environment.apiUrl + option.data.imageUrl + '/100';
 			case 'community':
-				return environment.apiUrl + option.data.imageUrls[0];
+				return environment.apiUrl + option.data.imageUrls[0] + '/100';
 			case 'question':
 				return '/assets/images/placeholder-image.jpg';
 			case 'peer':
@@ -98,7 +103,7 @@ export class SearchService {
 				} else if (option.data.profiles[0] !== undefined && option.data.profiles[0].picture_url === undefined) {
 					return '/assets/images/user-placeholder.jpg';
 				} else {
-					return environment.apiUrl + option.data.profiles[0].picture_url;
+					return environment.apiUrl + option.data.profiles[0].picture_url + '/100';
 				}
 			default:
 				return;

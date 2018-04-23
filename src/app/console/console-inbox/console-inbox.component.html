@@ -25,10 +25,10 @@
 				<div class="row chatListItemContainer clickable" [ngClass]="{'backgroundColorGray': selectedRoom && room.id === selectedRoom.id}">
 					<div [ngClass]="{'col-md-12' : true, 'padding-left-0': true}">
                         <div class="col-md-2 padding-right-0" *ngIf="room.collection && room.collection.length > 0" style="margin-left: 10px">
-                            <img src="{{ envVariable.apiUrl + room.collection[0].imageUrls}}" alt=" " class="circle-thumb" (error)="_collectionService.imgErrorHandler($event)">
+                            <img src="{{ envVariable.apiUrl + room.collection[0].imageUrls + '/100'}}" alt=" " class="circle-thumb" (error)="_collectionService.imgErrorHandler($event)">
                         </div>
 						<div class="col-md-2 padding-right-0" *ngIf="room.type === 'peer'"  style="margin-left: 10px">
-							<img src="{{ envVariable.apiUrl + room.participatingPeerImage}}" alt=" " class="circle-thumb" (error)="_collectionService.userImgErrorHandler($event)">
+							<img src="{{ envVariable.apiUrl + room.participatingPeerImage + '/100'}}" alt=" " class="circle-thumb" (error)="_collectionService.userImgErrorHandler($event)">
                         </div>
 						<div class="col-md-7 padding-left-10 padding-right-0 mat-body-2">
                             <div>{{ room.name | ucwords | shorten: 18 : '...' }}</div>
@@ -100,7 +100,7 @@
 						</div>
 						<div *ngIf="message.type==='user' && message.peer !== undefined && message.peer.length !== 0" class="mat-caption">
                             <div (click)="_profileService.viewProfile(message.peer[0])" [ngClass]="{'col-md-1': true, 'clickable': true, 'review-thumb': true, 'pull-left': message.peer && message.peer.length > 0 && message.peer[0].id !== userId, 'pull-right': message.peer && message.peer.length > 0 && message.peer[0].id === userId}">
-                                <img src="{{ envVariable.apiUrl + message.peer[0].profiles[0].picture_url}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
+                                <img src="{{ envVariable.apiUrl + message.peer[0].profiles[0].picture_url + '/100'}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
 	                            <mat-icon *ngIf="selectedRoom.collection && selectedRoom.collection.length > 0 && message.peer && message.peer.length > 0 && message.peer[0].id === selectedRoom.collection[0].owners[0].id" class="teacherIndicator">radio_button_checked</mat-icon>
                             </div>
 							<div class="talk-bubble tri-right left-top round margin-bottom-20" style="margin-top:3px">

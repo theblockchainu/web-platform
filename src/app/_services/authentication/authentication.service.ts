@@ -1,7 +1,7 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
 import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
@@ -55,8 +55,6 @@ export class AuthenticationService {
 	 *  Login the user then tell all the subscribers about the new status
 	 */
 	login(email: string, password: string, rememberMe: boolean): any {
-		// localStorage.setItem('token', 'JWT');
-		// this.isLoginSubject.next(true);
 		const body = `{"email":"${email}","password":"${password}","rememberMe":${rememberMe}}`;
 		return this.http
 			.post(environment.apiUrl + '/auth/local', body, this.options)
@@ -68,7 +66,6 @@ export class AuthenticationService {
 				if (user && user.access_token) {
 					(<any>window).ga('user_id', user.userId);
 					this.isLoginSubject.next(true);
-					// this.getLoggedInUser.emit(user.userId);
 					this._socketService.addUser(user.userId);
 					location.reload();
 				}

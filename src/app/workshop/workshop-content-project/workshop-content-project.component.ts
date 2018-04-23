@@ -94,7 +94,7 @@ export class WorkshopContentProjectComponent implements OnInit {
     deleteFromContainer(fileUrl, fileType) {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
-        this.http.delete(environment.apiUrl + fileUrl)
+        this.http.delete(environment.apiUrl + fileUrl, this.options)
             .map((response) => {
                 console.log(response);
                 if (fileType === 'file') {

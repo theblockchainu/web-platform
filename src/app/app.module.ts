@@ -1,12 +1,11 @@
 import { BrowserModule, Meta, Title } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 import { GlobalErrorHandlerComponent } from './error-handler/globalerrorhandler';
 import { DefaultModule } from './default/default.module';
 import { AppRoutingModule } from './app-routing.module';
 import { DialogsModule } from './_services/dialogs/dialogs.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppFooterModule } from './app-footer/app-footer.module';
 import { CoreModule } from './_core/_core.module';
 import { TrustComponent } from './trust/trust.component';
@@ -45,7 +44,7 @@ import { ShortreadComponent } from './shortread/shortread.component';
 import { PrivatebetaComponent } from './privatebeta/privatebeta.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { LandingPageModule } from './landing-page/landing-page.module';
-Raven
+/*Raven
 	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
 	.install();
 
@@ -57,7 +56,7 @@ export class RavenErrorHandler implements ErrorHandler {
 	handleError(err: any): void {
 		Raven.captureException(err);
 	}
-}
+}*/
 
 
 
@@ -92,8 +91,10 @@ export class RavenErrorHandler implements ErrorHandler {
 	imports: [
 		BrowserModule,
 		CoreModule,
+		DialogsModule,
+		AppRoutingModule,
+		DefaultModule,
 		AppFooterModule,
-		BrowserAnimationsModule,
 		MatCardModule,
 		MatButtonModule,
 		MatMenuModule,
@@ -106,9 +107,6 @@ export class RavenErrorHandler implements ErrorHandler {
 		MatProgressBarModule,
 		MatTooltipModule,
 		MatListModule,
-		DialogsModule,
-		AppRoutingModule,
-		DefaultModule,
 		PdfViewerModule,
 		LoadingModule.forRoot({
 			animationType: ANIMATION_TYPES.threeBounce,
@@ -123,10 +121,10 @@ export class RavenErrorHandler implements ErrorHandler {
 	providers: [
 		CookieService,
 		UcWordsPipe,
-		{
+		/*{
 			provide: ErrorHandler,
 			useClass: RavenErrorHandler
-		},
+		},*/
 		Title,
 		Meta
 	],
