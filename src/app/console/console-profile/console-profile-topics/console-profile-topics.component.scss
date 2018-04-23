@@ -16,3 +16,15 @@
     pointer-events: none;
     color: lightgrey;
 }
+
+.consoleProfileTopicContainer {
+	margin-right: 20px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.consoleProfileTopicContainer {
+		padding: 0 20px;
+		margin-right: 0;
+	}
+}
