@@ -133,7 +133,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
   public payoutAccounts: Array<any>;
   public freeExperience = false;
   public currentDate: Date;
-  mobileQuery: MediaQueryList;
+  public mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
   // TypeScript public modifiers

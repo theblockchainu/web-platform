@@ -170,7 +170,7 @@ export class SessionEditComponent implements OnInit {
 	public calendarEvent = 'add';
 	public nowTime = moment().format('hh:mm:ss');
 
-	mobileQuery: MediaQueryList;
+	public mobileQuery: MediaQueryList;
 	private _mobileQueryListener: () => void;
 
 
