@@ -157,9 +157,9 @@ export class OnboardingComponent implements OnInit {
 	}
 	
 	back() {
-		if (this.step === 2 || this.step === '2') {
+		if (this.step === 2) {
 			this.router.navigate(['onboarding', '1']);
-		} else if (this.step === 1 || this.step === '1') {
+		} else if (this.step === 1) {
 			this.router.navigate(['app-upload-docs', '1']);
 		}
 	}
