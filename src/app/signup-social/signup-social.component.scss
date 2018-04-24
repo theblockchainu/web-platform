@@ -3,9 +3,6 @@
     padding: 60px 50px;
     border: 1px solid lightgrey;
     margin-bottom: 70px;
-    width: 48%;
-    margin-left: 26%;
-    margin-right: 26%;
     height: auto;
 }
 
@@ -40,4 +37,13 @@
     padding-top: 5px;
     padding-bottom: 5px;
     margin-left: 32%
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.signup-box {
+		width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+	}
 }

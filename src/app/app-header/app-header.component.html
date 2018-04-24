@@ -119,8 +119,8 @@
 		</mat-toolbar-row>
 		<mat-toolbar-row class="show-small" style="border-top: 1px solid #ddd;">
 			<div style="display: flex; height: 100%; width: 100%;">
-				<button mat-button class="headerButtons" [routerLink]="['/console/teaching/experiences']" *ngIf="(isLoggedIn | async)">
-					Experience
+				<button mat-button class="headerButtons" [routerLink]="['/home/homefeed']" *ngIf="(isLoggedIn | async)">
+					Explore
 				</button>
 				<button mat-button class="headerButtons" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)">
 					Teach
