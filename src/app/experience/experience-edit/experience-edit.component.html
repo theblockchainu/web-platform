@@ -1,756 +1,756 @@
 <div style="background: #fff; padding: 0px; min-height: 100vh;" [class.main-content]="!mobileQuery.matches" [class.mobile-main-content]="mobileQuery.matches">
-  <mat-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: scroll; background: #ffffff;">
-    <mat-sidenav #snav [mode]="mobileQuery.matches === true ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" [(opened)]="!mobileQuery.matches">
-      <app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
-    </mat-sidenav>
-    <!-- Page Content -->
-    <mat-sidenav-content>
-      <div class="navbar-page-content" [ngClass]="{'step5Background': showBackground}">
-        <button *ngIf="mobileQuery.matches" class="side-nav-toggle-button pull-left" mat-icon-button (click)="snav.toggle()">
-          <mat-icon>menu</mat-icon>
-        </button>
-        <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && experience.controls['status'].value !== 'active'">
-          <button mat-button (click)="saveandexit()">
-            <span *ngIf="!busySave">Save &amp; Exit</span>
-            <span *ngIf="busySave"> </span>
-            <ngx-loading [show]="busySave"></ngx-loading>
-          </button>
-        </div>
-        <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && experience.controls['status'].value === 'active'">
-          <button mat-button (click)="exit()">Exit</button>
-        </div>
-        <div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12">
-          <button mat-button (click)="openExperience()">
-            <span *ngIf="!busyPreview">Preview</span>
-            <span *ngIf="busyPreview"> </span>
-            <ngx-loading [show]="busyPreview"></ngx-loading>
-          </button>
-        </div>
-        <div class="pull-left">
-          <mat-chip-list>
-            <mat-chip>
-              {{experience.controls['status'].value | titlecase}}
-            </mat-chip>
-          </mat-chip-list>
-        </div>
-        <br/>
-        <br/>
-        <br/>
-        <!--Disclaimer-->
-        <div class="onboarding step-1" [hidden]="step!=1">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <h2 class="title">Peerbuds Experience Guidelines</h2>
-              <p class="subtitle">Peerbuds is a platform dedicated to connecting people who are forward thinking, passionate about education,
-                and open-minded in general. We're pretty sure that each individual who joins our community is a cool, high-caliber
-                person with unique talents and knowledge to share. That said, we'd like to establish just a few common-sense
-                expectations so our platform can continue to be as high quality as possible.
-              </p>
-              <ul class="guideline-points text-grey">
-                <li>Respect others and their differences. Not everyone on Peerbuds is going to have the same worldview, and that's
-                  actually a good thing. It's how we can learn from each other. Keep all comments and observations fair,
-                  controlled and as positive as possible.</li>
-                <li>Take your responsibilities seriously. Whether you sign up to learn or to teach (or both!), be sure to communicate
-                  with all your peers as necessary and always be on time to events.</li>
-                <li>You can't go wrong with the "golden rule." Treat everyone you meet on Peerbuds with the same basic courtesy
-                  and friendliness you'd like to be shown and you're pretty much good to go. Good vibes are infectious -
-                  everybody wins.
-                </li>
-              </ul>
-              <div class="margin-top-20">
-                <button mat-raised-button (click)="goto(2)" color="accent" class="pull-right">
-                  <span *ngIf="!busyBasics">Next</span>
-                  <span *ngIf="busyBasics"> </span>
-                  <ngx-loading [show]="busyBasics"></ngx-loading>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- step 1 starts here -->
-        <div class="onboarding step-2" [hidden]="step!=2">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <h2 class="title">What topics does this experience cover?</h2>
-              <p class="subtitle">Select topics that this experience covers</p>
-              <br/>
-              <form [formGroup]="interest1" (ngSubmit)="submitInterests()">
-                <div class="row">
-                  <div class="col-sm-12 margin-bottom-30">
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <app-multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
-                          [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
-                          [maxSelection]=maxTopics [minSelection]="1" [suggestedTopics]="suggestedTopics"></app-multiselect-autocomplete>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <span class="col-sm-4" style="font-size: 12px; color: #777">{{maxTopicMsg}}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <!--<div class="flex flexContainer margin-top-30">
-                  <button mat-button class="padding-left-0" type="button" color="grey" [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
-                      <mat-icon class="iconVC" color="accent">
-                        add
-                      </mat-icon><span class="addIconText">Add New Topic</span></button>
-                  <span class="flex"></span>
-                  &lt;!&ndash; <div class="col-sm-12 margin-top-30">
-                    <div class="text-uppercase text-grey margin-bottom-10">Suggested Topics</div>
-                  </div>
-                  <div class="col-sm-3">
-                    <div class="lookingFor interest">
-                      <div class="lookingFor-thumb" style="text-align: center; padding-top: 20%">
-                        <a mat-button [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
-                          <mat-icon style="font-size: 30px">
-                            add
-                          </mat-icon>
-                        </a>
-                      </div>
-                    </div>
-                  </div> &ndash;&gt;
-                  &lt;!&ndash; <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
-                    <div class="lookingFor interest">
-                      <label class="check">
-                        <mat-icon *ngIf="topic.checked" color="accent">
-                          check_circle
-                        </mat-icon>
-                      </label>
-                      <div class="lookingFor-thumb">
-                        <i class="topic.id"></i>
-                      </div>
-                      <span class="lookingForTitle captitalise">{{ topic.name }}</span>
-                    </div>
-                  </div> &ndash;&gt;
-                </div>-->
-                <div style="margin-top:60px;">
-                  <button mat-raised-button type="button" (click)="back()" color="accent">
-                    Back
-                  </button>
-                  <span class="pull-right" matTooltip="Add at least one interest to continue" [matTooltipDisabled]="interests.length !== 0">
-                    <button mat-raised-button color="accent" [disabled]="interests.length == 0">
-                      <span *ngIf="!busyInterest">Next</span>
-                      <span *ngIf="busyInterest"> </span>
-                      <ngx-loading [show]="busyInterest"></ngx-loading>
-                    </button>
-                  </span>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <div class="onboarding step-3" [hidden]="step!=3">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <h2 class="title">Which language will you host in?</h2>
-              <p class="subtitle">You will write your descriptions and present your experience in this language. Guests will be notified of this
-                in your experience description.</p>
-              <br/>
-              <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
-                <div class="row margin-top-60">
-                  <mat-form-field [floatLabel]="'always'" class="col-md-4">
-                    <input type="text" name="other_languages" style="border-bottom: 0px;" placeholder="Select Language" matInput formControlName="selectedLanguage"
-                      [matAutocomplete]="auto">
-                    <mat-autocomplete #auto="matAutocomplete">
-                      <mat-option *ngFor="let l of filteredLanguageOptions | async" [value]="l" (click)="languageChange(l)">{{l}}</mat-option>
-                    </mat-autocomplete>
-                  </mat-form-field>
-                </div>
-                <div style="margin-top:100px;">
-                  <button mat-raised-button type="button" (click)="back()" color="accent">
-                    Back
-                  </button>
-                  <span class="pull-right" matTooltip="Select a language to continue" [matTooltipDisabled]="selectedLanguages!==undefined">
-                    <button mat-raised-button color="accent" type="Submit" [disabled]="selectedLanguages===undefined">
-                      <span *ngIf="!busyLanguage">Next</span>
-                      <span *ngIf="busyLanguage"> </span>
-                      <ngx-loading [show]="busyLanguage"></ngx-loading>
-                    </button>
-                  </span>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!-- step 4 ends here  -->
-        <div class="onboarding step-4" [hidden]="step!=4">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <h2 class="title">Introduce yourself as a Host</h2>
-              <p class="subtitle">Describe yourself and tell guests how you came to be passionate about hosting this experience.</p>
-
-              <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
-                <div class="row margin-bottom-30 margin-top-30" style="margin-top: 30px;">
-                  <div class="col-sm-12">
-                    <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
-                      <textarea matInput #aboutHost maxlength="500" rows="4" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
-                      <mat-hint align="end">{{aboutHost.value.length}} / 500</mat-hint>
-                    </mat-form-field>
-                  </div>
-                </div>
-                <div style="margin-top:50px;">
-                  <button mat-raised-button type="button" (click)="back()" color="accent">
-                    Back
-                  </button>
-                  <span class="pull-right" matTooltip="A brief description about yourself is mandatory to continue" [matTooltipDisabled]="aboutHost.value.length !== 0">
-                    <button mat-raised-button color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">
-                      <span *ngIf="!busyHost">Next</span>
-                      <span *ngIf="busyHost"> </span>
-                      <ngx-loading [show]="busyHost"></ngx-loading>
-                    </button>
-                  </span>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!--Disclaimer-->
-        <div class="onboarding step-5" [hidden]="step!=5">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8" style="background: #eeeeeedd; padding: 20px;">
-              <h2 class="title">Create the page learners will see</h2>
-              <p class="subtitle" style="color: #333333;">Write in a clear, straightforward and friendly way. We'll prompt you on when to show off your personality and
-                be more descriptive.
-              </p>
-              <br/>
-              <div style="margin-top:60px;">
-                <button mat-raised-button type="button" (click)="back()" color="accent">
-                  Back
-                </button>
-                <a mat-raised-button (click)="goto(6)" color="accent" class="pull-right">
-                  <span *ngIf="!busyExperiencePage">Next</span>
-                  <span *ngIf="busyExperiencePage"> </span>
-                  <ngx-loading [show]="busyExperiencePage"></ngx-loading>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Step 6 - Title -->
-        <div class="onboarding step-6" [hidden]="step!=6">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
-                <div class="row">
-                  <div class="col-sm-12 margin-bottom-30">
-                    <div class="form-group">
-                      <h2 class="title">Cover</h2>
-                      <p class="subtitle">
-                        Make it short and sweet
-                      </p>
-                      <br/>
-                      <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
-                        <input matInput #title formControlName="title" maxlength="100" placeholder="Enter Name">
-                        <mat-hint align="start">{{100 - title.value.length}} more characters needed</mat-hint>
-                        <mat-hint align="end">{{title.value.length}} / 100</mat-hint>
-                      </mat-form-field>
-                    </div>
-                  </div>
-                  <div class="col-sm-12 margin-bottom-30">
-                    <div class="form-group">
-                      <h2 class="title">Headline</h2>
-                      <p class="subtitle">
-                        Clearly describe your experience in one short, catchy sentence.
-                        <br/> Start with a verb that tells peers what they will do.
-                      </p>
-                      <br/>
-                      <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
-                        <input matInput #headline formControlName="headline" maxlength="100" placeholder="Write headline">
-                        <mat-hint align="start">{{100 - headline.value.length}} more characters needed</mat-hint>
-                        <mat-hint align="end">{{headline.value.length}} / 100</mat-hint>
-                      </mat-form-field>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-8">
-                    <div class="stepHeader margin-top-20">Upload an image for your cover</div>
-                    <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
-                      maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
-                      <ng-template pTemplate="toolbar">
-                        <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
-                      </ng-template>
-                    </p-fileUpload>
-                    <h5>Max File Size
-                      <b>10MB</b>
-                    </h5>
-                    <div *ngIf="urlForImages.length" class="pic delete">
-                      <div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
-                        <img src="{{envVariable.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
-                        <mat-icon (click)="deleteFromContainer(file, 'image')" class="delete-button">close</mat-icon>
-                      </div>
-                    </div>
-                    <div class="loading-container" [hidden]="!uploadingImage">
-                      <ngx-loading [show]="true"></ngx-loading>
-                    </div>
-                  </div>
-                </div>
-
-                <div style="margin-top:60px;">
-                  <button mat-raised-button type="button" (click)="back()" color="accent">
-                    Back
-                  </button>
-                  <span class="pull-right" matTooltip="Please type in a headline to continue." [matTooltipDisabled]="title.value.length !== 0 || headline.value.length !== 0">
-                    <span matTooltip="An image is mandatory to continue" [matTooltipDisabled]="urlForImages.length !== 0">
-                      <button mat-raised-button color="accent" type="Submit" [disabled]="urlForImages.length === 0 || title.value.length === 0 || headline.value.length === 0">Next</button>
-                    </span>
-                  </span>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!-- step 7 - Description  -->
-        <div class="onboarding step-7" [hidden]="step!=7">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
-                <div class="row">
-                  <div class="col-sm-12 margin-bottom-30">
-                    <h2 class="title">What’s the experience about?</h2>
-                    <p class="subtitle">Give a detailed description to learners of what they will do in this experience</p>
-                    <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                      <textarea matInput #description maxlength="800" rows="4" formControlName="description" placeholder="What we'll do in this experience?"></textarea>
-                      <mat-hint align="end">{{description.value.length}} / 800</mat-hint>
-                    </mat-form-field>
-                  </div>
-                </div>
-                <div style="margin-top:60px;">
-                  <button mat-raised-button type="button" (click)="back()" color="accent">
-                    Back
-                  </button>
-                  <span class="pull-right" matTooltip="Describe your experience in detail to continue" [matTooltipDisabled]="description.value.length !== 0">
-                    <button mat-raised-button color="accent" type="Submit" [disabled]="description.value.length == 0">Next</button>
-                  </span>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!-- step 8 Difficulty Level-->
-        <div class="onboarding step-8" [hidden]="step!=8">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
-                <h2 class="title">Who should come?</h2>
-                <p class="subtitle">Start with a level of difficulty</p>
-                <div class="col-sm-12 margin-bottom-30 padding-left-0">
-                  <mat-form-field [floatLabel]="'never'">
-                    <mat-select formControlName="difficultyLevel" [placeholder]="'Select difficulty level'">
-                      <mat-option [value]="">--Select--</mat-option>
-                      <mat-option *ngFor="let d of difficulties" [value]="d">{{d}}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <h3 class="title">Pre-requisites</h3>
-                <p class="subtitle">Describe the knowledge prerequisites, if there are any, that learners should know of.</p>
-                <div class="col-sm-12 margin-bottom-30 padding-left-0">
-                  <mat-form-field [floatLabel]="'always'" class="pb-block">
-                    <textarea matInput #notes maxlength="500" rows="4" formControlName="notes"></textarea>
-                    <mat-hint align="end">{{notes.value.length}} / 500</mat-hint>
-                  </mat-form-field>
-                </div>
-                <div style="margin-top:60px;">
-                  <button mat-raised-button type="button" (click)="back()" color="accent">
-                    Back
-                  </button>
-                  <span class="pull-right" matTooltip="Please fill all the details" [matTooltipDisabled]="experience.controls['difficultyLevel'].value && experience.controls['notes'].value">
-                    <button mat-raised-button color="accent" type="Submit" [disabled]="!experience.controls['difficultyLevel'].value && notes.value.length == 0">Next</button>
-                  </span>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!-- Step 9 - Max Spots -->
-        <div class="onboarding step-9" [hidden]="step!=9">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <h2 class="title">How many seats are available in each cohort? </h2>
-              <p class="subtitle">
-                Remember to keep your experience as personal as possible.
-                <br>The fuller your workshop, the less attention you can give to each individual learner.
-              </p>
-              <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
-                <div class="row">
-                  <div class="col-sm-4">
-                    <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                      <input type="number" matInput #maxSpots min="1" formControlName="maxSpots" placeholder="Enter Number">
-                    </mat-form-field>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div style="padding-top:60px;">
-                      <button mat-raised-button type="button" (click)="back()" color="accent">
-                        Back
-                      </button>
-                      <span class="pull-right" matTooltip="Enter the maximum number of participants you can teach in each Cohort of this experience"
-                        [matTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
-                        <button mat-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0 || maxSpots.value < 0">Next</button>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!-- step 10 Photos -->
-        <div class="onboarding step-10" [hidden]="step!=10">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <h2 class="title">Showcase your experience</h2>
-              <p class="subtitle">
-                Give the world a taste of your experience by showcasing captivating videos and/or photos
-              </p>
-              <div class="row" style="margin-top:25px;">
-                <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)" novalidate>
-                  <div class="row margin-left-0" style="margin-top:40px">
-                    <div class="col-md-8">
-                      <div class="stepHeader">Upload Video</div>
-                      <p-fileUpload *ngIf="!uploadingVideo" #fubauto name="video" accept="video/*" customUpload="true" (uploadHandler)="uploadVideo($event)"
-                        maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'video')" multiple="multiple">
-                        <ng-template pTemplate="toolbar">
-                          <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>
-                        </ng-template>
-                      </p-fileUpload>
-                      <h5>Max File Size
-                        <b>10MB</b>
-                      </h5>
-                      <div *ngIf="urlForVideo.length" class="profileVideo delete">
-                        <div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0 videoContainer">
-                          <video controls width="150" class="uploaded_picture" style="border: 0.5px solid #ccc;" preload="metadata">
-                            <source src="{{envVariable.apiUrl + file}}"> Your browser does not support the video tag.
-                          </video>
-                          <mat-icon (click)="deleteFromContainer(file, 'video')" class="delete-video">close</mat-icon>
-                        </div>
-                      </div>
-                      <div class="loading-container" [hidden]="!uploadingVideo">
-                        <ngx-loading [show]="true"></ngx-loading>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="margin-top-60">
-                        <button mat-raised-button type="button" (click)="back()" color="accent">
-                          Back
-                        </button>
-                        <span class="pull-right">
-                          <button mat-raised-button color="accent" type="Submit">Next</button>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- step 11 - Price -->
-        <div class="onboarding step-11" [hidden]="step!=11">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
-                <h2 class="title">Set a price per student</h2>
-                <p class="subtitle">
-                  The price of your experience is entirely up to you. Play with the calculator to see how much you’d earn depending on the
-                  number of peers.
-                </p>
-                <h3 class="title">Price</h3>
-                <div class="row">
-                  <div class="col-md-3">
-                    <mat-checkbox [(ngModel)]="freeExperience" (ngModelChange)="onFreeChange($event)" [ngModelOptions]="{standalone: true}">Free</mat-checkbox>
-                  </div>
-                </div>
-                <br/>
-                <div class="row margin-left-0" *ngIf="!freeExperience">
-                  <div class="col-md-3 col-xs-2 padding-left-0">
-                    <mat-form-field [floatLabel]="'never'" class="margin-top-20">
-                      <span matPrefix>
-                        {{0 | currency: experience.controls['currency'].value : 'symbol' | slice:0:1}} &nbsp;
-                      </span>
-                      <input type="number" matInput #price formControlName="price" placeholder="0" min="1" required>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-4">
-                    <mat-form-field [floatLabel]="'never'">
-                      <mat-select formControlName="currency" class="padding-top-0 margin-top-20" placeholder="USD">
-                        <mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </div>
-                <h3 class="title">Cancellation Policy</h3>
-                <div class="row margin-left-0">
-                  <div class="col-sm-12 padding-left-0">
-                    Students will get a full refund if they cancel within &nbsp;
-                    <mat-form-field [floatLabel]="'never'">
-                      <mat-select formControlName="cancellationPolicy" placeholder="3 Days">
-                        <mat-option *ngFor="let cp of cancellationPolicies" [value]="cp">{{cp}}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    &nbsp; of signing up.
-                  </div>
-                </div>
-                <div style="margin-top:100px;">
-                  <button mat-raised-button type="button" (click)="back()" color="accent">
-                    Back
-                  </button>
-                  <span class="pull-right" matTooltip="Enter a price you wish to charge for this experience and its cancellation policy" [matTooltipDisabled]="experience.controls['price'].value && experience.controls['currency'].value  && experience.controls['cancellationPolicy'].value">
-                    <button mat-raised-button color="accent" type="Submit" [disabled]="(!experience.controls['price'].value || !experience.controls['cancellationPolicy'].value  || !experience.controls['currency'].value) && !freeExperience">Next</button>
-                  </span>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!--Step 12 - Disclaimer-->
-        <div class="onboarding step-12" [hidden]="step!=12">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <h2 class="title">Add content to your Experience</h2>
-              <form [formGroup]="experience">
-                <p class="subtitle">Create a detailed timeline of your experience and add content for every event in your itinerary. Learners
-                  will see this before they sign up for your experience.</p>
-                <div style="margin-top:60px;">
-                  <button mat-raised-button type="button" (click)="back()" color="accent">
-                    Back
-                  </button>
-                  <button class="pull-right" mat-raised-button color="accent" (click)="goto(13)">Next</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!--Step 13 - Itinerary-->
-        <div class="onboarding step-13" [hidden]="step!=13">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <h2 class="title">Set your default timelime</h2>
-              <p class="subtitle">
-                Create a default timeline for your experience and add activities to it. Later on, you can create as many cohorts with specific
-                start dates.
-              </p>
-              <form [formGroup]="timeline" (ngSubmit)="submitExperience(experience, timeline, 13)" novalidate>
-                <!--(ngSubmit)="submitTimeline(timeline)" -->
-                <div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
-                  <div class="row" style="margin: 30px 0px 15px -15px;">
-                    <div class="col-xs-6">
-                      <mat-form-field [floatLabel]="'auto'" class="dateStyles">
-                        <input matInput [matDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate" disabled>
-                        <mat-datepicker-toggle matSuffix [for]="startDatePicker" class="svgStyle {{activeExperience}}"></mat-datepicker-toggle>
-                        <mat-datepicker touchUi="true" #startDatePicker disabled="false"></mat-datepicker>
-                      </mat-form-field>
-                    </div>
-                    <div class="col-xs-6">
-                      <mat-form-field [floatLabel]="'auto'" class="dateStyles">
-                        <input matInput [matDatepicker]="endDatePicker" [min]="timeline.controls['calendar'].value.startDate" placeholder="End date"
-                          formControlName="endDate" disabled>
-                        <mat-datepicker-toggle matSuffix [for]="endDatePicker" class="svgStyle"></mat-datepicker-toggle>
-                        <mat-datepicker touchUi="true" #endDatePicker disabled="false"></mat-datepicker>
-                      </mat-form-field>
-                    </div>
-                  </div>
-                </div>
-                <div formGroupName="calendar" *ngIf="(timeline.controls['calendar'].value.startDate && timeline.controls['calendar'].value.endDate) && !datesEditable">
-                  <div class="row" style="margin: 30px 0px 15px 0;">
-                    <div class="col-md-12 selected-dates">
-                      {{timeline.controls['calendar'].value.startDate | date: 'dd MMM'}} - {{timeline.controls['calendar'].value.endDate | date:
-                      'dd MMM'}} &emsp;
-                      <mat-icon color="accent">
-                        date_range
-                      </mat-icon>
-                      <a style="cursor: pointer; color: #33bd9e;" (click)="makeDatesEditable()">Change dates</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" *ngIf="timeline.controls['calendar'].value.startDate && timeline.controls['calendar'].value.endDate">
-                  <app-experience-content [myForm]="timeline.controls['contentGroup']" [collection]="experienceData" [calendar]="timeline.controls['calendar'].value"
-                    (days)="daysCollection($event)">
-                  </app-experience-content>
-                </div>
-                <div class="row">
-                  <div style="margin-top:100px;">
-                    <button mat-raised-button type="button" (click)="back()" color="accent">
-                      Back
-                    </button>
-                    <span class="pull-right" matTooltip="A minimum of 1 day experience is mandatory to continue" [matTooltipDisabled]="(timeline.controls['calendar'].value.startDate || timeline.controls['calendar'].value.endDate)">
-                      <button mat-raised-button color="accent" type="Submit" [disabled]="(!timeline.controls['calendar'].value.startDate && !timeline.controls['calendar'].value.endDate)">Next</button>
-                    </span>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!--Step 14 - Submit for review-->
-        <div class="onboarding step-14" [hidden]="step!=14">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <h2 class="title">Review and submit</h2>
-              <div *ngIf="!isSubmitted">
-                <div style="margin-top:40px;">
-                  <mat-checkbox value="val1" [(ngModel)]="selectedValues[0]">You meet our standards.</mat-checkbox>
-                </div>
-                <div style="margin-top:20px;">
-                  <mat-checkbox value="val2" [(ngModel)]="selectedValues[1]">You agree to our terms and conditions.</mat-checkbox>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 margin-top-60">
-                    <button mat-raised-button type="button" (click)="back()" color="accent">
-                      Back
-                    </button>
-                    <span class="pull-right" matTooltip="You need to agree to Peerbuds community terms to submit this experience for approval"
-                      [matTooltipDisabled]="selectedValues[0] && selectedValues[1]">
-                      <button mat-raised-button color="accent" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
-                        Submit for Review</button>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div *ngIf="isSubmitted" style="margin-top: 70px;">
-                Your experience has been submitted for review and is awaiting approval from Peerbuds team.
-                <br>
-                <br> We maintain highest possible standards for all content shared on Peerbuds platform.
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="onboarding step-15" [hidden]="step!=15">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <h2 class="title">Do you want to provide your phone number to learners?</h2>
-              <div class="subtitle">Phone numbers make it easy for learners to reach out to you in case of urgent queries.</div>
-              <form [formGroup]="phoneDetails">
-                <div style="margin-top:50px;">
-                  <mat-radio-group>
-                    <mat-radio-button class="pb-block margin-bottom-20" name="phone" value="1" (click)="toggleChoice(1)" *ngIf="!isPhoneVerified">Yes</mat-radio-button>
-                    <div *ngIf="selectedOption === 1 || isPhoneVerified" style="margin: 20px 0px 30px 0px;">
-                      <mat-form-field [floatLabel]="'always'" style="margin: 20px 0px;">
-                        <input type="tel" matInput #countryCode formControlName="countryCode" placeholder="Country Code" [readOnly]="true">
-                      </mat-form-field>
-                      <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin: 20px 0px;">
-                        <input type="tel" matInput #phoneNo formControlName="phoneNo" placeholder="Phone number from profile" [readOnly]="true">
-                        <mat-hint *ngIf="!isPhoneVerified">We will send the confirmation code on your mobile</mat-hint>
-                        <mat-hint *ngIf="isPhoneVerified">Update your phone number from profile to change it for this experience</mat-hint>
-                      </mat-form-field>
-                      <button mat-raised-button #sendOtpButton color="accent" (click)="submitPhoneNo($event.target, 'Sending OTP...')" *ngIf="!isPhoneVerified">
-                        Send Code as SMS
-                      </button>
-                      <button mat-raised-button #sendOtpButton color="accent" *ngIf="isPhoneVerified">
-                        <mat-icon mat-prefix style="margin-top: -12px; margin-right: 5px; color: white;">check_circle</mat-icon> Phone Verified
-                      </button>
-                    </div>
-                    <div *ngIf="otpSent && !isPhoneVerified" style="margin: 20px 0px 50px 0px;">
-                      <p>Type the 4 digit verification code</p>
-                      <mat-form-field [floatLabel]="'always'" class="pb-block inputOTP" style="margin: 20px 0px;">
-                        <input type="text" matInput #inputOTP formControlName="inputOTP" placeholder="Verification code">
-                      </mat-form-field>
-                      <button mat-raised-button color="accent" (click)="submitOTP()">Confirm Code</button>
-                    </div>
-                    <mat-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</mat-radio-button>
-                  </mat-radio-group>
-                </div>
-                <button mat-raised-button type="button" (click)="back()" color="accent">
-                  Back
-                </button>
-                <span class="pull-right" matTooltip="Please verify your phone number to continue" [matTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
-                  <button mat-raised-button (click)="takeToPayment()" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
-                    <span *ngIf="!busyPayment">Next</span>
-                    <span *ngIf="busyPayment"> </span>
-                    <ngx-loading [show]="busyPayment"></ngx-loading>
-                  </button>
-                </span>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="onboarding step-16" [hidden]="step!=16">
-          <div class="row">
-            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-              <h2 class="title">Connect Payment Option</h2>
-              <div class="subtitle">Choose from available payout options or add a new one</div>
-              <div class="row loading-container" style="padding-top: 10px; padding-bottom: 10px;" *ngIf="payoutLoading">
-                <ngx-loading [show]="true"></ngx-loading>
-              </div>
-              <div class="margin-top-30" *ngIf="!payoutLoading && payoutAccounts && payoutAccounts.length > 0" style="padding-top: 5px; padding-bottom: 15px">
-                <span class="mat-body-2">
-                  Connect existing account
-                </span>
-              </div>
-              <div class="row table" *ngIf="!payoutLoading">
-                <div class="col-md-10">
-                  <div class="row table-header">
-                    <div class="col-md-3 ">
-                      <b>Method</b>
-                    </div>
-                    <div class="col-md-3">
-                      <b>Details</b>
-                    </div>
-                    <div class="col-md-3">
-                      <b>Status</b>
-                    </div>
-                  </div>
-                  <div class="row table-data">
-                    <hr>
-                    <div class="col-md-12">
-                      <ng-container *ngIf="!addingAccount && payoutAccounts">
-                        <form [formGroup]="paymentInfo">
-                          <mat-radio-group formControlName="id">
-                            <div class="row" *ngFor="let account of payoutAccounts" style="padding-top: 5px; padding-bottom: 5px">
-                              <div class="col-md-3" [ngSwitch]="account.external_accounts.data[0].object">
-                                <b *ngSwitchCase="'card'">Card</b>
-                                <b *ngSwitchCase="'bank_account'">Bank Account</b>
-                              </div>
-                              <div class="col-md-3" [ngSwitch]="account.external_accounts.data[0].object">
-                                <span *ngSwitchCase="'card'">**** **** **** {{account.external_accounts.data[0].last4}}</span>
-                                <span *ngSwitchCase="'bank_account'">{{account.external_accounts.data[0].account_holder_name}}
-                                  <br>{{account.external_accounts.data[0].bank_name}} </span>
-                              </div>
-                              <div class="col-md-3">
-                                <b *ngIf="account.external_accounts.data[0].status">{{account.external_accounts.data[0].status | titlecase}}</b>
-                                <b *ngIf="!account.external_accounts.data[0].status">Ready</b>
-                              </div>
-                              <div class="col-md-3">
-                                <mat-radio-button value="{{account.payoutaccount.id}}">
-                                </mat-radio-button>
-                              </div>
-                            </div>
-                          </mat-radio-group>
-                        </form>
-
-                      </ng-container>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="margin-top-30" style="padding-top: 5px; padding-bottom: 15px" *ngIf="!payoutLoading">
-                <span class="mat-body-2">
-                  Add new payout account
-                </span>
-              </div>
-              <!-- <form [formGroup]="paymentInfo "> -->
-              <div style="margin-top:10px; " *ngIf="!payoutLoading">
-                <!--<button mat-raised-button>PayTM</button> &emsp;-->
-                <button mat-raised-button type="button" (click)="back()" color="accent">
-                  Back
-                </button>
-                <button mat-raised-button class="mat-border-button">
-                  <a [href]="connectPaymentUrl">
-                    <img src="../../../assets/images/stripe.png" style="width: 50px;" />
-                  </a>
-                </button> &emsp;
-                <!--<button mat-raised-button>Paypal</button> &emsp;-->
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+	<mat-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: scroll; background: #ffffff;">
+		<mat-sidenav #snav [mode]="mobileQuery.matches === true ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" [(opened)]="!mobileQuery.matches">
+			<app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
+		</mat-sidenav>
+		<!-- Page Content -->
+		<mat-sidenav-content>
+			<div class="navbar-page-content" [ngClass]="{'step5Background': showBackground}">
+				<button *ngIf="mobileQuery.matches" class="side-nav-toggle-button pull-left" mat-icon-button (click)="snav.toggle()">
+					<mat-icon>menu</mat-icon>
+				</button>
+				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && experience.controls['status'].value !== 'active'">
+					<button mat-button (click)="saveandexit()">
+						<span *ngIf="!busySave">Save &amp; Exit</span>
+						<span *ngIf="busySave"> </span>
+						<ngx-loading [show]="busySave"></ngx-loading>
+					</button>
+				</div>
+				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && experience.controls['status'].value === 'active'">
+					<button mat-button (click)="exit()">Exit</button>
+				</div>
+				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12">
+					<button mat-button (click)="openExperience()">
+						<span *ngIf="!busyPreview">Preview</span>
+						<span *ngIf="busyPreview"> </span>
+						<ngx-loading [show]="busyPreview"></ngx-loading>
+					</button>
+				</div>
+				<div class="pull-left">
+					<mat-chip-list>
+						<mat-chip>
+							{{experience.controls['status'].value | titlecase}}
+						</mat-chip>
+					</mat-chip-list>
+				</div>
+				<br/>
+				<br/>
+				<br/>
+				<!--Disclaimer-->
+				<div class="onboarding step-1" [hidden]="step!=1">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Peerbuds Experience Guidelines</h2>
+							<p class="subtitle">Peerbuds is a platform dedicated to connecting people who are forward thinking, passionate about education,
+							                    and open-minded in general. We're pretty sure that each individual who joins our community is a cool, high-caliber
+							                    person with unique talents and knowledge to share. That said, we'd like to establish just a few common-sense
+							                    expectations so our platform can continue to be as high quality as possible.
+							</p>
+							<ul class="guideline-points text-grey">
+								<li>Respect others and their differences. Not everyone on Peerbuds is going to have the same worldview, and that's
+								    actually a good thing. It's how we can learn from each other. Keep all comments and observations fair,
+								    controlled and as positive as possible.</li>
+								<li>Take your responsibilities seriously. Whether you sign up to learn or to teach (or both!), be sure to communicate
+								    with all your peers as necessary and always be on time to events.</li>
+								<li>You can't go wrong with the "golden rule." Treat everyone you meet on Peerbuds with the same basic courtesy
+								    and friendliness you'd like to be shown and you're pretty much good to go. Good vibes are infectious -
+								    everybody wins.
+								</li>
+							</ul>
+							<div class="margin-top-20">
+								<button mat-raised-button (click)="goto(2)" color="accent" class="pull-right">
+									<span *ngIf="!busyBasics">Next</span>
+									<span *ngIf="busyBasics"> </span>
+									<ngx-loading [show]="busyBasics"></ngx-loading>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- step 1 starts here -->
+				<div class="onboarding step-2" [hidden]="step!=2">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">What topics does this experience cover?</h2>
+							<p class="subtitle">Select topics that this experience covers</p>
+							<br/>
+							<form [formGroup]="interest1" (ngSubmit)="submitInterests()">
+								<div class="row">
+									<div class="col-sm-12 margin-bottom-30">
+										<div class="row">
+											<div class="col-sm-12">
+												<app-multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
+												                              [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
+												                              [maxSelection]=maxTopics [minSelection]="1" [suggestedTopics]="suggestedTopics"></app-multiselect-autocomplete>
+											</div>
+										</div>
+										<div class="row">
+											<span class="col-sm-4" style="font-size: 12px; color: #777">{{maxTopicMsg}}</span>
+										</div>
+									</div>
+								</div>
+								
+								<!--<div class="flex flexContainer margin-top-30">
+								  <button mat-button class="padding-left-0" type="button" color="grey" [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
+									  <mat-icon class="iconVC" color="accent">
+										add
+									  </mat-icon><span class="addIconText">Add New Topic</span></button>
+								  <span class="flex"></span>
+								  &lt;!&ndash; <div class="col-sm-12 margin-top-30">
+									<div class="text-uppercase text-grey margin-bottom-10">Suggested Topics</div>
+								  </div>
+								  <div class="col-sm-3">
+									<div class="lookingFor interest">
+									  <div class="lookingFor-thumb" style="text-align: center; padding-top: 20%">
+										<a mat-button [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
+										  <mat-icon style="font-size: 30px">
+											add
+										  </mat-icon>
+										</a>
+									  </div>
+									</div>
+								  </div> &ndash;&gt;
+								  &lt;!&ndash; <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
+									<div class="lookingFor interest">
+									  <label class="check">
+										<mat-icon *ngIf="topic.checked" color="accent">
+										  check_circle
+										</mat-icon>
+									  </label>
+									  <div class="lookingFor-thumb">
+										<i class="topic.id"></i>
+									  </div>
+									  <span class="lookingForTitle captitalise">{{ topic.name }}</span>
+									</div>
+								  </div> &ndash;&gt;
+								</div>-->
+								<div style="margin-top:60px;">
+									<button mat-raised-button type="button" (click)="back()" color="accent">
+										Back
+									</button>
+									<span class="pull-right" matTooltip="Add at least one interest to continue" [matTooltipDisabled]="interests.length !== 0">
+										<button mat-raised-button color="accent" [disabled]="interests.length == 0">
+											<span *ngIf="!busyInterest">Next</span>
+											<span *ngIf="busyInterest"> </span>
+											<ngx-loading [show]="busyInterest"></ngx-loading>
+										</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				
+				<div class="onboarding step-3" [hidden]="step!=3">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Which language will you host in?</h2>
+							<p class="subtitle">You will write your descriptions and present your experience in this language. Guests will be notified of this
+							                    in your experience description.</p>
+							<br/>
+							<form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
+								<div class="row margin-top-60">
+									<mat-form-field [floatLabel]="'always'" class="col-md-4">
+										<input type="text" name="other_languages" style="border-bottom: 0px;" placeholder="Select Language" matInput formControlName="selectedLanguage"
+										       [matAutocomplete]="auto">
+										<mat-autocomplete #auto="matAutocomplete">
+											<mat-option *ngFor="let l of filteredLanguageOptions | async" [value]="l" (click)="languageChange(l)">{{l}}</mat-option>
+										</mat-autocomplete>
+									</mat-form-field>
+								</div>
+								<div style="margin-top:100px;">
+									<button mat-raised-button type="button" (click)="back()" color="accent">
+										Back
+									</button>
+									<span class="pull-right" matTooltip="Select a language to continue" [matTooltipDisabled]="selectedLanguages!==undefined">
+										<button mat-raised-button color="accent" type="Submit" [disabled]="selectedLanguages===undefined">
+											<span *ngIf="!busyLanguage">Next</span>
+											<span *ngIf="busyLanguage"> </span>
+											<ngx-loading [show]="busyLanguage"></ngx-loading>
+										</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- step 4 ends here  -->
+				<div class="onboarding step-4" [hidden]="step!=4">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Introduce yourself as a Host</h2>
+							<p class="subtitle">Describe yourself and tell guests how you came to be passionate about hosting this experience.</p>
+							
+							<form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
+								<div class="row margin-bottom-30 margin-top-30" style="margin-top: 30px;">
+									<div class="col-sm-12">
+										<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
+											<textarea matInput #aboutHost maxlength="500" rows="4" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
+											<mat-hint align="end">{{aboutHost.value.length}} / 500</mat-hint>
+										</mat-form-field>
+									</div>
+								</div>
+								<div style="margin-top:50px;">
+									<button mat-raised-button type="button" (click)="back()" color="accent">
+										Back
+									</button>
+									<span class="pull-right" matTooltip="A brief description about yourself is mandatory to continue" [matTooltipDisabled]="aboutHost.value.length !== 0">
+										<button mat-raised-button color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">
+											<span *ngIf="!busyHost">Next</span>
+											<span *ngIf="busyHost"> </span>
+											<ngx-loading [show]="busyHost"></ngx-loading>
+										</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!--Disclaimer-->
+				<div class="onboarding step-5" [hidden]="step!=5">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8" style="background: #eeeeeedd; padding: 20px;">
+							<h2 class="title">Create the page learners will see</h2>
+							<p class="subtitle" style="color: #333333;">Write in a clear, straightforward and friendly way. We'll prompt you on when to show off your personality and
+							                                            be more descriptive.
+							</p>
+							<br/>
+							<div style="margin-top:60px;">
+								<button mat-raised-button type="button" (click)="back()" color="accent">
+									Back
+								</button>
+								<a mat-raised-button (click)="goto(6)" color="accent" class="pull-right">
+									<span *ngIf="!busyExperiencePage">Next</span>
+									<span *ngIf="busyExperiencePage"> </span>
+									<ngx-loading [show]="busyExperiencePage"></ngx-loading>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Step 6 - Title -->
+				<div class="onboarding step-6" [hidden]="step!=6">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
+								<div class="row">
+									<div class="col-sm-12 margin-bottom-30">
+										<div class="form-group">
+											<h2 class="title">Cover</h2>
+											<p class="subtitle">
+												Make it short and sweet
+											</p>
+											<br/>
+											<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
+												<input matInput #title formControlName="title" maxlength="100" placeholder="Enter Name">
+												<mat-hint align="start">{{100 - title.value.length}} more characters needed</mat-hint>
+												<mat-hint align="end">{{title.value.length}} / 100</mat-hint>
+											</mat-form-field>
+										</div>
+									</div>
+									<div class="col-sm-12 margin-bottom-30">
+										<div class="form-group">
+											<h2 class="title">Headline</h2>
+											<p class="subtitle">
+												Clearly describe your experience in one short, catchy sentence.
+												<br/> Start with a verb that tells peers what they will do.
+											</p>
+											<br/>
+											<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
+												<input matInput #headline formControlName="headline" maxlength="100" placeholder="Write headline">
+												<mat-hint align="start">{{100 - headline.value.length}} more characters needed</mat-hint>
+												<mat-hint align="end">{{headline.value.length}} / 100</mat-hint>
+											</mat-form-field>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-8">
+										<div class="stepHeader margin-top-20">Upload an image for your cover</div>
+										<p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
+										              maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
+											<ng-template pTemplate="toolbar">
+												<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
+											</ng-template>
+										</p-fileUpload>
+										<h5>Max File Size
+											<b>10MB</b>
+										</h5>
+										<div *ngIf="urlForImages.length" class="pic delete">
+											<div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
+												<img src="{{envVariable.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
+												<mat-icon (click)="deleteFromContainer(file, 'image')" class="delete-button">close</mat-icon>
+											</div>
+										</div>
+										<div class="loading-container" [hidden]="!uploadingImage">
+											<ngx-loading [show]="true"></ngx-loading>
+										</div>
+									</div>
+								</div>
+								
+								<div style="margin-top:60px;">
+									<button mat-raised-button type="button" (click)="back()" color="accent">
+										Back
+									</button>
+									<span class="pull-right" matTooltip="Please type in a headline to continue." [matTooltipDisabled]="title.value.length !== 0 || headline.value.length !== 0">
+										<span matTooltip="An image is mandatory to continue" [matTooltipDisabled]="urlForImages.length !== 0">
+											<button mat-raised-button color="accent" type="Submit" [disabled]="urlForImages.length === 0 || title.value.length === 0 || headline.value.length === 0">Next</button>
+										</span>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- step 7 - Description  -->
+				<div class="onboarding step-7" [hidden]="step!=7">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
+								<div class="row">
+									<div class="col-sm-12 margin-bottom-30">
+										<h2 class="title">What’s the experience about?</h2>
+										<p class="subtitle">Give a detailed description to learners of what they will do in this experience</p>
+										<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+											<textarea matInput #description maxlength="800" rows="4" formControlName="description" placeholder="What we'll do in this experience?"></textarea>
+											<mat-hint align="end">{{description.value.length}} / 800</mat-hint>
+										</mat-form-field>
+									</div>
+								</div>
+								<div style="margin-top:60px;">
+									<button mat-raised-button type="button" (click)="back()" color="accent">
+										Back
+									</button>
+									<span class="pull-right" matTooltip="Describe your experience in detail to continue" [matTooltipDisabled]="description.value.length !== 0">
+										<button mat-raised-button color="accent" type="Submit" [disabled]="description.value.length == 0">Next</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- step 8 Difficulty Level-->
+				<div class="onboarding step-8" [hidden]="step!=8">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
+								<h2 class="title">Who should come?</h2>
+								<p class="subtitle">Start with a level of difficulty</p>
+								<div class="col-sm-12 margin-bottom-30 padding-left-0">
+									<mat-form-field [floatLabel]="'never'">
+										<mat-select formControlName="difficultyLevel" [placeholder]="'Select difficulty level'">
+											<mat-option [value]="">--Select--</mat-option>
+											<mat-option *ngFor="let d of difficulties" [value]="d">{{d}}</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<h3 class="title">Pre-requisites</h3>
+								<p class="subtitle">Describe the knowledge prerequisites, if there are any, that learners should know of.</p>
+								<div class="col-sm-12 margin-bottom-30 padding-left-0">
+									<mat-form-field [floatLabel]="'always'" class="pb-block">
+										<textarea matInput #notes maxlength="500" rows="4" formControlName="notes"></textarea>
+										<mat-hint align="end">{{notes.value.length}} / 500</mat-hint>
+									</mat-form-field>
+								</div>
+								<div style="margin-top:60px;">
+									<button mat-raised-button type="button" (click)="back()" color="accent">
+										Back
+									</button>
+									<span class="pull-right" matTooltip="Please fill all the details" [matTooltipDisabled]="experience.controls['difficultyLevel'].value && experience.controls['notes'].value">
+										<button mat-raised-button color="accent" type="Submit" [disabled]="!experience.controls['difficultyLevel'].value && notes.value.length == 0">Next</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- Step 9 - Max Spots -->
+				<div class="onboarding step-9" [hidden]="step!=9">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">How many seats are available in each cohort? </h2>
+							<p class="subtitle">
+								Remember to keep your experience as personal as possible.
+								<br>The fuller your workshop, the less attention you can give to each individual learner.
+							</p>
+							<form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
+								<div class="row">
+									<div class="col-sm-4">
+										<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+											<input type="number" matInput #maxSpots min="1" formControlName="maxSpots" placeholder="Enter Number">
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div style="padding-top:60px;">
+											<button mat-raised-button type="button" (click)="back()" color="accent">
+												Back
+											</button>
+											<span class="pull-right" matTooltip="Enter the maximum number of participants you can teach in each Cohort of this experience"
+											      [matTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
+												<button mat-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0 || maxSpots.value < 0">Next</button>
+											</span>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- step 10 Photos -->
+				<div class="onboarding step-10" [hidden]="step!=10">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Showcase your experience</h2>
+							<p class="subtitle">
+								Give the world a taste of your experience by showcasing captivating videos and/or photos
+							</p>
+							<div class="row" style="margin-top:25px;">
+								<form [formGroup]="experience" (ngSubmit)="submitExperience(experience)" novalidate>
+									<div class="row margin-left-0" style="margin-top:40px">
+										<div class="col-md-8">
+											<div class="stepHeader">Upload Video</div>
+											<p-fileUpload *ngIf="!uploadingVideo" #fubauto name="video" accept="video/*" customUpload="true" (uploadHandler)="uploadVideo($event)"
+											              maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'video')" multiple="multiple">
+												<ng-template pTemplate="toolbar">
+													<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>
+												</ng-template>
+											</p-fileUpload>
+											<h5>Max File Size
+												<b>10MB</b>
+											</h5>
+											<div *ngIf="urlForVideo.length" class="profileVideo delete">
+												<div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0 videoContainer">
+													<video controls width="150" class="uploaded_picture" style="border: 0.5px solid #ccc;" preload="metadata">
+														<source src="{{envVariable.apiUrl + file}}"> Your browser does not support the video tag.
+													</video>
+													<mat-icon (click)="deleteFromContainer(file, 'video')" class="delete-video">close</mat-icon>
+												</div>
+											</div>
+											<div class="loading-container" [hidden]="!uploadingVideo">
+												<ngx-loading [show]="true"></ngx-loading>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="margin-top-60">
+												<button mat-raised-button type="button" (click)="back()" color="accent">
+													Back
+												</button>
+												<span class="pull-right">
+													<button mat-raised-button color="accent" type="Submit">Next</button>
+												</span>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- step 11 - Price -->
+				<div class="onboarding step-11" [hidden]="step!=11">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
+								<h2 class="title">Set a price per student</h2>
+								<p class="subtitle">
+									The price of your experience is entirely up to you. Play with the calculator to see how much you’d earn depending on the
+									number of peers.
+								</p>
+								<h3 class="title">Price</h3>
+								<div class="row">
+									<div class="col-md-3">
+										<mat-checkbox [(ngModel)]="freeExperience" (ngModelChange)="onFreeChange($event)" [ngModelOptions]="{standalone: true}">Free</mat-checkbox>
+									</div>
+								</div>
+								<br/>
+								<div class="row margin-left-0" *ngIf="!freeExperience">
+									<div class="col-md-3 col-xs-2 padding-left-0">
+										<mat-form-field [floatLabel]="'never'" class="margin-top-20">
+											<span matPrefix>
+												{{0 | currency: experience.controls['currency'].value : 'symbol' | slice:0:1}} &nbsp;
+											</span>
+											<input type="number" matInput #price formControlName="price" placeholder="0" min="1" required>
+										</mat-form-field>
+									</div>
+									<div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-4">
+										<mat-form-field [floatLabel]="'never'">
+											<mat-select formControlName="currency" class="padding-top-0 margin-top-20" placeholder="USD">
+												<mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+								</div>
+								<h3 class="title">Cancellation Policy</h3>
+								<div class="row margin-left-0">
+									<div class="col-sm-12 padding-left-0">
+										Students will get a full refund if they cancel within &nbsp;
+										<mat-form-field [floatLabel]="'never'">
+											<mat-select formControlName="cancellationPolicy" placeholder="3 Days">
+												<mat-option *ngFor="let cp of cancellationPolicies" [value]="cp">{{cp}}</mat-option>
+											</mat-select>
+										</mat-form-field>
+										&nbsp; of signing up.
+									</div>
+								</div>
+								<div style="margin-top:100px;">
+									<button mat-raised-button type="button" (click)="back()" color="accent">
+										Back
+									</button>
+									<span class="pull-right" matTooltip="Enter a price you wish to charge for this experience and its cancellation policy" [matTooltipDisabled]="experience.controls['price'].value && experience.controls['currency'].value  && experience.controls['cancellationPolicy'].value">
+										<button mat-raised-button color="accent" type="Submit" [disabled]="(!experience.controls['price'].value || !experience.controls['cancellationPolicy'].value  || !experience.controls['currency'].value) && !freeExperience">Next</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!--Step 12 - Disclaimer-->
+				<div class="onboarding step-12" [hidden]="step!=12">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Add content to your Experience</h2>
+							<form [formGroup]="experience">
+								<p class="subtitle">Create a detailed timeline of your experience and add content for every event in your itinerary. Learners
+								                    will see this before they sign up for your experience.</p>
+								<div style="margin-top:60px;">
+									<button mat-raised-button type="button" (click)="back()" color="accent">
+										Back
+									</button>
+									<button class="pull-right" mat-raised-button color="accent" (click)="goto(13)">Next</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!--Step 13 - Itinerary-->
+				<div class="onboarding step-13" [hidden]="step!=13">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Set your default timelime</h2>
+							<p class="subtitle">
+								Create a default timeline for your experience and add activities to it. Later on, you can create as many cohorts with specific
+								start dates.
+							</p>
+							<form [formGroup]="timeline" (ngSubmit)="submitExperience(experience, timeline, 13)" novalidate>
+								<!--(ngSubmit)="submitTimeline(timeline)" -->
+								<div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
+									<div class="row" style="margin: 30px 0px 15px -15px;">
+										<div class="col-xs-6">
+											<mat-form-field [floatLabel]="'auto'" class="dateStyles">
+												<input matInput [matDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate" disabled>
+												<mat-datepicker-toggle matSuffix [for]="startDatePicker" class="svgStyle {{activeExperience}}"></mat-datepicker-toggle>
+												<mat-datepicker touchUi="true" #startDatePicker disabled="false"></mat-datepicker>
+											</mat-form-field>
+										</div>
+										<div class="col-xs-6">
+											<mat-form-field [floatLabel]="'auto'" class="dateStyles">
+												<input matInput [matDatepicker]="endDatePicker" [min]="timeline.controls['calendar'].value.startDate" placeholder="End date"
+												       formControlName="endDate" disabled>
+												<mat-datepicker-toggle matSuffix [for]="endDatePicker" class="svgStyle"></mat-datepicker-toggle>
+												<mat-datepicker touchUi="true" #endDatePicker disabled="false"></mat-datepicker>
+											</mat-form-field>
+										</div>
+									</div>
+								</div>
+								<div formGroupName="calendar" *ngIf="(timeline.controls['calendar'].value.startDate && timeline.controls['calendar'].value.endDate) && !datesEditable">
+									<div class="row" style="margin: 30px 0px 15px 0;">
+										<div class="col-md-12 selected-dates">
+											{{timeline.controls['calendar'].value.startDate | date: 'dd MMM'}} - {{timeline.controls['calendar'].value.endDate | date:
+											'dd MMM'}} &emsp;
+											<mat-icon color="accent">
+												date_range
+											</mat-icon>
+											<a style="cursor: pointer; color: #33bd9e;" (click)="makeDatesEditable()">Change dates</a>
+										</div>
+									</div>
+								</div>
+								<div class="row" *ngIf="timeline.controls['calendar'].value.startDate && timeline.controls['calendar'].value.endDate">
+									<app-experience-content [myForm]="timeline.controls['contentGroup']" [collection]="experienceData" [calendar]="timeline.controls['calendar'].value"
+									                        (days)="daysCollection($event)">
+									</app-experience-content>
+								</div>
+								<div class="row">
+									<div style="margin-top:100px;">
+										<button mat-raised-button type="button" (click)="back()" color="accent">
+											Back
+										</button>
+										<span class="pull-right" matTooltip="A minimum of 1 day experience is mandatory to continue" [matTooltipDisabled]="(timeline.controls['calendar'].value.startDate || timeline.controls['calendar'].value.endDate)">
+											<button mat-raised-button color="accent" type="Submit" [disabled]="(!timeline.controls['calendar'].value.startDate && !timeline.controls['calendar'].value.endDate)">Next</button>
+										</span>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!--Step 14 - Submit for review-->
+				<div class="onboarding step-14" [hidden]="step!=14">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Review and submit</h2>
+							<div *ngIf="!isSubmitted">
+								<div style="margin-top:40px;">
+									<mat-checkbox value="val1" [(ngModel)]="selectedValues[0]">You meet our standards.</mat-checkbox>
+								</div>
+								<div style="margin-top:20px;">
+									<mat-checkbox value="val2" [(ngModel)]="selectedValues[1]">You agree to our terms and conditions.</mat-checkbox>
+								</div>
+								<div class="row">
+									<div class="col-md-12 margin-top-60">
+										<button mat-raised-button type="button" (click)="back()" color="accent">
+											Back
+										</button>
+										<span class="pull-right" matTooltip="You need to agree to Peerbuds community terms to submit this experience for approval"
+										      [matTooltipDisabled]="selectedValues[0] && selectedValues[1]">
+											<button mat-raised-button color="accent" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
+												Submit for Review</button>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div *ngIf="isSubmitted" style="margin-top: 70px;">
+								Your experience has been submitted for review and is awaiting approval from Peerbuds team.
+								<br>
+								<br> We maintain highest possible standards for all content shared on Peerbuds platform.
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="onboarding step-15" [hidden]="step!=15">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Do you want to provide your phone number to learners?</h2>
+							<div class="subtitle">Phone numbers make it easy for learners to reach out to you in case of urgent queries.</div>
+							<form [formGroup]="phoneDetails">
+								<div style="margin-top:50px;">
+									<mat-radio-group>
+										<mat-radio-button class="pb-block margin-bottom-20" name="phone" value="1" (click)="toggleChoice(1)" *ngIf="!isPhoneVerified">Yes</mat-radio-button>
+										<div *ngIf="selectedOption === 1 || isPhoneVerified" style="margin: 20px 0px 30px 0px;">
+											<mat-form-field [floatLabel]="'always'" style="margin: 20px 0px;">
+												<input type="tel" matInput #countryCode formControlName="countryCode" placeholder="Country Code" [readOnly]="true">
+											</mat-form-field>
+											<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin: 20px 0px;">
+												<input type="tel" matInput #phoneNo formControlName="phoneNo" placeholder="Phone number from profile" [readOnly]="true">
+												<mat-hint *ngIf="!isPhoneVerified">We will send the confirmation code on your mobile</mat-hint>
+												<mat-hint *ngIf="isPhoneVerified">Update your phone number from profile to change it for this experience</mat-hint>
+											</mat-form-field>
+											<button mat-raised-button #sendOtpButton color="accent" (click)="submitPhoneNo($event.target, 'Sending OTP...')" *ngIf="!isPhoneVerified">
+												Send Code as SMS
+											</button>
+											<button mat-raised-button #sendOtpButton color="accent" *ngIf="isPhoneVerified">
+												<mat-icon mat-prefix style="margin-top: -12px; margin-right: 5px; color: white;">check_circle</mat-icon> Phone Verified
+											</button>
+										</div>
+										<div *ngIf="otpSent && !isPhoneVerified" style="margin: 20px 0px 50px 0px;">
+											<p>Type the 4 digit verification code</p>
+											<mat-form-field [floatLabel]="'always'" class="pb-block inputOTP" style="margin: 20px 0px;">
+												<input type="text" matInput #inputOTP formControlName="inputOTP" placeholder="Verification code">
+											</mat-form-field>
+											<button mat-raised-button color="accent" (click)="submitOTP()">Confirm Code</button>
+										</div>
+										<mat-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</mat-radio-button>
+									</mat-radio-group>
+								</div>
+								<button mat-raised-button type="button" (click)="back()" color="accent">
+									Back
+								</button>
+								<span class="pull-right" matTooltip="Please verify your phone number to continue" [matTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
+									<button mat-raised-button (click)="takeToPayment()" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
+										<span *ngIf="!busyPayment">Next</span>
+										<span *ngIf="busyPayment"> </span>
+										<ngx-loading [show]="busyPayment"></ngx-loading>
+									</button>
+								</span>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="onboarding step-16" [hidden]="step!=16">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Connect Payment Option</h2>
+							<div class="subtitle">Choose from available payout options or add a new one</div>
+							<div class="row loading-container" style="padding-top: 10px; padding-bottom: 10px;" *ngIf="payoutLoading">
+								<ngx-loading [show]="true"></ngx-loading>
+							</div>
+							<div class="margin-top-30" *ngIf="!payoutLoading && payoutAccounts && payoutAccounts.length > 0" style="padding-top: 5px; padding-bottom: 15px">
+								<span class="mat-body-2">
+									Connect existing account
+								</span>
+							</div>
+							<div class="row table" *ngIf="!payoutLoading">
+								<div class="col-md-10">
+									<div class="row table-header">
+										<div class="col-md-3 ">
+											<b>Method</b>
+										</div>
+										<div class="col-md-3">
+											<b>Details</b>
+										</div>
+										<div class="col-md-3">
+											<b>Status</b>
+										</div>
+									</div>
+									<div class="row table-data">
+										<hr>
+										<div class="col-md-12">
+											<ng-container *ngIf="!addingAccount && payoutAccounts">
+												<form [formGroup]="paymentInfo">
+													<mat-radio-group formControlName="id">
+														<div class="row" *ngFor="let account of payoutAccounts" style="padding-top: 5px; padding-bottom: 5px">
+															<div class="col-md-3" [ngSwitch]="account.external_accounts.data[0].object">
+																<b *ngSwitchCase="'card'">Card</b>
+																<b *ngSwitchCase="'bank_account'">Bank Account</b>
+															</div>
+															<div class="col-md-3" [ngSwitch]="account.external_accounts.data[0].object">
+																<span *ngSwitchCase="'card'">**** **** **** {{account.external_accounts.data[0].last4}}</span>
+																<span *ngSwitchCase="'bank_account'">{{account.external_accounts.data[0].account_holder_name}}
+																	<br>{{account.external_accounts.data[0].bank_name}} </span>
+															</div>
+															<div class="col-md-3">
+																<b *ngIf="account.external_accounts.data[0].status">{{account.external_accounts.data[0].status | titlecase}}</b>
+																<b *ngIf="!account.external_accounts.data[0].status">Ready</b>
+															</div>
+															<div class="col-md-3">
+																<mat-radio-button value="{{account.payoutaccount.id}}">
+																</mat-radio-button>
+															</div>
+														</div>
+													</mat-radio-group>
+												</form>
+											
+											</ng-container>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="margin-top-30" style="padding-top: 5px; padding-bottom: 15px" *ngIf="!payoutLoading">
+								<span class="mat-body-2">
+									Add new payout account
+								</span>
+							</div>
+							<!-- <form [formGroup]="paymentInfo "> -->
+							<div style="margin-top:10px; " *ngIf="!payoutLoading">
+								<!--<button mat-raised-button>PayTM</button> &emsp;-->
+								<button mat-raised-button type="button" (click)="back()" color="accent">
+									Back
+								</button>
+								<button mat-raised-button class="mat-border-button">
+									<a [href]="connectPaymentUrl">
+										<img src="../../../assets/images/stripe.png" style="width: 50px;" />
+									</a>
+								</button> &emsp;
+								<!--<button mat-raised-button>Paypal</button> &emsp;-->
+							</div>
+						</div>
+					</div>
+				</div>
+			
+			</div>
+		</mat-sidenav-content>
+	</mat-sidenav-container>
 </div>
