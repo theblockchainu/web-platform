@@ -250,7 +250,7 @@ export class BookSessionComponent implements OnInit {
 	}
 	
 	public processPayment(content: any) {
-		if (this.bookingProcess === 'manual' && this.displayMode === 'request') {
+		if ((this.bookingProcess === 'manual' && this.displayMode === 'request') || (this.bookingProcess === 'auto' && this.totalCost.getValue() === 0)) {
 			// Skip payment. Redirect to console.
 			this.router.navigate(['console', 'learning', 'sessions']);
 		} else {
