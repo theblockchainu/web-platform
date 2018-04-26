@@ -33,7 +33,7 @@ export class QuestionService {
      */
     public addFollower(questionId, peerId) {
         return this.http
-            .put(environment.apiUrl + '/api/questions/' + questionId + '/followers/rel/' + peerId, this.options);
+            .put(environment.apiUrl + '/api/questions/' + questionId + '/followers/rel/' + peerId, {}, this.options);
     }
 
     /**
