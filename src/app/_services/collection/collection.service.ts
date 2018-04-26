@@ -735,11 +735,15 @@ export class CollectionService {
 	}
 	
 	public calculateRating(reviewArray?: any) {
-		let reviewScore = 0;
-		for (const reviewObject of reviewArray) {
-			reviewScore += reviewObject.score;
+		if (reviewArray && reviewArray.length > 0) {
+			let reviewScore = 0;
+			for (const reviewObject of reviewArray) {
+				reviewScore += reviewObject.score;
+			}
+			return (reviewScore / (reviewArray.length * 5)) * 5;
+		} else {
+			return 0;
 		}
-		return (reviewScore / (reviewArray.length * 5)) * 5;
 	}
 	
 	public calculateCollectionRating(collectionId, reviewArray?: any) {
