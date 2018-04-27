@@ -26,7 +26,7 @@ export class CollectionService {
 		this.options = requestHeaderService.getOptions();
 		this.now = new Date();
 	}
-	
+
 	public getCollection(userId, type: string, cb) {
 		const collections = [];
 		if (userId) {
@@ -48,7 +48,7 @@ export class CollectionService {
 				);
 		}
 	}
-	
+
 	public getOwnedCollections(userId, options: string, cb) {
 		if (userId) {
 			this.httpClient
@@ -60,7 +60,7 @@ export class CollectionService {
 				});
 		}
 	}
-	
+
 	public getParticipatingCollections(userId, options: any, cb) {
 		if (userId) {
 			this.httpClient
@@ -73,22 +73,22 @@ export class CollectionService {
 				}).subscribe();
 		}
 	}
-	
+
 	public getAllCollections(options: any) {
 		return this.httpClient
 			.get(environment.apiUrl + '/api/collections?' + 'filter=' + JSON.stringify(options), this.options)
 			.map(response => response);
 	}
-	
+
 	public getCollectionDetails(id: string) {
 		return this.httpClient
 			.get(environment.apiUrl + '/api/collections/' + id, this.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
-		
+
 	}
-	
+
 	public getCollectionDetail(id: string, param: any) {
 		const filter = JSON.stringify(param);
 		return this.httpClient
@@ -96,9 +96,9 @@ export class CollectionService {
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
-		
+
 	}
-	
+
 	/**
 	 * postCollection
 	 */
@@ -108,52 +108,52 @@ export class CollectionService {
 		};
 		return this.httpClient.post(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections', body, this.options)
 			.map(
-			(response) => response, (err) => {
-				console.log('Error: ' + err);
-			}
-		);
+				(response) => response, (err) => {
+					console.log('Error: ' + err);
+				}
+			);
 	}
-	
+
 	/**
 	 * postCollection
 	 */
 	public postCollectionWithData(userId, data: any) {
 		return this.httpClient.post(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections', data, this.options)
 			.map(
-			(response) => response, (err) => {
-				console.log('Error: ' + err);
-			}
-		);
+				(response) => response, (err) => {
+					console.log('Error: ' + err);
+				}
+			);
 	}
-	
+
 	/**
 	 * patchCollection
 	 */
 	public patchCollection(collectionId: string, body: any) {
 		return this.httpClient.patch(environment.apiUrl + '/api/collections/' + collectionId, body, this.options);
 	}
-	
+
 	/**
 	 * patchCalendar
 	 */
 	public patchCalendar(calendarId: string, body: any) {
 		return this.httpClient.patch(environment.apiUrl + '/api/calendars/' + calendarId, body, this.options);
 	}
-	
+
 	/**
 	 * deleteCollection
 	 */
 	public deleteCollection(collectionId: string) {
 		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId, this.options);
 	}
-	
+
 	/**
 	 * delete Calendar
 	 */
 	public deleteCalendar(calendarId: string) {
 		return this.httpClient.delete(environment.apiUrl + '/api/calendars/' + calendarId, this.options);
 	}
-	
+
 	/**
 	 * sanitize
 	 */
@@ -166,7 +166,7 @@ export class CollectionService {
 		delete collection.updatedAt;
 		return collection;
 	}
-	
+
 	/**
 	 * removeParticipant
 	 */
@@ -189,7 +189,7 @@ export class CollectionService {
 			return collection.status === 'complete';
 		});
 	}
-	
+
 	/**
 	 * calculateTotalHours
 	 */
@@ -203,13 +203,13 @@ export class CollectionService {
 					const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
 					totalLength += parseInt(contentLength, 10);
 				} else if (content.type === 'video') {
-				
+
 				}
 			});
 		}
 		return totalLength.toString();
 	}
-	
+
 	/**
 	 * calculate number of days of a workshop
 	 */
@@ -222,7 +222,7 @@ export class CollectionService {
 			return b.diff(a, 'days') + 1;
 		}
 	}
-	
+
 	/**
 	 * Get difference in days
 	 */
@@ -247,7 +247,7 @@ export class CollectionService {
 				return diff + ' days ago';
 		}
 	}
-	
+
 	/**
 	 * Get the most upcoming content details
 	 */
@@ -287,7 +287,7 @@ export class CollectionService {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Get the full name of any content type
 	 * @param contentType
@@ -306,7 +306,7 @@ export class CollectionService {
 		}
 		return contentType + ' ' + fillerWord;
 	}
-	
+
 	/**
 	 * Get the current active calendar of this collection
 	 * @param calendars
@@ -325,7 +325,7 @@ export class CollectionService {
 		});
 		return calendars[0];
 	}
-	
+
 	/**
 	 * Get the progress bar value of this workshop
 	 * @param workshop
@@ -371,7 +371,7 @@ export class CollectionService {
 				const calendarLength = workshop.calendars.length;
 				if (calendarLength > 1) {
 					startDate = this.getCurrentCalendar(workshop.calendars) !==
-					undefined ? this.getCurrentCalendar(workshop.calendars).startDate : this.now;
+						undefined ? this.getCurrentCalendar(workshop.calendars).startDate : this.now;
 				} else if (calendarLength === 1) {
 					startDate = workshop.calendars[0];
 				}
@@ -394,63 +394,63 @@ export class CollectionService {
 				return 0;
 		}
 	}
-	
+
 	/**
 	 *  Workshop
 	 */
 	public viewWorkshop(collection) {
 		this.router.navigate(['workshop', collection.id]);
 	}
-	
+
 	/**
 	 * viewExperience
 	 */
 	public viewExperience(collection) {
 		this.router.navigate(['experience', collection.id]);
 	}
-	
+
 	/**
 	 * viewCollection
 	 */
 	public viewCollection(collection) {
 		this.router.navigate([collection.type, collection.id]);
 	}
-	
+
 	/**
 	 * viewSession
 	 */
 	public viewSession(collection) {
 		this.router.navigate(['session', collection.id]);
 	}
-	
+
 	/**
 	 *  Edit Workshop
 	 */
 	public openEditWorkshop(collection) {
 		this.router.navigate(['workshop', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
 	}
-	
+
 	/**
 	 * Edit experience
 	 */
 	public openEditExperience(collection) {
 		this.router.navigate(['experience', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
 	}
-	
+
 	/**
 	 * editCollection
 	 */
 	public openEditCollection(collection) {
 		this.router.navigate([collection.type, collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
 	}
-	
+
 	/**
 	 * viewSession
 	 */
 	public openEditSession(collection) {
 		this.router.navigate(['session', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
 	}
-	
+
 	/**
 	 * Get text to show in action button of draft card
 	 * @param status
@@ -466,14 +466,14 @@ export class CollectionService {
 				return 'Continue Editing';
 		}
 	}
-	
+
 	/**
 	 * View all transactions for this teacher
 	 */
 	public viewTransactions() {
 		this.router.navigate(['/console/account/transactions']);
 	}
-	
+
 	public sendVerifySMS(phoneNo, countryCode) {
 		const body = {};
 		return this.httpClient
@@ -482,8 +482,8 @@ export class CollectionService {
 				console.log('Error: ' + err);
 			});
 	}
-	
-	
+
+
 	public confirmSmsOTP(inputToken) {
 		const body = {};
 		return this.httpClient
@@ -491,9 +491,9 @@ export class CollectionService {
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
-		
+
 	}
-	
+
 	public saveBookmark(collectionId, cb) {
 		const body = {};
 		this.httpClient
@@ -504,7 +504,7 @@ export class CollectionService {
 				cb(err);
 			}).subscribe();
 	}
-	
+
 	public removeBookmark(bookmarkId, cb) {
 		const body = {};
 		this.httpClient
@@ -515,7 +515,7 @@ export class CollectionService {
 				cb(err);
 			}).subscribe();
 	}
-	
+
 	/**
 	 * getBookmarks
 	 */
@@ -529,7 +529,7 @@ export class CollectionService {
 				cb(err);
 			}).subscribe();
 	}
-	
+
 	/**
 	 * getRecommendations
 	 */
@@ -538,7 +538,7 @@ export class CollectionService {
 		return this.httpClient
 			.get(environment.apiUrl + '/api/collections?' + 'filter=' + filter, this.options);
 	}
-	
+
 	/**
 	 * getParticipants
 	 */
@@ -547,7 +547,7 @@ export class CollectionService {
 		return this.httpClient
 			.get(environment.apiUrl + '/api/collections/' + collectionId + '/participants?filter=' + filter, this.options);
 	}
-	
+
 	/**
 	 * addParticipant
 	 collectionID:string,userId:string,calendarId:string   */
@@ -563,7 +563,7 @@ export class CollectionService {
 				cb(err);
 			}).subscribe();
 	}
-	
+
 	public linkCommunityToCollection(communityId, collectionId, cb) {
 		this.httpClient
 			.put(environment.apiUrl + '/api/communities/' + communityId + '/collections/rel/' + collectionId, {}, this.options)
@@ -573,8 +573,8 @@ export class CollectionService {
 				cb(err);
 			}).subscribe();
 	}
-	
-	
+
+
 	/**
 	 * Approve this collection
 	 * @param collection
@@ -586,7 +586,7 @@ export class CollectionService {
 				console.log('Error: ' + err);
 			});
 	}
-	
+
 	/**
 	 * open a collection view page based on its type
 	 * @param collection
@@ -608,7 +608,7 @@ export class CollectionService {
 				break;
 		}
 	}
-	
+
 	public postCalendars(id, calendars) {
 		return this.httpClient
 			.post(environment.apiUrl + '/api/collections/' + id + '/calendars', calendars, this.options)
@@ -616,7 +616,7 @@ export class CollectionService {
 				console.log('Error: ' + err);
 			});
 	}
-	
+
 	/**
 	 * getComments
 	 */
@@ -630,7 +630,7 @@ export class CollectionService {
 				cb(err);
 			}).subscribe();
 	}
-	
+
 	/**
 	 * get comments of given content
 	 * @param {string} contentId
@@ -647,7 +647,7 @@ export class CollectionService {
 				cb(err);
 			}).subscribe();
 	}
-	
+
 	/**
 	 * get comments of given submission
 	 * @param {string} submissionId
@@ -664,7 +664,7 @@ export class CollectionService {
 				cb(err);
 			}).subscribe();
 	}
-	
+
 	public getReviews(peerId: string, query: any, cb) {
 		const filter = JSON.stringify(query);
 		this.httpClient
@@ -675,7 +675,7 @@ export class CollectionService {
 				cb(err);
 			}).subscribe();
 	}
-	
+
 	/**
 	 * postComments
 	 worrkshopID   */
@@ -688,7 +688,7 @@ export class CollectionService {
 				cb(err);
 			}).subscribe();
 	}
-	
+
 	/**
 	 * Post a comment on submission
 	 * @param {string} submissionId
@@ -704,7 +704,7 @@ export class CollectionService {
 				cb(err);
 			}).subscribe();
 	}
-	
+
 	/**
 	 * post a comment on content
 	 * @param {string} contentId
@@ -720,7 +720,7 @@ export class CollectionService {
 				cb(err);
 			}).subscribe();
 	}
-	
+
 	/**
 	 * postReview
 	 */
@@ -728,12 +728,12 @@ export class CollectionService {
 		return this.httpClient
 			.post(environment.apiUrl + '/api/peers/' + peerId + '/reviewsAboutYou', reviewBody, this.options);
 	}
-	
+
 	public updateReview(reviewId: string, reviewBody: any) {
 		return this.httpClient
 			.patch(environment.apiUrl + '/api/reviews/' + reviewId, reviewBody, this.options);
 	}
-	
+
 	public calculateRating(reviewArray?: any) {
 		let reviewScore = 0;
 		for (const reviewObject of reviewArray) {
@@ -741,7 +741,7 @@ export class CollectionService {
 		}
 		return (reviewScore / (reviewArray.length * 5)) * 5;
 	}
-	
+
 	public calculateCollectionRating(collectionId, reviewArray?: any) {
 		let reviewScore = 0;
 		for (const reviewObject of reviewArray) {
@@ -749,7 +749,7 @@ export class CollectionService {
 		}
 		return (reviewScore / (reviewArray.length * 5)) * 5;
 	}
-	
+
 	public calculateCollectionRatingCount(collectionId, reviewArray?: any) {
 		let reviewCount = 0;
 		for (const reviewObject of reviewArray) {
@@ -757,15 +757,15 @@ export class CollectionService {
 		}
 		return reviewCount;
 	}
-	
+
 	public imgErrorHandler(event) {
 		event.target.src = '/assets/images/placeholder-image.jpg';
 	}
-	
+
 	public userImgErrorHandler(event) {
 		event.target.src = '/assets/images/user-placeholder.jpg';
 	}
-	
+
 	/**
 	 * deleteComment
 	 */
@@ -773,8 +773,8 @@ export class CollectionService {
 		return this.httpClient
 			.delete(environment.apiUrl + '/api/reviews/' + reviewId, this.options);
 	}
-	
-	
+
+
 	public calculateItenaries(workshop: any, currentCalendar: any) {
 		const itenariesObj = {};
 		const itenaryArray = [];
@@ -821,7 +821,7 @@ export class CollectionService {
 		});
 		return itenaryArray;
 	}
-	
+
 	/**
 	 * calculateDate
 	 */
@@ -830,7 +830,7 @@ export class CollectionService {
 		tempMoment.add(day, 'days');
 		return tempMoment;
 	}
-	
+
 	/**
 	 * markPresence for a peer in content rsvp
 	 */
@@ -842,16 +842,16 @@ export class CollectionService {
 			.put(environment.apiUrl + '/api/peers/' + peerId + '/rsvps/' + rsvpId, body, this.options)
 			.map((response: any) => response);
 	}
-	
+
 	public updateProvisions(collectionId: string, body: any) {
 		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/provisions', this.options).flatMap(res => {
 			return this.httpClient
 				.post(environment.apiUrl + '/api/collections/' + collectionId + '/provisions', body, this.options)
 				.map((response: any) => response);
 		});
-		
+
 	}
-	
+
 	public postPackages(collectionId: string, body: any) {
 		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/packages', this.options).flatMap(res => {
 			console.log('deleted');
@@ -861,7 +861,7 @@ export class CollectionService {
 				.map((response: any) => response);
 		});
 	}
-	
+
 	public postPreferences(collectionId: string, body: any) {
 		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/preferences', this.options).flatMap(res => {
 			console.log('deleted');
@@ -871,26 +871,26 @@ export class CollectionService {
 				.map((response: any) => response);
 		});
 	}
-	
+
 	public updateAvailability(collectionId: string, body: any) {
 		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/availability', this.options)
 			.flatMap(
-			res => {
-				return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/availability', body, this.options)
-					.map((response: any) => response);
-			}
-		);
+				res => {
+					return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/availability', body, this.options)
+						.map((response: any) => response);
+				}
+			);
 	}
-	
+
 	public deleteAvailability(collectionId: string, availabilityId: any) {
 		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/availability/' + availabilityId, this.options);
 	}
-	
+
 	public addAvailability(collectionId: string, body: any) {
 		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/availability', body, this.options)
 			.map((response: any) => response);
 	}
-	
+
 	public postAvailability(userId: string, collectionId: string, availabilities: Array<any>, approval: boolean, packageId: string) {
 		const contentObjs = [];
 		availabilities.forEach(() => {
@@ -936,20 +936,45 @@ export class CollectionService {
 				return contentArray;
 			});
 	}
-	
+
 	public approveSessionJoinRequest(sessionId) {
 		const body = { 'sessionIsApproved': true };
 		return this.httpClient.patch(environment.apiUrl + '/api/contents/' + sessionId, body, this.options).map(res => res);
 	}
-	
+
 	public rejectSessionJoinRequest(sessionId) {
 		const body = { 'sessionIsRejected': true };
 		return this.httpClient.patch(environment.apiUrl + '/api/contents/' + sessionId, body, this.options).map(res => res);
 	}
-	
+
 	public updateComment(commentId: string, commentBody: any) {
 		return this.httpClient
 			.patch(environment.apiUrl + '/api/comments/' + commentId, commentBody, this.options);
 	}
-	
+
+	public updateAssessmentModel(collectionId: string, assessmentModelObject: any) {
+		return this.httpClient.get(environment.apiUrl + '/api/collections/' + collectionId + '/assessment_models', this.options)
+			.flatMap(res => {
+				const assessmentModels = <any>res;
+				if (assessmentModels.length < 1) {
+					return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/assessment_models', assessmentModelObject, this.options);
+				} else {
+					return this.httpClient.patch(environment.apiUrl + '/api/assessment_models/' + assessmentModels[0].id, assessmentModelObject, this.options);
+				}
+			});
+	}
+
+	public updateAssessmentRules(assessmentModelId: string, assessmentRulesArray: any) {
+		return this.httpClient.delete(environment.apiUrl + '/api/assessment_models/' + assessmentModelId + '/assessment_rules', this.options)
+			.flatMap(res => {
+				return this.httpClient.post(environment.apiUrl + '/api/assessment_models/' + assessmentModelId + '/assessment_rules', assessmentRulesArray, this.options);
+			});
+	}
+
+	public updateNAAssessmentRules(assessmentModelId: string, assessmentNARulesArray: any) {
+		return this.httpClient.delete(environment.apiUrl + '/api/assessment_models/' + assessmentModelId + '/assessment_na_rules', this.options)
+			.flatMap(res => {
+				return this.httpClient.post(environment.apiUrl + '/api/assessment_models/' + assessmentModelId + '/assessment_na_rules', assessmentNARulesArray, this.options);
+			});
+	}
 }
