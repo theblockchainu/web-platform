@@ -73,7 +73,8 @@ export class LeftSidebarComponent implements OnInit {
           'calendars',
           { 'participants': [{ 'profiles': ['work'] }] },
           { 'owners': ['profiles'] },
-          { 'contents': ['schedules'] }
+          { 'contents': ['schedules'] },
+          { 'assessment_models': ['assessment_na_rules', 'assessment_rules'] }
         ]
       };
       this._collectionService.getCollectionDetail(this.id, query)

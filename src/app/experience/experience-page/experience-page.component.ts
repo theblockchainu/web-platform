@@ -471,7 +471,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 							{ 'peer': 'profiles' }]
 						}]
 				},
-				'rooms'
+				'rooms',
+				{ 'assessment_models': ['assessment_na_rules', 'assessment_rules'] }
 			],
 			'relInclude': 'calendarId'
 		};

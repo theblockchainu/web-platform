@@ -53,6 +53,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
   public conditions: FormGroup;
   public phoneDetails: FormGroup;
   public paymentInfo: FormGroup;
+  public assessmentForm: FormGroup;
 
   public supplementUrls = new FormArray([]);
   public uploadingImage = false;
@@ -80,6 +81,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
   public cancellationPolicies = [];
   public contentComplete = false;
   public currencies = [];
+  public availableAssessmentTypes = [];
+  public availableAssessmentStyles = [];
   public key;
   public maxTopics = 3;
   public otpSent = false;
@@ -124,7 +127,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
       { 'participants': [{ 'profiles': ['work'] }] },
       { 'owners': [{ 'profiles': ['phone_numbers'] }] },
       { 'contents': ['schedules', 'locations'] },
-      'payoutrules'
+      'payoutrules',
+      { 'assessment_models': ['assessment_na_rules', 'assessment_rules'] }
     ]
   };
 
@@ -135,6 +139,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
   public currentDate: Date;
   public mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
+
+  public nAAssessmentParams: Array<string>;
 
   // TypeScript public modifiers
   constructor(
@@ -213,7 +219,9 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
       notes: '',
       approvedBy: '',
       canceledBy: '',
-      status: 'draft'
+      status: 'draft',
+      academicGyan: '',
+      nonAcademicGyan: ''
     });
 
     this.timeline = this._fb.group({
@@ -246,9 +254,26 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.paymentInfo = this._fb.group({
       id: ''
     });
+
+    this.assessmentForm = this._fb.group({
+      type: ['', Validators.required],
+      style: ['', Validators.required],
+      rules: this._fb.array([
+        this._fb.group({
+          value: ['', Validators.required],
+          gyan: ['', Validators.required]
+        })
+      ], Validators.minLength(1)),
+      nARules: this._fb.array([
+        this._fb.group({
+          value: ['', Validators.required],
+          gyan: ['', Validators.required]
+        })
+      ], Validators.minLength(1))
+    });
+
     this.initializeFormFields();
     this.initializeExperience();
-
     this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
     this._VIDEO = document.querySelector('#main-video');
 
@@ -259,6 +284,32 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
   }
 
+  private initializeAssessment(result) {
+    this.assessmentForm.controls['type'].patchValue(result.assessment_models[0].type);
+    this.assessmentForm.controls['style'].patchValue(result.assessment_models[0].style);
+    if (result.assessment_models[0].assessment_rules && result.assessment_models[0].assessment_rules.length > 0) {
+      const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
+      rulesArray.removeAt(0);
+      result.assessment_models[0].assessment_rules.forEach(rule => {
+        rulesArray.push(this._fb.group({
+          value: rule.value,
+          gyan: rule.gyan
+        }));
+      });
+    }
+    if (result.assessment_models[0].assessment_na_rules && result.assessment_models[0].assessment_na_rules.length > 0) {
+      const rulesArray = <FormArray>this.assessmentForm.controls['nARules'];
+      rulesArray.removeAt(0);
+      result.assessment_models[0].assessment_na_rules.forEach(rule => {
+        rulesArray.push(this._fb.group({
+          value: rule.value,
+          gyan: rule.gyan
+        }));
+      });
+    }
+
+  }
+
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
@@ -266,6 +317,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
   ngAfterViewInit() {
     this.cd.detectChanges();
   }
+
 
   private extractDate(dateString: string) {
     return moment.utc(dateString).local().toDate();
@@ -450,6 +502,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
     this.currencies = ['USD', 'INR', 'GBP'];
 
+    this.availableAssessmentTypes = ['Peer', 'Teacher', 'Third Party'];
+
+    this.availableAssessmentStyles = ['Grades', 'Percentage', 'Percentile'];
+
+    this.nAAssessmentParams = ['attendance', 'community'];
     this.learnerType_array = {
       learner_type: [
         { id: 'auditory', display: 'Auditory' }
@@ -509,6 +566,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
           this.retrieveAccounts();
           this.initializeFormValues(res);
           this.initializeTimeLine(res);
+          this.initializeAssessment(res);
 
           if (res.status === 'active') {
             this.sidebarMenuItems[3].visible = false;
@@ -631,11 +689,19 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
     // Currency, Amount, Cancellation Policy
     this.experience.controls.price.patchValue(res.price);
+    if (res.price === 0) {
+
+    }
     if (res.currency) { this.experience.controls.currency.patchValue(res.currency); }
     if (res.cancellationPolicy) { this.experience.controls.cancellationPolicy.setValue(res.cancellationPolicy); }
 
     // Status
     this.experience.controls.status.setValue(res.status);
+
+    // Gyan
+    this.experience.controls['academicGyan'].patchValue(res.academicGyan);
+
+    this.experience.controls['nonAcademicGyan'].patchValue(res.nonAcademicGyan);
 
     this.isPhoneVerified = res.owners[0].phoneVerified;
 
@@ -783,7 +849,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
         result.owners = this.experienceData.owners;
         this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
 
-        if (step && step === 13) {
+        if (step && step === 14) {
           this.submitTimeline(collectionId, timeline);
         } else {
           this.step++;
@@ -937,7 +1003,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
   saveandexit() {
     this.busySave = true;
     this.experienceStepUpdate();
-    if (this.step === 13) {
+    if (this.step === 14) {
       const data = this.timeline;
       const body = data.value.calendar;
       if (body.startDate && body.endDate) {
@@ -1227,6 +1293,61 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
   back() {
     this.goto(this.step - 1);
+  }
+
+  public addAssessmentRule() {
+    const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
+    console.log(rulesArray);
+    rulesArray.push(this._fb.group({
+      value: '',
+      gyan: ''
+    }));
+  }
+
+  public deleteAssessmentRule(i: number) {
+    const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
+    rulesArray.removeAt(i);
+  }
+
+  public deleteNAAssessmentRule(i: number) {
+    const rulesArray = <FormArray>this.assessmentForm.controls['nARules'];
+    rulesArray.removeAt(i);
+  }
+
+
+  public addNAAssessmentRule() {
+    const rulesArray = <FormArray>this.assessmentForm.controls['nARules'];
+    rulesArray.push(this._fb.group({
+      value: '',
+      gyan: ''
+    }));
+  }
+
+  public submitAssessment() {
+    let assessmentModelObject;
+    this._collectionService.updateAssessmentModel(this.experienceId, {
+      type: this.assessmentForm.controls['type'].value,
+      style: this.assessmentForm.controls['style'].value
+    }).flatMap(res => {
+      console.log(res);
+      assessmentModelObject = <any>res;
+      this.experienceData.assessment_models = [assessmentModelObject];
+      return this._collectionService.updateAssessmentRules(assessmentModelObject.id, this.assessmentForm.controls['rules'].value);
+    }).flatMap(res => {
+      this.experienceData.assessment_models[0].assessment_rules = res;
+      return this._collectionService.updateNAAssessmentRules(assessmentModelObject.id, this.assessmentForm.controls['nARules'].value);
+    }).subscribe(res => {
+      this.experienceData.assessment_models[0].assessment_na_rules = res;
+      this._leftSideBarService.updateSideMenu(this.experienceData, this.sidebarMenuItems);
+      this.step++;
+      this.experienceStepUpdate();
+      this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
+    }, err => {
+      console.log(err);
+      this.snackBar.open('An error Occured', 'close', {
+        duration: 800
+      });
+    });
   }
 
 }
