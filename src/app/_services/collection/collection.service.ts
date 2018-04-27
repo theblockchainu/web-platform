@@ -588,6 +588,18 @@ export class CollectionService {
 	}
 
 	/**
+	 * Approve this collection
+	 * @param collection
+	 * @returns {Observable<any>}
+	 */
+	public rejectCollection(collection) {
+		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collection.id + '/reject', {}, this.options).map(
+			(response) => response, (err) => {
+				console.log('Error: ' + err);
+			});
+	}
+	
+	/**
 	 * open a collection view page based on its type
 	 * @param collection
 	 */
@@ -735,11 +747,15 @@ export class CollectionService {
 	}
 
 	public calculateRating(reviewArray?: any) {
-		let reviewScore = 0;
-		for (const reviewObject of reviewArray) {
-			reviewScore += reviewObject.score;
+		if (reviewArray && reviewArray.length > 0) {
+			let reviewScore = 0;
+			for (const reviewObject of reviewArray) {
+				reviewScore += reviewObject.score;
+			}
+			return (reviewScore / (reviewArray.length * 5)) * 5;
+		} else {
+			return 0;
 		}
-		return (reviewScore / (reviewArray.length * 5)) * 5;
 	}
 
 	public calculateCollectionRating(collectionId, reviewArray?: any) {
@@ -915,16 +931,16 @@ export class CollectionService {
 					// Each of the created content node is linked to all of the Availabilities (time slots) of that request
 					availabilities[index].forEach(element => {
 						availabilityLinkRequestArray.push(
-							this.httpClient.put(environment.apiUrl + '/api/contents/' + savedContent.id + '/availabilities/rel/' + element.id, this.options)
+							this.httpClient.put(environment.apiUrl + '/api/contents/' + savedContent.id + '/availabilities/rel/' + element.id, {}, this.options)
 						);
 					});
 					// The created content nodes are linked to the logged In user as the owner of this request
 					peerLinkRequestArray.push(
-						this.httpClient.put(environment.apiUrl + '/api/peers/' + userId + '/contents/rel/' + savedContent.id, this.options)
+						this.httpClient.put(environment.apiUrl + '/api/peers/' + userId + '/contents/rel/' + savedContent.id, {}, this.options)
 					);
 					// The created content nodes are linked to the package selected by this user.
 					packageLinkRequestArray.push(
-						this.httpClient.put(environment.apiUrl + '/api/contents/' + savedContent.id + '/packages/rel/' + packageId, this.options)
+						this.httpClient.put(environment.apiUrl + '/api/contents/' + savedContent.id + '/packages/rel/' + packageId, {}, this.options)
 					);
 				});
 				return forkJoin(availabilityLinkRequestArray);

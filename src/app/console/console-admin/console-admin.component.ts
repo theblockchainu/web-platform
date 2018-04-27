@@ -12,16 +12,18 @@ declare var moment: any;
 @Component({
 	selector: 'app-console-admin',
 	templateUrl: './console-admin.component.html',
-	styleUrls: ['./console-admin.component.css']
+	styleUrls: ['./console-admin.component.scss']
 })
 export class ConsoleAdminComponent implements OnInit {
 	public collectionsLoaded: boolean;
 	public unapprovedCollections: Array<any>;
-	public unapprovedPeers: Array<any>;
+	public unapprovedPeers;
 	public peersLoaded: boolean;
 	public envVariable;
 	public emailSubscriptions: Array<any>;
 	public emailSubLoaded: boolean;
+	public connectedIdentities;
+	public verifiedItems;
 	public displayedColumns = ['createdAt', 'email'];
 	constructor(
 		activatedRoute: ActivatedRoute,
@@ -56,17 +58,44 @@ export class ConsoleAdminComponent implements OnInit {
 	
 	private fetchPeers() {
 		this.peersLoaded = false;
+		this.connectedIdentities = {
+			'facebook': false,
+			'google': false
+		};
+		this.connectedIdentities = {
+			'phone': false,
+			'email': false,
+			'id': false
+		};
 		const query = {
 			'where': { 'accountVerified': 'false' },
 			'include': [
-				'profiles'
-			]
+				'profiles', 'identities', 'credentials'
+			],
+			'order': 'createdAt DESC'
 		};
 		this._profileService.getAllPeers(query).subscribe((result: any) => {
 			this.unapprovedPeers = result;
-			this.unapprovedPeers.sort((a, b) => {
-				return moment(a.updatedAt).diff(moment(b.updatedAt), 'days');
-			});
+			if (this.unapprovedPeers) {
+				if (this.unapprovedPeers.identities && this.unapprovedPeers.identities.length > 0) {
+					this.unapprovedPeers.identities.forEach(element => {
+						if (element.provider === 'google') {
+							this.connectedIdentities.google = true;
+						} else if (element.provider === 'facebook') {
+							this.connectedIdentities.facebook = true;
+						}
+					});
+				}
+				if (this.unapprovedPeers.credentials && this.unapprovedPeers.credentials.length > 0) {
+					this.unapprovedPeers.credentials.forEach(element => {
+						if (element.provider === 'google') {
+							this.connectedIdentities.google = true;
+						} else if (element.provider === 'facebook') {
+							this.connectedIdentities.facebook = true;
+						}
+					});
+				}
+			}
 			this.peersLoaded = true;
 		}, err => {
 			console.log(err);
@@ -80,14 +109,12 @@ export class ConsoleAdminComponent implements OnInit {
 			'include': [
 				'calendars',
 				{'owners': ['profiles', 'topicsTeaching']}
-			]
+			],
+			'order': 'submittedAt DESC'
 		};
 		this._collectionService.getAllCollections(query).subscribe(
 			(result: any) => {
 				this.unapprovedCollections = result;
-				this.unapprovedCollections.sort((a, b) => {
-					return moment(a.updatedAt).diff(moment(b.updatedAt), 'days');
-				});
 				this.collectionsLoaded = true;
 			}, err => {
 				console.log(err);
@@ -98,6 +125,22 @@ export class ConsoleAdminComponent implements OnInit {
 	public approveWorkshop(collection: any) {
 		
 		this._collectionService.approveCollection(collection).subscribe(
+			(result: any) => {
+				if (result) {
+					this.fetchCollections();
+					this.snackBar.open(result.result, 'Close', {
+						duration: 5000
+					}).onAction().subscribe();
+				}
+			}, err => {
+				console.log(err);
+			}
+		);
+	}
+	
+	public rejectWorkshop(collection: any) {
+		
+		this._collectionService.rejectCollection(collection).subscribe(
 			(result: any) => {
 				if (result) {
 					this.fetchCollections();
