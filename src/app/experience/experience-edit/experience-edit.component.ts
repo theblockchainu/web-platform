@@ -1331,13 +1331,13 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
     }).flatMap(res => {
       console.log(res);
       assessmentModelObject = <any>res;
-      this.experienceData.assessment_models = assessmentModelObject;
+      this.experienceData.assessment_models = [assessmentModelObject];
       return this._collectionService.updateAssessmentRules(assessmentModelObject.id, this.assessmentForm.controls['rules'].value);
     }).flatMap(res => {
-      this.experienceData.assessment_models.assessment_rules = res;
+      this.experienceData.assessment_models[0].assessment_rules = res;
       return this._collectionService.updateNAAssessmentRules(assessmentModelObject.id, this.assessmentForm.controls['nARules'].value);
     }).subscribe(res => {
-      this.experienceData.assessment_models.assessment_na_rules = res;
+      this.experienceData.assessment_models[0].assessment_na_rules = res;
       this._leftSideBarService.updateSideMenu(this.experienceData, this.sidebarMenuItems);
       this.step++;
       this.experienceStepUpdate();
