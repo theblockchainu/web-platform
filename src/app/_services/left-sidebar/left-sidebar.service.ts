@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
-import {RequestHeaderService} from '../requestHeader/request-header.service';
+import { RequestHeaderService } from '../requestHeader/request-header.service';
 
 export class SideBarMenuItem {
     active: boolean;
@@ -17,14 +17,14 @@ export class SideBarMenuItem {
 export class LeftSidebarService {
 
     sidebarMenuItems: Observable<SideBarMenuItem>;
-	private options;
+    private options;
     constructor(
         private http: HttpClient,
         public router: Router,
-		private requestHeaderService: RequestHeaderService
+        private requestHeaderService: RequestHeaderService
     ) {
-    	this.options = this.requestHeaderService.getOptions();
-	}
+        this.options = this.requestHeaderService.getOptions();
+    }
 
     public getMenuItems(fileLocation: string): Observable<SideBarMenuItem> {
         return this.http.get(fileLocation, this.options)
@@ -105,10 +105,12 @@ export class LeftSidebarService {
         } else {
             sidebarMenuItems[1].submenu[4].complete = false;
         }
-        if (collection.price !== undefined && collection.currency !== undefined &&
-            collection.cancellationPolicy !== undefined && collection.price > 0 &&
-            collection.currency.length > 0 && collection.cancellationPolicy.length > 0) {
+        if (collection.price !== undefined && collection.currency && collection.cancellationPolicy && collection.academicGyan !== undefined && collection.nonAcademicGyan !== undefined) {
             sidebarMenuItems[1].submenu[5].complete = true;
+            completedSections++;
+        }
+        if (collection.assessment_models && collection.assessment_models[0].assessment_rules && collection.assessment_models[0].assessment_na_rules) {
+            sidebarMenuItems[1].submenu[6].complete = true;
             completedSections++;
         }
         if (collection.contents !== undefined && collection.contents.length > 0) {
