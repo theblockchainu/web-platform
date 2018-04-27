@@ -287,28 +287,27 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
   private initializeAssessment(result) {
     this.assessmentForm.controls['type'].patchValue(result.assessment_models[0].type);
     this.assessmentForm.controls['style'].patchValue(result.assessment_models[0].style);
-    if (result.assessment_models[0].assessment_rules.length > 0) {
+    if (result.assessment_models[0].assessment_rules && result.assessment_models[0].assessment_rules.length > 0) {
       const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
       rulesArray.removeAt(0);
+      result.assessment_models[0].assessment_rules.forEach(rule => {
+        rulesArray.push(this._fb.group({
+          value: rule.value,
+          gyan: rule.gyan
+        }));
+      });
     }
-    if (result.assessment_models[0].assessment_na_rules.length > 0) {
+    if (result.assessment_models[0].assessment_na_rules && result.assessment_models[0].assessment_na_rules.length > 0) {
       const rulesArray = <FormArray>this.assessmentForm.controls['nARules'];
       rulesArray.removeAt(0);
+      result.assessment_models[0].assessment_na_rules.forEach(rule => {
+        rulesArray.push(this._fb.group({
+          value: rule.value,
+          gyan: rule.gyan
+        }));
+      });
     }
-    result.assessment_models[0].assessment_rules.forEach(rule => {
-      const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
-      rulesArray.push(this._fb.group({
-        value: rule.value,
-        gyan: rule.gyan
-      }));
-    });
-    result.assessment_models[0].assessment_na_rules.forEach(rule => {
-      const rulesArray = <FormArray>this.assessmentForm.controls['nARules'];
-      rulesArray.push(this._fb.group({
-        value: rule.value,
-        gyan: rule.gyan
-      }));
-    });
+
   }
 
   ngOnDestroy(): void {
