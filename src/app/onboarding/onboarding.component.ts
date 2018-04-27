@@ -9,6 +9,7 @@ import { TopicService } from '../_services/topic/topic.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import * as _ from 'lodash';
 import {environment} from '../../environments/environment';
+import {CollectionService} from '../_services/collection/collection.service';
 
 @Component({
 	selector: 'app-onboarding',
@@ -54,12 +55,14 @@ export class OnboardingComponent implements OnInit {
 		private _contentService: ContentService,
 		public _profileService: ProfileService,
 		private _topicService: TopicService,
-		private _cookieUtilsService: CookieUtilsService
+		private _cookieUtilsService: CookieUtilsService,
+		public _collectionService: CollectionService
 	) {
 		this.envVariable = environment;
 		
 		const query = {
-			'limit': 5
+			'limit': 5,
+			'order': 'createdAt DESC'
 		};
 		this.suggestTopicURL = environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics?filter=' + JSON.stringify(query);
 		this.searchTopicURL = environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
@@ -160,8 +163,12 @@ export class OnboardingComponent implements OnInit {
 		if (this.step === 2) {
 			this.router.navigate(['onboarding', '1']);
 		} else if (this.step === 1) {
-			this.router.navigate(['app-upload-docs', '1']);
+			this.router.navigate(['upload-docs', '1']);
 		}
+	}
+	
+	public goToHome() {
+		this.router.navigate(['home', 'homefeed']);
 	}
 	
 	public showConnectedSocials() {

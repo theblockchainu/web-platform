@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
 	
 	modifyFooter(location) {
 		this.showFooter = !(
-			/^\/app-upload-docs\/.*./.test(location.url)
+			/^\/upload-docs\/.*./.test(location.url)
 			|| /^\/onboarding\/.*./.test(location.url)
 			|| /\/console\/inbox\/.*./.test(location.url)
 			|| /^\/workshop\/.*\/edit\/./.test(location.url)

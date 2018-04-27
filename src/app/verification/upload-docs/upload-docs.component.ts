@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { ProfileService } from '../../_services/profile/profile.service';
-import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import {environment} from '../../../environments/environment';
@@ -12,7 +12,7 @@ import {environment} from '../../../environments/environment';
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
-	selector: 'app-upload-docs',
+	selector: 'upload-docs',
 	templateUrl: './upload-docs.component.html',
 	styleUrls: ['./upload-docs.component.scss']
 })
@@ -85,7 +85,7 @@ export class UploadDocsComponent implements OnInit {
 			this.sendOTP();
 		}
 		this.step = p;
-		this.router.navigate(['app-upload-docs', +this.step]);
+		this.router.navigate(['upload-docs', +this.step]);
 	}
 	
 	public sendOTP() {

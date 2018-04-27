@@ -117,6 +117,18 @@ export class AppHeaderComponent implements OnInit {
 					}
 					this.profileCompletionObject = this._profileService.getProfileProgressObject(this.profile);
 					console.log(this.profileCompletionObject);
+					if (this.router.url !== '/signup-social' && this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].verificationIdUrl || this.profile.peer[0].verificationIdUrl.length <= 0)) {
+						// Incomplete Social signup. Redirect user to finish it.
+						this.router.navigate(['signup-social']);
+						this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {
+							duration: 5000
+						});
+					} else if (this.router.url !== '/upload-docs/1' && (!this.profile.peer[0].identities || this.profile.peer[0].identities.length === 0) && (!this.profile.peer[0].verificationIdUrl || this.profile.peer[0].verificationIdUrl.length <= 0)) {
+						this.router.navigate(['upload-docs', '1']);
+						this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {
+							duration: 5000
+						});
+					}
 				}
 			});
 		} else {
@@ -136,14 +148,31 @@ export class AppHeaderComponent implements OnInit {
 
 	public goToHome() {
 		if (this.loggedIn) {
-			this.router.navigate(['home', 'homefeed']);
+			if (this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].verificationIdUrl || this.profile.peer[0].verificationIdUrl.length <= 0)) {
+				// Incomplete Social signup. Redirect user to finish it.
+				this.router.navigate(['signup-social']);
+				this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {
+					duration: 5000
+				});
+			} else if ((!this.profile.peer[0].identities || this.profile.peer[0].identities.length === 0) && (!this.profile.peer[0].verificationIdUrl || this.profile.peer[0].verificationIdUrl.length <= 0)) {
+				this.router.navigate(['upload-docs', '1']);
+				this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {
+					duration: 5000
+				});
+			} else {
+				this.router.navigate(['home', 'homefeed']);
+			}
 		} else {
 			this.router.navigate(['/']);
 		}
 	}
 
 	public getNotifications() {
-		this._notificationService.getNotifications(this.userId, '{}', (err, result) => {
+		const filter = {
+			'order': 'updatedAt DESC',
+			'limit': 10
+		};
+		this._notificationService.getNotifications(this.userId,  JSON.stringify(filter), (err, result) => {
 			if (err) {
 				console.log(err);
 			} else {

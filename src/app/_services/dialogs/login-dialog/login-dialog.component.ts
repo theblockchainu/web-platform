@@ -34,6 +34,7 @@ export class LoginComponentDialog implements OnInit {
 	public showError = false;
 	public envVariable;
 	public loadingHttp = false;
+	public currentPath = '';
 
 	constructor(
 		private route: ActivatedRoute,
@@ -60,6 +61,7 @@ export class LoginComponentDialog implements OnInit {
 		this.forgotpwdForm = this._fb.group({
 			email: ['', Validators.email] /* putting reg ex as well */
 		});
+		this.currentPath = this.router.url.slice(1);
 	}
 
 	public toggle() {
