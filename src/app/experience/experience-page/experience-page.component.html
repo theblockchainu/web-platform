@@ -313,7 +313,7 @@
 																	<div class="col-md-12">
 																		<a mat-button *ngIf="!content.hasRSVPd && userType==='participant'" class="mat-border-button" (click)="rsvpContent(content.id)">RSVP</a>
 																		<a mat-button *ngIf="content.hasRSVPd || userType === 'teacher'" class="mat-border-button" (click)="viewRSVPs(content, userType)">View RSVPs</a>
-																		<a mat-button *ngIf="content.hasRSVPd || userType === 'participant'" class="mat-border-button" (click)="cancelRSVP(content)">Cancel RSVPs</a>
+																		<a mat-button *ngIf="content.hasRSVPd && userType === 'participant'" class="mat-border-button" (click)="cancelRSVP(content)">Cancel RSVP</a>
 																		<a mat-button *ngIf="userType==='participant' && isLive(content) && content.hasRSVPd && calendarId" class="mat-border-button"
 																		 (click)="getDirections(content)">Get directions</a>
 																		<button mat-button class="mat-border-button margin-top-10" *ngIf="userType==='participant' && !isLive(content) && content.hasRSVPd  && calendarId"
