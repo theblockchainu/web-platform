@@ -843,7 +843,8 @@
 								<div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
 									<span class="cal-day-badge"></span>
 									<span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d MMM'
-										}})</span>
+										}})
+									</span>
 								</div>
 								<div class="margin-top-10 margin-bottom-10">
 									<span>{{clickedDate | date:'EEEE, MMM d'}}</span>
@@ -911,6 +912,9 @@
 												<p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating> &nbsp;&nbsp;
 												<span *ngIf="reviews" style="font-weight: 400; float: left; margin-left: 10px;">{{reviews.length}} reviews</span>
 												<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
+											</div>
+											<div class="col-md-12">
+												{{experience.academicGyan+experience.nonAcademicGyan}} Gyan
 											</div>
 										</div>
 									</div>
