@@ -11,6 +11,7 @@ import { CommunityService } from '../../_services/community/community.service';
 import { environment } from '../../../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import {TitleCasePipe} from "@angular/common";
 
 @Component({
     selector: 'app-feed',
@@ -61,7 +62,8 @@ export class HomefeedComponent implements OnInit {
         public _communityService: CommunityService,
         private titleService: Title,
         private metaService: Meta,
-        private router: Router
+        private router: Router,
+		private titlecasepipe: TitleCasePipe
     ) {
         this.envVariable = environment;
         this.userId = _cookieUtilsService.getValue('userId');
@@ -376,27 +378,54 @@ export class HomefeedComponent implements OnInit {
             'include': [
                 'reviewsAboutYou',
                 'profiles',
-                'topicsTeaching'
+                'topicsTeaching',
+				{
+					'relation': 'ownedCollections',
+					'scope': {
+						'where': {
+							'type': 'session'
+						}
+					}
+				}
             ],
-            'where': {
-                'id': { 'neq': this.userId }
+            'where': { and : [
+					{'id': { 'neq': this.userId }},
+					{'accountVerified': true}
+				]
             },
-            'limit': 6,
-            'order': 'createdAt desc'
+            'limit': 50,
+            'order': 'createdAt DESC'
         };
         this.loadingPeers = true;
         this._profileService.getAllPeers(query).subscribe((result: any) => {
-            this.loadingPeers = false;
             this.peers = [];
+            let isTeacher = false;
             for (const responseObj of result) {
-                responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
-                const topics = [];
-                responseObj.topicsTeaching.forEach(topicObj => {
-                    topics.push(topicObj.name);
-                });
-                responseObj.topics = topics;
-                this.peers.push(responseObj);
+            	if (responseObj.ownedCollections && responseObj.ownedCollections.length > 0 && responseObj.topicsTeaching && responseObj.topicsTeaching.length > 0) {
+            		responseObj.ownedCollections.forEach(ownedCollection => {
+            			if (ownedCollection.status === 'active') {
+            				isTeacher = true;
+						}
+					});
+            		if (isTeacher) {
+						responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
+						const topics = [];
+						responseObj.topicsTeaching.forEach(topicObj => {
+							topics.push(this.titlecasepipe.transform(topicObj.name));
+						});
+						if (topics.length > 0) {
+							responseObj.topics = topics;
+						} else {
+							topics.push('No topics selected');
+							responseObj.topics = topics;
+						}
+						if (this.peers.length < 6) {
+							this.peers.push(responseObj);
+						}
+					}
+				}
             }
+			this.loadingPeers = false;
         }, (err) => {
             console.log(err);
         });

@@ -605,7 +605,7 @@
                 }
             }
             var xhttp = new XMLHttpRequest();
-            xhttp.open("POST", 'https://peerbuds.com:3000/signup?returnTo=app-upload-docs/1', true);
+            xhttp.open("POST", 'https://peerbuds.com:3000/signup?returnTo=upload-docs/1', true);
             xhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8'); //
             xhttp.setRequestHeader('Accept', 'application/json');
             xhttp.withCredentials = true;
@@ -617,10 +617,10 @@
                             // $("#email").append(new alert(response.reason));
                             alert(response.reason);
                         } else {
-                            location.href = 'app-upload-docs/1';
+                            location.href = 'upload-docs/1';
                         }
                     } else {
-                        location.href = 'app-upload-docs/1';
+                        location.href = 'upload-docs/1';
                     }
                 }
             };

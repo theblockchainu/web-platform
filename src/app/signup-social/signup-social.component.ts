@@ -104,7 +104,7 @@ export class SignupSocialComponent implements OnInit {
 		this.profileService.updatePeer(this.userId, email).subscribe();
 		this.profileService.updatePeerProfile(this.userId, profile).subscribe((response: any) => response);
 		
-		this.router.navigate(['app-upload-docs', '1']);
+		this.router.navigate(['upload-docs', '1']);
 		
 	}
 	

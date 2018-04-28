@@ -388,7 +388,7 @@
 									</div>
 									<div class="col-md-12 margin-top-10  margin-bottom-20" *ngIf="(availablePaidPackages.length>0 || availableTrialPackages.length > 0) && urluserId !== cookieUserId">
 										<hr>
-										<a class="clickable mat-body-2" (click)="bookSession()">Book A Session</a>
+										<a class="clickable mat-body-2 bookSessionButton" (click)="bookSession()">Book A Session</a>
 										<hr>
 									</div>
 									<div class="col-md-12 margin-top-10  margin-bottom-20" *ngIf="(availablePaidPackages.length>0 || availableTrialPackages.length > 0) && urluserId === cookieUserId">
@@ -743,6 +743,9 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="bottomButton" (click)="bookSession()" *ngIf="isTeacher && (availableTrialPackages.length > 0 || availablePaidPackages.length > 0)">
+			Book Session
 		</div>
 	</div>
 </div>

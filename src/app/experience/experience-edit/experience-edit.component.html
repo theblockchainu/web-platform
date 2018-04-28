@@ -454,10 +454,9 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
-								<h2 class="title">Set a price per student</h2>
+								<h2 class="title">Set a price & gyan value of this experience</h2>
 								<p class="subtitle">
-									The price of your experience is entirely up to you. Play with the calculator to see how much you’d earn depending on the
-									number of peers.
+									The price of your experience is entirely up to you. Gyan is the unit measure of knowledge. You decide the amount of Gyan you will share with your students.
 								</p>
 								<h3 class="title">Price</h3>
 								<div class="row">
@@ -466,9 +465,11 @@
 									</div>
 								</div>
 								<br/>
+								<div class="lightText mat-caption" *ngIf="!freeExperience">OR</div>
+								<br/>
 								<div class="row margin-left-0" *ngIf="!freeExperience">
 									<div class="col-md-3 col-xs-2 padding-left-0">
-										<mat-form-field [floatLabel]="'never'" class="margin-top-20">
+										<mat-form-field [floatLabel]="'never'">
 											<span matPrefix>
 												{{0 | currency: experience.controls['currency'].value : 'symbol' | slice:0:1}} &nbsp;
 											</span>
@@ -477,19 +478,19 @@
 									</div>
 									<div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-4">
 										<mat-form-field [floatLabel]="'never'">
-											<mat-select formControlName="currency" class="padding-top-0 margin-top-20" placeholder="USD">
+											<mat-select formControlName="currency" class="padding-top-0" placeholder="USD">
 												<mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
 											</mat-select>
 										</mat-form-field>
 									</div>
 								</div>
-								<h3 class="title">Gyan Values </h3>
+								<h3 class="title">Gyan</h3>
 								<div class="row margin-left-0 margin-top-20">
 									<div class="col-md-3 col-xs-2 padding-left-0">
 										<mat-form-field>
 											<span mat-label>
 												Academic Gyan
-												<mat-icon matTooltip="This is the gyan based on academic performance!">info_outline</mat-icon>
+												<mat-icon matTooltip="Enter the amount of maximum Gyan you think students could earn if they got the best grades." style="font-size: 18px;">info_outline</mat-icon>
 											</span>
 											<input type="number" matInput formControlName="academicGyan" min="1" required>
 										</mat-form-field>
@@ -498,7 +499,7 @@
 										<mat-form-field>
 											<span mat-label>
 												Non Academic Gyan
-												<mat-icon matTooltip="This is the gyan based on Non academic parameters, such as Attendance, Community engagment etc.!">info_outline</mat-icon>
+												<mat-icon style="font-size: 18px;" matTooltip="Enter additional Gyan students could earn based on non academic performance like attendance or community engagement. This is optional.">info_outline</mat-icon>
 											</span>
 											<input type="number" matInput formControlName="nonAcademicGyan" min="1" required>
 										</mat-form-field>
@@ -537,7 +538,7 @@
 								<div class="row">
 									<div class="col-xs-12">
 										<mat-form-field [floatLabel]="'never'">
-											<mat-select formControlName="type" class="padding-top-0 margin-top-20">
+											<mat-select formControlName="type">
 												<mat-option *ngFor="let c of availableAssessmentTypes" [value]="c">{{c}}</mat-option>
 											</mat-select>
 										</mat-form-field>
@@ -547,19 +548,19 @@
 								<div class="row">
 									<div class="col-xs-12">
 										<mat-form-field [floatLabel]="'never'">
-											<mat-select formControlName="style" class="padding-top-0 margin-top-20">
+											<mat-select formControlName="style">
 												<mat-option *ngFor="let c of availableAssessmentStyles" [value]="c">{{c}}</mat-option>
 											</mat-select>
 										</mat-form-field>
 									</div>
 								</div>
-								<h3 class="title">Assessment Rules </h3>
+								<h3 class="margin-top-40">Academic Assessment Rules</h3>
 								<div class="row">
 									<div class="col-xs-4">
-										Value
+										Grade / Percent / Percentile
 									</div>
 									<div class="col-xs-4">
-										% of Gyan
+										equals how much academic Gyan?
 									</div>
 								</div>
 								<div formArrayName="rules">
@@ -578,7 +579,7 @@
 											</mat-form-field>
 										</div>
 										<div class="col-xs-4">
-											<mat-icon (click)="deleteAssessmentRule(i)" matTooltip="Delete this rule?">delete</mat-icon>
+											<mat-icon (click)="deleteAssessmentRule(i)" matTooltip="Delete this rule?" style="color: #aaaaaa;">delete</mat-icon>
 										</div>
 									</div>
 								</div>
@@ -586,19 +587,19 @@
 								<div class="row">
 									<div class="col-md-3">
 										<a (click)="addAssessmentRule()">
-											<mat-icon>add_circle_outline</mat-icon>
-											Add Rule
+											<mat-icon style="top: 5px;">add_circle_outline</mat-icon>
+											Add a rule
 										</a>
 									</div>
 								</div>
 
-								<h3 class="title">Non Assessment Rules </h3>
+								<h3 class="margin-top-40">Non Academic Assessment Rules</h3>
 								<div class="row">
 									<div class="col-xs-4">
-										Value
+										Attendance / Community Engagement
 									</div>
 									<div class="col-xs-4">
-										% of Gyan
+										covers how much non academic Gyan?
 									</div>
 								</div>
 								<div formArrayName="nARules">
@@ -619,15 +620,15 @@
 											</mat-form-field>
 										</div>
 										<div class="col-xs-4">
-											<mat-icon (click)="deleteNAAssessmentRule(i)" matTooltip="Delete this rule?">delete</mat-icon>
+											<mat-icon (click)="deleteNAAssessmentRule(i)" matTooltip="Delete this rule?" style="color: #aaaaaa;">delete</mat-icon>
 										</div>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-md-3">
 										<a (click)="addNAAssessmentRule()">
-											<mat-icon>add_circle_outline</mat-icon>
-											Add Rule
+											<mat-icon style="top: 5px;">add_circle_outline</mat-icon>
+											Add a rule
 										</a>
 									</div>
 								</div>
@@ -657,7 +658,7 @@
 									<button mat-raised-button type="button" (click)="back()" color="accent">
 										Back
 									</button>
-									<button class="pull-right" mat-raised-button color="accent" (click)="goto(13)">Next</button>
+									<button class="pull-right" mat-raised-button color="accent" (click)="goto(14)">Next</button>
 								</div>
 							</form>
 						</div>

@@ -58,15 +58,6 @@ export class ConsoleAdminComponent implements OnInit {
 	
 	private fetchPeers() {
 		this.peersLoaded = false;
-		this.connectedIdentities = {
-			'facebook': false,
-			'google': false
-		};
-		this.connectedIdentities = {
-			'phone': false,
-			'email': false,
-			'id': false
-		};
 		const query = {
 			'where': { 'accountVerified': 'false' },
 			'include': [
@@ -77,24 +68,26 @@ export class ConsoleAdminComponent implements OnInit {
 		this._profileService.getAllPeers(query).subscribe((result: any) => {
 			this.unapprovedPeers = result;
 			if (this.unapprovedPeers) {
-				if (this.unapprovedPeers.identities && this.unapprovedPeers.identities.length > 0) {
-					this.unapprovedPeers.identities.forEach(element => {
-						if (element.provider === 'google') {
-							this.connectedIdentities.google = true;
-						} else if (element.provider === 'facebook') {
-							this.connectedIdentities.facebook = true;
-						}
-					});
-				}
-				if (this.unapprovedPeers.credentials && this.unapprovedPeers.credentials.length > 0) {
-					this.unapprovedPeers.credentials.forEach(element => {
-						if (element.provider === 'google') {
-							this.connectedIdentities.google = true;
-						} else if (element.provider === 'facebook') {
-							this.connectedIdentities.facebook = true;
-						}
-					});
-				}
+				this.unapprovedPeers.forEach(peer => {
+					if (peer.identities && peer.identities.length > 0) {
+						peer.identities.forEach(element => {
+							if (element.provider === 'google') {
+								peer['google'] = true;
+							} else if (element.provider === 'facebook') {
+								peer['facebook'] = true;
+							}
+						});
+					}
+					if (peer.credentials && peer.credentials.length > 0) {
+						peer.credentials.forEach(element => {
+							if (element.provider === 'google') {
+								peer['google'] = true;
+							} else if (element.provider === 'facebook') {
+								peer['facebook'] = true;
+							}
+						});
+					}
+				});
 			}
 			this.peersLoaded = true;
 		}, err => {

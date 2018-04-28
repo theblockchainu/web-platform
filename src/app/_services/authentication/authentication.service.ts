@@ -64,7 +64,6 @@ export class AuthenticationService {
 				// login successful if there's a jwt token in the response
 				const user = response;
 				if (user && user.access_token) {
-					(<any>window).ga('user_id', user.userId);
 					this.isLoginSubject.next(true);
 					this._socketService.addUser(user.userId);
 					location.reload();
@@ -86,18 +85,16 @@ export class AuthenticationService {
 		this.isLoginSubject.next(false);
 		this.getLoggedInUser.emit(0);
 		if (this.getCookie(this.key)) {
-			console.log(this.options);
 			this.http.get(environment.apiUrl + '/auth/logout', this.options)
 				.subscribe(
 					(res: any) => {
-						console.log(res);
 						console.log('Logged out from server');
 					}, err => {
 						console.log(err);
 					}
 				);
 		}
-		location.reload();
+		this.router.navigate(['/']);
 	}
 	
 	public broadcastNewUserId(userId) {
