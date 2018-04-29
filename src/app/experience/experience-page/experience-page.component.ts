@@ -1232,11 +1232,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			.subscribe(result => {
 				if (result) {
 					if (this.userId) {
-						if (this.experience.price === 0) {
-							this.joinExperience(result);
-						} else {
-							this.router.navigate(['review-pay', 'collection', this.experienceId, result]);
-						}
+						// if (this.experience.price === 0) {
+						// 	this.joinExperience(result);
+						// } else {
+						this.router.navigate(['review-pay', 'collection', this.experienceId, result]);
+						// }
 
 					} else {
 						this.router.navigate(['login']);

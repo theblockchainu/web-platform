@@ -6,70 +6,72 @@ import 'rxjs/add/operator/map';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 @Injectable()
 export class PaymentService {
 	public key = 'userId';
 	private options;
 	public envVariable;
-	
+
 	constructor(private http: HttpClient,
-				private route: ActivatedRoute,
-				public router: Router,
-				private authService: AuthenticationService,
-				public _requestHeaderService: RequestHeaderService,
-				private _cookieUtilsService: CookieUtilsService
+		private route: ActivatedRoute,
+		public router: Router,
+		private authService: AuthenticationService,
+		public _requestHeaderService: RequestHeaderService,
+		private _cookieUtilsService: CookieUtilsService
 	) {
 		this.envVariable = environment;
 		this.options = this._requestHeaderService.getOptions();
 	}
-	
+
 	makePayment(userId, customerId: any, body: any) {
 		if (userId) {
 			return this.http.post(environment.apiUrl + '/api/create-source/' + customerId, body, this.options);
 		}
 	}
-	
+
 	createSource(userId, customerId: any, body: any) {
 		if (userId) {
 			return this.http.post(environment.apiUrl + '/api/transactions/create-source/' + customerId, body, this.options);
 		}
 	}
-	
+
 	createCharge(userId, collectionId: any, body: any) {
 		if (userId) {
 			return this.http.post(environment.apiUrl + '/api/transactions/create-charge/collection/' + collectionId, body, this.options);
 		}
 	}
-	
+
 	createContentCharge(userId, contentId: any, body: any) {
 		if (userId) {
 			return this.http.post(environment.apiUrl + '/api/transactions/create-charge/content/' + contentId, body, this.options);
 		}
 	}
-	
+
 	listAllCards(userId, customerId: any) {
 		if (userId) {
 			return this.http.get(environment.apiUrl + '/api/transactions/list-all-cards/' + customerId, this.options);
 		}
 	}
-	
+
 	deleteCard(userId, customerId: string, cardId: string) {
 		if (userId) {
 			return this.http.delete(environment.apiUrl + '/api/transactions/delete-card/' + customerId + '/' + cardId, this.options);
 		}
 	}
-	
+
 	public getCollectionDetails(id: string) {
-		const filter = `{"include": [{"owners":"profiles"},"calendars",{"contents":"schedules"}]}`;
+		const filter = `{"include": [{"owners":"profiles"},"calendars",{"contents":"schedules"},
+      { "assessment_models": ["assessment_na_rules", "assessment_rules"] }
+	]}`;
 		return this.http
 			.get(environment.apiUrl + '/api/collections/' + id + '?filter=' + filter, this.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
-		
+
 	}
-	
+
 	public createConnectedAccount(authcode: string, error?: any, errDescription?: any): Observable<any> {
 		if (error) {
 			return this.http.get(environment.apiUrl + '/api/payoutaccs/create-connected-account?error=' + error + '&errorDesc=' + errDescription, this.options).map((response: any) => response, (err) => {
@@ -77,7 +79,7 @@ export class PaymentService {
 			});
 		} else {
 			console.log(authcode);
-			
+
 			return this.http.get(environment.apiUrl + '/api/payoutaccs/create-connected-account?authCode=' + authcode, this.options).map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -101,7 +103,7 @@ export class PaymentService {
 				console.log('Error: ' + err);
 			});
 	}
-	
+
 	/**
 	 * getTransactions
 	 */
@@ -118,7 +120,7 @@ export class PaymentService {
 				});
 		}
 	}
-	
+
 	/**
 	 * convertCurrency
 	 */
@@ -145,7 +147,7 @@ export class PaymentService {
 						currency: from
 					};
 				}
-				
+
 			}, (err) => {
 				return {
 					amount: amount,
@@ -154,15 +156,15 @@ export class PaymentService {
 			});
 		// }
 	}
-	
+
 	/**
 	 * patchPayoutRule
 	 */
 	public patchPayoutRule(payoutRuleId: string, newPayoutId: string) {
-		return this.http.patch(environment.apiUrl + '/api/payoutrules/' + payoutRuleId, {'payoutId1': newPayoutId}, this.options)
+		return this.http.patch(environment.apiUrl + '/api/payoutrules/' + payoutRuleId, { 'payoutId1': newPayoutId }, this.options)
 			.map(result => result);
 	}
-	
+
 	/**
 	 * postPayoutRule
 	 */
@@ -173,12 +175,12 @@ export class PaymentService {
 		};
 		return this.http.post(environment.apiUrl + '/api/collections/' + collectionId + '/payoutrules', body, this.options).map(result => result);
 	}
-	
+
 	/**
 	 * retrieveLocalPayoutAccounts
 	 */
 	public retrieveLocalPayoutAccounts() {
 		return this.http.get(environment.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue('userId') + '/payoutaccs', this.options).map(result => result);
 	}
-	
+
 }
