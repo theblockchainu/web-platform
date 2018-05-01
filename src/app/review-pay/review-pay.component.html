@@ -17,13 +17,34 @@
                 </div>
                 <form [hidden]="loadingCards">
                     <div class="payment-message margin-top-20 margin-bottom-20 mat-body-2">{{message}}</div>
+                    <div class="assessment row margin-bottom-50" *ngIf="collection.assessment_models && collection.assessment_models.length>0">
+                        <div class="col-sm-12 margin-top-20">
+                            <h3>Assessment</h3>
+                            <span>Teacher assessment by {{collection.assessment_models[0].style}}</span>
+                        </div>
+                        <div class="col-sm-12 margin-top-20">
+                            <div class="row" *ngFor="let assessment_rule of collection.assessment_models[0].assessment_rules">
+                                <div class="col-sm-6">
+                                    {{assessment_rule.value}}
+                                </div>
+                                <div class="col-sm-6">
+                                    {{assessment_rule.gyan}} %
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 margin-top-20">
+                            Assessment applies to only {{collection.academicGyan}} Gyan
+                        </div>
+                    </div>
                     <div class="margin-bottom-50" *ngIf="isCardExist">
                         <h3>Select payment method</h3>
                         <div class="row margin-top-50">
                             <div class="col-sm-6">
-                                <mat-form-field [floatLabel]="'always'">                 <mat-select placeholder="Select card" (change)="getcardDetails($event)">
-                                    <mat-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand }} {{card.object}} ending with {{card.last4}}</mat-option>
-                                </mat-select>               </mat-form-field>
+                                <mat-form-field [floatLabel]="'always'">
+                                    <mat-select placeholder="Select card" (change)="getcardDetails($event)">
+                                        <mat-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand }} {{card.object}} ending with {{card.last4}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
                             </div>
                             <div class="col-sm-6" *ngIf="cardDetails['id']">
                                 <span class="text-grey" *ngIf="cardDetails['brand'] === 'Visa'">
@@ -103,7 +124,19 @@
                             </div>
                         </div>
                         <div class="seperate-section">
-                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate | date: 'EEE, MMM dd' }}</div>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    GYN
+                                </div>
+                                <div class=" col-xs-2 col-xs-offset-7">
+                                    {{collection.academicGyan + collection.nonAcademicGyan}}
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="seperate-section">
+                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate | date: 'EEE,
+                                MMM dd' }}</div>
                             <div class="" *ngIf="collection.contents">{{collection.contents.length}} Activities</div>
                             <!--<a href="#">See details</a>-->
                         </div>

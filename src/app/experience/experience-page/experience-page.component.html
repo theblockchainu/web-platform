@@ -913,7 +913,7 @@
 												<span *ngIf="reviews" style="font-weight: 400; float: left; margin-left: 10px;">{{reviews.length}} reviews</span>
 												<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
 											</div>
-											<div class="col-md-12">
+											<div class="col-md-12" matTooltip="You would gain {{experience.academicGyan+experience.nonAcademicGyan}} Gyan from completing this experience.">
 												{{experience.academicGyan+experience.nonAcademicGyan}} Gyan
 											</div>
 										</div>

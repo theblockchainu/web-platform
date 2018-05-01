@@ -5,7 +5,7 @@ import { ProfileService } from '../_services/profile/profile.service';
 import * as moment from 'moment';
 import { PaymentService } from '../_services/payment/payment.service';
 import { CollectionService } from '../_services/collection/collection.service';
-import {environment} from '../../environments/environment';
+import { environment } from '../../environments/environment';
 declare var Stripe: any;
 
 @Component({
@@ -89,6 +89,7 @@ export class ReviewPayComponent implements OnInit {
 
         this.paymentService.getCollectionDetails(this.collectionId).subscribe(collectionData => {
             if (collectionData) {
+                console.log(collectionData);
                 this.createChargeData.amount = (collectionData.price) * 100;
                 this.createChargeData.currency = collectionData.currency;
                 this.createChargeData.description = collectionData.description;
@@ -123,7 +124,7 @@ export class ReviewPayComponent implements OnInit {
 
                 // get all cards
                 this.paymentService.listAllCards(this.userId, this.custId).subscribe((cards: any) => {
-                    this.loadingCards = false;
+                this.loadingCards = false;
                     if (cards) {
                         this.listAllCards = cards.data;
                         console.log('listAllCards: ' + JSON.stringify(this.listAllCards));
