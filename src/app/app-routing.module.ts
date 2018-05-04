@@ -4,7 +4,6 @@ import { IndexComponent } from './default/index/index.component';
 import { NoContentComponent } from './no-content/no-content.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { LoginComponentDialog } from './_services/dialogs/login-dialog/login-dialog.component';
-import { LoginComponent } from './login/login.component';
 import { AppDesignComponent } from './app-design/app-design.component';
 import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.component';
 import { GlobalErrorHandlerComponent } from './error-handler/globalerrorhandler';
@@ -88,10 +87,6 @@ const routes: Routes = [
 		component: ResetPasswordComponent
 	},
 	{
-		path: 'login1',
-		component: LoginComponent
-	},
-	{
 		path: 'signup-social',
 		loadChildren: 'app/signup-social/signup-social.module#SignupSocialModule'
 	},
@@ -149,7 +144,7 @@ const routes: Routes = [
 		loadChildren: 'app/community/community.module#CommunityModule'
 	},
 	{
-		path: 'app-upload-docs',
+		path: 'verification',
 		loadChildren: 'app/verification/verification.module#VerificationModule',
 		canActivateChild: [AuthGuardService]
 	},

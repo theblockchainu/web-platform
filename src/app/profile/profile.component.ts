@@ -11,6 +11,7 @@ import { environment } from '../../environments/environment';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Meta, Title } from '@angular/platform-browser';
+import {TitleCasePipe} from '@angular/common';
 
 @Component({
 	selector: 'app-profile',
@@ -82,7 +83,8 @@ export class ProfileComponent implements OnInit {
 		public snackBar: MatSnackBar,
 		public _dialogsService: DialogsService,
 		private titleService: Title,
-		private metaService: Meta
+		private metaService: Meta,
+		private titlecasepipe: TitleCasePipe
 	) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe((param) => {
@@ -110,8 +112,8 @@ export class ProfileComponent implements OnInit {
 		this.cookieUserId = this._cookieUtilsService.getValue('userId');
 		this.loadingProfile = true;
 		this.isTeacher = false;
-		this.loadingProfile = false;
 		this.loadingLearningJourney = true;
+		this.loadingCommunities = true;
 		this.loadingPeers = true;
 		this.collectionTypes = ['workshops'];
 		this.recommendedpeers = [];
@@ -171,25 +173,53 @@ export class ProfileComponent implements OnInit {
 		const query = {
 			'include': [
 				'reviewsAboutYou',
+				'wallet',
 				'profiles',
-				'topicsTeaching'
+				'topicsTeaching',
+				{
+					'relation': 'ownedCollections',
+					'scope': {
+						'where': {
+							'type': 'session'
+						}
+					}
+				}
 			],
-			'where': {
-				'id': { 'neq': this.urluserId }
+			'where': { and : [
+					{'id': { 'neq': this.urluserId }},
+					{'accountVerified': true}
+				]
 			},
-			'limit': 6
+			'limit': 50,
+			'order': 'createdAt DESC'
 		};
 		this._profileService.getAllPeers(query).subscribe((result: any) => {
 			this.recommendedpeers = [];
+			let isTeacher = false;
 			for (const responseObj of result) {
-				// console.log(responseObj);
-				responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
-				const topics = [];
-				responseObj.topicsTeaching.forEach(topicObj => {
-					topics.push(topicObj.name);
-				});
-				responseObj.topics = topics;
-				this.recommendedpeers.push(responseObj);
+				if (responseObj.ownedCollections && responseObj.ownedCollections.length > 0 && responseObj.topicsTeaching && responseObj.topicsTeaching.length > 0) {
+					responseObj.ownedCollections.forEach(ownedCollection => {
+						if (ownedCollection.status === 'active') {
+							isTeacher = true;
+						}
+					});
+					if (isTeacher) {
+						responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
+						const topics = [];
+						responseObj.topicsTeaching.forEach(topicObj => {
+							topics.push(this.titlecasepipe.transform(topicObj.name));
+						});
+						if (topics.length > 0) {
+							responseObj.topics = topics;
+						} else {
+							topics.push('No topics selected');
+							responseObj.topics = topics;
+						}
+						if (this.recommendedpeers.length < 6) {
+							this.recommendedpeers.push(responseObj);
+						}
+					}
+				}
 			}
 			this.loadingPeers = false;
 		}, (err) => {
@@ -205,7 +235,6 @@ export class ProfileComponent implements OnInit {
 		this._profileService.getTeachingExternalTopics(this.urluserId, queryTeaching).subscribe((response: any) => {
 			// console.log(response);
 			this.topicsTeaching = response;
-			this.loadingProfile = false;
 			if (this.profileObj.peer[0].collections) {
 				this.getParticipatingWorkshops(this.profileObj.peer[0].collections);
 			} else {
@@ -225,6 +254,7 @@ export class ProfileComponent implements OnInit {
 		this._profileService.getJoinedCommunities(peerId, query).subscribe(res => {
 			this.pariticipatingCommunities = res;
 			this.loadingCommunities = false;
+			this.loadingProfile = false;
 		});
 	}
 

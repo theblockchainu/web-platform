@@ -17,7 +17,6 @@ export class IndexComponent implements OnInit {
 	public loadingHome = false;
 	private email: string;
 	notifyForm: FormGroup;
-	public isLoggedIn;
 	public loggedIn = false;
 	constructor(
 		private authenticationService: AuthenticationService,
@@ -30,7 +29,6 @@ export class IndexComponent implements OnInit {
 		private metaService: Meta,
 		private dialogsService: DialogsService,
 		private _activatedRoute: ActivatedRoute) {
-		this.isLoggedIn = authenticationService.isLoggedIn();
 		authenticationService.isLoggedIn().subscribe((res) => {
 			this.loggedIn = res;
 			if (this.loggedIn) {
@@ -41,8 +39,6 @@ export class IndexComponent implements OnInit {
 			if (res[0] && res[0].path === 'login') {
 				if (!this.loggedIn) {
 					this.dialogsService.openLogin().subscribe();
-				} else {
-					// this._router.navigate(['home', 'homefeed']);
 				}
 			}
 		});

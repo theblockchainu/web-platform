@@ -6,11 +6,11 @@ import { SignupSocialComponent } from './signup-social.component';
 import { SharedModule } from '../_shared/_shared.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SignupSocialRoutingModule,
-    SharedModule
-  ],
-  declarations: [SignupSocialComponent]
+	imports: [
+		CommonModule,
+		SignupSocialRoutingModule,
+		SharedModule
+	],
+	declarations: [SignupSocialComponent]
 })
 export class SignupSocialModule { }

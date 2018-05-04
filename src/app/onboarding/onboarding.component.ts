@@ -9,6 +9,8 @@ import { TopicService } from '../_services/topic/topic.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import * as _ from 'lodash';
 import {environment} from '../../environments/environment';
+import {CollectionService} from '../_services/collection/collection.service';
+import {Meta, Title} from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-onboarding',
@@ -50,16 +52,20 @@ export class OnboardingComponent implements OnInit {
 		private activatedRoute: ActivatedRoute,
 		private http: HttpClient,
 		private _fb: FormBuilder,
+		private titleService: Title,
+		private metaService: Meta,
 		private countryPickerService: CountryPickerService,
 		private _contentService: ContentService,
 		public _profileService: ProfileService,
 		private _topicService: TopicService,
-		private _cookieUtilsService: CookieUtilsService
+		private _cookieUtilsService: CookieUtilsService,
+		public _collectionService: CollectionService
 	) {
 		this.envVariable = environment;
 		
 		const query = {
-			'limit': 5
+			'limit': 5,
+			'order': 'createdAt DESC'
 		};
 		this.suggestTopicURL = environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics?filter=' + JSON.stringify(query);
 		this.searchTopicURL = environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
@@ -103,6 +109,30 @@ export class OnboardingComponent implements OnInit {
 				});
 	}
 	
+	private setTags() {
+		this.titleService.setTitle('Onboarding');
+		this.metaService.updateTag({
+			property: 'og:title',
+			content: 'Peerbuds Onboarding'
+		});
+		this.metaService.updateTag({
+			property: 'og:description',
+			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+		});
+		this.metaService.updateTag({
+			property: 'og:site_name',
+			content: 'peerbuds.com'
+		});
+		this.metaService.updateTag({
+			property: 'og:image',
+			content: 'https://peerbuds.com/pb_logo_square.png'
+		});
+		this.metaService.updateTag({
+			property: 'og:url',
+			content: environment.clientUrl + this.router.url
+		});
+	}
+	
 	public selected(event) {
 		if (this.interests.length >= 3) {
 			this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
@@ -142,6 +172,7 @@ export class OnboardingComponent implements OnInit {
 	}
 	
 	public ngOnInit() {
+		this.setTags();
 		this._topicService.getDefaultTopicsAtOnboarding(this.suggestTopicURL)
 			.subscribe((response: any) => {
 				this.active = false;
@@ -159,9 +190,11 @@ export class OnboardingComponent implements OnInit {
 	back() {
 		if (this.step === 2) {
 			this.router.navigate(['onboarding', '1']);
-		} else if (this.step === 1) {
-			this.router.navigate(['app-upload-docs', '1']);
 		}
+	}
+	
+	public goToHome() {
+		this.router.navigate(['home', 'homefeed']);
 	}
 	
 	public showConnectedSocials() {

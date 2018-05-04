@@ -2,836 +2,836 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>Peerbuds Sign-up</title>
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <base href="/">
-
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-
-
-    <!-- base url -->
-    <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
-    <!-- bootstrap css -->
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-    <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!--<link rel="stylesheet" type="text/css" href="assets/styles/themes/pbcustom.css">-->
-    <style>
-        /*body {
-            font-family: "Lato";
-        }*/
-
-        .example-spacer {
-            flex: 1 1 auto;
-        }
-
-        .headerButtons {
-            margin-left: 20px;
-        }
-
-
-        .mat-button,
-        .mat-fab,
-        .mat-icon-button,
-        .mat-mini-fab,
-        .mat-raised-button {
-            box-sizing: border-box;
-            position: relative;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            cursor: pointer;
-            outline: 0;
-            border: none;
-            -webkit-tap-highlight-color: transparent;
-            display: inline-block;
-            white-space: nowrap;
-            text-decoration: none;
-            vertical-align: baseline;
-            text-align: center;
-            margin: 0;
-            min-width: 88px;
-            line-height: 36px;
-            padding: 0 16px;
-            border-radius: 2px;
-            color: #767676;
-            background: none;
-        }
-
-        a.headerButtons,
-        a.headerButtons:active,
-        a.headerButtons:visited,
-        a.headerButtons:hover {
-            color: #767676;
-            text-decoration: none;
-        }
-
-        .footer-btn {
-            color: #979797 !important;
-            margin: 0px;
-        }
-
-        footer a {
-            color: rgba(0, 0, 0, 0.87);
-            margin: 0px 25px;
-        }
-
-        .signup-box {
-            border: 1px solid lightgrey;
-        }
-
-        .signupEmail {
-            border: 1px solid lightgrey;
-        }
-
-        .margin-top-40 {
-            margin-top: 40px;
-        }
-
-        .signup-box label {
-            font-weight: normal;
-            color: #666 !important;
-            font-size: 14px;
-        }
-
-        .form-control {
-            height: 35px;
-            width: 100%;
-            border-radius: 0px !important;
-        }
-
-        .birthDetails {
-            border-bottom-right-radius: 0px !important;
-            border-bottom-left-radius: 0px !important;
-            box-shadow: none !important;
-            border-radius: 0 6px 6px 0 !important;
-            border: none;
-            border-bottom: 1px solid #ccc !important;
-        }
-
-        .form-control.error {
-            border-bottom: 1px solid #ff6d71 !important;
-        }
-
-        .form-control:focus {
-            outline: none;
-            outline-color: transparent;
-        }
-
-        .form-control[readonly] {
-            background-color: inherit!important;
-        }
-
-        .btn {
-            height: 80%;
-            width: 80%;
-            background-color: #ff6d71 !important;
-            border-radius: 3px;
-        }
-
-        .small-font {
-            color: #666 !important;
-            font-size: 14px;
-        }
-
-        .btn:focus {
-            outline: none;
-            box-shadow: none;
-        }
-
-        .btn-primary {
-            border-color: #fff;
-            color: #fff;
-        }
-
-        .btn-primary:hover,
-        .btn-primary:active .btn-primary:focus,
-        .btn-primary:visited,
-        .btn-primary:active:after {
-            background-color: #ff6d71!important;
-            border-color: #ff6d71!important;
-            color: #fff!important;
-        }
-
-        .btn-social {
-            color: #fff;
-            display: block;
-            padding: 7px 20px;
-            position: relative;
-            font-size: 15px;
-            font-weight: 400;
-            border-radius: 3px;
-            text-align: center;
-            height: 50px;
-            line-height: 29px;
-        }
-
-        .btn-social i.fa-facebook {
-            padding: 4px 6.5px 4px 6.5px;
-        }
-
-        .btn-social i {
-            font-size: 13px;
-            left: 16px;
-            position: absolute;
-            top: 13px;
-
-        }
-
-        .btn-social i.fa-google,
-        .btn-social i.fa-facebook,
-        .btn-social i.fa-envelope {
-            border-right-color: #999;
-        }
-
-        .btn-ggl,
-        .btn-ggl:visited,
-        .btn-fb,
-        .btn-fb:visited {
-            color: #666;
-            background-color: #fff;
-            border: 1px solid #d3d3d3;
-            height: min-content;
-            width: 80%;
-        }
-
-        .btn-email {
-            background-color: #ff6d71;
-            color: #fff!important;
-            height: min-content;
-            width: 80%;
-        }
-
-        .btn-ggl:hover i {
-            background-color: #fff;
-            color: #dd3723 !important;
-        }
-
-        .btn-fb:hover i {
-            background-color: #fff;
-            color: #324B80 !important;
-        }
-
-        .btn-ggl:hover {
-            background-color: #dd3723;
-            color: #fff;
-        }
-
-        .btn-email:hover {
-            background-color: #ff6d71;
-
-        }
-
-        .btn-fb:hover {
-            background-color: #324B80;
-            color: #fff;
-        }
-
-        .btn-fb:active,
-        .btn-fb:focus,
-        .btn-fb:hover,
-        .btn-ggl:active,
-        .btn-ggl:focus,
-        .btn-ggl:hover,
-        .btn-email:active,
-        .btn-email:focus,
-        .btn-email:hover {
-            color: #fff!important;
-            text-decoration: none;
-            border: none;
-        }
-
-        .btn-email:hover i {
-            border-right-color: #ccc;
-        }
-
-        .btn-link {
-            color: #33bd9e;
-        }
-
-        .btn-link:hover {
-            color: #1dad8d;
-        }
-
-        .or-seperator-vertical {
-            border-bottom: 1px solid rgba(199, 199, 199, 0.5);
-            content: "";
-            display: inline-block;
-            left: 0;
-            position: absolute;
-            top: 17px;
-            width: 100%;
-        }
-
-        .round-or-text {
-            border-radius: 24px;
-            color: #fff;
-            display: inline-block;
-            height: 30px;
-            line-height: 30px;
-            width: 50px;
-            font-size: 20px;
-        }
-
-        .or-text-vertical {
-            background-color: #fff;
-            color: rgba(74, 74, 74, 0.5);
-            position: relative;
-            font-size: 15px;
-            font-weight: 800;
-        }
-
-        .position-relative {
-            position: relative;
-        }
-
-        .margin-bottom-20 {
-            margin-bottom: 20px;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        label.error {
-            color: #fff !important;
-            font-size: 13px !important;
-            margin: 50px;
-        }
-
-        .fs-13 {
-            font-size: 13px;
-            color: #999;
-        }
-
-
-        .p-1 {
-            color: #999 !important;
-            margin-left: 5px;
-        }
-
-        .fa-facebook {
-            background-color: #335397;
-            color: #fff!important;
-        }
-
-        .fa-google {
-            background-color: #dd4a38;
-            color: #fff!important;
-        }
-
-        .circle-icon {
-            padding: 4px 5px 4px 5px;
-            border-radius: 100%;
-        }
-
-        /* Material CSS */
-
-        * {
-            box-sizing: border-box;
-        }
-
-        input {
-            font-size: 16px;
-            padding: 8px 5px 10px 2px;
-            display: block;
-            width: 100%;
-            border: none;
-            border-bottom: 1px solid #d3d3d3;
-            margin-bottom: 19px;
-        }
-
-        input.error {
-            border-bottom: 1px solid #ff6d71 !important;
-        }
-
-        input:focus {
-            outline: none;
-        }
-
-        label {
-            color: #ccc;
-            font-size: 18px;
-            font-weight: normal;
-            position: absolute;
-            pointer-events: none;
-            top: 10px;
-            bottom: 10px;
-            transition: 0.2s ease all;
-            -moz-transition: 0.2s ease all;
-            -webkit-transition: 0.2s ease all;
-        }
-
-        /* active state */
-
-        input:focus~label,
-        input:valid~label {
-            top: -15px;
-            font-size: 13px;
-        }
-
-        .bar {
-            position: relative;
-            display: block;
-            width: 300px;
-        }
-
-        .bar:before,
-        .bar:after {
-            content: '';
-            height: 5px;
-            width: 0;
-            bottom: 3px;
-
-            background: #ff5b5f;
-            transition: 0.2s ease all;
-            -moz-transition: 0.2s ease all;
-            -webkit-transition: 0.2s ease all;
-        }
-
-        .bar:before {
-            left: 50%;
-        }
-
-        .bar:after {
-            right: 50%;
-        }
-
-        /* active state */
-
-        input:focus~.bar:before,
-        input:focus~.bar:after {
-            width: 50%;
-        }
-
-        .highlight {
-            position: absolute;
-            height: 20%;
-            width: 568px;
-            top: 25%;
-            left: 0;
-            pointer-events: none;
-            opacity: 0.5;
-        }
-
-        /* active state */
-
-        input:focus~.highlight {
-            -webkit-animation: inputHighlighter 0.3s ease;
-            -moz-animation: inputHighlighter 0.3s ease;
-            animation: inputHighlighter 0.3s ease;
-        }
-
-        @-webkit-keyframes inputHighlighter {
-            from {
-                background: #fff;
-            }
-            to {
-                width: 0;
-                background: transparent;
-            }
-        }
-
-        @-moz-keyframes inputHighlighter {
-            from {
-                background: #fff;
-            }
-            to {
-                width: 0;
-                background: transparent;
-            }
-        }
-
-        @keyframes inputHighlighter {
-            from {
-                background: #fff;
-            }
-            to {
-                width: 0;
-                background: transparent;
-            }
-        }
-
-
-        .btn-login {
-            float: right;
-            height: 34px;
-            width: 96px;
-            margin-left: 30%;
-            margin-top: 7px;
-            background-color: #fff;
-            border-radius: 1px;
-            color: #777;
-            border: 1px solid #ccc;
-        }
-
-        .logo {
-            width: 39px;
-            padding: 3px;
-        }
-
-        .hr {
-            height: 2px;
-            background: #dbdbdb;
-        }
-
-        .footer-btn {
-            color: #999;
-        }
-
-        .header-btn {
-            color: #999;
-        }
-
-        .a {
-            color: #999 !important;
-        }
-
-        .align {
-            padding-right: 21px;
-        }
-
-
-        .footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-        }
-    </style>
-
-    <script>
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-            $.validator.addMethod("check_date_of_birth", function (value, element) {
-                var day = $("#dobDay").val();
-                var month = $("#dobMonth").val();
-                var year = $("#dobYear").val();
-                var age = 0;
-                var mydate = new Date();
-                var mydate2 = mydate;
-                mydate.setFullYear(year, month - 1, day);
-                var currdate = new Date();
-                currdate.setFullYear(currdate.getFullYear() - age);
-                return currdate > mydate2;
-            });
-            $("#signupForm").validate({
-                rules: {
-                    first_name: "required",
-                    last_name: "required",
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    password: "required",
-                    dobMonth: "required",
-                    dobDay: "required",
-                    dobYear: {
-                        required: true,
-                        check_date_of_birth: true
-                    }
-                },
-                messages: {
-                    first_name: "",
-                    last_name: "",
-                    email: {
-                        required: "",
-                        email: "Email already exists"
-                    },
-                    password: "",
-                    dobMonth: "",
-                    dobDay: "",
-                    dobYear: {
-                        required: ""
-                    },
-                },
-                errorPlacement: function (error, element) {
-                    if (element.attr("name") == "first_name")
-                        error.insertAfter(".input-group-first-name");
-                    else if (element.attr("name") == "last_name")
-                        error.insertAfter(".input-group-last-name");
-                    else if (element.attr("name") == "email")
-                        error.insertAfter(".input-group-email");
-                    else if (element.attr("name") == "password")
-                        error.insertAfter(".input-group-password");
-                    else
-                        error.insertAfter(element);
-                },
-                success: function () {
-                    //$('.error').hide();
-                }
-            });
-            //Load year
-            var presentYear = new Date().getFullYear();
-            var maxYear = presentYear;
-            var period = 100;
-            for (var i = maxYear; i >= maxYear - 100; i--) {
-                $("#dobYear").append(new Option(i, i));
-            }
-            //Load MONTH
-            for (var i = 1; i <= 31; i++) {
-                var newI;
-                if (i < 10) {
-                    newI = '0' + i;
-                } else newI = i;
-                $("#dobDay").append(new Option(i, newI));
-            }
-        });
-
-        function signupEmail() {
-            $(".signupEmail").removeClass("hide");
-            $(".signup-box").addClass("hide");
-        }
-
-        function back() {
-            $(".signupEmail").addClass("hide");
-            $(".signup-box").removeClass("hide");
-        }
-
-        function signup(cFuntion) {
-            // $('#signupForm').submit();
-            var formElement = document.querySelector("form");
-            var formData = {};
-            for (var field in formElement) {
-                if (+field < 8) {
-                    formData[formElement[+field].name] = formElement[+field].value;
-                }
-            }
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("POST", 'https://peerbuds.com:3000/signup?returnTo=app-upload-docs/1', true);
-            xhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8'); //
-            xhttp.setRequestHeader('Accept', 'application/json');
-            xhttp.withCredentials = true;
-            xhttp.onreadystatechange = function () {
-                if (xhttp.readyState == 4) {
-                    if (xhttp.responseText) {
-                        response = JSON.parse(xhttp.responseText);
-                        if (response.status === 'failed') {
-                            // $("#email").append(new alert(response.reason));
-                            alert(response.reason);
-                        } else {
-                            location.href = 'app-upload-docs/1';
-                        }
-                    } else {
-                        location.href = 'app-upload-docs/1';
-                    }
-                }
-            };
-            xhttp.send(JSON.stringify(formData));
-        }
-        function goToHome() {
-            location.href = '/';
-        }
-        function goToPhilosophy() {
-            location.href = 'philosophy';
-        }
-        function goToWhitePaper() {
-            location.href = 'white-paper';
-        }
-        function goToLogin() {
-            location.href = "/login";
-        }
-    </script>
+	<meta charset="utf-8">
+	<title>Sign-up | Peerbuds</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Peerbuds">
+	<meta property="og:description" content="Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.">
+	<meta property="og:site_name" content="peerbuds.com">
+	<meta property="og:image" content="https://peerbuds.com/pb_logo_square.png">
+	<meta property="og:image:width" content="1024">
+	<meta property="og:image:height" content="1024">
+	<meta property="og:url" content="https://peerbuds.com">
+	
+	<base href="/">
+	
+	<link rel="icon" type="image/x-icon" href="favicon.png">
+	
+	<!--Fonts-->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+	
+	<!-- bootstrap css -->
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+	<link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<style>
+		body {
+			font-family: "Lato";
+		}
+		.example-spacer {
+			flex: 1 1 auto;
+		}
+		
+		.headerButtons {
+			margin-left: 20px;
+		}
+		
+		
+		.mat-button,
+		.mat-fab,
+		.mat-icon-button,
+		.mat-mini-fab,
+		.mat-raised-button {
+			box-sizing: border-box;
+			position: relative;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			cursor: pointer;
+			outline: 0;
+			border: none;
+			-webkit-tap-highlight-color: transparent;
+			display: inline-block;
+			white-space: nowrap;
+			text-decoration: none;
+			vertical-align: baseline;
+			text-align: center;
+			margin: 0;
+			min-width: 88px;
+			line-height: 36px;
+			padding: 0 16px;
+			border-radius: 2px;
+			color: #767676;
+			background: none;
+		}
+		
+		a.headerButtons,
+		a.headerButtons:active,
+		a.headerButtons:visited,
+		a.headerButtons:hover {
+			color: #767676;
+			text-decoration: none;
+		}
+		
+		.footer-btn {
+			color: #979797 !important;
+			margin: 0px;
+		}
+		
+		footer a {
+			color: rgba(0, 0, 0, 0.87);
+			margin: 0px 25px;
+		}
+		
+		.signup-box {
+			border: 1px solid lightgrey;
+		}
+		
+		.signupEmail {
+			border: 1px solid lightgrey;
+		}
+		
+		.margin-top-40 {
+			margin-top: 40px;
+		}
+		
+		.signup-box label {
+			font-weight: normal;
+			color: #666 !important;
+			font-size: 14px;
+		}
+		
+		.form-control {
+			height: 35px;
+			width: 100%;
+			border-radius: 0px !important;
+		}
+		
+		.birthDetails {
+			box-shadow: none !important;
+			border-radius: 0 6px 6px 0 !important;
+			border: none;
+			border-bottom: 1px solid #ccc !important;
+		}
+		
+		.form-control.error {
+			border-bottom: 1px solid #ff6d71 !important;
+		}
+		
+		.form-control:focus {
+			outline: transparent none;
+		}
+		
+		.form-control[readonly] {
+			background-color: inherit!important;
+		}
+		
+		.btn {
+			height: 80%;
+			width: 80%;
+			background-color: #ff6d71 !important;
+			border-radius: 3px;
+		}
+		
+		.small-font {
+			color: #666 !important;
+			font-size: 14px;
+		}
+		
+		.btn:focus {
+			outline: none;
+			box-shadow: none;
+		}
+		
+		.btn-primary {
+			border-color: #fff;
+			color: #fff;
+		}
+		
+		.btn-primary:hover,
+		.btn-primary:active .btn-primary:focus,
+		.btn-primary:visited,
+		.btn-primary:active:after {
+			background-color: #ff6d71!important;
+			border-color: #ff6d71!important;
+			color: #fff!important;
+		}
+		
+		.btn-social {
+			color: #fff;
+			display: block;
+			padding: 7px 20px;
+			position: relative;
+			font-size: 15px;
+			font-weight: 400;
+			border-radius: 3px;
+			text-align: center;
+			height: 50px;
+			line-height: 29px;
+		}
+		
+		.btn-social i.fa-facebook {
+			padding: 4px 6.5px 4px 6.5px;
+		}
+		
+		.btn-social i {
+			font-size: 13px;
+			left: 16px;
+			position: absolute;
+			top: 13px;
+			
+		}
+		
+		.btn-social i.fa-google,
+		.btn-social i.fa-facebook,
+		.btn-social i.fa-envelope {
+			border-right-color: #999;
+		}
+		
+		.btn-ggl,
+		.btn-ggl:visited,
+		.btn-fb,
+		.btn-fb:visited {
+			color: #666;
+			background-color: #fff;
+			border: 1px solid #d3d3d3;
+			height: min-content;
+			width: 80%;
+		}
+		
+		.btn-email {
+			background-color: #ff6d71;
+			color: #fff!important;
+			height: min-content;
+			width: 80%;
+		}
+		
+		.btn-ggl:hover i {
+			background-color: #fff;
+			color: #dd3723 !important;
+		}
+		
+		.btn-fb:hover i {
+			background-color: #fff;
+			color: #324B80 !important;
+		}
+		
+		.btn-ggl:hover {
+			background-color: #dd3723;
+			color: #fff;
+		}
+		
+		.btn-email:hover {
+			background-color: #ff6d71;
+			
+		}
+		
+		.btn-fb:hover {
+			background-color: #324B80;
+			color: #fff;
+		}
+		
+		.btn-fb:active,
+		.btn-fb:focus,
+		.btn-fb:hover,
+		.btn-ggl:active,
+		.btn-ggl:focus,
+		.btn-ggl:hover,
+		.btn-email:active,
+		.btn-email:focus,
+		.btn-email:hover {
+			color: #fff!important;
+			text-decoration: none;
+			border: none;
+		}
+		
+		.btn-email:hover i {
+			border-right-color: #ccc;
+		}
+		
+		.btn-link {
+			color: #33bd9e;
+		}
+		
+		.btn-link:hover {
+			color: #1dad8d;
+		}
+		
+		.or-seperator-vertical {
+			border-bottom: 1px solid rgba(199, 199, 199, 0.5);
+			content: "";
+			display: inline-block;
+			left: 0;
+			position: absolute;
+			top: 17px;
+			width: 100%;
+		}
+		
+		.round-or-text {
+			border-radius: 24px;
+			color: #fff;
+			display: inline-block;
+			height: 30px;
+			line-height: 30px;
+			width: 50px;
+			font-size: 20px;
+		}
+		
+		.or-text-vertical {
+			background-color: #fff;
+			color: rgba(74, 74, 74, 0.5);
+			position: relative;
+			font-size: 15px;
+			font-weight: 800;
+		}
+		
+		.position-relative {
+			position: relative;
+		}
+		
+		.margin-bottom-20 {
+			margin-bottom: 20px;
+		}
+		
+		.text-center {
+			text-align: center;
+		}
+		
+		label.error {
+			color: #fff !important;
+			font-size: 13px !important;
+			margin: 50px;
+		}
+		
+		.fs-13 {
+			font-size: 13px;
+			color: #999;
+		}
+		
+		
+		.p-1 {
+			color: #999 !important;
+			margin-left: 5px;
+		}
+		
+		.fa-facebook {
+			background-color: #335397;
+			color: #fff!important;
+		}
+		
+		.fa-google {
+			background-color: #dd4a38;
+			color: #fff!important;
+		}
+		
+		.circle-icon {
+			padding: 4px 5px 4px 5px;
+			border-radius: 100%;
+		}
+		
+		/* Material CSS */
+		
+		* {
+			box-sizing: border-box;
+		}
+		
+		input {
+			font-size: 16px;
+			padding: 8px 5px 10px 2px;
+			display: block;
+			width: 100%;
+			border: none;
+			border-bottom: 1px solid #d3d3d3;
+			margin-bottom: 19px;
+		}
+		
+		input.error {
+			border-bottom: 1px solid #ff6d71 !important;
+		}
+		
+		input:focus {
+			outline: none;
+		}
+		
+		label {
+			color: #ccc;
+			font-size: 18px;
+			font-weight: normal;
+			position: absolute;
+			pointer-events: none;
+			top: 10px;
+			bottom: 10px;
+			transition: 0.2s ease all;
+			-moz-transition: 0.2s ease all;
+			-webkit-transition: 0.2s ease all;
+		}
+		
+		/* active state */
+		
+		input:focus~label,
+		input:valid~label {
+			top: -15px;
+			font-size: 13px;
+		}
+		
+		.bar {
+			position: relative;
+			display: block;
+			width: 300px;
+		}
+		
+		.bar:before,
+		.bar:after {
+			content: '';
+			height: 5px;
+			width: 0;
+			bottom: 3px;
+			
+			background: #ff5b5f;
+			transition: 0.2s ease all;
+			-moz-transition: 0.2s ease all;
+			-webkit-transition: 0.2s ease all;
+		}
+		
+		.bar:before {
+			left: 50%;
+		}
+		
+		.bar:after {
+			right: 50%;
+		}
+		
+		/* active state */
+		
+		input:focus~.bar:before,
+		input:focus~.bar:after {
+			width: 50%;
+		}
+		
+		.highlight {
+			position: absolute;
+			height: 20%;
+			width: 568px;
+			top: 25%;
+			left: 0;
+			pointer-events: none;
+			opacity: 0.5;
+		}
+		
+		/* active state */
+		
+		input:focus~.highlight {
+			-webkit-animation: inputHighlighter 0.3s ease;
+			-moz-animation: inputHighlighter 0.3s ease;
+			animation: inputHighlighter 0.3s ease;
+		}
+		
+		@-webkit-keyframes inputHighlighter {
+			from {
+				background: #fff;
+			}
+			to {
+				width: 0;
+				background: transparent;
+			}
+		}
+		
+		@-moz-keyframes inputHighlighter {
+			from {
+				background: #fff;
+			}
+			to {
+				width: 0;
+				background: transparent;
+			}
+		}
+		
+		@keyframes inputHighlighter {
+			from {
+				background: #fff;
+			}
+			to {
+				width: 0;
+				background: transparent;
+			}
+		}
+		
+		
+		.btn-login {
+			float: right;
+			height: 34px;
+			width: 96px;
+			margin-left: 30%;
+			margin-top: 7px;
+			background-color: #fff;
+			border-radius: 1px;
+			color: #777;
+			border: 1px solid #ccc;
+		}
+		
+		.logo {
+			width: 39px;
+			padding: 3px;
+		}
+		
+		.hr {
+			height: 2px;
+			background: #dbdbdb;
+		}
+		
+		.footer-btn {
+			color: #999;
+		}
+		
+		.header-btn {
+			color: #999;
+		}
+		
+		.a {
+			color: #999 !important;
+		}
+		
+		.align {
+			padding-right: 21px;
+		}
+		
+		
+		.footer {
+			position: fixed;
+			left: 0;
+			bottom: 0;
+			width: 100%;
+			text-align: center;
+		}
+	</style>
+	
+	<script>
+		$(document).ready(function () {
+			$('[data-toggle="tooltip"]').tooltip();
+			$.validator.addMethod("check_date_of_birth", function (value, element) {
+				var day = $("#dobDay").val();
+				var month = $("#dobMonth").val();
+				var year = $("#dobYear").val();
+				var age = 0;
+				var mydate = new Date();
+				var mydate2 = mydate;
+				mydate.setFullYear(year, month - 1, day);
+				var currdate = new Date();
+				currdate.setFullYear(currdate.getFullYear() - age);
+				return currdate > mydate2;
+			});
+			$("#signupForm").validate({
+				rules: {
+					first_name: "required",
+					last_name: "required",
+					email: {
+						required: true,
+						email: true
+					},
+					password: "required",
+					dobMonth: "required",
+					dobDay: "required",
+					dobYear: {
+						required: true,
+						check_date_of_birth: true
+					}
+				},
+				messages: {
+					first_name: "",
+					last_name: "",
+					email: {
+						required: "",
+						email: "Email already exists"
+					},
+					password: "",
+					dobMonth: "",
+					dobDay: "",
+					dobYear: {
+						required: ""
+					}
+				},
+				errorPlacement: function (error, element) {
+					if (element.attr("name") === "first_name")
+						error.insertAfter(".input-group-first-name");
+					else if (element.attr("name") === "last_name")
+						error.insertAfter(".input-group-last-name");
+					else if (element.attr("name") === "email")
+						error.insertAfter(".input-group-email");
+					else if (element.attr("name") === "password")
+						error.insertAfter(".input-group-password");
+					else
+						error.insertAfter(element);
+				},
+				success: function () {
+					//$('.error').hide();
+				}
+			});
+			//Load year
+			var presentYear = new Date().getFullYear();
+			var maxYear = presentYear;
+			var period = 100;
+			for (var i = maxYear; i >= maxYear - 100; i--) {
+				$("#dobYear").append(new Option(i, i));
+			}
+			//Load MONTH
+			for (var i = 1; i <= 31; i++) {
+				var newI;
+				if (i < 10) {
+					newI = '0' + i;
+				} else newI = i;
+				$("#dobDay").append(new Option(i, newI));
+			}
+		});
+		
+		function signupEmail() {
+			$(".signupEmail").removeClass("hide");
+			$(".signup-box").addClass("hide");
+		}
+		
+		function back() {
+			$(".signupEmail").addClass("hide");
+			$(".signup-box").removeClass("hide");
+		}
+		
+		function signup(cFuntion) {
+			var formElement = document.querySelector("form");
+			var formData = {};
+			for (var field in formElement) {
+				if (+field < 8) {
+					formData[formElement[+field].name] = formElement[+field].value;
+				}
+			}
+			var xhttp = new XMLHttpRequest();
+			xhttp.open("POST", 'https://peerbuds.com:3000/signup?returnTo=verification/1', true);
+			xhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8'); //
+			xhttp.setRequestHeader('Accept', 'application/json');
+			xhttp.withCredentials = true;
+			xhttp.onreadystatechange = function () {
+				if (xhttp.readyState === 4) {
+					if (xhttp.responseText) {
+						response = JSON.parse(xhttp.responseText);
+						if (response.status === 'failed') {
+							alert(response.reason);
+						} else {
+							location.href = 'verification/1';
+						}
+					} else {
+						location.href = 'verification/1';
+					}
+				}
+			};
+			xhttp.send(JSON.stringify(formData));
+		}
+		function goToHome() {
+			location.href = '/';
+		}
+		function goToPhilosophy() {
+			location.href = 'philosophy';
+		}
+		function goToWhitePaper() {
+			location.href = 'white-paper';
+		}
+		function goToLogin() {
+			location.href = "/login";
+		}
+	</script>
 </head>
 
 <body>
-    <div class="page-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <span class="logo" onclick="goToHome()">
-                        <img style="width: 150px" src="assets/images/images_landing/Pb_logo.png" alt="logo">
-                    </span>
-                    <span class="pull-right">
-                        <!--<button class="headerButtons mat-button" onclick="goToPhilosophy()" *ngIf="!(isLoggedIn | async)">
-                                            Philosophy
-                                        </button>-->
-                        <!-- <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
-                                        Journey
-                                    </button>
-                                    <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
-                                    About
-                                    </button>-->
-                        <!--<button class="headerButtons mat-button" onclick="goToWhitePaper()" *ngIf="!(isLoggedIn | async)">
-                                            White Paper
-                                        </button>-->
+<div class="page-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<span class="logo" onclick="goToHome()">
+					<img style="width: 150px" src="assets/images/images_landing/Pb_logo.png" alt="logo">
+				</span>
+				<span class="pull-right">
+					<!--<button class="headerButtons mat-button" onclick="goToPhilosophy()" *ngIf="!(isLoggedIn | async)">
+										Philosophy
+									</button>-->
+					<!-- <button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
+									Journey
+								</button>
+								<button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)">
+								About
+								</button>-->
+					<!--<button class="headerButtons mat-button" onclick="goToWhitePaper()" *ngIf="!(isLoggedIn | async)">
+										White Paper
+									</button>-->
+					
+					<a class="headerButtons mat-button" href="/signup.html" *ngIf="!(isLoggedIn | async)">
+						Sign Up
+					</a>
+					<!-- trying dialog-->
+					<button class="headerButtons mat-button" onclick="goToLogin()" *ngIf="!(isLoggedIn | async)">
+						Log In
+					</button>
+				</span>
+			</div>
+		</div>
+	</div>
 
-                        <a class="headerButtons mat-button" href="/signup.html" *ngIf="!(isLoggedIn | async)">
-                            Sign Up
-                        </a>
-                        <!-- trying dialog-->
-                        <button class="headerButtons mat-button" onclick="goToLogin()" *ngIf="!(isLoggedIn | async)">
-                            Log In
-                        </button>
-                    </span>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4 col-sm-offset-4 col-xs-12 signup-box">
-                <div class="row margin-bottom-20">
-                </div>
-                <div class="row">
-                    <div class="col-xs-10 col-xs-offset-2 margin-bottom-20">
-                        <a class="btn-social btn-fb pi-margin-bottom-20" href="https://peerbuds.com:3000/auth/facebook?returnTo=signup-social">
-                            <i class="fa fa-facebook circle-icon"></i>
-                            <span style="font-size:16px;margin-left: 8%;">Continue with Facebook</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-10 col-xs-offset-2 margin-bottom-20">
-                        <a class="btn-social btn-ggl pi-margin-bottom-20" href="https://peerbuds.com:3000/auth/google?returnTo=signup-social">
-                            <i class="fa fa-google circle-icon"></i>
-                            <span style="font-size:16px;margin-left: 8%;">Continue with Google</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class=" col-xs-10 col-xs-offset-1 btn-hide position-relative margin-bottom-20 text-center">
-                        <div class="or-seperator-vertical"></div>
-                        <span class="round-or-text or-text-vertical">or</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class=" col-xs-10 col-xs-offset-2 margin-bottom-20 btnSignupEmail">
-                        <a class="btn-social btn-email pi-margin-bottom-20" style="font-size:16px;" href="javascript:;" onclick="signupEmail()">
-                            Continue with email</a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class=" col-xs-10 col-xs-offset-1  margin-bottom-20 small-font btn-hide text-center">Have an account already?
-                        <a class="btn-link link margin-top-10" style="cursor: pointer;" onclick="goToLogin()" style="font-size:14px;text-decoration: none;">Log in</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-sm-offset-3 col-xs-12 signupEmail hide">
-                <form id="signupForm" name="form" method="POST" onsubmit="signup(this); return false;">
-                    <div class="margin-bottom-20"> </div>
-                    <div class="text-center">Sign up with
-                        <a href="https://peerbuds.com:3000/auth/facebook?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Facebook</a> or
-                        <a href="https://peerbuds.com:3000/auth/google?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">
-                            Google</a>
-                    </div>
-                    <div class="position-relative margin-bottom-20 text-center">
-                        <div class="or-seperator-vertical"></div>
-                        <span class="round-or-text or-text-vertical">or</span>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6 col-xs-12">
-                            <input type="text" name="first_name" required class="input-box">
-                            <span class="highlight"></span>
-                            <span class="bar"></span>
-                            <label style="color:#999 !important;">First Name</label>
-                        </div>
-                        <div class="col-sm-6 col-xs-12">
-                            <input type="text" name="last_name" required class="input-box">
-                            <span class="highlight"></span>
-                            <span class="bar"></span>
-                            <label style="color:#999 !important;">Last Name</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <input type="text" name="email" id="email" required>
-                            <span class="highlight"></span>
-                            <span class="bar"></span>
-                            <label style="color:#999 !important;">Email</label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <input type="password" name="password" required>
-                            <span class="highlight"></span>
-                            <span class="bar"></span>
-                            <label style="color:#999 !important;">Password</label>
-                        </div>
-                    </div>
-
-                    <div class="row margin-bottom-20">
-                        <p class="p-1">Birthday</p>
-
-                        <div class="col-xs-4" style="color:#999 !important;">
-                            <select class="form-control birthDetails" name="dobMonth" id="dobMonth">
-                                <option value="" selected style="color:#999 !important;">Month</option>
-                                <option value="01">January</option>
-                                <option value="02">February</option>
-                                <option value="03">March</option>
-                                <option value="04">April</option>
-                                <option value="05">May</option>
-                                <option value="06">June</option>
-                                <option value="07">July</option>
-                                <option value="08">August</option>
-                                <option value="09">September</option>
-                                <option value="10">October</option>
-                                <option value="11">November</option>
-                                <option value="12">December</option>
-                            </select>
-                        </div>
-                        <div class="col-xs-4" style="color:#999 !important;">
-                            <select class="form-control birthDetails" name="dobDay" id="dobDay">
-                                <option value="" selected>Day</option>
-                            </select>
-                        </div>
-                        <div class="col-xs-4" style="color:#999 !important;">
-                            <select class="form-control birthDetails" name="dobYear" id="dobYear">
-                                <option value="" selected>Year</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row margin-bottom-20">
-                        <div class="col-xs-5 col-xs-offset-1">
-                            <button class="btn btn-primary" type="submit">Continue</button>
-                        </div>
-                        <div class="col-xs-5">
-                            <button class="btn btn-primary" type="button" onclick="back()">Back</button>
-                        </div>
-                    </div>
-                </form>
-                <div class="align text-center small-font">Have an account already?
-                    <a href="/login" class="btn-link link margin-top-10" onclick="openLogin()" style="font-size:14px;text-decoration: none;">Log in</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <hr>
-                <div class="col-md-offset-2 col-md-8 margin-bottom-20">
-                    <div layout="row" class="col-sm-12" style="cursor: pointer;">
-                        <a class="footer-btn footerButtons col-sm-2" mat-button href="/about-us"> About Us </a>
-                        <a class="footer-btn footerButtons col-sm-2" mat-button href="/contact">
-                            Contact Us
-                        </a>
-                        <span class="center">
-                            <a onclick="goToHome()" class="brand col-sm-2" aria-label="Peerbuds Homepage" style="margin-top: -1%;">
-                                <img style="width: 100px" src="assets/images/images_landing/Pb_logo.png" alt="logo">
-                            </a>
-                        </span>
-                        <a class="footer-btn footerButtons col-sm-2" mat-button href="/trust">
-                            Trust & Safety
-                        </a>
-                        <a class="footer-btn footerButtons col-sm-2" mat-button href="/privacy-policy">
-                            Privacy Policy
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-4 col-sm-offset-4 col-xs-12 signup-box">
+			<div class="row margin-bottom-20">
+			</div>
+			<div class="row">
+				<div class="col-xs-10 col-xs-offset-2 margin-bottom-20">
+					<a class="btn-social btn-fb pi-margin-bottom-20" href="https://peerbuds.com:3000/auth/facebook?returnTo=signup-social">
+						<i class="fa fa-facebook circle-icon"></i>
+						<span style="font-size:16px;margin-left: 8%;">Continue with Facebook</span>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-10 col-xs-offset-2 margin-bottom-20">
+					<a class="btn-social btn-ggl pi-margin-bottom-20" href="https://peerbuds.com:3000/auth/google?returnTo=signup-social">
+						<i class="fa fa-google circle-icon"></i>
+						<span style="font-size:16px;margin-left: 8%;">Continue with Google</span>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class=" col-xs-10 col-xs-offset-1 btn-hide position-relative margin-bottom-20 text-center">
+					<div class="or-seperator-vertical"></div>
+					<span class="round-or-text or-text-vertical">or</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class=" col-xs-10 col-xs-offset-2 margin-bottom-20 btnSignupEmail">
+					<a class="btn-social btn-email pi-margin-bottom-20" style="font-size:16px;" href="javascript:;" onclick="signupEmail()">
+						Continue with email</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class=" col-xs-10 col-xs-offset-1  margin-bottom-20 small-font btn-hide text-center">Have an account already?
+					<a class="btn-link link margin-top-10" style="cursor: pointer;" onclick="goToLogin()" style="font-size:14px;text-decoration: none;">Log in</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-sm-offset-3 col-xs-12 signupEmail hide">
+			<form id="signupForm" name="form" method="POST" onsubmit="signup(this); return false;">
+				<div class="margin-bottom-20"> </div>
+				<div class="text-center">Sign up with
+					<a href="https://peerbuds.com:3000/auth/facebook?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Facebook</a> or
+					<a href="https://peerbuds.com:3000/auth/google?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">
+						Google</a>
+				</div>
+				<div class="position-relative margin-bottom-20 text-center">
+					<div class="or-seperator-vertical"></div>
+					<span class="round-or-text or-text-vertical">or</span>
+				</div>
+				
+				<div class="row">
+					<div class="col-sm-6 col-xs-12">
+						<input type="text" name="first_name" required class="input-box">
+						<span class="highlight"></span>
+						<span class="bar"></span>
+						<label style="color:#999 !important;">First Name</label>
+					</div>
+					<div class="col-sm-6 col-xs-12">
+						<input type="text" name="last_name" required class="input-box">
+						<span class="highlight"></span>
+						<span class="bar"></span>
+						<label style="color:#999 !important;">Last Name</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<input type="text" name="email" id="email" required>
+						<span class="highlight"></span>
+						<span class="bar"></span>
+						<label style="color:#999 !important;">Email</label>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-xs-12">
+						<input type="password" name="password" required>
+						<span class="highlight"></span>
+						<span class="bar"></span>
+						<label style="color:#999 !important;">Password</label>
+					</div>
+				</div>
+				
+				<div class="row margin-bottom-20">
+					<p class="p-1">Birthday</p>
+					
+					<div class="col-xs-4" style="color:#999 !important;">
+						<select class="form-control birthDetails" name="dobMonth" id="dobMonth">
+							<option value="" selected style="color:#999 !important;">Month</option>
+							<option value="01">January</option>
+							<option value="02">February</option>
+							<option value="03">March</option>
+							<option value="04">April</option>
+							<option value="05">May</option>
+							<option value="06">June</option>
+							<option value="07">July</option>
+							<option value="08">August</option>
+							<option value="09">September</option>
+							<option value="10">October</option>
+							<option value="11">November</option>
+							<option value="12">December</option>
+						</select>
+					</div>
+					<div class="col-xs-4" style="color:#999 !important;">
+						<select class="form-control birthDetails" name="dobDay" id="dobDay">
+							<option value="" selected>Day</option>
+						</select>
+					</div>
+					<div class="col-xs-4" style="color:#999 !important;">
+						<select class="form-control birthDetails" name="dobYear" id="dobYear">
+							<option value="" selected>Year</option>
+						</select>
+					</div>
+				</div>
+				<div class="row margin-bottom-20">
+					<div class="col-xs-5 col-xs-offset-1">
+						<button class="btn btn-primary" type="submit">Continue</button>
+					</div>
+					<div class="col-xs-5">
+						<button class="btn btn-primary" type="button" onclick="back()">Back</button>
+					</div>
+				</div>
+			</form>
+			<div class="align text-center small-font">Have an account already?
+				<a href="/login" class="btn-link link margin-top-10" onclick="openLogin()" style="font-size:14px;text-decoration: none;">Log in</a>
+			</div>
+		</div>
+	</div>
+</div>
+<footer class="footer">
+	<div class="container">
+		<div class="row">
+			<hr>
+			<div class="col-md-offset-2 col-md-8 margin-bottom-20">
+				<div layout="row" class="col-sm-12" style="cursor: pointer;">
+					<a class="footer-btn footerButtons col-sm-2" mat-button href="/about"> About Us </a>
+					<a class="footer-btn footerButtons col-sm-2" mat-button href="/contact-us">
+						Contact Us
+					</a>
+					<span class="center">
+						<a onclick="goToHome()" class="brand col-sm-2" aria-label="Peerbuds Homepage" style="margin-top: -1%;">
+							<img style="width: 100px" src="assets/images/images_landing/Pb_logo.png" alt="logo">
+						</a>
+					</span>
+					<a class="footer-btn footerButtons col-sm-2" mat-button href="/trust">
+						Trust & Safety
+					</a>
+					<a class="footer-btn footerButtons col-sm-2" mat-button href="/privacy-policy">
+						Privacy Policy
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
 </body>
 
 </html>

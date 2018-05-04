@@ -102,7 +102,7 @@ export class ProfileService {
 	public getCompactProfile(userId) {
 		const profile = {};
 		if (userId) {
-			const filter = { 'include': [{ 'peer': 'ownedCollections' }, 'work', 'education', 'phone_numbers', 'emergency_contacts'] };
+			const filter = { 'include': [{ 'peer': ['ownedCollections', 'identities', 'credentials']}, 'work', 'education', 'phone_numbers', 'emergency_contacts'] };
 			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + JSON.stringify(filter), this.options)
 				.map(
 					(response: any) => response
@@ -201,11 +201,14 @@ export class ProfileService {
 	
 	public confirmEmail(userId, inputToken: string) {
 		const body = {};
-		const redirect = 'onboarding';
+		const redirect = 'verification';
 		console.log(inputToken);
 		return this.http
 			.post(environment.apiUrl + '/api/peers/confirmEmail?uid=' + userId + '&token=' + inputToken + '&redirect=' + redirect, body, this.options)
-			.map((response: any) => response);
+			.map((response: any) => {
+				this.profileSubject.next('updated');
+				return response;
+			});
 		
 	}
 	
@@ -520,52 +523,188 @@ export class ProfileService {
 	}
 	
 	public getProfileProgressObject(profile: any): any {
+		const profileObject = {
+			'id': {
+				'type': 'string',
+				'id': true
+			},
+			'first_name': {
+				'type': 'string'
+			},
+			'last_name': {
+				'type': 'string'
+			},
+			'picture_url': {
+				'type': 'string'
+			},
+			'headline': {
+				'type': 'string'
+			},
+			'joining_date': {
+				'type': 'date'
+			},
+			'preferred_language': {
+				'type': 'string',
+				'default': 'english'
+			},
+			'other_languages': {
+				'type': [
+					'string'
+				]
+			},
+			'currency': {
+				'type': 'string',
+				'default': 'usd'
+			},
+			'gender': {
+				'type': 'string'
+			},
+			'timezone': {
+				'type': 'string',
+				'default': 'pst'
+			},
+			'dobMonth': {
+				'type': 'string'
+			},
+			'dobYear': {
+				'type': 'number'
+			},
+			'dobDay': {
+				'type': 'number'
+			},
+			'location_string': {
+				'type': 'string'
+			},
+			'location_lat': {
+				'type': 'string'
+			},
+			'location_lng': {
+				'type': 'string'
+			},
+			'portfolio_url': {
+				'type': 'string'
+			},
+			'is_teacher': {
+				'type': 'boolean',
+				'default': false
+			},
+			'description': {
+				'type': 'string'
+			},
+			'education': {
+				'type': 'string'
+			},
+			'work_experience': {
+				'type': 'string'
+			},
+			'custom_url': {
+				'type': 'string'
+			},
+			'vat_number': {
+				'type': 'string'
+			}
+		};
+		
+		const peerObject = {
+			'id': {
+				'type': 'string',
+				'required': true
+			},
+			'username': {
+				'type': 'string'
+			},
+			'ethAddress': {
+				'type': 'string'
+			},
+			'ethKeyStore': {
+				'type': 'string'
+			},
+			'email': {
+				'type': 'string'
+			},
+			'phone': {
+				'type': 'number'
+			},
+			'phoneVerified': {
+				'type': 'boolean',
+				'default': false
+			},
+			'emailVerified': {
+				'type': 'boolean',
+				'default': false
+			},
+			'phoneVerificationToken': {
+				'type': 'string'
+			},
+			'verificationToken': {
+				'type': 'string'
+			},
+			'verificationTokenTime': {
+				'type': 'string'
+			},
+			'accountVerified': {
+				'type': 'boolean',
+				'default': false
+			},
+			'verificationIdUrl': {
+				'type': 'string'
+			},
+			'isAdmin': {
+				'type': 'boolean',
+				'default': false
+			}
+		};
 		console.log(profile);
-		const pProg = {};
+		const pProg = {
+			personal: false,
+			additional: false,
+			photos: false,
+			verification: false,
+			progress: 0,
+			pending: []
+		};
 		let progress = 0;
 		let totalKeys = 0;
-		for (const key in profile) {
-			if (profile.hasOwnProperty(key)) {
-				if (key === 'id' || key === 'joining_date' || key === 'is_teacher'
-					|| key === 'promoOptIn' || key === 'onboardingStage' || key === 'custom_url'
-					|| key === 'createdAt' || key === 'updatedAt' || key === 'other_languages' || key === 'location_string'
-					|| key === 'location_lat' || key === 'location_lng' || key === 'portfolio_url'
-					|| key === 'vat_number' || key === 'emergency_contact' || key === 'peer') {
-				} else {
-					totalKeys++;
-					if (profile[key] && profile[key].length > 0) {
+		for (const key in profileObject) {
+			if (key === 'id' || key === 'joining_date' || key === 'is_teacher'
+				|| key === 'promoOptIn' || key === 'onboardingStage' || key === 'custom_url'
+				|| key === 'createdAt' || key === 'updatedAt' || key === 'other_languages' || key === 'location_string'
+				|| key === 'location_lat' || key === 'location_lng' || key === 'portfolio_url'
+				|| key === 'vat_number' || key === 'emergency_contacts' || key === 'peer') {
+			} else {
+				totalKeys++;
+				if (profile.hasOwnProperty(key)) {
+					if (profile[key] && (profile[key] === true || profile[key] > 0 || profile[key].length > 0)) {
 						progress++;
+					} else {
+						pProg['pending'].push(key);
 					}
+				} else {
+					pProg['pending'].push(key);
+				}
+			}
+			
+		}
+		
+		for (const key in peerObject) {
+			if (key === 'id' || key === 'createdAt' || key === 'updatedAt' || key === 'isAdmin'
+				|| key === 'ownedCollections' || key === 'identities' || key === 'credentials'
+				|| key === 'ethAddress' || key === 'ethKeyStore' || key === 'phone' || key === 'phoneVerificationToken'
+				|| key === 'verificationToken' || key === 'verificationTokenTime' || key === 'accountVerified') {
+			} else {
+				totalKeys++;
+				if (profile.peer[0].hasOwnProperty(key)) {
+					if (profile.peer[0][key] && (profile.peer[0][key] === true || profile.peer[0][key] > 0 || profile.peer[0][key].length > 0)) {
+						progress++;
+					} else {
+						pProg['pending'].push(key);
+					}
+				} else {
+					pProg['pending'].push(key);
 				}
 			}
 		}
 		
-		for (const key in profile.peer[0]) {
-			if (profile.peer[0].hasOwnProperty(key)) {
-				if (key === 'id' || key === 'createdAt' || key === 'updatedAt' || key === 'isAdmin' || key === 'ownedCollections') {
-				} else {
-					totalKeys++;
-					if (profile.peer[0].key && profile.peer[0].key.length > 0) {
-						progress++;
-					}
-				}
-			}
-		}
-		
-		
-		// if (profile.first_name) { prog++; }
-		// if (profile.last_name) { prog++; }
-		// if (profile.headline) { prog++; }
-		// if (profile.gender) { prog++; }
-		// if (profile.dobDay) { prog++; }
-		// if (profile.dobMonth) { prog++; }
-		// if (profile.dobYear) { prog++; }
-		// if (profile.currency) { prog++; }
-		// if (profile.vat_number) { prog++; }
-		// if (profile.phones && profile.phones.length > 0) { prog++; }
-		// if (profile.location_string) { prog++; }
-		// if (profile.preferred_language) { prog++; }
-		// if (profile.emergency_contacts && profile.emergency_contacts.length > 0) { prog++; }
 		
 		if (profile.first_name && profile.last_name && profile.headline && profile.gender
 			&& profile.dobDay && profile.dobMonth && profile.dobYear && profile.currency) {
@@ -579,11 +718,9 @@ export class ProfileService {
 		if (profile.picture_url) {
 			pProg['photos'] = true;
 		}
-		
 		if (profile.peer[0].phoneVerified && profile.peer[0].phone && profile.peer[0].emailVerified
 			&& profile.peer[0].email && profile.peer[0].accountVerified && profile.peer[0].verificationIdUrl) {
 			pProg['verification'] = true;
-			
 		}
 		
 		pProg['progress'] = Math.round((progress / totalKeys) * 100);

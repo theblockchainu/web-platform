@@ -56,10 +56,10 @@
 					<div class="col-md-12 padding-left-0">
 						<div class="mat-title">Connected Accounts</div>
 					</div>
-					<div class="col-md-12 padding-left-0">
+					<div class="col-md-12 padding-left-0" style="color: #33bd9e;">
 						<!--<i *ngIf="!connectedIdentities[ 'facebook'] " class="fa fa-facebook dcSocial socialIcons "></i>-->
-						<i *ngIf="connectedIdentities[ 'facebook'] " class="fa fa-facebook defaultFB socialIcons "></i>
-						<i *ngIf="connectedIdentities[ 'google'] " class="fa fa-google defaultGoogle socialIcons "></i>
+						<i *ngIf="connectedIdentities[ 'facebook'] " class="fab fa-facebook-f"></i> &nbsp;&nbsp;&nbsp;
+						<i *ngIf="connectedIdentities[ 'google'] " class="fab fa-google"></i>
 						<!--<i *ngIf="!connectedIdentities[ 'google'] " class="fa fa-google dcSocial socialIcons "></i>-->
 					</div>
 				</div>
@@ -388,7 +388,7 @@
 									</div>
 									<div class="col-md-12 margin-top-10  margin-bottom-20" *ngIf="(availablePaidPackages.length>0 || availableTrialPackages.length > 0) && urluserId !== cookieUserId">
 										<hr>
-										<a class="clickable mat-body-2" (click)="bookSession()">Book A Session</a>
+										<a class="clickable mat-body-2 bookSessionButton" (click)="bookSession()">Book A Session</a>
 										<hr>
 									</div>
 									<div class="col-md-12 margin-top-10  margin-bottom-20" *ngIf="(availablePaidPackages.length>0 || availableTrialPackages.length > 0) && urluserId === cookieUserId">
@@ -625,12 +625,9 @@
 									<img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
 									 alt="workshpImg">
 								</div>
-								<div *ngIf="workshop.currency !== undefined && workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}}</div>
-								<!--{{workshop.price | currency: workshop.currency: true:'1.0-0'}}-->
-								<div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}}</div>
-								<!--{{workshop.price | currency: 'USD': true: '1.0-0'}}-->
+								<div *ngIf="workshop.currency !== undefined && workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}} / <i class="fab fa-ethereum"></i> {{workshop.academicGyan + workshop.nonAcademicGyan}} Gyan</div>
+								<div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}} / <i class="fab fa-ethereum"></i> {{workshop.academicGyan + workshop.nonAcademicGyan}} Gyan</div>
 								<div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
-								<!--<div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>-->
 								<div *ngIf="workshop.owners" style="margin-top: 0px;">{{workshop.owners[0].profiles[0].first_name + ' ' + workshop.owners[0].profiles[0].last_name | ucwords}}</div>
 								<div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
 									<p-rating class="padding-left-0" style="float: left;" [ngModel]="workshop.rating" readonly="true" stars="5" [cancel]="false">
@@ -719,6 +716,10 @@
 							</div>
 							<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}</div>
 							<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
+							<div *ngIf="peer.wallet && peer.wallet.length > 0">
+								<i class="fab fa-ethereum"></i> {{peer.wallet[0].gyan_balance}} Gyan
+							</div>
+							<div *ngIf="!peer.wallet || peer.wallet.length === 0"><i class="fab fa-ethereum"></i> 0 Gyan</div>
 							<div class="col-sm-12 padding-left-0 ">
 								<span *ngIf="!peer.topics || peer.topics.length<=2 ">
 									{{peer.topics}}
@@ -743,6 +744,9 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="bottomButton" (click)="bookSession()" *ngIf="isTeacher && (availableTrialPackages.length > 0 || availablePaidPackages.length > 0)">
+			Book Session
 		</div>
 	</div>
 </div>

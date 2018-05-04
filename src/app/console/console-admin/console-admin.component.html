@@ -149,12 +149,12 @@
 											<div>
 												Verified: &emsp;
 												<i *ngIf="peer.emailVerified" class="fa fa-envelope socialIcons "></i>
-												<i *ngIf="peer.phoneVerified" class="fa fa-phone socialIcons "></i>
+												<i *ngIf="peer.phoneVerified" class="fas fa-mobile-alt socialIcons "></i>
 											</div>
 											<div>
 												Social Accounts: &emsp;
-												<i *ngIf="connectedIdentities[ 'facebook'] " class="fa fa-facebook defaultFB socialIcons "></i>
-												<i *ngIf="connectedIdentities[ 'google'] " class="fa fa-google defaultGoogle socialIcons "></i>
+												<i *ngIf="peer.facebook" class="fa fa-facebook-f"></i> &nbsp;&nbsp;&nbsp;
+												<i *ngIf="peer.google" class="fa fa-google"></i>
 											</div>
 											<div class="mat-body-2">
 												<a href="{{envVariable.apiUrl + peer.verificationIdUrl}}" target="_blank" *ngIf="peer.verificationIdUrl !== undefined">View ID</a>

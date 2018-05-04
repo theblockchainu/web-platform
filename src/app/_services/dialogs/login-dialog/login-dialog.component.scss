@@ -51,16 +51,6 @@
     color: #fff;
 }
 
-.fa-facebook{
-    background-color: #ffffff;
-    color: #335397!important;
-}
-
-.fa-google{
-    background-color: #ffffff;
-    color: #dd4a38!important;
-}
-
 .circle-icon1 {
     padding:4px 7px 4px 7px;
     border-radius: 100%;
@@ -83,10 +73,6 @@
 .invert-fb:hover, .invert-fb:active{
      background-color: #ffffff;
      color: #335397;
-     .fa-facebook{
-         background-color:#335397;
-         color: #ffffff !important;
-     }
 }
 .invert-google{
 	padding: 4px 20px;
@@ -95,10 +81,6 @@
 .invert-google:hover, .invert-google:active {
     background-color: #ffffff;
     color: #dd4a38;
-     .fa-google {
-         background-color: #dd4a38;
-         color: #ffffff !important;
-     }
 }
 .alert{
     text-align: left;

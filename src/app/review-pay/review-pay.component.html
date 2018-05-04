@@ -17,23 +17,34 @@
                 </div>
                 <form [hidden]="loadingCards">
                     <div class="payment-message margin-top-20 margin-bottom-20 mat-body-2">{{message}}</div>
-                    <div class="assessment row margin-bottom-50" *ngIf="collection.assessment_models && collection.assessment_models.length>0">
+                    <div class="assessment seperate-section row margin-bottom-50 padding-bottom-40" *ngIf="collection.assessment_models && collection.assessment_models.length>0">
                         <div class="col-sm-12 margin-top-20">
-                            <h3>Assessment</h3>
-                            <span>Teacher assessment by {{collection.assessment_models[0].style}}</span>
+                            <div class="fw-bold margin-bottom-10">Assessment Rules</div>
+                            <span>Your teacher will assess your academic performance in
+                                <b>{{collection.assessment_models[0].style}}</b>
+                            </span>.
                         </div>
                         <div class="col-sm-12 margin-top-20">
                             <div class="row" *ngFor="let assessment_rule of collection.assessment_models[0].assessment_rules">
                                 <div class="col-sm-6">
-                                    {{assessment_rule.value}}
+                                    {{assessment_rule.value | titlecase}}
                                 </div>
                                 <div class="col-sm-6">
-                                    {{assessment_rule.gyan}} %
+                                    <i class="fab fa-ethereum"></i>
+                                    <b>{{(assessment_rule.gyan / 100) * collection.academicGyan}}</b>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 margin-top-20">
-                            Assessment applies to only {{collection.academicGyan}} Gyan
+                        <div class="col-sm-12 margin-top-20" *ngIf="collection.nonAcademicGyan > 0">
+                            <div class="row" *ngFor="let assessment_rule of collection.assessment_models[0].assessment_na_rules">
+                                <div class="col-sm-6">
+                                    {{assessment_rule.value | titlecase}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <i class="fab fa-ethereum"></i>
+                                    <b>{{(assessment_rule.gyan / 100) * collection.nonAcademicGyan}}</b>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div [hidden]="collection.price===0">
@@ -94,7 +105,7 @@
 
                     <div class="terms-text">
                         <div class="terms-title">Terms of Service</div>
-                        <p class="text-grey fs-15">By confirming this reservation you are agreeing to Peerbuds additional Terms of Service, Student
+                        <p class="text-grey fs-15">By confirming this reservation you are agreeing to peerbuds additional Terms of Service, Student
                             Release and Waiver, and the Cancellation Policy.</p>
                     </div>
                     <div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards || listAllCards.length < 0 ||  useAnotherCard">
@@ -135,10 +146,10 @@
                                 <div class="col-xs-3">
                                     GYN
                                 </div>
-                                <div class=" col-xs-2 col-xs-offset-7">
-                                    {{collection.academicGyan + collection.nonAcademicGyan}}
+                                <div class="col-xs-5 col-xs-offset-4" style="text-align: right;">
+                                    Up to
+                                    <i class="fab fa-ethereum"></i> {{collection.academicGyan + collection.nonAcademicGyan}}
                                 </div>
-
                             </div>
                         </div>
                         <div class="seperate-section">

@@ -9,6 +9,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TopicService } from '../../_services/topic/topic.service';
 import * as _ from 'lodash';
+import {TitleCasePipe} from '@angular/common';
 
 @Component({
 	selector: 'app-peers',
@@ -48,7 +49,8 @@ export class PeersComponent implements OnInit {
 		private metaService: Meta,
 		private router: Router,
 		public dialog: MatDialog,
-		private _topicService: TopicService
+		private _topicService: TopicService,
+		private titlecasepipe: TitleCasePipe
 	) {
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
@@ -114,6 +116,7 @@ export class PeersComponent implements OnInit {
 											}
 										},
 										'reviewsAboutYou',
+										'wallet',
 										'profiles',
 										'topicsTeaching'
 									]
@@ -162,9 +165,14 @@ export class PeersComponent implements OnInit {
 								peer.rating = this._collectionService.calculateRating(peer.reviewsAboutYou);
 								const topics = [];
 								peer.topicsTeaching.forEach(topicObj => {
-									topics.push(topicObj.name);
+									topics.push(this.titlecasepipe.transform(topicObj.name));
 								});
-								peer.topics = topics;
+								if (topics.length > 0) {
+									peer.topics = topics;
+								} else {
+									topics.push('No topic selected');
+									peer.topics = topics;
+								}
 								peers.push(peer);
 							}
 						});

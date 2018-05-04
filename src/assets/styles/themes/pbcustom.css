@@ -48,6 +48,16 @@ img {
 	outline: none !important;
 }
 
+.defaultFB {
+	padding-right: 10px;
+	color: #335397;
+}
+
+.defaultGoogle {
+	padding-right: 10px;
+	color: #dd4a38;
+}
+
 /* Scroll Bar custom Starts*/
 /* .scrollbar {
     background-color: #F5F5F5;

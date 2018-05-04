@@ -34,7 +34,7 @@ export class AppNotificationDialogComponent implements OnInit {
     ngOnInit() {
         this.loaded = false;
         this._notificationService.getNotifications(this.userId,
-            '{"include": [{"actor":"profiles"}, "collection", {"content": ["packages", "availabilities", "payments"]}], "order": "createdAt DESC" }',
+            '{"include": [{"actor":"profiles"}, "collection", {"content": ["packages", "availabilities", "payments"]}], "order": "createdAt DESC", "limit": "10" }',
             (err, result) => {
                 if (err) {
                     console.log(err);

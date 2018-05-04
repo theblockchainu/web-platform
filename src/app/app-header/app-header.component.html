@@ -37,9 +37,15 @@
 						<span style="margin-left:5px;font-size:10px">{{profileCompletionObject.progress}}%</span>
 					</div>
 				</span>
-				<button mat-button class="headerButtons hide-small" style="color: #33bd9e; font-weight: 600;" [routerLink]="['/console/teaching/experiences']"
+				<!--<button mat-button class="headerButtons hide-small" style="color: #33bd9e; font-weight: 600;" [routerLink]="['/console/teaching/experiences']"
 				 *ngIf="(isLoggedIn | async)">
-					Create an Experience
+					<mat-icon style="top: 4px; font-size: 15px;">add</mat-icon>
+					New Experience
+				</button>-->
+				<button mat-button class="headerButtons hide-small" style="color: #33bd9e; font-weight: 600;" [routerLink]="['/console/teaching/sessions']"
+				        *ngIf="(isLoggedIn | async) && !isSessionApproved">
+					<mat-icon style="top: 4px; font-size: 15px;">add</mat-icon>
+					Configure Online Sessions
 				</button>
 				<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)">
 					Teach
@@ -74,12 +80,12 @@
 
 				<span class="example-spacer hide-small"></span>
 
-				<!-- <button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']" *ngIf="!(isLoggedIn | async)">
+				 <button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']" *ngIf="!(isLoggedIn | async)">
 					White Paper
 				</button>
 				<button mat-button class="headerButtons hide-small" [routerLink]="['/shortread']" *ngIf="!(isLoggedIn | async)">
 					Short Paper
-				</button> -->
+				</button>
 				<button mat-button class="headerButtons hide-small" [routerLink]="['/privatebeta']" *ngIf="!(isLoggedIn | async)">
 					Private Beta
 				</button>
@@ -129,12 +135,12 @@
 				<button mat-button class="headerButtons" [matMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async)">
 					Learn
 				</button>
-				<!-- <button mat-button class="headerButtons" [routerLink]="['/whitepaper']" *ngIf="!(isLoggedIn | async)">
+				 <button mat-button class="headerButtons" [routerLink]="['/whitepaper']" *ngIf="!(isLoggedIn | async)">
 					White Paper
 				</button>
 				<button mat-button class="headerButtons" [routerLink]="['/shortread']" *ngIf="!(isLoggedIn | async)">
 					Short Paper
-				</button> -->
+				</button>
 				<button mat-button class="headerButtons" [routerLink]="['/privatebeta']" *ngIf="!(isLoggedIn | async)">
 					Private Beta
 				</button>
@@ -159,10 +165,10 @@
 	  Create a Workshop
 	</button>-->
 	<button mat-menu-item [routerLink]="['/console/teaching/experiences']">
-		Create an Experience
+		New Experience
 	</button>
 	<button mat-menu-item [routerLink]="['/console/teaching/sessions']" *ngIf="!isSessionApproved">
-		Enable Live Session
+		Configure Online Sessions
 	</button>
 	<!--<button mat-menu-item [routerLink]="['/console/calendar']" *ngIf="isTeacher">
 	  Calendar
@@ -191,6 +197,9 @@
 	<button mat-menu-item [routerLink]="['/profile', userId]">
 		{{profile.first_name | titlecase}} {{profile.last_name | titlecase}}
 	</button>
+	<button mat-menu-item *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].isAdmin" [routerLink]="['/console/admin']">
+		Admin
+	</button>
 	<button mat-menu-item [routerLink]="['/console/profile/edit']">
 		Edit Profile
 	</button>
@@ -208,22 +217,22 @@
 <mat-menu #profileCompletionMenu>
 	<span *ngIf="profileCompletionObject">
 		<button mat-menu-item [routerLink]="['/console/profile/edit']">
-			<mat-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['personal']">done</mat-icon>
+			<mat-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['personal']">mode_edit</mat-icon>
 			<mat-icon class="profile-check" *ngIf="profileCompletionObject['personal']">check_circle</mat-icon>
 			Personal Details
 		</button>
 		<button mat-menu-item [routerLink]="['/console/profile/edit']">
-			<mat-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['additional']">done</mat-icon>
+			<mat-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['additional']">mode_edit</mat-icon>
 			<mat-icon class="profile-check" *ngIf="profileCompletionObject['additional']">check_circle</mat-icon>
 			Additional Details
 		</button>
 		<button mat-menu-item [routerLink]="['/console/profile/photos']">
-			<mat-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['photos']">done</mat-icon>
+			<mat-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['photos']">mode_edit</mat-icon>
 			<mat-icon class="profile-check" *ngIf="profileCompletionObject['photos']">check_circle</mat-icon>
 			Photo
 		</button>
-		<button mat-menu-item [routerLink]="['/console/profile/edit']">
-			<mat-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['verification']">done</mat-icon>
+		<button mat-menu-item [routerLink]="['/console/profile/verification']">
+			<mat-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['verification']">mode_edit</mat-icon>
 			<mat-icon class="profile-check" *ngIf="profileCompletionObject['verification']">check_circle</mat-icon>
 			Verification
 		</button>

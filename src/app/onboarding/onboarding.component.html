@@ -1,5 +1,5 @@
 <div id="content" class="onboarding-content main-content">
-	<div class="step-1 onboarding" style="margin-bottom: 22%" [hidden]="step!=1">
+	<div class="step-1 onboarding" style="margin-bottom: 22%" [hidden]="step!=2">
 		<form [formGroup]="interest1" (ngSubmit)="submitInterests(interest1)">
 			<div class="row">
 				<div class="col-sm-8 col-sm-offset-2">
@@ -52,7 +52,7 @@
 						<ul *ngFor="let item of interests" style="list-style:none" class="padding-left-0">
 							<li class="captitalise topic" (click)="select(item)">
 								<a>
-									<img src="/assets/images/onboarding_select_interest.png" class="topic-bg">
+									<img src="{{envVariable.apiUrl+ item.imageUrl}}" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
 									<span style="margin-left:20px">{{item.name}}</span>
 									<span>
 										<i class="mdi mdi-check-circle mdi-24px primaryColor pull-right" style="margin:18px 10px"></i>
@@ -61,11 +61,11 @@
 							</li>
 						</ul>
 					</div>
-					<div class="suggestions col-sm-8 padding-left-15 padding-right-0pt5" *ngIf="suggestedTopics && suggestedTopics.length > 0">
+					<div class="suggestions col-sm-8 padding-left-15 padding-right-15" *ngIf="suggestedTopics && suggestedTopics.length > 0">
 						<ul *ngFor="let item of suggestedTopics" style="list-style:none" class="padding-left-0">
 							<li class="captitalise topic" (click)="select(item)">
 								<a>
-									<img src="/assets/images/onboarding_select_interest.png" class="topic-bg">
+									<img src="{{envVariable.apiUrl+ item.imageUrl}}" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
 									<span style="margin-left:20px">{{item.name}}</span>
 									<span>
 										<i class="mdi mdi-check-circle-outline mdi-24px primaryColor pull-right" style="margin:18px 10px"></i>
@@ -89,7 +89,7 @@
 		</form>
 	</div>
 	
-	<div class="onboarding step-2" style="padding-bottom: 18%; background: url('../../assets/images/onboarding_background_2.jpg'); background-size: cover;" [hidden]="step!=2">
+	<div class="onboarding step-2" style="padding-bottom: 18%; background: url('../../assets/images/onboarding_background_2.jpg'); background-size: cover;" [hidden]="step!=1">
 		<div class="text-center">
 			<div class="row">
 				<div class="col-sm-8 col-sm-offset-2">
@@ -97,7 +97,7 @@
 						<h1 class="mat-title title-explore text-center">You're now ready to teach
 							<br> and learn anything to your heart's desires</h1>
 						<div class="checkbox margin-top-50">
-							<a mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" href="/home/homefeed">Start Exploring</a>
+							<a mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" (click)="goToHome()">Start Exploring</a>
 						</div>
 					</div>
 				</div>
