@@ -117,7 +117,7 @@ export class AppHeaderComponent implements OnInit {
 					}
 					this.profileCompletionObject = this._profileService.getProfileProgressObject(this.profile);
 					console.log(this.profileCompletionObject);
-					if (this.router.url !== '/signup-social' && this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
+					if (this.router.url !== '/signup-social' && this.router.url !== '/verification/1' && this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
 						// Incomplete Social signup. Redirect user to finish it.
 						this.router.navigate(['signup-social']);
 						this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {

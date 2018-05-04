@@ -673,7 +673,7 @@
 								</div>
 								<div class="mat-body-2" style="margin-top: -3px;">{{community.title | titlecase}}</div>
 								<span *ngFor="let participant of community.participants; let i=index">
-									<div *ngIf="i<7" class="image-inline">
+									<div *ngIf="i<6" class="image-inline">
 										<app-profile-popup class="communityCardProfileImages" [peer]="participant"></app-profile-popup>
 									</div>
 								</span>

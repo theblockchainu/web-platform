@@ -65,8 +65,8 @@
                             </div>
                         </div>
                         <div *ngIf="community.participants  && community.participants.length > 0" style="margin-top: 3px;">
-                            <div *ngFor="let participant of community.participants" class="communityParticipants" style="display: inline-block;">
-                                <app-profile-popup [peer]="participant"></app-profile-popup>
+                            <div *ngFor="let participant of community.participants; let i = index" class="communityParticipants" style="display: inline-block;">
+                                <app-profile-popup *ngIf="i<6" [peer]="participant"></app-profile-popup>
                             </div>
                         </div>
                     </a>
