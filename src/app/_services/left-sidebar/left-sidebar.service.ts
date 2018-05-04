@@ -109,7 +109,7 @@ export class LeftSidebarService {
             sidebarMenuItems[1].submenu[5].complete = true;
             completedSections++;
         }
-        if (collection.assessment_models && collection.assessment_models[0].assessment_rules && collection.assessment_models[0].assessment_na_rules) {
+        if (collection.assessment_models && collection.assessment_models[0] && collection.assessment_models[0].assessment_rules && collection.assessment_models[0].assessment_na_rules) {
             sidebarMenuItems[1].submenu[6].complete = true;
             completedSections++;
         }
