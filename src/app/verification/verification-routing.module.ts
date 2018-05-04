@@ -4,20 +4,20 @@ import { UploadDocsComponent } from './upload-docs/upload-docs.component';
 import { AuthGuardService } from '../_services/auth-guard/auth-guard.service';
 
 const routes: Routes = [
-{
-  path: '',
-  children: [
-    {
-      path: ':step',
-      component: UploadDocsComponent,
-      canActivateChild: [AuthGuardService]
-    }
-  ]
-}
+	{
+		path: '',
+		children: [
+			{
+				path: ':step',
+				component: UploadDocsComponent,
+				canActivateChild: [AuthGuardService]
+			}
+		]
+	}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forChild(routes)],
+	exports: [RouterModule]
 })
 export class VerificationRoutingModule { }

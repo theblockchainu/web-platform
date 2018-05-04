@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>Peerbuds</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<title>Peerbuds</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta property="og:title" content="Peerbuds">
 	<meta property="og:description" content="Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.">
 	<meta property="og:site_name" content="peerbuds.com">
@@ -13,23 +13,25 @@
 	<meta property="og:image:height" content="1024">
 	<meta property="og:url" content="https://peerbuds.com">
 	
-  <base href="/">
-
-  <link rel="icon" type="image/x-icon" href="favicon.png">
+	<base href="/">
 	
-  <!-- base url -->
-  <!-- bootstrap css -->
-  <link rel="stylesheet" type="text/css" href="assets/styles/themes/bootstrap.css" />
-  <link rel="stylesheet" type="text/css" href="assets/styles/themes/pbcustom.css">
-
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script src="assets/js/moment.js"></script>
-  <script src="https://js.stripe.com/v3/"></script>
-  <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
+	<link rel="icon" type="image/x-icon" href="favicon.png">
+	
+	<!-- base url -->
+	<!-- bootstrap css -->
+	<link rel="stylesheet" type="text/css" href="assets/styles/themes/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="assets/styles/themes/pbcustom.css">
+	
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+	
+	<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+	<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/v4-shims.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="assets/js/moment.js"></script>
+	<script src="https://js.stripe.com/v3/"></script>
+	<script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
 </head>
 
 <body class="mat-typography">
@@ -37,40 +39,40 @@
 <app-root class="content"></app-root>
 
 <script>
-  if (window.location.hash && window.location.hash === "#_=_") {
-    if (window.history && history.pushState) {
-      window.history.pushState("", document.title, window.location.pathname);
-    } else {
-      // Prevent scrolling by storing the page's current scroll offset
-      var _scroll = {
-        top: document.body.scrollTop,
-        left: document.body.scrollLeft
-      };
-      window.location.hash = "";
-      // Restore the scroll offset, should be flicker free
-      document.body.scrollTop = _scroll.top;
-      document.body.scrollLeft = _scroll.left;
-    }
-  }
+	if (window.location.hash && window.location.hash === "#_=_") {
+		if (window.history && history.pushState) {
+			window.history.pushState("", document.title, window.location.pathname);
+		} else {
+			// Prevent scrolling by storing the page's current scroll offset
+			var _scroll = {
+				top: document.body.scrollTop,
+				left: document.body.scrollLeft
+			};
+			window.location.hash = "";
+			// Restore the scroll offset, should be flicker free
+			document.body.scrollTop = _scroll.top;
+			document.body.scrollLeft = _scroll.left;
+		}
+	}
 </script>
 <script>
-  window.fbAsyncInit = function () {
-    FB.init({
-      appId: '287639704995097',
-      autoLogAppEvents: true,
-      xfbml: true,
-      version: 'v2.10'
-    });
-    FB.AppEvents.logPageView();
-  };
-
-  (function (d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) { return; }
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
+	window.fbAsyncInit = function () {
+		FB.init({
+			appId: '287639704995097',
+			autoLogAppEvents: true,
+			xfbml: true,
+			version: 'v2.10'
+		});
+		FB.AppEvents.logPageView();
+	};
+	
+	(function (d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) { return; }
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
 </script>
 
 <!-- Google Analytics -->

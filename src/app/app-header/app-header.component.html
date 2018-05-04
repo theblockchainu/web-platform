@@ -37,15 +37,15 @@
 						<span style="margin-left:5px;font-size:10px">{{profileCompletionObject.progress}}%</span>
 					</div>
 				</span>
-				<button mat-button class="headerButtons hide-small" style="color: #33bd9e; font-weight: 600;" [routerLink]="['/console/teaching/experiences']"
+				<!--<button mat-button class="headerButtons hide-small" style="color: #33bd9e; font-weight: 600;" [routerLink]="['/console/teaching/experiences']"
 				 *ngIf="(isLoggedIn | async)">
 					<mat-icon style="top: 4px; font-size: 15px;">add</mat-icon>
 					New Experience
-				</button>
+				</button>-->
 				<button mat-button class="headerButtons hide-small" style="color: #33bd9e; font-weight: 600;" [routerLink]="['/console/teaching/sessions']"
 				        *ngIf="(isLoggedIn | async) && !isSessionApproved">
 					<mat-icon style="top: 4px; font-size: 15px;">add</mat-icon>
-					Enable Sessions
+					Configure Online Sessions
 				</button>
 				<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)">
 					Teach
@@ -165,10 +165,10 @@
 	  Create a Workshop
 	</button>-->
 	<button mat-menu-item [routerLink]="['/console/teaching/experiences']">
-		Create an Experience
+		New Experience
 	</button>
 	<button mat-menu-item [routerLink]="['/console/teaching/sessions']" *ngIf="!isSessionApproved">
-		Enable Live Session
+		Configure Online Sessions
 	</button>
 	<!--<button mat-menu-item [routerLink]="['/console/calendar']" *ngIf="isTeacher">
 	  Calendar

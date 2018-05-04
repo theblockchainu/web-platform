@@ -8,8 +8,10 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import {environment} from '../../../environments/environment';
+import {Meta, Title} from '@angular/platform-browser';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const PHONE_REGEX = /^(\+\d{1,3}[- ]?)?\d{10}$/;
 
 @Component({
 	selector: 'upload-docs',
@@ -20,16 +22,21 @@ export class UploadDocsComponent implements OnInit {
 	public step = 1;
 	public uploadingImage = false;
 	public peer: FormGroup;
-	public otp: FormGroup;
-	public email: string;
+	public phoneOtp: FormGroup;
+	public emailOtp: FormGroup;
+	public emailForm: FormGroup;
+	public phoneForm: FormGroup;
 	public success;
 	public otpReceived: string;
 	public verificationIdUrl: string;
 	public fileType;
 	public fileName;
 	public userId;
-	public otpError: string;
+	public emailOtpError: string;
+	public phoneOtpError: string;
+	public phoneFormError: string;
 	public envVariable;
+	public httpLoading = false;
 	
 	constructor(
 		public router: Router,
@@ -40,83 +47,205 @@ export class UploadDocsComponent implements OnInit {
 		private http: HttpClient,
 		public snackBar: MatSnackBar,
 		private dialog: MatDialog,
+		private titleService: Title,
+		private metaService: Meta,
 		private dialogsService: DialogsService,
 		private _cookieUtilsService: CookieUtilsService) {
 		this.activatedRoute.params.subscribe(params => {
-			this.step = params['step'];
+			this.step = parseInt(params['step'], 10);
 		});
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
 	
 	ngOnInit() {
+		this.setTags();
 		this.peer = this._fb.group({
 			email: ['',
 				[Validators.required,
 					Validators.pattern(EMAIL_REGEX)]],
 			verificationIdUrl: ['', Validators.required]
 		});
-		
-		this.otp = this._fb.group({
-			inputOTP: [null]
+		this.emailForm = this._fb.group({
+			email: ['',
+				[Validators.required,
+					Validators.pattern(EMAIL_REGEX)]]
+		});
+		this.phoneForm = this._fb.group({
+			countryCode: ['', [Validators.required]],
+			phone: ['',
+				[Validators.required,
+					Validators.pattern(PHONE_REGEX)]]
+		});
+		this.emailOtp = this._fb.group({
+			inputOTP: [null, [Validators.required]]
+		});
+		this.phoneOtp = this._fb.group({
+			inputOTP: [null, [Validators.required]]
 		});
 		this._profileService.getPeerNode(this.userId)
 			.subscribe((res) => {
-				this.peer.controls.email.setValue(res.email);
+				if (res.email && res.email.length > 0) {
+					this.emailForm.controls.email.setValue(res.email);
+					this.emailForm.controls.email.disable();
+				}
 			});
 	}
 	
-	continue(p) {
-		if (p === 2) {
-			this._profileService
-				.updatePeer(this.userId, {
-					'verificationIdUrl': this.peer.controls['verificationIdUrl'].value,
-					'email': this.peer.controls['email'].value
-				})
-				.subscribe((response) => {
-					console.log('File Saved Successfully');
-				}, (err) => {
-					console.log('Error updating Peer: ');
-					console.log(err);
-				});
-		}
-		if (p === 3) {
-			// this.peer.controls['email'].setValue(this.email);
-			this.sendOTP();
-		}
-		this.step = p;
-		this.router.navigate(['upload-docs', +this.step]);
+	private setTags() {
+		this.titleService.setTitle('Verification');
+		this.metaService.updateTag({
+			property: 'og:title',
+			content: 'Peerbuds Verification'
+		});
+		this.metaService.updateTag({
+			property: 'og:description',
+			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+		});
+		this.metaService.updateTag({
+			property: 'og:site_name',
+			content: 'peerbuds.com'
+		});
+		this.metaService.updateTag({
+			property: 'og:image',
+			content: 'https://peerbuds.com/pb_logo_square.png'
+		});
+		this.metaService.updateTag({
+			property: 'og:url',
+			content: environment.clientUrl + this.router.url
+		});
 	}
 	
-	public sendOTP() {
-		this._profileService.sendVerifyEmail(this.userId, this.peer.controls.email.value)
-			.subscribe();
+	continue(p, isBack = false) {
+		if (isBack) {
+			this.step = p;
+			this.router.navigate(['verification', +this.step]);
+		} else {
+			if (p === 2) {
+				this.sendPhoneOTP(p);
+			}
+			if (p === 3) {
+				this.verifyPhone(p);
+			}
+			if (p === 4) {
+				this.sendEmailOTP(p);
+			}
+			if (p === 5) {
+				this.verifyEmail(p);
+			}
+		}
+	}
+	
+	public sendEmailOTP(nextStep) {
+		this.httpLoading = true;
+		this._profileService.sendVerifyEmail(this.userId, this.emailForm.controls.email.value)
+			.subscribe( response => {
+				this.httpLoading = false;
+				this.step = nextStep;
+				this.router.navigate(['verification', +this.step]);
+			}, err => {
+				this.httpLoading = false;
+				this.snackBar.open('Error sending code to your email. Try again.', 'OK', {
+					duration: 5000
+				});
+			});
 		console.log('mail sent');
 	}
 	
+	public sendPhoneOTP(nextStep) {
+		this.httpLoading = true;
+		this._profileService.sendVerifySms(this.phoneForm.controls.phone.value, this.phoneForm.controls.countryCode.value)
+			.subscribe( response => {
+					this.httpLoading = false;
+					this.step = nextStep;
+					this.router.navigate(['verification', +this.step]);
+				}, err => {
+					this.httpLoading = false;
+					this.phoneFormError = err.error.error.message;
+				}
+			);
+		console.log('sms sent');
+	}
 	
-	public resendOTP() {
-		this._profileService.sendVerifyEmail(this.userId, this.peer.controls.email.value)
+	
+	public resendEmailOTP() {
+		this.httpLoading = true;
+		this._profileService.sendVerifyEmail(this.userId, this.emailForm.controls.email.value)
 			.subscribe((response) => {
+				this.httpLoading = false;
 				this.snackBar.open('Code Resent', 'OK', {
+					duration: 5000
+				});
+			}, err => {
+				this.httpLoading = false;
+				this.snackBar.open('Error sending code to your email. Try again.', 'OK', {
 					duration: 5000
 				});
 			});
 	}
 	
-	verifyEmail() {
-		this._profileService.confirmEmail(this.userId, this.otp.controls['inputOTP'].value)
+	public resendPhoneOTP() {
+		this.httpLoading = true;
+		this._profileService.sendVerifySms(this.phoneForm.controls.phone.value, this.phoneForm.controls.countryCode.value)
+			.subscribe((response) => {
+				this.httpLoading = false;
+				this.snackBar.open('Code Resent', 'OK', {
+					duration: 5000
+				});
+			}, err => {
+				this.httpLoading = false;
+				this.phoneFormError = err.error.error.message;
+			});
+	}
+	
+	updatePeer() {
+		this._profileService
+			.updatePeer(this.userId, {
+				'verificationIdUrl': this.peer.controls['verificationIdUrl'].value,
+				'email': this.peer.controls['email'].value
+			})
+			.subscribe((response) => {
+				console.log('File Saved Successfully');
+			}, (err) => {
+				console.log('Error updating Peer: ');
+				console.log(err);
+			});
+	}
+	
+	verifyEmail(nextStep) {
+		this.httpLoading = true;
+		this._profileService.confirmEmail(this.userId, this.emailOtp.controls['inputOTP'].value)
 			.subscribe((res) => {
-					console.log(res);
-					console.log('verified email');
+					this.httpLoading = false;
 					this.success = res;
-					this.router.navigate(['/onboarding/1']);
+					this.step = nextStep;
+					this.router.navigate(['onboarding', '1']);
+				},
+				(err) => {
+					this.httpLoading = false;
+					console.log(err);
+					if (err.status === 400) {
+						this.emailOtpError = 'The code you entered does not match our records. Did you enter the most recent one?';
+					}
+					
+				}
+			);
+	}
+	
+	verifyPhone(nextStep) {
+		this.httpLoading = true;
+		this._profileService.confirmSmsOTP(this.phoneOtp.controls['inputOTP'].value)
+			.subscribe((res) => {
+					this.httpLoading = false;
+					this.success = res;
+					this.step = nextStep;
+					this.router.navigate(['verification', +this.step]);
 				},
 				(err) => {
 					console.log(err);
+					this.httpLoading = false;
 					if (err.status === 400) {
-						this.otpError = 'The code you entered does not match our records. Did you enter the most recent one?';
-						// this.otp.controls['inputOTP'].setValue('');
+						this.phoneOtpError = 'The code you entered does not match our records. Did you enter the most recent one?';
 					}
 					
 				}
@@ -128,7 +257,6 @@ export class UploadDocsComponent implements OnInit {
 	}
 	
 	uploadImage(event) {
-		// this.peer.controls['email'].setValue(this.email);
 		this.uploadingImage = true;
 		console.log(event.files);
 		for (const file of event.files) {
@@ -157,3 +285,4 @@ export class UploadDocsComponent implements OnInit {
 		this.dialogsService.openIdPolicy().subscribe();
 	}
 }
+

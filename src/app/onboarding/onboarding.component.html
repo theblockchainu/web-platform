@@ -1,5 +1,5 @@
 <div id="content" class="onboarding-content main-content">
-	<div class="step-1 onboarding" style="margin-bottom: 22%" [hidden]="step!=1">
+	<div class="step-1 onboarding" style="margin-bottom: 22%" [hidden]="step!=2">
 		<form [formGroup]="interest1" (ngSubmit)="submitInterests(interest1)">
 			<div class="row">
 				<div class="col-sm-8 col-sm-offset-2">
@@ -89,7 +89,7 @@
 		</form>
 	</div>
 	
-	<div class="onboarding step-2" style="padding-bottom: 18%; background: url('../../assets/images/onboarding_background_2.jpg'); background-size: cover;" [hidden]="step!=2">
+	<div class="onboarding step-2" style="padding-bottom: 18%; background: url('../../assets/images/onboarding_background_2.jpg'); background-size: cover;" [hidden]="step!=1">
 		<div class="text-center">
 			<div class="row">
 				<div class="col-sm-8 col-sm-offset-2">

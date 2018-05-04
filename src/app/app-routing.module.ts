@@ -144,7 +144,7 @@ const routes: Routes = [
 		loadChildren: 'app/community/community.module#CommunityModule'
 	},
 	{
-		path: 'upload-docs',
+		path: 'verification',
 		loadChildren: 'app/verification/verification.module#VerificationModule',
 		canActivateChild: [AuthGuardService]
 	},

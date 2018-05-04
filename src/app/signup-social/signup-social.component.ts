@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router} from '@angular/router';
 import { ProfileService } from '../_services/profile/profile.service';
 import 'rxjs/add/operator/map';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
+import {Meta, Title} from '@angular/platform-browser';
+import {environment} from '../../environments/environment';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -32,11 +34,14 @@ export class SignupSocialComponent implements OnInit {
 	constructor(public profileService: ProfileService,
 				private _fb: FormBuilder,
 				public router: Router,
+				private titleService: Title,
+				private metaService: Meta,
 				private _cookieUtilsService: CookieUtilsService) {
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
 	
 	ngOnInit() {
+		this.setTags();
 		this.getPeerData();
 		this.getPeerWithProfile();
 		this.loadMonthAndYear();
@@ -50,6 +55,30 @@ export class SignupSocialComponent implements OnInit {
 			dobMonth: [null, [Validators.required]],
 			dobDay: [null, [Validators.required]],
 			dobYear: [null, [Validators.required]]
+		});
+	}
+	
+	private setTags() {
+		this.titleService.setTitle('Onboarding');
+		this.metaService.updateTag({
+			property: 'og:title',
+			content: 'Peerbuds Onboarding'
+		});
+		this.metaService.updateTag({
+			property: 'og:description',
+			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+		});
+		this.metaService.updateTag({
+			property: 'og:site_name',
+			content: 'peerbuds.com'
+		});
+		this.metaService.updateTag({
+			property: 'og:image',
+			content: 'https://peerbuds.com/pb_logo_square.png'
+		});
+		this.metaService.updateTag({
+			property: 'og:url',
+			content: environment.clientUrl + this.router.url
 		});
 	}
 	
@@ -67,6 +96,10 @@ export class SignupSocialComponent implements OnInit {
 		this.profileService.getProfileData(this.userId, query).subscribe((peerProfile) => {
 			this.peerProfile = peerProfile[0];
 			
+			this.signupSocialForm.controls.dobDay.patchValue(peerProfile[0].dobDay);
+			this.signupSocialForm.controls.dobMonth.patchValue(peerProfile[0].dobMonth);
+			this.signupSocialForm.controls.dobYear.patchValue(peerProfile[0].dobYear);
+			
 			this.signupSocialForm.controls.first_name.patchValue(peerProfile[0].first_name);
 			if (peerProfile[0].first_name && peerProfile[0].first_name.length > 0) {
 				this.signupSocialForm.controls.first_name.disable();
@@ -81,12 +114,10 @@ export class SignupSocialComponent implements OnInit {
 	// Load month and year
 	loadMonthAndYear() {
 		for (let index = this.maxYear; index >= this.periodStarts; index--) {
-			// var element = array[index];
 			this.dobYear.push(index);
 		}
 		
 		for (let index = 1; index <= 31; index++) {
-			// var element = array[index];
 			this.dobDay.push(index);
 		}
 	}
@@ -104,7 +135,7 @@ export class SignupSocialComponent implements OnInit {
 		this.profileService.updatePeer(this.userId, email).subscribe();
 		this.profileService.updatePeerProfile(this.userId, profile).subscribe((response: any) => response);
 		
-		this.router.navigate(['upload-docs', '1']);
+		this.router.navigate(['verification', '1']);
 		
 	}
 	

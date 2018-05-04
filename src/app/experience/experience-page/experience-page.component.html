@@ -878,7 +878,7 @@
 								<!--COVER IMAGE-->
 								<div class="row">
 									<div class="col-md-12">
-										<div style="width: 340px; height: 500px;" *ngIf="carouselImages">
+										<div style="width: 340px; height: auto;" *ngIf="carouselImages">
 											<ngu-carousel [inputs]="carouselBanner">
 												<ngu-item NguCarouselItem class="bannerStyle" *ngFor="let imageUrl of carouselImages">
 													<div class="row">
@@ -914,7 +914,7 @@
 												<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
 											</div>
 											<div class="col-md-12" matTooltip="You would gain {{experience.academicGyan+experience.nonAcademicGyan}} Gyan from completing this experience.">
-												{{experience.academicGyan+experience.nonAcademicGyan}} Gyan
+												<i class="fab fa-ethereum"></i> {{experience.academicGyan+experience.nonAcademicGyan}} Gyan
 											</div>
 										</div>
 									</div>
@@ -989,9 +989,9 @@
 										</div>
 									</div>
 									<div *ngIf="experience.currency !== undefined && experience.currency.length > 0" style="margin-top: 3px;">
-										<span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span> / person</div>
+										<span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span> / <i class="fab fa-ethereum"></i> {{experience.academicGyan + experience.nonAcademicGyan}} Gyan</div>
 									<div *ngIf="experience.currency === undefined || experience.currency.length === 0" style="margin-top: 3px;">
-										<span class="mat-body-2">{{experience.price | convertCurrency: 'USD' |async}}</span> / person</div>
+										<span class="mat-body-2">{{experience.price | convertCurrency: 'USD' |async}}</span> / <i class="fab fa-ethereum"></i> {{experience.academicGyan + experience.nonAcademicGyan}} Gyan</div>
 									<div class="mat-body-2" style="margin-top: -3px;">{{experience.title | titlecase}}</div>
 									<!--<div style="margin-top: 0px;">{{experience.headline | shorten: 20 : '...' | titlecase}}</div>-->
 									<div style="margin-top: 0px;">{{experience.owners[0].profiles[0].first_name + ' ' + experience.owners[0].profiles[0].last_name | ucwords}}</div>
