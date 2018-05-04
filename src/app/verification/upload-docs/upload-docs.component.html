@@ -1,6 +1,6 @@
 <div class="verification-section margin-top-40" id="content">
 	<div class="main-content hasFixedFooter">
-		<div class="position-relative step-1" [hidden]="step!=1">
+		<!--<div class="position-relative step-1" [hidden]="step!=1">
 			<form [formGroup]="peer">
 				<div class="col-md-8 col-md-offset-2">
 					<div class="verification-box drop-shadow">
@@ -53,59 +53,57 @@
 					</div>
 				</div>
 			</form>
-		</div>
-		<!-- step 1 ends -->
-		<div class="position-relative step-2" [hidden]="step!=2">
-			<form [formGroup]="peer">
+		</div>-->
+		<div class="position-relative step-1" [hidden]="step!=1">
+			<form [formGroup]="phoneForm">
 				<div class="col-md-8 col-md-offset-2">
 					<div class="verification-box drop-shadow">
 						<button class="mat-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
-							<i class="fa fa-envelope-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+							<i class="fas fa-mobile-alt fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
 						</button>
-						<h2 class="headline">How can we reach you securely?</h2>
-						<p class="description1 margin-bottom-40">Please let us know how can we reach you by email. To help keep your Peerbuds account secure, make sure only you
-						                                         can log into this email address.</p>
-						<mat-form-field [floatLabel]="'always'" style="width:50% !important" class="pb-block margin-bottom-60 margin-top-20">
-							<!-- <input type="text" formControlName="email" class="form-control display-inline-block email-address-input" placeholder="Email Address" /> -->
-							<input type="email" matInput #email formControlName="email" placeholder="Email Address" />
+						<h2 class="headline">Verify your mobile number</h2>
+						<p class="description1 margin-bottom-10">Please enter your phone number. We will send a code on this number via SMS to verify it. <br/>Peerbuds needs to verify uniqueness of phone numbers to make sure you only have a single account.</p>
+						<mat-form-field class="margin-bottom-60 margin-top-20" [floatLabel]="'auto'">
+							<span matPrefix>
+								+&nbsp;&nbsp;
+							</span>
+							<input type="number" matInput #countryCode formControlName="countryCode" placeholder="Country Code">
 						</mat-form-field>
+						<mat-form-field [floatLabel]="'auto'" class="margin-bottom-60 margin-top-20">
+							<input type="number" matInput #phone formControlName="phone" placeholder="Phone Number" />
+						</mat-form-field>
+						<div *ngIf="phoneFormError" style="color:red;">{{phoneFormError}}</div>
 					</div>
 				</div>
 				<div class="fixedFooter col-sm-12">
 					<div class="col-md-8 col-md-offset-2 bottom-section clearfix">
 						<div class="pull-right">
-							<button mat-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>
-							<span matTooltip="Invalid email!" [matTooltipDisabled]="!peer.controls.email.invalid || !peer.controls.email.dirty && email.value.length !== 0">
-								<button mat-raised-button color="accent" (click)="continue(3)" [disabled]="peer.controls['email'].invalid && peer.controls['email'].dirty || email.value.length == 0">Continue</button>
+							<span matTooltip="Please enter a valid phone number" [matTooltipDisabled]="phoneForm.valid">
+								<button mat-raised-button color="accent" (click)="continue(2)" [disabled]="!phoneForm.valid || httpLoading">Send Code</button>
 							</span>
 						</div>
 					</div>
 				</div>
 			</form>
 		</div>
-		<!-- step 2 ends -->
-		
-		<div class="position-relative step-3" [hidden]="step!=3">
-			<form [formGroup]="otp">
-				<div class="col-md-8 col-md-offset-2 position-relative">
+		<div class="position-relative step-2" [hidden]="step!=2">
+			<form [formGroup]="phoneOtp">
+				<div class="col-md-8 col-md-offset-2">
 					<div class="verification-box drop-shadow">
 						<button class="mat-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
 							<i class="fa fa-key fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
 						</button>
-						<h2 class="headline">Enter the code sent to your email</h2>
-						<p class="description1 margin-bottom-40">We have sent a 6 digit code to {{email.value}}. Please enter this code or click the link in your email to verify
-						                                         your email address. Users on Peerbuds need to verify their email IDs to receive notifications and updates from
-						                                         the platform.</p>
-						
-						<mat-form-field [floatLabel]="'auto'" style="width:20% !important" class="margin-bottom-10">
-							<input type="number" matInput #inputOTP formControlName="inputOTP" />
+						<h2 class="headline">Enter the code sent to your phone</h2>
+						<p class="description1 margin-bottom-10">We have sent 6 digit code to {{phone.value}}. Please enter this code to verify your phone number.</p>
+						<mat-form-field [floatLabel]="'auto'" style="width:30% !important" class="pb-block margin-bottom-10">
+							<input type="text" matInput #inputPhoneOTP formControlName="inputOTP" />
 						</mat-form-field>
-						<div *ngIf="otpError" style="color:red;">{{otpError}}</div>
+						<div *ngIf="phoneOtpError" style="color:red;">{{phoneOtpError}}</div>
 						<div>
 							<p class="description1">
-								<a (click)="resendOTP()" style="cursor: pointer;">Resend code</a>. Please wait at least 5 minutes before
+								<a (click)="resendPhoneOTP()" style="cursor: pointer;">Resend code?</a> Please wait at least 5 minutes before
 								<br/> requesting another code or
-								<a style="cursor: pointer;" (click)="continue(2)">change your email</a>
+								<a style="cursor: pointer;" (click)="continue(1, true)">change your phone number</a>
 							</p>
 						</div>
 					</div>
@@ -113,9 +111,35 @@
 				<div class="fixedFooter col-sm-12">
 					<div class="col-md-8 col-md-offset-2 bottom-section clearfix">
 						<div class="pull-right">
-							<a mat-button style="margin-right:20px; color:#767676" [routerLink]="['/onboarding/1']">Skip</a>
-							<span matTooltip="Please recheck the code you entered." [matTooltipDisabled]="inputOTP.value.length ===6">
-								<button mat-raised-button color="accent" (click)="verifyEmail()" [disabled]="inputOTP.value.length !=6">Verify Email</button>
+							<span matTooltip="Please enter a valid code" [matTooltipDisabled]="inputPhoneOTP.value.length === 6">
+								<button mat-raised-button color="accent" (click)="continue(3)" [disabled]="inputPhoneOTP.value.length !== 6 || httpLoading">Verify Phone</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- step 2 ends -->
+		<div class="position-relative step-3" [hidden]="step!=3">
+			<form [formGroup]="emailForm">
+				<div class="col-md-8 col-md-offset-2">
+					<div class="verification-box drop-shadow">
+						<button class="mat-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
+							<i class="fa fa-envelope-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+						</button>
+						<h2 class="headline">Verify your email address</h2>
+						<p class="description1 margin-bottom-40">Please let us know how can we reach you by email. To help keep your peerbuds account secure, make sure only you
+						                                         can log into this email address.</p>
+						<mat-form-field [floatLabel]="'auto'" style="width:50% !important" class="pb-block margin-bottom-60 margin-top-20">
+							<input type="email" matInput #email formControlName="email" placeholder="Email Address" />
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="fixedFooter col-sm-12">
+					<div class="col-md-8 col-md-offset-2 bottom-section clearfix">
+						<div class="pull-right">
+							<span matTooltip="Please enter a valid email ID" [matTooltipDisabled]="!emailForm.controls.email.invalid || !emailForm.controls.email.dirty && emailForm.value.length !== 0">
+								<button mat-raised-button color="accent" (click)="continue(4)" [disabled]="(emailForm.controls['email'].invalid && emailForm.controls['email'].dirty) || email.value.length === 0  || httpLoading">Send Code</button>
 							</span>
 						</div>
 					</div>
@@ -123,5 +147,42 @@
 			</form>
 		</div>
 		<!-- step 3 ends -->
+		<div class="position-relative step-4" [hidden]="step!=4">
+			<form [formGroup]="emailOtp">
+				<div class="col-md-8 col-md-offset-2 position-relative">
+					<div class="verification-box drop-shadow">
+						<button class="mat-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
+							<i class="fa fa-key fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+						</button>
+						<h2 class="headline">Enter the code sent to your email</h2>
+						<p class="description1 margin-bottom-40">We have sent a 6 digit code to {{email.value}}. Please enter this code to verify
+						                                         your email address. Users on peerbuds need to verify their email IDs to receive notifications and updates from
+						                                         the platform.</p>
+						
+						<mat-form-field [floatLabel]="'auto'" style="width:20% !important" class="margin-bottom-10">
+							<input type="number" matInput #inputEmailOTP formControlName="inputOTP" />
+						</mat-form-field>
+						<div *ngIf="emailOtpError" style="color:red;">{{emailOtpError}}</div>
+						<div>
+							<p class="description1">
+								<a (click)="resendEmailOTP()" style="cursor: pointer;">Resend code</a>. Please wait at least 5 minutes before
+								<br/> requesting another code or
+								<a style="cursor: pointer;" (click)="continue(3, true)">change your email</a>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="fixedFooter col-sm-12">
+					<div class="col-md-8 col-md-offset-2 bottom-section clearfix">
+						<div class="pull-right">
+							<span matTooltip="Please enter a valid code" [matTooltipDisabled]="inputEmailOTP.value.length === 6">
+								<button mat-raised-button color="accent" (click)="continue(5)" [disabled]="inputEmailOTP.value.length !== 6 || httpLoading">Verify Email</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- step 4 ends -->
 	</div>
 </div>

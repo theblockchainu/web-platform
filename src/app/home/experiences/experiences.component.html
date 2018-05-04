@@ -100,9 +100,9 @@
 							</div>
 						</div>
 						<div *ngIf="experience.currency !== undefined && experience.currency.length > 0" style="margin-top: 3px;">
-							<span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span> / person</div>
+							<span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span> / <i class="fab fa-ethereum"></i> {{experience.academicGyan + experience.nonAcademicGyan}} Gyan</div>
 						<div *ngIf="experience.currency === undefined || experience.currency.length == 0" style="margin-top: 3px;">
-							<span class="mat-body-2">{{experience.price | convertCurrency: 'USD' |async}}</span> / person</div>
+							<span class="mat-body-2">{{experience.price | convertCurrency: 'USD' |async}}</span> / <i class="fab fa-ethereum"></i> {{experience.academicGyan + experience.nonAcademicGyan}} Gyan</div>
 						<div class="mat-body-2" style="margin-top: -3px;">{{experience.title | titlecase}}</div>
 						<!--<div style="margin-top: 0px;">{{experience.headline | shorten: 20 : '...' | titlecase}}</div>-->
 						<div style="margin-top: 0px;">{{experience.owners[0].profiles[0].first_name + ' ' + experience.owners[0].profiles[0].last_name | ucwords}}</div>

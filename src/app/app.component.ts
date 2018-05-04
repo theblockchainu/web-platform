@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
 	
 	modifyFooter(location) {
 		this.showFooter = !(
-			/^\/upload-docs\/.*./.test(location.url)
+			/^\/verification\/.*./.test(location.url)
 			|| /^\/onboarding\/.*./.test(location.url)
 			|| /\/console\/inbox\/.*./.test(location.url)
 			|| /^\/workshop\/.*\/edit\/./.test(location.url)
@@ -69,7 +69,10 @@ export class AppComponent implements OnInit {
 	
 	modifyHeader(location) {
 		this.showHeader = !(
-			/^\/workshop\/.*\/edit\/./.test(location.url)
+			/^\/verification\/.*./.test(location.url)
+			|| /^\/onboarding\/.*./.test(location.url)
+			|| /^\/signup-social/.test(location.url)
+			|| /^\/workshop\/.*\/edit\/./.test(location.url)
 			|| /^\/experience\/.*\/edit\/./.test(location.url)
 			|| /^\/session\/.*\/edit\/./.test(location.url)
 			|| /^\/error/.test(location.url));

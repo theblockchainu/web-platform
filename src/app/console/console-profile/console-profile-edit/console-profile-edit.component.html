@@ -85,28 +85,26 @@
 									  close
 									</mat-icon> -->
 									<div [formGroupName]="i" class="col-md-11">
-										<mat-form-field [floatLabel]="'always'" class="customWidthCode">
-											<input matInput formControlName="country_code" type="tel" placeholder="Country Code" required>
+										<mat-form-field [floatLabel]="'auto'" class="customWidthCode">
+											<input matInput formControlName="country_code" type="number" placeholder="Country Code" required>
 											<!-- <mat-error [hidden]="profileForm.controls['phone_numbers'].controls[i].controls.country_code.valid">This field is required</mat-error> -->
-										
 										</mat-form-field>
-										<mat-form-field [floatLabel]="'always'" class="customWidthNumber">
-											<input *ngIf="i==0" matInput formControlName="subscriber_number" type="tel" placeholder="Primary Phone" required>
-											<input *ngIf="i==1" matInput formControlName="subscriber_number" type="tel" placeholder="Secondary Phone" required>
+										<mat-form-field [floatLabel]="'auto'" class="customWidthNumber">
+											<input *ngIf="i==0" matInput formControlName="subscriber_number" type="number" placeholder="Primary Phone" required>
+											<input *ngIf="i > 0" matInput formControlName="subscriber_number" type="number" placeholder="Secondary Phone" required>
 											<!-- <mat-error [hidden]="profileForm.controls['phone_numbers'].controls[i].controls.subscriber_number.valid">This field is required</mat-error> -->
-										
 										</mat-form-field>
 									</div>
-									<i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="clearEntry(i, profileForm.controls['phones'].controls[i].controls['isPrimary'].value)"
-									   style="cursor: pointer;"></i>
-								
+									<i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="clearEntry(i, profileForm.controls['phone_numbers'].controls[i].controls['isPrimary'].value)" style="cursor: pointer;"></i>
 								</div>
 							</div>
-							<div style="margin-top:-5px;margin-bottom:5px; cursor: pointer" (click)="addPhoneControl()">
-								<a [ngClass]="{'disabled': profileForm.controls['phone_numbers'].controls.length == 2}" style="font-size: 12px">+ Add Secondary Phone</a>
+							<br/>
+							<div style="margin-top:-5px;margin-bottom:5px; cursor: pointer">
+								<a [ngClass]="{'disabled': profileForm.controls['phone_numbers'].controls.length >= 2}" style="font-size: 12px" (click)="addPhoneControl()">+ Add Secondary Phone</a>
 							</div>
-							<mat-hint class="hint" align="start">This is only shared once you have a confirmed booking with another peerbuds user. This is how we can all get
-							                                     in touch.</mat-hint>
+							<mat-hint class="hint" align="start">
+								This is only shared once you have a confirmed booking with another peerbuds user. This is how we can all get in touch.
+							</mat-hint>
 							<br>
 							<mat-form-field [floatLabel]="'always'" placeholder="never" class="pb-block margin-top-30 max-height-40">
 								<input type="text" placeholder="Preferred Language" matInput formControlName="preferred_language" [matAutocomplete]="auto">

@@ -201,11 +201,14 @@ export class ProfileService {
 	
 	public confirmEmail(userId, inputToken: string) {
 		const body = {};
-		const redirect = 'onboarding';
+		const redirect = 'verification';
 		console.log(inputToken);
 		return this.http
 			.post(environment.apiUrl + '/api/peers/confirmEmail?uid=' + userId + '&token=' + inputToken + '&redirect=' + redirect, body, this.options)
-			.map((response: any) => response);
+			.map((response: any) => {
+				this.profileSubject.next('updated');
+				return response;
+			});
 		
 	}
 	

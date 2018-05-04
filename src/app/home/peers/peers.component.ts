@@ -116,6 +116,7 @@ export class PeersComponent implements OnInit {
 											}
 										},
 										'reviewsAboutYou',
+										'wallet',
 										'profiles',
 										'topicsTeaching'
 									]

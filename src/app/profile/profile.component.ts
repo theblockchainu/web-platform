@@ -173,6 +173,7 @@ export class ProfileComponent implements OnInit {
 		const query = {
 			'include': [
 				'reviewsAboutYou',
+				'wallet',
 				'profiles',
 				'topicsTeaching',
 				{

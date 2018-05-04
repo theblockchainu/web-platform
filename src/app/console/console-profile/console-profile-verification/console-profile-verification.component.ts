@@ -75,15 +75,21 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 			this.alreadyVerified = [];
 			this.notVerified = [];
 			if (peer.phoneVerified && peer.profiles && peer.profiles.length > 0 && peer.profiles[0].phone_numbers && peer.profiles[0].phone_numbers.length > 0) {
+				const primaryPhoneNumber = peer.profiles[0].phone_numbers.find(ele => {
+					return ele.isPrimary === true;
+				});
 				this.alreadyVerified.push({
 					text: 'Phone Number',
-					value: '+' + peer.profiles[0].phone_numbers[0].country_code + ' ' +  peer.profiles[0].phone_numbers[0].subscriber_number
+					value: '+' + primaryPhoneNumber.country_code + ' ' +  primaryPhoneNumber.subscriber_number
 				});
 			} else {
 				if (peer.profiles && peer.profiles.length > 0 && peer.profiles[0].phone_numbers && peer.profiles[0].phone_numbers.length > 0) {
+					const primaryPhoneNumber = peer.profiles[0].phone_numbers.find(ele => {
+						return ele.isPrimary === true;
+					});
 					this.notVerified.push({
 						text: 'Phone Number',
-						value: '+' + peer.profiles[0].phone_numbers[0].country_code + ' ' +  peer.profiles[0].phone_numbers[0].subscriber_number
+						value: '+' + primaryPhoneNumber.country_code + ' ' +  primaryPhoneNumber.subscriber_number
 					});
 				} else {
 					this.notVerified.push({

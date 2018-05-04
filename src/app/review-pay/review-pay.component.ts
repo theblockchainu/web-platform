@@ -139,56 +139,63 @@ export class ReviewPayComponent implements OnInit {
         });
     }
 
+    
     public processPayment(e: Event) {
         console.log('processing payment');
         this.savingData = true;
         e.preventDefault();
-        if (this.isCardExist === true && !this.useAnotherCard) {
-            // console.log('card exist');
-            this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: any) => {
-                if (resp) {
-                    this.message = 'Payment successful. Redirecting...';
-                    this.savingData = false;
-                    this.joinCollection();
-                }
-            });
-        } else {
-            const form = document.querySelector('form');
-            const extraDetails = {
-                name: form.querySelector('input[name=cardholder-name]')['value'],
-                phone: form.querySelector('input[name=cardholder-phone]')['value'],
-            };
-            this.stripe.createToken(this.card, extraDetails).then((result: any) => {
-                if (result.token) {
-                    this.createSourceData.token = result.token.id;
-                    this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: any) => {
-                        if (res) {
-                            // console.log(JSON.stringify(res ));
-                            this.createChargeData.source = res.id;
-                            this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe();
-                            this.message = 'Payment successful. Redirecting...';
-                            this.savingData = false;
-                            this.joinCollection();
-                        } else {
-                            this.message = 'Error occurred. Please try again.';
-                            this.savingData = false;
-                        }
-                    }, (error => {
-                        console.log(error);
-                        this.message = 'Error: ' + error.statusText;
-                        this.savingData = false;
-                    }));
-                } else {
-                    console.log(result.error);
-                    this.message = result.error;
-                    this.savingData = false;
-                }
-            }).catch((error) => {
-                console.log(error);
-                this.message = error;
-                this.savingData = false;
-            });
-        }
+        if (this.collection.price > 0) {
+			if (this.isCardExist === true && !this.useAnotherCard) {
+				// console.log('card exist');
+				this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: any) => {
+					if (resp) {
+						this.message = 'Payment successful. Redirecting...';
+						this.savingData = false;
+						this.joinCollection();
+					}
+				});
+			} else {
+				const form = document.querySelector('form');
+				const extraDetails = {
+					name: form.querySelector('input[name=cardholder-name]')['value'],
+					phone: form.querySelector('input[name=cardholder-phone]')['value'],
+				};
+				this.stripe.createToken(this.card, extraDetails).then((result: any) => {
+					if (result.token) {
+						this.createSourceData.token = result.token.id;
+						this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: any) => {
+							if (res) {
+								// console.log(JSON.stringify(res ));
+								this.createChargeData.source = res.id;
+								this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe();
+								this.message = 'Payment successful. Redirecting...';
+								this.savingData = false;
+								this.joinCollection();
+							} else {
+								this.message = 'Error occurred. Please try again.';
+								this.savingData = false;
+							}
+						}, (error => {
+							console.log(error);
+							this.message = 'Error: ' + error.statusText;
+							this.savingData = false;
+						}));
+					} else {
+						console.log(result.error);
+						this.message = result.error;
+						this.savingData = false;
+					}
+				}).catch((error) => {
+					console.log(error);
+					this.message = error;
+					this.savingData = false;
+				});
+			}
+		} else {
+			this.message = 'Signing up and redirecting...';
+        	this.joinCollection();
+			this.savingData = false;
+		}
     }
 
     getcardDetails(event) {

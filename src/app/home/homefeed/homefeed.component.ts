@@ -378,6 +378,7 @@ export class HomefeedComponent implements OnInit {
             'include': [
                 'reviewsAboutYou',
                 'profiles',
+				'wallet',
                 'topicsTeaching',
 				{
 					'relation': 'ownedCollections',

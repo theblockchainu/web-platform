@@ -6,11 +6,11 @@ import { UploadDocsComponent } from './upload-docs/upload-docs.component';
 import { SharedModule } from '../_shared/_shared.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    VerificationRoutingModule,
-    SharedModule
-  ],
-  declarations: [UploadDocsComponent]
+	imports: [
+		CommonModule,
+		VerificationRoutingModule,
+		SharedModule
+	],
+	declarations: [UploadDocsComponent]
 })
 export class VerificationModule { }
