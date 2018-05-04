@@ -38,6 +38,7 @@ import { DeleteCommunityDialogComponent } from './delete-community-dialog/delete
 import { ExitCommunityDialogComponent } from './exit-community-dialog/exit-community-dialog.component';
 import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflict-dialog.component';
 import { MessageParticipantDialogComponent } from './message-participant-dialog/message-participant-dialog.component';
+import { StudentAssessmentDialogComponent } from './student-assessment-dialog/student-assessment-dialog.component';
 @Injectable()
 export class DialogsService {
 
@@ -407,6 +408,15 @@ export class DialogsService {
         return this.dialog.open(DateConflictDialogComponent, {
             panelClass: 'responsive-dialog', width: '40vw',
             height: '31vh'
+        }).afterClosed();
+    }
+
+    public studentAssessmentDialog(data: any) {
+        return this.dialog.open(StudentAssessmentDialogComponent, {
+            panelClass: 'responsive-dialog',
+            width: '55vw',
+            height: '90vh',
+            data: data
         }).afterClosed();
     }
 

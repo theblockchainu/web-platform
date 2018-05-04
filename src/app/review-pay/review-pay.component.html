@@ -20,7 +20,9 @@
                     <div class="assessment seperate-section row margin-bottom-50 padding-bottom-40" *ngIf="collection.assessment_models && collection.assessment_models.length>0">
                         <div class="col-sm-12 margin-top-20">
                             <div class="fw-bold margin-bottom-10">Assessment Rules</div>
-	                        <span>Your teacher will assess your academic performance in <b>{{collection.assessment_models[0].style}}</b></span>.
+                            <span>Your teacher will assess your academic performance in
+                                <b>{{collection.assessment_models[0].style}}</b>
+                            </span>.
                         </div>
                         <div class="col-sm-12 margin-top-20">
                             <div class="row" *ngFor="let assessment_rule of collection.assessment_models[0].assessment_rules">
@@ -28,74 +30,79 @@
                                     {{assessment_rule.value | titlecase}}
                                 </div>
                                 <div class="col-sm-6">
-	                                <i class="fab fa-ethereum"></i> <b>{{(assessment_rule.gyan / 100) * collection.academicGyan}}</b>
+                                    <i class="fab fa-ethereum"></i>
+                                    <b>{{(assessment_rule.gyan / 100) * collection.academicGyan}}</b>
                                 </div>
                             </div>
                         </div>
-	                    <div class="col-sm-12 margin-top-20" *ngIf="collection.nonAcademicGyan > 0">
-		                    <div class="row" *ngFor="let assessment_rule of collection.assessment_models[0].assessment_na_rules">
-			                    <div class="col-sm-6">
-				                    {{assessment_rule.value | titlecase}}
-			                    </div>
-			                    <div class="col-sm-6">
-				                    <i class="fab fa-ethereum"></i> <b>{{(assessment_rule.gyan / 100) * collection.nonAcademicGyan}}</b>
-			                    </div>
-		                    </div>
-	                    </div>
-                    </div>
-                    <div class="margin-bottom-50" *ngIf="isCardExist && collection.price > 0">
-                        <h3>Select payment method</h3>
-                        <div class="row margin-top-50">
-                            <div class="col-sm-6">
-                                <mat-form-field [floatLabel]="'always'">
-                                    <mat-select placeholder="Select card" (change)="getcardDetails($event)">
-                                        <mat-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand }} {{card.object}} ending with {{card.last4}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-sm-6" *ngIf="cardDetails['id']">
-                                <span class="text-grey" *ngIf="cardDetails['brand'] === 'Visa'">
-                                    <i class="fa fa-cc-visa fa-2x"></i>
-                                </span> &emsp;
-                                <div class="display-inline-block fs-12 text-grey">
-                                    <span class="display-block lh-1">Name:
-                                        <span class="text-black">{{cardDetails['name']}}</span>
-                                    </span>
-                                    <span>Expires:
-                                        <span class="text-black">{{cardDetails['exp_month']}}/{{cardDetails['exp_year']}}</span>
-                                    </span>
+                        <div class="col-sm-12 margin-top-20" *ngIf="collection.nonAcademicGyan > 0">
+                            <div class="row" *ngFor="let assessment_rule of collection.assessment_models[0].assessment_na_rules">
+                                <div class="col-sm-6">
+                                    {{assessment_rule.value | titlecase}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <i class="fab fa-ethereum"></i>
+                                    <b>{{(assessment_rule.gyan / 100) * collection.nonAcademicGyan}}</b>
                                 </div>
                             </div>
                         </div>
-                        <div class="row margin-top-20">
-                            <div class="col-sm-6">
-                                <mat-checkbox [(ngModel)]="useAnotherCard" [ngModelOptions]="{standalone: true}">Or use another card</mat-checkbox>
+                    </div>
+                    <div [hidden]="collection.price===0">
+                        <div class="margin-bottom-50" *ngIf="isCardExist">
+                            <h3>Select payment method</h3>
+                            <div class="row margin-top-50">
+                                <div class="col-sm-6">
+                                    <mat-form-field [floatLabel]="'always'">
+                                        <mat-select placeholder="Select card" (change)="getcardDetails($event)">
+                                            <mat-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand }} {{card.object}} ending with {{card.last4}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-6" *ngIf="cardDetails['id']">
+                                    <span class="text-grey" *ngIf="cardDetails['brand'] === 'Visa'">
+                                        <i class="fa fa-cc-visa fa-2x"></i>
+                                    </span> &emsp;
+                                    <div class="display-inline-block fs-12 text-grey">
+                                        <span class="display-block lh-1">Name:
+                                            <span class="text-black">{{cardDetails['name']}}</span>
+                                        </span>
+                                        <span>Expires:
+                                            <span class="text-black">{{cardDetails['exp_month']}}/{{cardDetails['exp_year']}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row margin-top-20">
+                                <div class="col-sm-6">
+                                    <mat-checkbox [(ngModel)]="useAnotherCard" [ngModelOptions]="{standalone: true}">Or use another card</mat-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="margin-bottom-50" [hidden]="isCardExist && !useAnotherCard">
+                                <h3>Enter payment details</h3>
+                                <label>
+                                    <input name="cardholder-name" class="field is-empty" placeholder="Jane Doe" />
+                                    <span>
+                                        <span>Name</span>
+                                    </span>
+                                </label>
+                                <label>
+                                    <input class="field is-empty" name="cardholder-phone" type="tel" placeholder="(123) 456-7890" />
+                                    <span>
+                                        <span>Phone number</span>
+                                    </span>
+                                </label>
+                                <label>
+                                    <div id="card-element" class="field is-empty"></div>
+                                    <span>
+                                        <span>Credit or debit card number</span>
+                                    </span>
+                                </label>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="margin-bottom-50" [hidden]="isCardExist && !useAnotherCard">
-                            <h3>Enter payment details</h3>
-                            <label>
-                                <input name="cardholder-name" class="field is-empty" placeholder="Jane Doe" />
-                                <span>
-                                    <span>Name</span>
-                                </span>
-                            </label>
-                            <label>
-                                <input class="field is-empty" name="cardholder-phone" type="tel" placeholder="(123) 456-7890" />
-                                <span>
-                                    <span>Phone number</span>
-                                </span>
-                            </label>
-                            <label>
-                                <div id="card-element" class="field is-empty"></div>
-                                <span>
-                                    <span>Credit or debit card number</span>
-                                </span>
-                            </label>
-                        </div>
-                    </div>
+
                     <div class="terms-text">
                         <div class="terms-title">Terms of Service</div>
                         <p class="text-grey fs-15">By confirming this reservation you are agreeing to peerbuds additional Terms of Service, Student
@@ -104,12 +111,14 @@
                     <div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards || listAllCards.length < 0 ||  useAnotherCard">
                         <i class="fa fa-lock"></i> Your Credit card information is encrypted
                     </div>
-	                <!--PAY from new card-->
-                    <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard || collection.price <= 0"
-                        [disabled]="savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment</button>
-	                <!--PAY from existing card-->
-                    <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard && collection.price > 0"
-                        [disabled]="!cardDetails.id || savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment</button>
+                    <div *ngIf="collection.price && collection.price!==0">
+                        <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard"
+                            [disabled]="savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment</button>
+                        <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard"
+                            [disabled]="!cardDetails.id || savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment</button>
+                    </div>
+                    <button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center" *ngIf="!collection.price || collection.price===0 ">FREE - Join Collection</button>
+
                     <div class="display-inline-block margin-top-10" *ngIf="savingData">
                         <img src="{{loader}}" alt="loading" style="width:16px;" /> Processing Payment</div>
                 </form>
@@ -127,7 +136,8 @@
                                     <br>
                                     <span class="fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type }}</span>
                                     <br>
-                                    <span class="fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by {{collection.owners[0].profiles[0].first_name | titlecase}} {{collection.owners[0].profiles[0].last_name | ucwords}}</span>
+                                    <span class="fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by {{collection.owners[0].profiles[0].first_name | titlecase}} {{collection.owners[0].profiles[0].last_name
+                                        | ucwords}}</span>
                                 </div>
                             </div>
                         </div>
@@ -137,12 +147,14 @@
                                     GYN
                                 </div>
                                 <div class="col-xs-5 col-xs-offset-4" style="text-align: right;">
-                                    Up to  <i class="fab fa-ethereum"></i> {{collection.academicGyan + collection.nonAcademicGyan}}
+                                    Up to
+                                    <i class="fab fa-ethereum"></i> {{collection.academicGyan + collection.nonAcademicGyan}}
                                 </div>
                             </div>
                         </div>
                         <div class="seperate-section">
-                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate | date: 'EEE, MMM dd' }}</div>
+                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate | date: 'EEE,
+                                MMM dd' }}</div>
                             <div class="" *ngIf="collection.contents">{{collection.contents.length}} Activities</div>
                             <!--<a href="#">See details</a>-->
                         </div>
