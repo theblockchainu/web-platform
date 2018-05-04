@@ -124,7 +124,7 @@ export class ReviewPayComponent implements OnInit {
 
                 // get all cards
                 this.paymentService.listAllCards(this.userId, this.custId).subscribe((cards: any) => {
-                this.loadingCards = false;
+                    this.loadingCards = false;
                     if (cards) {
                         this.listAllCards = cards.data;
                         console.log('listAllCards: ' + JSON.stringify(this.listAllCards));
@@ -233,7 +233,7 @@ export class ReviewPayComponent implements OnInit {
         this.totalDuration = totalLength.toString();
     }
 
-    private joinCollection() {
+    public joinCollection() {
         this._collectionService.addParticipant(this.collectionId, this.userId, this.collectionCalendarId, (err: any, response: any) => {
             if (err) {
                 console.log(err);

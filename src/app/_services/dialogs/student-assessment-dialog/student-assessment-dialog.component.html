@@ -1,0 +1,47 @@
+<div mat-dialog-content class="dialog-container">
+  <div class="row">
+    <h1>Student Assessment</h1>
+  </div>
+  <form [formGroup]="assessmentForm">
+    <div class="assessment-container" formArrayName="participants">
+      <div *ngFor="let participant of assessmentForm.controls['participants'].controls;index as i">
+        <div class="row margin-top-10" [formGroup]="participant">
+          <div class="col-sm-4">
+            <h3>
+              {{participant.value.name}}
+            </h3>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field>
+              <mat-select formControlName="rule_obj" placeholder="--Select--">
+                <mat-option *ngFor="let assessment_rule of data.assessment_models[0].assessment_rules" [value]="assessment_rule">
+                  {{ assessment_rule.value }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4">
+            <div class="row">
+              <div class="col-sm-12">
+                +
+                <span *ngIf="participant.value.rule_obj">
+                  {{(participant.value.rule_obj.gyan / 100) * data.academicGyan }}
+                </span> Gyan from Academics
+              </div>
+            </div>
+            <div class="row" *ngFor="let nonAcademicRule of data.assessment_models[0].assessment_na_rules">
+              <div class="col-sm-12">
+                + {{nonAcademicRule.gyan}} Gyan from {{nonAcademicRule.value}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-xs-12">
+      <button type="submit" class="pull-right" (click)="submitForm()" mat-raised-button color="accent">Submit</button>
+    </div>
+  </div>
+</div>

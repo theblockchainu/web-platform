@@ -50,6 +50,7 @@ import { EditSubmissionDialogComponent } from './edit-submission-dialog/edit-sub
 import { InboxDialogComponent } from './inbox-dialog/inbox-dialog.component';
 import {MessageParticipantDialogComponent} from './message-participant-dialog/message-participant-dialog.component';
 import {ViewParticipantsComponent} from './view-participants/view-participants.component';
+import { StudentAssessmentDialogComponent } from './student-assessment-dialog/student-assessment-dialog.component';
 
 @NgModule({
 	imports: [
@@ -80,7 +81,7 @@ import {ViewParticipantsComponent} from './view-participants/view-participants.c
 		SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent, DeleteCohortDialogComponent,
 		CancelCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
 		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent,
-		DateConflictDialogComponent, EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent
+		DateConflictDialogComponent, EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent, StudentAssessmentDialogComponent
 	],
 	providers: [
 		DialogsService,
@@ -102,7 +103,8 @@ import {ViewParticipantsComponent} from './view-participants/view-participants.c
 		SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent,
 		CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
 		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent,
-		EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent
+		EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent,
+		StudentAssessmentDialogComponent
 	],
 })
 export class DialogsModule { }

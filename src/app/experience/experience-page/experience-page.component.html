@@ -24,6 +24,11 @@
 			<div class="col-md-10 col-md-offset-1">
 				<span>This cohort has ended. You can still add a review and participate in discussions</span>
 			</div>
+			<div class="col-md-10 col-md-offset-1" *ngIf="(experience && experience.assessment_models && experience.assessment_models.length>0 && experience.assessment_models[0].userType && userType === experience.assessment_models[0].userType)">
+				<span>This Cohort has ended.
+					<a href="javascript:void(0);" (click)="openAssessmentDialog()">Make Student Assessment</a>
+				</span>
+			</div>
 		</div>
 		<div class="row upcoming-actions center" *ngIf="(experience.status === 'active' && calendarId === undefined && hasLiveCohort() && userType === 'teacher')">
 			<div class="col-md-10 col-md-offset-1">
@@ -61,6 +66,7 @@
 				</span>
 			</div>
 		</div>
+
 		<div class="row margin-top-40">
 			<div class="col-md-10 col-md-offset-1">
 				<div class="row experience-header">

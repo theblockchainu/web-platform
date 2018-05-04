@@ -41,6 +41,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { environment } from '../../../environments/environment';
 import { SocketService } from '../../_services/socket/socket.service';
+import { AssessmentService } from '../../_services/assessment/assessment.service';
+
 declare var FB: any;
 
 const colors: any = {
@@ -210,7 +212,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		private _socketService: SocketService,
 		private _authenticationService: AuthenticationService,
 		private titleService: Title,
-		private metaService: Meta
+		private metaService: Meta,
+		private _assessmentService: AssessmentService
 		// private location: Location
 	) {
 		this.envVariable = environment;
@@ -1723,4 +1726,37 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	public openAssessmentDialog() {
+		this.dialogsService.studentAssessmentDialog(
+			{
+				'participants': this.participants,
+				'assessment_models': this.experience.assessment_models,
+				'academicGyan': this.experience.academicGyan,
+				'nonAcademicGyan': this.experience.nonAcademicGyan
+			}
+		).subscribe(dialogSelection => {
+			if (dialogSelection) {
+				const assessmentArray: Array<AssessmentResult> = [];
+				dialogSelection.participants.forEach(participant => {
+					assessmentArray.push({
+						assesserId: this.userId,
+						assesseeId: participant.id,
+						calendarId: this.calendarId,
+						assessmentRuleId: participant.rule_obj.id
+					});
+				});
+				this._assessmentService.submitAssessment(assessmentArray).subscribe(result => {
+					console.log(result);
+				});
+			}
+		});
+	}
+
+}
+
+interface AssessmentResult {
+	calendarId: string;
+	assesserId: string;
+	assesseeId: string;
+	assessmentRuleId: string;
 }
