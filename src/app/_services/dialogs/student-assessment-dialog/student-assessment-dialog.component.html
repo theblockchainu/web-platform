@@ -4,7 +4,7 @@
   </div>
   <form [formGroup]="assessmentForm">
     <div class="assessment-container" formArrayName="participants">
-      <div *ngFor="let participant of assessmentForm.controls['participants'].controls;index as i">
+      <div *ngFor="let participant of assessmentForm['controls']['participants']['controls'];index as i">
         <div class="row margin-top-10" [formGroup]="participant">
           <div class="col-sm-4">
             <h3>
