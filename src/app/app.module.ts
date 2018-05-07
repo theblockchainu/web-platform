@@ -44,6 +44,7 @@ import { ShortreadComponent } from './shortread/shortread.component';
 import { PrivatebetaComponent } from './privatebeta/privatebeta.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { LandingPageModule } from './landing-page/landing-page.module';
+/*
 Raven
 	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
 	.install();
@@ -57,6 +58,7 @@ export class RavenErrorHandler implements ErrorHandler {
 		Raven.captureException(err);
 	}
 }
+*/
 
 
 @NgModule({
@@ -119,10 +121,10 @@ export class RavenErrorHandler implements ErrorHandler {
 	providers: [
 		CookieService,
 		UcWordsPipe,
-		{
+		/*{
 			provide: ErrorHandler,
 			useClass: RavenErrorHandler
-		},
+		},*/
 		Title,
 		Meta
 	],
