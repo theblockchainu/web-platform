@@ -39,6 +39,7 @@ import { TimezonePickerService } from '../_services/timezone-picker/timezone-pic
 import { CohortDetailDialogComponent } from './console-teaching/console-teaching-workshop/cohort-detail-dialog/cohort-detail-dialog.component';
 import { ConsoleAdminComponent } from './console-admin/console-admin.component';
 import { ContentLearningBookmarksComponent } from './console-learning/content-learning-bookmarks/content-learning-bookmarks.component';
+import { ConsoleAccountWalletComponent } from './console-account/console-account-wallet/console-account-wallet.component';
 
 @NgModule({
   imports: [
@@ -90,7 +91,8 @@ import { ContentLearningBookmarksComponent } from './console-learning/content-le
     ConsoleAccountSettingsComponent,
     CohortDetailDialogComponent,
     ConsoleAdminComponent,
-    ContentLearningBookmarksComponent
+    ContentLearningBookmarksComponent,
+    ConsoleAccountWalletComponent
   ],
   providers: [TimezonePickerService],
   bootstrap: [CohortDetailDialogComponent]

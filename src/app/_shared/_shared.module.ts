@@ -74,6 +74,7 @@ import { SearchService } from '../_services/search/search.service';
 import { TimeToNowPipe } from './timetonow/time-to-now.pipe';
 import { TopicRowComponent } from './topic-row/topic-row.component';
 import { AssessmentService } from '../_services/assessment/assessment.service';
+import { WalletService } from '../_services/wallet/wallet.service';
 @NgModule({
     imports: [
         CommonModule,
@@ -136,7 +137,8 @@ import { AssessmentService } from '../_services/assessment/assessment.service';
         CommunityService,
         SearchService,
         TimeToNowPipe,
-        AssessmentService
+        AssessmentService,
+        WalletService
     ],
     exports: [
         CommonModule,

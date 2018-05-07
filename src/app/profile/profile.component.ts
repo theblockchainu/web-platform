@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Meta, Title } from '@angular/platform-browser';
-import {TitleCasePipe} from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
 	selector: 'app-profile',
@@ -185,9 +185,10 @@ export class ProfileComponent implements OnInit {
 					}
 				}
 			],
-			'where': { and : [
-					{'id': { 'neq': this.urluserId }},
-					{'accountVerified': true}
+			'where': {
+				and: [
+					{ 'id': { 'neq': this.urluserId } },
+					{ 'accountVerified': true }
 				]
 			},
 			'limit': 50,
@@ -277,7 +278,18 @@ export class ProfileComponent implements OnInit {
 				'education',
 				'work',
 				{
-					'peer': ['topicsLearning', 'topicsTeaching',
+					'peer': [
+						'wallet',
+						{
+							'token_transactions': [
+								'collections',
+								'communities',
+								'contents',
+								'peers'
+							]
+						},
+						'topicsLearning',
+						'topicsTeaching',
 						{
 							'ownedCollections': [
 								{ 'contents': ['schedules'] }
@@ -293,7 +305,7 @@ export class ProfileComponent implements OnInit {
 		};
 		this._profileService.getExternalProfileData(this.urluserId, query).subscribe((response) => {
 			this.profileObj = response[0];
-			// console.log(this.profileObj);
+			console.log(this.profileObj);
 			if (this.profileObj.other_languages) {
 				this.profileObj.other_languages = this.profileObj.other_languages.filter(Boolean);
 				this.other_languages = this.profileObj.other_languages.join(', ');
@@ -620,6 +632,15 @@ export class ProfileComponent implements OnInit {
 		this.peerObj.profiles.push(this.profileObj);
 		this._dialogsService.messageParticipant(this.peerObj).subscribe(result => {
 			// console.log(result);
+		});
+	}
+
+	/**
+	 * openTransactionsDialog
+	 */
+	public openTransactionsDialog() {
+		this._dialogsService.gyanTransactionsDialog(this.profileObj).subscribe(res => {
+			console.log(res);
 		});
 	}
 

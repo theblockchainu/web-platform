@@ -29,7 +29,8 @@ import { ConsoleAccountSecurityComponent } from './console-account/console-accou
 import { ConsoleAccountPrivacyComponent } from './console-account/console-account-privacy/console-account-privacy.component';
 import { ConsoleAccountSettingsComponent } from './console-account/console-account-settings/console-account-settings.component';
 import { ConsoleAdminComponent } from './console-admin/console-admin.component';
-import {ContentLearningBookmarksComponent} from './console-learning/content-learning-bookmarks/content-learning-bookmarks.component';
+import { ContentLearningBookmarksComponent } from './console-learning/content-learning-bookmarks/content-learning-bookmarks.component';
+import { ConsoleAccountWalletComponent } from './console-account/console-account-wallet/console-account-wallet.component';
 
 const routes: Routes = [{
   path: '',
@@ -39,22 +40,22 @@ const routes: Routes = [{
     {
       path: 'dashboard',
       component: ConsoleDashboardComponent,
-		canActivate: [AuthGuardService]
+      canActivate: [AuthGuardService]
     },
     {
       path: 'inbox',
       component: ConsoleInboxComponent,
-		canActivate: [AuthGuardService]
+      canActivate: [AuthGuardService]
     },
-	  {
-		  path: 'inbox/:roomId',
-		  component: ConsoleInboxComponent,
-		  canActivate: [AuthGuardService]
-	  },
+    {
+      path: 'inbox/:roomId',
+      component: ConsoleInboxComponent,
+      canActivate: [AuthGuardService]
+    },
     {
       path: 'learning',
       component: ConsoleLearningComponent,
-		canActivate: [AuthGuardService],
+      canActivate: [AuthGuardService],
       children: [
         {
           path: 'all',
@@ -69,8 +70,8 @@ const routes: Routes = [{
           component: ConsoleLearningExperiencesComponent
         },
         {
-            path: 'bookmarks',
-            component: ContentLearningBookmarksComponent
+          path: 'bookmarks',
+          component: ContentLearningBookmarksComponent
         },
         {
           path: 'sessions',
@@ -85,7 +86,7 @@ const routes: Routes = [{
     {
       path: 'teaching',
       component: ConsoleTeachingComponent,
-		canActivate: [AuthGuardService],
+      canActivate: [AuthGuardService],
       children: [
         {
           path: 'all',
@@ -112,7 +113,7 @@ const routes: Routes = [{
     {
       path: 'profile',
       component: ConsoleProfileComponent,
-		canActivate: [AuthGuardService],
+      canActivate: [AuthGuardService],
       children: [
         {
           path: 'edit',
@@ -143,7 +144,7 @@ const routes: Routes = [{
     {
       path: 'account',
       component: ConsoleAccountComponent,
-		canActivate: [AuthGuardService],
+      canActivate: [AuthGuardService],
       children: [
         {
           path: 'notifications',
@@ -174,6 +175,10 @@ const routes: Routes = [{
           component: ConsoleAccountSettingsComponent
         },
         {
+          path: 'wallet',
+          component: ConsoleAccountWalletComponent
+        },
+        {
           path: '',
           component: ConsoleAccountNotificationsComponent
         }
@@ -181,7 +186,7 @@ const routes: Routes = [{
     },
     {
       path: 'admin',
-		canActivate: [AuthGuardService],
+      canActivate: [AuthGuardService],
       component: ConsoleAdminComponent
     }
   ]

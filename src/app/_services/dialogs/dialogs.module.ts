@@ -48,9 +48,10 @@ import { ExitCommunityDialogComponent } from './exit-community-dialog/exit-commu
 import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflict-dialog.component';
 import { EditSubmissionDialogComponent } from './edit-submission-dialog/edit-submission-dialog.component';
 import { InboxDialogComponent } from './inbox-dialog/inbox-dialog.component';
-import {MessageParticipantDialogComponent} from './message-participant-dialog/message-participant-dialog.component';
-import {ViewParticipantsComponent} from './view-participants/view-participants.component';
+import { MessageParticipantDialogComponent } from './message-participant-dialog/message-participant-dialog.component';
+import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { StudentAssessmentDialogComponent } from './student-assessment-dialog/student-assessment-dialog.component';
+import { GyanTransactionsDialogComponent } from './gyan-transactions-dialog/gyan-transactions-dialog.component';
 
 @NgModule({
 	imports: [
@@ -81,7 +82,7 @@ import { StudentAssessmentDialogComponent } from './student-assessment-dialog/st
 		SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent, DeleteCohortDialogComponent,
 		CancelCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
 		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent,
-		DateConflictDialogComponent, EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent, StudentAssessmentDialogComponent
+		DateConflictDialogComponent, EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent, StudentAssessmentDialogComponent, GyanTransactionsDialogComponent
 	],
 	providers: [
 		DialogsService,
@@ -104,7 +105,7 @@ import { StudentAssessmentDialogComponent } from './student-assessment-dialog/st
 		CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
 		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent,
 		EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent,
-		StudentAssessmentDialogComponent
+		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent
 	],
 })
 export class DialogsModule { }
