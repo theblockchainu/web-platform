@@ -11,7 +11,8 @@
 			<div class="col-md-3 {{offsetString}} left-panel">
 				<div class="row padding-bottom-30">
 					<div class="col-md-12" style="padding-left: 0px;">
-						<img class="img-rounded profile-pic" *ngIf="profileObj.picture_url" src="{{envVariable.apiUrl+profileObj.picture_url + '/300'}}" alt="profile_pic">
+						<img class="img-rounded profile-pic" *ngIf="profileObj.picture_url" src="{{envVariable.apiUrl+profileObj.picture_url + '/300'}}"
+						 alt="profile_pic">
 						<img class="img-rounded profile-pic" *ngIf="!profileObj.picture_url" src="/assets/images/user-placeholder.jpg" alt="profile_pic">
 					</div>
 					<div class="col-md-6" style="margin-top: 25px; padding-left: 0px;">
@@ -21,6 +22,16 @@
 					<div class="col-md-6" style="margin-top: 25px; padding-left: 0px;" *ngIf="cookieUserId && urluserId !== cookieUserId">
 						<button mat-button (click)="openMessageDialog()">Message</button>
 					</div>
+				</div>
+				<div class="row" *ngIf="profileObj.peer[0].wallet.length>0 && profileObj.peer[0].wallet[0]">
+					<h3>
+						<i class="fab fa-ethereum">
+						</i>
+						{{profileObj.peer[0].wallet[0].gyan_balance}}
+						<a class="clickable" (click)="openTransactionsDialog()" *ngIf="cookieUserId === urluserId">
+							View Transactions
+						</a>
+					</h3>
 				</div>
 				<div class="row border-top" *ngIf="other_languages || profileObj.location_string">
 					<div class="col-xs-1" style="padding-left: 0px;">
@@ -250,7 +261,8 @@
 									<div class="review-section" *ngIf="review.peer !== undefined && i < maxVisibleReviewsLearner">
 										<div class="row review-top" style="margin-left:0px;">
 											<div class="col-md-2 padding-left-0 review-thumb pull-left">
-												<img src="{{ review.peer[0].profiles[0].picture_url + '/100'}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)" style="position: relative; top: 7px;">
+												<img src="{{ review.peer[0].profiles[0].picture_url + '/100'}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)"
+												 style="position: relative; top: 7px;">
 											</div>
 											<div class="col-md-4 reviewer padding-left-0">
 												<div class="reviewer-name">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name}}
@@ -308,7 +320,8 @@
 									<div class="review-section" *ngIf="review.peer !== undefined && i < maxVisibleReviewsTeacher">
 										<div class="row review-top" style="margin-left:0px;">
 											<div class="col-md-2 padding-left-0 review-thumb pull-left">
-												<img src="{{ review.peer[0].profiles[0].picture_url  + '/100'}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)" style="position: relative; top: 7px;">
+												<img src="{{ review.peer[0].profiles[0].picture_url  + '/100'}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)"
+												 style="position: relative; top: 7px;">
 											</div>
 											<div class="col-md-4 reviewer padding-left-0">
 												<div class="reviewer-name">{{ review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name}}
@@ -625,8 +638,10 @@
 									<img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
 									 alt="workshpImg">
 								</div>
-								<div *ngIf="workshop.currency !== undefined && workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}} / <i class="fab fa-ethereum"></i> {{workshop.academicGyan + workshop.nonAcademicGyan}} Gyan</div>
-								<div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}} / <i class="fab fa-ethereum"></i> {{workshop.academicGyan + workshop.nonAcademicGyan}} Gyan</div>
+								<div *ngIf="workshop.currency !== undefined && workshop.currency.length > 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}} /
+									<i class="fab fa-ethereum"></i> {{workshop.academicGyan + workshop.nonAcademicGyan}} Gyan</div>
+								<div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" class="mat-body-2" style="margin-top: 3px;">{{workshop.price | convertCurrency: workshop.currency |async}} /
+									<i class="fab fa-ethereum"></i> {{workshop.academicGyan + workshop.nonAcademicGyan}} Gyan</div>
 								<div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
 								<div *ngIf="workshop.owners" style="margin-top: 0px;">{{workshop.owners[0].profiles[0].first_name + ' ' + workshop.owners[0].profiles[0].last_name | ucwords}}</div>
 								<div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
@@ -719,7 +734,8 @@
 							<div *ngIf="peer.wallet && peer.wallet.length > 0">
 								<i class="fab fa-ethereum"></i> {{peer.wallet[0].gyan_balance}} Gyan
 							</div>
-							<div *ngIf="!peer.wallet || peer.wallet.length === 0"><i class="fab fa-ethereum"></i> 0 Gyan</div>
+							<div *ngIf="!peer.wallet || peer.wallet.length === 0">
+								<i class="fab fa-ethereum"></i> 0 Gyan</div>
 							<div class="col-sm-12 padding-left-0 ">
 								<span *ngIf="!peer.topics || peer.topics.length<=2 ">
 									{{peer.topics}}
