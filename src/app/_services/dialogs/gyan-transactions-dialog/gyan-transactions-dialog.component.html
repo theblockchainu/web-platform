@@ -6,7 +6,7 @@
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <h2>
+      <h2 *ngIf="data.peer[0].wallet">
         <i class="fab fa-ethereum">
         </i>
         {{data.peer[0].wallet[0].gyan_balance}}
