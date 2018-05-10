@@ -4,8 +4,8 @@ import { ConsoleComponent } from '../console.component';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { MatSnackBar } from '@angular/material';
-import {environment} from '../../../environments/environment';
-
+import { environment } from '../../../environments/environment';
+import { CommunityService } from '../../_services/community/community.service';
 declare var moment: any;
 
 
@@ -22,6 +22,8 @@ export class ConsoleAdminComponent implements OnInit {
 	public envVariable;
 	public emailSubscriptions: Array<any>;
 	public emailSubLoaded: boolean;
+	public communityRequestsLoaded: boolean;
+	public communityRequests: Array<any>;
 	public connectedIdentities;
 	public verifiedItems;
 	public displayedColumns = ['createdAt', 'email'];
@@ -31,6 +33,7 @@ export class ConsoleAdminComponent implements OnInit {
 		public _collectionService: CollectionService,
 		public _profileService: ProfileService,
 		public snackBar: MatSnackBar,
+		private _communityService: CommunityService
 	) {
 		this.envVariable = environment;
 		activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
@@ -38,13 +41,24 @@ export class ConsoleAdminComponent implements OnInit {
 			consoleComponent.setActiveTab(urlSegment[0].path);
 		});
 	}
-	
+
 	ngOnInit() {
 		this.fetchCollections();
 		this.fetchPeers();
 		this.fetchEmailSubscriptions();
+		this.fetchCommunityRequests();
 	}
-	
+
+	private fetchCommunityRequests() {
+		const filter = {
+			'include': [{ 'peers': ['profiles'] }]
+		};
+		this._communityService.getRequestedComminities(JSON.stringify(filter)).subscribe((res: any) => {
+			this.communityRequests = res;
+			this.communityRequestsLoaded = true;
+		});
+	}
+
 	private fetchEmailSubscriptions() {
 		this.emailSubLoaded = false;
 		const filter = {
@@ -55,7 +69,7 @@ export class ConsoleAdminComponent implements OnInit {
 			this.emailSubLoaded = true;
 		});
 	}
-	
+
 	private fetchPeers() {
 		this.peersLoaded = false;
 		const query = {
@@ -94,14 +108,14 @@ export class ConsoleAdminComponent implements OnInit {
 			console.log(err);
 		});
 	}
-	
+
 	private fetchCollections() {
 		this.collectionsLoaded = false;
 		const query = {
 			'where': { 'isApproved': false, 'status': 'submitted' },
 			'include': [
 				'calendars',
-				{'owners': ['profiles', 'topicsTeaching']}
+				{ 'owners': ['profiles', 'topicsTeaching'] }
 			],
 			'order': 'submittedAt DESC'
 		};
@@ -114,9 +128,9 @@ export class ConsoleAdminComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	public approveWorkshop(collection: any) {
-		
+
 		this._collectionService.approveCollection(collection).subscribe(
 			(result: any) => {
 				if (result) {
@@ -130,9 +144,9 @@ export class ConsoleAdminComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	public rejectWorkshop(collection: any) {
-		
+
 		this._collectionService.rejectCollection(collection).subscribe(
 			(result: any) => {
 				if (result) {
@@ -146,7 +160,7 @@ export class ConsoleAdminComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	/**
 	 * approvePeer
 	 */
@@ -158,12 +172,12 @@ export class ConsoleAdminComponent implements OnInit {
 					duration: 5000
 				}).onAction().subscribe();
 			}
-			
+
 		}, err => {
 			console.log(err);
 		});
 	}
-	
+
 	/**
 	 * rejectPeer
 	 */
@@ -175,10 +189,23 @@ export class ConsoleAdminComponent implements OnInit {
 					duration: 5000
 				}).onAction().subscribe();
 			}
-			
+
 		}, err => {
 			console.log(err);
 		});
 	}
-	
+
+	/**
+	 * deleteRequest
+		id: string	 
+	*/
+	public deleteRequest(id: string) {
+		this._communityService.deleteRequest(id).subscribe(res => {
+			this.snackBar.open('Deleted Request', 'close', {
+				duration: 800
+			});
+			this.fetchCommunityRequests();
+		});
+	}
+
 }

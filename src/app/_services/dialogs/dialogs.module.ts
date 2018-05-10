@@ -52,6 +52,7 @@ import { MessageParticipantDialogComponent } from './message-participant-dialog/
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { StudentAssessmentDialogComponent } from './student-assessment-dialog/student-assessment-dialog.component';
 import { GyanTransactionsDialogComponent } from './gyan-transactions-dialog/gyan-transactions-dialog.component';
+import { RequestCommunityDialogComponent } from './request-community-dialog/request-community-dialog.component';
 
 @NgModule({
 	imports: [
@@ -82,7 +83,9 @@ import { GyanTransactionsDialogComponent } from './gyan-transactions-dialog/gyan
 		SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent, DeleteCohortDialogComponent,
 		CancelCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
 		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent,
-		DateConflictDialogComponent, EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent, StudentAssessmentDialogComponent, GyanTransactionsDialogComponent
+		DateConflictDialogComponent, EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent,
+		ViewParticipantsComponent, StudentAssessmentDialogComponent, GyanTransactionsDialogComponent,
+		RequestCommunityDialogComponent
 	],
 	providers: [
 		DialogsService,
@@ -105,7 +108,7 @@ import { GyanTransactionsDialogComponent } from './gyan-transactions-dialog/gyan
 		CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
 		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent,
 		EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent,
-		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent
+		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent, RequestCommunityDialogComponent
 	],
 })
 export class DialogsModule { }

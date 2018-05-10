@@ -12,7 +12,7 @@ import { ViewParticipantsComponent } from './view-participants/view-participants
 import { CommunityService } from '../../_services/community/community.service';
 import { QuestionService } from '../../_services/question/question.service';
 import { HttpClient } from '@angular/common/http';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { SearchService } from '../../_services/search/search.service';
 import {
 	startOfDay,
@@ -35,7 +35,7 @@ import { TopicService } from '../../_services/topic/topic.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import {Meta, Title} from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 
 declare var FB: any;
 
@@ -65,7 +65,7 @@ declare var FB: any;
 })
 
 export class CommunityPageComponent implements OnInit, AfterViewChecked {
-	
+
 	public communityId: string;
 	public envVariable;
 	public userId;
@@ -97,19 +97,19 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	private today = moment();
 	public toOpenDialogName;
 	objectKeys = Object.keys;
-	
+
 	public questionMapping: { [k: string]: string } = {
 		'=0': 'No Questions',
 		'=1': 'One question',
 		'other': '# questions'
 	};
-	
+
 	public viewDate: Date = new Date();
-	
+
 	refresh: Subject<any> = new Subject();
-	
+
 	events: CalendarEvent[] = [];
-	
+
 	public loadingQuestions = true;
 	public loadingParticipants = true;
 	public loadingCommunity = true;
@@ -119,24 +119,24 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	public searchControl = new FormControl('');
 	public searchResults: any[];
 	public carouselBanner: any;
-	
+
 	constructor(public router: Router,
-				private activatedRoute: ActivatedRoute,
-				private _cookieUtilsService: CookieUtilsService,
-				public _collectionService: CollectionService,
-				public _topicService: TopicService,
-				private _commentService: CommentService,
-				private _questionService: QuestionService,
-				private _communityService: CommunityService,
-				public _searchService: SearchService,
-				private _fb: FormBuilder,
-				private dialog: MatDialog,
-				private http: HttpClient,
-				private _cdRef: ChangeDetectorRef,
-				private dialogsService: DialogsService,
-				private titleService: Title,
-				private metaService: Meta,
-				private snackBar: MatSnackBar) {
+		private activatedRoute: ActivatedRoute,
+		private _cookieUtilsService: CookieUtilsService,
+		public _collectionService: CollectionService,
+		public _topicService: TopicService,
+		private _commentService: CommentService,
+		private _questionService: QuestionService,
+		private _communityService: CommunityService,
+		public _searchService: SearchService,
+		private _fb: FormBuilder,
+		private dialog: MatDialog,
+		private http: HttpClient,
+		private _cdRef: ChangeDetectorRef,
+		public dialogsService: DialogsService,
+		private titleService: Title,
+		private metaService: Meta,
+		private snackBar: MatSnackBar) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && this.communityId !== params['communityId']) {
@@ -148,7 +148,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 		this.userId = _cookieUtilsService.getValue('userId');
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
 	}
-	
+
 	ngOnInit() {
 		this.initialised = true;
 		this.initializeCommunity();
@@ -175,15 +175,15 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 			touch: true
 		};
 	}
-	
+
 	ngAfterViewChecked(): void {
 		this._communityService.getActiveTab().subscribe(data => {
 			this.activeTab = data;
 		});
 		this._cdRef.detectChanges();
 	}
-	
-	
+
+
 	private initializeUserType() {
 		if (this.community) {
 			for (const owner of this.community.owners) {
@@ -201,12 +201,12 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 					}
 				}
 			}
-			
+
 			this.loadingCommunity = false;
-			
+
 		}
 	}
-	
+
 	private initializeCommunity() {
 		this.participants = [];
 		const query = {
@@ -221,13 +221,13 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 				{ 'owners': [{ 'profiles': ['work'] }] }
 			]
 		};
-		
+
 		if (this.communityId) {
 			this._communityService.getCommunityDetail(this.communityId, query)
 				.subscribe(res => {
-						console.log(res);
-						this.community = res;
-					},
+					console.log(res);
+					this.community = res;
+				},
 					err => console.log('error'),
 					() => {
 						this.initializeUserType();
@@ -241,7 +241,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 			console.log('NO COMMUNITY');
 		}
 	}
-	
+
 	private setTags() {
 		this.titleService.setTitle(this.community.title);
 		this.metaService.updateTag({
@@ -265,7 +265,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 			content: environment.clientUrl + this.router.url
 		});
 	}
-	
+
 	public showAll(strLength) {
 		if (strLength > this.maxLength) {
 			this.maxLength = strLength;
@@ -273,7 +273,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 			this.maxLength = 140;
 		}
 	}
-	
+
 	private getBookmarks() {
 		const query = {
 			'include': [
@@ -298,16 +298,16 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 			}
 		});
 	}
-	
+
 	private fixTopics() {
 		this.topicFix = _.uniqBy(this.community.topics, 'id');
 	}
-	
+
 	public gotoEdit() {
 		this.router.navigate(['community', this.communityId, 'edit', this.community.stage ? this.community.stage : '1']);
 	}
-	
-	
+
+
 	/**
 	 * dropoutCommunity
 	 */
@@ -318,7 +318,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 			}
 		});
 	}
-	
+
 	/**
 	 * deleteCommunity
 	 */
@@ -329,7 +329,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 			}
 		});
 	}
-	
+
 	/**
 	 * saveBookmark
 	 */
@@ -344,7 +344,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 			});
 		}
 	}
-	
+
 	/**
 	 * View participants
 	 */
@@ -354,12 +354,12 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 				participants: this.participants,
 				communityId: this.communityId
 			},
-			panelClass: 'responsive-dialog',			
+			panelClass: 'responsive-dialog',
 			width: '45vw',
 			height: '100vh'
 		});
 	}
-	
+
 	private joinCommunity() {
 		this._communityService.addParticipant(this.communityId, this.userId, (err: any, response: any) => {
 			if (err) {
@@ -368,13 +368,13 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 				this.router.navigate(['community', this.communityId]);
 				this.snackBar.open('Thanks for joining the community. Ask questions or share your' +
 					' find partners for your learning journey.', 'Close', {
-					duration: 5000
-				});
+						duration: 5000
+					});
 			}
 		});
 	}
-	
-	
+
+
 	public getParticipants() {
 		this.participants = [];
 		this.loadingParticipants = true;
@@ -395,7 +395,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 			}
 		);
 	}
-	
+
 	public shareOnFb() {
 		FB.ui({
 			method: 'share_open_graph',
@@ -416,45 +416,42 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 			console.log(response);
 		});
 	}
-	
+
 	public shareOnTwitter() {
 		// TODO twitter sharing code
 	}
-	
+
 	public openVerificationPage() {
 		this.router.navigate(['console', 'profile', 'verification']);
 	}
-	
+
 	public openLoginPage() {
 		this.router.navigate(['login']);
 	}
-	
+
 	public openProfilePage(peerId) {
 		this.router.navigate(['profile', peerId]);
 	}
-	
+
 	public openInviteFriendsDialog() {
 		this.dialogsService.inviteFriends(this.community);
 	}
-	
+
 	scrollToQuestions() {
 		const el = document.getElementById('questionTarget');
 		el.scrollIntoView();
 	}
-	
+
 	displayNone() {
 		return 'display: none';
 	}
-	
+
 	public parseTitle(title) {
 		return title.split(':');
 	}
-	
-	
+
+
 	public getUserType() {
 		return this.userType;
 	}
-	
-	
-	
 }

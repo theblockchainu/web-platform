@@ -1,0 +1,26 @@
+<div class="dialog-container">
+  <div class="row">
+    <div class="col-xs-12">
+      <h2> Request Community </h2>
+    </div>
+  </div>
+  <div class="row margin-top-10">
+    <form [formGroup]="communityForm" (ngSubmit)="submitForm()">
+      <div class="col-xs-12 margin-top-10">
+        <mat-form-field class="pb-block">
+          <input matInput placeholder="Community Name" formControlName="title">
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 margin-top-10">
+        <mat-form-field class="pb-block">
+          <textarea style="height:13vh" matInput placeholder="Describe this community" formControlName="description"></textarea>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 margin-top-10">
+        <button class="pull-right" mat-raised-button color="accent">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -5,7 +5,8 @@ import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { HttpClient } from '@angular/common/http';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
+import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 
 @Injectable()
 export class CommunityService {
@@ -20,7 +21,8 @@ export class CommunityService {
         private route: ActivatedRoute,
         public router: Router,
         private authService: AuthenticationService,
-        private requestHeaderService: RequestHeaderService) {
+        private requestHeaderService: RequestHeaderService,
+        private _cookieUtilsService: CookieUtilsService) {
         this.options = requestHeaderService.getOptions();
         this.now = new Date();
         this.envVariable = environment;
@@ -277,4 +279,26 @@ export class CommunityService {
             }).subscribe();
     }
 
+    /**
+     * requestCommunity
+     */
+    public requestCommunity(data: any) {
+        return this.http.post(environment.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue('userId')
+            + '/community_requests', data, this.options);
+    }
+
+    /**
+     * getRequestedComminities
+     */
+    public getRequestedComminities(filter: string) {
+        return this.http.get(environment.apiUrl + '/api/community_requests?filter=' + filter, this.options);
+    }
+
+    /**
+     * deleteRequest
+     id:string*/
+    public deleteRequest(id: string) {
+        return this.http.delete(environment.apiUrl + '/api/community_requests/' + id, this.options);
+        
+    }
 }
