@@ -75,6 +75,7 @@ import { TimeToNowPipe } from './timetonow/time-to-now.pipe';
 import { TopicRowComponent } from './topic-row/topic-row.component';
 import { AssessmentService } from '../_services/assessment/assessment.service';
 import { WalletService } from '../_services/wallet/wallet.service';
+import { ScholarshipService } from '../_services/scholarship/scholarship.service';
 @NgModule({
     imports: [
         CommonModule,
@@ -138,7 +139,8 @@ import { WalletService } from '../_services/wallet/wallet.service';
         SearchService,
         TimeToNowPipe,
         AssessmentService,
-        WalletService
+        WalletService,
+        ScholarshipService
     ],
     exports: [
         CommonModule,

@@ -53,6 +53,7 @@ import { ViewParticipantsComponent } from './view-participants/view-participants
 import { StudentAssessmentDialogComponent } from './student-assessment-dialog/student-assessment-dialog.component';
 import { GyanTransactionsDialogComponent } from './gyan-transactions-dialog/gyan-transactions-dialog.component';
 import { RequestCommunityDialogComponent } from './request-community-dialog/request-community-dialog.component';
+import { ScholarshipDialogComponent } from './scholarship-dialog/scholarship-dialog.component';
 
 @NgModule({
 	imports: [
@@ -85,7 +86,8 @@ import { RequestCommunityDialogComponent } from './request-community-dialog/requ
 		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent,
 		DateConflictDialogComponent, EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent,
 		ViewParticipantsComponent, StudentAssessmentDialogComponent, GyanTransactionsDialogComponent,
-		RequestCommunityDialogComponent
+		RequestCommunityDialogComponent,
+		ScholarshipDialogComponent
 	],
 	providers: [
 		DialogsService,
@@ -99,16 +101,12 @@ import { RequestCommunityDialogComponent } from './request-community-dialog/requ
 		VerifyPhoneDialogComponent
 		, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent, CancelCollectionDialogComponent,
 		ExitCollectionDialogComponent, DeleteCollectionDialogComponent,
-		EditCalendarDialogComponent,
-		AddTopicDialogComponent,
-		AddLanguageDialogComponent,
-		ViewConflictDialogComponent, SelectDateDialogComponent,
-		CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
-		SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent,
+		EditCalendarDialogComponent, AddTopicDialogComponent, AddLanguageDialogComponent, ViewConflictDialogComponent, SelectDateDialogComponent,
+		CollectionCloneDialogComponent, CollectionSubmitDialogComponent, SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent,
 		CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
 		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent,
 		EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent,
-		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent, RequestCommunityDialogComponent
+		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent, RequestCommunityDialogComponent, ScholarshipDialogComponent
 	],
 })
 export class DialogsModule { }

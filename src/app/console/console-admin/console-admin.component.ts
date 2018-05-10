@@ -6,6 +6,8 @@ import { ProfileService } from '../../_services/profile/profile.service';
 import { MatSnackBar } from '@angular/material';
 import { environment } from '../../../environments/environment';
 import { CommunityService } from '../../_services/community/community.service';
+import { ScholarshipService } from '../../_services/scholarship/scholarship.service';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
 declare var moment: any;
 
 
@@ -27,13 +29,18 @@ export class ConsoleAdminComponent implements OnInit {
 	public connectedIdentities;
 	public verifiedItems;
 	public displayedColumns = ['createdAt', 'email'];
+	public scholarship: any;
+	public scholarshipsLoaded: Boolean;
+
 	constructor(
 		activatedRoute: ActivatedRoute,
 		consoleComponent: ConsoleComponent,
 		public _collectionService: CollectionService,
 		public _profileService: ProfileService,
 		public snackBar: MatSnackBar,
-		private _communityService: CommunityService
+		private _communityService: CommunityService,
+		private _scholarshipService: ScholarshipService,
+		private _dialogsService: DialogsService
 	) {
 		this.envVariable = environment;
 		activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
@@ -47,6 +54,23 @@ export class ConsoleAdminComponent implements OnInit {
 		this.fetchPeers();
 		this.fetchEmailSubscriptions();
 		this.fetchCommunityRequests();
+		this.fetchScholarShips();
+	}
+
+	/**
+	 * fetchScholarShips
+	 */
+	public fetchScholarShips() {
+		const filter = { 'include': [{ 'owner': 'profiles' }, 'peers_joined', 'allowed_collections'] };
+		this._scholarshipService.fetchScholarships(filter).subscribe((res: any) => {
+			console.log(res);
+			this.scholarshipsLoaded = true;
+			if (res.length > 0) {
+				this.scholarship = res[0];
+			}
+		}, err => {
+			this.scholarshipsLoaded = true;
+		});
 	}
 
 	private fetchCommunityRequests() {
@@ -208,4 +232,42 @@ export class ConsoleAdminComponent implements OnInit {
 		});
 	}
 
+	public createScholarship() {
+		this._dialogsService.createScholarshipDialog()
+			.flatMap(res => {
+				if (res) {
+					return this._scholarshipService.createScholarship(res);
+				}
+			}).subscribe(res => {
+				console.log(res);
+				this.fetchScholarShips();
+				this.snackBar.open('Scholarship created', 'close', { duration: 800 });
+			}, err => {
+				this.snackBar.open('Error', 'close', { duration: 800 });
+			});
+
+	}
+
+	/**
+	 * deleteScholarship
+	 */
+	public deleteScholarship(id: string) {
+		this._scholarshipService.deleteScholarship(id).subscribe(res => {
+			this.snackBar.open('Deleted');
+			this.fetchScholarShips();
+		});
+
+	}
+
+	/**
+	 * editScholarship
+	 */
+	public editScholarship() {
+		this._dialogsService.createScholarshipDialog(this.scholarship)
+			.flatMap(res => {
+				return this._scholarshipService.patchScholarship(this.scholarship.id, res);
+			}).subscribe(res => {
+				this.fetchScholarShips();
+			});
+	}
 }

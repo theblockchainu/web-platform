@@ -1,0 +1,39 @@
+<div class="dialog-container">
+  <div class="row">
+    <div class="col-xs-12">
+      <h2> Request Community </h2>
+    </div>
+  </div>
+  <div class="row margin-top-10">
+    <form [formGroup]="scholarshipForm">
+      <div class="col-xs-6 margin-top-10">
+        <mat-form-field class="pb-block">
+          <input type="number" matInput placeholder="Karma" formControlName="karma">
+        </mat-form-field>
+      </div>
+      <div class="col-xs-6 margin-top-10">
+        <mat-form-field class="pb-block">
+          <mat-select placeholder="Type" formControlName="type">
+            <mat-option [value]="'public'"> Public </mat-option>
+            <mat-option [value]="'private'"> Private</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-6 margin-top-10">
+        <mat-form-field class="pb-block">
+          <input type="number" matInput placeholder="Max Karma" formControlName="max_karma">
+        </mat-form-field>
+      </div>
+      <div class="col-xs-6 margin-top-10">
+        <mat-form-field class="pb-block">
+          <input type="number" matInput placeholder="Min Gyan" formControlName="min_gyan">
+        </mat-form-field>
+      </div>
+      <div class="col-xs-12 margin-top-10">
+        <button (click)="submitForm()" class="pull-right" mat-raised-button color="accent">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
