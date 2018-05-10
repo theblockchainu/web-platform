@@ -37,4 +37,9 @@ id:string   */
     return this.http.patch(environment.apiUrl + '/api/scholarships/' + id, body, this.options);
   }
 
+  public fetchUserScholarships(filter: any) {
+    return this.http.get(environment.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue('userId')
+      + '/scholarships_joined?filter=' + JSON.stringify(filter), this.options);
+  }
+
 }

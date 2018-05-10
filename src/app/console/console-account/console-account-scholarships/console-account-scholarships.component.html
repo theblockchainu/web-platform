@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-md-12">
+    <div *ngIf="!scholarshipsLoaded" class="loading-container">
+      <ngx-loading [show]="true"></ngx-loading>
+    </div>
+  </div>
+  <div class="col-md-12 margin-top-30" *ngIf="scholarshipsLoaded">
+    <div style="display:inline;">
+      <h2>Scholarships</h2>
+    </div>
+    <div #noContentView *ngIf="scholarships.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
+      <div class="lightText">
+        No Scholarships joined !
+      </div>
+    </div>
+    <div *ngIf="scholarships.length > 0">
+      <div class="row" style="margin-top:20px;">
+        <div class="col-xs-12 col-md-3" *ngFor="let scholarship of scholarships">
+          <mat-card style="text-align: center; padding: 20px;">
+            <mat-card-content>
+              <!-- <div style="text-align: right">
+                          <div class="pull-right">
+                            <a mat-icon-button [matMenuTriggerFor]="scholarCardMenu" style="text-align: right; padding: 0px">
+                              <mat-icon>more_vert</mat-icon>
+                            </a>
+                          </div>
+                        </div> -->
+              <br>
+              <div class="collectionTitle clickable">{{ scholarship.type | ucwords }} </div>
+              <br>
+              <br>
+              <div>
+                {{scholarship.karma}}
+              </div>
+              <div class="mat-caption">
+                {{scholarship.owner[0].profiles[0].first_name + ' ' + scholarship.owner[0].peers[0].profiles[0].last_name | ucwords }}
+              </div>
+            </mat-card-content>
+
+          </mat-card>
+        </div>
+      </div>
+      <br>
+      <br>
+    </div>
+  </div>
+</div>
