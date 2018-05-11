@@ -100,7 +100,18 @@ export class ConsoleAccountScholarshipsComponent implements OnInit {
       });
       this.fetchHostedScholarships();
     });
+  }
 
+  /**
+   * leaveScholarship
+id:string   */
+  public leaveScholarship(id: string) {
+    this._scholarshipService.leaveScholarship(this.userId, id).subscribe(res => {
+      this._matSnackBar.open('Left', 'close', {
+        duration: 800
+      });
+      this.fetchScholarships();
+    });
   }
 
 }

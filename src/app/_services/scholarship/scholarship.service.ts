@@ -24,6 +24,10 @@ export class ScholarshipService {
     return this.http.get(environment.apiUrl + '/api/scholarships?filter=' + JSON.stringify(filter), this.options);
   }
 
+  public fetchScholarship(scholarshipId: string, filter: any) {
+    return this.http.get(environment.apiUrl + '/api/scholarships/' + scholarshipId + '?filter=' + JSON.stringify(filter), this.options);
+  }
+
   /**
    * deleteScholarship
 id:string   */
@@ -52,4 +56,11 @@ id:string   */
     }, this.options);
   }
 
+  public joinScholarship(userId: string, scholarshipId: string) {
+    return this.http.put(environment.apiUrl + '/api/scholarships/' + scholarshipId + '/peers_joined/rel/' + userId, {}, this.options);
+  }
+
+  public leaveScholarship(userId: string, scholarshipId: string) {
+    return this.http.delete(environment.apiUrl + '/api/scholarships/' + scholarshipId + '/peers_joined/rel/' + userId, this.options);
+  }
 }
