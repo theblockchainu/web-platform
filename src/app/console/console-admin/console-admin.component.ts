@@ -233,18 +233,19 @@ export class ConsoleAdminComponent implements OnInit {
 	}
 
 	public createScholarship() {
-		this._dialogsService.createScholarshipDialog()
-			.flatMap(res => {
-				if (res) {
-					return this._scholarshipService.createScholarship(res);
-				}
-			}).subscribe(res => {
-				console.log(res);
-				this.fetchScholarShips();
-				this.snackBar.open('Scholarship created', 'close', { duration: 800 });
-			}, err => {
-				this.snackBar.open('Error', 'close', { duration: 800 });
-			});
+		this._dialogsService.createScholarshipDialog(
+			{ type: 'public' }
+		).flatMap(res => {
+			if (res) {
+				return this._scholarshipService.createScholarship(res);
+			}
+		}).subscribe(res => {
+			console.log(res);
+			this.fetchScholarShips();
+			this.snackBar.open('Scholarship created', 'close', { duration: 800 });
+		}, err => {
+			this.snackBar.open('Error', 'close', { duration: 800 });
+		});
 
 	}
 
@@ -265,8 +266,15 @@ export class ConsoleAdminComponent implements OnInit {
 	public editScholarship() {
 		this._dialogsService.createScholarshipDialog(this.scholarship)
 			.flatMap(res => {
-				return this._scholarshipService.patchScholarship(this.scholarship.id, res);
-			}).subscribe(res => {
+				if (res) {
+					return this._scholarshipService.patchScholarship(this.scholarship.id, res.scholarshipForm);
+				}
+			})
+			.subscribe(res => {
+				console.log(res);
+				this.snackBar.open('Updated', 'Close', {
+					duration: 800
+				});
 				this.fetchScholarShips();
 			});
 	}

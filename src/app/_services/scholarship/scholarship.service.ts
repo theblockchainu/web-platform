@@ -33,13 +33,23 @@ id:string   */
 
 
   public patchScholarship(id: string, body: any) {
-    console.log(body);
     return this.http.patch(environment.apiUrl + '/api/scholarships/' + id, body, this.options);
   }
 
   public fetchUserScholarships(filter: any) {
     return this.http.get(environment.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue('userId')
       + '/scholarships_joined?filter=' + JSON.stringify(filter), this.options);
+  }
+
+  public fetchUserHostedScholarships(filter: any) {
+    return this.http.get(environment.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue('userId')
+      + '/scholarships_owned?filter=' + JSON.stringify(filter), this.options);
+  }
+
+  public connectCollections(id: string, targetIds: Array<any>) {
+    return this.http.patch(environment.apiUrl + '/api/scholarships/' + id + '/allowed_collections/rel', {
+      targetIds: targetIds
+    }, this.options);
   }
 
 }
