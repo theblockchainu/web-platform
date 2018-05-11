@@ -4,8 +4,10 @@ import { ConsoleComponent } from '../console.component';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { MatSnackBar } from '@angular/material';
-import {environment} from '../../../environments/environment';
-
+import { environment } from '../../../environments/environment';
+import { CommunityService } from '../../_services/community/community.service';
+import { ScholarshipService } from '../../_services/scholarship/scholarship.service';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
 declare var moment: any;
 
 
@@ -22,15 +24,23 @@ export class ConsoleAdminComponent implements OnInit {
 	public envVariable;
 	public emailSubscriptions: Array<any>;
 	public emailSubLoaded: boolean;
+	public communityRequestsLoaded: boolean;
+	public communityRequests: Array<any>;
 	public connectedIdentities;
 	public verifiedItems;
 	public displayedColumns = ['createdAt', 'email'];
+	public scholarship: any;
+	public scholarshipsLoaded: Boolean;
+
 	constructor(
 		activatedRoute: ActivatedRoute,
 		consoleComponent: ConsoleComponent,
 		public _collectionService: CollectionService,
 		public _profileService: ProfileService,
 		public snackBar: MatSnackBar,
+		private _communityService: CommunityService,
+		private _scholarshipService: ScholarshipService,
+		private _dialogsService: DialogsService
 	) {
 		this.envVariable = environment;
 		activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
@@ -38,13 +48,41 @@ export class ConsoleAdminComponent implements OnInit {
 			consoleComponent.setActiveTab(urlSegment[0].path);
 		});
 	}
-	
+
 	ngOnInit() {
 		this.fetchCollections();
 		this.fetchPeers();
 		this.fetchEmailSubscriptions();
+		this.fetchCommunityRequests();
+		this.fetchScholarShips();
 	}
-	
+
+	/**
+	 * fetchScholarShips
+	 */
+	public fetchScholarShips() {
+		const filter = { 'include': [{ 'owner': 'profiles' }, 'peers_joined', 'allowed_collections'] };
+		this._scholarshipService.fetchScholarships(filter).subscribe((res: any) => {
+			console.log(res);
+			this.scholarshipsLoaded = true;
+			if (res.length > 0) {
+				this.scholarship = res[0];
+			}
+		}, err => {
+			this.scholarshipsLoaded = true;
+		});
+	}
+
+	private fetchCommunityRequests() {
+		const filter = {
+			'include': [{ 'peers': ['profiles'] }]
+		};
+		this._communityService.getRequestedComminities(JSON.stringify(filter)).subscribe((res: any) => {
+			this.communityRequests = res;
+			this.communityRequestsLoaded = true;
+		});
+	}
+
 	private fetchEmailSubscriptions() {
 		this.emailSubLoaded = false;
 		const filter = {
@@ -55,7 +93,7 @@ export class ConsoleAdminComponent implements OnInit {
 			this.emailSubLoaded = true;
 		});
 	}
-	
+
 	private fetchPeers() {
 		this.peersLoaded = false;
 		const query = {
@@ -94,14 +132,14 @@ export class ConsoleAdminComponent implements OnInit {
 			console.log(err);
 		});
 	}
-	
+
 	private fetchCollections() {
 		this.collectionsLoaded = false;
 		const query = {
 			'where': { 'isApproved': false, 'status': 'submitted' },
 			'include': [
 				'calendars',
-				{'owners': ['profiles', 'topicsTeaching']}
+				{ 'owners': ['profiles', 'topicsTeaching'] }
 			],
 			'order': 'submittedAt DESC'
 		};
@@ -114,9 +152,9 @@ export class ConsoleAdminComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	public approveWorkshop(collection: any) {
-		
+
 		this._collectionService.approveCollection(collection).subscribe(
 			(result: any) => {
 				if (result) {
@@ -130,9 +168,9 @@ export class ConsoleAdminComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	public rejectWorkshop(collection: any) {
-		
+
 		this._collectionService.rejectCollection(collection).subscribe(
 			(result: any) => {
 				if (result) {
@@ -146,7 +184,7 @@ export class ConsoleAdminComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	/**
 	 * approvePeer
 	 */
@@ -158,12 +196,12 @@ export class ConsoleAdminComponent implements OnInit {
 					duration: 5000
 				}).onAction().subscribe();
 			}
-			
+
 		}, err => {
 			console.log(err);
 		});
 	}
-	
+
 	/**
 	 * rejectPeer
 	 */
@@ -175,10 +213,61 @@ export class ConsoleAdminComponent implements OnInit {
 					duration: 5000
 				}).onAction().subscribe();
 			}
-			
+
 		}, err => {
 			console.log(err);
 		});
 	}
-	
+
+	/**
+	 * deleteRequest
+		id: string	 
+	*/
+	public deleteRequest(id: string) {
+		this._communityService.deleteRequest(id).subscribe(res => {
+			this.snackBar.open('Deleted Request', 'close', {
+				duration: 800
+			});
+			this.fetchCommunityRequests();
+		});
+	}
+
+	public createScholarship() {
+		this._dialogsService.createScholarshipDialog()
+			.flatMap(res => {
+				if (res) {
+					return this._scholarshipService.createScholarship(res);
+				}
+			}).subscribe(res => {
+				console.log(res);
+				this.fetchScholarShips();
+				this.snackBar.open('Scholarship created', 'close', { duration: 800 });
+			}, err => {
+				this.snackBar.open('Error', 'close', { duration: 800 });
+			});
+
+	}
+
+	/**
+	 * deleteScholarship
+	 */
+	public deleteScholarship(id: string) {
+		this._scholarshipService.deleteScholarship(id).subscribe(res => {
+			this.snackBar.open('Deleted');
+			this.fetchScholarShips();
+		});
+
+	}
+
+	/**
+	 * editScholarship
+	 */
+	public editScholarship() {
+		this._dialogsService.createScholarshipDialog(this.scholarship)
+			.flatMap(res => {
+				return this._scholarshipService.patchScholarship(this.scholarship.id, res);
+			}).subscribe(res => {
+				this.fetchScholarShips();
+			});
+	}
 }

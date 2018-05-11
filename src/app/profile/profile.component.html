@@ -23,7 +23,7 @@
 						<button mat-button (click)="openMessageDialog()">Message</button>
 					</div>
 				</div>
-				<div class="row" *ngIf="profileObj.peer[0].wallet.length>0 && profileObj.peer[0].wallet[0]">
+				<div class="row" *ngIf="profileObj.peer[0].wallet && profileObj.peer[0].wallet.length>0 && profileObj.peer[0].wallet[0]">
 					<h3>
 						<i class="fab fa-ethereum">
 						</i>

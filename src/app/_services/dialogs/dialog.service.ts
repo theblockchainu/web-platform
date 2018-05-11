@@ -40,6 +40,8 @@ import { DateConflictDialogComponent } from './date-conflict-dialog/date-conflic
 import { MessageParticipantDialogComponent } from './message-participant-dialog/message-participant-dialog.component';
 import { StudentAssessmentDialogComponent } from './student-assessment-dialog/student-assessment-dialog.component';
 import { GyanTransactionsDialogComponent } from './gyan-transactions-dialog/gyan-transactions-dialog.component';
+import { RequestCommunityDialogComponent } from './request-community-dialog/request-community-dialog.component';
+import { ScholarshipDialogComponent } from './scholarship-dialog/scholarship-dialog.component';
 
 @Injectable()
 export class DialogsService {
@@ -428,6 +430,29 @@ export class DialogsService {
             width: '55vw',
             height: '90vh',
             data: data
+        }).afterClosed();
+    }
+
+    /**
+     * requestCommunityDialog
+     */
+    public requestCommunityDialog() {
+        return this.dialog.open(RequestCommunityDialogComponent, {
+            panelClass: 'responsive-dialog',
+            width: '40vw',
+            height: '50vh'
+        });
+    }
+
+    /**
+     * createScholarshipDialog
+     */
+    public createScholarshipDialog(data?: any) {
+        return this.dialog.open(ScholarshipDialogComponent, {
+            panelClass: 'responsive-dialog',
+            width: '55vw',
+            height: '40vh',
+            data: data ? data : {}
         }).afterClosed();
     }
 

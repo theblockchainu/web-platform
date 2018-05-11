@@ -34,7 +34,8 @@
 												{{collection.type | ucfirst}}
 											</div>
 											<div class="cohortDate" style="padding-top: 10px" *ngIf="collection.calendars && collection.calendars[0]">
-												<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
+												<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
+													MMM' }}</span>
 											</div>
 											<div class="cohortDate" style="padding-top: 10px" *ngIf="!collection.calendars || !collection.calendars[0]">
 												<span>No dates selected</span>
@@ -142,7 +143,8 @@
 											</div>
 											<br>
 											<div class="collectionTitle clickable" [routerLink]="['/profile/'+peer.id]">{{ peer.profiles[0].first_name + ' ' + peer.profiles[0].last_name || 'No name' | ucwords }} </div>
-											<br><br>
+											<br>
+											<br>
 											<div>
 												Email: {{peer.email}}
 											</div>
@@ -215,16 +217,137 @@
 									<mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
 									<mat-cell *matCellDef="let element"> {{element.createdAt || '01-01-1900 00:00:00' | extractTime : 'Do MMM'}} </mat-cell>
 								</ng-container>
-								
+
 								<!-- Email Column -->
 								<ng-container matColumnDef="email">
 									<mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
 									<mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
 								</ng-container>
-								
+
 								<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 								<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 							</mat-table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 margin-top-40">
+		<div *ngIf="!communityRequestsLoaded" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+	<div class="col-md-12 margin-top-10" *ngIf="communityRequestsLoaded">
+		<div style="display:inline;">
+			<h2>Community Requests</h2>
+		</div>
+		<div #noContentView *ngIf="communityRequests.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
+			<div class="lightText">
+				No Approval Pending !
+			</div>
+		</div>
+		<div *ngIf="communityRequests.length > 0">
+			<div class="row">
+				<div>
+					<div style="margin-top:20px;" class="col-md-12">
+						<div class="row">
+							<div *ngFor="let request of communityRequests">
+								<div class="col-md-3" style="margin-top: 20px;">
+									<mat-card style="text-align: center; padding: 20px;">
+										<mat-card-content>
+											<div style="text-align: right">
+												<div class="pull-right">
+													<a mat-icon-button [matMenuTriggerFor]="approvalCardMenu" style="text-align: right; padding: 0px">
+														<mat-icon>more_vert</mat-icon>
+													</a>
+												</div>
+											</div>
+											<br>
+											<div class="collectionTitle clickable">{{ request.title | ucwords }} </div>
+											<br>
+											<br>
+											<div>
+												{{request.description}}
+											</div>
+											<div class="mat-caption">
+												{{request.peers[0].profiles[0].first_name + ' '+ request.peers[0].profiles[0].last_name | ucwords }}
+											</div>
+										</mat-card-content>
+										<mat-menu #approvalCardMenu>
+											<button (click)="deleteRequest(request.id)" mat-menu-item>
+												Delete Request
+											</button>
+										</mat-menu>
+										<!-- <mat-card-footer class="cardFooter" style="line-height: 30px">
+											<button (click)="approvePeer(peer)" mat-button>Approve</button>
+											<button (click)="rejectPeer(peer)" mat-button>Reject</button>
+										</mat-card-footer> -->
+									</mat-card>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 margin-top-40">
+		<div *ngIf="!scholarshipsLoaded" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+	<div class="col-md-12 margin-top-10" *ngIf="scholarshipsLoaded">
+		<div style="display:inline;">
+			<h2>Community Requests</h2>
+		</div>
+		<div #noContentView *ngIf="!scholarship " class="center" style="margin-top: 5%;margin-bottom: 5%;">
+			<button (click)="createScholarship()" mat-raised-button>
+				Create Scholarship
+			</button>
+		</div>
+		<div *ngIf="scholarship">
+			<div class="row">
+				<div>
+					<div style="margin-top:20px;" class="col-md-12">
+						<div class="row">
+							<div class="col-md-3" style="margin-top: 20px;">
+								<mat-card style="text-align: center; padding: 20px;">
+									<mat-card-content>
+										<!-- <div style="text-align: right">
+												<div class="pull-right">
+													<a mat-icon-button [matMenuTriggerFor]="scholarCardMenu" style="text-align: right; padding: 0px">
+														<mat-icon>more_vert</mat-icon>
+													</a>
+												</div>
+											</div> -->
+										<br>
+										<div class="collectionTitle clickable">{{ scholarship.type | ucwords }} </div>
+										<br>
+										<br>
+										<div>
+											{{scholarship.karma}}
+										</div>
+										<!-- <div class="mat-caption">
+												{{request.peers[0].profiles[0].first_name + ' '+ request.peers[0].profiles[0].last_name | ucwords }}
+											</div> -->
+									</mat-card-content>
+									<mat-card-footer class="cardFooter" style="line-height: 30px">
+										<button (click)="editScholarship()" mat-button>Edit</button>
+									</mat-card-footer>
+								</mat-card>
+							</div>
+
 						</div>
 					</div>
 				</div>
