@@ -9,7 +9,7 @@
 		</div>
 		<div class="row" *ngIf="profileObj && !loadingProfile">
 			<div class="col-md-3 {{offsetString}} left-panel">
-				<div class="row padding-bottom-30">
+				<div class="row padding-bottom-0">
 					<div class="col-md-12" style="padding-left: 0px;">
 						<img class="img-rounded profile-pic" *ngIf="profileObj.picture_url" src="{{envVariable.apiUrl+profileObj.picture_url + '/300'}}"
 						 alt="profile_pic">
@@ -23,15 +23,17 @@
 						<button mat-button (click)="openMessageDialog()">Message</button>
 					</div>
 				</div>
-				<div class="row" *ngIf="profileObj.peer[0].wallet.length>0 && profileObj.peer[0].wallet[0]">
-					<h3>
-						<i class="fab fa-ethereum">
-						</i>
-						{{profileObj.peer[0].wallet[0].gyan_balance}}
+				<div class="row padding-bottom-30" *ngIf="profileObj.peer[0].wallet && profileObj.peer[0].wallet.length>0 && profileObj.peer[0].wallet[0]">
+					<div class="col-md-6" style="padding-left: 0px;">
+						<h3>
+							<i class="fab fa-ethereum"></i> {{profileObj.peer[0].wallet[0].gyan_balance}} Gyan
+						</h3>
+					</div>
+					<div class="col-md-6 mat-caption" style="padding-left: 0px;">
 						<a class="clickable" (click)="openTransactionsDialog()" *ngIf="cookieUserId === urluserId">
-							View Transactions
+							View Knowledge Story
 						</a>
-					</h3>
+					</div>
 				</div>
 				<div class="row border-top" *ngIf="other_languages || profileObj.location_string">
 					<div class="col-xs-1" style="padding-left: 0px;">
