@@ -6,6 +6,9 @@ import * as moment from 'moment';
 import { PaymentService } from '../_services/payment/payment.service';
 import { CollectionService } from '../_services/collection/collection.service';
 import { environment } from '../../environments/environment';
+import { ScholarshipService } from '../_services/scholarship/scholarship.service';
+import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+
 declare var Stripe: any;
 
 @Component({
@@ -41,14 +44,20 @@ export class ReviewPayComponent implements OnInit {
         { [k: string]: string } = { '=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours' };
     public useAnotherCard = false;
     public loadingCards = true;
-
+    karma: number;
+    availableScholarships = [];
+    scholarshipForm: FormGroup;
+    scholarshipAmount: number;
+    paybleKarma: number;
     constructor(
         private _cookieUtilsService: CookieUtilsService,
         private activatedRoute: ActivatedRoute,
         private _collectionService: CollectionService,
         public profileService: ProfileService,
         public paymentService: PaymentService,
-        private router: Router
+        private router: Router,
+        private _scholarshipService: ScholarshipService,
+        private _fb: FormBuilder
     ) {
         this.envVariable = environment;
         this.activatedRoute.params.subscribe(params => {
@@ -94,6 +103,7 @@ export class ReviewPayComponent implements OnInit {
                 this.createChargeData.currency = collectionData.currency;
                 this.createChargeData.description = collectionData.description;
                 this.collection = collectionData;
+                this.getkarma(collectionData.academicGyan + collectionData.nonAcademicGyan);
                 this.setCurrentCalendar();
                 this.calculateTotalHours();
                 const inputs = document.querySelectorAll('input.field');
@@ -137,65 +147,67 @@ export class ReviewPayComponent implements OnInit {
             }
 
         });
+        this.fetchScholarships();
+        this.scholarshipAmount = 0;
     }
 
-    
+
     public processPayment(e: Event) {
         console.log('processing payment');
         this.savingData = true;
         e.preventDefault();
         if (this.collection.price > 0) {
-			if (this.isCardExist === true && !this.useAnotherCard) {
-				// console.log('card exist');
-				this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: any) => {
-					if (resp) {
-						this.message = 'Payment successful. Redirecting...';
-						this.savingData = false;
-						this.joinCollection();
-					}
-				});
-			} else {
-				const form = document.querySelector('form');
-				const extraDetails = {
-					name: form.querySelector('input[name=cardholder-name]')['value'],
-					phone: form.querySelector('input[name=cardholder-phone]')['value'],
-				};
-				this.stripe.createToken(this.card, extraDetails).then((result: any) => {
-					if (result.token) {
-						this.createSourceData.token = result.token.id;
-						this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: any) => {
-							if (res) {
-								// console.log(JSON.stringify(res ));
-								this.createChargeData.source = res.id;
-								this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe();
-								this.message = 'Payment successful. Redirecting...';
-								this.savingData = false;
-								this.joinCollection();
-							} else {
-								this.message = 'Error occurred. Please try again.';
-								this.savingData = false;
-							}
-						}, (error => {
-							console.log(error);
-							this.message = 'Error: ' + error.statusText;
-							this.savingData = false;
-						}));
-					} else {
-						console.log(result.error);
-						this.message = result.error;
-						this.savingData = false;
-					}
-				}).catch((error) => {
-					console.log(error);
-					this.message = error;
-					this.savingData = false;
-				});
-			}
-		} else {
-			this.message = 'Signing up and redirecting...';
-        	this.joinCollection();
-			this.savingData = false;
-		}
+            if (this.isCardExist === true && !this.useAnotherCard) {
+                // console.log('card exist');
+                this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: any) => {
+                    if (resp) {
+                        this.message = 'Payment successful. Redirecting...';
+                        this.savingData = false;
+                        this.joinCollection();
+                    }
+                });
+            } else {
+                const form = document.querySelector('form');
+                const extraDetails = {
+                    name: form.querySelector('input[name=cardholder-name]')['value'],
+                    phone: form.querySelector('input[name=cardholder-phone]')['value'],
+                };
+                this.stripe.createToken(this.card, extraDetails).then((result: any) => {
+                    if (result.token) {
+                        this.createSourceData.token = result.token.id;
+                        this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: any) => {
+                            if (res) {
+                                // console.log(JSON.stringify(res ));
+                                this.createChargeData.source = res.id;
+                                this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe();
+                                this.message = 'Payment successful. Redirecting...';
+                                this.savingData = false;
+                                this.joinCollection();
+                            } else {
+                                this.message = 'Error occurred. Please try again.';
+                                this.savingData = false;
+                            }
+                        }, (error => {
+                            console.log(error);
+                            this.message = 'Error: ' + error.statusText;
+                            this.savingData = false;
+                        }));
+                    } else {
+                        console.log(result.error);
+                        this.message = result.error;
+                        this.savingData = false;
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                    this.message = error;
+                    this.savingData = false;
+                });
+            }
+        } else {
+            this.message = 'Signing up and redirecting...';
+            this.joinCollection();
+            this.savingData = false;
+        }
     }
 
     getcardDetails(event) {
@@ -250,4 +262,61 @@ export class ReviewPayComponent implements OnInit {
         });
     }
 
+    getkarma(gyan: number) {
+        return this._collectionService.getKarmaValue(gyan).subscribe((res: any) => {
+            console.log(res);
+            this.karma = res.karma;
+        });
+    }
+
+    fetchScholarships() {
+        this.scholarshipForm = this._fb.group({
+            scholarships: this._fb.array([])
+        });
+        const scholarships = <FormArray>this.scholarshipForm.controls['scholarships'];
+        const filter = { 'include': [{ 'owner': 'profiles' }, 'peers_joined', 'allowed_collections'] };
+        this._scholarshipService.fetchScholarships(filter).subscribe((res: any) => {
+            console.log(res);
+            res.forEach(scholarship => {
+                if (scholarship.type === 'public' || scholarship.allowed_collections.length === 0) {
+                    // this.availableScholarships.push(scholarship);
+                    scholarships.push(this._fb.group({
+                        title: scholarship.title,
+                        karma: scholarship.karma,
+                        min_gyan: scholarship.min_gyan,
+                        max_karma: scholarship.max_karma,
+                        selected: ''
+                    }));
+                } else {
+                    scholarship.allowed_collections.forEach(collection => {
+                        if (this.collectionId === collection.id) {
+                            scholarships.push(this._fb.group({
+                                title: scholarship.title,
+                                karma: scholarship.karma,
+                                min_gyan: scholarship.min_gyan,
+                                max_karma: scholarship.max_karma,
+                                selected: ''
+                            }));
+                            // this.availableScholarships.push(scholarship);
+                        }
+                    });
+                }
+            });
+            this.scholarshipForm.valueChanges.subscribe(changes => {
+                this.calculateScholarship();
+            });
+        });
+
+
+    }
+    private calculateScholarship() {
+        this.scholarshipAmount = 0;
+        this.scholarshipForm.value.scholarships.forEach(scholarship => {
+            if (scholarship.selected) {
+                this.scholarshipAmount += scholarship.max_karma;
+            }
+        });
+        const paybleKarma = this.karma - this.scholarshipAmount;
+        this.paybleKarma = (paybleKarma > 0) ? paybleKarma : 0;
+    }
 }

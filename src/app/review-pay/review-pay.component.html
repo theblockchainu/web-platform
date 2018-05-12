@@ -102,7 +102,24 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <h2>Available scholarships</h2>
+                        <form [formGroup]="scholarshipForm">
+                            <div formArrayName="scholarships">
+                                <div class="col-xs-4" *ngFor="let scholarship of scholarshipForm.controls['scholarships'].controls;index as i">
+                                    <mat-card [formGroupName]="i">
+                                        <mat-card-content>
+                                            <mat-checkbox formControlName="selected">
+                                                {{scholarship.value.title}}
+                                                <br> Balance:{{scholarship.value.karma}}
+                                                <br> Max Karma:{{scholarship.value.max_karma}}
+                                            </mat-checkbox>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <div class="terms-text">
                         <div class="terms-title">Terms of Service</div>
                         <p class="text-grey fs-15">By confirming this reservation you are agreeing to peerbuds additional Terms of Service, Student
@@ -148,7 +165,36 @@
                                 </div>
                                 <div class="col-xs-5 col-xs-offset-4" style="text-align: right;">
                                     Up to
-                                    <i class="fab fa-ethereum"></i> {{collection.academicGyan + collection.nonAcademicGyan}}
+                                    <i class="fas fa-fire"></i> {{collection.academicGyan + collection.nonAcademicGyan}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="seperate-section">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    Karma
+                                </div>
+                                <div class="col-xs-5 col-xs-offset-4" style="text-align: right;">
+                                    <i class="fab fa-ethereum"></i>{{karma}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="seperate-section">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    Scholarship
+                                </div>
+                                <div class="col-xs-5 col-xs-offset-3" style="text-align: right;">
+                                    -
+                                    <i class="fab fa-ethereum"></i>{{scholarshipAmount}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    Payable karma
+                                </div>
+                                <div class="col-xs-5 col-xs-offset-3" style="text-align: right;">
+                                    <i class="fab fa-ethereum"></i>{{paybleKarma}}
                                 </div>
                             </div>
                         </div>

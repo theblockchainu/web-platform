@@ -598,7 +598,7 @@ export class CollectionService {
 				console.log('Error: ' + err);
 			});
 	}
-	
+
 	/**
 	 * open a collection view page based on its type
 	 * @param collection
@@ -992,5 +992,11 @@ export class CollectionService {
 			.flatMap(res => {
 				return this.httpClient.post(environment.apiUrl + '/api/assessment_models/' + assessmentModelId + '/assessment_na_rules', assessmentNARulesArray, this.options);
 			});
+	}
+
+	public getKarmaValue(gyan: number) {
+		return this.httpClient.post(environment.apiUrl + '/getKarmaValue', {
+			gyan: gyan
+		}, this.options);
 	}
 }
