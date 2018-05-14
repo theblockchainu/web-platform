@@ -85,16 +85,16 @@ export class SearchService {
 			case 'collection':
 				switch (option.data.type) {
 					case 'workshop':
-						return environment.apiUrl + option.data.imageUrls[0] + '/100';
+						return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
 					case 'experience':
-						return environment.apiUrl + option.data.imageUrls[0] + '/100';
+						return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100': '/assets/images/placeholder-image.jpg';
 					default:
 						return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
 				}
 			case 'topic':
 				return environment.apiUrl + option.data.imageUrl + '/100';
 			case 'community':
-				return environment.apiUrl + option.data.imageUrls[0] + '/100';
+				return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
 			case 'question':
 				return '/assets/images/placeholder-image.jpg';
 			case 'peer':

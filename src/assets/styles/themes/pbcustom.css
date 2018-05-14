@@ -1422,6 +1422,10 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	height: 100%;
 }
 
+.ui-button .ui-button-text {
+	display: inline-block !important;
+}
+
 
 .video-popup .mat-dialog-container{
 	padding: 0px !important;

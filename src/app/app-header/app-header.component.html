@@ -6,11 +6,11 @@
 					<img src="/assets/images/pb_logo.png" alt="logo">
 				</a>
 			</span>
-			<span style="margin-left: 35px;" *ngIf="(isLoggedIn | async)" class="hide-small">
+			<span style="margin-left: 35px;" *ngIf="(isLoggedIn | async) && isEmailVerified" class="hide-small">
 				<mat-icon>search</mat-icon>
 			</span>
 			<span class="search-form hide-small">
-				<mat-form-field style="color:#333333 !important" class="mat-block" *ngIf="(isLoggedIn | async)" [floatLabel]="'never'">
+				<mat-form-field style="color:#333333 !important" class="mat-block" *ngIf="(isLoggedIn | async) && isEmailVerified" [floatLabel]="'never'">
 					<input #searchInputBar name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="myControl"
 					 [matAutocomplete]="auto" placeholder="Try 'Mumbai' ">
 					<mat-autocomplete #auto="matAutocomplete">
@@ -29,7 +29,7 @@
 			<!-- This fills the remaining space of the current row -->
 			<span class="example-spacer"></span>
 			<span>
-				<span class="header-progress-bar hide-small" *ngIf="profileCompletionObject  && profileCompletionObject.progress<80 && isLoggedIn | async"
+				<span class="header-progress-bar hide-small" *ngIf="profileCompletionObject  && profileCompletionObject.progress<80 && isEmailVerified && isLoggedIn | async"
 				 [matMenuTriggerFor]="profileCompletionMenu">
 					Complete Profile
 					<div style="line-height: 0rem;">
@@ -43,31 +43,31 @@
 					New Experience
 				</button>-->
 				<button mat-button class="headerButtons hide-small" style="color: #33bd9e; font-weight: 600;" [routerLink]="['/console/teaching/sessions']"
-				 *ngIf="(isLoggedIn | async) && !isSessionApproved">
+				 *ngIf="(isLoggedIn | async) && isEmailVerified && !isSessionApproved">
 					<mat-icon style="top: 4px; font-size: 15px;">add</mat-icon>
 					Configure Online Sessions
 				</button>
-				<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)">
+				<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async) && isEmailVerified">
 					Teach
 				</button>
-				<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async)">
+				<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async) && isEmailVerified">
 					Learn
 				</button>
-				<button mat-button class="headerButtons show-small-inline" (click)="showSearchBar()" *ngIf="(isLoggedIn | async)">
+				<button mat-button class="headerButtons show-small-inline" (click)="showSearchBar()" *ngIf="(isLoggedIn | async) && isEmailVerified">
 					<mat-icon>search</mat-icon>
 				</button>
-				<button mat-button class="headerButtons" #notificationsButton (click)="openNotificationsDialog()" *ngIf="(isLoggedIn | async)">
+				<button mat-button class="headerButtons" #notificationsButton (click)="openNotificationsDialog()" *ngIf="(isLoggedIn | async) && isEmailVerified">
 					<mat-icon *ngIf="!hasNewNotification">notifications_none</mat-icon>
 					<mat-icon *ngIf="hasNewNotification">notifications</mat-icon>
 				</button>
-				<div style="display: inline-block;" *ngIf="(isLoggedIn | async)">
+				<div style="display: inline-block;" *ngIf="(isLoggedIn | async) && isEmailVerified">
 					<mat-icon class="notifDot" *ngIf="hasNewNotification">fiber_manual_record</mat-icon>
 				</div>
 
-				<button mat-button class="headerButtons" #messagesButton (click)="openMessagesDialog()" *ngIf="(isLoggedIn | async)">
+				<button mat-button class="headerButtons" #messagesButton (click)="openMessagesDialog()" *ngIf="(isLoggedIn | async) && isEmailVerified">
 					<mat-icon>chat</mat-icon>
 				</button>
-				<div style="display: inline-block;" *ngIf="(isLoggedIn | async)">
+				<div style="display: inline-block;" *ngIf="(isLoggedIn | async) && isEmailVerified">
 					<mat-icon class="notifDot" *ngIf="hasNewMessage">fiber_manual_record</mat-icon>
 				</div>
 
@@ -101,7 +101,7 @@
 				</button>
 			</span>
 		</mat-toolbar-row>
-		<mat-toolbar-row [ngClass]="{'show-small': true, 'searchBar' : true, 'searchBarHeight': isSearchBarVisible}" *ngIf="(isLoggedIn | async)"
+		<mat-toolbar-row [ngClass]="{'show-small': true, 'searchBar' : true, 'searchBarHeight': isSearchBarVisible}" *ngIf="(isLoggedIn | async) && isEmailVerified"
 		 style="border-top: 1px solid #ddd;">
 			<div class="search-form">
 				<mat-form-field style="color:#333333 !important" class="pb-block" *ngIf="(isLoggedIn | async)" [floatLabel]="'never'">
@@ -204,7 +204,7 @@
 		Edit Profile
 	</button>
 	<button mat-menu-item [routerLink]="['/console/account/payoutmethods']">
-		Account Settings
+		Account
 	</button>
 	<button mat-menu-item [routerLink]="['/console/account/wallet']">
 		Wallet

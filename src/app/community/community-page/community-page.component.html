@@ -4,6 +4,12 @@
 			<ngx-loading [show]="true"></ngx-loading>
 		</div>
 		<div *ngIf="community">
+			<div class="row pending-actions center">
+				<div class="col-md-10 col-md-offset-1">
+					<span>Not the community you required?
+						<a class="clickable" (click)="dialogsService.requestCommunityDialog()">Click here</a> to request a new Community</span>
+				</div>
+			</div>
 			<div class="row pending-actions" *ngIf="community.status === 'cancelled' && userType==='owner' ">
 				<div class="col-md-10 col-md-offset-1">
 					<span>This community has been cancelled by one of the owners</span>
@@ -44,7 +50,7 @@
 										<ngu-item NguCarouselItem class="bannerStyle" *ngFor="let imageUrl of carouselImages">
 											<div class="row">
 												<div class="col-md-12" [ngStyle]="{'background': 'url(' + imageUrl  + '/500' + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}"
-												     [ngClass]="'community-banner'">
+												 [ngClass]="'community-banner'">
 												</div>
 											</div>
 										</ngu-item>
@@ -128,7 +134,7 @@
 								</div>
 							</div>
 						</div>
-						
+
 						<!--RIGHT SIDEBAR-->
 						<div class="col-md-4 col-md-offset-1 col-xs-12 col-xs-offset-0 right-content">
 							<!--ACTION BUTTONS-->
@@ -160,7 +166,7 @@
 								<div class="col-md-12">
 									<mat-form-field [floatLabel]="'auto'" style="color:#767676 !important" class="pb-block">
 										<input name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="searchControl"
-										       [matAutocomplete]="auto" placeholder="Search in the community...">
+										 [matAutocomplete]="auto" placeholder="Search in the community...">
 									</mat-form-field>
 									<mat-autocomplete #auto="matAutocomplete">
 										<mat-option *ngFor="let option of searchResults" [value]="_searchService.getSearchOptionText(option)" (click)="_searchService.onSearchOptionClicked(option)">

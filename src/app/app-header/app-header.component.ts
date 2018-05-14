@@ -44,6 +44,7 @@ export class AppHeaderComponent implements OnInit {
 	public options: any[];
 	public defaultProfileUrl = '/assets/images/default-user.jpg';
 	public isTeacher = false;
+	public isEmailVerified = false;
 	public makeOldNotification = [];
 	public joinedRooms = [];
 	public tempJoinedRooms = [];
@@ -112,6 +113,7 @@ export class AppHeaderComponent implements OnInit {
 			this._profileService.getCompactProfile(this.userId).subscribe(profile => {
 				if (profile && profile.length > 0) {
 					this.profile = profile[0];
+					this.isEmailVerified = this.profile.peer[0].emailVerified;
 					if (this.profile.peer[0].ownedCollections !== undefined && this.profile.peer[0].ownedCollections.length > 0) {
 						this.isTeacher = true;
 					}

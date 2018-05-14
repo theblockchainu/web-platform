@@ -32,6 +32,7 @@ import { TitleCasePipe } from '@angular/common';
 })
 export class ProfileComponent implements OnInit {
 	public cookieUserId;
+	public gyanBalance;
 	public loadingProfile;
 	public loadingLearningJourney;
 	public loadingPeers;
@@ -140,6 +141,9 @@ export class ProfileComponent implements OnInit {
 	public getPeerData() {
 		this._profileService.getPeerNode(this.urluserId).subscribe(result => {
 			this.peerObj = result;
+		});
+		this._profileService.getGyanBalance(this.urluserId).subscribe(result => {
+			this.gyanBalance = result;
 		});
 	}
 	private getIdentities() {

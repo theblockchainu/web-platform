@@ -139,24 +139,26 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 	}
 	
 	public enterRoom(room) {
-		this.selectedRoom = room;
-		this.router.navigate(['console', 'inbox', room.id]);
-		if (room && room.unread && room.messages) {
-			room.messages.forEach(message => {
-				if (!message.read && message.peer && message.peer.length > 0 && message.peer[0].id !== this.loggedInPeer.id) {
-					this._inboxService.postMessageReadReceipt(message.id, {}).subscribe(readReceipt => {
-						readReceipt['peer'] = [];
-						readReceipt['peer'].push(this.loggedInPeer);
-						if (message.readReceipts) {
-							message['readReceipts'].push(readReceipt);
-						} else {
-							message.readReceipts = [];
-							message['readReceipts'].push(readReceipt);
-						}
-						this.sortFilterJoinedRooms(this.joinedRooms);
-					});
-				}
-			});
+		if (room !== undefined) {
+			this.selectedRoom = room;
+			this.router.navigate(['console', 'inbox', room.id]);
+			if (room && room.unread && room.messages) {
+				room.messages.forEach(message => {
+					if (!message.read && message.peer && message.peer.length > 0 && message.peer[0].id !== this.loggedInPeer.id) {
+						this._inboxService.postMessageReadReceipt(message.id, {}).subscribe(readReceipt => {
+							readReceipt['peer'] = [];
+							readReceipt['peer'].push(this.loggedInPeer);
+							if (message.readReceipts) {
+								message['readReceipts'].push(readReceipt);
+							} else {
+								message.readReceipts = [];
+								message['readReceipts'].push(readReceipt);
+							}
+							this.sortFilterJoinedRooms(this.joinedRooms);
+						});
+					}
+				});
+			}
 		}
 	}
 	

@@ -23,6 +23,7 @@ import { KnowledgeeconomyComponent } from './knowledgeeconomy/knowledgeeconomy.c
 import { TokenflowComponent } from './tokenflow/tokenflow.component';
 import { WhitepaperComponent } from './whitepaper/whitepaper.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import {InviteComponent} from './invite/invite.component';
 const routes: Routes = [
 	{
 		path: '',
@@ -85,6 +86,16 @@ const routes: Routes = [
 	{
 		path: 'reset',
 		component: ResetPasswordComponent
+	},
+	{
+		path: 'invite',
+		component: InviteComponent,
+		canActivate: [AuthGuardService]
+	},
+	{
+		path: 'invite/:provider',
+		component: InviteComponent,
+		canActivate: [AuthGuardService]
 	},
 	{
 		path: 'signup-social',
