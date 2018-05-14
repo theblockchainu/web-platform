@@ -24,6 +24,10 @@ export class ScholarshipService {
     return this.http.get(environment.apiUrl + '/api/scholarships?filter=' + JSON.stringify(filter), this.options);
   }
 
+  public fetchScholarship(scholarshipId: string, filter: any) {
+    return this.http.get(environment.apiUrl + '/api/scholarships/' + scholarshipId + '?filter=' + JSON.stringify(filter), this.options);
+  }
+
   /**
    * deleteScholarship
 id:string   */
@@ -33,7 +37,6 @@ id:string   */
 
 
   public patchScholarship(id: string, body: any) {
-    console.log(body);
     return this.http.patch(environment.apiUrl + '/api/scholarships/' + id, body, this.options);
   }
 
@@ -42,4 +45,22 @@ id:string   */
       + '/scholarships_joined?filter=' + JSON.stringify(filter), this.options);
   }
 
+  public fetchUserHostedScholarships(filter: any) {
+    return this.http.get(environment.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue('userId')
+      + '/scholarships_owned?filter=' + JSON.stringify(filter), this.options);
+  }
+
+  public connectCollections(id: string, targetIds: Array<any>) {
+    return this.http.patch(environment.apiUrl + '/api/scholarships/' + id + '/allowed_collections/rel', {
+      targetIds: targetIds
+    }, this.options);
+  }
+
+  public joinScholarship(userId: string, scholarshipId: string) {
+    return this.http.put(environment.apiUrl + '/api/scholarships/' + scholarshipId + '/peers_joined/rel/' + userId, {}, this.options);
+  }
+
+  public leaveScholarship(userId: string, scholarshipId: string) {
+    return this.http.delete(environment.apiUrl + '/api/scholarships/' + scholarshipId + '/peers_joined/rel/' + userId, this.options);
+  }
 }

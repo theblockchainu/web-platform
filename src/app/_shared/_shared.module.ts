@@ -26,7 +26,8 @@ import {
     MatExpansionModule,
     MatSnackBarModule,
     MatAutocompleteModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatStepperModule
 } from '@angular/material';
 import {
     ModalModule, BsDropdownModule, ProgressbarModule,
@@ -202,7 +203,8 @@ import { ScholarshipService } from '../_services/scholarship/scholarship.service
         AgmCoreModule,
         TimeToNowPipe,
         TopicRowComponent,
-        NguCarouselModule
+        NguCarouselModule,
+        MatStepperModule
     ]
 })
 export class SharedModule {

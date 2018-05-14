@@ -451,7 +451,7 @@ export class DialogsService {
         return this.dialog.open(ScholarshipDialogComponent, {
             panelClass: 'responsive-dialog',
             width: '55vw',
-            height: '40vh',
+            height: '75vh',
             data: data ? data : {}
         }).afterClosed();
     }
