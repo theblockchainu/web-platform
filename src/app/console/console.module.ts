@@ -41,6 +41,7 @@ import { ConsoleAdminComponent } from './console-admin/console-admin.component';
 import { ContentLearningBookmarksComponent } from './console-learning/content-learning-bookmarks/content-learning-bookmarks.component';
 import { ConsoleAccountWalletComponent } from './console-account/console-account-wallet/console-account-wallet.component';
 import { ConsoleAccountScholarshipsComponent } from './console-account/console-account-scholarships/console-account-scholarships.component';
+import { ConsoleAccountKnowledgeStoryComponent } from './console-account/console-account-knowledge-story/console-account-knowledge-story.component';
 
 @NgModule({
   imports: [
@@ -94,7 +95,8 @@ import { ConsoleAccountScholarshipsComponent } from './console-account/console-a
     ConsoleAdminComponent,
     ContentLearningBookmarksComponent,
     ConsoleAccountWalletComponent,
-    ConsoleAccountScholarshipsComponent
+    ConsoleAccountScholarshipsComponent,
+    ConsoleAccountKnowledgeStoryComponent
   ],
   providers: [TimezonePickerService],
   bootstrap: [CohortDetailDialogComponent]

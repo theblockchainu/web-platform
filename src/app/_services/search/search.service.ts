@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import {environment} from '../../../environments/environment';
-import {RequestHeaderService} from '../requestHeader/request-header.service';
+import { environment } from '../../../environments/environment';
+import { RequestHeaderService } from '../requestHeader/request-header.service';
 
 @Injectable()
 export class SearchService {
@@ -12,14 +12,14 @@ export class SearchService {
     private options;
 
     constructor(
-    	private router: Router,
+        private router: Router,
         private http: HttpClient,
-		private requestHeaderService: RequestHeaderService
-	) {
+        private requestHeaderService: RequestHeaderService
+    ) {
         this.envVariable = environment;
         this.options = this.requestHeaderService.getOptions();
     }
-    
+
     public getAllSearchResults(userId, query: any, cb) {
         if (userId) {
             if (this.httpSubscription) {
@@ -35,6 +35,13 @@ export class SearchService {
                 }).subscribe();
         }
     }
+
+    public getPeerSearchResults(query: any) {
+        return this.http
+            .get(environment.searchUrl + '/api/search/'
+                + environment.uniqueDeveloperCode + '_peers/suggest?field=username&query=' + query, this.options);
+    }
+
 
     public getCommunitySearchResults(userId, query: any, cb) {
         if (userId) {
@@ -78,37 +85,37 @@ export class SearchService {
                 return;
         }
     }
-	
-	
-	public getSearchOptionImage(option) {
-		switch (option.index.split('_')[1]) {
-			case 'collection':
-				switch (option.data.type) {
-					case 'workshop':
-						return environment.apiUrl + option.data.imageUrls[0] + '/100';
-					case 'experience':
-						return environment.apiUrl + option.data.imageUrls[0] + '/100';
-					default:
-						return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
-				}
-			case 'topic':
-				return environment.apiUrl + option.data.imageUrl + '/100';
-			case 'community':
-				return environment.apiUrl + option.data.imageUrls[0] + '/100';
-			case 'question':
-				return '/assets/images/placeholder-image.jpg';
-			case 'peer':
-				if (option.data.profiles[0] === undefined) {
-					return '/assets/images/user-placeholder.jpg';
-				} else if (option.data.profiles[0] !== undefined && option.data.profiles[0].picture_url === undefined) {
-					return '/assets/images/user-placeholder.jpg';
-				} else {
-					return environment.apiUrl + option.data.profiles[0].picture_url + '/100';
-				}
-			default:
-				return;
-		}
-	}
+
+
+    public getSearchOptionImage(option) {
+        switch (option.index.split('_')[1]) {
+            case 'collection':
+                switch (option.data.type) {
+                    case 'workshop':
+                        return environment.apiUrl + option.data.imageUrls[0] + '/100';
+                    case 'experience':
+                        return environment.apiUrl + option.data.imageUrls[0] + '/100';
+                    default:
+                        return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
+                }
+            case 'topic':
+                return environment.apiUrl + option.data.imageUrl + '/100';
+            case 'community':
+                return environment.apiUrl + option.data.imageUrls[0] + '/100';
+            case 'question':
+                return '/assets/images/placeholder-image.jpg';
+            case 'peer':
+                if (option.data.profiles[0] === undefined) {
+                    return '/assets/images/user-placeholder.jpg';
+                } else if (option.data.profiles[0] !== undefined && option.data.profiles[0].picture_url === undefined) {
+                    return '/assets/images/user-placeholder.jpg';
+                } else {
+                    return environment.apiUrl + option.data.profiles[0].picture_url + '/100';
+                }
+            default:
+                return;
+        }
+    }
 
     public getSearchOptionType(option) {
         switch (option.index.split('_')[1]) {

@@ -77,6 +77,7 @@ import { TopicRowComponent } from './topic-row/topic-row.component';
 import { AssessmentService } from '../_services/assessment/assessment.service';
 import { WalletService } from '../_services/wallet/wallet.service';
 import { ScholarshipService } from '../_services/scholarship/scholarship.service';
+import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-story.service';
 @NgModule({
     imports: [
         CommonModule,
@@ -141,7 +142,8 @@ import { ScholarshipService } from '../_services/scholarship/scholarship.service
         TimeToNowPipe,
         AssessmentService,
         WalletService,
-        ScholarshipService
+        ScholarshipService,
+        KnowledgeStoryService
     ],
     exports: [
         CommonModule,
