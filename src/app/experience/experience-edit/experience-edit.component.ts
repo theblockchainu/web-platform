@@ -24,6 +24,7 @@ import { TopicService } from '../../_services/topic/topic.service';
 import { PaymentService } from '../../_services/payment/payment.service';
 import { DataSharingService } from '../../_services/data-sharing-service/data-sharing.service';
 import { MediaMatcher } from '@angular/cdk/layout';
+import {Meta, Title} from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-experience-edit',
@@ -163,7 +164,9 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		private location: Location,
 		public cd: ChangeDetectorRef,
 		private _dataSharingService: DataSharingService,
-		private media: MediaMatcher
+		private media: MediaMatcher,
+		private titleService: Title,
+		private metaService: Meta
 	) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
@@ -191,6 +194,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	
 	public ngOnInit() {
 		console.log('Inside oninit experience');
+		this.setTags();
 		this.interest1 = new FormGroup({});
 		
 		this.newTopic = this._fb.group({
@@ -282,6 +286,30 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this._mobileQueryListener = () => this.cd.detectChanges();
 		this.mobileQuery.addListener(this._mobileQueryListener);
 		
+	}
+	
+	private setTags() {
+		this.titleService.setTitle('Create Experience');
+		this.metaService.updateTag({
+			property: 'og:title',
+			content: 'Create new experience'
+		});
+		this.metaService.updateTag({
+			property: 'og:description',
+			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+		});
+		this.metaService.updateTag({
+			property: 'og:site_name',
+			content: 'peerbuds.com'
+		});
+		this.metaService.updateTag({
+			property: 'og:image',
+			content: 'https://peerbuds.com/pb_logo_square.png'
+		});
+		this.metaService.updateTag({
+			property: 'og:url',
+			content: environment.clientUrl + this.router.url
+		});
 	}
 	
 	private initializeAssessment(result) {

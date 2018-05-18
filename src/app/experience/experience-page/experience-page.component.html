@@ -41,7 +41,7 @@
 		</div>
 		<div class="row pending-actions center" *ngIf="(experience.status === 'active' && calendarId === undefined && !hasUpcomingCohort() && userType === 'teacher')">
 			<div class="col-md-10 col-md-offset-1">
-				<span>There are no upcoming cohorts scheduled for this experience!
+				<span>There are no more upcoming cohorts scheduled for this experience!
 					<a href="javascript:void(0);" (click)="editCalendar()">Schedule one now?</a>
 				</span>
 			</div>

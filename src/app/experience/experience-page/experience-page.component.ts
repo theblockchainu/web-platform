@@ -1235,27 +1235,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			.subscribe(result => {
 				if (result) {
 					if (this.userId) {
-						// if (this.experience.price === 0) {
-						// 	this.joinExperience(result);
-						// } else {
 						this.router.navigate(['review-pay', 'collection', this.experienceId, result]);
-						// }
-
 					} else {
 						this.router.navigate(['login']);
 					}
 				}
 			});
-	}
-
-	private joinExperience(calendarId: string) {
-		this._collectionService.addParticipant(this.experienceId, this.userId, calendarId, (err: any, response: any) => {
-			if (err) {
-				console.log(err);
-			} else {
-				this.router.navigate(['experience', this.experienceId, 'calendar', calendarId]);
-			}
-		});
 	}
 
 	private extractTime(dateString: string) {

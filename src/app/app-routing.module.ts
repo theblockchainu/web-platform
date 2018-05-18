@@ -175,6 +175,10 @@ const routes: Routes = [
 		canActivateChild: [AuthGuardService]
 	},
 	{
+		path: 'scholarship',
+		loadChildren: 'app/scholarship/scholarship.module#ScholarshipModule'
+	},
+	{
 		path: 'access-denied',
 		component: AccessDeniedComponent
 	},

@@ -26,7 +26,8 @@ import {
     MatExpansionModule,
     MatSnackBarModule,
     MatAutocompleteModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatStepperModule
 } from '@angular/material';
 import {
     ModalModule, BsDropdownModule, ProgressbarModule,
@@ -77,6 +78,7 @@ import { AssessmentService } from '../_services/assessment/assessment.service';
 import { WalletService } from '../_services/wallet/wallet.service';
 import { ScholarshipService } from '../_services/scholarship/scholarship.service';
 import { GyanBalancePipe } from './gyan-balance/gyan-balance.pipe';
+import { KarmaBalancePipe } from './karma-balance/karma-balance.pipe';
 @NgModule({
     imports: [
         CommonModule,
@@ -114,7 +116,8 @@ import { GyanBalancePipe } from './gyan-balance/gyan-balance.pipe';
         TextIconCarouselComponent,
         TimeToNowPipe,
         TopicRowComponent,
-        GyanBalancePipe
+        GyanBalancePipe,
+        KarmaBalancePipe
     ],
     providers: [
         CollectionService,
@@ -198,6 +201,7 @@ import { GyanBalancePipe } from './gyan-balance/gyan-balance.pipe';
         LoadingModule,
         ConvertCurrencyPipe,
 		GyanBalancePipe,
+		KarmaBalancePipe,
         ProfilePopupComponent,
         TrimPipe,
         TextIconCarouselComponent,
@@ -205,7 +209,8 @@ import { GyanBalancePipe } from './gyan-balance/gyan-balance.pipe';
         AgmCoreModule,
         TimeToNowPipe,
         TopicRowComponent,
-        NguCarouselModule
+        NguCarouselModule,
+        MatStepperModule
     ]
 })
 export class SharedModule {

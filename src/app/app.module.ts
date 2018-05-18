@@ -45,6 +45,7 @@ import { PrivatebetaComponent } from './privatebeta/privatebeta.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { LandingPageModule } from './landing-page/landing-page.module';
 import { InviteComponent } from './invite/invite.component';
+import { ScholarshipModule } from './scholarship/scholarship.module';
 /*
 Raven
 	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
@@ -118,7 +119,8 @@ export class RavenErrorHandler implements ErrorHandler {
 			secondaryColour: '#ff5b5f',
 			tertiaryColour: '#ff6d71'
 		}),
-		LandingPageModule
+		LandingPageModule,
+		ScholarshipModule
 	],
 	providers: [
 		CookieService,

@@ -309,11 +309,11 @@
 	</div>
 	<div class="col-md-12 margin-top-10" *ngIf="scholarshipsLoaded">
 		<div style="display:inline;">
-			<h2>Community Requests</h2>
+			<h2>Scholarships</h2>
 		</div>
 		<div #noContentView *ngIf="!scholarship " class="center" style="margin-top: 5%;margin-bottom: 5%;">
 			<button (click)="createScholarship()" mat-raised-button>
-				Create Scholarship
+				Create first public scholarship
 			</button>
 		</div>
 		<div *ngIf="scholarship">
@@ -324,30 +324,21 @@
 							<div class="col-md-3" style="margin-top: 20px;">
 								<mat-card style="text-align: center; padding: 20px;">
 									<mat-card-content>
-										<!-- <div style="text-align: right">
-												<div class="pull-right">
-													<a mat-icon-button [matMenuTriggerFor]="scholarCardMenu" style="text-align: right; padding: 0px">
-														<mat-icon>more_vert</mat-icon>
-													</a>
-												</div>
-											</div> -->
 										<br>
-										<div class="collectionTitle clickable">{{ scholarship.type | ucwords }} </div>
+										<div class="collectionTitle clickable" [routerLink]="'/scholarship/'+scholarship.id">{{ scholarship.title | ucwords }} </div>
+										<div class="mat-caption">{{scholarship.type | ucwords}}</div>
 										<br>
 										<br>
-										<div>
-											{{scholarship.karma}}
+										Fund Balance
+										<div class="mat-body-2">
+											<i class="fas fa-fire"></i> {{scholarship.id | karmaBalance: 'scholarship' | async}} Karma
 										</div>
-										<!-- <div class="mat-caption">
-												{{request.peers[0].profiles[0].first_name + ' '+ request.peers[0].profiles[0].last_name | ucwords }}
-											</div> -->
 									</mat-card-content>
 									<mat-card-footer class="cardFooter" style="line-height: 30px">
 										<button (click)="editScholarship()" mat-button>Edit</button>
 									</mat-card-footer>
 								</mat-card>
 							</div>
-
 						</div>
 					</div>
 				</div>
