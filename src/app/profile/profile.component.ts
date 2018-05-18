@@ -12,7 +12,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Meta, Title } from '@angular/platform-browser';
 import { TitleCasePipe } from '@angular/common';
-
+import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-story.service';
 @Component({
 	selector: 'app-profile',
 	templateUrl: './profile.component.html',
@@ -71,6 +71,8 @@ export class ProfileComponent implements OnInit {
 	public blankCardArray: Array<number>;
 	public loadingCommunities: boolean;
 	public pariticipatingCommunities: any;
+	public searchTopicURL = '';
+	public knowledgeStories: Array<any>;
 
 	constructor(
 		public _profileService: ProfileService,
@@ -84,7 +86,8 @@ export class ProfileComponent implements OnInit {
 		public _dialogsService: DialogsService,
 		private titleService: Title,
 		private metaService: Meta,
-		private titlecasepipe: TitleCasePipe
+		private titlecasepipe: TitleCasePipe,
+		private _knowledgeStoryService: KnowledgeStoryService
 	) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe((param) => {
@@ -95,6 +98,7 @@ export class ProfileComponent implements OnInit {
 				window.scrollTo(0, 0);
 			}
 		});
+		this.searchTopicURL = environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
 	}
 
 	ngOnInit() {
@@ -135,6 +139,7 @@ export class ProfileComponent implements OnInit {
 		this.blankCardArray = [4, 3, 2, 1, 0];
 		this.getPeerData();
 		this.getProfileData();
+		this.getKnowledgeStories();
 	}
 
 	public getPeerData() {
@@ -644,4 +649,106 @@ export class ProfileComponent implements OnInit {
 		});
 	}
 
+	public generateKnowledgeStoryDialog() {
+		const inputs = {
+			title: 'Start typing to select from a list of available topics...',
+			minSelection: 1,
+			searchTopicURL: this.searchTopicURL,
+			suggestedTopics: []
+		};
+		const topics = [];
+		const peers = [];
+		this._dialogsService.generateKnowledgeStoryDialog(this.cookieUserId, inputs)
+			.subscribe(dialogResult => {
+				if (dialogResult) {
+					dialogResult.selectedTopics.forEach(topic => {
+						topics.push(topic.id);
+					});
+					dialogResult.selectedPeers.forEach(peer => {
+						peers.push(peer.id);
+					});
+					this._knowledgeStoryService.createKnowledgeStoryRequest(this.urluserId, {
+						status: 'approved',
+						visibility: (peers.length === 0) ? 'public' : 'private'
+					}).flatMap((res: any) => {
+						return this._knowledgeStoryService.connectTopics(res.id, { targetIds: topics }).map
+							(result => {
+								this._knowledgeStoryService.connectPeers(res.id, { targetIds: peers }).subscribe(peersConnected => {
+									console.log('peers connected');
+								});
+							});
+					}).subscribe(res => {
+						console.log(res);
+						this.getKnowledgeStories();
+						this.snackBar.open('Story Created', 'Close', { duration: 800 });
+
+					}, err => {
+						console.log(err);
+						this.snackBar.open('Error in Generating Story', 'Close', { duration: 800 });
+					});
+				}
+			});
+
+	}
+
+	/**
+	 * requestKnowledgeStory
+	 */
+	public requestKnowledgeStory() {
+		const inputs = {
+			title: 'Start typing to select from a list of available topics...',
+			minSelection: 1,
+			searchTopicURL: this.searchTopicURL,
+			suggestedTopics: []
+		};
+		const topics: Array<string> = [];
+		this._dialogsService.requestStoryDialog(this.cookieUserId, inputs)
+			.subscribe(result => {
+				if (result) {
+					result.forEach(topic => {
+						topics.push(topic.id);
+					});
+					this._knowledgeStoryService.createKnowledgeStoryRequest(this.urluserId, {
+						status: 'pending',
+						visibility: 'private'
+					}).flatMap((res: any) => {
+						return this._knowledgeStoryService.connectTopics(res.id, { targetIds: topics });
+					}).subscribe(res => {
+						if (res) {
+							console.log(res);
+							this.getKnowledgeStories();
+							this.snackBar.open('Story Requested', 'Close', { duration: 800 });
+						} else {
+							this.snackBar.open('Error in Requesting Story', 'Close', { duration: 800 });
+						}
+					}, err => {
+						console.log(err);
+						this.snackBar.open('Error in Requesting Story', 'Close', { duration: 800 });
+					});
+				}
+			});
+	}
+
+	getKnowledgeStories() {
+		const filter = {
+			'include': [{ 'protagonist': 'profiles' }, { 'peer': 'profiles' }, 'topics']
+		};
+		this.knowledgeStories = [];
+		this._knowledgeStoryService.getknowledgeStoryRequests(this.urluserId, filter).subscribe((res: any) => {
+			console.log(res);
+			res.forEach(story => {
+				if (story.visibility === 'public') {
+					this.knowledgeStories.push(story);
+				} else {
+					for (let i = 0; i < story.peer.length; i++) {
+						const peer = story.peer[i];
+						if (peer.id === this.cookieUserId) {
+							this.knowledgeStories.push(story);
+							break;
+						}
+					}
+				}
+			});
+		});
+	}
 }

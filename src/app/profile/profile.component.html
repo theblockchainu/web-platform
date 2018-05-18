@@ -669,6 +669,50 @@
 				</div>
 			</div>
 		</div>
+		<div class="row bottom-panel margin-top-30">
+			<hr class="col-md-10 col-md-offset-1 margin-bottom-30">
+			<div class="col-md-offset-1 col-md-10">
+				<div class="row">
+					<div class="col-md-8">
+						<span class="mat-title">Knowledge Story</span>
+						<button color="accent" *ngIf="cookieUserId===urluserId" (click)="generateKnowledgeStoryDialog()" mat-raised-button>Generate</button>
+						<button color="accent" *ngIf="cookieUserId!==urluserId" (click)="requestKnowledgeStory()" mat-raised-button>Request</button>
+					</div>
+				</div>
+				<div class="row feed-horizontal margin-top-20" style="padding: 0px 7px;">
+					<div class="col-xs-12 col-md-3" *ngFor="let story of knowledgeStories">
+						<mat-card class="card">
+							<mat-card-content>
+								<div class="row">
+									<div class="col-xs-12">
+										<a *ngIf="story.status==='approved'" [routerLink]="'/knowledge-story/'+story.id">
+											Go to Story
+										</a>
+									</div>
+									<div class="col-xs-12">
+										<div>
+											{{story.status}}
+										</div>
+									</div>
+									<div class="col-xs-12">
+										<div *ngIf="story.protagonist[0] && story.protagonist[0].profiles[0]">
+											{{story.protagonist[0].profiles[0].first_name+ ' ' +story.protagonist[0].profiles[0].last_name}}
+										</div>
+									</div>
+									<div class="col-xs-12">
+										<div class="row" *ngIf="story.topics.length>0">
+											<div class="col-xs-2" *ngFor="let topic of story.topics">
+												{{topic.name}}
+											</div>
+										</div>
+									</div>
+								</div>
+							</mat-card-content>
+						</mat-card>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="row bottom-panel margin-top-30" *ngIf="!loadingCommunities && !loadingProfile">
 			<div class="col-md-offset-1 col-md-10" *ngIf="(!pariticipatingCommunities && cookieUserId === urluserId) || (pariticipatingCommunities && pariticipatingCommunities.length > 0)">
 				<div class="row">
