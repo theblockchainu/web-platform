@@ -9,7 +9,7 @@ import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { environment } from '../../../../environments/environment';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
-import { Observable } from 'rxjs/observable';
+import { Observable } from 'rxjs/Observable';
 import { map, startWith } from 'rxjs/operators';
 
 @Component({
