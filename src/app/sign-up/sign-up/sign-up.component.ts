@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ProfileService } from '../../_services/profile/profile.service';
 import { MatSnackBar } from '@angular/material';
+import { AuthenticationService } from '../../_services/authentication/authentication.service';
+import { SocketService } from '../../_services/socket/socket.service';
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
@@ -10,16 +11,19 @@ import { MatSnackBar } from '@angular/material';
 })
 export class SignUpComponent implements OnInit {
 
-  signupForm: FormGroup;
-  hide = true;
+  public startDate = new Date(1994, 0, 1);
+  public signupForm: FormGroup;
+  public hide = true;
   public emailRegister = false;
-
   constructor(private _fb: FormBuilder,
-    private _ProfileService: ProfileService,
     private _router: Router,
-    private _MatSnackBar: MatSnackBar) { }
+    private _MatSnackBar: MatSnackBar,
+    private _AuthenticationService: AuthenticationService,
+    private _SocketService: SocketService
+  ) { }
 
   ngOnInit() {
+
     this.signupForm = this._fb.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
@@ -34,6 +38,7 @@ export class SignUpComponent implements OnInit {
   }
 
   submitForm() {
+    console.log(this.signupForm);
     if (this.signupForm.valid) {
       const registerObject = this.signupForm.value;
       const birthdate = <Date>registerObject.birthdate;
@@ -41,20 +46,27 @@ export class SignUpComponent implements OnInit {
       registerObject.dobDay = birthdate.getDay();
       registerObject.dobMonth = birthdate.getMonth();
       registerObject.dobYear = birthdate.getFullYear();
-      this._ProfileService.signup(registerObject).subscribe((res: any) => {
+      this._AuthenticationService.signup(registerObject).subscribe((res: any) => {
         if (res.status === 'failed') {
           this._MatSnackBar.open(res.reason, 'close', { duration: 3000 });
         } else {
-          console.log(res);
-          // this._router.navigate(['']);
-          location.reload();
+          this.signIn();
         }
       }, err => {
         console.log(err);
-        // this._MatSnackBar.open('An error occured', 'close', { duration: 3000 });
-        // this._router.navigate(['']);
-        location.reload();
+        this.signIn();
       });
+    }
+  }
+
+  signIn() {
+    const userId = this._AuthenticationService.getCookie('userId');
+    if (userId.length > 5) {
+      this._AuthenticationService.isLoginSubject.next(true);
+      this._SocketService.addUser(userId);
+      this._router.navigate(['verification', '1']);
+    } else {
+      this._MatSnackBar.open('An error occured', 'close', { duration: 3000 });
     }
   }
 

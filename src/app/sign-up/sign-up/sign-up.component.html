@@ -87,7 +87,7 @@
               <mat-form-field class="pb-block">
                 <input matInput [matDatepicker]="picker2" placeholder="Select Birthdate" formControlName="birthdate">
                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                <mat-datepicker touchUi="true" startView="multi-year" #picker2></mat-datepicker>
+                <mat-datepicker touchUi="true" startView="multi-year" [startAt]="startDate" disabled="false" #picker2></mat-datepicker>
               </mat-form-field>
             </div>
           </div>

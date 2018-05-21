@@ -755,11 +755,4 @@ export class ProfileService {
 	public getJoinedCommunities(peerId: string, filter: any) {
 		return this.http.get(environment.apiUrl + '/api/peers/' + peerId + '/communities?filter=' + JSON.stringify(filter), this.options);
 	}
-
-	/**
-	 * signup
-	 */
-	public signup(body: any) {
-		return this.http.post(environment.apiUrl + '/signup', body, this.options);
-	}
 }
