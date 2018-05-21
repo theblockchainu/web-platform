@@ -4,6 +4,7 @@ import { DialogsService } from './dialog.service';
 import { SharedModule } from '../../_shared/_shared.module';
 import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard';
+import { RouterModule } from '@angular/router';
 
 import { SignupComponentDialogComponent } from './signup-dialog/signup-dialog.component';
 import { LoginComponentDialog } from './login-dialog/login-dialog.component';
@@ -67,7 +68,8 @@ import { RequestKnowledgeStoryComponent } from './request-knowledge-story/reques
 		VgControlsModule,
 		VgOverlayPlayModule,
 		VgBufferingModule,
-		ClipboardModule
+		ClipboardModule,
+		RouterModule
 	],
 	exports: [SignupComponentDialogComponent, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent
 		, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent

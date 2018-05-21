@@ -13,17 +13,17 @@ export class ProfileService {
 	private options;
 	public profileSubject = new Subject<any>();
 	public envVariable;
-	
+
 	constructor(private http: HttpClient,
-				private route: ActivatedRoute,
-				public router: Router,
-				public _requestHeaderService: RequestHeaderService,
-				private _cookieUtilsService: CookieUtilsService
+		private route: ActivatedRoute,
+		public router: Router,
+		public _requestHeaderService: RequestHeaderService,
+		private _cookieUtilsService: CookieUtilsService
 	) {
 		this.envVariable = environment;
 		this.options = this._requestHeaderService.getOptions();
 	}
-	
+
 	public getPeer(id) {
 		const peer = {};
 		if (id) {
@@ -36,7 +36,7 @@ export class ProfileService {
 				.map((response: any) => response);
 		}
 	}
-	
+
 	public getProfile(userId) {
 		const profile = {};
 		if (userId) {
@@ -50,7 +50,7 @@ export class ProfileService {
 				);
 		}
 	}
-	
+
 	public getProfileData(userId, filter: any) {
 		if (userId) {
 			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + JSON.stringify(filter), this.options)
@@ -59,7 +59,7 @@ export class ProfileService {
 				);
 		}
 	}
-	
+
 	public getExternalProfileData(id: string, filter: any) {
 		if (id) {
 			return this.http.get(environment.apiUrl + '/api/peers/' + id + '/profiles?filter=' + JSON.stringify(filter), this.options)
@@ -68,7 +68,7 @@ export class ProfileService {
 				);
 		}
 	}
-	
+
 	/**
 	 * getPeerData
 	 */
@@ -102,14 +102,14 @@ export class ProfileService {
 	public getCompactProfile(userId) {
 		const profile = {};
 		if (userId) {
-			const filter = { 'include': [{ 'peer': ['ownedCollections', 'identities', 'credentials']}, 'work', 'education', 'phone_numbers', 'emergency_contacts'] };
+			const filter = { 'include': [{ 'peer': ['ownedCollections', 'identities', 'credentials'] }, 'work', 'education', 'phone_numbers', 'emergency_contacts'] };
 			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + JSON.stringify(filter), this.options)
 				.map(
 					(response: any) => response
 				);
 		}
 	}
-	
+
 	public changePassword(userId, oldPassword, newPassword) {
 		if (userId) {
 			const body = {
@@ -124,7 +124,7 @@ export class ProfileService {
 				});
 		}
 	}
-	
+
 	public updatePeer(userId, body: any) {
 		if (userId) {
 			return this.http.patch(environment.apiUrl + '/api/peers/' + userId, body, this.options).map(
@@ -141,14 +141,14 @@ export class ProfileService {
 				});
 		}
 	}
-	
+
 	public updatePeerProfile(userId, body: any) {
 		if (userId) {
 			return this.http.patch(environment.apiUrl + '/api/peers/' + userId + '/profile', body, this.options);
 			// patch first_name, last_name, dob, promoOptIn into peers/id/profiles
 		}
 	}
-	
+
 	public socialProfiles(userId) {
 		const socialProfile = [];
 		if (userId) {
@@ -157,13 +157,13 @@ export class ProfileService {
 				);
 		}
 	}
-	
+
 	public interestTopics(userId, topicsFor) {
 		const interestTopics = [];
 		if (userId) {
-			
+
 			const topicsUrl = topicsFor === 'teacher' ? '/topicsTeaching' : '/topicsLearning';
-			
+
 			return this.http.get(environment.apiUrl + '/api/peers/' + userId + topicsUrl, this.options)
 				.map((response: any) => response
 				);
@@ -177,7 +177,7 @@ export class ProfileService {
 				console.log('Error: ' + err);
 			});
 	}
-	
+
 	public sendVerifyEmail(userId, emailAddress) {
 		const body = {
 		};
@@ -186,7 +186,7 @@ export class ProfileService {
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
-		
+
 	}
 	public sendVerifySms(phonenumber, countryCode) {
 		const body = {
@@ -196,9 +196,9 @@ export class ProfileService {
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
-		
+
 	}
-	
+
 	public confirmEmail(userId, inputToken: string) {
 		const body = {};
 		const redirect = 'verification';
@@ -209,9 +209,9 @@ export class ProfileService {
 				this.profileSubject.next('updated');
 				return response;
 			});
-		
+
 	}
-	
+
 	public confirmSmsOTP(inputToken: string) {
 		const body = {};
 		return this.http
@@ -219,10 +219,10 @@ export class ProfileService {
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
-		
+
 	}
 	/* Signup Verification Methods Ends*/
-	
+
 	public getSocialIdentities(query: any, peerId) {
 		let url;
 		if (query) {
@@ -231,15 +231,15 @@ export class ProfileService {
 		} else {
 			url = environment.apiUrl + '/api/peers/' + peerId;
 		}
-		
+
 		return this.http
 			.get(url, this.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
-		
+
 	}
-	
+
 	/* get collections */
 	public getCollections(userId, filter?: any) {
 		if (userId) {
@@ -256,7 +256,7 @@ export class ProfileService {
 			}
 		}
 	}
-	
+
 	public getReviews(userId, collectionId) {
 		if (userId) {
 			return this.http.get(environment.apiUrl + '/api/collections/' + collectionId + '/reviews', this.options)
@@ -275,12 +275,12 @@ export class ProfileService {
 				.map((response: any) => response);
 		}
 	}
-	
+
 	public getEmailSubscriptions(filter: {}) {
 		return this.http.get(environment.apiUrl + '/api/emailSubscriptions?filter=' + JSON.stringify(filter), this.options)
 			.map((response: any) => response);
 	}
-	
+
 	/**
 	 * Delete all work nodes of a profile
 	 * @param profileId
@@ -295,7 +295,7 @@ export class ProfileService {
 				cb(err);
 			}).subscribe();
 	}
-	
+
 	public updateWork(userId, profileId, work: any) {
 		if (!(work.length > 0 && userId)) {
 			console.log('User not logged in');
@@ -309,7 +309,7 @@ export class ProfileService {
 				).map((response) => response);
 		}
 	}
-	
+
 	public updateEmergencyContact(userId, profileId, emergency_contact) {
 		if (!(emergency_contact.length > 0 && userId)) {
 			console.log('User not logged in');
@@ -323,7 +323,7 @@ export class ProfileService {
 				).map((response) => response);
 		}
 	}
-	
+
 	public updatePhoneNumbers(userId, profileId, phone_numbers) {
 		if (!(phone_numbers.length > 0 && userId)) {
 			console.log('User not logged in');
@@ -337,7 +337,7 @@ export class ProfileService {
 				).map((response) => response);
 		}
 	}
-	
+
 	public updateProfileWorks(userId, profileId, work: any, cb: any) {
 		if (!(work.length > 0 && userId)) {
 			console.log('User not logged in');
@@ -352,7 +352,7 @@ export class ProfileService {
 				}).subscribe();
 		}
 	}
-	
+
 	/**
 	 * Delete all education nodes of a profile
 	 * @param profileId
@@ -367,7 +367,7 @@ export class ProfileService {
 				cb(err);
 			}).subscribe();
 	}
-	
+
 	public updateProfileEducations(userId, profileId, education: any, cb: any) {
 		if (!(education.length > 0 && userId)) {
 			console.log('User not logged in');
@@ -382,7 +382,7 @@ export class ProfileService {
 				}).subscribe();
 		}
 	}
-	
+
 	public updateEducation(userId, profileId, education: any) {
 		if (!userId) {
 			console.log('User not logged in');
@@ -406,14 +406,14 @@ export class ProfileService {
 		delete object.education;
 		return object;
 	}
-	
+
 	/**
 	 * getAllPeers
 	 */
 	public getAllPeers(query: any) {
 		return this.http.get(environment.apiUrl + '/api/peers?filter=' + JSON.stringify(query), this.options);
 	}
-	
+
 	/**
 	 * getTopics
 	 */
@@ -425,14 +425,14 @@ export class ProfileService {
 			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/topicsLearning', this.options)
 				.map(response => response);
 		}
-		
+
 	}
-	
+
 	public getTeachingTopics(userId, query: any) {
 		return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching?filter=' + JSON.stringify(query), this.options)
 			.map(response => response);
 	}
-	
+
 	public getTeachingExternalTopics(userId: string, query: any) {
 		return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching?filter=' + JSON.stringify(query), this.options)
 			.map(response => response);
@@ -447,7 +447,7 @@ export class ProfileService {
 			return this.http.delete(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId, this.options);
 		}
 	}
-	
+
 	public stopTeachingTopic(userId, topicId: string) {
 		return this.http.delete(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId, this.options);
 	}
@@ -473,7 +473,7 @@ export class ProfileService {
 			}
 		}
 	}
-	
+
 	public updateTeachingTopic(userId, topicId: string, body?: any) {
 		if (body) {
 			console.log(topicId + ' ' + body.experience);
@@ -486,18 +486,18 @@ export class ProfileService {
 				.map(response => response);
 		}
 	}
-	
-	
+
+
 	public followMultipleTopicsLearning(userId, body: any) {
 		return this.http.patch(environment.apiUrl + '/api/peers/' + userId + '/topicsLearning/rel', body, this.options)
 			.map(response => response);
 	}
-	
+
 	public followMultipleTopicsTeaching(userId, body: any) {
 		return this.http.patch(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel', body, this.options)
 			.map(response => response);
 	}
-	
+
 	/**
 	 * reportProfile
 	 */
@@ -505,7 +505,7 @@ export class ProfileService {
 		return this.http.post(environment.apiUrl + '/api/peers/' + userId + '/flags', body, this.options)
 			.map(response => response);
 	}
-	
+
 	/**
 	 * approvePeer
 	 */
@@ -513,7 +513,7 @@ export class ProfileService {
 		return this.http.post(environment.apiUrl + '/api/peers/' + peer.id + '/approve', {}, this.options)
 			.map(response => response);
 	}
-	
+
 	/**
 	 * approvePeer
 	 */
@@ -521,7 +521,7 @@ export class ProfileService {
 		return this.http.post(environment.apiUrl + '/api/peers/' + peer.id + '/reject', {}, this.options)
 			.map(response => response);
 	}
-	
+
 	public getProfileProgressObject(profile: any): any {
 		const profileObject = {
 			'id': {
@@ -604,7 +604,7 @@ export class ProfileService {
 				'type': 'string'
 			}
 		};
-		
+
 		const peerObject = {
 			'id': {
 				'type': 'string',
@@ -683,9 +683,9 @@ export class ProfileService {
 					pProg['pending'].push(key);
 				}
 			}
-			
+
 		}
-		
+
 		for (const key in peerObject) {
 			if (key === 'id' || key === 'createdAt' || key === 'updatedAt' || key === 'isAdmin'
 				|| key === 'ownedCollections' || key === 'identities' || key === 'credentials'
@@ -704,8 +704,8 @@ export class ProfileService {
 				}
 			}
 		}
-		
-		
+
+
 		if (profile.first_name && profile.last_name && profile.headline && profile.gender
 			&& profile.dobDay && profile.dobMonth && profile.dobYear && profile.currency) {
 			pProg['personal'] = true;
@@ -722,18 +722,18 @@ export class ProfileService {
 			&& profile.peer[0].email && profile.peer[0].accountVerified && profile.peer[0].verificationIdUrl) {
 			pProg['verification'] = true;
 		}
-		
+
 		pProg['progress'] = Math.round((progress / totalKeys) * 100);
 		return pProg;
 	}
-	
+
 	/**
 	 * viewProfile
 	 */
 	public viewProfile(peer) {
 		this.router.navigate(['profile', peer.id]);
 	}
-	
+
 	/**
 	 * getBookmarks
 	 */
@@ -747,12 +747,19 @@ export class ProfileService {
 				cb(err);
 			}).subscribe();
 	}
-	
+
 	public imgErrorHandler(event) {
 		event.target.src = '/assets/images/user-placeholder.jpg';
 	}
-	
+
 	public getJoinedCommunities(peerId: string, filter: any) {
 		return this.http.get(environment.apiUrl + '/api/peers/' + peerId + '/communities?filter=' + JSON.stringify(filter), this.options);
+	}
+
+	/**
+	 * signup
+	 */
+	public signup(body: any) {
+		return this.http.post(environment.apiUrl + '/signup', body, this.options);
 	}
 }
