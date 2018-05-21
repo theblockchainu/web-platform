@@ -666,7 +666,7 @@ export class ProfileComponent implements OnInit {
 		const peers = [];
 		this._dialogsService.generateKnowledgeStoryDialog(this.cookieUserId, inputs)
 			.subscribe(dialogResult => {
-				const createdKnowledgeStoryId;
+				let createdKnowledgeStoryId;
 				if (dialogResult) {
 					dialogResult.selectedTopics.forEach(topic => {
 						topics.push(topic.id);
