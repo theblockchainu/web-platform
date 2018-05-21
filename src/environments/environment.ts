@@ -6,7 +6,7 @@ export const environment = {
     production: false,
     hmr: false,
     host: 'localhost',
-    apiUrl: 'https://localhost:3000',
+    apiUrl: 'http://localhost:3000',
     searchUrl: 'https://localhost:4000',
     clientUrl: 'http://localhost:8080',
     uniqueDeveloperCode: 'aakash',

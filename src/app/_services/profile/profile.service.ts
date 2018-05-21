@@ -165,7 +165,8 @@ export class ProfileService {
 			const topicsUrl = topicsFor === 'teacher' ? '/topicsTeaching' : '/topicsLearning';
 			
 			return this.http.get(environment.apiUrl + '/api/peers/' + userId + topicsUrl, this.options)
-				.map((response: any) => response
+				.map(
+					(response: any) => response
 				);
 		}
 	}
@@ -173,9 +174,32 @@ export class ProfileService {
 	public getPeerNode(userId) {
 		return this.http
 			.get(environment.apiUrl + '/api/peers/' + userId, this.options)
-			.map((response: any) => response, (err) => {
-				console.log('Error: ' + err);
-			});
+			.map(
+				(response: any) => response,
+				(err) => {
+					console.log('Error: ' + err);
+				});
+	}
+	
+	
+	public getKarmaBalance(userId) {
+		return this.http
+			.get(environment.apiUrl + '/api/peers/' + userId + '/karmaBalance', this.options)
+			.map(
+				(response: any) => response,
+				(err) => {
+					console.log('Error: ' + err);
+				});
+	}
+	
+	public getGyanBalance(userId) {
+		return this.http
+			.get(environment.apiUrl + '/api/peers/' + userId + '/gyanBalance', this.options)
+			.map(
+				(response: any) => response,
+				(err) => {
+					console.log('Error: ' + err);
+				});
 	}
 	
 	public sendVerifyEmail(userId, emailAddress) {
@@ -183,19 +207,24 @@ export class ProfileService {
 		};
 		return this.http
 			.post(environment.apiUrl + '/api/peers/sendVerifyEmail?uid=' + userId + '&email=' + emailAddress, body, this.options)
-			.map((response: any) => response, (err) => {
-				console.log('Error: ' + err);
-			});
+			.map(
+				(response: any) => response,
+				(err) => {
+					console.log('Error: ' + err);
+				});
 		
 	}
+	
 	public sendVerifySms(phonenumber, countryCode) {
 		const body = {
 		};
 		return this.http
 			.post(environment.apiUrl + '/api/peers/sendVerifySms?phone=' + phonenumber + '&countryCode=' + countryCode, body, this.options)
-			.map((response: any) => response, (err) => {
-				console.log('Error: ' + err);
-			});
+			.map(
+				(response: any) => response,
+				(err) => {
+					console.log('Error: ' + err);
+				});
 		
 	}
 	

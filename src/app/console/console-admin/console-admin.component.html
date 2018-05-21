@@ -8,9 +8,9 @@
 		<div style="display:inline;">
 			<h2>Collection Approvals</h2>
 		</div>
-		<div #noContentView *ngIf="unapprovedCollections.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
+		<div #noContentView *ngIf="unapprovedCollections.length === 0 " style="margin-top: 5%;margin-bottom: 5%;">
 			<div class="lightText">
-				No Approval Pending !
+				No collection approval pending.
 			</div>
 		</div>
 		<div *ngIf="unapprovedCollections.length > 0">
@@ -120,9 +120,9 @@
 		<div style="display:inline;">
 			<h2>Peer Approvals</h2>
 		</div>
-		<div #noContentView *ngIf="unapprovedPeers.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
+		<div #noContentView *ngIf="unapprovedPeers.length === 0 " style="margin-top: 5%;margin-bottom: 5%;">
 			<div class="lightText">
-				No Approval Pending !
+				No peer approvals pending.
 			</div>
 		</div>
 		<div *ngIf="unapprovedPeers.length > 0">
@@ -201,9 +201,9 @@
 		<div style="display:inline;">
 			<h2>Email Subscriptions</h2>
 		</div>
-		<div #noContentView *ngIf="emailSubscriptions && emailSubscriptions.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
+		<div #noContentView *ngIf="emailSubscriptions && emailSubscriptions.length === 0" style="margin-top: 5%; margin-bottom: 5%;">
 			<div class="lightText">
-				No Approval Pending !
+				No email subscriptions.
 			</div>
 		</div>
 		<div *ngIf="emailSubscriptions && emailSubscriptions.length > 0">
@@ -247,9 +247,9 @@
 		<div style="display:inline;">
 			<h2>Community Requests</h2>
 		</div>
-		<div #noContentView *ngIf="communityRequests.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
+		<div #noContentView *ngIf="communityRequests.length === 0 " style="margin-top: 5%;margin-bottom: 5%;">
 			<div class="lightText">
-				No Approval Pending !
+				No community requests.
 			</div>
 		</div>
 		<div *ngIf="communityRequests.length > 0">
@@ -309,12 +309,12 @@
 	</div>
 	<div class="col-md-12 margin-top-10" *ngIf="scholarshipsLoaded">
 		<div style="display:inline;">
-			<h2>Community Requests</h2>
+			<h2>Scholarships</h2>
 		</div>
-		<div #noContentView *ngIf="!scholarship " class="center" style="margin-top: 5%;margin-bottom: 5%;">
-			<button (click)="createScholarship()" mat-raised-button>
-				Create Scholarship
-			</button>
+		<div #noContentView *ngIf="!scholarship " style="margin-top: 5%;margin-bottom: 5%;">
+			<div (click)="createScholarship()" class="clickable lightText">
+				<i class="fa fa-plus"></i> No global scholarship detected. Create one now?
+			</div>
 		</div>
 		<div *ngIf="scholarship">
 			<div class="row">
@@ -324,23 +324,15 @@
 							<div class="col-md-3" style="margin-top: 20px;">
 								<mat-card style="text-align: center; padding: 20px;">
 									<mat-card-content>
-										<!-- <div style="text-align: right">
-												<div class="pull-right">
-													<a mat-icon-button [matMenuTriggerFor]="scholarCardMenu" style="text-align: right; padding: 0px">
-														<mat-icon>more_vert</mat-icon>
-													</a>
-												</div>
-											</div> -->
 										<br>
-										<div class="collectionTitle clickable">{{ scholarship.type | ucwords }} </div>
+										<div class="collectionTitle clickable" [routerLink]="'/scholarship/'+scholarship.id">{{ scholarship.title | ucwords }} </div>
+										<div class="mat-caption">{{scholarship.type | ucwords}}</div>
 										<br>
 										<br>
-										<div>
-											{{scholarship.karma}}
+										Fund Balance
+										<div class="mat-body-2">
+											<i class="fas fa-fire"></i> {{scholarship.id | karmaBalance: 'scholarship' | async}} Karma
 										</div>
-										<!-- <div class="mat-caption">
-												{{request.peers[0].profiles[0].first_name + ' '+ request.peers[0].profiles[0].last_name | ucwords }}
-											</div> -->
 									</mat-card-content>
 									<mat-card-footer class="cardFooter" style="line-height: 30px">
 										<button (click)="editScholarship()" mat-button>Edit</button>
@@ -357,7 +349,12 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row margin-top-40">
+	<div class="col-md-12 margin-top-10">
+		<div style="display:inline;">
+			<h2>Utilities</h2>
+		</div>
+	</div>
 	<div class="col-md-3">
 		<mat-card>
 			<form [formGroup]="topicForm" (ngSubmit)="createTopics()">
@@ -379,7 +376,7 @@
 		<mat-card>
 			<form [formGroup]="languageForm" (ngSubmit)="createLanguage()">
 				<mat-card-header>
-					<mat-card-title>Add topics</mat-card-title>
+					<mat-card-title>Add Language</mat-card-title>
 				</mat-card-header>
 				<mat-card-content>
 					<mat-form-field>

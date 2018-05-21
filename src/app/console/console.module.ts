@@ -4,9 +4,9 @@ import { SharedModule } from '../_shared/_shared.module';
 import { ConsoleRoutingModule } from './console-routing.module';
 import { ConsoleComponent } from './console.component';
 import {
-  MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule
-  , MatProgressBarModule, MatListModule, MatTabsModule, MatChipsModule, MatInputModule
-  , MatSelectModule, MatSnackBarModule, MatAutocompleteModule
+	MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule
+	, MatProgressBarModule, MatListModule, MatTabsModule, MatChipsModule, MatInputModule
+	, MatSelectModule, MatSnackBarModule, MatAutocompleteModule
 } from '@angular/material';
 import { RatingModule } from 'primeng/primeng';
 import { ConsoleDashboardComponent } from './console-dashboard/console-dashboard.component';
@@ -41,64 +41,64 @@ import { ConsoleAdminComponent } from './console-admin/console-admin.component';
 import { ContentLearningBookmarksComponent } from './console-learning/content-learning-bookmarks/content-learning-bookmarks.component';
 import { ConsoleAccountWalletComponent } from './console-account/console-account-wallet/console-account-wallet.component';
 import { ConsoleAccountScholarshipsComponent } from './console-account/console-account-scholarships/console-account-scholarships.component';
-import { ConsoleAccountKnowledgeStoryComponent } from './console-account/console-account-knowledge-story/console-account-knowledge-story.component';
+import { ConsoleLearningKnowledgeStoryComponent } from './console-learning/console-learning-knowledge-story/console-learning-knowledge-story.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    ConsoleRoutingModule,
-    RatingModule,
-    MatCardModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatProgressBarModule,
-    MatListModule,
-    MatTabsModule,
-    MatChipsModule,
-    MatInputModule,
-    MatSelectModule,
-    MatSnackBarModule,
-    MatAutocompleteModule
-  ],
-  declarations: [
-    ConsoleComponent,
-    ConsoleDashboardComponent,
-    ConsoleInboxComponent,
-    ConsoleLearningComponent,
-    ConsoleTeachingComponent,
-    ConsoleProfileComponent,
-    ConsoleAccountComponent,
-    ConsoleTeachingWorkshopComponent,
-    ConsoleTeachingExperienceComponent,
-    ConsoleTeachingSessionComponent,
-    ConsoleTeachingAllComponent,
-    ConsoleLearningAllComponent,
-    ConsoleLearningWorkshopsComponent,
-    ConsoleLearningExperiencesComponent,
-    ConsoleLearningSessionsComponent,
-    ConsoleProfileEditComponent,
-    ConsoleProfilePhotosComponent,
-    ConsoleProfileTopicsComponent,
-    ConsoleProfileVerificationComponent,
-    ConsoleProfileReviewsComponent,
-    ConsoleAccountNotificationsComponent,
-    ConsoleAccountPaymentmethodsComponent,
-    ConsoleAccountPayoutmethodsComponent,
-    ConsoleAccountTransactionhistoryComponent,
-    ConsoleAccountSecurityComponent,
-    ConsoleAccountPrivacyComponent,
-    ConsoleAccountSettingsComponent,
-    CohortDetailDialogComponent,
-    ConsoleAdminComponent,
-    ContentLearningBookmarksComponent,
-    ConsoleAccountWalletComponent,
-    ConsoleAccountScholarshipsComponent,
-    ConsoleAccountKnowledgeStoryComponent
-  ],
-  providers: [TimezonePickerService],
-  bootstrap: [CohortDetailDialogComponent]
+	imports: [
+		CommonModule,
+		SharedModule,
+		ConsoleRoutingModule,
+		RatingModule,
+		MatCardModule,
+		MatButtonModule,
+		MatMenuModule,
+		MatToolbarModule,
+		MatIconModule,
+		MatProgressBarModule,
+		MatListModule,
+		MatTabsModule,
+		MatChipsModule,
+		MatInputModule,
+		MatSelectModule,
+		MatSnackBarModule,
+		MatAutocompleteModule
+	],
+	declarations: [
+		ConsoleComponent,
+		ConsoleDashboardComponent,
+		ConsoleInboxComponent,
+		ConsoleLearningComponent,
+		ConsoleTeachingComponent,
+		ConsoleProfileComponent,
+		ConsoleAccountComponent,
+		ConsoleTeachingWorkshopComponent,
+		ConsoleTeachingExperienceComponent,
+		ConsoleTeachingSessionComponent,
+		ConsoleTeachingAllComponent,
+		ConsoleLearningAllComponent,
+		ConsoleLearningWorkshopsComponent,
+		ConsoleLearningExperiencesComponent,
+		ConsoleLearningSessionsComponent,
+		ConsoleProfileEditComponent,
+		ConsoleProfilePhotosComponent,
+		ConsoleProfileTopicsComponent,
+		ConsoleProfileVerificationComponent,
+		ConsoleProfileReviewsComponent,
+		ConsoleAccountNotificationsComponent,
+		ConsoleAccountPaymentmethodsComponent,
+		ConsoleAccountPayoutmethodsComponent,
+		ConsoleAccountTransactionhistoryComponent,
+		ConsoleAccountSecurityComponent,
+		ConsoleAccountPrivacyComponent,
+		ConsoleAccountSettingsComponent,
+		CohortDetailDialogComponent,
+		ConsoleAdminComponent,
+		ContentLearningBookmarksComponent,
+		ConsoleAccountWalletComponent,
+		ConsoleAccountScholarshipsComponent,
+		ConsoleLearningKnowledgeStoryComponent
+	],
+	providers: [TimezonePickerService],
+	bootstrap: [CohortDetailDialogComponent]
 })
 export class ConsoleModule { }

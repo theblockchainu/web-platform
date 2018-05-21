@@ -69,10 +69,7 @@ export class AppComponent implements OnInit {
 	
 	modifyHeader(location) {
 		this.showHeader = !(
-			/^\/verification\/.*./.test(location.url)
-			|| /^\/onboarding\/.*./.test(location.url)
-			|| /^\/signup-social/.test(location.url)
-			|| /^\/workshop\/.*\/edit\/./.test(location.url)
+			/^\/workshop\/.*\/edit\/./.test(location.url)
 			|| /^\/experience\/.*\/edit\/./.test(location.url)
 			|| /^\/session\/.*\/edit\/./.test(location.url)
 			|| /^\/error/.test(location.url));

@@ -154,6 +154,7 @@ export class UploadDocsComponent implements OnInit {
 	
 	public sendPhoneOTP(nextStep) {
 		this.httpLoading = true;
+		this.phoneFormError = null;
 		this._profileService.sendVerifySms(this.phoneForm.controls.phone.value, this.phoneForm.controls.countryCode.value)
 			.subscribe( response => {
 					this.httpLoading = false;
@@ -194,7 +195,9 @@ export class UploadDocsComponent implements OnInit {
 				});
 			}, err => {
 				this.httpLoading = false;
-				this.phoneFormError = err.error.error.message;
+				this.snackBar.open(err.error.error.message, 'OK', {
+					duration: 5000
+				});
 			});
 	}
 	

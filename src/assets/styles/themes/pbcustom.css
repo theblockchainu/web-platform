@@ -1285,6 +1285,10 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 	margin: 0px !important;
 }
 
+.mat-dialog-actions {
+	padding: 12px 24px !important;
+}
+
 .my-full-screen-dialog .mat-dialog-container {
 	max-width: none;
 	width: 100vw;
@@ -1420,6 +1424,10 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	display: inline-block;
 	width: 17%;
 	height: 100%;
+}
+
+.ui-button .ui-button-text {
+	display: inline-block !important;
 }
 
 

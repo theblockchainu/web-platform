@@ -48,6 +48,8 @@ export class ReviewPayComponent implements OnInit {
     availableScholarships = [];
     scholarshipForm: FormGroup;
     scholarshipAmount: number;
+    public burnAddress: string;
+    public selectedScholarship = 'NA';
     paybleKarma: number;
     constructor(
         private _cookieUtilsService: CookieUtilsService,
@@ -130,6 +132,7 @@ export class ReviewPayComponent implements OnInit {
                 this.createSourceData.email = peer.email;
                 this.createChargeData.customer = peer.stripeCustId;
                 this.custId = peer.stripeCustId;
+                this.burnAddress = peer.ethAddress;
                 console.log(this.custId);
 
                 // get all cards
@@ -253,7 +256,7 @@ export class ReviewPayComponent implements OnInit {
     }
 
     public joinCollection() {
-        this._collectionService.addParticipant(this.collectionId, this.userId, this.collectionCalendarId, (err: any, response: any) => {
+        this._collectionService.addParticipant(this.collectionId, this.userId, this.collectionCalendarId, this.selectedScholarship, (err: any, response: any) => {
             if (err) {
                 console.log(err);
             } else {
@@ -266,6 +269,7 @@ export class ReviewPayComponent implements OnInit {
         return this._collectionService.getKarmaValue(gyan).subscribe((res: any) => {
             console.log(res);
             this.karma = res.karma;
+            this.paybleKarma = this.karma;
         });
     }
 
@@ -281,21 +285,25 @@ export class ReviewPayComponent implements OnInit {
                 if (scholarship.type === 'public' || scholarship.allowed_collections.length === 0) {
                     // this.availableScholarships.push(scholarship);
                     scholarships.push(this._fb.group({
+						id: scholarship.id,
                         title: scholarship.title,
                         karma: scholarship.karma,
                         min_gyan: scholarship.min_gyan,
                         max_karma: scholarship.max_karma,
-                        selected: ''
+						ethAddress: scholarship.ethAddress,
+                        selected: false
                     }));
                 } else {
                     scholarship.allowed_collections.forEach(collection => {
                         if (this.collectionId === collection.id) {
                             scholarships.push(this._fb.group({
+								id: scholarship.id,
                                 title: scholarship.title,
                                 karma: scholarship.karma,
                                 min_gyan: scholarship.min_gyan,
                                 max_karma: scholarship.max_karma,
-                                selected: ''
+								ethAddress: scholarship.ethAddress,
+                                selected: false
                             }));
                             // this.availableScholarships.push(scholarship);
                         }
@@ -311,12 +319,22 @@ export class ReviewPayComponent implements OnInit {
     }
     private calculateScholarship() {
         this.scholarshipAmount = 0;
+        this.selectedScholarship = 'NA';
         this.scholarshipForm.value.scholarships.forEach(scholarship => {
             if (scholarship.selected) {
-                this.scholarshipAmount += scholarship.max_karma;
+            	this._scholarshipService.getKarmaBalance(scholarship.id).subscribe(res => {
+					this.scholarshipAmount += Math.min(Math.min(this.karma, res), scholarship.max_karma);
+					this.burnAddress = scholarship.ethAddress;
+					this.selectedScholarship = scholarship.id;
+		
+					const paybleKarma = this.karma - this.scholarshipAmount;
+					this.paybleKarma = (paybleKarma > 0) ? paybleKarma : 0;
+				});
             }
         });
-        const paybleKarma = this.karma - this.scholarshipAmount;
-        this.paybleKarma = (paybleKarma > 0) ? paybleKarma : 0;
     }
+    
+    public getGyanForRule(gyanPercent, totalGyan) {
+    	return Math.floor((gyanPercent / 100) * totalGyan);
+	}
 }

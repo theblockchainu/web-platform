@@ -44,6 +44,7 @@ import { ShortreadComponent } from './shortread/shortread.component';
 import { PrivatebetaComponent } from './privatebeta/privatebeta.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { LandingPageModule } from './landing-page/landing-page.module';
+import { InviteComponent } from './invite/invite.component';
 import { ScholarshipModule } from './scholarship/scholarship.module';
 import { KnowledgeStoryModule } from './knowledge-story/knowledge-story.module';
 
@@ -87,7 +88,9 @@ export class RavenErrorHandler implements ErrorHandler {
 		WhitepaperComponent,
 		KnowledgeeconomyComponent,
 		ShortreadComponent,
-		PrivatebetaComponent],
+		PrivatebetaComponent,
+		InviteComponent
+	],
 	imports: [
 		BrowserModule,
 		CoreModule,
