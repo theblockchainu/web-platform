@@ -28,7 +28,16 @@ export class WalletService {
 				});
 	}
 	
-	
+	public fixWallet(userId, body) {
+		return this.http
+			.post(environment.apiUrl + '/api/peers/' + userId + '/fixWallet', body, this.options)
+			.map(
+				(response: any) => response,
+				(err) => {
+					console.log('Error: ' + err);
+				});
+		
+	}
 	
 	/**
 	 * createWallet

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import {environment} from '../../../environments/environment';
-import {RequestHeaderService} from '../requestHeader/request-header.service';
+import { environment } from '../../../environments/environment';
+import { RequestHeaderService } from '../requestHeader/request-header.service';
 
 @Injectable()
 export class SearchService {
@@ -12,14 +12,14 @@ export class SearchService {
     private options;
 
     constructor(
-    	private router: Router,
+        private router: Router,
         private http: HttpClient,
-		private requestHeaderService: RequestHeaderService
-	) {
+        private requestHeaderService: RequestHeaderService
+    ) {
         this.envVariable = environment;
         this.options = this.requestHeaderService.getOptions();
     }
-    
+
     public getAllSearchResults(userId, query: any, cb) {
         if (userId) {
             if (this.httpSubscription) {
@@ -35,6 +35,13 @@ export class SearchService {
                 }).subscribe();
         }
     }
+
+    public getPeerSearchResults(query: any) {
+        return this.http
+            .get(environment.searchUrl + '/api/search/'
+                + environment.uniqueDeveloperCode + '_peers/suggest?field=username&query=' + query, this.options);
+    }
+
 
     public getCommunitySearchResults(userId, query: any, cb) {
         if (userId) {

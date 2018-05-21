@@ -551,10 +551,10 @@ export class CollectionService {
 	/**
 	 * addParticipant
 	 collectionID:string,userId:string,calendarId:string   */
-	public addParticipant(collectionId: string, userId: string, calendarId: string, burnAddress: string, cb) {
+	public addParticipant(collectionId: string, userId: string, calendarId: string, scholarshipId: string, cb) {
 		const body = {
 			'calendarId': calendarId,
-			'burnAddress': burnAddress
+			'scholarshipId': scholarshipId
 		};
 		this.httpClient
 			.put(environment.apiUrl + '/api/collections/' + collectionId + '/participants/rel/' + userId, body, this.options)

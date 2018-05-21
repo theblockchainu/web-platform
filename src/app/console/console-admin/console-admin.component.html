@@ -8,9 +8,9 @@
 		<div style="display:inline;">
 			<h2>Collection Approvals</h2>
 		</div>
-		<div #noContentView *ngIf="unapprovedCollections.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
+		<div #noContentView *ngIf="unapprovedCollections.length === 0 " style="margin-top: 5%;margin-bottom: 5%;">
 			<div class="lightText">
-				No Approval Pending !
+				No collection approval pending.
 			</div>
 		</div>
 		<div *ngIf="unapprovedCollections.length > 0">
@@ -120,9 +120,9 @@
 		<div style="display:inline;">
 			<h2>Peer Approvals</h2>
 		</div>
-		<div #noContentView *ngIf="unapprovedPeers.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
+		<div #noContentView *ngIf="unapprovedPeers.length === 0 " style="margin-top: 5%;margin-bottom: 5%;">
 			<div class="lightText">
-				No Approval Pending !
+				No peer approvals pending.
 			</div>
 		</div>
 		<div *ngIf="unapprovedPeers.length > 0">
@@ -201,9 +201,9 @@
 		<div style="display:inline;">
 			<h2>Email Subscriptions</h2>
 		</div>
-		<div #noContentView *ngIf="emailSubscriptions && emailSubscriptions.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
+		<div #noContentView *ngIf="emailSubscriptions && emailSubscriptions.length === 0" style="margin-top: 5%; margin-bottom: 5%;">
 			<div class="lightText">
-				No Approval Pending !
+				No email subscriptions.
 			</div>
 		</div>
 		<div *ngIf="emailSubscriptions && emailSubscriptions.length > 0">
@@ -247,9 +247,9 @@
 		<div style="display:inline;">
 			<h2>Community Requests</h2>
 		</div>
-		<div #noContentView *ngIf="communityRequests.length === 0 " class="center" style="margin-top: 5%;margin-bottom: 5%;">
+		<div #noContentView *ngIf="communityRequests.length === 0 " style="margin-top: 5%;margin-bottom: 5%;">
 			<div class="lightText">
-				No Approval Pending !
+				No community requests.
 			</div>
 		</div>
 		<div *ngIf="communityRequests.length > 0">
@@ -311,10 +311,10 @@
 		<div style="display:inline;">
 			<h2>Scholarships</h2>
 		</div>
-		<div #noContentView *ngIf="!scholarship " class="center" style="margin-top: 5%;margin-bottom: 5%;">
-			<button (click)="createScholarship()" mat-raised-button>
-				Create first public scholarship
-			</button>
+		<div #noContentView *ngIf="!scholarship " style="margin-top: 5%;margin-bottom: 5%;">
+			<div (click)="createScholarship()" class="clickable lightText">
+				<i class="fa fa-plus"></i> No global scholarship detected. Create one now?
+			</div>
 		</div>
 		<div *ngIf="scholarship">
 			<div class="row">
@@ -346,5 +346,50 @@
 			<br>
 			<br>
 		</div>
+	</div>
+</div>
+
+<div class="row margin-top-40">
+	<div class="col-md-12 margin-top-10">
+		<div style="display:inline;">
+			<h2>Utilities</h2>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<mat-card>
+			<form [formGroup]="topicForm" (ngSubmit)="createTopics()">
+				<mat-card-header>
+					<mat-card-title>Add topics</mat-card-title>
+				</mat-card-header>
+				<mat-card-content>
+					<mat-form-field>
+						<input matInput formControlName="name" placeholder="Name">
+					</mat-form-field>
+				</mat-card-content>
+				<mat-card-actions>
+					<button type="submit" mat-button>Submit</button>
+				</mat-card-actions>
+			</form>
+		</mat-card>
+	</div>
+	<div class="col-md-3">
+		<mat-card>
+			<form [formGroup]="languageForm" (ngSubmit)="createLanguage()">
+				<mat-card-header>
+					<mat-card-title>Add Language</mat-card-title>
+				</mat-card-header>
+				<mat-card-content>
+					<mat-form-field>
+						<input matInput formControlName="name" placeholder="Name">
+					</mat-form-field>
+					<mat-form-field>
+						<input matInput formControlName="code" placeholder="Code">
+					</mat-form-field>
+				</mat-card-content>
+				<mat-card-actions>
+					<button type="submit" mat-button>Submit</button>
+				</mat-card-actions>
+			</form>
+		</mat-card>
 	</div>
 </div>

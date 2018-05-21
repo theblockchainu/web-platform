@@ -1,0 +1,106 @@
+<div mat-dialog-content class="dialog-container">
+	<div class="row">
+		<div class="col-md-12 collectionContent">
+			<button disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+			</button>
+			<div class="mat-display-1" style="margin-bottom: 20px;">
+				View or share your knowledge story
+			</div>
+		</div>
+	</div>
+	<hr>
+	<mat-horizontal-stepper [linear]="true" #stepper class="margin-top-30">
+		<mat-step>
+			<div class="row margin-top-40 margin-bottom-40">
+				<div class="col-md-12">
+					<span class="ui-autocomplete ui-widget ui-autocomplete-multiple multiselectBox">
+						<ul class="ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all" style="padding-left: 0.0em">
+							<li class="ui-autocomplete-input-token col-sm-12">
+								<mat-icon icon="search" aria-label="search" role="img" class="vAlignMiddle">search</mat-icon>
+								<input cdkTrapFocus #box id="list" type="text" class="form-control input-topic" [(ngModel)]=query (keyup)=filter() placeholder="{{ title }}"
+								       autocomplete="off" tabindex="1">
+							</li>
+						</ul>
+					</span>
+					<div class="margin-top-20">
+						<span *ngFor="let item of selected">
+							<li class="ui-autocomplete-token ui-state-highlight ui-corner-all margin-bottom-0">
+								<a (click)="remove(item)" class="ui-autocomplete-token-icon fa fa-fw fa-close" style="text-decoration:none"></a>
+								<span class="ui-autocomplete-token-label captitalise">{{item.name}}</span>
+							</li>
+						</span>
+						<span class="col-sm-4 pull-right" style="font-size: 12px; color: #f5393e; line-height: 15px; width: 42%; text-align: justify;">{{maxTopicMsg}}</span>
+					</div>
+					
+					<div class="loading-container col-md-offset-4" style="width:100%" [hidden]="!loadingSuggestions">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div class="suggestions" *ngIf="!loadingSuggestions && filteredList.length > 0">
+						<ul *ngFor="let item of filteredList" style="list-style:none" class="padding-left-0">
+							<li class="captitalise topic" (click)="select(item)">
+								<a>
+									<img src="{{envVariable.apiUrl+ item.imageUrl}}" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
+									<span style="margin-left:20px">{{item.name}}</span>
+									<span *ngIf="!item.inSelect">
+										<mat-icon class="pull-right" style="top: 1.1em; right: 0.6em; color: #cccccc;">check_circle</mat-icon>
+									</span>
+									<span *ngIf="item.inSelect">
+										<mat-icon [color]="'primary'" class="pull-right" style="top: 1.1em; right: 0.6em;">check_circle</mat-icon>
+									</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<button matStepperNext (click)="submitTopics()" class="pull-right" mat-raised-button color="accent">
+						Next
+					</button>
+				</div>
+			</div>
+		</mat-step>
+		<mat-step>
+			<div class="row margin-top-40 margin-bottom-40">
+				<div class="col-xs-12">
+					<mat-form-field class="pb-block">
+						<mat-chip-list #chipList>
+							<mat-chip *ngFor="let peer of selectedPeers" [selectable]="selectable" [removable]="removable" (remove)="removePeer(peer)">
+								{{peer.name}}
+								<mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+							</mat-chip>
+							<input placeholder="Select peers this story is visible to" #peerInput [formControl]="myControl" [matAutocomplete]="auto"
+							       [matChipInputFor]="chipList" [matChipInputAddOnBlur]="addOnBlur" />
+						</mat-chip-list>
+						<mat-autocomplete #auto="matAutocomplete">
+							<mat-option *ngFor="let option of searchOptions" [value]="" (click)="onSearchOptionClicked(option)">
+								<span>
+									<img src="{{envVariable.apiUrl+option.profiles[0].picture_url}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
+									     (error)="_collectionService.imgErrorHandler($event)" />
+								</span>
+								<span>
+									{{option.profiles[0].first_name + ' ' + option.profiles[0].last_name }}
+								</span>
+							</mat-option>
+						</mat-autocomplete>
+					</mat-form-field>
+				</div>
+				<div class="col-xs-12">
+					<mat-checkbox [(ngModel)]="allPeers">Public</mat-checkbox>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 margin-top-10">
+					<button matStepperPrevious mat-raised-button>
+						Back
+					</button>
+					<button (click)="submitPeers()" class="pull-right" mat-raised-button color="accent">
+						Submit
+					</button>
+				</div>
+			</div>
+		</mat-step>
+	</mat-horizontal-stepper>
+</div>

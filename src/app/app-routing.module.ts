@@ -179,6 +179,10 @@ const routes: Routes = [
 		loadChildren: 'app/scholarship/scholarship.module#ScholarshipModule'
 	},
 	{
+		path: 'story',
+		loadChildren: 'app/knowledge-story/knowledge-story.module#KnowledgeStoryModule'
+	},
+	{
 		path: 'access-denied',
 		component: AccessDeniedComponent
 	},

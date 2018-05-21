@@ -42,6 +42,9 @@ import { StudentAssessmentDialogComponent } from './student-assessment-dialog/st
 import { GyanTransactionsDialogComponent } from './gyan-transactions-dialog/gyan-transactions-dialog.component';
 import { RequestCommunityDialogComponent } from './request-community-dialog/request-community-dialog.component';
 import { ScholarshipDialogComponent } from './scholarship-dialog/scholarship-dialog.component';
+import { GenerateKnowledgeStoryComponent } from './generate-knowledge-story/generate-knowledge-story.component';
+import { RequestKnowledgeStoryComponent } from './request-knowledge-story/request-knowledge-story.component';
+import {ConfirmPasswordDialogComponent} from './confirm-password-dialog/confirm-password-dialog.component';
 
 @Injectable()
 export class DialogsService {
@@ -455,5 +458,65 @@ export class DialogsService {
             data: data ? data : {}
         }).afterClosed();
     }
+
+    /**
+     * generate
+     */
+    public generateKnowledgeStoryDialog(userId, inputs) {
+
+        const dialogRef5 = this.dialog.open(GenerateKnowledgeStoryComponent,
+            {
+                panelClass: 'responsive-dialog',
+                width: '55vw',
+                height: '75vh',
+            }
+        );
+        dialogRef5.componentInstance.searchUrl = inputs.searchTopicURL;
+        dialogRef5.componentInstance.title = inputs.title;
+        dialogRef5.componentInstance.minSelection = inputs.minSelection;
+        dialogRef5.componentInstance.maxSelection = inputs.maxSelection;
+        dialogRef5.componentInstance.suggestedTopics = inputs.suggestedTopics;
+        dialogRef5.componentInstance.data = {
+            searchUrl: inputs.searchTopicURL,
+            selected: [],
+            userId: userId
+        };
+
+        return dialogRef5.afterClosed();
+    }
+
+    public requestStoryDialog(userId, inputs) {
+
+        const dialogRef5 = this.dialog.open(RequestKnowledgeStoryComponent,
+            {
+                panelClass: 'responsive-dialog',
+                width: '55vw',
+                height: '75vh',
+            }
+        );
+        dialogRef5.componentInstance.searchUrl = inputs.searchTopicURL;
+        dialogRef5.componentInstance.title = inputs.title;
+        dialogRef5.componentInstance.minSelection = inputs.minSelection;
+        dialogRef5.componentInstance.maxSelection = inputs.maxSelection;
+        dialogRef5.componentInstance.suggestedTopics = inputs.suggestedTopics;
+        dialogRef5.componentInstance.data = {
+            searchUrl: inputs.searchTopicURL,
+            selected: [],
+            userId: userId
+        };
+
+        return dialogRef5.afterClosed();
+    }
+    
+    public confirmPasswordDialog() {
+		const dialogRef5 = this.dialog.open(ConfirmPasswordDialogComponent,
+			{
+				panelClass: 'responsive-dialog',
+				width: '55vw',
+				height: '75vh',
+			}
+		);
+		return dialogRef5.afterClosed();
+	}
 
 }

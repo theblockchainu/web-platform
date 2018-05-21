@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { WalletService } from '../../../_services/wallet/wallet.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { ProfileService } from '../../../_services/profile/profile.service';
+import {DialogsService} from '../../../_services/dialogs/dialog.service';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
 	selector: 'app-console-account-wallet',
@@ -12,11 +14,9 @@ import { ProfileService } from '../../../_services/profile/profile.service';
 })
 export class ConsoleAccountWalletComponent implements OnInit {
 	
-	public wallet: any;
 	public showWalletId = false;
 	private userId: string;
 	public peer: any;
-	public loadingWallet = true;
 	public loadingPeer = true;
 	
 	constructor(
@@ -25,6 +25,8 @@ export class ConsoleAccountWalletComponent implements OnInit {
 		private _walletService: WalletService,
 		private _profileService: ProfileService,
 		private _cookieUtilsService: CookieUtilsService,
+		private snackBar: MatSnackBar,
+		private _dialogService: DialogsService
 	) {
 		activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
 			console.log(urlSegment[0].path);
@@ -34,24 +36,7 @@ export class ConsoleAccountWalletComponent implements OnInit {
 	}
 	
 	ngOnInit() {
-		this.fetchWallet();
 		this.fetchTransactions();
-	}
-	
-	private fetchWallet() {
-		this.loadingWallet = true;
-		this._walletService.getWallet().subscribe(res => {
-			if (res && res.length > 0) {
-				this.wallet = res[0];
-				this.loadingWallet = false;
-			} else {
-				this.wallet = {};
-				this.loadingWallet = false;
-			}
-		}, err => {
-			this.wallet = {};
-			this.loadingWallet = false;
-		});
 	}
 	
 	private fetchTransactions() {
@@ -78,6 +63,20 @@ export class ConsoleAccountWalletComponent implements OnInit {
 	
 	public toggleWalletId() {
 		this.showWalletId = !this.showWalletId;
+	}
+	
+	public fixWalletDialog() {
+		this._dialogService.confirmPasswordDialog()
+			.subscribe(res => {
+				this._walletService.fixWallet(this.userId, res)
+					.subscribe(result => {
+						this.snackBar.open('Successfully updated wallet', 'Ok', { duration: 5000 });
+						this.fetchTransactions();
+					},
+						error => {
+						this.snackBar.open('Error fixing wallet: ' + error.error.error.message, 'Close', { duration: 5000});
+						});
+			});
 	}
 	
 }

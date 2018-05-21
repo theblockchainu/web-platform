@@ -1,5 +1,5 @@
 import { BrowserModule, Meta, Title } from '@angular/platform-browser';
-import {ErrorHandler, NgModule} from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 import { GlobalErrorHandlerComponent } from './error-handler/globalerrorhandler';
@@ -46,7 +46,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { LandingPageModule } from './landing-page/landing-page.module';
 import { InviteComponent } from './invite/invite.component';
 import { ScholarshipModule } from './scholarship/scholarship.module';
-/*
+import { KnowledgeStoryModule } from './knowledge-story/knowledge-story.module';
+
 Raven
 	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
 	.install();
@@ -60,7 +61,6 @@ export class RavenErrorHandler implements ErrorHandler {
 		Raven.captureException(err);
 	}
 }
-*/
 
 
 @NgModule({
@@ -120,15 +120,16 @@ export class RavenErrorHandler implements ErrorHandler {
 			tertiaryColour: '#ff6d71'
 		}),
 		LandingPageModule,
-		ScholarshipModule
+		ScholarshipModule,
+		KnowledgeStoryModule
 	],
 	providers: [
 		CookieService,
 		UcWordsPipe,
-		/*{
+		{
 			provide: ErrorHandler,
 			useClass: RavenErrorHandler
-		},*/
+		},
 		Title,
 		Meta
 	],

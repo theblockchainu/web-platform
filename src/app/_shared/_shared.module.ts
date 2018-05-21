@@ -79,6 +79,7 @@ import { WalletService } from '../_services/wallet/wallet.service';
 import { ScholarshipService } from '../_services/scholarship/scholarship.service';
 import { GyanBalancePipe } from './gyan-balance/gyan-balance.pipe';
 import { KarmaBalancePipe } from './karma-balance/karma-balance.pipe';
+import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-story.service';
 @NgModule({
     imports: [
         CommonModule,
@@ -145,7 +146,8 @@ import { KarmaBalancePipe } from './karma-balance/karma-balance.pipe';
         TimeToNowPipe,
         AssessmentService,
         WalletService,
-        ScholarshipService
+        ScholarshipService,
+        KnowledgeStoryService
     ],
     exports: [
         CommonModule,

@@ -1,28 +1,28 @@
 <div mat-dialog-content class="dialog-container">
-  <h1 mat-dialog-title>Add a new card</h1>
-  <div class="row">
-    <div class="col-md-12">
-      <form>
-        <label>
-          <input name="cardholder-name" class="field is-empty" placeholder="Jane Doe" />
-          <span>
-            <span>Name</span>
-          </span>
-        </label>
-        <label>
-          <input class="field is-empty" type="tel" placeholder="(123) 456-7890" />
-          <span>
-            <span>Phone number</span>
-          </span>
-        </label>
-        <label>
-          <div id="card-element" class="field is-empty"></div>
-          <span>
-            <span>Credit or debit card</span>
-          </span>
-        </label>
-        <button type="submit" (click)="processPayment($event)">Add Card</button>
-      </form>
-    </div>
-  </div>
+	<h1 mat-dialog-title>Add a new card</h1>
+	<div class="row">
+		<div class="col-md-12">
+			<form>
+				<label>
+					<input name="cardholder-name" class="field is-empty" placeholder="Jane Doe" />
+					<span>
+						<span>Name</span>
+					</span>
+				</label>
+				<label>
+					<input class="field is-empty" type="tel" placeholder="(123) 456-7890" />
+					<span>
+						<span>Phone number</span>
+					</span>
+				</label>
+				<label>
+					<div id="card-element" class="field is-empty"></div>
+					<span>
+						<span>Credit or debit card</span>
+					</span>
+				</label>
+				<button type="submit" (click)="processPayment($event)">Add Card</button>
+			</form>
+		</div>
+	</div>
 </div>

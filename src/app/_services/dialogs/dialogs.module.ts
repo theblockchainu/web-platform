@@ -54,6 +54,9 @@ import { StudentAssessmentDialogComponent } from './student-assessment-dialog/st
 import { GyanTransactionsDialogComponent } from './gyan-transactions-dialog/gyan-transactions-dialog.component';
 import { RequestCommunityDialogComponent } from './request-community-dialog/request-community-dialog.component';
 import { ScholarshipDialogComponent } from './scholarship-dialog/scholarship-dialog.component';
+import { GenerateKnowledgeStoryComponent } from './generate-knowledge-story/generate-knowledge-story.component';
+import { RequestKnowledgeStoryComponent } from './request-knowledge-story/request-knowledge-story.component';
+import { ConfirmPasswordDialogComponent } from './confirm-password-dialog/confirm-password-dialog.component';
 
 @NgModule({
 	imports: [
@@ -87,7 +90,10 @@ import { ScholarshipDialogComponent } from './scholarship-dialog/scholarship-dia
 		DateConflictDialogComponent, EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent,
 		ViewParticipantsComponent, StudentAssessmentDialogComponent, GyanTransactionsDialogComponent,
 		RequestCommunityDialogComponent,
-		ScholarshipDialogComponent
+		ScholarshipDialogComponent,
+		GenerateKnowledgeStoryComponent,
+		RequestKnowledgeStoryComponent,
+		ConfirmPasswordDialogComponent
 	],
 	providers: [
 		DialogsService,
@@ -106,7 +112,8 @@ import { ScholarshipDialogComponent } from './scholarship-dialog/scholarship-dia
 		CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
 		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent,
 		EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent,
-		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent, RequestCommunityDialogComponent, ScholarshipDialogComponent
+		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent, RequestCommunityDialogComponent,
+		ScholarshipDialogComponent, GenerateKnowledgeStoryComponent, RequestKnowledgeStoryComponent, ConfirmPasswordDialogComponent
 	],
 })
 export class DialogsModule { }

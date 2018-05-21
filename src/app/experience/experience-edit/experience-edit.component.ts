@@ -1377,8 +1377,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
 		}, err => {
 			console.log(err);
-			this.snackBar.open('An error Occured', 'close', {
-				duration: 800
+			this.snackBar.open('An error occurred', 'close', {
+				duration: 5000
 			});
 		});
 	}

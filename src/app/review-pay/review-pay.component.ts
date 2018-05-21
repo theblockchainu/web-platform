@@ -49,6 +49,7 @@ export class ReviewPayComponent implements OnInit {
     scholarshipForm: FormGroup;
     scholarshipAmount: number;
     public burnAddress: string;
+    public selectedScholarship = 'NA';
     paybleKarma: number;
     constructor(
         private _cookieUtilsService: CookieUtilsService,
@@ -255,7 +256,7 @@ export class ReviewPayComponent implements OnInit {
     }
 
     public joinCollection() {
-        this._collectionService.addParticipant(this.collectionId, this.userId, this.collectionCalendarId, this.burnAddress, (err: any, response: any) => {
+        this._collectionService.addParticipant(this.collectionId, this.userId, this.collectionCalendarId, this.selectedScholarship, (err: any, response: any) => {
             if (err) {
                 console.log(err);
             } else {
@@ -290,7 +291,7 @@ export class ReviewPayComponent implements OnInit {
                         min_gyan: scholarship.min_gyan,
                         max_karma: scholarship.max_karma,
 						ethAddress: scholarship.ethAddress,
-                        selected: ''
+                        selected: false
                     }));
                 } else {
                     scholarship.allowed_collections.forEach(collection => {
@@ -302,7 +303,7 @@ export class ReviewPayComponent implements OnInit {
                                 min_gyan: scholarship.min_gyan,
                                 max_karma: scholarship.max_karma,
 								ethAddress: scholarship.ethAddress,
-                                selected: ''
+                                selected: false
                             }));
                             // this.availableScholarships.push(scholarship);
                         }
@@ -318,14 +319,19 @@ export class ReviewPayComponent implements OnInit {
     }
     private calculateScholarship() {
         this.scholarshipAmount = 0;
+        this.selectedScholarship = 'NA';
         this.scholarshipForm.value.scholarships.forEach(scholarship => {
             if (scholarship.selected) {
-                this.scholarshipAmount += Math.min(Math.min(this.karma, scholarship.karma), scholarship.max_karma);
-                this.burnAddress = scholarship.ethAddress;
+            	this._scholarshipService.getKarmaBalance(scholarship.id).subscribe(res => {
+					this.scholarshipAmount += Math.min(Math.min(this.karma, res), scholarship.max_karma);
+					this.burnAddress = scholarship.ethAddress;
+					this.selectedScholarship = scholarship.id;
+		
+					const paybleKarma = this.karma - this.scholarshipAmount;
+					this.paybleKarma = (paybleKarma > 0) ? paybleKarma : 0;
+				});
             }
         });
-        const paybleKarma = this.karma - this.scholarshipAmount;
-        this.paybleKarma = (paybleKarma > 0) ? paybleKarma : 0;
     }
     
     public getGyanForRule(gyanPercent, totalGyan) {

@@ -1,11 +1,11 @@
 <div class="row">
 	<div class="col-md-12">
-		<div *ngIf="loadingWallet || loadingPeer" class="loading-container">
+		<div *ngIf="loadingPeer" class="loading-container">
 			<ngx-loading [show]="true"></ngx-loading>
 		</div>
 	</div>
 </div>
-<div *ngIf="!loadingWallet && !loadingPeer">
+<div *ngIf="!loadingPeer">
 	<div class="row">
 		<div class="col-xs-7">
 			<h1 style="padding-top: 2%">
@@ -15,13 +15,13 @@
 			</h1>
 		</div>
 		<div class="col-xs-2">
-			<button mat-button color="primary" class="mat-border-button">
+			<!--<button mat-button color="primary" class="mat-border-button">
 				Buy
-			</button>
+			</button>-->
 		</div>
 		<div class="col-xs-2">
-			<button mat-button color="primary" class="mat-border-button">
-				Sell
+			<button mat-button color="primary" class="mat-border-button" *ngIf="!peer.ethAddress" (click)="fixWalletDialog()">
+				Create Wallet
 			</button>
 		</div>
 		<div class="col-xs-1">
