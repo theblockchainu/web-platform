@@ -10,7 +10,7 @@ import 'rxjs/add/operator/map';
 import { ContentService } from '../../content/content.service';
 import { environment } from '../../../../environments/environment';
 import * as _ from 'lodash';
-import {RequestHeaderService} from '../../requestHeader/request-header.service';
+import { RequestHeaderService } from '../../requestHeader/request-header.service';
 
 @Component({
     selector: 'app-submit-entry',
@@ -37,7 +37,6 @@ export class SubmitEntryComponent implements OnInit {
     public createTopicURL;
     public placeholderStringTopic = 'Submission Tag';
     public maxTopicMsg = 'Choose max 3 related tags';
-    private options;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -56,7 +55,6 @@ export class SubmitEntryComponent implements OnInit {
         this.searchTopicURL = environment.searchUrl + '/api/search/'
             + environment.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
         this.createTopicURL = environment.apiUrl + '/api/' + environment.uniqueDeveloperCode + '_topics';
-		this.options = this.requestHeaderService.getOptions();
     }
 
     ngOnInit() {
@@ -94,30 +92,30 @@ export class SubmitEntryComponent implements OnInit {
         const query = '{"include":[{"upvotes":"peer"}, {"peer": "profiles"}, ' +
             '{"comments": [{"peer": {"profiles": "work"}}, {"replies": [{"peer": {"profiles": "work"}}]}]}]}';
         this.projectSubmissionService.viewSubmission(submissionId, query)
-			.subscribe((response) => {
-            if (response) {
-                const dialogRef = this.dialog.open(SubmissionViewComponent, {
-                    data: {
-                        userType: this.data.userType,
-                        submission: response,
-                        peerHasSubmission: this.data.peerHasSubmission,
-                        collectionId: this.data.collectionId
-                    },
-                    width: '45vw',
-                    height: '100vh',
-                    panelClass: 'responsive-dialog'
-                });
-                dialogRef.afterClosed().subscribe(res => {
-                    this.dialogRef.close(true);
-                });
-            }
-        });
+            .subscribe((response) => {
+                if (response) {
+                    const dialogRef = this.dialog.open(SubmissionViewComponent, {
+                        data: {
+                            userType: this.data.userType,
+                            submission: response,
+                            peerHasSubmission: this.data.peerHasSubmission,
+                            collectionId: this.data.collectionId
+                        },
+                        width: '45vw',
+                        height: '100vh',
+                        panelClass: 'responsive-dialog'
+                    });
+                    dialogRef.afterClosed().subscribe(res => {
+                        this.dialogRef.close(true);
+                    });
+                }
+            });
     }
 
     public deleteFromContainer(fileUrl, fileType) {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
-        this.http.delete(environment.apiUrl + fileUrl, this.options)
+        this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
             .map((response) => {
                 console.log(response);
                 this.urlForImages = [];

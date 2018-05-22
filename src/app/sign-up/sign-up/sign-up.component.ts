@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { SocketService } from '../../_services/socket/socket.service';
+import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
@@ -19,7 +20,8 @@ export class SignUpComponent implements OnInit {
     private _router: Router,
     private _MatSnackBar: MatSnackBar,
     private _AuthenticationService: AuthenticationService,
-    private _SocketService: SocketService
+    private _SocketService: SocketService,
+    private _RequestHeaderService: RequestHeaderService
   ) { }
 
   ngOnInit() {
@@ -62,6 +64,7 @@ export class SignUpComponent implements OnInit {
   signIn() {
     const userId = this._AuthenticationService.getCookie('userId');
     if (userId.length > 5) {
+      this._RequestHeaderService.refreshToken.next(true);
       this._AuthenticationService.isLoginSubject.next(true);
       this._SocketService.addUser(userId);
       this._router.navigate(['verification', '1']);

@@ -38,9 +38,7 @@ export class AppHeaderComponent implements OnInit {
 	@ViewChild('searchInputBar') searchInputBar;
 	@ViewChild('messageNotification') messageNotification;
 	public userId;
-	public userIdObservable;
 	public envVariable;
-	private key: string;
 	public options: any[];
 	public defaultProfileUrl: string;
 	public isTeacher: boolean;
@@ -70,45 +68,12 @@ export class AppHeaderComponent implements OnInit {
 
 	ngOnInit() {
 		this.initializeHeader();
-	}
-
-	initializeHeader() {
-		console.log('initializing');
-		this.hasNewNotification = false;
-		this.hasNewMessage = false;
-		this.userType = '';
-		this.envVariable = environment;
-		this.profile = {};
-		this.key = 'userId';
-		this.defaultProfileUrl = '/assets/images/default-user.jpg';
 		this.isLoggedIn = this.authService.isLoginSubject.asObservable();
-		this.authService.isLoggedIn().subscribe((res) => {
-			this.loggedIn = res;
+		this.authService.isLoginSubject.subscribe(res => {
+			console.log('Initializing Header');
+			console.log(res);
+			this.initializeHeader();
 		});
-		this.isTeacher = false;
-		this.makeOldNotification = [];
-		this.joinedRooms = [];
-		this.tempJoinedRooms = [];
-		this.isSessionApproved = false;
-		this.sessionId = '';
-		this.isSearchBarVisible = false;
-		this.authService.getLoggedInUser.subscribe((userId) => {
-			if (userId !== 0) {
-				this.userId = userId;
-				this.getProfile();
-				this.checkIfSessionApproved();
-				this.getNotifications();
-				this.getMessages();
-			} else {
-				this.loggedIn = false;
-				this.profile = {};
-			}
-		});
-		this.userId = this.userIdObservable || this._cookieService.getValue('userId');
-		this.getProfile();
-		this.checkIfSessionApproved();
-		this.getNotifications();
-		this.getMessages();
 		this.myControl.valueChanges.subscribe((value) => {
 			this._searchService.getAllSearchResults(this.userId, value, (err, result) => {
 				if (!err) {
@@ -120,6 +85,29 @@ export class AppHeaderComponent implements OnInit {
 		});
 	}
 
+	initializeHeader() {
+		this.hasNewNotification = false;
+		this.hasNewMessage = false;
+		this.userType = '';
+		this.envVariable = environment;
+		this.profile = {};
+		this.loggedIn = this.authService.isLoginSubject.value;
+		this.userId = this._cookieService.getValue('userId');
+		console.log(this.userId);
+		this.defaultProfileUrl = '/assets/images/default-user.jpg';
+		this.isTeacher = false;
+		this.makeOldNotification = [];
+		this.joinedRooms = [];
+		this.tempJoinedRooms = [];
+		this.isSessionApproved = false;
+		this.sessionId = '';
+		this.isSearchBarVisible = false;
+		this.getProfile();
+		this.checkIfSessionApproved();
+		this.getNotifications();
+		this.getMessages();
+	}
+
 	getProfile() {
 		if (this.loggedIn) {
 			this._profileService.getCompactProfile(this.userId).subscribe(profile => {
@@ -129,7 +117,6 @@ export class AppHeaderComponent implements OnInit {
 						this.isTeacher = true;
 					}
 					this.profileCompletionObject = this._profileService.getProfileProgressObject(this.profile);
-					console.log(this.profileCompletionObject);
 					if (this.router.url !== '/signup-social' && this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
 						// Incomplete Social signup. Redirect user to finish it.
 						this.router.navigate(['signup-social']);
@@ -155,7 +142,6 @@ export class AppHeaderComponent implements OnInit {
 
 
 	public openLogin() {
-		console.log('openLogin');
 		this.dialogsService.openLogin().subscribe();
 	}
 

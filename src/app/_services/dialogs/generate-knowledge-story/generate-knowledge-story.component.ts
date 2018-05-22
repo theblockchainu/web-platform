@@ -37,7 +37,6 @@ export class GenerateKnowledgeStoryComponent implements OnInit {
   public filteredList = [];
   public elementRef;
   public envVariable;
-  private options;
   public placeholderString;
   public entryInSelected = undefined;
   public selectedQueries = [];
@@ -112,7 +111,6 @@ export class GenerateKnowledgeStoryComponent implements OnInit {
     public _searchService: SearchService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     this.elementRef = myElement;
-    this.options = requestHeaderService.getOptions();
     this.placeholderString = this.title;
     this.envVariable = environment;
   }
@@ -169,7 +167,7 @@ export class GenerateKnowledgeStoryComponent implements OnInit {
       }
       if (this.searchUrl) {
         const finalSearchURL = this.searchUrl + this.query;
-        this.http.get(finalSearchURL, this.options)
+        this.http.get(finalSearchURL, this.requestHeaderService.options)
           .map((res: any) => {
             this.loadingSuggestions = false;
             this.filteredList = [];

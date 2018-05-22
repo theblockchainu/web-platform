@@ -9,53 +9,51 @@ import { environment } from '../../../environments/environment';
 @Injectable()
 export class ProjectSubmissionService {
 	public key = 'userId';
-	private options;
 	public envVariable;
-	
+
 	constructor(private http: HttpClient,
-				private route: ActivatedRoute,
-				public router: Router,
-				private authService: AuthenticationService,
-				public _requestHeaderService: RequestHeaderService
+		private route: ActivatedRoute,
+		public router: Router,
+		private authService: AuthenticationService,
+		public _requestHeaderService: RequestHeaderService
 	) {
 		this.envVariable = environment;
-		this.options = this._requestHeaderService.getOptions();
 	}
-	
+
 	public submitProject(contentId: any, body: any) {
 		if (contentId) {
-			return this.http.post(environment.apiUrl + '/api/contents/' + contentId + '/submissions', body, this.options);
+			return this.http.post(environment.apiUrl + '/api/contents/' + contentId + '/submissions', body, this._requestHeaderService.options);
 		}
 	}
-	
+
 	public editProject(contentId: any, body: any) {
 		if (contentId) {
-			return this.http.put(environment.apiUrl + '/api/contents/' + contentId + '/submissions', body, this.options);
+			return this.http.put(environment.apiUrl + '/api/contents/' + contentId + '/submissions', body, this._requestHeaderService.options);
 		}
 	}
-	
+
 	public updateSubmission(submissionId: string, body: any) {
-		return this.http.patch(environment.apiUrl + '/api/submissions/' + submissionId, body, this.options);
+		return this.http.patch(environment.apiUrl + '/api/submissions/' + submissionId, body, this._requestHeaderService.options);
 	}
-	
+
 	public saveSubmissionTags(submissionId, body: any) {
 		if (submissionId) {
-			return this.http.patch(environment.apiUrl + '/api/submissions/' + submissionId + '/topics', body, this.options);
+			return this.http.patch(environment.apiUrl + '/api/submissions/' + submissionId + '/topics', body, this._requestHeaderService.options);
 		}
 	}
-	
+
 	public viewSubmission(submissionId, query: any) {
 		if (submissionId) {
-			return this.http.get(environment.apiUrl + '/api/submissions/' + submissionId + '?filter=' + query, this.options);
+			return this.http.get(environment.apiUrl + '/api/submissions/' + submissionId + '?filter=' + query, this._requestHeaderService.options);
 		}
 	}
-	
+
 	public addPeerSubmissionRelation(userId, submissionId) {
 		if (userId && submissionId) {
-			return this.http.put(environment.apiUrl + '/api/submissions/' + submissionId + '/peer/rel/' + userId, null, this.options);
+			return this.http.put(environment.apiUrl + '/api/submissions/' + submissionId + '/peer/rel/' + userId, null, this._requestHeaderService.options);
 		}
 	}
-	
+
 	/**
 	 * Add submission upvote
 	 * @param replyId
@@ -64,6 +62,6 @@ export class ProjectSubmissionService {
 	 */
 	public addSubmissionUpvote(submissionId, upvoteBody) {
 		return this.http
-			.post(environment.apiUrl + '/api/submissions/' + submissionId + '/upvotes', upvoteBody, this.options);
+			.post(environment.apiUrl + '/api/submissions/' + submissionId + '/upvotes', upvoteBody, this._requestHeaderService.options);
 	}
 }

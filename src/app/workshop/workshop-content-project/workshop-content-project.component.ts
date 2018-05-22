@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import * as _ from 'lodash';
@@ -34,7 +34,6 @@ export class WorkshopContentProjectComponent implements OnInit {
     private uploadingAttachments;
     public attachments: any;
     public attachmentUrls = [];
-    private options;
 
     constructor(
         private _fb: FormBuilder,
@@ -42,11 +41,10 @@ export class WorkshopContentProjectComponent implements OnInit {
         private mediaUploader: MediaUploaderService,
         @Inject(MAT_DIALOG_DATA) public inputData: any,
         public dialogRef: MatDialogRef<WorkshopContentProjectComponent>,
-        private requestHeaders: RequestHeaderService,
+        private requestHeaderService: RequestHeaderService,
         private contentService: ContentService
     ) {
         this.envVariable = environment;
-        this.options = requestHeaders.getOptions();
         this.collectionEndDate = inputData.collectionEndDate;
         this.collectionStartDate = inputData.collectionStartDate;
         this.itenaryForm = inputData.itenaryForm;
@@ -94,7 +92,7 @@ export class WorkshopContentProjectComponent implements OnInit {
     deleteFromContainer(fileUrl, fileType) {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
-        this.http.delete(environment.apiUrl + fileUrl, this.options)
+        this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
             .map((response) => {
                 console.log(response);
                 if (fileType === 'file') {
@@ -128,7 +126,7 @@ export class WorkshopContentProjectComponent implements OnInit {
     }
 
     deleteFromContent(contentForm, body) {
-        this.http.patch(environment.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.options)
+        this.http.patch(environment.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.requestHeaderService.options)
             .map((response) => { })
             .subscribe();
     }

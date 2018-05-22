@@ -36,7 +36,6 @@ export class GenericMultiselectAutocompleteComponent {
     public removed = [];
     public filteredList = [];
     public elementRef;
-    private options;
     public placeholderString;
 
 
@@ -77,7 +76,6 @@ export class GenericMultiselectAutocompleteComponent {
         private http: HttpClient,
         public requestHeaderService: RequestHeaderService) {
         this.elementRef = myElement;
-        this.options = requestHeaderService.getOptions();
         this.placeholderString = this.title;
     }
 
@@ -131,7 +129,7 @@ export class GenericMultiselectAutocompleteComponent {
             }
             if (this.searchUrl) {
                 const finalSearchURL = this.searchUrl + this.query;
-                this.http.get(finalSearchURL, this.options)
+                this.http.get(finalSearchURL, this.requestHeaderService.options)
                     .map((res: any) => {
                         this.filteredList = [];
                         res.map(item => {
@@ -150,7 +148,7 @@ export class GenericMultiselectAutocompleteComponent {
                         //     'name' : this.query,
                         //     'type': 'user'
                         //   };
-                        //   this.http.post(this.createURL, body, this.options)
+                        //   this.http.post(this.createURL, body, this.requestHeaderService.options)
                         //             .map((res: any) => {
                         //               this.select(res);
                         //             })

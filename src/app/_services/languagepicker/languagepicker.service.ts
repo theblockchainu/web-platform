@@ -8,7 +8,6 @@ import { RequestHeaderService } from '../requestHeader/request-header.service';
 @Injectable()
 export class LanguagePickerService {
     public envVariable;
-    private options;
     constructor(
         private http: HttpClient,
         private route: ActivatedRoute,
@@ -16,12 +15,11 @@ export class LanguagePickerService {
         private requestHeaderService: RequestHeaderService
     ) {
         this.envVariable = environment;
-        this.options = this.requestHeaderService.getOptions();
     }
 
     public getLanguages() {
 
-        return this.http.get(environment.apiUrl + '/api/languages', this.options)
+        return this.http.get(environment.apiUrl + '/api/languages', this.requestHeaderService.options)
             .map((response: any) => {
                 return response;
             });
@@ -31,7 +29,7 @@ export class LanguagePickerService {
      * addLanguage
      */
     public addLanguage(body: any) {
-        return this.http.post(environment.apiUrl + '/api/languages', body, this.options);
+        return this.http.post(environment.apiUrl + '/api/languages', body, this.requestHeaderService.options);
     }
 
 }

@@ -17,17 +17,15 @@ export class SideBarMenuItem {
 export class LeftSidebarService {
 
     sidebarMenuItems: Observable<SideBarMenuItem>;
-    private options;
     constructor(
         private http: HttpClient,
         public router: Router,
         private requestHeaderService: RequestHeaderService
     ) {
-        this.options = this.requestHeaderService.getOptions();
     }
 
     public getMenuItems(fileLocation: string): Observable<SideBarMenuItem> {
-        return this.http.get(fileLocation, this.options)
+        return this.http.get(fileLocation, this.requestHeaderService.options)
             .map((response: any) => {
                 return response;
             });

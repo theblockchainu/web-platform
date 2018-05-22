@@ -6,7 +6,7 @@ import { ContentService } from '../../_services/content/content.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import * as _ from 'lodash';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 @Component({
     selector: 'app-workshop-content-online',
     templateUrl: './workshop-content-online.component.html',
@@ -31,7 +31,6 @@ export class WorkshopContentOnlineComponent implements OnInit {
     private uploadingImage = false;
     private uploadingAttachments = false;
     private contentId;
-    private options;
 
     constructor(
         private _fb: FormBuilder,
@@ -40,10 +39,9 @@ export class WorkshopContentOnlineComponent implements OnInit {
         private contentService: ContentService,
         @Inject(MAT_DIALOG_DATA) public inputData: any,
         public dialogRef: MatDialogRef<WorkshopContentOnlineComponent>,
-        private requestHeaders: RequestHeaderService
+        private requestHeaderService: RequestHeaderService
     ) {
         this.envVariable = environment;
-        this.options = requestHeaders.getOptions();
         this.itenaryForm = inputData.itenaryForm;
         this.lastIndex = inputData.index;
         this.isEdit = inputData.isEdit;
@@ -202,7 +200,7 @@ export class WorkshopContentOnlineComponent implements OnInit {
     deleteFromContainer(fileUrl, fileType) {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
-        this.http.delete(environment.apiUrl + fileUrl, this.options)
+        this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
             .map((response) => {
                 console.log(response);
                 if (fileType === 'file') {
@@ -240,7 +238,7 @@ export class WorkshopContentOnlineComponent implements OnInit {
     }
 
     deleteFromContent(contentForm, body) {
-        this.http.patch(environment.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.options)
+        this.http.patch(environment.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.requestHeaderService.options)
             .map((response: any) => { })
             .subscribe();
     }

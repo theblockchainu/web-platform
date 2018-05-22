@@ -9,7 +9,6 @@ export class SearchService {
 
     public httpSubscription: any;
     public envVariable;
-    private options;
 
     constructor(
         private router: Router,
@@ -17,7 +16,6 @@ export class SearchService {
         private requestHeaderService: RequestHeaderService
     ) {
         this.envVariable = environment;
-        this.options = this.requestHeaderService.getOptions();
     }
 
     public getAllSearchResults(userId, query: any, cb) {
@@ -26,7 +24,7 @@ export class SearchService {
                 this.httpSubscription.unsubscribe();
             }
             this.httpSubscription = this.http
-                .get(environment.searchUrl + '/searchAll?' + 'query=' + query, this.options)
+                .get(environment.searchUrl + '/searchAll?' + 'query=' + query, this.requestHeaderService.options)
                 .map((response) => {
                     console.log(response);
                     cb(null, response);
@@ -39,14 +37,14 @@ export class SearchService {
     public getPeerSearchResults(query: any) {
         return this.http
             .get(environment.searchUrl + '/api/search/'
-                + environment.uniqueDeveloperCode + '_peers/suggest?field=username&query=' + query, this.options);
+                + environment.uniqueDeveloperCode + '_peers/suggest?field=username&query=' + query, this.requestHeaderService.options);
     }
 
 
     public getCommunitySearchResults(userId, query: any, cb) {
         if (userId) {
             this.http
-                .get(environment.searchUrl + '/searchCommunity?' + 'query=' + query, this.options)
+                .get(environment.searchUrl + '/searchCommunity?' + 'query=' + query, this.requestHeaderService.options)
                 .map((response) => {
                     console.log(response);
                     cb(null, response);

@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { HttpClient } from '@angular/common/http';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class QuestionService {
 
-    public options;
     public envVariable;
 
     constructor(private http: HttpClient,
         private requestHeaderService: RequestHeaderService) {
         this.envVariable = environment;
-        this.options = requestHeaderService.getOptions();
     }
 
 
@@ -23,7 +21,7 @@ export class QuestionService {
      */
     public answerToQuestion(questionId, answerBody) {
         return this.http
-            .post(environment.apiUrl + '/api/questions/' + questionId + '/answers', answerBody, this.options);
+            .post(environment.apiUrl + '/api/questions/' + questionId + '/answers', answerBody, this.requestHeaderService.options);
     }
 
     /**
@@ -33,7 +31,7 @@ export class QuestionService {
      */
     public addFollower(questionId, peerId) {
         return this.http
-            .put(environment.apiUrl + '/api/questions/' + questionId + '/followers/rel/' + peerId, {}, this.options);
+            .put(environment.apiUrl + '/api/questions/' + questionId + '/followers/rel/' + peerId, {}, this.requestHeaderService.options);
     }
 
     /**
@@ -43,7 +41,7 @@ export class QuestionService {
      */
     public postCommentToAnswer(answerId, commentBody) {
         return this.http
-            .post(environment.apiUrl + '/api/answers/' + answerId + '/comments', commentBody, this.options);
+            .post(environment.apiUrl + '/api/answers/' + answerId + '/comments', commentBody, this.requestHeaderService.options);
     }
 
     /**
@@ -53,7 +51,7 @@ export class QuestionService {
      */
     public postCommentToQuestion(questionId, commentBody) {
         return this.http
-            .post(environment.apiUrl + '/api/questions/' + questionId + '/comments', commentBody, this.options);
+            .post(environment.apiUrl + '/api/questions/' + questionId + '/comments', commentBody, this.requestHeaderService.options);
     }
 
     /**
@@ -63,7 +61,7 @@ export class QuestionService {
      */
     public addQuestionUpvote(questionId, upvoteBody) {
         return this.http
-            .post(environment.apiUrl + '/api/questions/' + questionId + '/upvotes', upvoteBody, this.options);
+            .post(environment.apiUrl + '/api/questions/' + questionId + '/upvotes', upvoteBody, this.requestHeaderService.options);
     }
 
     /**
@@ -73,7 +71,7 @@ export class QuestionService {
      */
     public addAnswerUpvote(answerId, upvoteBody) {
         return this.http
-            .post(environment.apiUrl + '/api/answers/' + answerId + '/upvotes', upvoteBody, this.options);
+            .post(environment.apiUrl + '/api/answers/' + answerId + '/upvotes', upvoteBody, this.requestHeaderService.options);
     }
 
     /**
@@ -82,7 +80,7 @@ export class QuestionService {
      */
     public deleteQuestion(questionId: string) {
         return this.http
-            .delete(environment.apiUrl + '/api/questions/' + questionId, this.options);
+            .delete(environment.apiUrl + '/api/questions/' + questionId, this.requestHeaderService.options);
     }
 
     /**
@@ -91,7 +89,7 @@ export class QuestionService {
      */
     public deleteAnswer(answerId: string) {
         return this.http
-            .delete(environment.apiUrl + '/api/answers/' + answerId, this.options);
+            .delete(environment.apiUrl + '/api/answers/' + answerId, this.requestHeaderService.options);
     }
 
 }

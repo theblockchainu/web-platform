@@ -2,15 +2,14 @@ import { Injectable } from '@angular/core';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { HttpClient } from '@angular/common/http';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable()
 export class TwilioServicesService {
 	public userId;
-	private options;
 	public envVariable;
-	
+
 	constructor(
 		public _requestHeaderService: RequestHeaderService,
 		private http: HttpClient,
@@ -18,19 +17,18 @@ export class TwilioServicesService {
 	) {
 		this.envVariable = environment;
 		this.userId = this._cookieService.getValue('userId');
-		this.options = this._requestHeaderService.getOptions();
 	}
-	
-	
+
+
 	/**
 	 * getToken
 	 */
 	public getToken() {
-		return this.http.get(environment.apiUrl + '/api/vsessions/token', this.options)
+		return this.http.get(environment.apiUrl + '/api/vsessions/token', this._requestHeaderService.options)
 			.map(
 				(response) => response
 			);
 	}
-	
-	
+
+
 }

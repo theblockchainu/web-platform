@@ -87,8 +87,6 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
   public maxTopics = 3;
   public otpSent = false;
 
-  private options;
-
   profileImagePending: Boolean;
   experienceVideoPending: Boolean;
   experienceImage1Pending: Boolean;
@@ -184,7 +182,6 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 
     this.userId = _cookieUtilsService.getValue('userId');
-    this.options = requestHeaderService.getOptions();
     this.currentDate = moment().toDate();
 
   }
@@ -534,7 +531,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
       });
 
     if (this.interests.length === 0) {
-      this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.options)
+      this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.requestHeaderService.options)
         .map((response: any) => {
           this.suggestedTopics = response.slice(0, 5);
         }).subscribe();
@@ -615,7 +612,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.removedInterests = event;
     if (this.removedInterests.length !== 0) {
       this.removedInterests.forEach((topic) => {
-        this.http.delete(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel/' + topic.id, this.options)
+        this.http.delete(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel/' + topic.id, this.requestHeaderService.options)
           .map((response) => {
             console.log(response);
           }).subscribe();
@@ -882,7 +879,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
     const body = data.value.calendar;
     const itinerary = data.controls.contentGroup.value.itenary;
     if (body.startDate && body.endDate && itinerary && itinerary.length > 0) {
-      this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body, this.options)
+      this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body, this.requestHeaderService.options)
         .subscribe((response) => {
           this.step++;
           this.experienceStepUpdate();
@@ -919,7 +916,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
     if (topicArray.length !== 0) {
       let observable: Observable<any>;
-      observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel', body, this.options)
+      observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel', body, this.requestHeaderService.options)
         .map(response => response).publishReplay().refCount();
       observable.subscribe((res) => {
         this._collectionService.getCollectionDetail(this.experienceId, this.query)
@@ -1008,7 +1005,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
       const data = this.timeline;
       const body = data.value.calendar;
       if (body.startDate && body.endDate) {
-        this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/calendar', body, this.options)
+        this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/calendar', body, this.requestHeaderService.options)
           .map((response) => {
             this.busySave = false;
             this.router.navigate(['console/teaching/experiences']);
@@ -1125,7 +1122,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
   deleteFromContainer(fileUrl, fileType) {
     const fileurl = fileUrl;
     fileUrl = _.replace(fileUrl, 'download', 'files');
-    this.http.delete(environment.apiUrl + fileUrl, this.options)
+    this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
       .map((response) => {
         console.log(response);
         if (fileType === 'video') {
@@ -1149,7 +1146,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
       let file = event.target.files[i];
       const fileurl = file;
       file = _.replace(file, 'download', 'files');
-      this.http.delete(environment.apiUrl + file, this.options)
+      this.http.delete(environment.apiUrl + file, this.requestHeaderService.options)
         .map((response) => {
           console.log(response);
           if (fileType === 'video') {

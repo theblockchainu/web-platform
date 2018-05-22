@@ -11,12 +11,8 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class AuthenticationService {
-	@Output()
-	getLoggedInUser: EventEmitter<any> = new EventEmitter();
-
 	public key = 'access_token';
 	public envVariable;
-	private options;
 	public userId;
 	isLoginSubject = new BehaviorSubject<boolean>(this.hasToken());
 
@@ -28,7 +24,6 @@ export class AuthenticationService {
 		private _socketService: SocketService
 	) {
 		this.envVariable = environment;
-		this.options = this._requestHeaderService.getOptions();
 	}
 
 	/**
@@ -57,16 +52,16 @@ export class AuthenticationService {
 	login(email: string, password: string, rememberMe: boolean): any {
 		const body = `{"email":"${email}","password":"${password}","rememberMe":${rememberMe}}`;
 		return this.http
-			.post(environment.apiUrl + '/auth/local', body, this.options)
+			.post(environment.apiUrl + '/auth/local', body, this._requestHeaderService.options)
 			.map((response: any) => {
 				console.log(response);
 				// if res code is xxx and response "error"
 				// login successful if there's a jwt token in the response
 				const user = response;
 				if (user && user.access_token) {
+					this._requestHeaderService.refreshToken.next(true);
 					this.isLoginSubject.next(true);
 					this._socketService.addUser(user.userId);
-					// location.reload();
 				}
 			}, (err) => {
 				console.log('Error: ' + err);
@@ -83,9 +78,9 @@ export class AuthenticationService {
 		this.removeCookie('accountApproved');
 		this.removeCookie('access_token');
 		this.isLoginSubject.next(false);
-		this.getLoggedInUser.emit(0);
+		this._requestHeaderService.refreshToken.next(true);
 		if (this.getCookie(this.key)) {
-			this.http.get(environment.apiUrl + '/auth/logout', this.options)
+			this.http.get(environment.apiUrl + '/auth/logout', this._requestHeaderService.options)
 				.subscribe(
 					(res: any) => {
 						console.log('Logged out from server');
@@ -95,10 +90,6 @@ export class AuthenticationService {
 				);
 		}
 		this.router.navigate(['/']);
-	}
-
-	public broadcastNewUserId(userId) {
-		this.getLoggedInUser.emit(userId);
 	}
 
 	/**
@@ -112,7 +103,7 @@ export class AuthenticationService {
 	sendForgotPwdMail(email): any {
 		const body = `{"email":"${email}"}`;
 		return this.http
-			.post(environment.apiUrl + '/api/peers/forgotPassword?em=' + email, body, this.options)
+			.post(environment.apiUrl + '/api/peers/forgotPassword?em=' + email, body, this._requestHeaderService.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -121,7 +112,7 @@ export class AuthenticationService {
 	sendEmailSubscriptions(email): any {
 		const body = `{"email":"${email}"}`;
 		return this.http
-			.post(environment.apiUrl + '/api/emailSubscriptions?em=' + email, body, this.options)
+			.post(environment.apiUrl + '/api/emailSubscriptions?em=' + email, body, this._requestHeaderService.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -129,14 +120,14 @@ export class AuthenticationService {
 
 	resetPassword(body: any): any {
 		return this.http
-			.post(environment.apiUrl + '/api/peers/resetPassword', body, this.options)
+			.post(environment.apiUrl + '/api/peers/resetPassword', body, this._requestHeaderService.options)
 			.map((response: any) => response);
 	}
 	createGuestContacts(first_name, last_name, email, subject, message): any {
 		const body = `{"first_name":"${first_name}","last_name":"${last_name}",
     "email":"${email}","subject":"${subject}","message":"${message}"}`;
 		return this.http
-			.post(environment.apiUrl + '/api/guestContacts', body, this.options)
+			.post(environment.apiUrl + '/api/guestContacts', body, this._requestHeaderService.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -146,7 +137,7 @@ export class AuthenticationService {
 	 * signup
 	 */
 	public signup(body: any) {
-		return this.http.post(environment.apiUrl + '/signup', body, this.options);
+		return this.http.post(environment.apiUrl + '/signup', body, this._requestHeaderService.options);
 	}
 
 }

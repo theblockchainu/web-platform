@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, EventEmitter, Output, AfterViewInit, ChangeDetectorRef} from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import * as _ from 'lodash';
@@ -10,7 +10,7 @@ import { RequestHeaderService } from '../../_services/requestHeader/request-head
 import { MatDialog } from '@angular/material';
 import * as moment from 'moment';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-experience-content',
@@ -38,13 +38,12 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
   @Output()
   days = new EventEmitter<any>();
 
-  private options;
   public envVariable;
   constructor(
     public authenticationService: AuthenticationService,
     private http: HttpClient,
     private _fb: FormBuilder,
-    private requestHeaders: RequestHeaderService,
+    private requestHeaderService: RequestHeaderService,
     private dialog: MatDialog,
     public router: Router,
     public cd: ChangeDetectorRef,
@@ -52,8 +51,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
     private location: Location,
     private _dialogsService: DialogsService
   ) {
-      this.envVariable = environment;
-    this.options = requestHeaders.getOptions();
+    this.envVariable = environment;
   }
 
   ngOnInit() {
@@ -84,7 +82,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
     let deleteIndex = 0;
 
     while (deleteIndex !== contents.length) {
-      this.http.delete(environment.apiUrl + '/api/contents/' + contents[deleteIndex].id, this.options)
+      this.http.delete(environment.apiUrl + '/api/contents/' + contents[deleteIndex].id, this.requestHeaderService.options)
         .map((response: any) => {
           console.log(response);
         })
@@ -263,12 +261,12 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
       const endHour = endTimeArr[0];
       const endMin = endTimeArr[1];
       schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);*/
-        schedule.endTime = moment(schedule.endTime).format();
+      schedule.endTime = moment(schedule.endTime).format();
       schedule.endDay = 0;
     }
     schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
 
-    this.http.post(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents', contentObj, this.options)
+    this.http.post(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents', contentObj, this.requestHeaderService.options)
       .map((response: any) => {
 
         const result = response;
@@ -285,7 +283,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
         }
         contentGroup.controls.id.setValue(contentId);
 
-        this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.options)
+        this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.requestHeaderService.options)
           .map((resp: any) => {
             if (resp.status === 200) {
               const Itenary = <FormArray>this.myForm.controls.itenary;
@@ -303,7 +301,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 
         // Add a location to this content
         if (location !== undefined) {
-          this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/location', location, this.options)
+          this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/location', location, this.requestHeaderService.options)
             .map((resp: any) => {
               if (resp.status === 200) {
                 const Itenary = <FormArray>this.myForm.controls.itenary;
@@ -357,7 +355,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
       const startHour = startTimeArr[0];
       const startMin = startTimeArr[1];
       schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);*/
-        schedule.startTime = moment(schedule.startTime).format();
+      schedule.startTime = moment(schedule.startTime).format();
     }
     if (schedule.endTime === '') {
       schedule.endTime = new Date(0, 0, 0, 23, 0, 0, 0);
@@ -366,9 +364,9 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
       const endHour = endTimeArr[0];
       const endMin = endTimeArr[1];
       schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);*/
-        schedule.endTime = moment(schedule.endTime).format();
+      schedule.endTime = moment(schedule.endTime).format();
     }
-    this.http.put(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, contentObj, this.options)
+    this.http.put(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, contentObj, this.requestHeaderService.options)
       .map((response: any) => {
         const result = response;
         if (result.isNewInstance) {
@@ -379,7 +377,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
             }
           });
         }
-        this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.options)
+        this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.requestHeaderService.options)
           .map((resp: any) => {
             if (resp.status === 200) {
               contentGroup.controls.pending.setValue(false);
@@ -389,7 +387,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 
         // Edit a location of this content
         if (location !== undefined) {
-          this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/location', location, this.options)
+          this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/location', location, this.requestHeaderService.options)
             .map((resp: any) => {
               if (resp.status === 200) {
                 const Itenary = <FormArray>this.myForm.controls.itenary;
@@ -415,7 +413,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
     if (eventIndex) {
       const contentObj = itenaryObj.contents[eventIndex];
       const contentId = contentObj.id;
-      this.http.delete(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, this.options)
+      this.http.delete(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, this.requestHeaderService.options)
         .map((response: any) => {
           if (response !== null) {
             const result = response;
@@ -439,7 +437,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
     } else {
       const contentArray = itenaryObj.contents;
       contentArray.forEach(content => {
-        this.http.delete(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + content.id, this.options)
+        this.http.delete(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + content.id, this.requestHeaderService.options)
           .map((response: any) => {
             if (response !== null) {
               const result = response;
@@ -467,14 +465,14 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
   }
 
   getSelectedItineraryDates() {
-      const selectedDates = [];
-      const itineraries = <FormArray>this.myForm.controls.itenary;
-      itineraries.controls.forEach(itinerary => {
-          if (itinerary.value.date !== null) {
-              selectedDates.push(itinerary.value.date);
-          }
-      });
-      return selectedDates;
+    const selectedDates = [];
+    const itineraries = <FormArray>this.myForm.controls.itenary;
+    itineraries.controls.forEach(itinerary => {
+      if (itinerary.value.date !== null) {
+        selectedDates.push(itinerary.value.date);
+      }
+    });
+    return selectedDates;
   }
 
 }
