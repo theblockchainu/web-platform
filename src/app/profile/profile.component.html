@@ -9,7 +9,7 @@
 		</div>
 		<div class="row" *ngIf="profileObj && !loadingProfile">
 			<div class="col-md-3 {{offsetString}} left-panel">
-				<div class="row padding-bottom-30">
+				<div class="row padding-bottom-0">
 					<div class="col-md-12" style="padding-left: 0px;">
 						<img class="img-rounded profile-pic" *ngIf="profileObj.picture_url" src="{{envVariable.apiUrl+profileObj.picture_url + '/300'}}"
 						 alt="profile_pic">
@@ -23,15 +23,20 @@
 						<button mat-button (click)="openMessageDialog()">Message</button>
 					</div>
 				</div>
-				<div class="row" *ngIf="profileObj.peer[0].wallet && profileObj.peer[0].wallet.length>0 && profileObj.peer[0].wallet[0]">
-					<h3>
-						<i class="fab fa-ethereum">
-						</i>
-						{{profileObj.peer[0].wallet[0].gyan_balance}}
-						<a class="clickable" (click)="openTransactionsDialog()" *ngIf="cookieUserId === urluserId">
-							View Transactions
+				<div class="row padding-bottom-20" *ngIf="profileObj.peer[0].ethAddress">
+					<div class="col-md-6" style="padding-left: 0px;">
+						<h3>
+							<i class="fab fa-ethereum"></i> {{profileObj.peer[0].id | gyanBalance | async}} Gyan
+						</h3>
+					</div>
+					<div class="col-md-6 mat-caption" style="padding-left: 0px;">
+						<a class="clickable" (click)="generateKnowledgeStoryDialog()" *ngIf="cookieUserId === urluserId">
+							View Knowledge Story
 						</a>
-					</h3>
+						<a class="clickable" (click)="requestKnowledgeStory()" *ngIf="cookieUserId !== urluserId">
+							Request Knowledge Story
+						</a>
+					</div>
 				</div>
 				<div class="row border-top" *ngIf="other_languages || profileObj.location_string">
 					<div class="col-xs-1" style="padding-left: 0px;">
@@ -608,7 +613,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row bottom-panel margin-top-30" *ngIf="!loadingLearningJourney && !loadingProfile">
+		<!--<div class="row bottom-panel margin-top-30" *ngIf="!loadingLearningJourney && !loadingProfile">
 			<hr class="col-md-10 col-md-offset-1 margin-bottom-30" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || (participatingWorkshops && participatingWorkshops.length > 0)">
 			<div class="col-md-offset-1 col-md-10" *ngIf="(!participatingWorkshops && cookieUserId === urluserId) || (participatingWorkshops && participatingWorkshops.length > 0)">
 				<div class="row">
@@ -626,7 +631,7 @@
 							</mat-select>
 						</mat-form-field>
 					</div>
-					<!--TODO: Add button to see all learning journey of another user-->
+					&lt;!&ndash;TODO: Add button to see all learning journey of another user&ndash;&gt;
 				</div>
 				<div class="row feed-horizontal margin-top-20" style="padding: 0px 7px;">
 					<div *ngFor="let workshop of participatingWorkshops; let i =index">
@@ -668,47 +673,50 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="row bottom-panel margin-top-30">
+		</div>-->
+		<div class="row bottom-panel margin-top-30" *ngIf="!loadingKnowledgeStories && !loadingProfile && knowledgeStories.length > 0">
 			<hr class="col-md-10 col-md-offset-1 margin-bottom-30">
 			<div class="col-md-offset-1 col-md-10">
 				<div class="row">
 					<div class="col-md-8">
-						<span class="mat-title">Knowledge Story</span>
-						<button color="accent" *ngIf="cookieUserId===urluserId" (click)="generateKnowledgeStoryDialog()" mat-raised-button>Generate</button>
-						<button color="accent" *ngIf="cookieUserId!==urluserId" (click)="requestKnowledgeStory()" mat-raised-button>Request</button>
+						<span class="mat-title">Knowledge Stories</span>
+						<!--<button color="accent" *ngIf="cookieUserId===urluserId" (click)="generateKnowledgeStoryDialog()" mat-raised-button>Generate</button>
+						<button color="accent" *ngIf="cookieUserId!==urluserId" (click)="requestKnowledgeStory()" mat-raised-button>Request</button>-->
 					</div>
 				</div>
-				<div class="row feed-horizontal margin-top-20" style="padding: 0px 7px;">
-					<div class="col-xs-12 col-md-3" *ngFor="let story of knowledgeStories">
-						<mat-card class="card">
-							<mat-card-content>
-								<div class="row">
-									<div class="col-xs-12">
-										<a *ngIf="story.status==='approved'" [routerLink]="'/knowledge-story/'+story.id">
-											Go to Story
-										</a>
-									</div>
-									<div class="col-xs-12">
-										<div>
-											{{story.status}}
+				<div class="row feed-horizontal margin-top-40" style="padding: 0px 7px;">
+					<div *ngFor="let story of knowledgeStories; let i = index;">
+						<div class="col-xs-12 col-md-3" *ngIf="i < 4">
+							<mat-card class="card clickable storyCard" (click)="openStory(story)" style="text-align: center; min-height: 250px;">
+								<mat-card-content>
+									<div class="row">
+										<div class="col-xs-12 margin-top-40">
+											<div *ngIf="story.protagonist[0] && story.protagonist[0].profiles[0]">
+												<app-profile-popup [peer]="story.protagonist[0]"></app-profile-popup>
+												<br/>
+												<div class="mat-subheading-1">
+													{{story.protagonist[0].profiles[0].first_name+ ' ' +story.protagonist[0].profiles[0].last_name | ucwords}}
+												</div>
+											</div>
 										</div>
-									</div>
-									<div class="col-xs-12">
-										<div *ngIf="story.protagonist[0] && story.protagonist[0].profiles[0]">
-											{{story.protagonist[0].profiles[0].first_name+ ' ' +story.protagonist[0].profiles[0].last_name}}
-										</div>
-									</div>
-									<div class="col-xs-12">
-										<div class="row" *ngIf="story.topics.length>0">
-											<div class="col-xs-2" *ngFor="let topic of story.topics">
-												{{topic.name}}
+										<div class="col-xs-12 margin-top-20">
+											<div class="row mat-body-2" *ngIf="story.topics.length>0">
+												<div class="col-xs-12" *ngFor="let topic of story.topics">
+													{{topic.name | ucwords}}
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-							</mat-card-content>
-						</mat-card>
+								</mat-card-content>
+							</mat-card>
+						</div>
+					</div>
+					<div *ngIf="knowledgeStories.length === 0">
+						<div class="col-md-12">
+							<div class="mat-caption lightText">
+								All knowledge stories you share with the world appear here..
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -732,7 +740,7 @@
 								</div>
 								<div class="mat-body-2" style="margin-top: -3px;">{{community.title | titlecase}}</div>
 								<span *ngFor="let participant of community.participants; let i=index">
-									<div *ngIf="i<7" class="image-inline">
+									<div *ngIf="i<6" class="image-inline">
 										<app-profile-popup class="communityCardProfileImages" [peer]="participant"></app-profile-popup>
 									</div>
 								</span>
@@ -775,11 +783,12 @@
 							</div>
 							<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}</div>
 							<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
-							<div *ngIf="peer.wallet && peer.wallet.length > 0">
-								<i class="fab fa-ethereum"></i> {{peer.wallet[0].gyan_balance}} Gyan
+							<div *ngIf="peer.ethAddress">
+								<i class="fab fa-ethereum"></i> {{peer.id | gyanBalance | async}} Gyan
 							</div>
-							<div *ngIf="!peer.wallet || peer.wallet.length === 0">
-								<i class="fab fa-ethereum"></i> 0 Gyan</div>
+							<div *ngIf="!peer.ethAddress">
+								<i class="fab fa-ethereum"></i> 0 Gyan
+							</div>
 							<div class="col-sm-12 padding-left-0 ">
 								<span *ngIf="!peer.topics || peer.topics.length<=2 ">
 									{{peer.topics}}

@@ -242,12 +242,12 @@ export class ConsoleAdminComponent implements OnInit {
 
 	/**
 	 * deleteRequest
-		id: string	 
+		id: string
 	*/
 	public deleteRequest(id: string) {
 		this._communityService.deleteRequest(id).subscribe(res => {
 			this.snackBar.open('Deleted Request', 'close', {
-				duration: 800
+				duration: 5000
 			});
 			this.fetchCommunityRequests();
 		});
@@ -258,14 +258,14 @@ export class ConsoleAdminComponent implements OnInit {
 			{ type: 'public' }
 		).flatMap(res => {
 			if (res) {
-				return this._scholarshipService.createScholarship(res);
+				return this._scholarshipService.createScholarship(res.scholarshipForm);
 			}
 		}).subscribe(res => {
 			console.log(res);
 			this.fetchScholarShips();
-			this.snackBar.open('Scholarship created', 'close', { duration: 800 });
+			this.snackBar.open('Scholarship created', 'close', { duration: 5000 });
 		}, err => {
-			this.snackBar.open('Error', 'close', { duration: 800 });
+			this.snackBar.open('Error', 'close', { duration: 5000 });
 		});
 
 	}
@@ -294,7 +294,7 @@ export class ConsoleAdminComponent implements OnInit {
 			.subscribe(res => {
 				console.log(res);
 				this.snackBar.open('Updated', 'Close', {
-					duration: 800
+					duration: 5000
 				});
 				this.fetchScholarShips();
 			});
@@ -304,7 +304,7 @@ export class ConsoleAdminComponent implements OnInit {
 		this._topicService.addNewTopic(this.topicForm.value.name).subscribe(res => {
 			this.topicForm.reset();
 			this.snackBar.open('Added', 'Close', {
-				duration: 800
+				duration: 5000
 			});
 		});
 	}
@@ -313,7 +313,7 @@ export class ConsoleAdminComponent implements OnInit {
 		this._LanguagePickerService.addLanguage(this.languageForm.value).subscribe(res => {
 			this.languageForm.reset();
 			this.snackBar.open('Added', 'Close', {
-				duration: 800
+				duration: 5000
 			});
 		});
 	}

@@ -40,6 +40,8 @@ export class AppHeaderComponent implements OnInit {
 	public userId;
 	public envVariable;
 	public options: any[];
+	public isEmailVerified: boolean;
+
 	public defaultProfileUrl: string;
 	public isTeacher: boolean;
 	public makeOldNotification: Array<any>;
@@ -91,6 +93,7 @@ export class AppHeaderComponent implements OnInit {
 		this.userType = '';
 		this.envVariable = environment;
 		this.profile = {};
+		this.isEmailVerified = false;
 		this.loggedIn = this.authService.isLoginSubject.value;
 		this.userId = this._cookieService.getValue('userId');
 		console.log(this.userId);
@@ -113,11 +116,13 @@ export class AppHeaderComponent implements OnInit {
 			this._profileService.getCompactProfile(this.userId).subscribe(profile => {
 				if (profile && profile.length > 0) {
 					this.profile = profile[0];
+					this.isEmailVerified = this.profile.peer[0].emailVerified;
 					if (this.profile.peer[0].ownedCollections !== undefined && this.profile.peer[0].ownedCollections.length > 0) {
 						this.isTeacher = true;
 					}
 					this.profileCompletionObject = this._profileService.getProfileProgressObject(this.profile);
-					if (this.router.url !== '/signup-social' && this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
+					console.log(this.profileCompletionObject);
+					if (this.router.url !== '/signup-social' && this.router.url !== '/verification/1' && this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
 						// Incomplete Social signup. Redirect user to finish it.
 						this.router.navigate(['signup-social']);
 						this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {

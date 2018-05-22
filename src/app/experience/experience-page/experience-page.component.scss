@@ -340,28 +340,26 @@ div.event span:first-child {
 }
 
 .pending-actions{
-    background-color: #ff5b5f;
-    color: white;
+    background-color: #eeeeee;
+    color: #333;
     padding: 12px 0px;
     font-size: 14px;
-    border-bottom: 1px solid #ff6d71;
+    border-bottom: 1px solid #dddddd;
 }
 
 .upcoming-actions{
-    background-color: #33bd9e;
-    color: white;
+    background-color: #eeeeee;
+    color: #333;
     padding: 12px 0px;
     font-size: 14px;
-    border-bottom: 1px solid #1dad8d;
+    border-bottom: 1px solid #dddddd;
 }
 
 .pending-actions a {
-    color: #ffffff;
     font-weight: 500;
 }
 
 .upcoming-actions a {
-    color: #ffffff;
     font-weight: 500;
 }
 

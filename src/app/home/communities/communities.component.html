@@ -15,12 +15,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row pending-actions center">
-                <div class="col-md-10 col-md-offset-1">
-                    <span>Don't find a community you belong?
-                        <b class="clickable" (click)="_dialogsService.requestCommunityDialog()">Click here</b> to request a new Community</span>
-                </div>
-            </div>
             <div class="mat-display-1" style="margin-bottom: 5px !important; margin-top: 34px;">
                 Explore Peerbuds
             </div>
@@ -71,13 +65,19 @@
                             </div>
                         </div>
                         <div *ngIf="community.participants  && community.participants.length > 0" style="margin-top: 3px;">
-                            <div *ngFor="let participant of community.participants" class="communityParticipants" style="display: inline-block;">
-                                <app-profile-popup [peer]="participant"></app-profile-popup>
+                            <div *ngFor="let participant of community.participants; let i = index" class="communityParticipants" style="display: inline-block;">
+                                <app-profile-popup *ngIf="i<6" [peer]="participant"></app-profile-popup>
                             </div>
                         </div>
                     </a>
                 </div>
             </div>
+	        <div class="row more-actions center">
+		        <div class="col-md-10 col-md-offset-1">
+			        <span>Didn't find a community you belong to?
+				        <b class="clickable" (click)="_dialogsService.requestCommunityDialog()">Let us know</b> and we'll do our best to create one for your like</span>
+		        </div>
+	        </div>
         </div>
     </div>
 </div>

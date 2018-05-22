@@ -93,9 +93,6 @@ export class LeftSidebarService {
             sidebarMenuItems[1].submenu[3].complete = true;
             completedSections++;
         }
-        // if (collection.imageUrls !== null && collection.videoUrls !== null
-        //     && collection.imageUrls !== undefined && collection.videoUrls !== undefined
-        //     && collection.imageUrls.length > 0 && collection.videoUrls.length > 0) {
         if ((collection.imageUrls && collection.imageUrls.length > 0)
             || (collection.videoUrls && collection.videoUrls.length > 0)) {
             sidebarMenuItems[1].submenu[4].complete = true;
@@ -117,11 +114,9 @@ export class LeftSidebarService {
             }, this);
             completedSections++;
         }
-        if (completedSections !== 10) {
-            sidebarMenuItems[3].locked = true;
-        } else {
-            sidebarMenuItems[3].locked = false;
-        }
+        
+        sidebarMenuItems[3].locked = completedSections !== 11;
+        
         if (collection.owners !== undefined && collection.owners[0].phoneVerified) {
             sidebarMenuItems[4].submenu[0].complete = true;
         }

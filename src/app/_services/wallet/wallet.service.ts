@@ -7,33 +7,45 @@ import { RequestHeaderService } from '../requestHeader/request-header.service';
 @Injectable()
 export class WalletService {
 
-  private userId: string;
-  constructor(
-    private http: HttpClient,
-    private _cookieUtilsService: CookieUtilsService,
-    private requestHeaderService: RequestHeaderService
-  ) {
-    this.userId = _cookieUtilsService.getValue('userId');
-  }
+	private userId: string;
+	constructor(
+		private http: HttpClient,
+		private _cookieUtilsService: CookieUtilsService,
+		private requestHeaderService: RequestHeaderService
+	) {
+		this.userId = _cookieUtilsService.getValue('userId');
+	}
 
-  /**
-   * getWallet
-   */
-  public getWallet() {
-    return this.http.get(environment.apiUrl + '/api/peers/' + this.userId + '/wallet', this.requestHeaderService.options);
-  }
+	/**
+	 * getWallet
+	 */
+	public getWallet() {
+		return this.http.get(environment.apiUrl + '/api/peers/' + this.userId + '/wallet', this.requestHeaderService.options)
+			.map((response: any) => response, (err) => {
+				console.log(err);
+			});
+	}
 
+	public fixWallet(userId, body) {
+		return this.http
+			.post(environment.apiUrl + '/api/peers/' + userId + '/fixWallet', body, this.requestHeaderService.options)
+			.map(
+				(response: any) => response,
+				(err) => {
+					console.log('Error: ' + err);
+				});
 
+	}
 
-  /**
-   * createWallet
-   */
-  public createWallet() {
-    return this.http.post(environment.apiUrl + '/api/peers/' + this.userId + '/wallet', {
-      'gyan_balance': 0,
-      'karma_balance': 0
-    }, this.requestHeaderService.options);
+	/**
+	 * createWallet
+	 */
+	public createWallet() {
+		return this.http.post(environment.apiUrl + '/api/peers/' + this.userId + '/wallet', {
+			'gyan_balance': 0,
+			'karma_balance': 0
+		}, this.requestHeaderService.options);
 
-  }
+	}
 
 }

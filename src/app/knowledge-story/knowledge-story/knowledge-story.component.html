@@ -1,5 +1,114 @@
-<div class="main-content">
-  <p>
-    Story under construction!
-  </p>
+<div class="main-content knowledgeStoryPage">
+	<div class="loading-container" [hidden]="!loadingKnowledgeStory" style="margin-left: 8.5%; margin-top: 3%;">
+		<ngx-loading [show]="true"></ngx-loading>
+	</div>
+	<div *ngIf="knowledgeStory">
+		<div class="row margin-top-40">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="col-md-7 left-content">
+					<div class="row knowledgestory-header">
+						<div class="col-md-12">
+							<p class="mat-display-1" style="margin-bottom: 20px !important;">
+								<span *ngIf="ownerView">Your </span>Knowledge Story
+								&emsp;
+								<i class="fa fa-lock lightText mat-caption" *ngIf="knowledgeStory.visibility === 'private'"></i>
+								<i class="fa fa-globe lightText mat-caption" *ngIf="knowledgeStory.visibility === 'public'"></i>
+							</p>
+							<p class="mat-caption lightText">
+								First requested on {{knowledgeStory.createdAt | extractTime : 'Do MMM, YYYY'}}
+							</p>
+							<hr>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<h3>Topics</h3>
+						</div>
+						<div class="col-xs-12 margin-top-10">
+							<mat-chip-list style="display: inline-block;">
+								<mat-chip class="square" *ngFor="let topic of knowledgeStory.topics"> {{topic.name | ucwords}}
+								</mat-chip>
+							</mat-chip-list>
+							<hr>
+						</div>
+						<div class="col-xs-12" *ngIf="knowledgeStory.status === 'approved'">
+							<h3>Real time updates</h3>
+						</div>
+						<div class="col-xs-12 mat-caption lightText" *ngIf="knowledgeStory.status === 'approved'">
+							All your learning and teaching efforts will show up here...
+						</div>
+						<div class="col-xs-12" *ngIf="knowledgeStory.status === 'rejected'">
+							<h3 class="mat-error">Request denied by {{knowledgeStory.protagonist[0].profiles[0].first_name | ucwords}}</h3>
+						</div>
+						<div class="col-xs-12 mat-caption lightText" *ngIf="knowledgeStory.status === 'rejected'">
+							This knowledge story can not be viewed.
+						</div>
+						<div class="col-xs-12" *ngIf="knowledgeStory.status === 'pending'">
+							<h3 class="mat-error">Pending approval form {{knowledgeStory.protagonist[0].profiles[0].first_name | ucwords}}</h3>
+						</div>
+						<div class="col-xs-12 mat-caption lightText" *ngIf="knowledgeStory.status === 'pending'">
+							All your learning and teaching efforts will show up here...
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-md-4 col-md-offset-1 margin-top-50 right-content">
+					<div class="row">
+						<div class="col-md-12">
+							<mat-card>
+								<mat-card-content>
+									<div class="row">
+										<div class="col-xs-12">
+											<div class="margin-bottom-10">
+												<img class="ownerImage" [src]="envVariable.apiUrl + knowledgeStory.protagonist[0].profiles[0].picture_url + '/300'" alt="image" (error)="_collectionService.userImgErrorHandler($event)" />
+											</div>
+											<div class="mat-subheading-2">
+												{{knowledgeStory.protagonist[0].profiles[0].first_name + ' ' + knowledgeStory.protagonist[0].profiles[0].last_name | ucwords}}
+												<br/>
+												<span class="mat-caption lightText">{{knowledgeStory.protagonist[0].profiles[0].headline}}</span>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12">
+											Member since <b>{{knowledgeStory.protagonist[0].createdAt | extractTime: 'Do MMM, YYYY'}}</b>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12 center" *ngIf="!viewerApproved && !ownerView">
+											<hr>
+											<span *ngIf="userId !== undefined && userId.length > 5" matTooltip="Please wait for your account to be approved before requesting to view this private knowledge story"
+											      [matTooltipDisabled]="accountApproved === 'true'">
+												<button mat-raised-button color="primary" [disabled]="accountApproved !== 'true'">Request to view</button>
+											</span>
+											<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to view this knowledge story">
+												<button mat-raised-button color="primary" [disabled]="true">Login to view</button>
+											</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12 center" *ngIf="viewerApproved && !ownerView">
+											<hr>
+											You can view this story
+											<hr>
+										</div>
+									</div>
+								</mat-card-content>
+							</mat-card>
+						</div>
+					</div>
+					<hr class="margin-top-30 margin-bottom-10">
+					<div class="row" style="color: #777777" *ngIf="ownerView">
+						<div class="col-xs-4" style="cursor: pointer;">
+							<a (click)="openInviteFriendsDialog()">Invite friends</a>
+						</div>
+						<div class="col-xs-4" style="cursor: pointer;">
+							Share&nbsp;
+							<i class="fa fa-facebook-square clickable" aria-hidden="true" style="font-size: 1rem;" (click)="shareOnFb()"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

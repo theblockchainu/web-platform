@@ -57,6 +57,7 @@ import { RequestCommunityDialogComponent } from './request-community-dialog/requ
 import { ScholarshipDialogComponent } from './scholarship-dialog/scholarship-dialog.component';
 import { GenerateKnowledgeStoryComponent } from './generate-knowledge-story/generate-knowledge-story.component';
 import { RequestKnowledgeStoryComponent } from './request-knowledge-story/request-knowledge-story.component';
+import { ConfirmPasswordDialogComponent } from './confirm-password-dialog/confirm-password-dialog.component';
 
 @NgModule({
 	imports: [
@@ -93,7 +94,8 @@ import { RequestKnowledgeStoryComponent } from './request-knowledge-story/reques
 		RequestCommunityDialogComponent,
 		ScholarshipDialogComponent,
 		GenerateKnowledgeStoryComponent,
-		RequestKnowledgeStoryComponent
+		RequestKnowledgeStoryComponent,
+		ConfirmPasswordDialogComponent
 	],
 	providers: [
 		DialogsService,
@@ -113,7 +115,7 @@ import { RequestKnowledgeStoryComponent } from './request-knowledge-story/reques
 		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent,
 		EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent,
 		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent, RequestCommunityDialogComponent,
-		ScholarshipDialogComponent, GenerateKnowledgeStoryComponent, RequestKnowledgeStoryComponent
+		ScholarshipDialogComponent, GenerateKnowledgeStoryComponent, RequestKnowledgeStoryComponent, ConfirmPasswordDialogComponent
 	],
 })
 export class DialogsModule { }

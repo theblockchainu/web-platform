@@ -250,8 +250,8 @@
                             </div>
                         </div>
                         <div *ngIf="community.participants !== undefined && community.participants.length > 0" style="margin-top: 3px;">
-                            <div *ngFor="let participant of community.participants" style="display: inline-block;" class="communityParticipants">
-                                <app-profile-popup [peer]="participant"></app-profile-popup>
+                            <div *ngFor="let participant of community.participants; let i = index" style="display: inline-block;" class="communityParticipants">
+                                <app-profile-popup *ngIf="i<6" [peer]="participant"></app-profile-popup>
                             </div>
                         </div>
                     </a>
@@ -290,10 +290,10 @@
                         </div>
                         <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe
                         </div>
-	                    <div *ngIf="peer.wallet && peer.wallet.length > 0">
-		                    <i class="fab fa-ethereum"></i> {{peer.wallet[0].gyan_balance}} Gyan
+	                    <div *ngIf="peer.ethAddress">
+		                    <i class="fab fa-ethereum"></i> {{peer.id | gyanBalance | async}} Gyan
 	                    </div>
-	                    <div *ngIf="!peer.wallet || peer.wallet.length === 0"><i class="fab fa-ethereum"></i> 0 Gyan</div>
+	                    <div *ngIf="!peer.ethAddress"><i class="fab fa-ethereum"></i> 0 Gyan</div>
                         <div class="col-sm-12 padding-left-0">
                             <span *ngIf="peer.topics.length<=2">
                                 {{peer.topics}}

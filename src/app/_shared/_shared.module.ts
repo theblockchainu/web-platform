@@ -76,6 +76,8 @@ import { TopicRowComponent } from './topic-row/topic-row.component';
 import { AssessmentService } from '../_services/assessment/assessment.service';
 import { WalletService } from '../_services/wallet/wallet.service';
 import { ScholarshipService } from '../_services/scholarship/scholarship.service';
+import { GyanBalancePipe } from './gyan-balance/gyan-balance.pipe';
+import { KarmaBalancePipe } from './karma-balance/karma-balance.pipe';
 import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-story.service';
 @NgModule({
     imports: [
@@ -113,7 +115,9 @@ import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-st
         TrimPipe,
         TextIconCarouselComponent,
         TimeToNowPipe,
-        TopicRowComponent
+        TopicRowComponent,
+        GyanBalancePipe,
+        KarmaBalancePipe
     ],
     providers: [
         CollectionService,
@@ -196,6 +200,8 @@ import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-st
         ExtractTimePipe,
         LoadingModule,
         ConvertCurrencyPipe,
+		GyanBalancePipe,
+		KarmaBalancePipe,
         ProfilePopupComponent,
         TrimPipe,
         TextIconCarouselComponent,

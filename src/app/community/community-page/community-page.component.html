@@ -4,10 +4,10 @@
 			<ngx-loading [show]="true"></ngx-loading>
 		</div>
 		<div *ngIf="community">
-			<div class="row pending-actions center">
+			<div class="row more-actions center" *ngIf="userType === 'public'">
 				<div class="col-md-10 col-md-offset-1">
-					<span>Not the community you required?
-						<a class="clickable" (click)="dialogsService.requestCommunityDialog()">Click here</a> to request a new Community</span>
+					<span>Cannot find a community you were looking for?
+						<a class="clickable" (click)="dialogsService.requestCommunityDialog()">Let us know</a> and we'll do our best to create one for you</span>
 				</div>
 			</div>
 			<div class="row pending-actions" *ngIf="community.status === 'cancelled' && userType==='owner' ">
@@ -76,7 +76,7 @@
 										<mat-chip class="square" *ngFor="let topic of topicFix"> {{topic.name | ucwords}}
 										</mat-chip>
 									</mat-chip-list>
-									<mat-icon class="clickable" color="primary" style="margin-left: 20px; top: 5px;">edit</mat-icon>
+									<!--<mat-icon class="clickable" color="primary" style="margin-left: 20px; top: 5px;">edit</mat-icon>-->
 								</div>
 							</div>
 							<!--DISCUSSION THREAD-->

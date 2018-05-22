@@ -32,9 +32,11 @@ import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-st
 })
 export class ProfileComponent implements OnInit {
 	public cookieUserId;
+	public gyanBalance;
 	public loadingProfile;
 	public loadingLearningJourney;
 	public loadingPeers;
+	public loadingKnowledgeStories;
 	public envVariable;
 	public urluserId: string;
 	public profileObj: any;
@@ -119,6 +121,7 @@ export class ProfileComponent implements OnInit {
 		this.loadingLearningJourney = true;
 		this.loadingCommunities = true;
 		this.loadingPeers = true;
+		this.loadingKnowledgeStories = true;
 		this.collectionTypes = ['workshops'];
 		this.recommendedpeers = [];
 		this.socialIdentities = {};
@@ -145,6 +148,9 @@ export class ProfileComponent implements OnInit {
 	public getPeerData() {
 		this._profileService.getPeerNode(this.urluserId).subscribe(result => {
 			this.peerObj = result;
+		});
+		this._profileService.getGyanBalance(this.urluserId).subscribe(result => {
+			this.gyanBalance = result;
 		});
 	}
 	private getIdentities() {
@@ -660,6 +666,7 @@ export class ProfileComponent implements OnInit {
 		const peers = [];
 		this._dialogsService.generateKnowledgeStoryDialog(this.cookieUserId, inputs)
 			.subscribe(dialogResult => {
+				let createdKnowledgeStoryId;
 				if (dialogResult) {
 					dialogResult.selectedTopics.forEach(topic => {
 						topics.push(topic.id);
@@ -671,6 +678,8 @@ export class ProfileComponent implements OnInit {
 						status: 'approved',
 						visibility: (peers.length === 0) ? 'public' : 'private'
 					}).flatMap((res: any) => {
+						console.log(res);
+						createdKnowledgeStoryId = res.id;
 						return this._knowledgeStoryService.connectTopics(res.id, { targetIds: topics }).map
 							(result => {
 								this._knowledgeStoryService.connectPeers(res.id, { targetIds: peers }).subscribe(peersConnected => {
@@ -680,11 +689,11 @@ export class ProfileComponent implements OnInit {
 					}).subscribe(res => {
 						console.log(res);
 						this.getKnowledgeStories();
-						this.snackBar.open('Story Created', 'Close', { duration: 800 });
-
+						this.snackBar.open('Your knowledge story has been created.', 'Close', { duration: 5000 });
+						this.router.navigate(['story', createdKnowledgeStoryId]);
 					}, err => {
 						console.log(err);
-						this.snackBar.open('Error in Generating Story', 'Close', { duration: 800 });
+						this.snackBar.open('Error. Could not generate your knowledge story.', 'Close', { duration: 5000 });
 					});
 				}
 			});
@@ -717,13 +726,13 @@ export class ProfileComponent implements OnInit {
 						if (res) {
 							console.log(res);
 							this.getKnowledgeStories();
-							this.snackBar.open('Story Requested', 'Close', { duration: 800 });
+							this.snackBar.open('Your request for knowledge story has been sent.', 'Close', { duration: 5000 });
 						} else {
-							this.snackBar.open('Error in Requesting Story', 'Close', { duration: 800 });
+							this.snackBar.open('Could not send knowledge story request. Try again.', 'Close', { duration: 5000 });
 						}
 					}, err => {
 						console.log(err);
-						this.snackBar.open('Error in Requesting Story', 'Close', { duration: 800 });
+						this.snackBar.open('Could not send knowledge story request. Try again.', 'Close', { duration: 5000 });
 					});
 				}
 			});
@@ -731,7 +740,8 @@ export class ProfileComponent implements OnInit {
 
 	getKnowledgeStories() {
 		const filter = {
-			'include': [{ 'protagonist': 'profiles' }, { 'peer': 'profiles' }, 'topics']
+			'include': [{ 'protagonist': 'profiles' }, { 'peer': 'profiles' }, 'topics'],
+			'where': {'status': {'eq': 'approved'}}
 		};
 		this.knowledgeStories = [];
 		this._knowledgeStoryService.getknowledgeStoryRequests(this.urluserId, filter).subscribe((res: any) => {
@@ -749,6 +759,15 @@ export class ProfileComponent implements OnInit {
 					}
 				}
 			});
+			this.loadingKnowledgeStories = false;
 		});
+	}
+	
+	public openStory(story) {
+		if (story.status === 'approved') {
+			this.router.navigate(['story', story.id]);
+		} else {
+			this.snackBar.open('Cannot open this story as it is yet to be approved.', 'Ok', { duration : 5000 });
+		}
 	}
 }

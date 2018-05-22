@@ -32,179 +32,179 @@ import { ConsoleAdminComponent } from './console-admin/console-admin.component';
 import { ContentLearningBookmarksComponent } from './console-learning/content-learning-bookmarks/content-learning-bookmarks.component';
 import { ConsoleAccountWalletComponent } from './console-account/console-account-wallet/console-account-wallet.component';
 import { ConsoleAccountScholarshipsComponent } from './console-account/console-account-scholarships/console-account-scholarships.component';
-import { ConsoleAccountKnowledgeStoryComponent } from './console-account/console-account-knowledge-story/console-account-knowledge-story.component';
+import {ConsoleLearningKnowledgeStoryComponent} from './console-learning/console-learning-knowledge-story/console-learning-knowledge-story.component';
 
 const routes: Routes = [{
-  path: '',
-  component: ConsoleComponent,
-  canActivate: [AuthGuardService],
-  children: [
-    {
-      path: 'dashboard',
-      component: ConsoleDashboardComponent,
-      canActivate: [AuthGuardService]
-    },
-    {
-      path: 'inbox',
-      component: ConsoleInboxComponent,
-      canActivate: [AuthGuardService]
-    },
-    {
-      path: 'inbox/:roomId',
-      component: ConsoleInboxComponent,
-      canActivate: [AuthGuardService]
-    },
-    {
-      path: 'learning',
-      component: ConsoleLearningComponent,
-      canActivate: [AuthGuardService],
-      children: [
-        {
-          path: 'all',
-          component: ConsoleLearningAllComponent
-        },
-        {
-          path: 'workshops',
-          component: ConsoleLearningWorkshopsComponent
-        },
-        {
-          path: 'experiences',
-          component: ConsoleLearningExperiencesComponent
-        },
-        {
-          path: 'bookmarks',
-          component: ContentLearningBookmarksComponent
-        },
-        {
-          path: 'sessions',
-          component: ConsoleLearningSessionsComponent
-        },
-        {
-          path: '',
-          component: ConsoleLearningAllComponent
-        }
-      ]
-    },
-    {
-      path: 'teaching',
-      component: ConsoleTeachingComponent,
-      canActivate: [AuthGuardService],
-      children: [
-        {
-          path: 'all',
-          component: ConsoleTeachingAllComponent
-        },
-        {
-          path: 'workshops',
-          component: ConsoleTeachingWorkshopComponent
-        },
-        {
-          path: 'experiences',
-          component: ConsoleTeachingExperienceComponent
-        },
-        {
-          path: 'sessions',
-          component: ConsoleTeachingSessionComponent
-        },
-        {
-          path: '',
-          component: ConsoleTeachingAllComponent
-        }
-      ]
-    },
-    {
-      path: 'profile',
-      component: ConsoleProfileComponent,
-      canActivate: [AuthGuardService],
-      children: [
-        {
-          path: 'edit',
-          component: ConsoleProfileEditComponent
-        },
-        {
-          path: 'photos',
-          component: ConsoleProfilePhotosComponent
-        },
-        {
-          path: 'topics',
-          component: ConsoleProfileTopicsComponent
-        },
-        {
-          path: 'verification',
-          component: ConsoleProfileVerificationComponent
-        },
-        {
-          path: 'reviews',
-          component: ConsoleProfileReviewsComponent
-        },
-        {
-          path: '',
-          component: ConsoleProfileEditComponent
-        }
-      ]
-    },
-    {
-      path: 'account',
-      component: ConsoleAccountComponent,
-      canActivate: [AuthGuardService],
-      children: [
-        {
-          path: 'notifications',
-          component: ConsoleAccountNotificationsComponent
-        },
-        {
-          path: 'paymentmethods',
-          component: ConsoleAccountPaymentmethodsComponent
-        },
-        {
-          path: 'payoutmethods',
-          component: ConsoleAccountPayoutmethodsComponent
-        },
-        {
-          path: 'transactions',
-          component: ConsoleAccountTransactionhistoryComponent
-        },
-        {
-          path: 'security',
-          component: ConsoleAccountSecurityComponent
-        },
-        {
-          path: 'privacy',
-          component: ConsoleAccountPrivacyComponent
-        },
-        {
-          path: 'settings',
-          component: ConsoleAccountSettingsComponent
-        },
-        {
-          path: 'wallet',
-          component: ConsoleAccountWalletComponent
-        },
-        {
-          path: 'scholarships',
-          component: ConsoleAccountScholarshipsComponent
-        },
-        {
-          path: 'knowledge-story',
-          component: ConsoleAccountKnowledgeStoryComponent
-        },
-        {
-          path: '',
-          component: ConsoleAccountNotificationsComponent
-        }
-      ]
-    },
-    {
-      path: 'admin',
-      canActivate: [AuthGuardService],
-      component: ConsoleAdminComponent
-    }
-  ]
+	path: '',
+	component: ConsoleComponent,
+	canActivate: [AuthGuardService],
+	children: [
+		{
+			path: 'dashboard',
+			component: ConsoleDashboardComponent,
+			canActivate: [AuthGuardService]
+		},
+		{
+			path: 'inbox',
+			component: ConsoleInboxComponent,
+			canActivate: [AuthGuardService]
+		},
+		{
+			path: 'inbox/:roomId',
+			component: ConsoleInboxComponent,
+			canActivate: [AuthGuardService]
+		},
+		{
+			path: 'learning',
+			component: ConsoleLearningComponent,
+			canActivate: [AuthGuardService],
+			children: [
+				{
+					path: 'all',
+					component: ConsoleLearningAllComponent
+				},
+				{
+					path: 'workshops',
+					component: ConsoleLearningWorkshopsComponent
+				},
+				{
+					path: 'experiences',
+					component: ConsoleLearningExperiencesComponent
+				},
+				{
+					path: 'bookmarks',
+					component: ContentLearningBookmarksComponent
+				},
+				{
+					path: 'story',
+					component: ConsoleLearningKnowledgeStoryComponent
+				},
+				{
+					path: 'sessions',
+					component: ConsoleLearningSessionsComponent
+				},
+				{
+					path: '',
+					component: ConsoleLearningAllComponent
+				}
+			]
+		},
+		{
+			path: 'teaching',
+			component: ConsoleTeachingComponent,
+			canActivate: [AuthGuardService],
+			children: [
+				{
+					path: 'all',
+					component: ConsoleTeachingAllComponent
+				},
+				{
+					path: 'workshops',
+					component: ConsoleTeachingWorkshopComponent
+				},
+				{
+					path: 'experiences',
+					component: ConsoleTeachingExperienceComponent
+				},
+				{
+					path: 'sessions',
+					component: ConsoleTeachingSessionComponent
+				},
+				{
+					path: '',
+					component: ConsoleTeachingAllComponent
+				}
+			]
+		},
+		{
+			path: 'profile',
+			component: ConsoleProfileComponent,
+			canActivate: [AuthGuardService],
+			children: [
+				{
+					path: 'edit',
+					component: ConsoleProfileEditComponent
+				},
+				{
+					path: 'photos',
+					component: ConsoleProfilePhotosComponent
+				},
+				{
+					path: 'topics',
+					component: ConsoleProfileTopicsComponent
+				},
+				{
+					path: 'verification',
+					component: ConsoleProfileVerificationComponent
+				},
+				{
+					path: 'reviews',
+					component: ConsoleProfileReviewsComponent
+				},
+				{
+					path: '',
+					component: ConsoleProfileEditComponent
+				}
+			]
+		},
+		{
+			path: 'account',
+			component: ConsoleAccountComponent,
+			canActivate: [AuthGuardService],
+			children: [
+				{
+					path: 'notifications',
+					component: ConsoleAccountNotificationsComponent
+				},
+				{
+					path: 'paymentmethods',
+					component: ConsoleAccountPaymentmethodsComponent
+				},
+				{
+					path: 'payoutmethods',
+					component: ConsoleAccountPayoutmethodsComponent
+				},
+				{
+					path: 'transactions',
+					component: ConsoleAccountTransactionhistoryComponent
+				},
+				{
+					path: 'security',
+					component: ConsoleAccountSecurityComponent
+				},
+				{
+					path: 'privacy',
+					component: ConsoleAccountPrivacyComponent
+				},
+				{
+					path: 'settings',
+					component: ConsoleAccountSettingsComponent
+				},
+				{
+					path: 'wallet',
+					component: ConsoleAccountWalletComponent
+				},
+				{
+					path: 'scholarships',
+					component: ConsoleAccountScholarshipsComponent
+				},
+				{
+					path: '',
+					component: ConsoleAccountNotificationsComponent
+				}
+			]
+		},
+		{
+			path: 'admin',
+			canActivate: [AuthGuardService],
+			component: ConsoleAdminComponent
+		}
+	]
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forChild(routes)],
+	exports: [RouterModule]
 })
 export class ConsoleRoutingModule {
 

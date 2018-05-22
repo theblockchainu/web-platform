@@ -1,16 +1,25 @@
 <div mat-dialog-content class="dialog-container">
-  <div class="row">
-    <div class="col-xs-12">
-      <h1> {{data.first_name}}'s Gyan Transactions</h1>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12">
-      <h2 *ngIf="data.peer[0].wallet">
-        <i class="fab fa-ethereum">
-        </i>
-        {{data.peer[0].wallet[0].gyan_balance}}
-      </h2>
-    </div>
-  </div>
+	<div class="row">
+		<div class="col-md-12">
+			<button disableRipple mat-button style="min-width: 30px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+			</button>
+			<div class="mat-display-1" style="margin-bottom: 20px;">
+				{{data.first_name | ucwords}}'s Knowledge Story
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-xs-2">
+			<app-profile-popup [peer]="data.peer[0]"></app-profile-popup>
+		</div>
+		<div class="col-xs-10">
+			<h2 *ngIf="data.peer[0].ethAddress">
+				<i class="fab fa-ethereum">
+				</i>
+				 {{data.peer[0].id | gyanBalance | async}} Gyan
+			</h2>
+		</div>
+	</div>
 </div>
