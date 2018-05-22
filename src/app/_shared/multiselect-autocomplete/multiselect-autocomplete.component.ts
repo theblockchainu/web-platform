@@ -2,12 +2,12 @@ import {
 	Component, Input, forwardRef, ElementRef, EventEmitter, HostListener, Output, OnInit,
 	OnChanges, SimpleChanges
 } from '@angular/core';
-import {NG_VALUE_ACCESSOR, NG_VALIDATORS} from '@angular/forms';
+import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import * as _ from 'lodash';
-import {environment} from '../../../environments/environment';
-import {CollectionService} from '../../_services/collection/collection.service';
+import { environment } from '../../../environments/environment';
+import { CollectionService } from '../../_services/collection/collection.service';
 
 @Component({
 	selector: 'app-multiselect-autocomplete',
@@ -25,80 +25,78 @@ import {CollectionService} from '../../_services/collection/collection.service';
 	styleUrls: ['./multiselect-autocomplete.component.scss'],
 	templateUrl: './multiselect-autocomplete.component.html'
 })
-export class MultiselectAutocompleteComponent implements OnChanges{
+export class MultiselectAutocompleteComponent implements OnChanges {
 	public query = '';
 	public selected = [];
 	public removed = [];
 	public filteredList = [];
 	public elementRef;
-	private options;
 	public placeholderString;
 	public entryInSelected = undefined;
 	public selectedQueries = [];
 	public maxTopicMsg;
 	public loadingSuggestions = false;
 	public envVariable;
-	
-	
+
+
 	// Input parameter - jsonObject of collection
 	@Input()
 	private list: any = {};
-	
+
 	// Optional Input Parameter
 	@Input()
 	private searchUrl = '';
-	
+
 	// Optional Input Parameter
 	@Input()
 	private multiSelect = true;
-	
+
 	// Optional Input Parameter
 	@Input()
 	private suggestedTopics: any = [];
-	
+
 	@Input()
 	private create = false;
-	
+
 	@Input()
 	private createURL = '';
-	
+
 	@Input('title')
 	public title = '';
-	
+
 	@Input()
 	private preSelectedTopics: any = [];
-	
+
 	@Input('minSelection')
 	private minSelection = -1;
-	
+
 	@Input('maxSelection')
 	private maxSelection = -1;
-	
+
 	@Output()
 	selectedOutput = new EventEmitter<any>();
-	
+
 	@Output()
 	removedOutput = new EventEmitter<any>();
-	
+
 	@Output()
 	anyItemNotFound = new EventEmitter<any>();
-	
+
 	@Output()
 	queries = new EventEmitter<any>();
-	
+
 	@Output()
 	active = new EventEmitter<any>();
-	
+
 	constructor(myElement: ElementRef,
-				private http: HttpClient,
-				public _collectionService: CollectionService,
-				public requestHeaderService: RequestHeaderService) {
+		private http: HttpClient,
+		public _collectionService: CollectionService,
+		public requestHeaderService: RequestHeaderService) {
 		this.elementRef = myElement;
-		this.options = requestHeaderService.getOptions();
 		this.placeholderString = this.title;
 		this.envVariable = environment;
 	}
-	
+
 	@HostListener('document:click', ['$event'])
 	private handleClick(event) {
 		let clickedComponent = event.target;
@@ -113,7 +111,7 @@ export class MultiselectAutocompleteComponent implements OnChanges{
 			this.filteredList = [];
 		}
 	}
-	
+
 	ngOnChanges(changes: SimpleChanges) {
 		for (const property in changes) {
 			if (property === 'preSelectedTopics') {
@@ -133,12 +131,12 @@ export class MultiselectAutocompleteComponent implements OnChanges{
 			}
 		}
 	}
-	
+
 	ngViewInitChanges() {
 		this.selected = _.union(this.preSelectedTopics, this.selected);
 		console.log(this.selected);
 	}
-	
+
 	public filter() {
 		let showItemNotFound = true;
 		if (!this.multiSelect) {
@@ -165,14 +163,14 @@ export class MultiselectAutocompleteComponent implements OnChanges{
 			}
 			if (this.searchUrl) {
 				const finalSearchURL = this.searchUrl + this.query;
-				this.http.get(finalSearchURL, this.options)
+				this.http.get(finalSearchURL, this.requestHeaderService.options)
 					.map((res: any) => {
 						this.loadingSuggestions = false;
 						this.filteredList = [];
 						res.map(item => {
 							this.entryInSelected = _.find(this.selected, function (entry) { return entry.id === item.id; });
 							showItemNotFound = !this.entryInSelected;
-							
+
 							const obj = {};
 							obj['id'] = item.id;
 							obj['name'] = item.name;
@@ -197,7 +195,7 @@ export class MultiselectAutocompleteComponent implements OnChanges{
 			this.selectedOutput.emit(this.selected);
 		}
 	}
-	
+
 	private emitRequestTopic() {
 		if (this.filteredList.length === 0) {
 			this.anyItemNotFound.emit(this.query);
@@ -205,7 +203,7 @@ export class MultiselectAutocompleteComponent implements OnChanges{
 			this.anyItemNotFound.emit('');
 		}
 	}
-	
+
 	public select(item) {
 		const itemPresent = _.find(this.selected, function (entry) { return item.id === entry.id; });
 		if (itemPresent) {
@@ -229,7 +227,7 @@ export class MultiselectAutocompleteComponent implements OnChanges{
 		this.query = '';
 		this.filteredList = [];
 	}
-	
+
 	public remove(item) {
 		this.selected.splice(this.selected.indexOf(item), 1);
 		if (this.selected.length < this.maxSelection && this.maxSelection !== -1) {
@@ -239,5 +237,5 @@ export class MultiselectAutocompleteComponent implements OnChanges{
 		this.selectedOutput.emit(this.selected);
 		this.removedOutput.emit(this.removed);
 	}
-	
+
 }

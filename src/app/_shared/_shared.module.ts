@@ -49,7 +49,6 @@ import { CollectionService } from '../_services/collection/collection.service';
 import { CountryPickerService } from '../_services/countrypicker/countrypicker.service';
 import { LanguagePickerService } from '../_services/languagepicker/languagepicker.service';
 import { AppointmentService } from '../_services/appointment/appointment.service';
-import { RequestHeaderService } from '../_services/requestHeader/request-header.service';
 import { MediaUploaderService } from '../_services/mediaUploader/media-uploader.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { ContentService } from '../_services/content/content.service';
@@ -125,7 +124,6 @@ import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-st
         CountryPickerService,
         LanguagePickerService,
         AppointmentService,
-        RequestHeaderService,
         MediaUploaderService,
         CookieUtilsService,
         ContentService,

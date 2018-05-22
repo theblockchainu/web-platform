@@ -32,7 +32,6 @@ export class ExperienceContentInpersonComponent implements OnInit {
     private uploadingImage = false;
     private uploadingAttachments = false;
     private contentId;
-    private options;
     public contentsFArray;
     public contentForm;
     public usePreviousLocation: FormControl;
@@ -46,12 +45,11 @@ export class ExperienceContentInpersonComponent implements OnInit {
         private contentService: ContentService,
         @Inject(MAT_DIALOG_DATA) public inputData: any,
         public dialogRef: MatDialogRef<ExperienceContentInpersonComponent>,
-        private requestHeaders: RequestHeaderService,
+        private requestHeaderService: RequestHeaderService,
         private dialog: MatDialog,
         private dataSharingService: DataSharingService
     ) {
         this.envVariable = environment;
-        this.options = requestHeaders.getOptions();
         this.itenaryForm = inputData.itenaryForm;
         this.lastIndex = inputData.index;
         this.isEdit = inputData.isEdit;
@@ -228,7 +226,7 @@ export class ExperienceContentInpersonComponent implements OnInit {
     deleteFromContainer(fileUrl, fileType) {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
-        this.http.delete(environment.apiUrl + fileUrl, this.options)
+        this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
             .map((response) => {
                 console.log(response);
                 if (fileType === 'file') {
@@ -266,7 +264,7 @@ export class ExperienceContentInpersonComponent implements OnInit {
     }
 
     deleteFromContent(contentForm, body) {
-        this.http.patch(environment.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.options)
+        this.http.patch(environment.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.requestHeaderService.options)
             .map((response: any) => { })
             .subscribe();
     }

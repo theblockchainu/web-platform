@@ -1,24 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
-import {environment} from '../../../environments/environment';
-import {RequestHeaderService} from '../requestHeader/request-header.service';
+import { environment } from '../../../environments/environment';
+import { RequestHeaderService } from '../requestHeader/request-header.service';
 
 @Injectable()
 export class MediaUploaderService {
-	private options;
 	public envVariable;
-	
+
 	constructor(
 		private http: HttpClient,
 		private sanitizer: DomSanitizer,
 		private requestHeaderService: RequestHeaderService
 	) {
 		this.envVariable = environment;
-		this.options = this.requestHeaderService.getMediaOptions();
-		delete this.options.headers['Content-type'];
 	}
-	
+
 	public upload(file) {
 		let type = file;
 		if (!file.objectURL) {
@@ -34,8 +31,8 @@ export class MediaUploaderService {
 			type = 'file';
 		}
 		formData.append(type, file, file.name);
-		return this.http.post(environment.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData, this.options)
+		return this.http.post(environment.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData, this.requestHeaderService.mediaOptions)
 			.map((response: any) => response);
 	}
-	
+
 }

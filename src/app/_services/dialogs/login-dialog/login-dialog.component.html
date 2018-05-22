@@ -2,48 +2,56 @@
 <div mat-dialog-content class="dialog-container">
 	<div class="signin-header"></div>
 	<div class="logincontent">
-			<div class="signin-form mat-whiteframe-z1">
-					<form [formGroup]="loginForm" class="form-horizontal">
-						<div class="flex-body">
-							<div class="margin-bottom-20">
-								<a mat-raised-button class="invert-fb btn-width-large btn-block" href="{{envVariable.apiUrl}}/auth/facebook?returnTo={{currentPath}}">
-									<span class="circle-icon1"><i class="fa fa-facebook-f"></i></span>Continue with Facebook</a>
-							</div>
-							
-							<div class="margin-bottom-20">
-								<a mat-raised-button class="invert-google btn-width-large btn-block" href="{{envVariable.apiUrl}}/auth/google?returnTo={{currentPath}}">
-									<span class="circle-icon2"><i class="fa fa-google"></i></span>Continue with Google</a>
-							</div>
-							<div class="btn-hide position-relative text-center">
-								<div class="or-seperator-vertical"></div>
-								<span class="round-or-text or-text-vertical">or</span>
-							</div>
-							<!-- error handling-->
-							<div *ngIf="showError" class="alert alert-success box-msg margin-bottom-10" role="alert">
-								<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-								The email or password you entered is incorrect
-							</div>
-							
-							<div class="margin-bottom-10">
-								<mat-form-field [floatLabel]="'always'" class="pb-block">
-									<input matInput placeholder="Email" formControlName="email" type="email">
-								</mat-form-field>
-							</div>
-							<div class="margin-bottom-10">
-								<mat-form-field [floatLabel]="'always'" class="pb-block">
-									<input matInput placeholder="Password" formControlName="password" type="password">
-								</mat-form-field>
-							</div>
-							<div class="check margin-top-10 margin-bottom-10">
-								<mat-checkbox formControlName="rememberMe" [checked]="'false'" (change)="toggle()"> Remember me </mat-checkbox>
-							</div>
-							<div class="margin-bottom-20">
-								<button mat-raised-button class="loginbtn btn-width-large vertical-bottom" type="submit" (click)="login()"><span class="txtcolor">Log in</span></button><br><br>
-								<a style="color: #666; cursor: pointer;" (click)="openForgotPwd()"> Forgot Password?</a>&nbsp;&nbsp;
-								<a href="/signup.html" style="font-size:14px;">Sign up</a>
-							</div>
-						</div>
-					</form>
-			</div>
+		<div class="signin-form mat-whiteframe-z1">
+			<form [formGroup]="loginForm" class="form-horizontal">
+				<div class="flex-body">
+					<div class="margin-bottom-20">
+						<a mat-raised-button class="invert-fb btn-width-large btn-block" href="{{envVariable.apiUrl}}/auth/facebook?returnTo={{currentPath}}">
+							<span class="circle-icon1">
+								<i class="fa fa-facebook-f"></i>
+							</span>Continue with Facebook</a>
+					</div>
+
+					<div class="margin-bottom-20">
+						<a mat-raised-button class="invert-google btn-width-large btn-block" href="{{envVariable.apiUrl}}/auth/google?returnTo={{currentPath}}">
+							<span class="circle-icon2">
+								<i class="fa fa-google"></i>
+							</span>Continue with Google</a>
+					</div>
+					<div class="btn-hide position-relative text-center">
+						<div class="or-seperator-vertical"></div>
+						<span class="round-or-text or-text-vertical">or</span>
+					</div>
+					<!-- error handling-->
+					<div *ngIf="showError" class="alert alert-success box-msg margin-bottom-10" role="alert">
+						<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+						The email or password you entered is incorrect
+					</div>
+
+					<div class="margin-bottom-10">
+						<mat-form-field [floatLabel]="'always'" class="pb-block">
+							<input matInput placeholder="Email" formControlName="email" type="email">
+						</mat-form-field>
+					</div>
+					<div class="margin-bottom-10">
+						<mat-form-field [floatLabel]="'always'" class="pb-block">
+							<input matInput placeholder="Password" formControlName="password" type="password">
+						</mat-form-field>
+					</div>
+					<div class="check margin-top-10 margin-bottom-10">
+						<mat-checkbox formControlName="rememberMe" [checked]="'false'" (change)="toggle()"> Remember me </mat-checkbox>
+					</div>
+					<div class="margin-bottom-20">
+						<button mat-raised-button class="loginbtn btn-width-large vertical-bottom" type="submit" (click)="login()">
+							<span class="txtcolor">Log in</span>
+						</button>
+						<br>
+						<br>
+						<a style="color: #666; cursor: pointer;" (click)="openForgotPwd()"> Forgot Password?</a>&nbsp;&nbsp;
+						<button mat-button mat-dialog-close [routerLink]="'sign-up'" style="font-size:14px;">Sign up</button>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
@@ -27,7 +27,6 @@ export class WorkshopContentVideoComponent implements OnInit {
     };
     public isEdit = false;
     public urlForVideo;
-    private options;
     private uploadingVideo;
     private uploadingAttachments;
     public attachments: any;
@@ -39,11 +38,10 @@ export class WorkshopContentVideoComponent implements OnInit {
         private mediaUploader: MediaUploaderService,
         @Inject(MAT_DIALOG_DATA) public inputData: any,
         public dialogRef: MatDialogRef<WorkshopContentVideoComponent>,
-        private requestHeaders: RequestHeaderService,
+        private requestHeaderService: RequestHeaderService,
         private contentService: ContentService
     ) {
         this.envVariable = environment;
-        this.options = requestHeaders.getOptions();
         this.itenaryForm = inputData.itenaryForm;
         this.lastIndex = inputData.index;
         this.isEdit = inputData.isEdit;
@@ -81,7 +79,7 @@ export class WorkshopContentVideoComponent implements OnInit {
     deleteFromContainer(fileUrl, fileType) {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
-        this.http.delete(environment.apiUrl + fileUrl, this.options)
+        this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
             .map((response) => {
                 console.log(response);
                 if (fileType === 'file') {
@@ -114,7 +112,7 @@ export class WorkshopContentVideoComponent implements OnInit {
     }
 
     deleteFromContent(contentForm, body) {
-        this.http.patch(environment.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.options)
+        this.http.patch(environment.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.requestHeaderService.options)
             .map((response) => { })
             .subscribe();
     }

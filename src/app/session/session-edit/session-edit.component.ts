@@ -87,8 +87,6 @@ export class SessionEditComponent implements OnInit {
 	public maxTopics = 3;
 	public otpSent = false;
 
-	private options;
-
 	profileImagePending: Boolean;
 	sessionVideoPending: Boolean;
 	sessionImage1Pending: Boolean;
@@ -205,7 +203,6 @@ export class SessionEditComponent implements OnInit {
 			this.createTopicURL = environment.apiUrl + '/api/' + environment.uniqueDeveloperCode + '_topics';
 		});
 		this.userId = _cookieUtilsService.getValue('userId');
-		this.options = requestHeaderService.getOptions();
 		this.currentDate = moment().toDate();
 	}
 
@@ -514,7 +511,7 @@ export class SessionEditComponent implements OnInit {
 			});
 
 		if (this.interests.length === 0) {
-			this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.options)
+			this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.requestHeaderService.options)
 				.map((response: any) => {
 					this.suggestedTopics = response.slice(0, 7);
 				}).subscribe();
@@ -784,7 +781,7 @@ export class SessionEditComponent implements OnInit {
 		};
 		console.log('topics');
 		if (topicArray.length !== 0) {
-			this.http.patch(environment.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel', body, this.options)
+			this.http.patch(environment.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel', body, this.requestHeaderService.options)
 				.subscribe((response) => {
 					this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
 						{ topicsObject: response });

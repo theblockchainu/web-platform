@@ -183,6 +183,10 @@ const routes: Routes = [
 		loadChildren: 'app/knowledge-story/knowledge-story.module#KnowledgeStoryModule'
 	},
 	{
+		path: 'sign-up',
+		loadChildren: 'app/sign-up/sign-up.module#SignUpModule'
+	},
+	{
 		path: 'access-denied',
 		component: AccessDeniedComponent
 	},

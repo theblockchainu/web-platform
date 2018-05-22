@@ -10,7 +10,6 @@ import { environment } from '../../../environments/environment';
 @Injectable()
 export class PaymentService {
 	public key = 'userId';
-	private options;
 	public envVariable;
 
 	constructor(private http: HttpClient,
@@ -21,42 +20,41 @@ export class PaymentService {
 		private _cookieUtilsService: CookieUtilsService
 	) {
 		this.envVariable = environment;
-		this.options = this._requestHeaderService.getOptions();
 	}
 
 	makePayment(userId, customerId: any, body: any) {
 		if (userId) {
-			return this.http.post(environment.apiUrl + '/api/create-source/' + customerId, body, this.options);
+			return this.http.post(environment.apiUrl + '/api/create-source/' + customerId, body, this._requestHeaderService.options);
 		}
 	}
 
 	createSource(userId, customerId: any, body: any) {
 		if (userId) {
-			return this.http.post(environment.apiUrl + '/api/transactions/create-source/' + customerId, body, this.options);
+			return this.http.post(environment.apiUrl + '/api/transactions/create-source/' + customerId, body, this._requestHeaderService.options);
 		}
 	}
 
 	createCharge(userId, collectionId: any, body: any) {
 		if (userId) {
-			return this.http.post(environment.apiUrl + '/api/transactions/create-charge/collection/' + collectionId, body, this.options);
+			return this.http.post(environment.apiUrl + '/api/transactions/create-charge/collection/' + collectionId, body, this._requestHeaderService.options);
 		}
 	}
 
 	createContentCharge(userId, contentId: any, body: any) {
 		if (userId) {
-			return this.http.post(environment.apiUrl + '/api/transactions/create-charge/content/' + contentId, body, this.options);
+			return this.http.post(environment.apiUrl + '/api/transactions/create-charge/content/' + contentId, body, this._requestHeaderService.options);
 		}
 	}
 
 	listAllCards(userId, customerId: any) {
 		if (userId) {
-			return this.http.get(environment.apiUrl + '/api/transactions/list-all-cards/' + customerId, this.options);
+			return this.http.get(environment.apiUrl + '/api/transactions/list-all-cards/' + customerId, this._requestHeaderService.options);
 		}
 	}
 
 	deleteCard(userId, customerId: string, cardId: string) {
 		if (userId) {
-			return this.http.delete(environment.apiUrl + '/api/transactions/delete-card/' + customerId + '/' + cardId, this.options);
+			return this.http.delete(environment.apiUrl + '/api/transactions/delete-card/' + customerId + '/' + cardId, this._requestHeaderService.options);
 		}
 	}
 
@@ -65,7 +63,7 @@ export class PaymentService {
       { "assessment_models": ["assessment_na_rules", "assessment_rules"] }
 	]}`;
 		return this.http
-			.get(environment.apiUrl + '/api/collections/' + id + '?filter=' + filter, this.options)
+			.get(environment.apiUrl + '/api/collections/' + id + '?filter=' + filter, this._requestHeaderService.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -74,13 +72,13 @@ export class PaymentService {
 
 	public createConnectedAccount(authcode: string, error?: any, errDescription?: any): Observable<any> {
 		if (error) {
-			return this.http.get(environment.apiUrl + '/api/payoutaccs/create-connected-account?error=' + error + '&errorDesc=' + errDescription, this.options).map((response: any) => response, (err) => {
+			return this.http.get(environment.apiUrl + '/api/payoutaccs/create-connected-account?error=' + error + '&errorDesc=' + errDescription, this._requestHeaderService.options).map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
 		} else {
 			console.log(authcode);
 
-			return this.http.get(environment.apiUrl + '/api/payoutaccs/create-connected-account?authCode=' + authcode, this.options).map((response: any) => response, (err) => {
+			return this.http.get(environment.apiUrl + '/api/payoutaccs/create-connected-account?authCode=' + authcode, this._requestHeaderService.options).map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
 		}
@@ -89,7 +87,7 @@ export class PaymentService {
 	 * retrieveConnectedAccount
 	 */
 	public retrieveConnectedAccount(): Observable<any> {
-		return this.http.get(environment.apiUrl + '/api/payoutaccs/retrieve-connected-accounts', this.options)
+		return this.http.get(environment.apiUrl + '/api/payoutaccs/retrieve-connected-accounts', this._requestHeaderService.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -98,7 +96,7 @@ export class PaymentService {
 	 * createLoginLink
 	 */
 	public createLoginLink(accountId: string): Observable<any> {
-		return this.http.get(environment.apiUrl + '/api/payoutaccs/create-login-link?accountId=' + accountId, this.options)
+		return this.http.get(environment.apiUrl + '/api/payoutaccs/create-login-link?accountId=' + accountId, this._requestHeaderService.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -109,12 +107,12 @@ export class PaymentService {
 	 */
 	public getTransactions(userId, filter?: any): Observable<any> {
 		if (filter) {
-			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/transactions?filter=' + JSON.stringify(filter), this.options)
+			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/transactions?filter=' + JSON.stringify(filter), this._requestHeaderService.options)
 				.map((response: any) => response, (err) => {
 					console.log('Error: ' + err);
 				});
 		} else {
-			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/transactions', this.options)
+			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/transactions', this._requestHeaderService.options)
 				.map((response: any) => response, (err) => {
 					console.log('Error: ' + err);
 				});
@@ -132,7 +130,7 @@ export class PaymentService {
 		};
 		console.log(body);
 		/*if (from.length === 3 && this._cookieUtilsService.getValue('currency').length === 3) {*/
-		return this.http.post(environment.apiUrl + '/convertCurrency', body, this.options)
+		return this.http.post(environment.apiUrl + '/convertCurrency', body, this._requestHeaderService.options)
 			.map((response: any) => {
 				const res = response;
 				console.log(res);
@@ -161,7 +159,7 @@ export class PaymentService {
 	 * patchPayoutRule
 	 */
 	public patchPayoutRule(payoutRuleId: string, newPayoutId: string) {
-		return this.http.patch(environment.apiUrl + '/api/payoutrules/' + payoutRuleId, { 'payoutId1': newPayoutId }, this.options)
+		return this.http.patch(environment.apiUrl + '/api/payoutrules/' + payoutRuleId, { 'payoutId1': newPayoutId }, this._requestHeaderService.options)
 			.map(result => result);
 	}
 
@@ -173,14 +171,14 @@ export class PaymentService {
 			'percentage1': 100,
 			'payoutId1': 'string'
 		};
-		return this.http.post(environment.apiUrl + '/api/collections/' + collectionId + '/payoutrules', body, this.options).map(result => result);
+		return this.http.post(environment.apiUrl + '/api/collections/' + collectionId + '/payoutrules', body, this._requestHeaderService.options).map(result => result);
 	}
 
 	/**
 	 * retrieveLocalPayoutAccounts
 	 */
 	public retrieveLocalPayoutAccounts() {
-		return this.http.get(environment.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue('userId') + '/payoutaccs', this.options).map(result => result);
+		return this.http.get(environment.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue('userId') + '/payoutaccs', this._requestHeaderService.options).map(result => result);
 	}
 
 }

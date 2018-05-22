@@ -11,24 +11,22 @@ import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 export class AuthService {
 	isLoggedIn = false;
 	key = 'access_token';
-	private options;
-	
+
 	constructor(
 		private _cookieService: CookieUtilsService,
 		public _requestHeaderService: RequestHeaderService
 	) {
 		this.isLoggedIn = !!this.getCookie(this.key);
-		this.options = this._requestHeaderService.getOptions();
 	}
-	
+
 	getCookie(key: string): any {
 		return this._cookieService.getValue(key);
 	}
-	
+
 	removeCookie(key: string) {
 		this._cookieService.deleteValue(key);
 	}
-	
+
 	login(): void {
 		const userToken = this.getCookie('access_token');
 		const userId = this.getCookie('userId');
@@ -37,8 +35,8 @@ export class AuthService {
 			this.isLoggedIn = true;
 		}
 	}
-	
-	
+
+
 	logout(): void {
 		this.isLoggedIn = false;
 	}

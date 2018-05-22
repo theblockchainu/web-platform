@@ -4,24 +4,22 @@ import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
 @Injectable()
 export class InboxService {
 	public key = 'userId';
-	private options;
 	public envVariable;
-	
+
 	constructor(private http: HttpClient,
-				private route: ActivatedRoute,
-				public router: Router,
-				public _requestHeaderService: RequestHeaderService,
-				private _cookieUtilsService: CookieUtilsService
+		private route: ActivatedRoute,
+		public router: Router,
+		public _requestHeaderService: RequestHeaderService,
+		private _cookieUtilsService: CookieUtilsService
 	) {
-		this.options = this._requestHeaderService.getOptions();
 		this.envVariable = environment;
 	}
-	
+
 	public getRoomData() {
 		const userId = this._cookieUtilsService.getValue(this.key);
 		const query = {
@@ -30,9 +28,9 @@ export class InboxService {
 					relation: 'collection',
 					scope: {
 						include: {
-							'owners' : 'profiles'
+							'owners': 'profiles'
 						},
-						where: {type: {'neq': 'session'}}
+						where: { type: { 'neq': 'session' } }
 					}
 				},
 				{
@@ -42,17 +40,17 @@ export class InboxService {
 							{
 								'peer': 'profiles'
 							},
-							{'deliveryReceipts' : 'peer'},
-							{'readReceipts': 'peer'}
+							{ 'deliveryReceipts': 'peer' },
+							{ 'readReceipts': 'peer' }
 						],
 						order: 'updatedAt ASC'
 					}
 				},
-				{ 'participants': {'profiles': 'work'} }
+				{ 'participants': { 'profiles': 'work' } }
 			]
 		};
 		if (userId) {
-			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/joinedRooms?filter=' + JSON.stringify(query), this.options)
+			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/joinedRooms?filter=' + JSON.stringify(query), this._requestHeaderService.options)
 				.map(
 					(response: any) => response
 				);
@@ -60,39 +58,39 @@ export class InboxService {
 			return null;
 		}
 	}
-	
+
 	public getRooms(userId, query) {
-		return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/joinedRooms?filter=' + JSON.stringify(query), this.options)
+		return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/joinedRooms?filter=' + JSON.stringify(query), this._requestHeaderService.options)
 			.map(
 				(response: any) => response
 			);
 	}
-	
+
 	public createRoom(peerId, body) {
-		return this.http.post(environment.apiUrl + '/api/peers/' + peerId + '/joinedRooms', body, this.options)
+		return this.http.post(environment.apiUrl + '/api/peers/' + peerId + '/joinedRooms', body, this._requestHeaderService.options)
 			.map((response: any) => response);
 	}
-	
+
 	public addParticipantToRoom(roomId, participantId) {
-		return this.http.put(environment.apiUrl + '/api/rooms/' + roomId + '/participants/rel/' + participantId, {}, this.options)
+		return this.http.put(environment.apiUrl + '/api/rooms/' + roomId + '/participants/rel/' + participantId, {}, this._requestHeaderService.options)
 			.map((response: any) => response);
 	}
-	
+
 	public postMessage(roomId, body) {
-		return this.http.post(environment.apiUrl + '/api/rooms/' + roomId + '/messages', body, this.options)
+		return this.http.post(environment.apiUrl + '/api/rooms/' + roomId + '/messages', body, this._requestHeaderService.options)
 			.map((response: any) => response);
 	}
-	
+
 	public postMessageDeliveryReceipt(messageId, body) {
-		return this.http.post(environment.apiUrl + '/api/messages/' + messageId + '/deliveryReceipts', body, this.options)
+		return this.http.post(environment.apiUrl + '/api/messages/' + messageId + '/deliveryReceipts', body, this._requestHeaderService.options)
 			.map((response: any) => response);
 	}
-	
+
 	public postMessageReadReceipt(messageId, body) {
-		return this.http.post(environment.apiUrl + '/api/messages/' + messageId + '/readReceipts', body, this.options)
+		return this.http.post(environment.apiUrl + '/api/messages/' + messageId + '/readReceipts', body, this._requestHeaderService.options)
 			.map((response: any) => response);
 	}
-	
+
 	public formatDateTime(room, loggedInUserId) {
 		let participantTextHeader = '';
 		const participantTextHeaderSub = '';
@@ -120,7 +118,7 @@ export class InboxService {
 		if (room.participants) {
 			if (room.participants.length > 2) {
 				for (let i = 0; i < room.participants.length; i++) {
-					if ( i < 2) {
+					if (i < 2) {
 						participantTextHeader += room.participants[i].profiles[0].first_name + ' ' + room.participants[i].profiles[0].last_name + ', ';
 					}
 				}
@@ -166,5 +164,5 @@ export class InboxService {
 		}
 		return room;
 	}
-	
+
 }

@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 import { ContentService } from '../../content/content.service';
 import { environment } from '../../../../environments/environment';
 import * as _ from 'lodash';
-import {RequestHeaderService} from '../../requestHeader/request-header.service';
+import { RequestHeaderService } from '../../requestHeader/request-header.service';
 
 @Component({
 	selector: 'app-edit-submission-dialog',
@@ -17,7 +17,7 @@ import {RequestHeaderService} from '../../requestHeader/request-header.service';
 	styleUrls: ['./edit-submission-dialog.component.scss']
 })
 export class EditSubmissionDialogComponent implements OnInit {
-	
+
 	public userId;
 	public envVariable;
 	public submitEntryForm: any = FormGroup;
@@ -34,10 +34,9 @@ export class EditSubmissionDialogComponent implements OnInit {
 	public urlForImages = [];
 	public searchTopicURL;
 	public createTopicURL;
-	private options;
 	public placeholderStringTopic = 'Submission Tag';
 	public maxTopicMsg = 'Choose max 3 related tags';
-	
+
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		public dialog: MatDialog,
@@ -55,9 +54,8 @@ export class EditSubmissionDialogComponent implements OnInit {
 		this.searchTopicURL = environment.searchUrl + '/api/search/'
 			+ environment.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
 		this.createTopicURL = environment.apiUrl + '/api/' + environment.uniqueDeveloperCode + '_topics';
-		this.options = this.requestHeaderService.getOptions();
 	}
-	
+
 	ngOnInit() {
 		console.log(this.data);
 		this.submitEntryForm = this._fb.group({
@@ -68,7 +66,7 @@ export class EditSubmissionDialogComponent implements OnInit {
 		});
 		this.addImageUrl(this.data.submission.picture_url);
 	}
-	
+
 	publishView() {
 		const submissionForm = {
 			name: this.submitEntryForm.controls['name'].value,
@@ -85,18 +83,18 @@ export class EditSubmissionDialogComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public deleteFromContainer(fileUrl, fileType) {
 		const fileurl = fileUrl;
 		fileUrl = _.replace(fileUrl, 'download', 'files');
-		this.http.delete(environment.apiUrl + fileUrl, this.options)
+		this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
 			.map((response) => {
 				console.log(response);
 				this.urlForImages = [];
 				this.submitEntryForm.controls['picture_url'].patchValue('');
 			}).subscribe();
 	}
-	
+
 	uploadImage(event) {
 		this.uploadingImage = true;
 		for (const file of event.files) {
@@ -106,7 +104,7 @@ export class EditSubmissionDialogComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	public addImageUrl(value) {
 		console.log('Adding image url: ' + value);
 		this._contentService.getMediaObject(value).subscribe((res) => {
@@ -115,5 +113,5 @@ export class EditSubmissionDialogComponent implements OnInit {
 		const control = <FormArray>this.submitEntryForm.controls['picture_url'];
 		control.patchValue(value);
 	}
-	
+
 }
