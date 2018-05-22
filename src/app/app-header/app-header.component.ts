@@ -29,29 +29,28 @@ import { UcWordsPipe } from 'ngx-pipes';
 export class AppHeaderComponent implements OnInit {
 	isLoggedIn: Observable<boolean>;
 	loggedIn: boolean;
-	public hasNewNotification = false;
-	public hasNewMessage = false;
+	public hasNewNotification: boolean;
+	public hasNewMessage: boolean;
 	public profile: any;
-	public userType = '';
+	public userType: string;
 	public myControl = new FormControl('');
 	@ViewChild('notificationsButton') notificationsButton;
 	@ViewChild('searchInputBar') searchInputBar;
 	@ViewChild('messageNotification') messageNotification;
 	public userId;
-	public userIdObservable;
 	public envVariable;
-	private key = 'userId';
 	public options: any[];
-	public defaultProfileUrl = '/assets/images/default-user.jpg';
-	public isTeacher = false;
-	public isEmailVerified = false;
-	public makeOldNotification = [];
-	public joinedRooms = [];
-	public tempJoinedRooms = [];
+	public isEmailVerified: boolean;
+
+	public defaultProfileUrl: string;
+	public isTeacher: boolean;
+	public makeOldNotification: Array<any>;
+	public joinedRooms: Array<any>;
+	public tempJoinedRooms: Array<any>;
 	public profileCompletionObject: any;
-	public isSessionApproved = false;
-	public sessionId = '';
-	public isSearchBarVisible = false;
+	public isSessionApproved: boolean;
+	public sessionId: string;
+	public isSearchBarVisible: boolean;
 	constructor(public authService: AuthenticationService,
 		private http: HttpClient,
 		private _cookieService: CookieUtilsService,
@@ -67,36 +66,16 @@ export class AppHeaderComponent implements OnInit {
 		public _socketService: SocketService,
 		public snackBar: MatSnackBar,
 		private dialogsService: DialogsService) {
-		this.envVariable = environment;
-		this.profile = {};
-		this.isLoggedIn = authService.isLoginSubject.asObservable();
-		authService.isLoggedIn().subscribe((res) => {
-			this.loggedIn = res;
-		});
-
-		authService.getLoggedInUser.subscribe((userId) => {
-			if (userId !== 0) {
-				this.userId = userId;
-				this.getProfile();
-				this.checkIfSessionApproved();
-				this.getNotifications();
-				this.getMessages();
-			} else {
-				this.loggedIn = false;
-				this.profile = {};
-			}
-		});
-		this.userId = this.userIdObservable || this._cookieService.getValue('userId');
 	}
 
 	ngOnInit() {
-		this._profileService.profileSubject.subscribe(res => {
-			this.getProfile();
+		this.initializeHeader();
+		this.isLoggedIn = this.authService.isLoginSubject.asObservable();
+		this.authService.isLoginSubject.subscribe(res => {
+			console.log('Initializing Header');
+			console.log(res);
+			this.initializeHeader();
 		});
-		this.getProfile();
-		this.checkIfSessionApproved();
-		this.getNotifications();
-		this.getMessages();
 		this.myControl.valueChanges.subscribe((value) => {
 			this._searchService.getAllSearchResults(this.userId, value, (err, result) => {
 				if (!err) {
@@ -106,6 +85,30 @@ export class AppHeaderComponent implements OnInit {
 				}
 			});
 		});
+	}
+
+	initializeHeader() {
+		this.hasNewNotification = false;
+		this.hasNewMessage = false;
+		this.userType = '';
+		this.envVariable = environment;
+		this.profile = {};
+		this.isEmailVerified = false;
+		this.loggedIn = this.authService.isLoginSubject.value;
+		this.userId = this._cookieService.getValue('userId');
+		console.log(this.userId);
+		this.defaultProfileUrl = '/assets/images/default-user.jpg';
+		this.isTeacher = false;
+		this.makeOldNotification = [];
+		this.joinedRooms = [];
+		this.tempJoinedRooms = [];
+		this.isSessionApproved = false;
+		this.sessionId = '';
+		this.isSearchBarVisible = false;
+		this.getProfile();
+		this.checkIfSessionApproved();
+		this.getNotifications();
+		this.getMessages();
 	}
 
 	getProfile() {
@@ -144,7 +147,6 @@ export class AppHeaderComponent implements OnInit {
 
 
 	public openLogin() {
-		console.log('openLogin');
 		this.dialogsService.openLogin().subscribe();
 	}
 
@@ -174,7 +176,7 @@ export class AppHeaderComponent implements OnInit {
 			'order': 'updatedAt DESC',
 			'limit': 10
 		};
-		this._notificationService.getNotifications(this.userId,  JSON.stringify(filter), (err, result) => {
+		this._notificationService.getNotifications(this.userId, JSON.stringify(filter), (err, result) => {
 			if (err) {
 				console.log(err);
 			} else {
@@ -303,7 +305,7 @@ export class AppHeaderComponent implements OnInit {
 		this.searchInputBar.value = '';
 		this._searchService.onSearchOptionClicked(option);
 	}
-	
+
 	public showSearchBar() {
 		if (this.isSearchBarVisible) {
 			this.isSearchBarVisible = false;

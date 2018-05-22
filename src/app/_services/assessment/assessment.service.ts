@@ -6,16 +6,13 @@ import { environment } from '../../../environments/environment';
 @Injectable()
 export class AssessmentService {
 
-  private options;
-
   constructor(private httpClient: HttpClient,
     public _requestHeaderService: RequestHeaderService
   ) {
-    this.options = this._requestHeaderService.getOptions();
   }
 
   public submitAssessment(assessment: Array<AssessmentResult>) {
-    return this.httpClient.post(environment.apiUrl + '/api/assessment_results', assessment, this.options);
+    return this.httpClient.post(environment.apiUrl + '/api/assessment_results', assessment, this._requestHeaderService.options);
   }
 
 

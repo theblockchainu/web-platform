@@ -18,7 +18,6 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactComponent } from './contact-us/contact-us.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { AppDesignComponent } from './app-design/app-design.component';
-import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
@@ -45,8 +44,6 @@ import { PrivatebetaComponent } from './privatebeta/privatebeta.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { LandingPageModule } from './landing-page/landing-page.module';
 import { InviteComponent } from './invite/invite.component';
-import { ScholarshipModule } from './scholarship/scholarship.module';
-import { KnowledgeStoryModule } from './knowledge-story/knowledge-story.module';
 
 /*Raven
 	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
@@ -71,7 +68,6 @@ export class RavenErrorHandler implements ErrorHandler {
 		AppHeaderComponent,
 		AccessDeniedComponent,
 		LoginComponent,
-		SignupComponent,
 		AppDesignComponent,
 		GlobalErrorHandlerComponent,
 		AppNotificationDialogComponent,
@@ -119,9 +115,7 @@ export class RavenErrorHandler implements ErrorHandler {
 			secondaryColour: '#ff5b5f',
 			tertiaryColour: '#ff6d71'
 		}),
-		LandingPageModule,
-		ScholarshipModule,
-		KnowledgeStoryModule
+		LandingPageModule
 	],
 	providers: [
 		CookieService,

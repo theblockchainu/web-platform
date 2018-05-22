@@ -12,7 +12,6 @@ declare var moment: any;
 @Injectable()
 export class CollectionService {
 	public key = 'userId';
-	public options;
 	public now: Date;
 	public envVariable;
 	constructor(
@@ -23,7 +22,6 @@ export class CollectionService {
 		private requestHeaderService: RequestHeaderService
 	) {
 		this.envVariable = environment;
-		this.options = requestHeaderService.getOptions();
 		this.now = new Date();
 	}
 
@@ -31,7 +29,7 @@ export class CollectionService {
 		const collections = [];
 		if (userId) {
 			this.httpClient
-				.get(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections', this.options)
+				.get(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections', this.requestHeaderService.options)
 				.subscribe(
 					(response: any) => {
 						const responseObj = response;
@@ -52,7 +50,7 @@ export class CollectionService {
 	public getOwnedCollections(userId, options: string, cb) {
 		if (userId) {
 			this.httpClient
-				.get(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections?' + 'filter=' + options, this.options)
+				.get(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections?' + 'filter=' + options, this.requestHeaderService.options)
 				.subscribe(res => {
 					cb(null, res);
 				}, err => {
@@ -64,7 +62,7 @@ export class CollectionService {
 	public getParticipatingCollections(userId, options: any, cb) {
 		if (userId) {
 			this.httpClient
-				.get(environment.apiUrl + '/api/peers/' + userId + '/collections?' + 'filter=' + options, this.options)
+				.get(environment.apiUrl + '/api/peers/' + userId + '/collections?' + 'filter=' + options, this.requestHeaderService.options)
 				.map((response) => {
 					console.log(response);
 					cb(null, response);
@@ -76,13 +74,13 @@ export class CollectionService {
 
 	public getAllCollections(options: any) {
 		return this.httpClient
-			.get(environment.apiUrl + '/api/collections?' + 'filter=' + JSON.stringify(options), this.options)
+			.get(environment.apiUrl + '/api/collections?' + 'filter=' + JSON.stringify(options), this.requestHeaderService.options)
 			.map(response => response);
 	}
 
 	public getCollectionDetails(id: string) {
 		return this.httpClient
-			.get(environment.apiUrl + '/api/collections/' + id, this.options)
+			.get(environment.apiUrl + '/api/collections/' + id, this.requestHeaderService.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -92,7 +90,7 @@ export class CollectionService {
 	public getCollectionDetail(id: string, param: any) {
 		const filter = JSON.stringify(param);
 		return this.httpClient
-			.get(environment.apiUrl + '/api/collections/' + id + '?filter=' + filter, this.options)
+			.get(environment.apiUrl + '/api/collections/' + id + '?filter=' + filter, this.requestHeaderService.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -106,7 +104,7 @@ export class CollectionService {
 		const body = {
 			'type': type
 		};
-		return this.httpClient.post(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections', body, this.options)
+		return this.httpClient.post(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections', body, this.requestHeaderService.options)
 			.map(
 				(response) => response, (err) => {
 					console.log('Error: ' + err);
@@ -118,7 +116,7 @@ export class CollectionService {
 	 * postCollection
 	 */
 	public postCollectionWithData(userId, data: any) {
-		return this.httpClient.post(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections', data, this.options)
+		return this.httpClient.post(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections', data, this.requestHeaderService.options)
 			.map(
 				(response) => response, (err) => {
 					console.log('Error: ' + err);
@@ -130,28 +128,28 @@ export class CollectionService {
 	 * patchCollection
 	 */
 	public patchCollection(collectionId: string, body: any) {
-		return this.httpClient.patch(environment.apiUrl + '/api/collections/' + collectionId, body, this.options);
+		return this.httpClient.patch(environment.apiUrl + '/api/collections/' + collectionId, body, this.requestHeaderService.options);
 	}
 
 	/**
 	 * patchCalendar
 	 */
 	public patchCalendar(calendarId: string, body: any) {
-		return this.httpClient.patch(environment.apiUrl + '/api/calendars/' + calendarId, body, this.options);
+		return this.httpClient.patch(environment.apiUrl + '/api/calendars/' + calendarId, body, this.requestHeaderService.options);
 	}
 
 	/**
 	 * deleteCollection
 	 */
 	public deleteCollection(collectionId: string) {
-		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId, this.options);
+		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId, this.requestHeaderService.options);
 	}
 
 	/**
 	 * delete Calendar
 	 */
 	public deleteCalendar(calendarId: string) {
-		return this.httpClient.delete(environment.apiUrl + '/api/calendars/' + calendarId, this.options);
+		return this.httpClient.delete(environment.apiUrl + '/api/calendars/' + calendarId, this.requestHeaderService.options);
 	}
 
 	/**
@@ -171,11 +169,11 @@ export class CollectionService {
 	 * removeParticipant
 	 */
 	public removeParticipant(collectionId: string, participantId: string) {
-		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/participants/rel/' + participantId, this.options);
+		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/participants/rel/' + participantId, this.requestHeaderService.options);
 	}
 	/* Submit workshop for Review */
 	public submitForReview(id: string) {
-		return this.httpClient.post(environment.apiUrl + '/api/collections/' + id + '/submitForReview', {}, this.options).map(
+		return this.httpClient.post(environment.apiUrl + '/api/collections/' + id + '/submitForReview', {}, this.requestHeaderService.options).map(
 			(response) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -477,7 +475,7 @@ export class CollectionService {
 	public sendVerifySMS(phoneNo, countryCode) {
 		const body = {};
 		return this.httpClient
-			.post(environment.apiUrl + '/api/peers/sendVerifySms?phone=' + phoneNo + '&countryCode=' + countryCode, body, this.options)
+			.post(environment.apiUrl + '/api/peers/sendVerifySms?phone=' + phoneNo + '&countryCode=' + countryCode, body, this.requestHeaderService.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -487,7 +485,7 @@ export class CollectionService {
 	public confirmSmsOTP(inputToken) {
 		const body = {};
 		return this.httpClient
-			.post(environment.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body, this.options)
+			.post(environment.apiUrl + '/api/peers/confirmSmsOTP?token=' + inputToken, body, this.requestHeaderService.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -497,7 +495,7 @@ export class CollectionService {
 	public saveBookmark(collectionId, cb) {
 		const body = {};
 		this.httpClient
-			.post(environment.apiUrl + '/api/collections/' + collectionId + '/bookmarks', body, this.options)
+			.post(environment.apiUrl + '/api/collections/' + collectionId + '/bookmarks', body, this.requestHeaderService.options)
 			.map((response) => {
 				cb(null, response);
 			}, (err) => {
@@ -508,7 +506,7 @@ export class CollectionService {
 	public removeBookmark(bookmarkId, cb) {
 		const body = {};
 		this.httpClient
-			.delete(environment.apiUrl + '/api/bookmarks/' + bookmarkId, this.options)
+			.delete(environment.apiUrl + '/api/bookmarks/' + bookmarkId, this.requestHeaderService.options)
 			.map((response) => {
 				cb(null, response);
 			}, (err) => {
@@ -522,7 +520,7 @@ export class CollectionService {
 	public getBookmarks(collectionId: string, query: any, cb) {
 		const filter = JSON.stringify(query);
 		this.httpClient
-			.get(environment.apiUrl + '/api/collections/' + collectionId + '/bookmarks' + '?filter=' + filter, this.options)
+			.get(environment.apiUrl + '/api/collections/' + collectionId + '/bookmarks' + '?filter=' + filter, this.requestHeaderService.options)
 			.map((response) => {
 				cb(null, response);
 			}, (err) => {
@@ -536,7 +534,7 @@ export class CollectionService {
 	public getRecommendations(query) {
 		const filter = JSON.stringify(query);
 		return this.httpClient
-			.get(environment.apiUrl + '/api/collections?' + 'filter=' + filter, this.options);
+			.get(environment.apiUrl + '/api/collections?' + 'filter=' + filter, this.requestHeaderService.options);
 	}
 
 	/**
@@ -545,7 +543,7 @@ export class CollectionService {
 	public getParticipants(collectionId, query) {
 		const filter = JSON.stringify(query);
 		return this.httpClient
-			.get(environment.apiUrl + '/api/collections/' + collectionId + '/participants?filter=' + filter, this.options);
+			.get(environment.apiUrl + '/api/collections/' + collectionId + '/participants?filter=' + filter, this.requestHeaderService.options);
 	}
 
 	/**
@@ -557,7 +555,7 @@ export class CollectionService {
 			'scholarshipId': scholarshipId
 		};
 		this.httpClient
-			.put(environment.apiUrl + '/api/collections/' + collectionId + '/participants/rel/' + userId, body, this.options)
+			.put(environment.apiUrl + '/api/collections/' + collectionId + '/participants/rel/' + userId, body, this.requestHeaderService.options)
 			.map((response) => {
 				cb(null, response);
 			}, (err) => {
@@ -567,7 +565,7 @@ export class CollectionService {
 
 	public linkCommunityToCollection(communityId, collectionId, cb) {
 		this.httpClient
-			.put(environment.apiUrl + '/api/communities/' + communityId + '/collections/rel/' + collectionId, {}, this.options)
+			.put(environment.apiUrl + '/api/communities/' + communityId + '/collections/rel/' + collectionId, {}, this.requestHeaderService.options)
 			.map((response) => {
 				cb(null, response);
 			}, (err) => {
@@ -582,7 +580,7 @@ export class CollectionService {
 	 * @returns {Observable<any>}
 	 */
 	public approveCollection(collection) {
-		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collection.id + '/approve', {}, this.options).map(
+		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collection.id + '/approve', {}, this.requestHeaderService.options).map(
 			(response) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -594,7 +592,7 @@ export class CollectionService {
 	 * @returns {Observable<any>}
 	 */
 	public rejectCollection(collection) {
-		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collection.id + '/reject', {}, this.options).map(
+		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collection.id + '/reject', {}, this.requestHeaderService.options).map(
 			(response) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -624,7 +622,7 @@ export class CollectionService {
 
 	public postCalendars(id, calendars) {
 		return this.httpClient
-			.post(environment.apiUrl + '/api/collections/' + id + '/calendars', calendars, this.options)
+			.post(environment.apiUrl + '/api/collections/' + id + '/calendars', calendars, this.requestHeaderService.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -636,7 +634,7 @@ export class CollectionService {
 	public getComments(workshopId: string, query: any, cb) {
 		const filter = JSON.stringify(query);
 		this.httpClient
-			.get(environment.apiUrl + '/api/collections/' + workshopId + '/comments' + '?filter=' + filter, this.options)
+			.get(environment.apiUrl + '/api/collections/' + workshopId + '/comments' + '?filter=' + filter, this.requestHeaderService.options)
 			.map((response) => {
 				cb(null, response);
 			}, (err) => {
@@ -653,7 +651,7 @@ export class CollectionService {
 	public getContentComments(contentId: string, query: any, cb) {
 		const filter = JSON.stringify(query);
 		this.httpClient
-			.get(environment.apiUrl + '/api/contents/' + contentId + '/comments' + '?filter=' + filter, this.options)
+			.get(environment.apiUrl + '/api/contents/' + contentId + '/comments' + '?filter=' + filter, this.requestHeaderService.options)
 			.map((response) => {
 				cb(null, response);
 			}, (err) => {
@@ -670,7 +668,7 @@ export class CollectionService {
 	public getSubmissionComments(submissionId: string, query: any, cb) {
 		const filter = JSON.stringify(query);
 		this.httpClient
-			.get(environment.apiUrl + '/api/submissions/' + submissionId + '/comments' + '?filter=' + filter, this.options)
+			.get(environment.apiUrl + '/api/submissions/' + submissionId + '/comments' + '?filter=' + filter, this.requestHeaderService.options)
 			.map((response) => {
 				cb(null, response);
 			}, (err) => {
@@ -681,7 +679,7 @@ export class CollectionService {
 	public getReviews(peerId: string, query: any, cb) {
 		const filter = JSON.stringify(query);
 		this.httpClient
-			.get(environment.apiUrl + '/api/peers/' + peerId + '/reviewsAboutYou' + '?filter=' + filter, this.options)
+			.get(environment.apiUrl + '/api/peers/' + peerId + '/reviewsAboutYou' + '?filter=' + filter, this.requestHeaderService.options)
 			.map((response) => {
 				cb(null, response);
 			}, (err) => {
@@ -694,7 +692,7 @@ export class CollectionService {
 	 worrkshopID   */
 	public postComments(workshopId: string, commentBody: any, cb) {
 		this.httpClient
-			.post(environment.apiUrl + '/api/collections/' + workshopId + '/comments', commentBody, this.options)
+			.post(environment.apiUrl + '/api/collections/' + workshopId + '/comments', commentBody, this.requestHeaderService.options)
 			.map((response) => {
 				cb(null, response);
 			}, (err) => {
@@ -710,7 +708,7 @@ export class CollectionService {
 	 */
 	public postSubmissionComments(submissionId: string, commentBody: any, cb) {
 		this.httpClient
-			.post(environment.apiUrl + '/api/submissions/' + submissionId + '/comments', commentBody, this.options)
+			.post(environment.apiUrl + '/api/submissions/' + submissionId + '/comments', commentBody, this.requestHeaderService.options)
 			.map((response) => {
 				cb(null, response);
 			}, (err) => {
@@ -726,7 +724,7 @@ export class CollectionService {
 	 */
 	public postContentComments(contentId: string, commentBody: any, cb) {
 		this.httpClient
-			.post(environment.apiUrl + '/api/contents/' + contentId + '/comments', commentBody, this.options)
+			.post(environment.apiUrl + '/api/contents/' + contentId + '/comments', commentBody, this.requestHeaderService.options)
 			.map((response) => {
 				cb(null, response);
 			}, (err) => {
@@ -739,12 +737,12 @@ export class CollectionService {
 	 */
 	public postReview(peerId: string, reviewBody: any) {
 		return this.httpClient
-			.post(environment.apiUrl + '/api/peers/' + peerId + '/reviewsAboutYou', reviewBody, this.options);
+			.post(environment.apiUrl + '/api/peers/' + peerId + '/reviewsAboutYou', reviewBody, this.requestHeaderService.options);
 	}
 
 	public updateReview(reviewId: string, reviewBody: any) {
 		return this.httpClient
-			.patch(environment.apiUrl + '/api/reviews/' + reviewId, reviewBody, this.options);
+			.patch(environment.apiUrl + '/api/reviews/' + reviewId, reviewBody, this.requestHeaderService.options);
 	}
 
 	public calculateRating(reviewArray?: any) {
@@ -788,7 +786,7 @@ export class CollectionService {
 	 */
 	public deleteReview(reviewId: string) {
 		return this.httpClient
-			.delete(environment.apiUrl + '/api/reviews/' + reviewId, this.options);
+			.delete(environment.apiUrl + '/api/reviews/' + reviewId, this.requestHeaderService.options);
 	}
 
 
@@ -856,55 +854,55 @@ export class CollectionService {
 			'isPresent': isPresent
 		};
 		return this.httpClient
-			.put(environment.apiUrl + '/api/peers/' + peerId + '/rsvps/' + rsvpId, body, this.options)
+			.put(environment.apiUrl + '/api/peers/' + peerId + '/rsvps/' + rsvpId, body, this.requestHeaderService.options)
 			.map((response: any) => response);
 	}
 
 	public updateProvisions(collectionId: string, body: any) {
-		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/provisions', this.options).flatMap(res => {
+		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/provisions', this.requestHeaderService.options).flatMap(res => {
 			return this.httpClient
-				.post(environment.apiUrl + '/api/collections/' + collectionId + '/provisions', body, this.options)
+				.post(environment.apiUrl + '/api/collections/' + collectionId + '/provisions', body, this.requestHeaderService.options)
 				.map((response: any) => response);
 		});
 
 	}
 
 	public postPackages(collectionId: string, body: any) {
-		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/packages', this.options).flatMap(res => {
+		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/packages', this.requestHeaderService.options).flatMap(res => {
 			console.log('deleted');
 			console.log('posting', body);
 			return this.httpClient
-				.post(environment.apiUrl + '/api/collections/' + collectionId + '/packages', body, this.options)
+				.post(environment.apiUrl + '/api/collections/' + collectionId + '/packages', body, this.requestHeaderService.options)
 				.map((response: any) => response);
 		});
 	}
 
 	public postPreferences(collectionId: string, body: any) {
-		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/preferences', this.options).flatMap(res => {
+		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/preferences', this.requestHeaderService.options).flatMap(res => {
 			console.log('deleted');
 			console.log('posting', body);
 			return this.httpClient
-				.post(environment.apiUrl + '/api/collections/' + collectionId + '/preferences', body, this.options)
+				.post(environment.apiUrl + '/api/collections/' + collectionId + '/preferences', body, this.requestHeaderService.options)
 				.map((response: any) => response);
 		});
 	}
 
 	public updateAvailability(collectionId: string, body: any) {
-		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/availability', this.options)
+		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/availability', this.requestHeaderService.options)
 			.flatMap(
 				res => {
-					return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/availability', body, this.options)
+					return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/availability', body, this.requestHeaderService.options)
 						.map((response: any) => response);
 				}
 			);
 	}
 
 	public deleteAvailability(collectionId: string, availabilityId: any) {
-		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/availability/' + availabilityId, this.options);
+		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/availability/' + availabilityId, this.requestHeaderService.options);
 	}
 
 	public addAvailability(collectionId: string, body: any) {
-		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/availability', body, this.options)
+		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/availability', body, this.requestHeaderService.options)
 			.map((response: any) => response);
 	}
 
@@ -923,7 +921,7 @@ export class CollectionService {
 		let contents;
 		const contentArray = [];
 		// Create Content nodes for the session request (can be split into multiple content nodes if time is not contiguous)
-		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/contents', contentObjs, this.options)
+		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/contents', contentObjs, this.requestHeaderService.options)
 			.flatMap((res: any) => {
 				contents = res;
 				contents.forEach((savedContent, index) => {
@@ -932,16 +930,16 @@ export class CollectionService {
 					// Each of the created content node is linked to all of the Availabilities (time slots) of that request
 					availabilities[index].forEach(element => {
 						availabilityLinkRequestArray.push(
-							this.httpClient.put(environment.apiUrl + '/api/contents/' + savedContent.id + '/availabilities/rel/' + element.id, {}, this.options)
+							this.httpClient.put(environment.apiUrl + '/api/contents/' + savedContent.id + '/availabilities/rel/' + element.id, {}, this.requestHeaderService.options)
 						);
 					});
 					// The created content nodes are linked to the logged In user as the owner of this request
 					peerLinkRequestArray.push(
-						this.httpClient.put(environment.apiUrl + '/api/peers/' + userId + '/contents/rel/' + savedContent.id, {}, this.options)
+						this.httpClient.put(environment.apiUrl + '/api/peers/' + userId + '/contents/rel/' + savedContent.id, {}, this.requestHeaderService.options)
 					);
 					// The created content nodes are linked to the package selected by this user.
 					packageLinkRequestArray.push(
-						this.httpClient.put(environment.apiUrl + '/api/contents/' + savedContent.id + '/packages/rel/' + packageId, {}, this.options)
+						this.httpClient.put(environment.apiUrl + '/api/contents/' + savedContent.id + '/packages/rel/' + packageId, {}, this.requestHeaderService.options)
 					);
 				});
 				return forkJoin(availabilityLinkRequestArray);
@@ -956,48 +954,48 @@ export class CollectionService {
 
 	public approveSessionJoinRequest(sessionId) {
 		const body = { 'sessionIsApproved': true };
-		return this.httpClient.patch(environment.apiUrl + '/api/contents/' + sessionId, body, this.options).map(res => res);
+		return this.httpClient.patch(environment.apiUrl + '/api/contents/' + sessionId, body, this.requestHeaderService.options).map(res => res);
 	}
 
 	public rejectSessionJoinRequest(sessionId) {
 		const body = { 'sessionIsRejected': true };
-		return this.httpClient.patch(environment.apiUrl + '/api/contents/' + sessionId, body, this.options).map(res => res);
+		return this.httpClient.patch(environment.apiUrl + '/api/contents/' + sessionId, body, this.requestHeaderService.options).map(res => res);
 	}
 
 	public updateComment(commentId: string, commentBody: any) {
 		return this.httpClient
-			.patch(environment.apiUrl + '/api/comments/' + commentId, commentBody, this.options);
+			.patch(environment.apiUrl + '/api/comments/' + commentId, commentBody, this.requestHeaderService.options);
 	}
 
 	public updateAssessmentModel(collectionId: string, assessmentModelObject: any) {
-		return this.httpClient.get(environment.apiUrl + '/api/collections/' + collectionId + '/assessment_models', this.options)
+		return this.httpClient.get(environment.apiUrl + '/api/collections/' + collectionId + '/assessment_models', this.requestHeaderService.options)
 			.flatMap(res => {
 				const assessmentModels = <any>res;
 				if (assessmentModels.length < 1) {
-					return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/assessment_models', assessmentModelObject, this.options);
+					return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/assessment_models', assessmentModelObject, this.requestHeaderService.options);
 				} else {
-					return this.httpClient.patch(environment.apiUrl + '/api/assessment_models/' + assessmentModels[0].id, assessmentModelObject, this.options);
+					return this.httpClient.patch(environment.apiUrl + '/api/assessment_models/' + assessmentModels[0].id, assessmentModelObject, this.requestHeaderService.options);
 				}
 			});
 	}
 
 	public updateAssessmentRules(assessmentModelId: string, assessmentRulesArray: any) {
-		return this.httpClient.delete(environment.apiUrl + '/api/assessment_models/' + assessmentModelId + '/assessment_rules', this.options)
+		return this.httpClient.delete(environment.apiUrl + '/api/assessment_models/' + assessmentModelId + '/assessment_rules', this.requestHeaderService.options)
 			.flatMap(res => {
-				return this.httpClient.post(environment.apiUrl + '/api/assessment_models/' + assessmentModelId + '/assessment_rules', assessmentRulesArray, this.options);
+				return this.httpClient.post(environment.apiUrl + '/api/assessment_models/' + assessmentModelId + '/assessment_rules', assessmentRulesArray, this.requestHeaderService.options);
 			});
 	}
 
 	public updateNAAssessmentRules(assessmentModelId: string, assessmentNARulesArray: any) {
-		return this.httpClient.delete(environment.apiUrl + '/api/assessment_models/' + assessmentModelId + '/assessment_na_rules', this.options)
+		return this.httpClient.delete(environment.apiUrl + '/api/assessment_models/' + assessmentModelId + '/assessment_na_rules', this.requestHeaderService.options)
 			.flatMap(res => {
-				return this.httpClient.post(environment.apiUrl + '/api/assessment_models/' + assessmentModelId + '/assessment_na_rules', assessmentNARulesArray, this.options);
+				return this.httpClient.post(environment.apiUrl + '/api/assessment_models/' + assessmentModelId + '/assessment_na_rules', assessmentNARulesArray, this.requestHeaderService.options);
 			});
 	}
 
 	public getKarmaValue(gyan: number) {
 		return this.httpClient.post(environment.apiUrl + '/getKarmaValue', {
 			gyan: gyan
-		}, this.options);
+		}, this.requestHeaderService.options);
 	}
 }

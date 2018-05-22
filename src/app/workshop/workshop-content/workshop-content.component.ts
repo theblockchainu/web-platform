@@ -9,7 +9,7 @@ import { CollectionService } from '../../_services/collection/collection.service
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import { MatDialog } from '@angular/material';
 import * as moment from 'moment';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 @Component({
   selector: 'app-workshop-content',
@@ -37,21 +37,19 @@ export class WorkshopContentComponent implements OnInit {
   @Output()
   days = new EventEmitter<any>();
 
-  private options;
   public envVariable;
   constructor(
     public authenticationService: AuthenticationService,
     private http: HttpClient,
     private _fb: FormBuilder,
-    private requestHeaders: RequestHeaderService,
+    private requestHeaderService: RequestHeaderService,
     private dialog: MatDialog,
     public router: Router,
     public _collectionService: CollectionService,
     private location: Location,
     private _dialogsService: DialogsService
   ) {
-      this.envVariable = environment;
-    this.options = requestHeaders.getOptions();
+    this.envVariable = environment;
   }
 
   ngOnInit() {
@@ -78,7 +76,7 @@ export class WorkshopContentComponent implements OnInit {
     let deleteIndex = 0;
 
     while (deleteIndex !== contents.length) {
-      this.http.delete(environment.apiUrl + '/api/contents/' + contents[deleteIndex].id, this.options)
+      this.http.delete(environment.apiUrl + '/api/contents/' + contents[deleteIndex].id, this.requestHeaderService.options)
         .map((response: any) => {
           console.log(response);
         })
@@ -260,7 +258,7 @@ export class WorkshopContentComponent implements OnInit {
     schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
 
     console.log(schedule);
-    this.http.post(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents', contentObj, this.options)
+    this.http.post(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents', contentObj, this.requestHeaderService.options)
       .map((response: any) => {
         const result = response;
         if (result.isNewInstance) {
@@ -275,7 +273,7 @@ export class WorkshopContentComponent implements OnInit {
         }
         contentGroup.controls.id.setValue(contentId);
 
-        this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.options)
+        this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.requestHeaderService.options)
           .map((resp: any) => {
             if (resp.status === 200) {
               const Itenary = <FormArray>this.myForm.controls.itenary;
@@ -340,8 +338,8 @@ export class WorkshopContentComponent implements OnInit {
       const endMin = endTimeArr[1];
       schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);
     }
-    // this.http.patch(environment.apiUrl + '/api/contents/' + contentId, contentObj, this.options)
-    this.http.put(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, contentObj, this.options)
+    // this.http.patch(environment.apiUrl + '/api/contents/' + contentId, contentObj, this.requestHeaderService.options)
+    this.http.put(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, contentObj, this.requestHeaderService.options)
       .map((response: any) => {
         const result = response;
         if (result.isNewInstance) {
@@ -352,7 +350,7 @@ export class WorkshopContentComponent implements OnInit {
             }
           });
         }
-        this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.options)
+        this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.requestHeaderService.options)
           .map((resp: any) => {
             if (resp.status === 200) {
               /*ContentSchedule.controls.startTime.patchValue('');
@@ -376,8 +374,8 @@ export class WorkshopContentComponent implements OnInit {
     if (eventIndex) {
       const contentObj = itenaryObj.contents[eventIndex];
       const contentId = contentObj.id;
-      // this.http.delete(environment.apiUrl + '/api/contents/' + contentId, this.options)
-      this.http.delete(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, this.options)
+      // this.http.delete(environment.apiUrl + '/api/contents/' + contentId, this.requestHeaderService.options)
+      this.http.delete(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, this.requestHeaderService.options)
         .map((response: any) => {
           console.log(response);
           if (response !== null) {
@@ -402,7 +400,7 @@ export class WorkshopContentComponent implements OnInit {
     } else {
       const contentArray = itenaryObj.contents;
       contentArray.forEach(content => {
-        this.http.delete(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + content.id, this.options)
+        this.http.delete(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + content.id, this.requestHeaderService.options)
           .map((response: any) => {
             console.log(response);
             if (response !== null) {

@@ -10,9 +10,9 @@ import {
 
 import { HttpClient } from '@angular/common/http';
 import { RequestHeaderService } from '../../requestHeader/request-header.service';
-import { environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import * as _ from 'lodash';
-import {CollectionService} from '../../collection/collection.service';
+import { CollectionService } from '../../collection/collection.service';
 
 @Component({
 	selector: 'app-multiselect-topic-dialog',
@@ -38,7 +38,6 @@ export class MultiselectTopicDialogComponent implements OnInit {
 	public filteredList = [];
 	public elementRef;
 	public envVariable;
-	private options;
 	public placeholderString;
 	public entryInSelected = undefined;
 	public selectedQueries = [];
@@ -47,64 +46,63 @@ export class MultiselectTopicDialogComponent implements OnInit {
 	// Input parameter - jsonObject of collection
 	@Input()
 	private list: any = {};
-	
+
 	// Optional Input Parameter
 	@Input()
 	public searchUrl = '';
-	
+
 	// Optional Input Parameter
 	@Input()
 	private multiSelect = true;
-	
+
 	@Input()
 	private create = false;
-	
+
 	@Input()
 	public suggestedTopics: any = [];
-	
+
 	@Input()
 	private createURL = '';
-	
+
 	@Input()
 	public title = '';
-	
+
 	@Input()
 	private preSelectedTopics: any = [];
-	
+
 	@Input()
 	public minSelection = -1;
-	
+
 	@Input()
 	public maxSelection = -1;
-	
+
 	@Output()
 	selectedOutput = new EventEmitter<any>();
-	
+
 	@Output()
 	removedOutput = new EventEmitter<any>();
-	
+
 	@Output()
 	anyItemNotFound = new EventEmitter<any>();
-	
+
 	@Output()
 	queries = new EventEmitter<any>();
-	
+
 	@Output()
 	active = new EventEmitter<any>();
-	
+
 	constructor(myElement: ElementRef,
-				private http: HttpClient,
-				public requestHeaderService: RequestHeaderService,
-				public dialogRef: MatDialogRef<MultiselectTopicDialogComponent>,
-				public _collectionService: CollectionService,
-				@Inject(MAT_DIALOG_DATA) public data: any
+		private http: HttpClient,
+		public requestHeaderService: RequestHeaderService,
+		public dialogRef: MatDialogRef<MultiselectTopicDialogComponent>,
+		public _collectionService: CollectionService,
+		@Inject(MAT_DIALOG_DATA) public data: any
 	) {
 		this.elementRef = myElement;
-		this.options = requestHeaderService.getOptions();
 		this.placeholderString = this.title;
 		this.envVariable = environment;
 	}
-	
+
 	ngOnInit() {
 		this.filteredList = [];
 		this.suggestedTopics.forEach(suggestedTopic => {
@@ -116,17 +114,17 @@ export class MultiselectTopicDialogComponent implements OnInit {
 			this.sendDataToCaller();
 		});
 	}
-	
+
 	sendDataToCaller() {
 		this.data.selected = this.selected;
 		this.dialogRef.close(this.data);
 	}
-	
+
 	ngViewInitChanges() {
 		this.selected = _.union(this.preSelectedTopics, this.selected);
 		console.log(this.selected);
 	}
-	
+
 	public filter() {
 		let showItemNotFound = true;
 		if (!this.multiSelect) {
@@ -153,14 +151,14 @@ export class MultiselectTopicDialogComponent implements OnInit {
 			}
 			if (this.searchUrl) {
 				const finalSearchURL = this.searchUrl + this.query;
-				this.http.get(finalSearchURL, this.options)
+				this.http.get(finalSearchURL, this.requestHeaderService.options)
 					.map((res: any) => {
 						this.loadingSuggestions = false;
 						this.filteredList = [];
 						res.map(item => {
 							this.entryInSelected = _.find(this.selected, function (entry) { return entry.id === item.id; });
 							showItemNotFound = !this.entryInSelected;
-							
+
 							const obj = {};
 							obj['id'] = item.id;
 							obj['name'] = item.name;
@@ -185,7 +183,7 @@ export class MultiselectTopicDialogComponent implements OnInit {
 			this.selectedOutput.emit(this.selected);
 		}
 	}
-	
+
 	private emitRequestTopic() {
 		if (this.filteredList.length === 0) {
 			this.anyItemNotFound.emit(this.query);
@@ -193,7 +191,7 @@ export class MultiselectTopicDialogComponent implements OnInit {
 			this.anyItemNotFound.emit('');
 		}
 	}
-	
+
 	public select(item) {
 		const itemPresent = _.find(this.selected, function (entry) { return item.id === entry.id; });
 		if (itemPresent) {
@@ -217,7 +215,7 @@ export class MultiselectTopicDialogComponent implements OnInit {
 		this.query = '';
 		this.filteredList = [];
 	}
-	
+
 	public remove(item) {
 		this.selected.splice(this.selected.indexOf(item), 1);
 		if (this.selected.length < this.maxSelection && this.maxSelection !== -1) {

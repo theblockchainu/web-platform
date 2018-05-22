@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
-import {environment} from '../../../environments/environment';
-import {Meta, Title} from '@angular/platform-browser';
+import { environment } from '../../../environments/environment';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-index',
@@ -69,15 +69,16 @@ export class IndexComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	public openSignup() {
-		window.location.href = environment.clientUrl + '/signup.html';
+		// window.location.href = environment.clientUrl + '/signup.html';
+		this._router.navigate(['sign-up']);
 	}
-	
+
 	public openTelegram() {
 		window.location.href = 'https://t.me/peerbuds';
 	}
-	
+
 	private setTags() {
 		this.titleService.setTitle('Peerbuds');
 		this.metaService.updateTag({

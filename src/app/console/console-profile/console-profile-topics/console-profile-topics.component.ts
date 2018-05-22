@@ -5,30 +5,29 @@ import { ProfileService } from '../../../_services/profile/profile.service';
 import { MatSnackBar } from '@angular/material';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
-import {environment} from '../../../../environments/environment';
-import {HttpClient} from '@angular/common/http';
-import {RequestHeaderService} from '../../../_services/requestHeader/request-header.service';
+import { environment } from '../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { RequestHeaderService } from '../../../_services/requestHeader/request-header.service';
 @Component({
 	selector: 'app-console-profile-topics',
 	templateUrl: './console-profile-topics.component.html',
 	styleUrls: ['./console-profile-topics.component.scss']
 })
 export class ConsoleProfileTopicsComponent implements OnInit {
-	
+
 	public userId;
 	public envVariable;
 	public loading: boolean;
 	public topicsLearning: Array<any> = [];
 	public topicsTeaching: Array<any> = [];
 	public searchTopicURL = '';
-	private options;
 	public placeholderStringTopic = 'Search for a topic ';
 	private newTopics: Array<any>;
 	private selectedTopicsLearning = [];
 	private selectedTopicsTeaching = [];
 	public suggestedTopics: any = [];
-	
-	
+
+
 	constructor(
 		public activatedRoute: ActivatedRoute,
 		public consoleProfileComponent: ConsoleProfileComponent,
@@ -47,14 +46,13 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 		});
 		this.userId = _cookieUtilsService.getValue('userId');
 		this.searchTopicURL = environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
-		this.options = this.requestHeaderService.getOptions();
 	}
-	
+
 	ngOnInit() {
 		this.loading = true;
 		this.getTopics();
 	}
-	
+
 	private getLearningTopics() {
 		const querylearning = {};
 		this._profileService.getLearningTopics(this.userId, querylearning).subscribe((response: any) => {
@@ -63,7 +61,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 			console.log(err);
 		});
 	}
-	
+
 	private getTeachingTopics() {
 		const queryTeaching = {
 			'relInclude': 'experience'
@@ -73,14 +71,14 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 			this.topicsTeaching = response;
 		});
 	}
-	
+
 	private getTopics() {
 		this.getLearningTopics();
 		this.getTeachingTopics();
 		this.getSuggestedTopics();
 		this.loading = false;
 	}
-	
+
 	/**
 	 * unfollowTopic
 	 topic:any   */
@@ -92,7 +90,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 			console.log(err);
 		});
 	}
-	
+
 	/**
 	 * stopTeachingTopic
 	 */
@@ -103,14 +101,14 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 			console.log(err);
 		});
 	}
-	
+
 	public getSuggestedTopics() {
-		this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.options)
+		this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.requestHeaderService.options)
 			.map((response: any) => {
 				this.suggestedTopics = response.slice(0, 5);
 			}).subscribe();
 	}
-	
+
 	public selected(event) {
 		this.newTopics = event;
 	}
@@ -120,7 +118,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 	public removed(event) {
 		console.log(event);
 	}
-	
+
 	/**
 	 * AddTopics
 	 */
@@ -147,10 +145,10 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 			} else {
 				console.log('unknown type');
 			}
-			
+
 		}
 	}
-	
+
 	public updateChanges(type, topic) {
 		if (topic['experience']) {
 			this._profileService.updateTeachingTopic(this.userId, topic.id, { 'experience': topic['experience'] })
@@ -169,7 +167,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 				});
 		}
 	}
-	
+
 	public openFollowTopicDialog(type) {
 		const inputs = {
 			title: 'Start typing to select from a list of available topics...',
@@ -185,7 +183,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 				if (res && res.selected) {
 					if (type === 'learning') {
 						this.selectedTopicsLearning = res.selected;
-						
+
 						this.selectedTopicsLearning.forEach((topic) => {
 							topicArray.push(topic.id);
 							this.topicsLearning.push(topic);
@@ -204,5 +202,5 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 				}
 			});
 	}
-	
+
 }

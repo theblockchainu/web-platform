@@ -9,6 +9,8 @@ import { FormsModule, ReactiveFormsModule, NgModel } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProfileService } from '../_services/profile/profile.service';
 import { PaymentService } from '../_services/payment/payment.service';
+import { RequestHeaderService } from '../_services/requestHeader/request-header.service';
+
 @NgModule({
 	imports: [
 		CommonModule
@@ -27,7 +29,8 @@ import { PaymentService } from '../_services/payment/payment.service';
 		AlertService,
 		AuthenticationService,
 		ProfileService,
-		PaymentService
+		PaymentService,
+		RequestHeaderService
 	]
 })
 export class CoreModule {

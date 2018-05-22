@@ -17,7 +17,7 @@ import { RequestHeaderService } from '../../_services/requestHeader/request-head
 import * as _ from 'lodash';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { Observable } from 'rxjs/Observable';
 import { TopicService } from '../../_services/topic/topic.service';
@@ -42,7 +42,7 @@ export class CommunityEditComponent implements OnInit {
   public sidebarFilePath = 'assets/menu/community-static-left-sidebar-menu.json';
   public sidebarMenuItems;
   public itenariesForMenu = [];
-    public envVariable;
+  public envVariable;
   public interest1: FormGroup;
   public newTopic: FormGroup;
   public community: FormGroup;
@@ -82,7 +82,6 @@ export class CommunityEditComponent implements OnInit {
   public maxTopics = 3;
   public otpSent = false;
 
-  private options;
 
   profileImagePending: Boolean;
   communityVideoPending: Boolean;
@@ -150,7 +149,7 @@ export class CommunityEditComponent implements OnInit {
     private _paymentService: PaymentService,
     private location: Location
   ) {
-      this.envVariable = environment;
+    this.envVariable = environment;
     this.activatedRoute.params.subscribe(params => {
       this.communityId = params['collectionId'];
       this.step = params['step'];
@@ -167,7 +166,6 @@ export class CommunityEditComponent implements OnInit {
 
 
     this.userId = _cookieUtilsService.getValue('userId');
-    this.options = requestHeaderService.getOptions();
 
   }
 
@@ -422,7 +420,7 @@ export class CommunityEditComponent implements OnInit {
       });
 
     if (this.interests.length === 0) {
-      this.http.get(environment.searchUrl + '/api/search/topics', this.options)
+      this.http.get(environment.searchUrl + '/api/search/topics', this.requestHeaderService.options)
         .map((response: any) => {
           this.suggestedTopics = response.slice(0, 7);
         }).subscribe();
@@ -502,7 +500,7 @@ export class CommunityEditComponent implements OnInit {
     this.removedInterests = event;
     if (this.removedInterests.length !== 0) {
       this.removedInterests.forEach((topic) => {
-        this.http.delete(environment.apiUrl + '/api/collections/' + this.communityId + '/topics/rel/' + topic.id, this.options)
+        this.http.delete(environment.apiUrl + '/api/collections/' + this.communityId + '/topics/rel/' + topic.id, this.requestHeaderService.options)
           .map((response) => {
             console.log(response);
           }).subscribe();
@@ -738,7 +736,7 @@ export class CommunityEditComponent implements OnInit {
   public submitTimeline(collectionId, data: FormGroup) {
     const body = data.value.calendar;
     if (body.startDate && body.endDate) {
-      this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body, this.options)
+      this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body, this.requestHeaderService.options)
         .map((response) => {
           // console.log(this.step);
           // this.step++;
@@ -771,7 +769,7 @@ export class CommunityEditComponent implements OnInit {
 
     if (topicArray.length !== 0) {
       let observable: Observable<any>;
-      observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.communityId + '/topics/rel', body, this.options)
+      observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.communityId + '/topics/rel', body, this.requestHeaderService.options)
         .map(response => response).publishReplay().refCount();
       observable.subscribe((res) => {
         this.step++;
@@ -858,7 +856,7 @@ export class CommunityEditComponent implements OnInit {
       const data = this.timeline;
       const body = data.value.calendar;
       if (body.startDate && body.endDate) {
-        this.http.patch(environment.apiUrl + '/api/collections/' + this.communityId + '/calendar', body, this.options)
+        this.http.patch(environment.apiUrl + '/api/collections/' + this.communityId + '/calendar', body, this.requestHeaderService.options)
           .map((response) => {
             this.busySave = false;
             this.router.navigate(['console/teaching/communities']);
@@ -975,7 +973,7 @@ export class CommunityEditComponent implements OnInit {
   deleteFromContainer(fileUrl, fileType) {
     const fileurl = fileUrl;
     fileUrl = _.replace(fileUrl, 'download', 'files');
-    this.http.delete(environment.apiUrl + fileUrl, this.options)
+    this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
       .map((response) => {
         console.log(response);
         if (fileType === 'video') {
@@ -999,7 +997,7 @@ export class CommunityEditComponent implements OnInit {
       let file = event.target.files[i];
       const fileurl = file;
       file = _.replace(file, 'download', 'files');
-      this.http.delete(environment.apiUrl + file, this.options)
+      this.http.delete(environment.apiUrl + file, this.requestHeaderService.options)
         .map((response) => {
           console.log(response);
           if (fileType === 'video') {
