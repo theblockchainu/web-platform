@@ -195,25 +195,25 @@
 
 <mat-menu #headerUserMenu>
 	<button mat-menu-item [routerLink]="['/profile', userId]">
-		{{profile.first_name | titlecase}} {{profile.last_name | titlecase}}
+		<i class="fas fa-user lightText"></i>&nbsp;&nbsp;&nbsp; {{profile.first_name | titlecase}} {{profile.last_name | titlecase}}
 	</button>
 	<button mat-menu-item *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].isAdmin" [routerLink]="['/console/admin']">
-		Admin
+		<i class="fas fa-lock lightText"></i>&nbsp;&nbsp; Admin
 	</button>
 	<button mat-menu-item [routerLink]="['/console/profile/edit']">
-		Edit Profile
+		<i class="fas fa-pencil-alt lightText"></i>&nbsp;&nbsp; Edit Profile
 	</button>
 	<button mat-menu-item [routerLink]="['/console/account/payoutmethods']">
-		Account
+		<i class="fas fa-cog lightText"></i>&nbsp;&nbsp; Account
 	</button>
 	<button mat-menu-item [routerLink]="['/console/account/wallet']">
-		Wallet
+		<i class="fas fa-google-wallet lightText"></i>&nbsp;&nbsp; Wallet
 	</button>
 	<button mat-menu-item [routerLink]="['/console/learning/bookmarks']">
-		Bookmarks
+		<i class="fas fa-bookmark lightText"></i>&nbsp;&nbsp; Bookmarks
 	</button>
 	<button mat-menu-item (click)="authService.logout()">
-		Logout
+		<i class="fas fa-sign-out-alt lightText"></i>&nbsp;&nbsp; Logout
 	</button>
 </mat-menu>
 

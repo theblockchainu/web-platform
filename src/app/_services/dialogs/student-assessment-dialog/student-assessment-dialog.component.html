@@ -2,8 +2,8 @@
 	<div class="row">
 		<h1>Student Assessment</h1>
 	</div>
-	<form [formGroup]="assessmentForm" class="margin-top-40">
-		<div class="assessment-container" formArrayName="participants">
+	<form [formGroup]="assessmentForm" class="margin-top-40 margin-bottom-40">
+		<div formArrayName="participants">
 			<div class="row mat-body-2">
 				<div class="col-xs-4">Student Name</div>
 				<div class="col-xs-4">Assessment Result</div>
@@ -31,13 +31,13 @@
 							<div class="col-sm-12">
 								+
 								<span *ngIf="participant.value.rule_obj">
-									{{(participant.value.rule_obj.gyan / 100) * data.academicGyan }}
+									{{getGyanForRule(participant.get('rule_obj').gyan, data.academicGyan) }}
 								</span> Gyan from Academics
 							</div>
 						</div>
 						<div class="row" *ngFor="let nonAcademicRule of data.assessment_models[0].assessment_na_rules">
 							<div class="col-sm-12">
-								+ {{( nonAcademicRule.gyan / 100) * data.nonAcademicGyan }} Gyan from {{nonAcademicRule.value | titlecase}}
+								+ {{getGyanForRule(nonAcademicRule.gyan, data.nonAcademicGyan) }} Gyan from {{nonAcademicRule.value | titlecase}}
 							</div>
 						</div>
 					</div>
@@ -47,7 +47,7 @@
 	</form>
 	<div class="row">
 		<div class="col-xs-12">
-			<button type="submit" class="pull-right" (click)="submitForm()" mat-raised-button color="accent">Submit</button>
+			<button type="submit" [disabled]="!assessmentForm.valid" class="pull-right" (click)="submitForm()" mat-raised-button color="accent">Submit</button>
 		</div>
 	</div>
 </div>

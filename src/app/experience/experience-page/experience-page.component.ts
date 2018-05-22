@@ -475,7 +475,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						}]
 				},
 				'rooms',
-				{ 'assessment_models': ['assessment_na_rules', 'assessment_rules'] }
+				{ 'assessment_models': ['assessment_na_rules', {'assessment_rules' : {'assessment_result': 'assessees'}}] }
 			],
 			'relInclude': 'calendarId'
 		};
@@ -1723,15 +1723,18 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			if (dialogSelection) {
 				const assessmentArray: Array<AssessmentResult> = [];
 				dialogSelection.participants.forEach(participant => {
-					assessmentArray.push({
-						assesserId: this.userId,
-						assesseeId: participant.id,
-						calendarId: this.calendarId,
-						assessmentRuleId: participant.rule_obj.id
-					});
+					if (participant.rule_obj && participant.rule_obj.id) {
+						assessmentArray.push({
+							assesserId: this.userId,
+							assesseeId: participant.id,
+							calendarId: this.calendarId,
+							assessmentRuleId: participant.rule_obj.id
+						});
+					}
 				});
 				this._assessmentService.submitAssessment(assessmentArray).subscribe(result => {
 					console.log(result);
+					this.snackBar.open('Your assessment has been submitted. Students will be informed over email.', 'Ok', { duration: 5000});
 				});
 			}
 		});
