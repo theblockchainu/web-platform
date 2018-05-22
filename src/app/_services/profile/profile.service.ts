@@ -192,7 +192,7 @@ export class ProfileService {
 		};
 		console.log(this._requestHeaderService.options);
 		return this.http
-			.post(environment.apiUrl + '/api/peers/sendVerifySms?phone=' + phonenumber + '&countryCode=' + countryCode, body, this._requestHeaderService.getOptions())
+			.post(environment.apiUrl + '/api/peers/sendVerifySms?phone=' + phonenumber + '&countryCode=' + countryCode, body, this._requestHeaderService.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
