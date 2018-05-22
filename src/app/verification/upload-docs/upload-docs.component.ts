@@ -7,9 +7,9 @@ import { ProfileService } from '../../_services/profile/profile.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
-import {environment} from '../../../environments/environment';
-import {Meta, Title} from '@angular/platform-browser';
-
+import { environment } from '../../../environments/environment';
+import { Meta, Title } from '@angular/platform-browser';
+import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const PHONE_REGEX = /^(\+\d{1,3}[- ]?)?\d{10}$/;
 
@@ -37,7 +37,7 @@ export class UploadDocsComponent implements OnInit {
 	public phoneFormError: string;
 	public envVariable;
 	public httpLoading = false;
-	
+
 	constructor(
 		public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -50,32 +50,33 @@ export class UploadDocsComponent implements OnInit {
 		private titleService: Title,
 		private metaService: Meta,
 		private dialogsService: DialogsService,
-		private _cookieUtilsService: CookieUtilsService) {
+		private _cookieUtilsService: CookieUtilsService,
+		private _RequestHeaderService: RequestHeaderService) {
 		this.activatedRoute.params.subscribe(params => {
 			this.step = parseInt(params['step'], 10);
 		});
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.setTags();
 		this.peer = this._fb.group({
 			email: ['',
 				[Validators.required,
-					Validators.pattern(EMAIL_REGEX)]],
+				Validators.pattern(EMAIL_REGEX)]],
 			verificationIdUrl: ['', Validators.required]
 		});
 		this.emailForm = this._fb.group({
 			email: ['',
 				[Validators.required,
-					Validators.pattern(EMAIL_REGEX)]]
+				Validators.pattern(EMAIL_REGEX)]]
 		});
 		this.phoneForm = this._fb.group({
 			countryCode: ['', [Validators.required]],
 			phone: ['',
 				[Validators.required,
-					Validators.pattern(PHONE_REGEX)]]
+				Validators.pattern(PHONE_REGEX)]]
 		});
 		this.emailOtp = this._fb.group({
 			inputOTP: [null, [Validators.required]]
@@ -91,7 +92,7 @@ export class UploadDocsComponent implements OnInit {
 				}
 			});
 	}
-	
+
 	private setTags() {
 		this.titleService.setTitle('Verification');
 		this.metaService.updateTag({
@@ -115,7 +116,7 @@ export class UploadDocsComponent implements OnInit {
 			content: environment.clientUrl + this.router.url
 		});
 	}
-	
+
 	continue(p, isBack = false) {
 		if (isBack) {
 			this.step = p;
@@ -135,11 +136,11 @@ export class UploadDocsComponent implements OnInit {
 			}
 		}
 	}
-	
+
 	public sendEmailOTP(nextStep) {
 		this.httpLoading = true;
 		this._profileService.sendVerifyEmail(this.userId, this.emailForm.controls.email.value)
-			.subscribe( response => {
+			.subscribe(response => {
 				this.httpLoading = false;
 				this.step = nextStep;
 				this.router.navigate(['verification', +this.step]);
@@ -151,23 +152,23 @@ export class UploadDocsComponent implements OnInit {
 			});
 		console.log('mail sent');
 	}
-	
+
 	public sendPhoneOTP(nextStep) {
 		this.httpLoading = true;
 		this._profileService.sendVerifySms(this.phoneForm.controls.phone.value, this.phoneForm.controls.countryCode.value)
-			.subscribe( response => {
-					this.httpLoading = false;
-					this.step = nextStep;
-					this.router.navigate(['verification', +this.step]);
-				}, err => {
-					this.httpLoading = false;
-					this.phoneFormError = err.error.error.message;
-				}
+			.subscribe(response => {
+				this.httpLoading = false;
+				this.step = nextStep;
+				this.router.navigate(['verification', +this.step]);
+			}, err => {
+				this.httpLoading = false;
+				this.phoneFormError = err.error.error.message;
+			}
 			);
 		console.log('sms sent');
 	}
-	
-	
+
+
 	public resendEmailOTP() {
 		this.httpLoading = true;
 		this._profileService.sendVerifyEmail(this.userId, this.emailForm.controls.email.value)
@@ -183,7 +184,7 @@ export class UploadDocsComponent implements OnInit {
 				});
 			});
 	}
-	
+
 	public resendPhoneOTP() {
 		this.httpLoading = true;
 		this._profileService.sendVerifySms(this.phoneForm.controls.phone.value, this.phoneForm.controls.countryCode.value)
@@ -197,7 +198,7 @@ export class UploadDocsComponent implements OnInit {
 				this.phoneFormError = err.error.error.message;
 			});
 	}
-	
+
 	updatePeer() {
 		this._profileService
 			.updatePeer(this.userId, {
@@ -211,51 +212,51 @@ export class UploadDocsComponent implements OnInit {
 				console.log(err);
 			});
 	}
-	
+
 	verifyEmail(nextStep) {
 		this.httpLoading = true;
 		this._profileService.confirmEmail(this.userId, this.emailOtp.controls['inputOTP'].value)
 			.subscribe((res) => {
-					this.httpLoading = false;
-					this.success = res;
-					this.step = nextStep;
-					this.router.navigate(['onboarding', '1']);
-				},
+				this.httpLoading = false;
+				this.success = res;
+				this.step = nextStep;
+				this.router.navigate(['onboarding', '1']);
+			},
 				(err) => {
 					this.httpLoading = false;
 					console.log(err);
 					if (err.status === 400) {
 						this.emailOtpError = 'The code you entered does not match our records. Did you enter the most recent one?';
 					}
-					
+
 				}
 			);
 	}
-	
+
 	verifyPhone(nextStep) {
 		this.httpLoading = true;
 		this._profileService.confirmSmsOTP(this.phoneOtp.controls['inputOTP'].value)
 			.subscribe((res) => {
-					this.httpLoading = false;
-					this.success = res;
-					this.step = nextStep;
-					this.router.navigate(['verification', +this.step]);
-				},
+				this.httpLoading = false;
+				this.success = res;
+				this.step = nextStep;
+				this.router.navigate(['verification', +this.step]);
+			},
 				(err) => {
 					console.log(err);
 					this.httpLoading = false;
 					if (err.status === 400) {
 						this.phoneOtpError = 'The code you entered does not match our records. Did you enter the most recent one?';
 					}
-					
+
 				}
 			);
 	}
-	
+
 	redirectToOnboarding() {
 		this.router.navigate(['/onboarding/1']);
 	}
-	
+
 	uploadImage(event) {
 		this.uploadingImage = true;
 		console.log(event.files);
@@ -269,7 +270,7 @@ export class UploadDocsComponent implements OnInit {
 			}).subscribe();
 		}
 	}
-	
+
 	deleteFromContainer(url: string, type: string) {
 		if (type === 'image' || type === 'file') {
 			this._profileService.updatePeer(this.userId, {

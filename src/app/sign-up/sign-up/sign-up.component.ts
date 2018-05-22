@@ -67,7 +67,7 @@ export class SignUpComponent implements OnInit {
       this._RequestHeaderService.refreshToken.next(true);
       this._AuthenticationService.isLoginSubject.next(true);
       this._SocketService.addUser(userId);
-      this._router.navigate(['verification', '1']);
+      this._router.navigate(['']);
     } else {
       this._MatSnackBar.open('An error occured', 'close', { duration: 3000 });
     }

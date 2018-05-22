@@ -7,17 +7,18 @@ import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
+import { AuthenticationService } from '../authentication/authentication.service';
 @Injectable()
 export class ProfileService {
 	public key = 'userId';
-	public profileSubject = new Subject<any>();
 	public envVariable;
 
 	constructor(private http: HttpClient,
 		private route: ActivatedRoute,
 		public router: Router,
 		public _requestHeaderService: RequestHeaderService,
-		private _cookieUtilsService: CookieUtilsService
+		private _cookieUtilsService: CookieUtilsService,
+		private _AuthenticationService: AuthenticationService
 	) {
 		this.envVariable = environment;
 	}
@@ -134,7 +135,7 @@ export class ProfileService {
 		if (userId) {
 			return this.http.patch(environment.apiUrl + '/api/peers/' + userId + '/profile', body, this._requestHeaderService.options)
 				.map((response: any) => {
-					this.profileSubject.next('updated');
+					this._AuthenticationService.isLoginSubject.next(true);
 					return response;
 				});
 		}
@@ -189,8 +190,9 @@ export class ProfileService {
 	public sendVerifySms(phonenumber, countryCode) {
 		const body = {
 		};
+		console.log(this._requestHeaderService.options);
 		return this.http
-			.post(environment.apiUrl + '/api/peers/sendVerifySms?phone=' + phonenumber + '&countryCode=' + countryCode, body, this._requestHeaderService.options)
+			.post(environment.apiUrl + '/api/peers/sendVerifySms?phone=' + phonenumber + '&countryCode=' + countryCode, body, this._requestHeaderService.getOptions())
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -204,7 +206,7 @@ export class ProfileService {
 		return this.http
 			.post(environment.apiUrl + '/api/peers/confirmEmail?uid=' + userId + '&token=' + inputToken + '&redirect=' + redirect, body, this._requestHeaderService.options)
 			.map((response: any) => {
-				this.profileSubject.next('updated');
+				this._AuthenticationService.isLoginSubject.next(true);
 				return response;
 			});
 
