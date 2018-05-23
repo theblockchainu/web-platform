@@ -324,6 +324,13 @@ export class ProfileService {
 				cb(err);
 			}).subscribe();
 	}
+	
+	public deletePeer(peerId) {
+		return this.http
+			.delete(environment.apiUrl + '/api/peers/' + peerId, this._requestHeaderService.options)
+			.map((response) => response,
+				(err) => err);
+	}
 
 	public updateWork(userId, profileId, work: any) {
 		if (!(work.length > 0 && userId)) {

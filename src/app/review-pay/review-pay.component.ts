@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { ProfileService } from '../_services/profile/profile.service';
 import * as moment from 'moment';
@@ -70,6 +70,7 @@ export class ReviewPayComponent implements OnInit {
     }
 
     ngOnInit() {
+    	this.setTags();
         this.stripe = Stripe(environment.stripePublishableKey);
         const elements = this.stripe.elements();
         this.card = elements.create('card', {
@@ -153,6 +154,30 @@ export class ReviewPayComponent implements OnInit {
         this.fetchScholarships();
         this.scholarshipAmount = 0;
     }
+	
+	private setTags() {
+		this.titleService.setTitle('Review & Pay');
+		this.metaService.updateTag({
+			property: 'og:title',
+			content: 'Review & Pay'
+		});
+		this.metaService.updateTag({
+			property: 'og:description',
+			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+		});
+		this.metaService.updateTag({
+			property: 'og:site_name',
+			content: 'peerbuds.com'
+		});
+		this.metaService.updateTag({
+			property: 'og:image',
+			content: 'https://peerbuds.com/pb_logo_square.png'
+		});
+		this.metaService.updateTag({
+			property: 'og:url',
+			content: environment.clientUrl + this.router.url
+		});
+	}
 
 
     public processPayment(e: Event) {

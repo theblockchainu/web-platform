@@ -25,7 +25,7 @@
 	<div *ngIf="data.content">
 		<div *ngIf="data.userType==='teacher' || data.userType==='participant' ">
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-12 margin-bottom-20">
 					<button mat-raised-button style="float: right;" color="primary" *ngIf="userType ==='participant' && !data.content.hasRSVPd" (click)="rsvpToggle(data.content)">RSVP</button>
 					<button mat-button style="float: right;" class="mat-border-button margin-bottom-20" *ngIf="data.content.hasRSVPd" (click)="viewRSVPs(data.content)" [disabled]="true"
 					        tabindex="-1"> View RSVPs </button>

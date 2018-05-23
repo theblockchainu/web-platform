@@ -105,7 +105,7 @@ export class HomefeedComponent implements OnInit {
     private fetchContinueLearning() {
         this.loadingContinueLearning = true;
         this._collectionService.getParticipatingCollections(this.userId,
-            '{ "relInclude": "calendarId", "where": {"type":"workshop"}, "include": ' +
+            '{ "relInclude": "calendarId", "include": ' +
             '["calendars", {"owners":["profiles", "reviewsAboutYou", "ownedCollections"]},' +
             ' {"participants": "profiles"}, "topics", {"contents":["schedules","views","submissions"]}, ' +
             '{"reviews":"peer"}] }', (err, result) => {
@@ -179,7 +179,9 @@ export class HomefeedComponent implements OnInit {
             fillerWord = 'recording';
         } else if (contents[0].type === 'project') {
             fillerWord = 'submission';
-        }
+        } else if (contents[0].type === 'in-person') {
+			fillerWord = 'session';
+		}
         if (currentCalendar) {
             const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
             const timeToStart = contentStartDate.diff(moment(), 'days');
