@@ -20,7 +20,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 		
 		const participantsInitArray = [];
 		console.log(this.data);
-		this.pendingParticipants = true;
+		this.pendingParticipants = false;
 		this.data.participants.forEach(participant => {
 			let isParticipantAssessed = false;
 			let participantResult = '';
@@ -36,11 +36,16 @@ export class StudentAssessmentDialogComponent implements OnInit {
 				}
 				
 			});
+			if (!isParticipantAssessed) {
+				this.pendingParticipants = true;
+				console.log('Assessment pending for : ' + participant.profiles[0].first_name + ' ' + participant.profiles[0].last_name);
+			}
 			participantsInitArray.push(
 				this._fb.group({
 					name: participant.profiles[0].first_name + ' ' + participant.profiles[0].last_name,
 					id: participant.id,
-					rule_obj: [{value: participantResult, disabled: isParticipantAssessed}, Validators.required]
+					rule_obj: [{value: participantResult, disabled: isParticipantAssessed}, Validators.required],
+					isAssessed: isParticipantAssessed
 				})
 			);
 		});

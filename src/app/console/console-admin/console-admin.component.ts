@@ -227,14 +227,13 @@ export class ConsoleAdminComponent implements OnInit {
 	 * rejectPeer
 	 */
 	public rejectPeer(peer) {
-		this._profileService.rejectPeer(peer).subscribe((result: any) => {
+		this._profileService.deletePeer(peer.id).subscribe((result: any) => {
 			if (result) {
 				this.fetchPeers();
-				this.snackBar.open(result.result, 'Close', {
+				this.snackBar.open('Peer profile rejected. Account has been deleted from system.', 'Close', {
 					duration: 5000
-				}).onAction().subscribe();
+				});
 			}
-
 		}, err => {
 			console.log(err);
 		});

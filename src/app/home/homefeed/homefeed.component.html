@@ -19,12 +19,12 @@
             </div>
             <div *ngIf="!loadingContinueLearning" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
                 <div class="continueLearning-card" *ngFor="let collection of ongoingArray; let i =index">
-                    <a *ngIf="i<3" [routerLink]="'/workshop/'+collection.id+'/calendar/' + getLearnerCalendar(collection).id + '/' + getLearnerUpcomingEvent(collection).id">
+                    <a *ngIf="i<3" [routerLink]="'/' + collection.type + '/'+collection.id+'/calendar/' + getLearnerCalendar(collection).id + '/' + getLearnerUpcomingEvent(collection).id">
                         <div class="">
                             <img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl !== undefined" src="{{envVariable.apiUrl+getLearnerUpcomingEvent(collection).imageUrl + '/500'}}"
-                                alt="workshpImg">
+                                alt="collectionImg" (error)="_collectionService.imgErrorHandler($event)">
                             <img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl === undefined" src="/assets/images/no-image.jpg"
-                                alt="workshpImg">
+                                alt="collectionImg">
                         </div>
                         <div class="mat-body-2" style="margin-top: 0px;">{{collection.type | titlecase}} : {{collection.title | titlecase}}
                         </div>
