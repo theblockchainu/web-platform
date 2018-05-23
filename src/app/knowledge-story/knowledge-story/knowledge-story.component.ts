@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { environment } from '../../../environments/environment';
 import { MatSnackBar } from '@angular/material';
 import {KnowledgeStoryService} from '../../_services/knowledge-story/knowledge-story.service';
-import {CollectionService} from "../../_services/collection/collection.service";
+import {CollectionService} from '../../_services/collection/collection.service';
+import {Meta, Title} from '@angular/platform-browser';
 declare var FB: any;
 
 @Component({
@@ -29,6 +30,8 @@ export class KnowledgeStoryComponent implements OnInit {
 		private _knowledgeStoryService: KnowledgeStoryService,
 		public _collectionService: CollectionService,
 		private router: Router,
+		private titleService: Title,
+		private metaService: Meta,
 		private dialogsService: DialogsService,
 		private matSnackBar: MatSnackBar
 	) {
@@ -47,6 +50,32 @@ export class KnowledgeStoryComponent implements OnInit {
 		this.initializePage();
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
 	}
+	
+	private setTags() {
+		this.titleService.setTitle(this.knowledgeStory.protagonist[0].profiles[0].first_name + '\'s Knowledge Story');
+		this.metaService.updateTag({
+			property: 'og:title',
+			content: this.knowledgeStory.protagonist[0].profiles[0].first_name + '\'s Knowledge Story'
+		});
+		this.metaService.updateTag({
+			property: 'og:description',
+			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+		});
+		this.metaService.updateTag({
+			property: 'og:site_name',
+			content: 'peerbuds.com'
+		});
+		this.metaService.updateTag({
+			property: 'og:image',
+			content: environment.apiUrl + this.knowledgeStory.protagonist[0].profiles[0].picture_url
+		});
+		this.metaService.updateTag({
+			property: 'og:url',
+			content: environment.clientUrl + this.router.url
+		});
+	}
+	
+	
 	
 	initializePage() {
 		const filter = {
@@ -68,6 +97,7 @@ export class KnowledgeStoryComponent implements OnInit {
 						this.viewerApproved = true;
 					}
 				}
+				this.setTags();
 			});
 	}
 	

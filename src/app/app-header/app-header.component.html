@@ -150,25 +150,25 @@
 </header>
 <mat-menu #headerTeachMenu>
 	<button mat-menu-item [routerLink]="['/console/dashboard']" *ngIf="isTeacher">
-		Dashboard
+		<i class="fas fa-bars lighterText"></i>&nbsp;&nbsp;&nbsp; Dashboard
 	</button>
 	<button mat-menu-item [routerLink]="['/console/teaching/all']" *ngIf="isTeacher">
-		Teaching Journey
+		<i class="fas fa-chart-line lighterText"></i>&nbsp;&nbsp;&nbsp; Teaching Journey
 	</button>
 	<button mat-menu-item [routerLink]="['/console/account/transactions']" *ngIf="isTeacher">
-		Transaction History
+		<i class="fas fa-history lighterText"></i>&nbsp;&nbsp;&nbsp;Transaction History
 	</button>
 	<button mat-menu-item [routerLink]="['session', sessionId,'edit','10']" *ngIf="isSessionApproved && sessionId.length > 5">
-		Available Hours
+		<i class="fas fa-user lighterText"></i>&nbsp;&nbsp;&nbsp; Available Hours
 	</button>
 	<!--<button mat-menu-item [routerLink]="['/console/teaching/workshops']">
 	  Create a Workshop
 	</button>-->
 	<button mat-menu-item [routerLink]="['/console/teaching/experiences']">
-		New Experience
+		<i class="fas fa-plus lighterText"></i>&nbsp;&nbsp;&nbsp; New Experience
 	</button>
 	<button mat-menu-item [routerLink]="['/console/teaching/sessions']" *ngIf="!isSessionApproved">
-		Configure Online Sessions
+		<i class="fas fa-cog lighterText"></i>&nbsp;&nbsp;&nbsp; Configure Online Sessions
 	</button>
 	<!--<button mat-menu-item [routerLink]="['/console/calendar']" *ngIf="isTeacher">
 	  Calendar
@@ -177,13 +177,16 @@
 
 <mat-menu #headerLearnMenu>
 	<button mat-menu-item [routerLink]="['/console/dashboard']">
-		Dashboard
+		<i class="fas fa-bars lighterText"></i>&nbsp;&nbsp;&nbsp; Dashboard
 	</button>
 	<button mat-menu-item [routerLink]="['/console/learning/all']">
-		Learning Journey
+		<i class="fas fa-graduation-cap lighterText"></i>&nbsp;&nbsp;&nbsp; Learning Journey
 	</button>
 	<button mat-menu-item [routerLink]="['/console/account/transactions']">
-		Transaction History
+		<i class="fas fa-history lighterText"></i>&nbsp;&nbsp;&nbsp; Transaction History
+	</button>
+	<button mat-menu-item [routerLink]="['/console/learning/story']">
+		<i class="fas fa-user lighterText"></i>&nbsp;&nbsp;&nbsp; Knowledge Stories
 	</button>
 	<!--<button mat-menu-item [routerLink]="['/console/learning/workshops']">
 	  Workshops

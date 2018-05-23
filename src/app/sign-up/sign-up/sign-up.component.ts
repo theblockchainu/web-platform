@@ -6,6 +6,7 @@ import { AuthenticationService } from '../../_services/authentication/authentica
 import { SocketService } from '../../_services/socket/socket.service';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import {environment} from '../../../environments/environment';
+import {Meta, Title} from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-sign-up',
@@ -24,6 +25,8 @@ export class SignUpComponent implements OnInit {
 				private _MatSnackBar: MatSnackBar,
 				private _AuthenticationService: AuthenticationService,
 				private _SocketService: SocketService,
+				private titleService: Title,
+				private metaService: Meta,
 				private _RequestHeaderService: RequestHeaderService
 	) {
 		this.envVariable = environment;
@@ -31,12 +34,38 @@ export class SignUpComponent implements OnInit {
 	
 	ngOnInit() {
 		
+		this.setTags();
+		
 		this.signupForm = this._fb.group({
 			first_name: ['', Validators.required],
 			last_name: ['', Validators.required],
 			email: ['', Validators.email],
 			password: ['', Validators.required],
 			birthdate: ['', Validators.required]
+		});
+	}
+	
+	private setTags() {
+		this.titleService.setTitle('Sign-up | Peerbuds');
+		this.metaService.updateTag({
+			property: 'og:title',
+			content: 'Sign up for peerbuds.com'
+		});
+		this.metaService.updateTag({
+			property: 'og:description',
+			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+		});
+		this.metaService.updateTag({
+			property: 'og:site_name',
+			content: 'peerbuds.com'
+		});
+		this.metaService.updateTag({
+			property: 'og:image',
+			content: 'https://peerbuds.com/pb_logo_square.png'
+		});
+		this.metaService.updateTag({
+			property: 'og:url',
+			content: environment.clientUrl + this._router.url
 		});
 	}
 	
