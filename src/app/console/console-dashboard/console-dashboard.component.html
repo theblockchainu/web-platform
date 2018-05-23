@@ -293,7 +293,7 @@
 						     (click)="onNotificationClick(notification)">
 							<div class="col-md-1 col-xs-2">
 								<img *ngIf="!notification.actor[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb notificationsImage">
-								<img *ngIf="notification.actor[0].profiles[0].picture_url" src="{{envVariable.apiUrl + notification.actor[0].profiles[0].picture_url}}"
+								<img *ngIf="notification.actor[0].profiles[0].picture_url" src="{{envVariable.apiUrl + notification.actor[0].profiles[0].picture_url}}/100"
 								     alt="A" class="circle-thumb notificationsImage">
 							</div>
 							<div class="col-md-10 col-xs-9">

@@ -8,6 +8,7 @@ import { CollectionService } from '../_services/collection/collection.service';
 import { environment } from '../../environments/environment';
 import { ScholarshipService } from '../_services/scholarship/scholarship.service';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import {Meta, Title} from '@angular/platform-browser';
 
 declare var Stripe: any;
 
@@ -59,6 +60,8 @@ export class ReviewPayComponent implements OnInit {
         public paymentService: PaymentService,
         private router: Router,
         private _scholarshipService: ScholarshipService,
+        private titleService: Title,
+        private metaService: Meta,
         private _fb: FormBuilder
     ) {
         this.envVariable = environment;
