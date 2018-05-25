@@ -1,7 +1,3 @@
-.large-icon {
-	font-size: 13vw;
-}
-
 .search-content{
     height: 47vh;
     overflow-y: scroll;
@@ -13,3 +9,38 @@
     overflow-y: auto;
     overflow-x: hidden;    
 }
+
+.invert-fb{
+	padding: 4px 20px;
+	background-color: #335397;
+}
+.invert-fb:hover, .invert-fb:active{
+	background-color: #ffffff;
+	color: #335397;
+}
+.invert-google{
+	padding: 4px 20px;
+	background-color: #dd4a38;
+}
+.invert-google:hover, .invert-google:active {
+	background-color: #ffffff;
+	color: #dd4a38;
+}
+.circle-icon1 {
+	padding:4px 7px 4px 7px;
+	border-radius: 100%;
+	margin:2px 21px 6px 0px;
+}
+.circle-icon2{
+	padding:4px 5.5px 4px 5.75px;
+	border-radius: 100%;
+	margin:2px 21px 6px 0px;
+}
+.btn-block{
+	font-size:15px;
+	color:#ffffff;
+	width: 100%;
+}
+
+
+

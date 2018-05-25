@@ -2,17 +2,54 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
-				<mat-horizontal-stepper *ngIf="!mobileQuery.matches" #stepper>
+				<mat-horizontal-stepper class="hide-header" [selectedIndex]="selectedIndex" (selectionChange)="selectionChanged($event)"
+				 *ngIf="!mobileQuery.matches" #stepper>
 					<mat-step>
-						<ng-template matStepLabel>Connect</ng-template>
-						<div class="row stepper-container padding-top-30">
-							<div class="col-xs-3" *ngFor="let platform of platforms">
+						<div class="row stepper-container">
+							<div class="col-sm-4 col-sm-offset-4 col-xs-12 ">
 								<mat-card>
-									<i class="fab fa-{{platform.name}} large-icon"></i>
-									<mat-card-actions class="center">
-										<a *ngIf="!platform.connected" mat-button href="{{envVariable.apiUrl}}/auth/{{platform.name.toLowerCase()}}?returnTo={{currentPath}}">Connect</a>
-										<a *ngIf="platform.connected" mat-button href="{{envVariable.apiUrl}}/auth/{{platform.name.toLowerCase()}}?returnTo={{currentPath}}">Already Connected</a>
-									</mat-card-actions>
+									<mat-card-content>
+										<div class="row margin-bottom-20">
+										</div>
+										<div class="row margin-bottom-20">
+											<div class="col-xs-12 center">
+												<a mat-raised-button class="invert-fb btn-block" href="{{envVariable.apiUrl}}/auth/facebook?returnTo=invite/2">
+													<span class="circle-icon1">
+														<i class="fa fa-facebook-f"></i>
+													</span>Continue with Facebook
+												</a>
+											</div>
+										</div>
+										<div class="row margin-bottom-20">
+											<div class="col-xs-12 center">
+												<a mat-raised-button class="invert-google btn-block" href="{{envVariable.apiUrl}}/auth/google?returnTo=invite/2">
+													<span class="circle-icon2">
+														<i class="fa fa-google"></i>
+													</span>Continue with Google
+												</a>
+											</div>
+										</div>
+										<div class="row margin-bottom-20">
+											<div class="col-xs-12 center">
+												<a mat-raised-button class="invert-fb btn-block" href="{{envVariable.apiUrl}}/auth/linkedin?returnTo=invite/2">
+													<span class="circle-icon1">
+														<i class="fab fa-linkedin-in"></i>
+													</span>Continue with Linkedin
+												</a>
+											</div>
+										</div>
+										<!-- <div class="btn-hide position-relative text-center">
+											<div class="or-seperator-vertical"></div>
+											<span class="round-or-text or-text-vertical">or</span>
+										</div>
+										<div class="row margin-top-20 margin-bottom-20">
+											<div class="col-xs-12 center">
+												<button mat-button class="mat-border-button pb-block" color="accent" (click)="signupEmail()">
+													Continue with email</button>
+											</div>
+										</div> -->
+
+									</mat-card-content>
 								</mat-card>
 							</div>
 						</div>
@@ -24,7 +61,7 @@
 								<div class="row padding-top-30">
 									<div class="col-xs-12">
 										<mat-form-field class="pb-block">
-											<input [formControl]="searchForm" matInput placeholder="Favorite food">
+											<input [formControl]="searchForm" matInput placeholder="Search Contact">
 										</mat-form-field>
 									</div>
 								</div>
@@ -37,7 +74,7 @@
 														<mat-card>
 															<div class="row">
 																<div class="col-xs-1">
-																	<mat-checkbox [(ngModel)]="contact.selected"></mat-checkbox>
+																	<mat-checkbox [(ngModel)]="contact.selected" (ngModelChange)="count($event)"></mat-checkbox>
 																</div>
 																<div class="col-xs-1">
 																	<img src="{{contact.imageUrl}}">
@@ -59,7 +96,7 @@
 														<mat-card>
 															<div class="row">
 																<div class="col-xs-1">
-																	<mat-checkbox [(ngModel)]="contact.selected"></mat-checkbox>
+																	<mat-checkbox [(ngModel)]="contact.selected" (ngModelChange)="count($event)"></mat-checkbox>
 																</div>
 																<div class="col-xs-1">
 																	<img src="{{contact.imageUrl}}">
@@ -88,7 +125,7 @@
 							<div class="col-xs-12">
 								<div class="row">
 									<div class="col-xs-12">
-										<h3>Sending Invites to</h3>
+										<h3>Please Verify the contacts you want to invite</h3>
 									</div>
 								</div>
 								<div class="row" *ngFor="let contact of contacts">
@@ -114,13 +151,13 @@
 						</div>
 					</mat-step>
 				</mat-horizontal-stepper>
-				<div class="row padding-top-10 padding-bottom-20">
+				<div class="row padding-top-10 padding-bottom-20" [hidden]="selectedIndex===0">
 					<div class="col-xs-12">
 						<button (click)="previous()" mat-raised-button color="accent">
-							Previous
+							Back
 						</button>
 						<button class="pull-right" (click)="next()" mat-raised-button color="accent">
-							Next
+							Invite ({{checkedCount}})
 						</button>
 					</div>
 				</div>

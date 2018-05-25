@@ -18,7 +18,6 @@ export class InviteComponent implements OnInit {
 	public mobileQuery: MediaQueryList;
 	private _mobileQueryListener: () => void;
 	selectedPlatform: number;
-	platforms: Array<SocialPLatform>;
 	userId: string;
 	envVariable: any;
 	currentPath: string;
@@ -26,6 +25,8 @@ export class InviteComponent implements OnInit {
 	contacts: Array<any>;
 	originalContacts: Array<any>;
 	@ViewChild('stepper') public myStepper: MatStepper;
+	selectedIndex: number;
+	checkedCount: number;
 
 	constructor(
 		private titleService: Title,
@@ -42,26 +43,19 @@ export class InviteComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.platforms = [
-			// { name: 'linkedin', connected: false },
-			{ name: 'google', connected: false },
-			{ name: 'facebook', connected: false }
-		];
-		this.activatedRoute.params.subscribe(params => {
-			if (this.initialised && (this.provider !== params['provider'])) {
-				location.reload();
-			}
-			this.provider = params['provider'];
-		});
 		this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
 		this._mobileQueryListener = () => this.cd.detectChanges();
 		this.mobileQuery.addListener(this._mobileQueryListener);
 		this.userId = this.cookieUtilsService.getValue('userId');
 		this.currentPath = this.router.url.slice(1);
 		this.setTags();
-		this.getProviders();
 		this.getContacts();
 		this.setupForm();
+		this.selectedIndex = 0;
+		this.checkedCount = 0;
+		this.activatedRoute.params.subscribe(params => {
+			this.selectedIndex = Number(params['stepId']);
+		});
 	}
 
 	private setupForm() {
@@ -70,23 +64,6 @@ export class InviteComponent implements OnInit {
 			console.log(res);
 			this.contacts = this.originalContacts.filter((contact) => {
 				return contact.name.toLowerCase().includes(res.toLowerCase());
-			});
-		});
-	}
-
-
-	private getProviders() {
-		this.socialSharingService.getConnectedPlatforms(this.userId).subscribe((identities: any) => {
-			console.log('providers');
-			console.log(identities);
-			identities.forEach(identity => {
-				const element = this.platforms.find(
-					(platform: SocialPLatform) => {
-						console.log('found' + platform.name);
-						return (platform.name === identity.provider);
-					}
-				);
-				element.connected = true;
 			});
 		});
 	}
@@ -140,7 +117,8 @@ export class InviteComponent implements OnInit {
 					email: contact.email,
 					name: contact.name,
 					peerId: this.userId,
-					status: 'pending'
+					status: 'pending',
+					contactId: contact.id
 				});
 			}
 		});
@@ -168,11 +146,16 @@ export class InviteComponent implements OnInit {
 	public previous() {
 		this.myStepper.previous();
 	}
-}
 
-interface SocialPLatform {
-	name: string;
-	connected: boolean;
+	public selectionChanged(event) {
+		console.log(event);
+		this.selectedIndex = event.selectedIndex;
+	}
+
+	public count(event) {
+		console.log(event);
+		this.checkedCount = this.contacts.filter((contact) => contact.selected).length;
+	}
 }
 
 interface PeerInvite {
@@ -180,4 +163,5 @@ interface PeerInvite {
 	email: string;
 	peerId: string;
 	status: string;
+	contactId: string;
 }

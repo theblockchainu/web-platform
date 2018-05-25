@@ -10,7 +10,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
-    path: ':provider',
+    path: ':stepId',
     component: InviteComponent,
     canActivate: [AuthGuardService]
   },
