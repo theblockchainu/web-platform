@@ -1,14 +1,15 @@
-.no-content-section{
-	padding: 3% 0 5% 0 !important;
-	overflow-y: inherit;
-}
-img{
-	max-width:756px;
-}
-h1{
-	margin-top:20px;
+.large-icon {
+	font-size: 13vw;
 }
 
-.text-center{
-	margin-top: 5% !important;
+.search-content{
+    height: 47vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.stepper-container{
+	height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;    
 }

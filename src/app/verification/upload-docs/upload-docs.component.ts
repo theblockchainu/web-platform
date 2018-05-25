@@ -12,6 +12,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const PHONE_REGEX = /^(\+\d{1,3}[- ]?)?\d{10}$/;
+import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
 
 @Component({
 	selector: 'upload-docs',
@@ -37,6 +38,7 @@ export class UploadDocsComponent implements OnInit {
 	public phoneFormError: string;
 	public envVariable;
 	public httpLoading = false;
+	public countryCodes: Array<CountryCode>;
 
 	constructor(
 		public router: Router,
@@ -51,7 +53,8 @@ export class UploadDocsComponent implements OnInit {
 		private metaService: Meta,
 		private dialogsService: DialogsService,
 		private _cookieUtilsService: CookieUtilsService,
-		private _RequestHeaderService: RequestHeaderService) {
+		private _RequestHeaderService: RequestHeaderService,
+		private countryPickerService: CountryPickerService) {
 		this.activatedRoute.params.subscribe(params => {
 			this.step = parseInt(params['step'], 10);
 		});
@@ -73,11 +76,12 @@ export class UploadDocsComponent implements OnInit {
 				Validators.pattern(EMAIL_REGEX)]]
 		});
 		this.phoneForm = this._fb.group({
-			countryCode: ['', [Validators.required]],
+			countryCode: ['', [Validators.required,]],
 			phone: ['',
 				[Validators.required,
 				Validators.pattern(PHONE_REGEX)]]
 		});
+		this.phoneForm.disable();
 		this.emailOtp = this._fb.group({
 			inputOTP: [null, [Validators.required]]
 		});
@@ -91,6 +95,19 @@ export class UploadDocsComponent implements OnInit {
 					this.emailForm.controls.email.disable();
 				}
 			});
+		this.countryCodes = [];
+		this.countryPickerService.getCountries().subscribe((res: any) => {
+			console.log(res);
+			res.forEach(country => {
+				console.log(country);
+				this.countryCodes.push({
+					code: country.callingCode[0],
+					country: country.name
+				});
+			});
+			console.log(this.countryCodes);
+			this.phoneForm.enable();
+		});
 	}
 
 	private setTags() {
@@ -223,7 +240,7 @@ export class UploadDocsComponent implements OnInit {
 				this.httpLoading = false;
 				this.success = res;
 				this.step = nextStep;
-				this.router.navigate(['onboarding', '1']);
+				this.router.navigate(['invite']);
 			},
 				(err) => {
 					this.httpLoading = false;
@@ -290,3 +307,7 @@ export class UploadDocsComponent implements OnInit {
 	}
 }
 
+interface CountryCode {
+	code: number;
+	country: string;
+}

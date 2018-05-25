@@ -328,8 +328,7 @@
 										<div class="collectionTitle clickable" [routerLink]="'/scholarship/'+scholarship.id">{{ scholarship.title | ucwords }} </div>
 										<div class="mat-caption">{{scholarship.type | ucwords}}</div>
 										<br>
-										<br>
-										Fund Balance
+										<br> Fund Balance
 										<div class="mat-body-2">
 											<i class="fas fa-fire"></i> {{scholarship.id | karmaBalance: 'scholarship' | async}} Karma
 										</div>
@@ -390,6 +389,16 @@
 					<button type="submit" mat-button>Submit</button>
 				</mat-card-actions>
 			</form>
+		</mat-card>
+	</div>
+	<div class="col-md-3">
+		<mat-card>
+			<mat-card-header>
+				<mat-card-title>Add Countries</mat-card-title>
+			</mat-card-header>
+			<mat-card-actions>
+				<button (click)="addCountries()" mat-button>Add</button>
+			</mat-card-actions>
 		</mat-card>
 	</div>
 </div>

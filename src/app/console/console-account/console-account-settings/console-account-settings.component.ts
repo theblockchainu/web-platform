@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {ConsoleAccountComponent} from '../console-account.component';
-import {ProfileService} from '../../../_services/profile/profile.service';
-import {CookieUtilsService} from '../../../_services/cookieUtils/cookie-utils.service';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConsoleAccountComponent } from '../console-account.component';
+import { ProfileService } from '../../../_services/profile/profile.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+import { MatSnackBar } from '@angular/material';
+import { AuthenticationService } from '../../../_services/authentication/authentication.service';
+import { RequestHeaderService } from '../../../_services/requestHeader/request-header.service';
 @Component({
   selector: 'app-console-account-settings',
   templateUrl: './console-account-settings.component.html',
@@ -19,7 +21,11 @@ export class ConsoleAccountSettingsComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public consoleAccountComponent: ConsoleAccountComponent,
     public _profileService: ProfileService,
-    private _cookieUtilsService: CookieUtilsService
+    private _cookieUtilsService: CookieUtilsService,
+    public _MatSnackBar: MatSnackBar,
+    private _Router: Router,
+    private _AuthenticationService: AuthenticationService,
+    private _RequestHeaderService: RequestHeaderService
   ) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       console.log(urlSegment[0].path);
@@ -32,7 +38,17 @@ export class ConsoleAccountSettingsComponent implements OnInit {
   }
 
   public deleteAccount() {
-
+    this._profileService.deletePeer(this.userId).subscribe(res => {
+      this._MatSnackBar.open('Account Deleted. Redirecting', 'Close', {
+        duration: 3000
+      });
+      this._cookieUtilsService.deleteValue('userId');
+      this._cookieUtilsService.deleteValue('accountApproved');
+      this._cookieUtilsService.deleteValue('userId');
+      this._AuthenticationService.isLoginSubject.next(false);
+      this._RequestHeaderService.refreshToken.next(true);
+      this._Router.navigate(['']);
+    });
   }
 
 }
