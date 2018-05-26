@@ -40,7 +40,7 @@
 				<ul *ngFor="let item of filteredList" style="list-style:none" class="padding-left-0">
 					<li class="captitalise topic" (click)="select(item)">
 						<a>
-							<img src="{{envVariable.apiUrl+ item.imageUrl}}" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
+							<img src="{{envVariable.apiUrl+ item.imageUrl}}/100" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
 							<span style="margin-left:20px">{{item.name}}</span>
 							<span *ngIf="!item.inSelect">
                                 <mat-icon class="pull-right" style="top: 1.1em; right: 0.6em; color: #cccccc;">check_circle</mat-icon>

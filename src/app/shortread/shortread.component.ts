@@ -11,12 +11,14 @@ import {environment} from '../../environments/environment';
 export class ShortreadComponent implements OnInit {
 	
 	pdfSrc = '../assets/files/peerbudsShortread.pdf';
-	
+	public envVariable;
 	constructor(
 		private titleService: Title,
 		private metaService: Meta,
 		private router: Router
-	) { }
+	) {
+		this.envVariable = environment;
+	}
 	
 	ngOnInit() {
 		this.setTags();

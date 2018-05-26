@@ -76,7 +76,7 @@
                     <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
                         <div class="">
                             <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0"
-                                 src="{{envVariable.apiUrl+workshop.imageUrls[0]}}"
+                                 src="{{envVariable.apiUrl+workshop.imageUrls[0] + '/300'}}"
                                  alt="workshpImg" (error)="_collectionService.imgErrorHandler($event)">
                             <img class="recommendation-thumb"
                                  *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0"

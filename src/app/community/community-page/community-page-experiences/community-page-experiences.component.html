@@ -39,7 +39,7 @@
 				</span>
 				<a [routerLink]="'/experience/'+experience.id">
 					<div class="">
-						<img class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" src="{{envVariable.apiUrl+experience.imageUrls[0]}}" alt="experience image" (error)="_collectionService.imgErrorHandler($event)">
+						<img class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" src="{{envVariable.apiUrl+experience.imageUrls[0]}}/300" alt="experience image" (error)="_collectionService.imgErrorHandler($event)">
 						<img class="recommendation-thumb" *ngIf="!experience.imageUrls || experience.imageUrls.length<=0" src="/assets/images/no-image.jpg" alt="experience image" (error)="_collectionService.imgErrorHandler($event)">
 					</div>
 					<div *ngIf="experience.currency !== undefined && experience.currency.length > 0" style="margin-top: 3px;"><span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span> / person</div>

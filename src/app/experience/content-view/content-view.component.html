@@ -43,7 +43,7 @@
           <mat-list-item *ngFor="let Content of itenaryForm.controls['contents'].controls; let i=index" style="margin: 20px 0px; padding: 0px 0px; height: fit-content;">
             <div class="col-md-3" style="padding-left: 0px; margin-right: 10px;" (click)="findAndOpenDialog(i)">
               <img *ngIf="!Content.value.imageUrl" src="/assets/images/placeholder-image.jpg" style="width: 140px;">
-              <img *ngIf="Content.value.imageUrl  && Content.value.type !== 'video'" src="{{envVariable.apiUrl + Content.value.imageUrl}}"
+              <img *ngIf="Content.value.imageUrl  && Content.value.type !== 'video'" src="{{envVariable.apiUrl + Content.value.imageUrl}}/500"
                 (error)="imgErrorHandler($event)" style="width: 140px;">
               <video *ngIf="Content.value.imageUrl && Content.value.type === 'video'" width="100%" class="center-block itenary-media" preload="metadata"
                 poster="../../../assets/images/placeholder-image.jpg" controls>

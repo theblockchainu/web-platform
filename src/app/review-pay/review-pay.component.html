@@ -130,7 +130,7 @@
                         <div class="seperate-section padding-top-0">
                             <div class="display-table">
                                 <div class="margin-bottom-10">
-                                    <img [src]="(collection.imageUrls && collection.imageUrls.length > 0) ? envVariable.apiUrl+collection.imageUrls[0] : defaultImageUrl"
+                                    <img [src]="(collection.imageUrls && collection.imageUrls.length > 0) ? envVariable.apiUrl+collection.imageUrls[0] + '/300' : defaultImageUrl"
                                         alt="image" />
                                 </div>
                                 <div class="fs-17">{{ collection.title | titlecase}}

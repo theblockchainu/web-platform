@@ -101,18 +101,22 @@ export class AuthenticationService {
 	}
 
 	sendForgotPwdMail(email): any {
-		const body = `{"email":"${email}"}`;
+		const body = {
+			email: email
+		};
 		return this.http
-			.post(environment.apiUrl + '/api/peers/forgotPassword?em=' + email, body, this._requestHeaderService.options)
+			.post(environment.apiUrl + '/api/peers/forgotPassword', body, this._requestHeaderService.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
 	}
 
 	sendEmailSubscriptions(email): any {
-		const body = `{"email":"${email}"}`;
+		const body = {
+			email: email
+		};
 		return this.http
-			.post(environment.apiUrl + '/api/emailSubscriptions?em=' + email, body, this._requestHeaderService.options)
+			.post(environment.apiUrl + '/api/emailSubscriptions', body, this._requestHeaderService.options)
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
@@ -124,8 +128,13 @@ export class AuthenticationService {
 			.map((response: any) => response);
 	}
 	createGuestContacts(first_name, last_name, email, subject, message): any {
-		const body = `{"first_name":"${first_name}","last_name":"${last_name}",
-    "email":"${email}","subject":"${subject}","message":"${message}"}`;
+		const body = {
+			first_name: first_name,
+			last_name: last_name,
+			email: email,
+			subject: subject,
+			message: message
+		};
 		return this.http
 			.post(environment.apiUrl + '/api/guestContacts', body, this._requestHeaderService.options)
 			.map((response: any) => response, (err) => {

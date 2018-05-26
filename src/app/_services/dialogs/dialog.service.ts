@@ -308,11 +308,11 @@ export class DialogsService {
         return dialogRef5.afterClosed();
     }
 
-    public selectDateDialog(allItenaries, mode, participants, userType) {
+    public selectDateDialog(allItenaries, mode, participants, userType, collectionType) {
         return this.dialog.open(SelectDateDialogComponent, {
             panelClass: 'responsive-dialog', width: '45vw',
             height: '100vh',
-            data: { itineraries: allItenaries, mode: mode, participants: participants, userType: userType }
+            data: { itineraries: allItenaries, mode: mode, participants: participants, userType: userType, collectionType: collectionType }
         }).afterClosed();
     }
 

@@ -46,7 +46,7 @@ export class IndexComponent implements OnInit {
 	ngOnInit() {
 		this.loadingHome = false;
 		this.notifyForm = this._fb.group(
-			{ email: ['', [Validators.requiredTrue, Validators.email]] }
+			{ email: ['', [Validators.required, Validators.email]] }
 		);
 		this.setTags();
 	}
@@ -58,9 +58,8 @@ export class IndexComponent implements OnInit {
 		if (this.notifyForm.valid) {
 			this.email = this.notifyForm.controls['email'].value;
 			this.authenticationService.sendEmailSubscriptions(this.email)
-				.subscribe(
-				);
-			this.snackBar.open('We have registered your email for all our future updates leading to the official Karma launch later this year', 'Thanks', {
+				.subscribe();
+			this.snackBar.open('We have registered your email for all our future updates.', 'Thanks', {
 				duration: 5000
 			});
 		} else {

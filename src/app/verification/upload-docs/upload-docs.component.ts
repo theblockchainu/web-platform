@@ -238,7 +238,7 @@ export class UploadDocsComponent implements OnInit {
 
 	verifyPhone(nextStep) {
 		this.httpLoading = true;
-		this._profileService.confirmSmsOTP(this.phoneOtp.controls['inputOTP'].value)
+		this._profileService.confirmSmsOTP('' + this.phoneOtp.controls['inputOTP'].value)
 			.subscribe((res) => {
 				this.httpLoading = false;
 				this.success = res;
