@@ -76,7 +76,7 @@ export class UploadDocsComponent implements OnInit {
 				Validators.pattern(EMAIL_REGEX)]]
 		});
 		this.phoneForm = this._fb.group({
-			countryCode: ['', [Validators.required,]],
+			countryCode: ['', [Validators.required]],
 			phone: ['',
 				[Validators.required,
 				Validators.pattern(PHONE_REGEX)]]

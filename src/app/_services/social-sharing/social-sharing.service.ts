@@ -21,4 +21,8 @@ export class SocialSharingService {
   inviteContacts(userId: string, inviteList: Array<any>) {
     return this.httpClient.post(environment.apiUrl + '/api/peers/' + userId + '/invites', inviteList, this.requestHeaderService.options);
   }
+
+  getPeerInvite(peerInviteId: string, filter: any) {
+    return this.httpClient.get(environment.apiUrl + '/api/peer_invites/' + peerInviteId + '?filter=' + JSON.stringify(filter), this.requestHeaderService.options);
+  }
 }
