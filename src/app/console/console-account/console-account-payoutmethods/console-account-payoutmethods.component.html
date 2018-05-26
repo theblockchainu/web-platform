@@ -54,15 +54,18 @@
     </div>
     <div class="row" style="padding-top: 20px;">
       <div class="col-md-3">
-        <a href="{{'https://connect.stripe.com/express/oauth/authorize?redirect_uri='+envVariable.clientUrl+'/console/account/payoutmethods&client_id='+envVariable.stripeClientId}}" mat-button>Add Payout Method</a>
+        <a mat-raised-button href="{{'https://connect.stripe.com/express/oauth/authorize?redirect_uri='+envVariable.clientUrl+'/console/account/payoutmethods&client_id='+envVariable.stripeClientId}}"
+          color="primary">Add Payout Method
+          <img src="/assets/images/powered_by_stripe.svg" class="stripe-image">
+        </a>
       </div>
     </div>
     <br>
-	  <div class="row">
-		  <div class="col-md-12">
-			  <h3>Payout Rules</h3>
-		  </div>
-	  </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Payout Rules</h3>
+      </div>
+    </div>
     <div class="row table">
       <div class="col-md-10">
         <div class="row table-header">
@@ -85,22 +88,24 @@
             </div>
             <ng-container *ngIf="ownedCollections">
               <div *ngFor="let collection of ownedCollections">
-                  <div class="row"  *ngIf="collection.payoutrules && collection.payoutrules.length > 0 && collection.payoutrules[0].external_account" style="padding-top: 5px; padding-bottom: 5px">
-                      <div class="col-md-6" *ngIf="collection.type !== 'session'">
-                          {{collection.type|titlecase}} : <b>{{collection.title | ucwords}}</b>
-                      </div>
-	                  <div class="col-md-6" *ngIf="collection.type === 'session'">
-		                  Peer Sessions
-	                  </div>
-                      <div class="col-md-4">
-                          <span>{{collection.payoutrules[0].external_account.object | titlecase}} **** **** {{collection.payoutrules[0].external_account.last4}}</span>
-                      </div>
-                      <div class="col-md-2">
-                          <a (click)="editPayout(collection.id)">
-                              edit
-                          </a>
-                      </div>
+                <div class="row" *ngIf="collection.payoutrules && collection.payoutrules.length > 0 && collection.payoutrules[0].external_account"
+                  style="padding-top: 5px; padding-bottom: 5px">
+                  <div class="col-md-6" *ngIf="collection.type !== 'session'">
+                    {{collection.type|titlecase}} :
+                    <b>{{collection.title | ucwords}}</b>
                   </div>
+                  <div class="col-md-6" *ngIf="collection.type === 'session'">
+                    Peer Sessions
+                  </div>
+                  <div class="col-md-4">
+                    <span>{{collection.payoutrules[0].external_account.object | titlecase}} **** **** {{collection.payoutrules[0].external_account.last4}}</span>
+                  </div>
+                  <div class="col-md-2">
+                    <a (click)="editPayout(collection.id)">
+                      edit
+                    </a>
+                  </div>
+                </div>
               </div>
             </ng-container>
           </div>

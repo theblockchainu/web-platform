@@ -11,7 +11,6 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class AuthenticationService {
-	public key = 'access_token';
 	public envVariable;
 	public userId;
 	isLoginSubject = new BehaviorSubject<boolean>(this.hasToken());
@@ -72,14 +71,7 @@ export class AuthenticationService {
 	 * Log out the user then tell all the subscribers about the new status
 	 */
 	logout(): void {
-		console.log(this.route.toString());
-		this.removeCookie(this.key);
-		this.removeCookie('userId');
-		this.removeCookie('accountApproved');
-		this.removeCookie('access_token');
-		this.isLoginSubject.next(false);
-		this._requestHeaderService.refreshToken.next(true);
-		if (this.getCookie(this.key)) {
+		if (this.getCookie('access_token')) {
 			this.http.get(environment.apiUrl + '/auth/logout', this._requestHeaderService.options)
 				.subscribe(
 					(res: any) => {
@@ -89,6 +81,11 @@ export class AuthenticationService {
 					}
 				);
 		}
+		this.removeCookie('userId');
+		this.removeCookie('accountApproved');
+		this.removeCookie('access_token');
+		this.isLoginSubject.next(false);
+		this._requestHeaderService.refreshToken.next(true);
 		this.router.navigate(['/']);
 	}
 
@@ -97,7 +94,7 @@ export class AuthenticationService {
 	 * @returns {boolean}
 	 */
 	private hasToken(): boolean {
-		return !!this.getCookie(this.key);
+		return !!this.getCookie('access_token');
 	}
 
 	sendForgotPwdMail(email): any {

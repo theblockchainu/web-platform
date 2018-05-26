@@ -11,7 +11,7 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { TopicService } from '../../_services/topic/topic.service';
 import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
-
+import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
 declare var moment: any;
 
 
@@ -50,7 +50,8 @@ export class ConsoleAdminComponent implements OnInit {
 		private _dialogsService: DialogsService,
 		private _fb: FormBuilder,
 		private _topicService: TopicService,
-		private _LanguagePickerService: LanguagePickerService
+		private _LanguagePickerService: LanguagePickerService,
+		private countryPickerService: CountryPickerService
 	) {
 		this.envVariable = environment;
 		activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
@@ -314,6 +315,13 @@ export class ConsoleAdminComponent implements OnInit {
 			this.snackBar.open('Added', 'Close', {
 				duration: 5000
 			});
+		});
+	}
+	addCountries() {
+		this.countryPickerService.postInbuiltCountries().subscribe(res => {
+			this.snackBar.open('posted successfully', 'close', { duration: 3000 });
+		}, err => {
+			this.snackBar.open('Error', 'close', { duration: 3000 });
 		});
 	}
 }

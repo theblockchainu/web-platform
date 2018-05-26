@@ -30,7 +30,7 @@
                                     For {{assessment_rule.value | titlecase}}
                                 </div>
                                 <div class="col-sm-6">
-	                                you get
+                                    you get
                                     <i class="fab fa-ethereum"></i>
                                     <b>{{getGyanForRule(assessment_rule.gyan, collection.academicGyan)}} Gyan</b>
                                 </div>
@@ -42,7 +42,7 @@
                                     For {{assessment_rule.value | titlecase}}
                                 </div>
                                 <div class="col-sm-6">
-	                                you get
+                                    you get
                                     <i class="fab fa-ethereum"></i>
                                     <b>{{getGyanForRule(assessment_rule.gyan, collection.nonAcademicGyan)}} Gyan</b>
                                 </div>
@@ -114,9 +114,12 @@
                     </div>
                     <div *ngIf="collection.price && collection.price!==0">
                         <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard"
-                            [disabled]="savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment</button>
+                            [disabled]="savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment
+                            <img src="/assets/images/powered_by_stripe.svg" class="stripe-image"> </button>
                         <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard"
-                            [disabled]="!cardDetails.id || savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment</button>
+                            [disabled]="!cardDetails.id || savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment
+                            <img src="/assets/images/powered_by_stripe.svg" class="stripe-image">
+                        </button>
                     </div>
                     <button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center" *ngIf="!collection.price || collection.price===0 ">FREE - Join Collection</button>
 
@@ -142,11 +145,12 @@
                                 </div>
                             </div>
                         </div>
-	                    <div class="seperate-section">
-		                    <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate | date: 'EEE, MMM dd' }}</div>
-		                    <div class="" *ngIf="collection.contents">{{collection.contents.length}} Activities</div>
-		                    <!--<a href="#">See details</a>-->
-	                    </div>
+                        <div class="seperate-section">
+                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate | date: 'EEE,
+                                MMM dd' }}</div>
+                            <div class="" *ngIf="collection.contents">{{collection.contents.length}} Activities</div>
+                            <!--<a href="#">See details</a>-->
+                        </div>
                         <div class="seperate-section">
                             <div class="row">
                                 <div class="col-xs-5">
@@ -157,48 +161,50 @@
                                 </div>
                             </div>
                         </div>
-	                    <div class="seperate-section">
-		                    <div class="row">
-			                    <div class="col-xs-5">
-				                    Scholarship contribution
-			                    </div>
-			                    <div class="col-xs-5 col-xs-offset-2" style="text-align: right;">
-				                    <i class="fas fa-fire"></i> {{scholarshipAmount}} Karma
-			                    </div>
-		                    </div>
-		                    <div class="row">
-			                    <div class="col-xs-5">
-				                    Your contribution
-			                    </div>
-			                    <div class="col-xs-5 col-xs-offset-2" style="text-align: right;">
-				                    <i class="fas fa-fire"></i> {{paybleKarma}} Karma
-			                    </div>
-		                    </div>
-	                    </div>
-	                    <div class="seperate-section" *ngIf="scholarshipForm.controls['scholarships'].controls.length > 0">
-		                    <div class="row">
-			                    <div class="col-xs-12">
-				                    <div class="mat-subheading-1">
-					                    Pay from your scholarships?
-				                    </div>
-			                    </div>
-		                    </div>
-		                    <div class="row">
-				                    <form [formGroup]="scholarshipForm">
-					                    <div formArrayName="scholarships">
-						                    <div class="col-xs-12" *ngFor="let scholarship of scholarshipForm.controls['scholarships'].controls;index as i">
-							                    <div class="scholarshipItemBox" [formGroup]="scholarship">
-								                    <mat-checkbox formControlName="selected">
-									                    {{scholarship.value.title}}
-									                    <br><i class="fas fa-fire"></i> {{scholarship.value.id | karmaBalance: 'scholarship' | async}} Karma
-								                    </mat-checkbox>
-							                    </div>
-						                    </div>
-					                    </div>
-				                    </form>
-				                    <div class="col-xs-12 mat-caption lightText margin-top-20"><i class="fas fa-info"></i> The required Karma can be burned either from your wallet or from your scholarships.</div>
-		                    </div>
-	                    </div>
+                        <div class="seperate-section">
+                            <div class="row">
+                                <div class="col-xs-5">
+                                    Scholarship contribution
+                                </div>
+                                <div class="col-xs-5 col-xs-offset-2" style="text-align: right;">
+                                    <i class="fas fa-fire"></i> {{scholarshipAmount}} Karma
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-5">
+                                    Your contribution
+                                </div>
+                                <div class="col-xs-5 col-xs-offset-2" style="text-align: right;">
+                                    <i class="fas fa-fire"></i> {{paybleKarma}} Karma
+                                </div>
+                            </div>
+                        </div>
+                        <div class="seperate-section" *ngIf="scholarshipForm.controls['scholarships'].controls.length > 0">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="mat-subheading-1">
+                                        Pay from your scholarships?
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <form [formGroup]="scholarshipForm">
+                                    <div formArrayName="scholarships">
+                                        <div class="col-xs-12" *ngFor="let scholarship of scholarshipForm.controls['scholarships'].controls;index as i">
+                                            <div class="scholarshipItemBox" [formGroup]="scholarship">
+                                                <mat-checkbox formControlName="selected">
+                                                    {{scholarship.value.title}}
+                                                    <br>
+                                                    <i class="fas fa-fire"></i> {{scholarship.value.id | karmaBalance: 'scholarship' | async}} Karma
+                                                </mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="col-xs-12 mat-caption lightText margin-top-20">
+                                    <i class="fas fa-info"></i> The required Karma can be burned either from your wallet or from your scholarships.</div>
+                            </div>
+                        </div>
                         <div class="seperate-section">
                             <div class="margin-bottom-10">
                                 <span class="text-grey">{{collection.price | convertCurrency: collection.currency |async}} x {{ guestCount }} Student</span>

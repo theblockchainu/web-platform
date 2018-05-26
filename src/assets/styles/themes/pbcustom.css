@@ -1801,6 +1801,14 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	overflow-y: scroll
 }
 
+.stripe-image{
+    width: max-content;
+}
+
+.hide-header .mat-horizontal-stepper-header-container{
+	visibility: hidden !important;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	.circle-thumb {
