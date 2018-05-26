@@ -65,7 +65,9 @@ export class SignUpComponent implements OnInit {
 		};
 		this.socialSharingService.getPeerInvite(this.invitationId, filter).subscribe((res: any) => {
 			console.log(res);
-			this.invite = res;
+			if (res) {
+				this.invite = res;
+			}
 		});
 	}
 
