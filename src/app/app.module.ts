@@ -43,7 +43,7 @@ import { ShortreadComponent } from './shortread/shortread.component';
 import { PrivatebetaComponent } from './privatebeta/privatebeta.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { LandingPageModule } from './landing-page/landing-page.module';
-import { InviteComponent } from './invite/invite.component';
+
 
 Raven
 	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
@@ -85,7 +85,6 @@ export class RavenErrorHandler implements ErrorHandler {
 		KnowledgeeconomyComponent,
 		ShortreadComponent,
 		PrivatebetaComponent,
-		InviteComponent
 	],
 	imports: [
 		BrowserModule,

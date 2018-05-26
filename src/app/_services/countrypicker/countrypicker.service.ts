@@ -8,21 +8,27 @@ import { RequestHeaderService } from '../requestHeader/request-header.service';
 @Injectable()
 export class CountryPickerService {
 
-	public envVariable;
+	private envVariable;
 	constructor(
 		private http: HttpClient,
 		private route: ActivatedRoute,
-		public router: Router,
+		private router: Router,
 		private requestHeaderService: RequestHeaderService
 	) {
 		this.envVariable = environment;
 	}
 
 	public getCountries() {
-		return this.http.get(environment.apiUrl + '/api/countries', this.requestHeaderService.options)
-			.map((response: any) => {
-				return response;
-			});
+		return this.http.get(environment.apiUrl + '/api/countries', this.requestHeaderService.options).map((response: any) => {
+			return response;
+		});
+	}
+
+	/**
+	 * postInbuiltCountries
+	 */
+	public postInbuiltCountries() {
+		return this.http.post(environment.apiUrl + '/api/countries/add-countries', {}, this.requestHeaderService.options);
 	}
 
 }
