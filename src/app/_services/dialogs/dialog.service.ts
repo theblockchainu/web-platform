@@ -44,7 +44,8 @@ import { RequestCommunityDialogComponent } from './request-community-dialog/requ
 import { ScholarshipDialogComponent } from './scholarship-dialog/scholarship-dialog.component';
 import { GenerateKnowledgeStoryComponent } from './generate-knowledge-story/generate-knowledge-story.component';
 import { RequestKnowledgeStoryComponent } from './request-knowledge-story/request-knowledge-story.component';
-import {ConfirmPasswordDialogComponent} from './confirm-password-dialog/confirm-password-dialog.component';
+import { ConfirmPasswordDialogComponent } from './confirm-password-dialog/confirm-password-dialog.component';
+import { AddViewerDialogComponent } from './add-viewer-dialog/add-viewer-dialog.component';
 
 @Injectable()
 export class DialogsService {
@@ -507,16 +508,27 @@ export class DialogsService {
 
         return dialogRef5.afterClosed();
     }
-    
+
     public confirmPasswordDialog() {
-		const dialogRef5 = this.dialog.open(ConfirmPasswordDialogComponent,
-			{
-				panelClass: 'responsive-dialog',
-				width: '55vw',
-				height: '75vh',
-			}
-		);
-		return dialogRef5.afterClosed();
-	}
+        const dialogRef5 = this.dialog.open(ConfirmPasswordDialogComponent,
+            {
+                panelClass: 'responsive-dialog',
+                width: '55vw',
+                height: '75vh',
+            }
+        );
+        return dialogRef5.afterClosed();
+    }
+
+    public addViewer() {
+        const dialogRef5 = this.dialog.open(AddViewerDialogComponent,
+            {
+                panelClass: 'responsive-dialog',
+                width: '55vw',
+                height: '75vh',
+            }
+        );
+        return dialogRef5.afterClosed();
+    }
 
 }

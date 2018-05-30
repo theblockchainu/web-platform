@@ -19,6 +19,10 @@ export class KnowledgeStoryService {
 		return this._HttpClient.post(environment.apiUrl + '/api/peers/' + userId + '/knowledgeStories', body, this._RequestHeaderService.options);
 	}
 
+	public patchKnowledgeStoryRequest(storyId: string, body: StoryRequest) {
+		return this._HttpClient.patch(environment.apiUrl + '/api/knowledge_stories/' + storyId, body, this._RequestHeaderService.options);
+	}
+
 	/**
 	 * patchTopics
 	 */
@@ -31,6 +35,18 @@ export class KnowledgeStoryService {
 	 */
 	public connectPeers(knowledgeStoryId: string, body: PatchManyObject) {
 		return this._HttpClient.patch(environment.apiUrl + '/api/knowledge_stories/' + knowledgeStoryId + '/peer/rel', body, this._RequestHeaderService.options);
+	}
+
+	public connectPeer(knowledgeStoryId: string, peerId: string) {
+		return this._HttpClient.put(environment.apiUrl + '/api/knowledge_stories/' + knowledgeStoryId + '/peer/rel/' + peerId, {}, this._RequestHeaderService.options);
+	}
+
+	public requestPeers(knowledgeStoryId: string, peerId: string) {
+		return this._HttpClient.put(environment.apiUrl + '/api/knowledge_stories/' + knowledgeStoryId + '/requests/rel/' + peerId, {}, this._RequestHeaderService.options);
+	}
+
+	public deleteRequest(knowledgeStoryId: string, peerId: string) {
+		return this._HttpClient.delete(environment.apiUrl + '/api/knowledge_stories/' + knowledgeStoryId + '/requests/rel/' + peerId, this._RequestHeaderService.options);
 	}
 
 	/**
@@ -56,6 +72,19 @@ export class KnowledgeStoryService {
 		return this._HttpClient.patch(environment.apiUrl + '/api/knowledge_stories/' + userId, body, this._RequestHeaderService.options);
 	}
 
+	/**
+	 * deleteStory
+	 */
+	public deleteStory(storyId: string) {
+		return this._HttpClient.delete(environment.apiUrl + '/api/knowledge_stories/' + storyId, this._RequestHeaderService.options);
+	}
+
+	/**
+	 * removePeerRelation
+	 */
+	public removePeerRelation(peerId: string, storyId: string) {
+		return this._HttpClient.delete(environment.apiUrl + '/api/knowledge_stories/' + storyId + '/peer/rel/' + peerId, this._RequestHeaderService.options);
+	}
 }
 
 interface PatchManyObject {
@@ -63,6 +92,6 @@ interface PatchManyObject {
 }
 
 interface StoryRequest {
-	status: 'approved' | 'rejected' | 'pending';
-	visibility: 'private' | 'public';
+	status?: 'approved' | 'rejected' | 'pending';
+	visibility?: 'private' | 'public';
 }
