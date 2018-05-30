@@ -4,15 +4,15 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { environment } from '../../../environments/environment';
 import { MatSnackBar } from '@angular/material';
-import {KnowledgeStoryService} from '../../_services/knowledge-story/knowledge-story.service';
-import {CollectionService} from '../../_services/collection/collection.service';
-import {Meta, Title} from '@angular/platform-browser';
+import { KnowledgeStoryService } from '../../_services/knowledge-story/knowledge-story.service';
+import { CollectionService } from '../../_services/collection/collection.service';
+import { Meta, Title } from '@angular/platform-browser';
 declare var FB: any;
 
 @Component({
-  selector: 'app-knowledge-story',
-  templateUrl: './knowledge-story.component.html',
-  styleUrls: ['./knowledge-story.component.scss']
+	selector: 'app-knowledge-story',
+	templateUrl: './knowledge-story.component.html',
+	styleUrls: ['./knowledge-story.component.scss']
 })
 export class KnowledgeStoryComponent implements OnInit {
 	public loadingKnowledgeStory: boolean;
@@ -37,7 +37,7 @@ export class KnowledgeStoryComponent implements OnInit {
 	) {
 		this.envVariable = environment;
 	}
-	
+
 	ngOnInit() {
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.knowledgeStoryId !== params['storyId'])) {
@@ -50,7 +50,7 @@ export class KnowledgeStoryComponent implements OnInit {
 		this.initializePage();
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
 	}
-	
+
 	private setTags() {
 		this.titleService.setTitle(this.knowledgeStory.protagonist[0].profiles[0].first_name + '\'s Knowledge Story');
 		this.metaService.updateTag({
@@ -74,15 +74,15 @@ export class KnowledgeStoryComponent implements OnInit {
 			content: environment.clientUrl + this.router.url
 		});
 	}
-	
-	
-	
+
+
+
 	initializePage() {
 		const filter = {
-			'include': [{ 'protagonist': 'profiles' },
-				{'peer': 'profiles'},
+			'include': [{ 'protagonist': { 'profiles': ['work', 'education'] } },
+			{ 'peer': 'profiles' },
 				'topics'
-				]
+			]
 		};
 		this._knowledgeStoryService.fetchKnowledgeStory(this.knowledgeStoryId, filter)
 			.subscribe((res: any) => {
@@ -100,18 +100,18 @@ export class KnowledgeStoryComponent implements OnInit {
 				this.setTags();
 			});
 	}
-	
+
 	openCollection(collection: any) {
 		this.router.navigateByUrl('/' + collection.type + '/' + collection.id);
 	}
-	
+
 	public openInviteFriendsDialog() {
 		const shareObject = this.knowledgeStory;
 		shareObject.type = 'story';
 		this.dialogsService.inviteFriends(shareObject);
 	}
-	
-	
+
+
 	public shareOnFb() {
 		FB.ui({
 			method: 'share_open_graph',

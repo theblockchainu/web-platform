@@ -9,8 +9,7 @@
 					<div class="row knowledgestory-header">
 						<div class="col-md-12">
 							<p class="mat-display-1" style="margin-bottom: 20px !important;">
-								<span *ngIf="ownerView">Your </span>Knowledge Story
-								&emsp;
+								<span *ngIf="ownerView">Your </span>Knowledge Story &emsp;
 								<i class="fa fa-lock lightText mat-caption" *ngIf="knowledgeStory.visibility === 'private'"></i>
 								<i class="fa fa-globe lightText mat-caption" *ngIf="knowledgeStory.visibility === 'public'"></i>
 							</p>
@@ -51,7 +50,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="col-md-4 col-md-offset-1 margin-top-50 right-content">
 					<div class="row">
 						<div class="col-md-12">
@@ -60,7 +59,8 @@
 									<div class="row">
 										<div class="col-xs-12">
 											<div class="margin-bottom-10">
-												<img class="ownerImage" [src]="envVariable.apiUrl + knowledgeStory.protagonist[0].profiles[0].picture_url + '/300'" alt="image" (error)="_collectionService.userImgErrorHandler($event)" />
+												<img class="ownerImage" [src]="envVariable.apiUrl + knowledgeStory.protagonist[0].profiles[0].picture_url + '/300'" alt="image"
+												 (error)="_collectionService.userImgErrorHandler($event)" />
 											</div>
 											<div class="mat-subheading-2">
 												{{knowledgeStory.protagonist[0].profiles[0].first_name + ' ' + knowledgeStory.protagonist[0].profiles[0].last_name | ucwords}}
@@ -69,16 +69,64 @@
 											</div>
 										</div>
 									</div>
-									<div class="row">
+									<div class="row" *ngIf="knowledgeStory.protagonist[0].profiles[0].description">
+										<div class="col-xs-12 text-center">
+											<p>
+												{{knowledgeStory.protagonist[0].profiles[0].description}}
+											</p>
+										</div>
+									</div>
+									<div class="row" *ngIf="knowledgeStory.protagonist[0].profiles[0].work && knowledgeStory.protagonist[0].profiles[0].work.length>0">
 										<div class="col-xs-12">
-											Member since <b>{{knowledgeStory.protagonist[0].createdAt | extractTime: 'Do MMM, YYYY'}}</b>
+											<h3>
+												Work
+											</h3>
+										</div>
+										<div class="col-xs-12">
+											<div class="row padding-top-10" *ngFor="let work of knowledgeStory.protagonist[0].profiles[0].work">
+												<div class="col-xs-6">
+													{{work.position}}, {{work.company}}
+												</div>
+												<div class="col-xs-6 pull-right">
+													{{work.startDate|extractTime:'YYYY'}} -
+													<span *ngIf="work.presentlyWorking">
+														Present
+													</span>
+													<span *ngIf="!work.presentlyWorking">
+														{{work.endDate|extractTime:'YYYY'}}
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row padding-top-10" *ngIf="knowledgeStory.protagonist[0].profiles[0].education && knowledgeStory.protagonist[0].profiles[0].education.length>0">
+										<div class="col-xs-12">
+											<h3>
+												Education
+											</h3>
+										</div>
+										<div class="col-xs-12">
+											<div class="row padding-top-10" *ngFor="let education of knowledgeStory.protagonist[0].profiles[0].education">
+												<div class="col-xs-6">
+													{{education.degree}}, {{education.school}}
+												</div>
+												<div class="col-xs-6 pull-right">
+													{{education.startYear}} -
+													<span *ngIf="education.presentlyPursuing">
+														Present
+													</span>
+													<span *ngIf="!education.presentlyPursuing">
+														{{education.endYear}}
+													</span>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-xs-12 center" *ngIf="!viewerApproved && !ownerView">
 											<hr>
 											<span *ngIf="userId !== undefined && userId.length > 5" matTooltip="Please wait for your account to be approved before requesting to view this private knowledge story"
-											      [matTooltipDisabled]="accountApproved === 'true'">
+											 [matTooltipDisabled]="accountApproved === 'true'">
 												<button mat-raised-button color="primary" [disabled]="accountApproved !== 'true'">Request to view</button>
 											</span>
 											<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to view this knowledge story">
@@ -88,9 +136,14 @@
 									</div>
 									<div class="row">
 										<div class="col-xs-12 center" *ngIf="viewerApproved && !ownerView">
+											<hr> You can view this story
 											<hr>
-											You can view this story
-											<hr>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12">
+											Member since
+											<b>{{knowledgeStory.protagonist[0].createdAt | extractTime: 'Do MMM, YYYY'}}</b>
 										</div>
 									</div>
 								</mat-card-content>
