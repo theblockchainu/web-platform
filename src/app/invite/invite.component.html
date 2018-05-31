@@ -1,43 +1,86 @@
 <div class="main-content">
 	<div class="container">
+		<button disableRipple mat-button style="min-width: 20px;padding: 6px 9px 0px 9px;vertical-align: middle; position: absolute; top: 90px; right: 30px; border-radius: 200px;" (click)="closeInvite()">
+			<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+		</button>
 		<div class="row">
-			<div class="col-xs-12">
-				<mat-horizontal-stepper class="hide-header" [selectedIndex]="selectedIndex" (selectionChange)="selectionChanged($event)"
+			<div class="col-xs-12 margin-top-40 center">
+				<div class="mat-display-1">Start building your network on peerbuds</div>
+			</div>
+			<div class="col-xs-12 margin-bottom-40">
+				<div class="content earn-invite-steps-content">
+					<ul class="list-unstyled earn-invite-steps-list">
+						<li class="text earn-invite-steps-list-item">
+							<span class="icon"><i class="fas fa-users" style="font-size: 24px; color: #FF6D71;"></i></span>
+							<div class="earn-invite-steps-list-item-main">
+								<div class="mat-body-2">1. Invite your friends</div> <p>or share your personal referral link</p>
+							</div>
+						</li>
+						<li class="text earn-invite-steps-list-item">
+							<span class="icon"><i class="fas fa-database" style="font-size: 24px; color: #FF6D71;"></i></span>
+							<div class="earn-invite-steps-list-item-main">
+								<div class="mat-body-2">2. Earn 10 KARMA</div> <p> when a friend signs up and verifies their account.</p>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="row margin-top-10">
+			<div class="col-xs-12 margin-bottom-60">
+				<mat-horizontal-stepper class="hide-header" [selectedIndex]="selectedIndex - 1" (selectionChange)="selectionChanged($event)"
 				 *ngIf="!mobileQuery.matches" #stepper>
 					<mat-step>
 						<div class="row stepper-container">
-							<div class="col-sm-4 col-sm-offset-4 col-xs-12 ">
+							<div class="col-sm-8 col-sm-offset-2 col-xs-12 ">
 								<mat-card>
 									<mat-card-content>
 										<div class="row margin-bottom-20">
-										</div>
-										<div class="row margin-bottom-20">
-											<div class="col-xs-12 center">
-												<a mat-raised-button class="invert-fb btn-block" href="{{envVariable.apiUrl}}/auth/facebook?returnTo=invite/2">
-													<span class="circle-icon1">
-														<i class="fa fa-facebook-f"></i>
-													</span>Continue with Facebook
-												</a>
+											<div class="col-xs-6 center" style="border-right: 1px solid #eeeeee; padding-right: 35px;">
+												<div class="mat-subheading-1">
+													Personal referral link
+												</div>
+												<mat-form-field [floatLabel]="'auto'"   class="pb-block" style="margin: 0px 0px; font-size: 20px;">
+													<input #urlInput matInput value="{{inviteLink}}" [ngxClipboard]="urlInput" (cbOnSuccess)="onCopySuccess()" readonly />
+												</mat-form-field>
+												<div class="lightText">Share on <a shareButton="facebook" href="javascript:;" [url]="inviteLink">facebook</a>, <a shareButton="linkedin" href="javascript:;" [url]="inviteLink">linkedIn</a> or <a shareButton="twitter" href="javascript:;" [url]="inviteLink">twitter</a></div>
+											</div>
+											<div class="col-xs-6 center" style="padding-left: 35px;">
+												<div class="row margin-bottom-20 margin-top-30">
+													<div class="col-xs-12 center">
+														<a mat-raised-button class="invert-fb btn-block" (click)="continueWithFacebook()">
+															<span class="circle-icon1">
+																<i class="fa fa-facebook-f"></i>
+															</span>Import Facebook
+														</a>
+													</div>
+												</div>
+												<div class="row margin-bottom-20">
+													<div class="col-xs-12 center">
+														<a mat-raised-button class="invert-google btn-block" (click)="continueWithGoogle()">
+															<span class="circle-icon2">
+																<i class="fa fa-google"></i>
+															</span>Import Google
+														</a>
+													</div>
+												</div>
 											</div>
 										</div>
-										<div class="row margin-bottom-20">
+										<!--<div class="btn-hide position-relative text-center">
+											<div class="or-seperator-vertical"></div>
+											<span class="round-or-text or-text-vertical">or</span>
+										</div>-->
+										
+										
+										<!--<div class="row margin-bottom-20">
 											<div class="col-xs-12 center">
-												<a mat-raised-button class="invert-google btn-block" href="{{envVariable.apiUrl}}/auth/google?returnTo=invite/2">
-													<span class="circle-icon2">
-														<i class="fa fa-google"></i>
-													</span>Continue with Google
-												</a>
-											</div>
-										</div>
-										<div class="row margin-bottom-20">
-											<div class="col-xs-12 center">
-												<a mat-raised-button class="invert-fb btn-block" href="{{envVariable.apiUrl}}/auth/linkedin?returnTo=invite/2">
+												<a mat-raised-button class="invert-fb btn-block" (click)="continueWithLinkedin()">
 													<span class="circle-icon1">
 														<i class="fab fa-linkedin-in"></i>
-													</span>Continue with Linkedin
+													</span>Import LinkedIn
 												</a>
 											</div>
-										</div>
+										</div>-->
 										<!-- <div class="btn-hide position-relative text-center">
 											<div class="or-seperator-vertical"></div>
 											<span class="round-or-text or-text-vertical">or</span>
@@ -51,6 +94,9 @@
 
 									</mat-card-content>
 								</mat-card>
+								<div class="center margin-top-30">
+									<button mat-button (click)="closeInvite()">Close & continue</button>
+								</div>
 							</div>
 						</div>
 					</mat-step>
@@ -58,10 +104,24 @@
 						<ng-template matStepLabel>Invite</ng-template>
 						<div class="row stepper-container">
 							<div class="col-xs-12">
+								<div class="row">
+									<div class="col-xs-6">
+										<mat-checkbox (change)="selectAllClicked($event)"></mat-checkbox>&emsp;
+										<span>Select all</span>
+									</div>
+									<div class="col-xs-6" style="text-align: right;">
+										Imported from
+										<span *ngFor="let identity of userIdentities">
+											&nbsp;&nbsp;&nbsp;<i class="fab fa-{{identity.provider}}"></i>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12">
 								<div class="row padding-top-30">
 									<div class="col-xs-12">
 										<mat-form-field class="pb-block">
-											<input [formControl]="searchForm" matInput placeholder="Search Contact">
+											<input [formControl]="searchForm" matInput placeholder="Search from your {{contacts.length}} contacts..">
 										</mat-form-field>
 									</div>
 								</div>
@@ -85,15 +145,15 @@
 																<div class="col-xs-5">
 																	{{contact.email}}
 																</div>
-																<div class="col-xs-1">
-																	<i class="fa fa-{{contact.provider}}"></i>
+																<div class="col-xs-5 margin-top-10 lighterText">
+																	{{contact.provider | ucwords}}
 																</div>
 															</div>
 														</mat-card>
 													</div>
 												</div>
 											</span>
-											<span *ngFor="let contact of contacts">
+											<span *ngFor="let contact of contacts; let i = index;">
 												<div *ngIf="!contact.selected" class="row">
 													<div class="col-xs-12">
 														<mat-card>
@@ -107,18 +167,20 @@
 																<div class="col-xs-5">
 																	{{contact.name}}
 																</div>
-																<div class="col-xs-5">
+																<div class="col-xs-4">
 																	{{contact.email}}
 																</div>
-																<div class="col-xs-1">
-																	<i class="fa fa-{{contact.provider}}"></i>
+																<div class="col-xs-1 lighterText clickable" (click)="deleteContact(contact, i)">
+																	<i class="fa fa-trash-o"></i>
+																</div>
+																<div class="col-xs-5 margin-top-10 lighterText">
+																	{{contact.provider | ucwords}}
 																</div>
 															</div>
 														</mat-card>
 													</div>
 												</div>
 											</span>
-
 										</div>
 									</div>
 								</div>
@@ -131,13 +193,13 @@
 							<div class="col-xs-12">
 								<div class="row">
 									<div class="col-xs-12">
-										<h3>Please Verify the contacts you want to invite</h3>
+										<h3>Here is a list of contacts we will send invites to</h3>
 									</div>
 								</div>
 								<div class="row" *ngFor="let contact of contacts">
 									<div *ngIf="contact.selected" class="row">
 										<div class="col-xs-12">
-											<mat-card>
+											<mat-card style="margin: 0 18px;">
 												<div class="row">
 													<div class="col-xs-1">
 														<img src="{{contact.imageUrl}}">
@@ -148,8 +210,8 @@
 													<div class="col-xs-5">
 														{{contact.email}}
 													</div>
-													<div class="col-xs-1">
-														<i class="fa fa-{{contact.provider}}"></i>
+													<div class="col-xs-5 margin-top-10 lighterText">
+														{{contact.provider | ucwords}}
 													</div>
 												</div>
 											</mat-card>
@@ -160,13 +222,19 @@
 						</div>
 					</mat-step>
 				</mat-horizontal-stepper>
-				<div class="row padding-top-10 padding-bottom-20" [hidden]="selectedIndex===0">
+				<div class="row padding-top-10 padding-bottom-20" [hidden]="selectedIndex===1">
 					<div class="col-xs-12">
-						<button (click)="previous()" mat-raised-button color="accent">
+						<button (click)="previous()" mat-raised-button *ngIf="selectedIndex === 2">
+							< Import other contacts
+						</button>
+						<button (click)="previous()" mat-raised-button *ngIf="selectedIndex === 3">
 							Back
 						</button>
-						<button class="pull-right" (click)="next()" mat-raised-button color="accent">
-							Invite ({{checkedCount}})
+						<button class="pull-right" (click)="next()" *ngIf="selectedIndex === 2" mat-raised-button color="accent" [disabled]="checkedCount === 0">
+							Select {{checkedCount}} contacts
+						</button>
+						<button class="pull-right" (click)="next()" *ngIf="selectedIndex === 3" mat-raised-button color="accent" [disabled]="checkedCount === 0">
+							Invite {{checkedCount}} contacts
 						</button>
 					</div>
 				</div>

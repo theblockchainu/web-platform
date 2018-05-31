@@ -5,12 +5,17 @@
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<div class="mat-display-1" style="margin-bottom: 20px;">
-				View or share your knowledge story
+				Create & share a knowledge story
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div>
+				<button mat-button (click)="openExistingStories()">View Existing Stories</button> or create a new one below.
 			</div>
 		</div>
 	</div>
 	<hr>
-	<mat-horizontal-stepper [linear]="true" #stepper class="margin-top-30">
+	<mat-horizontal-stepper [linear]="true" #stepper class="margin-top-30 hide-header">
 		<mat-step>
 			<div class="row margin-top-40 margin-bottom-40">
 				<div class="col-md-12">
@@ -26,7 +31,7 @@
 					<div class="margin-top-20">
 						<span *ngFor="let item of selected">
 							<li class="ui-autocomplete-token ui-state-highlight ui-corner-all margin-bottom-0">
-								<a (click)="remove(item)" class="ui-autocomplete-token-icon fa fa-fw fa-close" style="text-decoration:none"></a>
+								<a (click)="remove(item)" class="ui-autocomplete-token-icon fa fa-fw fa-close" style="text-decoration:none" href="javascript:;"></a>
 								<span class="ui-autocomplete-token-label captitalise">{{item.name}}</span>
 							</li>
 						</span>

@@ -26,7 +26,8 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 	public envVariable;
 	public connectedIdentities = {
 		'fb': false,
-		'google': false
+		'google': false,
+		'linkedin': false
 	};
 	
 	constructor(
@@ -148,6 +149,8 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 						this.connectedIdentities.google = true;
 					} else if (element.provider === 'facebook') {
 						this.connectedIdentities.fb = true;
+					} else if (element.provider === 'linkedin') {
+						this.connectedIdentities.linkedin = true;
 					}
 				});
 			}
@@ -157,6 +160,8 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 						this.connectedIdentities.google = true;
 					} else if (element.provider === 'facebook') {
 						this.connectedIdentities.fb = true;
+					} else if (element.provider === 'linkedin') {
+						this.connectedIdentities.linkedin = true;
 					}
 				});
 			}

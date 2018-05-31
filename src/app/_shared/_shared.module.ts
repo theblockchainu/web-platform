@@ -79,6 +79,9 @@ import { ScholarshipService } from '../_services/scholarship/scholarship.service
 import { GyanBalancePipe } from './gyan-balance/gyan-balance.pipe';
 import { KarmaBalancePipe } from './karma-balance/karma-balance.pipe';
 import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-story.service';
+import {ClipboardModule} from 'ngx-clipboard';
+import {ShareModule} from '@ngx-share/core';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -106,7 +109,8 @@ import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-st
         }),
         Ng4GeoautocompleteModule.forRoot(),
         MatIconModule,
-        MatButtonModule
+        MatButtonModule,
+		ShareModule.forRoot()
     ],
     declarations: [
         ExtractTimePipe,
@@ -210,7 +214,9 @@ import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-st
         TimeToNowPipe,
         TopicRowComponent,
         NguCarouselModule,
-        MatStepperModule
+        MatStepperModule,
+		ClipboardModule,
+		ShareModule
     ]
 })
 export class SharedModule {

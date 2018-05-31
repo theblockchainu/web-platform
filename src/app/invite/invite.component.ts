@@ -7,6 +7,8 @@ import { SocialSharingService } from '../_services/social-sharing/social-sharing
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { FormControl } from '@angular/forms';
 import { MatStepper, MatSnackBar } from '@angular/material';
+import {ProfileService} from '../_services/profile/profile.service';
+declare let FB: any;
 @Component({
 	selector: 'app-invite',
 	templateUrl: './invite.component.html',
@@ -21,12 +23,15 @@ export class InviteComponent implements OnInit {
 	userId: string;
 	envVariable: any;
 	currentPath: string;
+	public userIdentities = [];
+	public userCredentials = [];
 	searchForm: FormControl;
-	contacts: Array<any>;
+	public contacts = [];
 	originalContacts: Array<any>;
 	@ViewChild('stepper') public myStepper: MatStepper;
-	selectedIndex: number;
+	public selectedIndex = 1;
 	checkedCount: number;
+	public inviteLink = '';
 
 	constructor(
 		private titleService: Title,
@@ -37,12 +42,19 @@ export class InviteComponent implements OnInit {
 		public cd: ChangeDetectorRef,
 		private socialSharingService: SocialSharingService,
 		private cookieUtilsService: CookieUtilsService,
-		private matSnackBar: MatSnackBar
+		private matSnackBar: MatSnackBar,
+		private _profileService: ProfileService,
+		private _cookieUtilsService: CookieUtilsService
 	) {
 		this.envVariable = environment;
+		this.userId = _cookieUtilsService.getValue('userId');
+		this.inviteLink = environment.clientUrl + '/sign-up/' + this.userId;
 	}
 
 	ngOnInit() {
+		this.activatedRoute.params.subscribe(params => {
+			this.selectedIndex = Number(params['stepId']);
+		});
 		this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
 		this._mobileQueryListener = () => this.cd.detectChanges();
 		this.mobileQuery.addListener(this._mobileQueryListener);
@@ -50,12 +62,9 @@ export class InviteComponent implements OnInit {
 		this.currentPath = this.router.url.slice(1);
 		this.setTags();
 		this.getContacts();
+		this.getIdentities();
 		this.setupForm();
-		this.selectedIndex = 0;
 		this.checkedCount = 0;
-		this.activatedRoute.params.subscribe(params => {
-			this.selectedIndex = Number(params['stepId']);
-		});
 	}
 
 	private setupForm() {
@@ -65,6 +74,19 @@ export class InviteComponent implements OnInit {
 			this.contacts = this.originalContacts.filter((contact) => {
 				return contact.name.toLowerCase().includes(res.toLowerCase());
 			});
+		});
+	}
+	
+	private getIdentities() {
+		this.userIdentities = [];
+		const filter = {
+			include: ['identities', 'credentials']
+		};
+		this._profileService.getPeerData(this.userId, filter).subscribe( res => {
+			this.userIdentities = res.identities;
+			this.userCredentials = res.credentials;
+		}, err => {
+			this.matSnackBar.open('Error occurred: ' + err, 'Ok', {duration: 5000});
 		});
 	}
 
@@ -84,16 +106,25 @@ export class InviteComponent implements OnInit {
 			this.contacts = this.originalContacts;
 		});
 	}
+	
+	public deleteContact(contact, index) {
+		this.socialSharingService.deleteContact(contact.id).subscribe( res => {
+			this.matSnackBar.open('Contact has been deleted.', 'Ok', {duration: 5000});
+			this.originalContacts.splice(index, 1);
+		}, err => {
+			this.matSnackBar.open('Error Occurred.', 'Ok', {duration: 5000});
+		});
+	}
 
 	private setTags() {
 		this.titleService.setTitle('Invite friends');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Invite your friends to peerbuds'
+			content: 'Build your Knowledge Story - Join Peerbuds!'
 		});
 		this.metaService.updateTag({
 			property: 'og:description',
-			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma. Earn FREE Karma rewards when you join using this link.'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
@@ -125,36 +156,103 @@ export class InviteComponent implements OnInit {
 		this.socialSharingService.inviteContacts(this.userId, selectedPeers).subscribe(res => {
 			this.router.navigate(['onboarding', '1']);
 
-			this.matSnackBar.open('Peers invited', 'Close', { duration: 3000 });
+			this.matSnackBar.open('Your invitation has been sent to all selected contacts.', 'Close', { duration: 3000 });
 		}, err => {
-			this.matSnackBar.open('Error', 'Close', { duration: 3000 });
+			this.matSnackBar.open('Error', 'Close', { duration: 5000 });
 		});
 	}
 
 	public next() {
-		const step = this.myStepper.selectedIndex;
+		const step = this.myStepper.selectedIndex + 1;
 		switch (step) {
-			case 2:
+			case 3:
 				this.sendInvites();
 				break;
 			default:
 				break;
 		}
 		this.myStepper.next();
+		this.router.navigate(['invite', this.myStepper.selectedIndex + 1]);
 	}
 
 	public previous() {
 		this.myStepper.previous();
+		this.router.navigate(['invite', this.myStepper.selectedIndex + 1]);
 	}
 
 	public selectionChanged(event) {
 		console.log(event);
-		this.selectedIndex = event.selectedIndex;
+		this.selectedIndex = event.selectedIndex + 1;
 	}
 
 	public count(event) {
 		console.log(event);
 		this.checkedCount = this.contacts.filter((contact) => contact.selected).length;
+	}
+	
+	public selectAllClicked(event) {
+		if (event.checked) {
+			this.contacts.forEach(contact => {
+				contact.selected = true;
+			});
+		} else {
+			this.contacts.forEach(contact => {
+				contact.selected = false;
+			});
+		}
+		this.count(event);
+	}
+	
+	public continueWithGoogle() {
+		let hasIdentity = false;
+		this.userIdentities.forEach(identity => {
+			if (identity.provider && identity.provider === 'google') {
+				hasIdentity = true;
+			}
+		});
+		if (hasIdentity) {
+			this.router.navigate(['invite', '2']);
+		} else {
+			location.href = environment.apiUrl + '/auth/google?returnTo=invite/2';
+		}
+	}
+	
+	public continueWithFacebook() {
+		let hasIdentity = false;
+		this.userIdentities.forEach(identity => {
+			if (identity.provider && identity.provider === 'facebook') {
+				hasIdentity = true;
+			}
+		});
+		if (hasIdentity) {
+			this.router.navigate(['invite', '2']);
+		} else {
+			location.href = environment.apiUrl + '/auth/facebook?returnTo=invite/2';
+		}
+	}
+	
+	public continueWithLinkedin() {
+		let hasIdentity = false;
+		this.userIdentities.forEach(identity => {
+			if (identity.provider && identity.provider === 'linkedin') {
+				hasIdentity = true;
+			}
+		});
+		if (hasIdentity) {
+			this.router.navigate(['invite', '2']);
+		} else {
+			location.href = environment.apiUrl + '/auth/linkedin?returnTo=invite/2';
+		}
+	}
+	
+	public onCopySuccess() {
+		this.matSnackBar.open('Copied to clipboard', 'Close', {
+			duration: 5000
+		});
+	}
+	
+	public closeInvite() {
+		this.router.navigate(['onboarding', '1']);
 	}
 }
 

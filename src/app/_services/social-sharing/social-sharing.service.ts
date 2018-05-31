@@ -4,21 +4,25 @@ import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 @Injectable()
 export class SocialSharingService {
-
-  constructor(
-    private httpClient: HttpClient,
-    private requestHeaderService: RequestHeaderService
-  ) { }
-
-  getConnectedPlatforms(userId: string) {
-    return this.httpClient.get(environment.apiUrl + '/api/peers/' + userId + '/identities', this.requestHeaderService.options);
-  }
-
-  getUserContacts(userId) {
-    return this.httpClient.get(environment.apiUrl + '/api/peers/' + userId + '/contact', this.requestHeaderService.options);
-  }
-
-  inviteContacts(userId: string, inviteList: Array<any>) {
-    return this.httpClient.post(environment.apiUrl + '/api/peers/' + userId + '/invites', inviteList, this.requestHeaderService.options);
-  }
+	
+	constructor(
+		private httpClient: HttpClient,
+		private requestHeaderService: RequestHeaderService
+	) { }
+	
+	public getConnectedPlatforms(userId: string) {
+		return this.httpClient.get(environment.apiUrl + '/api/peers/' + userId + '/identities', this.requestHeaderService.options);
+	}
+	
+	public getUserContacts(userId) {
+		return this.httpClient.get(environment.apiUrl + '/api/peers/' + userId + '/contact', this.requestHeaderService.options);
+	}
+	
+	public inviteContacts(userId: string, inviteList: Array<any>) {
+		return this.httpClient.post(environment.apiUrl + '/api/peers/' + userId + '/invites', inviteList, this.requestHeaderService.options);
+	}
+	
+	public deleteContact(contactId) {
+		return this.httpClient.delete(environment.apiUrl + '/api/contacts/' + contactId, this.requestHeaderService.options);
+	}
 }

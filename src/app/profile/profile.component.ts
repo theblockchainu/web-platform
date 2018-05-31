@@ -75,6 +75,7 @@ export class ProfileComponent implements OnInit {
 	public pariticipatingCommunities: any;
 	public searchTopicURL = '';
 	public knowledgeStories: Array<any>;
+	public dialogToOpen;
 
 	constructor(
 		public _profileService: ProfileService,
@@ -94,6 +95,7 @@ export class ProfileComponent implements OnInit {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe((param) => {
 			const calledUserId = param['profileId'];
+			this.dialogToOpen = param['dialogToOpen'];
 			if (this.urluserId !== calledUserId) {
 				this.urluserId = calledUserId;
 				this.fetchData();
@@ -101,6 +103,9 @@ export class ProfileComponent implements OnInit {
 			}
 		});
 		this.searchTopicURL = environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
+		if (this.dialogToOpen && this.dialogToOpen === 'story') {
+			this.generateKnowledgeStoryDialog();
+		}
 	}
 
 	ngOnInit() {
@@ -657,7 +662,7 @@ export class ProfileComponent implements OnInit {
 
 	public generateKnowledgeStoryDialog() {
 		const inputs = {
-			title: 'Start typing to select from a list of available topics...',
+			title: 'Select some or all of the topics you learn and teach...',
 			minSelection: 1,
 			searchTopicURL: this.searchTopicURL,
 			suggestedTopics: []

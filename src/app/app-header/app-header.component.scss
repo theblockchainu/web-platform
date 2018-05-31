@@ -1,5 +1,5 @@
 .mat-elevation-header .headerButtons {
-    color: #767676;
+    color: #95959f;
     font-size: 1rem;
     min-width: 20px;
 }
@@ -19,25 +19,33 @@
   top: -8px;
 }
 
+.mat-menu-item-colored:hover:not([disabled]) {
+	background: #ff5b5f;
+}
+
 .mat-focused, .mat-input-placeholder{
-color: #767676 !important;
+color: #95959f !important;
 }
 
 .input{
-color: #767676 !important;
+color: #95959f !important;
 }
 
 .header-progress-bar{
-  color: #767676;
-  font-size: 1rem;
-  display: inline-grid; 
-  cursor: pointer;
-  margin-right: 40px;
-} 
+	font-size: 1rem;
+	display: -ms-inline-grid;
+	display: inline-grid;
+	cursor: pointer;
+	margin-right: 25px;
+	top: -5px;
+	position: relative;
+	text-align: right;
+	color: #33bd9e;
+}
 
 .profile-check{
- color:#33bd9e !important; 
- font-size: 18px; 
+ color:#33bd9e !important;
+ font-size: 18px;
  font-weight:bold;
 }
 
@@ -45,4 +53,16 @@ color: #767676 !important;
   color:#aaaaaa !important;
   font-size: 18px;
   font-weight:bold;
+}
+
+.mat-menu-item-colored {
+	background: #FF6D71;
+	color: #fff;
+	margin-top: -8px;
+}
+
+.headerNewActionButton {
+	color: #ff6d71;
+	font-size: 35px;
+	top: -5px;
 }

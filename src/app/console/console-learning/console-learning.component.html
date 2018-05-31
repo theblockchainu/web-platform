@@ -16,8 +16,13 @@
 			<mat-list-item [routerLink]="'/console/learning/bookmarks'" [class.bold]="getActiveTab() === 'bookmarks'">
 				Bookmarks
 			</mat-list-item>
-			<mat-list-item [routerLink]="'/console/learning/story'" [class.bold]="getActiveTab() === 'knowledge-story'">
+			<mat-list-item [routerLink]="'/console/learning/story'" [class.bold]="getActiveTab() === 'story'">
 				Knowledge Stories
+			</mat-list-item>
+			<mat-list-item *ngIf="activeTab === 'story'">
+				<span matTooltip="Please wait for your account to be verified before creating a new knowledge story." [matTooltipDisabled]="accountVerified">
+					<button mat-raised-button (click)="generateKnowledgeStory()" [disabled]="!accountVerified" color="primary">New Knowledge Story</button>
+				</span>
 			</mat-list-item>
 		</mat-list>
 	</div>

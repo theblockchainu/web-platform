@@ -6,6 +6,11 @@
     padding-top: 50px;
 }
 
+.welcome-feed {
+	padding-top: 50px;
+	padding-bottom: 30px;
+}
+
 .recommendation-thumb{
     object-fit: cover;
     height: 240px;
@@ -23,7 +28,7 @@
     height: 370px;
 }
 
-.homefeed label{
+.homefeed label, .welcome-feed label{
     color: #484848;
     font-size: 13px;
 }
@@ -89,6 +94,74 @@ padding-top: 15px
 
 .homeFeedContainer {
 	margin-top: 0;
+}
+
+.verify-account-task-image {
+	width: 50%;
+	height: auto;
+	margin-top: 30px;
+}
+
+.invert-fb{
+	background-color: #ffffff;
+	color: #335397;
+}
+.invert-fb:hover, .invert-fb:active{
+	padding: 4px 20px;
+	background-color: #335397;
+	color: #fff;
+}
+.invert-google{
+	background-color: #ffffff;
+	color: #dd4a38;
+}
+.invert-google:hover, .invert-google:active {
+	padding: 4px 20px;
+	background-color: #dd4a38;
+	color: #fff;
+}
+.circle-icon1 {
+	padding:4px 7px 4px 7px;
+	border-radius: 100%;
+	margin:2px 21px 6px 0px;
+}
+.circle-icon2{
+	padding:4px 5.5px 4px 5.75px;
+	border-radius: 100%;
+	margin:2px 21px 6px 0px;
+}
+.btn-block{
+	font-size:15px;
+	width: 50%;
+}
+
+.verify-account-task-card {
+	min-height: 365px;
+	padding-top: 60px;
+}
+
+.welcome-feed-accordian {
+	margin-top: 30px;
+}
+
+.community-join-icon {
+	font-size: 35px;
+	color: #777 !important;
+}
+
+.welcome-feed-accordian .fab {
+	color: #777;
+}
+
+.expansion-panel-header-icon {
+	font-size: 20px;
+}
+
+.expansion-panel-header-icon.pending {
+	color: #aaa;
+}
+.expansion-panel-header-icon.complete {
+	color: #33bd9e;
 }
 
 /* Extra small devices (phones, 600px and down) */

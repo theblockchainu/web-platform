@@ -22,6 +22,10 @@
 					<div class="col-md-6" style="margin-top: 25px; padding-left: 0px;" *ngIf="cookieUserId && urluserId !== cookieUserId">
 						<button mat-button (click)="openMessageDialog()">Message</button>
 					</div>
+					<div class="col-md-6" style="margin-top: 45px; padding-left: 0px; text-align: right; font-size: 32px;" *ngIf="cookieUserId && urluserId === cookieUserId">
+						<a [routerLink]="['/console', 'profile', 'edit']" style="color: #FF6D71;"><mat-icon>edit</mat-icon></a>
+						<a [routerLink]="['/console', 'learning', 'story']" style="color: #FF6D71;"><mat-icon>book</mat-icon></a>
+					</div>
 				</div>
 				<div class="row padding-bottom-20" *ngIf="profileObj.peer[0].ethAddress">
 					<div class="col-md-6" style="padding-left: 0px;">
@@ -31,7 +35,7 @@
 					</div>
 					<div class="col-md-6 mat-caption" style="padding-left: 0px;">
 						<a class="clickable" (click)="generateKnowledgeStoryDialog()" *ngIf="cookieUserId === urluserId">
-							View Knowledge Story
+							New Knowledge Story
 						</a>
 						<a class="clickable" (click)="requestKnowledgeStory()" *ngIf="cookieUserId !== urluserId">
 							Request Knowledge Story

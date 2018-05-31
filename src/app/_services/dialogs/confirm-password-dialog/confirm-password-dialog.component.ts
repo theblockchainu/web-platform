@@ -1,7 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {environment} from '../../../../environments/environment';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {RequestPasswordDialogComponent} from '../forgot-pwd-dialog/forgot-pwd-dialog.component';
 
 @Component({
 	selector: 'app-confirm-password-dialog',
@@ -16,7 +17,8 @@ export class ConfirmPasswordDialogComponent implements OnInit {
 	constructor(
 		public dialogRef: MatDialogRef<ConfirmPasswordDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,
-		public _fb: FormBuilder
+		public _fb: FormBuilder,
+		private dialog: MatDialog
 	) {
 		this.envVariable = environment;
 	}
@@ -29,6 +31,13 @@ export class ConfirmPasswordDialogComponent implements OnInit {
 	
 	public confirmPassword() {
 		this.dialogRef.close(this.passwordForm.value);
+	}
+	
+	public openForgotPasswordDialog() {
+		const dialogRef = this.dialog.open(RequestPasswordDialogComponent, {
+			panelClass: 'responsive-dialog'
+		});
+		return dialogRef.afterClosed();
 	}
 	
 }
