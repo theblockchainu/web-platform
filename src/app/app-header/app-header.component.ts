@@ -164,7 +164,7 @@ export class AppHeaderComponent implements OnInit {
 					duration: 5000
 				});
 			} else {
-				this.router.navigate(['home', 'homefeed']);
+				this.router.navigate(['home']);
 			}
 		} else {
 			this.router.navigate(['/']);

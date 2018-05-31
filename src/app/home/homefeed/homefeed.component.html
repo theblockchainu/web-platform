@@ -295,14 +295,14 @@
 	                    </div>
 	                    <div *ngIf="!peer.ethAddress"><i class="fab fa-ethereum"></i> 0 Gyan</div>
                         <div class="col-sm-12 padding-left-0">
-                            <span *ngIf="peer.topics.length<=2">
+                            <span *ngIf="peer.topics.length<=1">
                                 {{peer.topics}}
                             </span>
-                            <span *ngIf="peer.topics.length>2">
-                                {{peer.topics | initial: 1}}
-                                <b matTooltip="{{peer.topics}}">
-                                    +{{peer.topics.length-2}} more
-                                </b>
+                            <span *ngIf="peer.topics.length>1">
+                                {{peer.topics | slice: 0:1}}
+                                <span matTooltip="{{peer.topics}}">
+                                    &nbsp;& {{peer.topics.length - 1}} more
+                                </span>
                             </span>
                         </div>
                         <div class="col-sm-12 padding-left-0" style="margin-top: -2px; font-size: 13px;">

@@ -1,56 +1,74 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 declare var FB: any;
 
 
 @Component({
-  selector: 'app-share-dialog',
-  templateUrl: './share-dialog.component.html',
-  styleUrls: ['./share-dialog.component.scss']
+	selector: 'app-share-dialog',
+	templateUrl: './share-dialog.component.html',
+	styleUrls: ['./share-dialog.component.scss']
 })
 export class ShareDialogComponent implements OnInit {
-
-  public generatedUrl: string;
-  public tweetUrl: string;
-  public envVariable;
-  public LinkedInShareUrl: string;
-  constructor(public dialogRef: MatDialogRef<ShareDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackBar: MatSnackBar) {
-      this.envVariable = environment;
-    if (data.cohortId) {
-      this.generatedUrl = environment.clientUrl + '/' + data.type + '/' + data.id + '/calendar/' + data.cohortId;
-    } else {
-      this.generatedUrl = environment.clientUrl + '/' + data.type + '/' + data.id;
-    }
-    this.tweetUrl = 'https://twitter.com/intent/tweet?text=Join me for the ' + this.data.type + ' ' + this.data.title + '&url=' + this.generatedUrl;
-    this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=' + this.data.title + '&summary=Join me for the ' + this.data.type + ' ' + this.data.title + ' on ' + this.generatedUrl;
-  }
-
-  ngOnInit() {
-  }
-
-  public onCopySuccess() {
-    this.snackBar.open('Copied to clipboard', 'Close', {
-      duration: 5000
-    });
-  }
-
-  public onEmailClicked() {
-    window.location.href = 'mailto:' + '' + '?Subject=Want to join me for this ' + this.data.type + '?&body=Hey, I found this really fitting ' + this.data.type + ' ' + this.data.title + ' you should look at - ' + this.generatedUrl;
-  }
-
-  public onFBClicked() {
-    FB.ui({
-      method: 'share',
-      display: 'popup',
-      href: this.generatedUrl,
-    }, function (response) { });
-  }
-
-  public onLinkedInClicked() {
-    window.open(this.LinkedInShareUrl, 'MyWindow', 'width = 600, height = 300'); return false;
-  }
-
+	
+	public generatedUrl: string;
+	public tweetUrl: string;
+	public envVariable;
+	public LinkedInShareUrl: string;
+	constructor(public dialogRef: MatDialogRef<ShareDialogComponent>,
+				@Inject(MAT_DIALOG_DATA) public data: any,
+				private snackBar: MatSnackBar) {
+		this.envVariable = environment;
+		if (data.cohortId) {
+			this.generatedUrl = environment.clientUrl + '/' + data.type + '/' + data.id + '/calendar/' + data.cohortId;
+		} else {
+			this.generatedUrl = environment.clientUrl + '/' + data.type + '/' + data.id;
+		}
+		if (data.type === 'story') {
+			this.tweetUrl = 'https://twitter.com/intent/tweet?text=See my knowledge story&url=' + this.generatedUrl;
+			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Knowledge Story&summary=See my knowledge story on ' + this.generatedUrl;
+		} else {
+			this.tweetUrl = 'https://twitter.com/intent/tweet?text=Join me for the ' + this.data.type + ' ' + this.data.title + '&url=' + this.generatedUrl;
+			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=' + this.data.title + '&summary=Join me for the ' + this.data.type + ' ' + this.data.title + ' on ' + this.generatedUrl;
+		}
+	}
+	
+	ngOnInit() {
+	}
+	
+	public onCopySuccess() {
+		this.snackBar.open('Copied to clipboard', 'Close', {
+			duration: 5000
+		});
+	}
+	
+	public onEmailClicked() {
+		if (this.data.type === 'story') {
+			window.location.href = 'mailto:' + '' + '?Subject=See my knowledge story?&body=Hey, you can view my knowledge story at - ' + this.generatedUrl;
+		} else {
+			window.location.href = 'mailto:' + '' + '?Subject=Want to join me for this ' + this.data.type + '?&body=Hey, I found this really fitting ' + this.data.type + ' ' + this.data.title + ' you should look at - ' + this.generatedUrl;
+		}
+	}
+	
+	public onFBClicked() {
+		FB.ui({
+			method: 'share_open_graph',
+			action_type: 'og.shares',
+			action_properties: JSON.stringify({
+				object: {
+					'og:url': this.generatedUrl, // your url to share
+					'og:title': (this.data.type === 'story') ? 'Knowledge story of ' + this.data.title : 'Join me for this ' + this.data.type + ', ' + this.data.title,
+					'og:site_name': 'Peerbuds',
+					'og:description': (this.data.type === 'story') ? 'View my knowledge story at ' + this.generatedUrl : 'Join me for this ' + this.data.type + ' at ' + this.generatedUrl,
+				}
+			})
+		}, function (response) {
+			console.log('response is ', response);
+		});
+	}
+	
+	public onLinkedInClicked() {
+		window.open(this.LinkedInShareUrl, 'MyWindow', 'width = 600, height = 300'); return false;
+	}
+	
 }

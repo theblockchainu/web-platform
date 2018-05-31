@@ -1817,6 +1817,14 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	font-weight: 500;
 }
 
+.verify-panel .mat-expansion-panel-header {
+	background: #ff6d71 !important;
+}
+
+.verify-panel .mat-expansion-panel-header-title, .verify-panel .mat-expansion-panel-header-description, .verify-panel .mat-expansion-indicator::after, .verify-panel .expansion-panel-header-icon {
+	color: #fff !important;
+}
+
 .welcome-feed-accordian .mat-content {
 	background: inherit !important;
 }

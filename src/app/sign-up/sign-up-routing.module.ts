@@ -5,6 +5,10 @@ const routes: Routes = [
   {
     path: '',
     component: SignUpComponent
+  },
+  {
+    path: 'invite/:invitationId',
+    component: SignUpComponent
   }
 ];
 

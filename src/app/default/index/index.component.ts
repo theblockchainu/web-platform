@@ -32,7 +32,7 @@ export class IndexComponent implements OnInit {
 		authenticationService.isLoggedIn().subscribe((res) => {
 			this.loggedIn = res;
 			if (this.loggedIn) {
-				this._router.navigate(['home', 'homefeed']);
+				this._router.navigate(['home']);
 			}
 		});
 		_activatedRoute.url.subscribe(res => {
@@ -79,10 +79,10 @@ export class IndexComponent implements OnInit {
 	}
 
 	private setTags() {
-		this.titleService.setTitle('Peerbuds');
+		this.titleService.setTitle('Peerbuds - Own and Control Your Knowledge Story');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds'
+			content: 'Peerbuds - Own and Control Your Knowledge Story'
 		});
 		this.metaService.updateTag({
 			property: 'og:description',

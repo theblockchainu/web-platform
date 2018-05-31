@@ -81,6 +81,7 @@ import { KarmaBalancePipe } from './karma-balance/karma-balance.pipe';
 import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-story.service';
 import {ClipboardModule} from 'ngx-clipboard';
 import {ShareModule} from '@ngx-share/core';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
     imports: [
@@ -204,8 +205,8 @@ import {ShareModule} from '@ngx-share/core';
         ExtractTimePipe,
         LoadingModule,
         ConvertCurrencyPipe,
-		GyanBalancePipe,
-		KarmaBalancePipe,
+        GyanBalancePipe,
+        KarmaBalancePipe,
         ProfilePopupComponent,
         TrimPipe,
         TextIconCarouselComponent,
@@ -216,7 +217,8 @@ import {ShareModule} from '@ngx-share/core';
         NguCarouselModule,
         MatStepperModule,
 		ClipboardModule,
-		ShareModule
+		ShareModule,
+        QRCodeModule
     ]
 })
 export class SharedModule {

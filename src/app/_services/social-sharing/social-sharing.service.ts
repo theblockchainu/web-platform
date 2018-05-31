@@ -25,4 +25,8 @@ export class SocialSharingService {
 	public deleteContact(contactId) {
 		return this.httpClient.delete(environment.apiUrl + '/api/contacts/' + contactId, this.requestHeaderService.options);
 	}
+	
+	getPeerInvite(peerInviteId: string, filter: any) {
+		return this.httpClient.get(environment.apiUrl + '/api/peer_invites/' + peerInviteId + '?filter=' + JSON.stringify(filter), this.requestHeaderService.options);
+	}
 }

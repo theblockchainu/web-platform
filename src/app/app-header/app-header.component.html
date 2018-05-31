@@ -240,8 +240,11 @@
 	<button mat-menu-item [routerLink]="['/console/profile/edit']">
 		<i class="fas fa-pencil-alt lighterText"></i>&nbsp;&nbsp; Edit Profile
 	</button>
-	<button mat-menu-item [routerLink]="['/console/account/payoutmethods']">
-		<i class="fas fa-cog lighterText"></i>&nbsp;&nbsp; Account
+	<button mat-menu-item *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].ethAddress" [routerLink]="['/console/learning/story']">
+		<i class="far fa-address-book lighterText"></i>&nbsp;&nbsp; My Knowledge Stories
+	</button>
+	<button mat-menu-item [routerLink]="['/console/account/scholarships']">
+		<i class="fas fa-hand-holding-usd lighterText"></i>&nbsp;&nbsp; My Scholarships
 	</button>
 	<!--<button mat-menu-item [routerLink]="['/console/account/wallet']">
 		<i class="fas fa-fire lighterText"></i>&nbsp;&nbsp; Wallet
