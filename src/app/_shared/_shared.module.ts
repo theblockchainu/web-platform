@@ -79,6 +79,8 @@ import { ScholarshipService } from '../_services/scholarship/scholarship.service
 import { GyanBalancePipe } from './gyan-balance/gyan-balance.pipe';
 import { KarmaBalancePipe } from './karma-balance/karma-balance.pipe';
 import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-story.service';
+import { QRCodeModule } from 'angularx-qrcode';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -200,8 +202,8 @@ import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-st
         ExtractTimePipe,
         LoadingModule,
         ConvertCurrencyPipe,
-		GyanBalancePipe,
-		KarmaBalancePipe,
+        GyanBalancePipe,
+        KarmaBalancePipe,
         ProfilePopupComponent,
         TrimPipe,
         TextIconCarouselComponent,
@@ -210,7 +212,8 @@ import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-st
         TimeToNowPipe,
         TopicRowComponent,
         NguCarouselModule,
-        MatStepperModule
+        MatStepperModule,
+        QRCodeModule
     ]
 })
 export class SharedModule {

@@ -54,7 +54,10 @@ export class InviteComponent implements OnInit {
 		this.selectedIndex = 0;
 		this.checkedCount = 0;
 		this.activatedRoute.params.subscribe(params => {
-			this.selectedIndex = Number(params['stepId']);
+			if (params['stepId']) {
+				console.log('stepId' + params['stepId']);
+				this.selectedIndex = Number(params['stepId']);
+			}
 		});
 	}
 

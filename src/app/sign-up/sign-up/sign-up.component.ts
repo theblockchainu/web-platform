@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { SocketService } from '../../_services/socket/socket.service';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
-import {environment} from '../../../environments/environment';
-import {Meta, Title} from '@angular/platform-browser';
+import { environment } from '../../../environments/environment';
+import { Meta, Title } from '@angular/platform-browser';
+import { SocialSharingService } from '../../_services/social-sharing/social-sharing.service';
 
 @Component({
 	selector: 'app-sign-up',
@@ -14,28 +15,34 @@ import {Meta, Title} from '@angular/platform-browser';
 	styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
-	
+
 	public startDate = new Date(1994, 0, 1);
 	public signupForm: FormGroup;
 	public hide = true;
 	public emailRegister = false;
 	public envVariable;
-	constructor(private _fb: FormBuilder,
-				private _router: Router,
-				private _MatSnackBar: MatSnackBar,
-				private _AuthenticationService: AuthenticationService,
-				private _SocketService: SocketService,
-				private titleService: Title,
-				private metaService: Meta,
-				private _RequestHeaderService: RequestHeaderService
+	private invitationId: string;
+	invite: any;
+
+	constructor(
+		private _fb: FormBuilder,
+		private _router: Router,
+		private _MatSnackBar: MatSnackBar,
+		private _AuthenticationService: AuthenticationService,
+		private _SocketService: SocketService,
+		private titleService: Title,
+		private metaService: Meta,
+		private _RequestHeaderService: RequestHeaderService,
+		private activatedRoute: ActivatedRoute,
+		private socialSharingService: SocialSharingService
 	) {
 		this.envVariable = environment;
 	}
-	
+
 	ngOnInit() {
-		
+
 		this.setTags();
-		
+
 		this.signupForm = this._fb.group({
 			first_name: ['', Validators.required],
 			last_name: ['', Validators.required],
@@ -43,8 +50,27 @@ export class SignUpComponent implements OnInit {
 			password: ['', Validators.required],
 			birthdate: ['', Validators.required]
 		});
+
+		this.activatedRoute.params.subscribe(params => {
+			if (params['invitationId']) {
+				this.invitationId = params['invitationId'];
+				this.getInvitee();
+			}
+		});
 	}
-	
+
+	private getInvitee() {
+		const filter = {
+			'include': ['contacts', { 'peers': 'profiles' }]
+		};
+		this.socialSharingService.getPeerInvite(this.invitationId, filter).subscribe((res: any) => {
+			console.log(res);
+			if (res) {
+				this.invite = res;
+			}
+		});
+	}
+
 	private setTags() {
 		this.titleService.setTitle('Sign-up | Peerbuds');
 		this.metaService.updateTag({
@@ -68,11 +94,11 @@ export class SignUpComponent implements OnInit {
 			content: environment.clientUrl + this._router.url
 		});
 	}
-	
+
 	signupEmail() {
 		this.emailRegister = true;
 	}
-	
+
 	submitForm() {
 		console.log(this.signupForm);
 		if (this.signupForm.valid) {
@@ -94,7 +120,7 @@ export class SignUpComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	signIn() {
 		const userId = this._AuthenticationService.getCookie('userId');
 		if (userId.length > 5) {
@@ -106,11 +132,11 @@ export class SignUpComponent implements OnInit {
 			this._MatSnackBar.open('An error occurred', 'close', { duration: 3000 });
 		}
 	}
-	
+
 	public openLogin() {
 		this._router.navigate(['login']);
 	}
-	
+
 	public back() {
 		this.emailRegister = false;
 	}

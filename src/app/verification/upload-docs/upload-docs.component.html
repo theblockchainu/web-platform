@@ -68,7 +68,7 @@
 							<!-- <input type="number" matInput placeholder="Country Code"> -->
 							<mat-select #countryCode formControlName="countryCode" placeholder="Country ">
 								<mat-option *ngFor="let country of countryCodes" [value]="country.code">
-									{{ country.code+' '+country.country }}
+									{{ country.country }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>

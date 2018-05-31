@@ -1,7 +1,35 @@
 <div class="main-content">
 	<div class="container">
-		<div class="row">
-			<div class="col-sm-4 col-sm-offset-4  col-xs-12 margin-top-70 margin-bottom-70" [hidden]="emailRegister">
+		<div class="row margin-top-70 margin-bottom-70">
+			<div class="col-xs-12 center margin-bottom-20" *ngIf="invite && invite.peers[0] && invite.peers[0].profiles[0]">
+				<h2>Hi {{invite.name}}, you have been invited by </h2>
+			</div>
+			<div class="col-sm-4 col-sm-offset-4 col-xs-1 margin-bottom-20" *ngIf="invite && invite.peers[0] && invite.peers[0].profiles[0]">
+				<mat-card>
+					<div class="row">
+						<div class="col-xs-2">
+							<img *ngIf="!invite.peers[0].profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="A" class="clickable circle-thumb">
+							<img *ngIf="invite.peers[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ invite.peers[0].profiles[0].picture_url + '/100'}}"
+							 class="clickable circle-thumb" alt="dp"> </div>
+						<div class="col-xs-10">
+							<div class="row">
+								<div class="col-xs-12">
+									<b>
+										{{invite.peers[0].profiles[0].first_name +' ' + invite.peers[0].profiles[0].last_name}}
+
+									</b>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12">
+									{{invite.peers[0].profiles[0].headline}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</mat-card>
+			</div>
+			<div class="col-sm-4 col-sm-offset-4  col-xs-12" [hidden]="emailRegister">
 				<mat-card>
 					<mat-card-content>
 						<div class="row margin-bottom-20">
