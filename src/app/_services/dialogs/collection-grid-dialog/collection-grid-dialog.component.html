@@ -14,7 +14,7 @@
     <div class="recommendation-card" *ngFor="let workshop of data.collections; let i =index">
       <a (click)="openCollectionPage(workshop.id)">
         <div class="">
-          <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{envVariable.apiUrl+workshop.imageUrls[0]}}"
+          <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{envVariable.apiUrl+workshop.imageUrls[0]}}/300"
             alt="workshpImg">
           <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
             alt="workshpImg">

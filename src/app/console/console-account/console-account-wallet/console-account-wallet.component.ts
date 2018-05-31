@@ -6,6 +6,7 @@ import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.
 import { ProfileService } from '../../../_services/profile/profile.service';
 import {DialogsService} from '../../../_services/dialogs/dialog.service';
 import {MatSnackBar} from '@angular/material';
+import {AuthenticationService} from '../../../_services/authentication/authentication.service';
 
 @Component({
 	selector: 'app-console-account-wallet',
@@ -22,6 +23,7 @@ export class ConsoleAccountWalletComponent implements OnInit {
 	constructor(
 		public consoleAccountComponent: ConsoleAccountComponent,
 		public activatedRoute: ActivatedRoute,
+		public _authService: AuthenticationService,
 		private _walletService: WalletService,
 		private _profileService: ProfileService,
 		private _cookieUtilsService: CookieUtilsService,
@@ -68,14 +70,17 @@ export class ConsoleAccountWalletComponent implements OnInit {
 	public fixWalletDialog() {
 		this._dialogService.confirmPasswordDialog()
 			.subscribe(res => {
-				this._walletService.fixWallet(this.userId, res)
-					.subscribe(result => {
-						this.snackBar.open('Successfully updated wallet', 'Ok', { duration: 5000 });
-						this.fetchTransactions();
-					},
-						error => {
-						this.snackBar.open('Error fixing wallet: ' + error.error.error.message, 'Close', { duration: 5000});
-						});
+				if (res) {
+					this._walletService.fixWallet(this.userId, res)
+						.subscribe(result => {
+								this.snackBar.open('Successfully updated wallet', 'Ok', { duration: 5000 });
+								this.fetchTransactions();
+								this._authService.isLoginSubject.next(true);
+							},
+							error => {
+								this.snackBar.open('Error fixing wallet: ' + error.error.error.message, 'Close', { duration: 5000});
+							});
+				}
 			});
 	}
 	

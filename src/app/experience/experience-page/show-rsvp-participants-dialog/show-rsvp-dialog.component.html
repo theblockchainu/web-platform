@@ -36,7 +36,7 @@
                         <div class="col-md-8">
                             <div class="row">
                                 <div class="col-md-2 vcenter">
-                                    <img src="{{envVariable.apiUrl+attendie.profiles[0].picture_url}}" style="margin-left: 0px;" class="circle-thumb" alt="dp" (error)="_collectionService.imgErrorHandler($event)">
+                                    <img src="{{envVariable.apiUrl+attendie.profiles[0].picture_url}}/100" style="margin-left: 0px;" class="circle-thumb" alt="dp" (error)="_collectionService.imgErrorHandler($event)">
                                 </div>
                                 <div class="col-md-9 vcenter">
                                     <b>{{attendie.profiles[0].first_name +' '+ attendie.profiles[0].last_name | ucwords }}</b>

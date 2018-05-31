@@ -802,7 +802,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	 * changeDates
 	 */
 	public changeDates() {
-		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType)
+		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.experience.type)
 			.subscribe(result => {
 				if (result) {
 					this.router.navigate(['experience', this.experienceId, 'calendar', result]);
@@ -1231,7 +1231,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	 */
 	public selectJoiningDates() {
 
-		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType)
+		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.experience.type)
 			.subscribe(result => {
 				if (result) {
 					if (this.userId) {
@@ -1735,6 +1735,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				this._assessmentService.submitAssessment(assessmentArray).subscribe(result => {
 					console.log(result);
 					this.snackBar.open('Your assessment has been submitted. Students will be informed over email.', 'Ok', { duration: 5000});
+					this._authenticationService.isLoginSubject.next(true);
 				});
 			}
 		});

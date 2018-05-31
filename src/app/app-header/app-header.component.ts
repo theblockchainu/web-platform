@@ -164,7 +164,7 @@ export class AppHeaderComponent implements OnInit {
 					duration: 5000
 				});
 			} else {
-				this.router.navigate(['home', 'homefeed']);
+				this.router.navigate(['home']);
 			}
 		} else {
 			this.router.navigate(['/']);
@@ -307,10 +307,12 @@ export class AppHeaderComponent implements OnInit {
 	}
 
 	public showSearchBar() {
-		if (this.isSearchBarVisible) {
-			this.isSearchBarVisible = false;
-		} else {
-			this.isSearchBarVisible = true;
+		this.isSearchBarVisible = !this.isSearchBarVisible;
+	}
+	
+	public openGenerateStoryDialog() {
+		if (this.profile && this.profile.peer && this.profile.peer.length > 0) {
+			this.router.navigate(['profile', this.profile.peer[0].id, 'story']);
 		}
 	}
 }

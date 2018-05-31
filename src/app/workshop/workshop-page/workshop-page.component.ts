@@ -652,7 +652,7 @@ export class WorkshopPageComponent implements OnInit {
 	 * changeDates
 	 */
 	public changeDates() {
-		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType)
+		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.workshop.type)
 			.subscribe(result => {
 				if (result) {
 					this.router.navigate(['workshop', this.workshopId, 'calendar', result]);
@@ -982,7 +982,7 @@ export class WorkshopPageComponent implements OnInit {
 	 * selectJoiningDates
 	 */
 	public selectJoiningDates() {
-		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType)
+		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.workshop.type)
 			.subscribe(result => {
 				if (result) {
 					if (this.userId) {

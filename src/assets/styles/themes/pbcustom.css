@@ -231,7 +231,7 @@ mat-subheader {
 
 .mat-menu-item {
 	/* font-size: 14px !important; */
-	font-size: 1rem !important;
+	font-size: 0.9rem !important;
 }
 
 .mat-list-item {
@@ -1806,7 +1806,27 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 }
 
 .hide-header .mat-horizontal-stepper-header-container{
-	visibility: hidden !important;
+	display: none !important;
+}
+
+.welcome-feed-accordian .mat-expansion-panel-header {
+	border-bottom: 1px solid #dfdfdf !important;
+}
+.welcome-feed-accordian .mat-expansion-panel-header-title {
+	font-size: 1.4rem;
+	font-weight: 500;
+}
+
+.verify-panel .mat-expansion-panel-header {
+	background: #ff6d71 !important;
+}
+
+.verify-panel .mat-expansion-panel-header-title, .verify-panel .mat-expansion-panel-header-description, .verify-panel .mat-expansion-indicator::after, .verify-panel .expansion-panel-header-icon {
+	color: #fff !important;
+}
+
+.welcome-feed-accordian .mat-content {
+	background: inherit !important;
 }
 
 /* Extra small devices (phones, 600px and down) */

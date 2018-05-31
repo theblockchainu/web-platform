@@ -32,7 +32,7 @@
     <div class="row">
       <div class="content-image" *ngIf="data.content.imageUrl">
         <img *ngIf="data.content.imageUrl.includes('.jpeg') || data.content.imageUrl.includes('.jpg') || data.content.imageUrl.includes('.png')"
-          class="img-responsive media-middle" width="100%" style="max-height: 400px;" src="{{envVariable.apiUrl+data.content.imageUrl}}"
+          class="img-responsive media-middle" width="100%" style="max-height: 400px;" src="{{envVariable.apiUrl+data.content.imageUrl}}/500"
           alt="image">
         <!--If project has a video and not an image-->
         <div *ngIf="data.content.imageUrl.includes('.mp4') || data.content.imageUrl.includes('.mpeg') || data.content.imageUrl.includes('.mpg')"

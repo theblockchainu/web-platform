@@ -11,7 +11,7 @@ import { CommunityService } from '../../_services/community/community.service';
 import { environment } from '../../../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import {TitleCasePipe} from "@angular/common";
+import {TitleCasePipe} from '@angular/common';
 
 @Component({
     selector: 'app-feed',
@@ -79,7 +79,7 @@ export class HomefeedComponent implements OnInit {
     }
 
     private setTags() {
-        this.titleService.setTitle('Homefeed');
+        this.titleService.setTitle('Peerbuds - Own & Control Your Knowledge Story');
         this.metaService.updateTag({
             property: 'og:title',
             content: 'Explore Peerbuds'

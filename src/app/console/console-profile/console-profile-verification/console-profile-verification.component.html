@@ -64,8 +64,8 @@
 								<div class="col-md-4 col-xs-4">
 									<button mat-button color="primary" *ngIf="unverifiedObj.text == 'Email address'" (click)="openEmailVerify()">Verify</button>
 									<button mat-button color="primary" *ngIf="unverifiedObj.text == 'Government Id' && !unverifiedObj.submitted" (click)="openIdVerify()">Verify</button>
-									<span matTooltip="Already submitted!" *ngIf="unverifiedObj.text == 'Government Id' && unverifiedObj.submitted">
-										<button mat-button color="primary" [disabled]="true">Awaiting verification</button>
+									<span matTooltip="Your ID has been submitted and is awaiting approval from our KYC team." *ngIf="unverifiedObj.text == 'Government Id' && unverifiedObj.submitted">
+										<button mat-button color="primary" [disabled]="true">Submitted. Awaiting verification.</button>
 									</span>
 									<button mat-button color="primary" *ngIf="unverifiedObj.text == 'Phone Number'" (click)="openPhoneVerify()">Verify</button>
 								</div>
@@ -73,6 +73,11 @@
 						</div>
 					</div>
 					<hr *ngIf="notVerified?.length > 0">
+					<div class="row">
+						<div class="col-md-12">
+							<h3>Social accounts</h3>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-md-8 col-xs-8">
 							<div class="row">
@@ -87,8 +92,8 @@
 							</div>
 						</div>
 						<div class="col-md-4 col-xs-4 margin-top-20">
-							<a *ngIf="!connectedIdentities.fb" mat-button href="{{envVariable.apiUrl + '/link/Facebook?returnTo=console/profile/verification'}}">Connect</a>
-							<p *ngIf="connectedIdentities.fb" href="#" color="grey">Connected</p>
+							<a *ngIf="!connectedIdentities.fb" mat-button href="{{envVariable.apiUrl + '/link/facebook?returnTo=console/profile/verification'}}">Connect</a>
+							<p *ngIf="connectedIdentities.fb" href="#" style="color: #33bd9e">Connected</p>
 						</div>
 					</div>
 					<div class="row">
@@ -105,27 +110,28 @@
 							</div>
 						</div>
 						<div class="col-md-4 col-xs-4 margin-top-40">
-							<a *ngIf="!connectedIdentities.google" mat-button href="{{envVariable.apiUrl + '/link/Google?returnTo=console/profile/verification'}}">Connect</a>
-							<p *ngIf="connectedIdentities.google" href="#" color="grey">Connected</p>
+							<a *ngIf="!connectedIdentities.google" mat-button href="{{envVariable.apiUrl + '/link/google?returnTo=console/profile/verification'}}">Connect</a>
+							<p *ngIf="connectedIdentities.google" href="#" style="color: #33bd9e">Connected</p>
 						</div>
 					</div>
-					<!-- <div class="row">
-					<div class="col-md-8 margin-top-20">
-					  <div class="row">
-						<div class="col-md-12">
-						  <h5 style="font-weight:bold">LinkedIn</h5>
+					<div class="row">
+						<div class="col-md-8 margin-top-20">
+							<div class="row">
+								<div class="col-md-12">
+									<h5 style="font-weight:bold">LinkedIn</h5>
+								</div>
+								<div class="col-md-10">
+									<p class="mat-caption" style="color:#767676">
+										Sign in with your LinkedIn and discover your trusted connections to teachers and learners all over the world.
+									</p>
+								</div>
+							</div>
 						</div>
-						<div class="col-md-10">
-						  <p class="mat-caption" style="color:#767676">
-							Sign in with your LinkedIn and discover your trusted connections to teachers and learners all over the world.
-						  </p>
+						<div class="col-md-4 margin-top-40">
+							<a *ngIf="!connectedIdentities.linkedin" mat-button href="{{envVariable.apiUrl + '/link/linkedin?returnTo=console/profile/verification'}}">Connect</a>
+							<p *ngIf="connectedIdentities.linkedin" href="#" style="color: #33bd9e">Connected</p>
 						</div>
-					  </div>
 					</div>
-					<div class="col-md-4 margin-top-40">
-					  <a mat-button color="accent">Connect</a>
-					</div>
-				  </div> -->
 				</div>
 			</div>
 		</div>

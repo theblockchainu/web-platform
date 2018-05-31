@@ -321,7 +321,7 @@
 			<div *ngFor="let collection of collections; let i = index;">
 				<div class="row margin-top-30" *ngIf="i < 3">
 					<div class="col-xs-6">
-						<div class="teachingContentThumb clickable" *ngIf="collection.imageUrls && collection.imageUrls.length > 0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + collection.imageUrls[0] + '), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}"
+						<div class="teachingContentThumb clickable" *ngIf="collection.imageUrls && collection.imageUrls.length > 0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + collection.imageUrls[0] + '/300), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}"
 						     (click)="_collectionService.openCollection(collection)"></div>
 						<div class="teachingContentThumb clickable" *ngIf="!collection.imageUrls || collection.imageUrls.length === 0" [ngStyle]="{'background': 'url(url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}"
 						     (click)="_collectionService.openCollection(collection)"></div>

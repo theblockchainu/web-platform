@@ -5,12 +5,17 @@
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<div class="mat-display-1" style="margin-bottom: 20px;">
-				View or share your knowledge story
+				Create & share a knowledge story
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div>
+				<button mat-button (click)="openExistingStories()">View Existing Stories</button> or create a new one below.
 			</div>
 		</div>
 	</div>
 	<hr>
-	<mat-horizontal-stepper [linear]="true" #stepper class="margin-top-30">
+	<mat-horizontal-stepper [linear]="true" #stepper class="margin-top-30 hide-header">
 		<mat-step>
 			<div class="row margin-top-40 margin-bottom-40">
 				<div class="col-md-12">
@@ -26,7 +31,7 @@
 					<div class="margin-top-20">
 						<span *ngFor="let item of selected">
 							<li class="ui-autocomplete-token ui-state-highlight ui-corner-all margin-bottom-0">
-								<a (click)="remove(item)" class="ui-autocomplete-token-icon fa fa-fw fa-close" style="text-decoration:none"></a>
+								<a (click)="remove(item)" class="ui-autocomplete-token-icon fa fa-fw fa-close" style="text-decoration:none" href="javascript:;"></a>
 								<span class="ui-autocomplete-token-label captitalise">{{item.name}}</span>
 							</li>
 						</span>
@@ -40,7 +45,7 @@
 						<ul *ngFor="let item of filteredList" style="list-style:none" class="padding-left-0">
 							<li class="captitalise topic" (click)="select(item)">
 								<a>
-									<img src="{{envVariable.apiUrl+ item.imageUrl}}" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
+									<img src="{{envVariable.apiUrl+ item.imageUrl}}/100" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
 									<span style="margin-left:20px">{{item.name}}</span>
 									<span *ngIf="!item.inSelect">
 										<mat-icon class="pull-right" style="top: 1.1em; right: 0.6em; color: #cccccc;">check_circle</mat-icon>

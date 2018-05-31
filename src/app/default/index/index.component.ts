@@ -32,7 +32,7 @@ export class IndexComponent implements OnInit {
 		authenticationService.isLoggedIn().subscribe((res) => {
 			this.loggedIn = res;
 			if (this.loggedIn) {
-				this._router.navigate(['home', 'homefeed']);
+				this._router.navigate(['home']);
 			}
 		});
 		_activatedRoute.url.subscribe(res => {
@@ -46,7 +46,7 @@ export class IndexComponent implements OnInit {
 	ngOnInit() {
 		this.loadingHome = false;
 		this.notifyForm = this._fb.group(
-			{ email: ['', [Validators.requiredTrue, Validators.email]] }
+			{ email: ['', [Validators.required, Validators.email]] }
 		);
 		this.setTags();
 	}
@@ -58,9 +58,8 @@ export class IndexComponent implements OnInit {
 		if (this.notifyForm.valid) {
 			this.email = this.notifyForm.controls['email'].value;
 			this.authenticationService.sendEmailSubscriptions(this.email)
-				.subscribe(
-				);
-			this.snackBar.open('We have registered your email for all our future updates leading to the official Karma launch later this year', 'Thanks', {
+				.subscribe();
+			this.snackBar.open('We have registered your email for all our future updates.', 'Thanks', {
 				duration: 5000
 			});
 		} else {
@@ -80,10 +79,10 @@ export class IndexComponent implements OnInit {
 	}
 
 	private setTags() {
-		this.titleService.setTitle('Peerbuds');
+		this.titleService.setTitle('Peerbuds - Own and Control Your Knowledge Story');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds'
+			content: 'Peerbuds - Own and Control Your Knowledge Story'
 		});
 		this.metaService.updateTag({
 			property: 'og:description',

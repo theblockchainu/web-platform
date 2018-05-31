@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="147" height="126" viewBox="0 0 147 126">
+    <defs>
+        <path id="a" d="M40 0h56c6.627 0 12 5.373 12 12v110H28V12c0-6.627 5.373-12 12-12z"/>
+        <path id="b" d="M37 7h60a5 5 0 0 1 5 5v104a3 3 0 0 1-3 3H35a3 3 0 0 1-3-3V12a5 5 0 0 1 5-5z"/>
+        <ellipse id="c" cx="12.966" cy="13.042" rx="12.966" ry="12.506"/>
+        <ellipse id="e" cx="12.885" cy="9.889" rx="5.662" ry="5.556"/>
+        <path id="f" d="M24.677 28.973H.889a10.519 10.519 0 0 1-.167-1.87c0-6.193 5.4-11.214 12.06-11.214 6.662 0 12.061 5.02 12.061 11.215 0 .637-.057 1.26-.166 1.869z"/>
+        <path id="h" d="M.31 11.152C-1.6 31.34 5.323 44.661 21.078 51.114c16.558-5.373 24.055-18.497 22.49-39.372C34.581 8.991 27.066 5.077 21.025 0 13.72 6.026 6.815 9.743.309 11.152z"/>
+        <filter id="g" width="224.3%" height="206.4%" x="-55.3%" y="-41.5%" filterUnits="objectBoundingBox">
+            <feMorphology in="SourceAlpha" operator="dilate" radius="3.2" result="shadowSpreadOuter1"/>
+            <feOffset dx="3" dy="6" in="shadowSpreadOuter1" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="7"/>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.18285779 0"/>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd" transform="translate(9)">
+        <path fill="#000" fill-opacity=".053" d="M37 6h68v110H25V18c0-6.627 5.373-12 12-12z"/>
+        <use fill="#F8F8F8" xlink:href="#a"/>
+        <path stroke="#555" stroke-width="2" d="M29 121h78V12c0-6.075-4.925-11-11-11H40c-6.075 0-11 4.925-11 11v109z"/>
+        <use fill="#FFF" xlink:href="#b"/>
+        <path stroke="#555" stroke-width="1.3" d="M37 7.65A4.35 4.35 0 0 0 32.65 12v104a2.35 2.35 0 0 0 2.35 2.35h64a2.35 2.35 0 0 0 2.35-2.35V12A4.35 4.35 0 0 0 97 7.65H37z"/>
+        <path fill="#FFF" d="M13 116h111v10H13z"/>
+        <path stroke="#555" stroke-linecap="round" stroke-width="2" d="M.172 116H136.68"/>
+        <g fill="#D7D7D7">
+            <path d="M42 55h49v1.438H42zM42 62.188h41.763v1.438H42zM42 69.375h46.829v1.438H42zM42 76.563h32.355v1.438H42z"/>
+        </g>
+        <g transform="translate(55 18)">
+            <ellipse cx="12.966" cy="13.042" stroke="#7C47AB" rx="12.466" ry="12.006"/>
+            <mask id="d" fill="#fff">
+                <use xlink:href="#c"/>
+            </mask>
+            <g mask="url(#d)">
+                <use fill="#FFF" xlink:href="#e"/>
+                <ellipse cx="12.885" cy="9.889" stroke="#555" stroke-width="1.3" rx="5.012" ry="4.906"/>
+            </g>
+            <g mask="url(#d)">
+                <use fill="#FFF" xlink:href="#f"/>
+                <path stroke="#555" stroke-width="1.3" d="M24.118 28.323c.05-.403.075-.81.075-1.22 0-5.823-5.098-10.564-11.41-10.564s-11.41 4.74-11.41 10.565c0 .41.024.816.074 1.219h22.671z"/>
+            </g>
+        </g>
+        <ellipse cx="68" cy="30.5" stroke="#555" stroke-width="1.3" rx="12.35" ry="11.85"/>
+        <g transform="translate(5.018 21.209)">
+            <use fill="#000" filter="url(#g)" xlink:href="#h"/>
+            <use fill="#E5E5E5" xlink:href="#h"/>
+            <path stroke="#E5E5E5" stroke-width="3.2" d="M-.03 9.588C6.203 8.24 12.887 4.641 20.008-1.234l1.027-.848 1.02.857c5.869 4.932 13.192 8.746 21.984 11.438l1.045.32.082 1.09c1.617 21.567-6.283 35.396-23.592 41.013l-.558.181-.543-.222C4.023 45.857-3.255 31.853-1.284 11.002l.11-1.166 1.145-.248z"/>
+        </g>
+        <path stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.8" d="M16.723 47.25l7.053 6.201 13.1-11.515"/>
+        <g fill="#D7D7D7">
+            <path d="M42 109h49v1.438H42z"/>
+        </g>
+        <g fill="#F3F3F3" transform="translate(43 89)">
+            <rect width="13" height="13" rx="2"/>
+            <rect width="13" height="13" x="18" rx="2"/>
+            <rect width="13" height="13" x="36" rx="2"/>
+        </g>
+    </g>
+</svg>

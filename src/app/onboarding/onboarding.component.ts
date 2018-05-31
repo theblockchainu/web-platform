@@ -194,7 +194,7 @@ export class OnboardingComponent implements OnInit {
 	}
 	
 	public goToHome() {
-		this.router.navigate(['home', 'homefeed']);
+		this.router.navigate(['home']);
 	}
 	
 	public showConnectedSocials() {

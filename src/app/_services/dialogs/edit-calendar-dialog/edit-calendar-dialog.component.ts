@@ -629,7 +629,7 @@ export class EditCalendarDialogComponent implements OnInit {
             width: '70vw',
             height: '90vh',
             panelClass: 'responsive-dialog',
-            data: { itineraries: this.allItenaries, mode: 'editDelete', participants: this.participants, userType: 'teacher' }
+            data: { itineraries: this.allItenaries, mode: 'editDelete', participants: this.participants, userType: 'teacher', collectionType: this.collection.type }
         }).afterClosed()
             .subscribe((data) => {
                 // Handle the deleted calendar if any

@@ -22,6 +22,7 @@ import { RequestHeaderService } from '../../requestHeader/request-header.service
 
 import * as _ from 'lodash';
 import { ConsoleLearningAllComponent } from '../../../console/console-learning/console-learning-all/console-learning-all.component';
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -109,6 +110,7 @@ export class GenerateKnowledgeStoryComponent implements OnInit {
 		public dialogRef: MatDialogRef<GenerateKnowledgeStoryComponent>,
 		public _collectionService: CollectionService,
 		public _searchService: SearchService,
+		public router: Router,
 		@Inject(MAT_DIALOG_DATA) public data: any) {
 		this.elementRef = myElement;
 		this.placeholderString = this.title;
@@ -233,6 +235,7 @@ export class GenerateKnowledgeStoryComponent implements OnInit {
 	}
 
 	public remove(item) {
+		console.log('Removing item: ' + item);
 		this.selected.splice(this.selected.indexOf(item), 1);
 		if (this.selected.length < this.maxSelection && this.maxSelection !== -1) {
 			this.maxTopicMsg = '';
@@ -268,6 +271,11 @@ export class GenerateKnowledgeStoryComponent implements OnInit {
 			selectedPeers: this.selectedPeers,
 			selectedTopics: this.allPeers ? [] : this.selected
 		});
+	}
+	
+	public openExistingStories() {
+		this.dialogRef.close();
+		this.router.navigate(['console', 'learning', 'story']);
 	}
 }
 

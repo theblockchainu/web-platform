@@ -52,7 +52,7 @@
 						<ul *ngFor="let item of interests" style="list-style:none" class="padding-left-0">
 							<li class="captitalise topic" (click)="select(item)">
 								<a>
-									<img src="{{envVariable.apiUrl+ item.imageUrl}}" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
+									<img src="{{envVariable.apiUrl+ item.imageUrl}}/100" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
 									<span style="margin-left:20px">{{item.name}}</span>
 									<span>
 										<i class="mdi mdi-check-circle mdi-24px primaryColor pull-right" style="margin:18px 10px"></i>
@@ -65,7 +65,7 @@
 						<ul *ngFor="let item of suggestedTopics" style="list-style:none" class="padding-left-0">
 							<li class="captitalise topic" (click)="select(item)">
 								<a>
-									<img src="{{envVariable.apiUrl+ item.imageUrl}}" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
+									<img src="{{envVariable.apiUrl+ item.imageUrl}}/100" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
 									<span style="margin-left:20px">{{item.name}}</span>
 									<span>
 										<i class="mdi mdi-check-circle-outline mdi-24px primaryColor pull-right" style="margin:18px 10px"></i>

@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-const PHONE_REGEX = /^(\+\d{1,3}[- ]?)?\d{10}$/;
+const PHONE_REGEX = /^(\+\d{1,3}[- ]?)?\d{7,10}$/;
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
 
 @Component({
@@ -235,12 +235,13 @@ export class UploadDocsComponent implements OnInit {
 
 	verifyEmail(nextStep) {
 		this.httpLoading = true;
-		this._profileService.confirmEmail(this.userId, this.emailOtp.controls['inputOTP'].value)
+		this._profileService.confirmEmail(this.userId, '' + this.emailOtp.controls['inputOTP'].value)
 			.subscribe((res) => {
 				this.httpLoading = false;
 				this.success = res;
 				this.step = nextStep;
-				this.router.navigate(['invite']);
+				this.router.navigate(['invite', '1']);
+				
 			},
 				(err) => {
 					this.httpLoading = false;
@@ -255,7 +256,7 @@ export class UploadDocsComponent implements OnInit {
 
 	verifyPhone(nextStep) {
 		this.httpLoading = true;
-		this._profileService.confirmSmsOTP(this.phoneOtp.controls['inputOTP'].value)
+		this._profileService.confirmSmsOTP('' + this.phoneOtp.controls['inputOTP'].value)
 			.subscribe((res) => {
 				this.httpLoading = false;
 				this.success = res;

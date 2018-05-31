@@ -25,7 +25,7 @@ export class KnowledgeStoryComponent implements OnInit {
 	public ownerView = false;
 	public envVariable;
 	public pageUrl: string;
-	public storyNotFound = true;
+	public storyNotFound = false;
 	public requested: boolean;
 	constructor(
 		private activatedRoute: ActivatedRoute,
@@ -86,6 +86,7 @@ export class KnowledgeStoryComponent implements OnInit {
 
 	initializePage() {
 		delete this.knowledgeStory;
+		this.loadingKnowledgeStory = true;
 		this.pageUrl = environment.clientUrl + this.router.url;
 		const filter = {
 			'include': [
