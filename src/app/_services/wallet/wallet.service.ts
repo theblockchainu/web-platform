@@ -52,7 +52,7 @@ export class WalletService {
 		return this.http
 			.get(environment.apiUrl + '/karmaToDollar?karma=' + karma, this.requestHeaderService.options)
 			.map(
-				res => res.USD,
+				res => res['USD'],
 				err => console.log('Error: ' + err)
 			);
 	}
@@ -61,7 +61,7 @@ export class WalletService {
 		return this.http
 			.get(environment.apiUrl + '/gyanToDollar?karma=' + gyan, this.requestHeaderService.options)
 			.map(
-				res => res.USD,
+				res => res['USD'],
 				err => console.log('Error: ' + err)
 			);
 	}

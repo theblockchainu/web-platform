@@ -61,9 +61,9 @@ export class ScholarshipService {
 		return this.http.delete(environment.apiUrl + '/api/scholarships/' + scholarshipId + '/peers_joined/rel/' + userId, this._requestHeaderService.options);
 	}
 
-	public getKarmaBalance(scholarshipId) {
+	public getKarmaBalance(scholarshipId, convertTo = 'KARMA') {
 		return this.http
-			.get(environment.apiUrl + '/api/scholarships/' + scholarshipId + '/karmaBalance', this._requestHeaderService.options)
+			.get(environment.apiUrl + '/api/scholarships/' + scholarshipId + '/karmaBalance?convertTo=' + convertTo, this._requestHeaderService.options)
 			.map(
 				(response: any) => response,
 				(err) => {
