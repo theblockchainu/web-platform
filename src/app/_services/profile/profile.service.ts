@@ -179,11 +179,10 @@ export class ProfileService {
 					console.log('Error: ' + err);
 				});
 	}
-
-
-	public getKarmaBalance(userId) {
+	
+	public getScholarships(userId, filter) {
 		return this.http
-			.get(environment.apiUrl + '/api/peers/' + userId + '/karmaBalance', this._requestHeaderService.options)
+			.get(environment.apiUrl + '/api/peers/' + userId + '/scholarships_joined?filter=' + JSON.stringify(filter), this._requestHeaderService.options)
 			.map(
 				(response: any) => response,
 				(err) => {
@@ -191,9 +190,20 @@ export class ProfileService {
 				});
 	}
 
-	public getGyanBalance(userId) {
+
+	public getKarmaBalance(userId, convertTo = 'KARMA') {
 		return this.http
-			.get(environment.apiUrl + '/api/peers/' + userId + '/gyanBalance', this._requestHeaderService.options)
+			.get(environment.apiUrl + '/api/peers/' + userId + '/karmaBalance?convertTo=' + convertTo, this._requestHeaderService.options)
+			.map(
+				(response: any) => response,
+				(err) => {
+					console.log('Error: ' + err);
+				});
+	}
+
+	public getGyanBalance(userId, convertTo = 'GYAN') {
+		return this.http
+			.get(environment.apiUrl + '/api/peers/' + userId + '/gyanBalance?convertTo=' + convertTo, this._requestHeaderService.options)
 			.map(
 				(response: any) => response,
 				(err) => {

@@ -79,13 +79,13 @@
 				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'dashboard']">
 					{{profile.peer[0].id | gyanBalance | async}} GYAN
 					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
-						$0.00 USD
+						${{profile.peer[0].id | gyanBalance: 'USD' | async}} USD
 					</div>
 				</span>
 				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']" >
 					{{profile.peer[0].id | karmaBalance | async}} KARMA
 					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
-						$0.00 USD
+						${{profile.peer[0].id | karmaBalance : 'peer': 'USD' | async}} USD
 					</div>
 				</span>
 				<div class="headerButtons" [matMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem; cursor: pointer; display: inline-block; margin: 0 15px;">

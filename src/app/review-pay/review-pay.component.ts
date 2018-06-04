@@ -294,7 +294,7 @@ export class ReviewPayComponent implements OnInit {
     }
 
     getkarma(gyan: number) {
-        return this._collectionService.getKarmaValue(gyan).subscribe((res: any) => {
+        return this._collectionService.getKarmaToBurn(gyan).subscribe((res: any) => {
             console.log(res);
             this.karma = res.karma;
             this.paybleKarma = this.karma;
@@ -307,7 +307,7 @@ export class ReviewPayComponent implements OnInit {
         });
         const scholarships = <FormArray>this.scholarshipForm.controls['scholarships'];
         const filter = { 'include': [{ 'owner': 'profiles' }, 'peers_joined', 'allowed_collections'] };
-        this._scholarshipService.fetchScholarships(filter).subscribe((res: any) => {
+        this.profileService.getScholarships(this.userId, filter).subscribe((res: any) => {
             console.log(res);
             res.forEach(scholarship => {
                 if (scholarship.type === 'public' || scholarship.allowed_collections.length === 0) {

@@ -20,12 +20,12 @@
 				</span>
 			</div>
 		</div>
-		<div class="row pending-actions center" *ngIf="(calendarId !== undefined && experience.status === 'active' && !hasCohortEnded() )">
+		<div class="row pending-actions center" *ngIf="(calendarId !== undefined && experience.status === 'active')">
 		<!--<div class="row pending-actions center" *ngIf="(calendarId !== undefined && experience.status === 'active')">-->
 			<div class="col-md-10 col-md-offset-1">
 				<span>This cohort has ended. You can still add a review and participate in discussions</span>
 			</div>
-			<div class="col-md-10 col-md-offset-1" *ngIf="(experience && experience.assessment_models && experience.assessment_models.length>0 && experience.assessment_models[0].type && userType === experience.assessment_models[0].type.toLowerCase())">
+			<div class="col-md-10 col-md-offset-1" *ngIf="(experience && experience.assessment_models && experience.assessment_models.length>0 && experience.assessment_models[0].type && userType === experience.assessment_models[0].type.toLowerCase())" >
 				<span>This cohort has ended.
 					<a href="javascript:void(0);" (click)="openAssessmentDialog()">Assess your student's performance now.</a>
 				</span>
@@ -826,7 +826,7 @@
 								<span class="text-muted h6">{{experience.calendars.length}} Cohorts</span>
 							</div>
 							<br>
-							<div class="mat-content border-calendar calendar">
+							<div class="border-calendar calendar">
 								<div class="flex flexContainer" style="margin-bottom:10px">
 									<div class="col-md-8">
 										<h3 class="calendarTitle">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
