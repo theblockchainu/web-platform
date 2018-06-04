@@ -35,7 +35,7 @@ export class KarmaBalancePipe implements PipeTransform {
 					if (convertTo === 'USD') {
 						return this._scholarshipService.getKarmaBalance(userId, 'USD');
 					}
-					return this._scholarshipService.getKarmaBalance(userId, 'USD');
+					return this._scholarshipService.getKarmaBalance(userId);
 				default:
 					return new Observable((observer) => {
 						observer.next('0');
