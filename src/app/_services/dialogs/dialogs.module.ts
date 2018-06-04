@@ -59,6 +59,7 @@ import { GenerateKnowledgeStoryComponent } from './generate-knowledge-story/gene
 import { RequestKnowledgeStoryComponent } from './request-knowledge-story/request-knowledge-story.component';
 import { ConfirmPasswordDialogComponent } from './confirm-password-dialog/confirm-password-dialog.component';
 import { AddViewerDialogComponent } from './add-viewer-dialog/add-viewer-dialog.component';
+import { GyanPromptComponent } from './gyan-prompt/gyan-prompt.component';
 
 @NgModule({
 	imports: [
@@ -97,7 +98,8 @@ import { AddViewerDialogComponent } from './add-viewer-dialog/add-viewer-dialog.
 		GenerateKnowledgeStoryComponent,
 		RequestKnowledgeStoryComponent,
 		ConfirmPasswordDialogComponent,
-		AddViewerDialogComponent
+		AddViewerDialogComponent,
+		GyanPromptComponent
 	],
 	providers: [
 		DialogsService,
@@ -118,7 +120,7 @@ import { AddViewerDialogComponent } from './add-viewer-dialog/add-viewer-dialog.
 		EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent,
 		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent, RequestCommunityDialogComponent,
 		ScholarshipDialogComponent, GenerateKnowledgeStoryComponent, RequestKnowledgeStoryComponent, ConfirmPasswordDialogComponent,
-		AddViewerDialogComponent
+		AddViewerDialogComponent, GyanPromptComponent
 	],
 })
 export class DialogsModule { }

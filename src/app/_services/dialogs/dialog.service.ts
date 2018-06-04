@@ -46,6 +46,7 @@ import { GenerateKnowledgeStoryComponent } from './generate-knowledge-story/gene
 import { RequestKnowledgeStoryComponent } from './request-knowledge-story/request-knowledge-story.component';
 import { ConfirmPasswordDialogComponent } from './confirm-password-dialog/confirm-password-dialog.component';
 import { AddViewerDialogComponent } from './add-viewer-dialog/add-viewer-dialog.component';
+import { GyanPromptComponent } from './gyan-prompt/gyan-prompt.component';
 
 @Injectable()
 export class DialogsService {
@@ -525,6 +526,21 @@ export class DialogsService {
                 panelClass: 'responsive-dialog',
                 width: '55vw',
                 height: '75vh',
+            }
+        );
+        return dialogRef5.afterClosed();
+    }
+
+    public showGyanNotif(availableGyan: number, requiredGyan: number) {
+        const dialogRef5 = this.dialog.open(GyanPromptComponent,
+            {
+                panelClass: 'responsive-dialog',
+                width: '55vw',
+                height: '40vh',
+                data: {
+                    availableGyan: availableGyan,
+                    requiredGyan: requiredGyan
+                }
             }
         );
         return dialogRef5.afterClosed();
