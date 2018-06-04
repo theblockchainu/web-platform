@@ -11,6 +11,7 @@ export const environment = {
     clientUrl: 'http://localhost:8080',
     uniqueDeveloperCode: 'aakash',
     stripeClientId: 'ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q',
-    stripePublishableKey: 'pk_test_i9RmJ8HN4UygSzCchZMEGgwn'
+    stripePublishableKey: 'pk_test_i9RmJ8HN4UygSzCchZMEGgwn',
+	karmaRate : 1000
 };
 

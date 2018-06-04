@@ -7,5 +7,6 @@ export const environment = {
     clientUrl: 'https://peerbuds.com',
     uniqueDeveloperCode: 'dev',
     stripeClientId: 'ca_AlhagrA2ZiFcVY4JdezzWre4sjxAmat8',
-    stripePublishableKey: 'pk_live_ENfRpF7KnjQPBrDxBxcDeoii'
+    stripePublishableKey: 'pk_live_ENfRpF7KnjQPBrDxBxcDeoii',
+	karmaRate : 1000
 };

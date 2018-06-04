@@ -13,13 +13,16 @@ export class GyanBalancePipe implements PipeTransform {
 	
 	}
 	
-	transform(userId: string): any {
+	transform(userId: string, convertTo = 'GYAN'): any {
 		if (!userId || userId.length === 0) {
 			// create observable
 			return new Observable((observer) => {
 				observer.next('0');
 			});
 		} else {
+			if (convertTo === 'USD') {
+				return this._profileService.getGyanBalance(userId, convertTo);
+			}
 			return this._profileService.getGyanBalance(userId);
 		}
 	}
