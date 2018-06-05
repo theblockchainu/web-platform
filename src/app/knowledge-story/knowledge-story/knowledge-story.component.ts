@@ -46,16 +46,16 @@ export class KnowledgeStoryComponent implements OnInit {
 		this.authService.isLoginSubject.subscribe(res => {
 			this.initializePage();
 		});
+		this.userId = this._cookieUtilsService.getValue('userId');
+		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.knowledgeStoryId !== params['storyId'])) {
 				location.reload();
 			}
 			this.knowledgeStoryId = params['storyId'];
+			this.initialised = true;
+			this.initializePage();
 		});
-		this.userId = this._cookieUtilsService.getValue('userId');
-		this.initialised = true;
-		this.initializePage();
-		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
 	}
 
 	private setTags() {
@@ -96,35 +96,38 @@ export class KnowledgeStoryComponent implements OnInit {
 				{ 'requests': ['profiles', 'reviewsAboutYou', 'ownedCollections'] },
 			]
 		};
-		this._knowledgeStoryService.fetchKnowledgeStory(this.knowledgeStoryId, filter)
-			.subscribe((res: any) => {
-				this.storyNotFound = false;
-				this.knowledgeStory = res;
-				console.log(this.knowledgeStory);
-				if (this.knowledgeStory.protagonist[0].id === this.userId) {
-					this.ownerView = true;
-				}
-				if (this.knowledgeStory.visibility === 'public') {
-					this.viewerApproved = true;
-				} else {
-					for (let index = 0; (!this.viewerApproved && index < this.knowledgeStory.peer.length); index++) {
-						const peer = this.knowledgeStory.peer[index];
-						if (peer.id === this.userId) {
-							this.viewerApproved = true;
+		this.storyNotFound = false;
+		if (this.knowledgeStoryId) {
+			this._knowledgeStoryService.fetchKnowledgeStory(this.knowledgeStoryId, filter)
+				.subscribe((res: any) => {
+					this.knowledgeStory = res;
+					console.log(this.knowledgeStory);
+					if (this.knowledgeStory.protagonist[0].id === this.userId) {
+						this.ownerView = true;
+					}
+					if (this.knowledgeStory.visibility === 'public') {
+						this.viewerApproved = true;
+					} else {
+						for (let index = 0; (!this.viewerApproved && index < this.knowledgeStory.peer.length); index++) {
+							const peer = this.knowledgeStory.peer[index];
+							if (peer.id === this.userId) {
+								this.viewerApproved = true;
+							}
+						}
+						for (let index = 0; (!this.viewerApproved && index < this.knowledgeStory.requests.length); index++) {
+							const peer = this.knowledgeStory.requests[index];
+							if (peer.id === this.userId) {
+								this.requested = true;
+							}
 						}
 					}
-					for (let index = 0; (!this.viewerApproved && index < this.knowledgeStory.requests.length); index++) {
-						const peer = this.knowledgeStory.requests[index];
-						if (peer.id === this.userId) {
-							this.requested = true;
-						}
-					}
-				}
-				this.setTags();
-			}, err => {
-				this.storyNotFound = true;
-				this.loadingKnowledgeStory = false;
-			});
+					this.setTags();
+					this.loadingKnowledgeStory = false;
+				}, err => {
+					this.storyNotFound = true;
+					this.loadingKnowledgeStory = false;
+				});
+		}
 	}
 
 	openCollection(collection: any) {

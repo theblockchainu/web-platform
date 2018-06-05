@@ -36,6 +36,35 @@ export class WalletService {
 				});
 
 	}
+	
+	public getKarmaSupply() {
+		return this.http
+			.get(environment.apiUrl + '/api/peers/karmaSupply', this.requestHeaderService.options)
+			.map(
+				(response: any) => response,
+				(err) => {
+					console.log('Error: ' + err);
+				});
+		
+	}
+	
+	public karmaToDollar(karma) {
+		return this.http
+			.get(environment.apiUrl + '/karmaToDollar?karma=' + karma, this.requestHeaderService.options)
+			.map(
+				res => res['USD'],
+				err => console.log('Error: ' + err)
+			);
+	}
+	
+	public gyanToDollar(gyan) {
+		return this.http
+			.get(environment.apiUrl + '/gyanToDollar?karma=' + gyan, this.requestHeaderService.options)
+			.map(
+				res => res['USD'],
+				err => console.log('Error: ' + err)
+			);
+	}
 
 	/**
 	 * createWallet

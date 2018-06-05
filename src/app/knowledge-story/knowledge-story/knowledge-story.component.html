@@ -42,7 +42,7 @@
 								<div class="col-xs-12">
 									<h3>Approved Viewers &emsp;
 										<button mat-button class="lightText" (click)="addViewer()">
-											+ Add Viewer
+											<span class="lightText mat-h5"> + Add Viewer</span>
 										</button>
 									</h3>
 								</div>
@@ -73,7 +73,7 @@
 									</h3>
 								</div>
 							</div>
-							<div class="row margin-top-20">
+							<div class="row margin-top-20" *ngIf="ownerView && knowledgeStory.requests && knowledgeStory.requests.length > 0">
 								<div class="col-xs-6" *ngFor="let viewer of knowledgeStory.requests">
 									<div class="row" *ngIf="viewer.profiles">
 										<div class="col-xs-1 clickable">
@@ -96,7 +96,7 @@
 									</div>
 								</div>
 							</div>
-							<hr>
+							<hr *ngIf="ownerView && knowledgeStory.requests && knowledgeStory.requests.length > 0">
 						</div>
 						<div class="col-xs-12" *ngIf="knowledgeStory.status === 'approved'">
 							<h3>Real time updates</h3>
@@ -222,6 +222,13 @@
 										<div class="col-xs-6 col-xs-offset-3">
 											<qrcode [qrdata]="pageUrl" [size]="256" [level]="'M'"></qrcode>
 										</div>
+										<div class="col-xs-12 margin-top-10 center">
+											<div class="mat-h5 lightText">
+												Share this QR code with anyone to let them quickly open this knowledge story.
+												<br/>
+												<a href="javascript:;">Download as image</a>
+											</div>
+										</div>
 									</div>
 								</mat-card-content>
 							</mat-card>
@@ -231,7 +238,7 @@
 			</div>
 		</div>
 	</div>
-	<div *ngIf="storyNotFound && !loadingKnowledgeStory" class="center padding-top-50">
+	<div *ngIf="storyNotFound" class="center padding-top-50">
 		<h1>Story Not Found</h1>
 		<button [routerLink]="['']" mat-raised-button color="primary">
 			Take me home

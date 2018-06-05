@@ -993,8 +993,8 @@ export class CollectionService {
 			});
 	}
 
-	public getKarmaValue(gyan: number) {
-		return this.httpClient.post(environment.apiUrl + '/getKarmaValue', {
+	public getKarmaToBurn(gyan: number) {
+		return this.httpClient.post(environment.apiUrl + '/getKarmaToBurn', {
 			gyan: gyan
 		}, this.requestHeaderService.options);
 	}

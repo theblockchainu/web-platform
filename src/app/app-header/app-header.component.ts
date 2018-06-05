@@ -18,6 +18,7 @@ import * as moment from 'moment';
 import { InboxDialogComponent } from '../_services/dialogs/inbox-dialog/inbox-dialog.component';
 import { SocketService } from '../_services/socket/socket.service';
 import { UcWordsPipe } from 'ngx-pipes';
+import {WalletService} from "../_services/wallet/wallet.service";
 
 @Component({
 	selector: 'app-header',
@@ -62,6 +63,7 @@ export class AppHeaderComponent implements OnInit {
 		public _collectionService: CollectionService,
 		public _searchService: SearchService,
 		public _inboxService: InboxService,
+		public _walletService: WalletService,
 		public ucwords: UcWordsPipe,
 		public _socketService: SocketService,
 		public snackBar: MatSnackBar,
