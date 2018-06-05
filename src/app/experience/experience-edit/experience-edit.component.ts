@@ -850,13 +850,18 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		if (this.calendarIsValid(step)) {
 			switch (Number(this.step)) {
 				case 11:
+					console.log('executing');
 					this.totalGyan = this.experience.controls['academicGyan'].value + this.experience.controls['nonAcademicGyan'].value;
+					console.log(this.totalGyan);
+					console.log(this.gyanBalance);
 					if (this.totalGyan > this.gyanBalance) {
 						this.dialogsService.showGyanNotif(this.gyanBalance, this.totalGyan).subscribe(res => {
 							if (res) {
 								this.checkStatusAndSubmit(data, timeline, step);
 							}
 						});
+					} else {
+						this.checkStatusAndSubmit(data, timeline, step);
 					}
 					break;
 				case 14:
@@ -871,10 +876,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 					this.executeSubmitExperience(data, timeline, this.step);
 					break;
 			}
-
-
 		}
-
 	}
 
 	private checkStatusAndSubmit(data, timeline?, step?) {
