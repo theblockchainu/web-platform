@@ -850,7 +850,6 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		if (this.calendarIsValid(step)) {
 			switch (Number(this.step)) {
 				case 11:
-					console.log('executing');
 					this.totalGyan = this.experience.controls['academicGyan'].value + this.experience.controls['nonAcademicGyan'].value;
 					console.log(this.totalGyan);
 					console.log(this.gyanBalance);
