@@ -25,7 +25,7 @@ import { PaymentService } from '../../_services/payment/payment.service';
 import { DataSharingService } from '../../_services/data-sharing-service/data-sharing.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Meta, Title } from '@angular/platform-browser';
-
+import { ProfileService } from '../../_services/profile/profile.service';
 @Component({
 	selector: 'app-experience-edit',
 	templateUrl: './experience-edit.component.html',
@@ -138,9 +138,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public currentDate: Date;
 	public mobileQuery: MediaQueryList;
 	private _mobileQueryListener: () => void;
-
+	public gyanBalance: number;
 	public nAAssessmentParams: Array<string>;
-
+	public maxGyanExceding: boolean;
+	totalGyan: number;
+	totalDuration: number;
 	// TypeScript public modifiers
 	constructor(
 		public router: Router,
@@ -164,7 +166,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		private _dataSharingService: DataSharingService,
 		private media: MediaMatcher,
 		private titleService: Title,
-		private metaService: Meta
+		private metaService: Meta,
+		private profileService: ProfileService
 	) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
@@ -277,12 +280,18 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.initializeExperience();
 		this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
 		this._VIDEO = document.querySelector('#main-video');
-
+		this.getGyanBalance();
 
 		this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
 		this._mobileQueryListener = () => this.cd.detectChanges();
 		this.mobileQuery.addListener(this._mobileQueryListener);
 
+	}
+
+	getGyanBalance() {
+		this.profileService.getGyanBalance(this.userId).subscribe(res => {
+			this.gyanBalance = Number(res);
+		});
 	}
 
 	private setTags() {
@@ -522,6 +531,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	}
 
 	private initializeFormFields() {
+		this.maxGyanExceding = false;
 		this.difficulties = ['Beginner', 'Intermediate', 'Advanced'];
 
 		this.cancellationPolicies = ['24 Hours', '3 Days', '1 Week'];
@@ -570,6 +580,25 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.profileImagePending = true;
 		this.experienceVideoPending = true;
 		this.experienceImage1Pending = true;
+
+		this.experience.controls['academicGyan'].valueChanges.subscribe(res => {
+			this.validateGyan();
+		});
+		this.experience.controls['nonAcademicGyan'].valueChanges.subscribe(res => {
+			this.validateGyan();
+		});
+		this.timeline.valueChanges.subscribe(res => {
+			this.totalHours();
+		});
+	}
+
+	validateGyan() {
+		this.totalGyan = this.experience.controls['academicGyan'].value + this.experience.controls['nonAcademicGyan'].value;
+		if (this.totalGyan > this.gyanBalance) {
+			this.maxGyanExceding = true;
+		} else {
+			this.maxGyanExceding = false;
+		}
 	}
 
 	filter(val: string): string[] {
@@ -817,20 +846,67 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	}
 
 	public submitExperience(data, timeline?, step?) {
+
 		if (this.calendarIsValid(step)) {
-			if (this.experience.controls.status.value === 'active') {
-				this.dialogsService.openCollectionCloneDialog({ type: 'experience' })
-					.subscribe((result) => {
-						if (result === 'accept') {
-							this.executeSubmitExperience(data, timeline, this.step);
-						} else if (result === 'reject') {
-							this.router.navigate(['/console/teaching/experiences']);
-						}
-					});
-			} else {
-				this.executeSubmitExperience(data, timeline, step);
+			switch (Number(this.step)) {
+				case 11:
+					this.totalGyan = this.experience.controls['academicGyan'].value + this.experience.controls['nonAcademicGyan'].value;
+					console.log(this.totalGyan);
+					console.log(this.gyanBalance);
+					if (this.totalGyan > this.gyanBalance) {
+						this.dialogsService.showGyanNotif(this.gyanBalance, this.totalGyan).subscribe(res => {
+							if (res) {
+								this.checkStatusAndSubmit(data, timeline, step);
+							}
+						});
+					} else {
+						this.checkStatusAndSubmit(data, timeline, step);
+					}
+					break;
+				case 14:
+					if ((this.totalGyan > this.gyanBalance) && (this.totalDuration <= this.totalGyan)) {
+						this.snackBar.open('You still need to add ' + (this.totalGyan - this.totalDuration) + ' hours of learning to proceed',
+							'Close', { duration: 3000 });
+					} else {
+						this.checkStatusAndSubmit(data, timeline, step);
+					}
+					break;
+				default:
+					this.executeSubmitExperience(data, timeline, this.step);
+					break;
 			}
 		}
+	}
+
+	private checkStatusAndSubmit(data, timeline?, step?) {
+		if (this.experience.controls.status.value === 'active') {
+			this.dialogsService.openCollectionCloneDialog({ type: 'experience' })
+				.subscribe((result) => {
+					if (result === 'accept') {
+						this.executeSubmitExperience(data, timeline, this.step);
+					} else if (result === 'reject') {
+						this.router.navigate(['/console/teaching/experiences']);
+					}
+				});
+		} else {
+			this.executeSubmitExperience(data, timeline, step);
+		}
+	}
+
+	private totalHours(): void {
+		console.log(this.timeline);
+		let totalLength = 0;
+		this.timeline.value.contentGroup.itenary.forEach((itenaryObj: any) => {
+			itenaryObj.contents.forEach(contentObj => {
+				if (contentObj.type === 'in-person') {
+					const startMoment = moment(contentObj.schedule.startTime);
+					const endMoment = moment(contentObj.schedule.endTime);
+					const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
+					totalLength += parseInt(contentLength, 10);
+				}
+			});
+		});
+		this.totalDuration = totalLength;
 	}
 
 	private calendarIsValid(step) {
