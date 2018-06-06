@@ -18,7 +18,7 @@
 			</div>
 			<div class="row margin-top-10 margin-bottom-10">
 				<div class="col-md-12 mat-body-2" style="height: 18px;">
-					<h5><i class="fab fa-ethereum"></i> {{data.id | gyanBalance | async}} Gyan</h5>
+					<h5><i class="fab fa-ethereum"></i> {{data.id | gyanBalance : 'fixed' | async}} Gyan</h5>
 				</div>
 			</div>
 			<div class="row" *ngIf="data.reviewsAboutYou">

@@ -30,7 +30,7 @@
 				<div class="row padding-bottom-20" *ngIf="profileObj.peer[0].ethAddress">
 					<div class="col-md-6" style="padding-left: 0px;">
 						<h3>
-							<i class="fab fa-ethereum"></i> {{profileObj.peer[0].id | gyanBalance | async}} Gyan
+							<i class="fab fa-ethereum"></i> {{profileObj.peer[0].id | gyanBalance : 'fixed' | async}} Gyan
 						</h3>
 					</div>
 					<div class="col-md-6 mat-caption" style="padding-left: 0px;">
@@ -788,7 +788,7 @@
 							<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}</div>
 							<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
 							<div *ngIf="peer.ethAddress">
-								<i class="fab fa-ethereum"></i> {{peer.id | gyanBalance | async}} Gyan
+								<i class="fab fa-ethereum"></i> {{peer.id | gyanBalance : 'fixed' | async}} Gyan
 							</div>
 							<div *ngIf="!peer.ethAddress">
 								<i class="fab fa-ethereum"></i> 0 Gyan

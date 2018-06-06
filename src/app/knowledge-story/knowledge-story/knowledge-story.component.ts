@@ -16,6 +16,8 @@ import { AuthenticationService } from '../../_services/authentication/authentica
 })
 export class KnowledgeStoryComponent implements OnInit {
 	public loadingKnowledgeStory: boolean;
+	public loadingBlockTransactions = true;
+	public blockTransactions: any;
 	public knowledgeStory: any;
 	public knowledgeStoryId: string;
 	public userId: string;
@@ -102,6 +104,7 @@ export class KnowledgeStoryComponent implements OnInit {
 				.subscribe((res: any) => {
 					this.knowledgeStory = res;
 					console.log(this.knowledgeStory);
+					this.fetchBlockTransactions(this.knowledgeStory.topics.map(topic => topic.name));
 					if (this.knowledgeStory.protagonist[0].id === this.userId) {
 						this.ownerView = true;
 					}
@@ -128,6 +131,25 @@ export class KnowledgeStoryComponent implements OnInit {
 					this.loadingKnowledgeStory = false;
 				});
 		}
+	}
+	
+	private fetchBlockTransactions(topics) {
+		this.loadingBlockTransactions = true;
+		this._knowledgeStoryService.fetchBlockTransactions(this.knowledgeStory.protagonist[0].ethAddress, topics)
+			.subscribe(
+				res => {
+					this.blockTransactions = [];
+					res.forEach(transaction => {
+						const resultObject = JSON.parse(transaction.result);
+						this.blockTransactions.push(resultObject);
+					});
+					this.loadingBlockTransactions = false;
+				},
+				err => {
+					this.loadingBlockTransactions = false;
+					this.blockTransactions = [];
+				}
+			);
 	}
 
 	openCollection(collection: any) {

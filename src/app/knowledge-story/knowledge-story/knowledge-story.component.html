@@ -35,9 +35,12 @@
 								<mat-chip class="square" *ngFor="let topic of knowledgeStory.topics"> {{topic.name | ucwords}}
 								</mat-chip>
 							</mat-chip-list>
+							<div class="mat-caption lightText margin-top-10 margin-bottom-10" *ngIf="!knowledgeStory.topics || knowledgeStory.topics.length === 0">
+								This story has no topics linked to it
+							</div>
 							<hr>
 						</div>
-						<div class="col-xs-12 margin-top-10" *ngIf="ownerView">
+						<div class="col-xs-12 margin-top-10" *ngIf="ownerView && knowledgeStory.visibility === 'private'">
 							<div class="row">
 								<div class="col-xs-12">
 									<h3>Approved Viewers &emsp;
@@ -49,7 +52,7 @@
 							</div>
 							<div class="row margin-top-20">
 								<div class="col-xs-12" *ngFor="let viewer of knowledgeStory.peer">
-									<div class="row" *ngIf="viewer.profiles">
+									<div class="row" *ngIf="viewer.profiles && viewer.id !== userId">
 										<div class="col-xs-1 vcenter clickable">
 											<app-profile-popup [peer]="viewer"></app-profile-popup>
 										</div>
@@ -60,9 +63,14 @@
 										</div>
 										<div class="col-xs-1 vcenter clickable">
 											<button (click)="removeViewer(viewer.id)" mat-icon-button class="lightText">
-												<mat-icon class="lightText">remove_circle</mat-icon>
+												<mat-icon class="lightText mat-h5">remove_circle</mat-icon>
 											</button>
 										</div>
+									</div>
+								</div>
+								<div class="col-xs-12">
+									<div class="mat-caption lightText margin-top-10 margin-bottom-10" *ngIf="!knowledgeStory.peer || knowledgeStory.peer.length === 1">
+										There are no approved viewers for this story
 									</div>
 								</div>
 							</div>
@@ -101,8 +109,8 @@
 						<div class="col-xs-12" *ngIf="knowledgeStory.status === 'approved'">
 							<h3>Real time updates</h3>
 						</div>
-						<div class="col-xs-12 mat-caption lightText" *ngIf="knowledgeStory.status === 'approved'">
-							All your learning and teaching efforts will show up here...
+						<div class="col-xs-12" *ngIf="knowledgeStory.status === 'pending'">
+							<h3 class="mat-error">Pending approval form {{knowledgeStory.protagonist[0].profiles[0].first_name | ucwords}}</h3>
 						</div>
 						<div class="col-xs-12" *ngIf="knowledgeStory.status === 'rejected'">
 							<h3 class="mat-error">Request denied by {{knowledgeStory.protagonist[0].profiles[0].first_name | ucwords}}</h3>
@@ -110,11 +118,15 @@
 						<div class="col-xs-12 mat-caption lightText" *ngIf="knowledgeStory.status === 'rejected'">
 							This knowledge story can not be viewed.
 						</div>
-						<div class="col-xs-12" *ngIf="knowledgeStory.status === 'pending'">
-							<h3 class="mat-error">Pending approval form {{knowledgeStory.protagonist[0].profiles[0].first_name | ucwords}}</h3>
-						</div>
-						<div class="col-xs-12 mat-caption lightText" *ngIf="knowledgeStory.status === 'pending'">
-							All your learning and teaching efforts will show up here...
+						<div class="col-xs-12 mat-caption lightText" *ngIf="knowledgeStory.status === 'approved'">
+							<div class="loading-container" [hidden]="!loadingBlockTransactions" style="margin-top: 3%;">
+								<ngx-loading [show]="true"></ngx-loading>
+							</div>
+							<div class="row" *ngIf="!loadingBlockTransactions">
+								<div class="col-xs-12" *ngFor="let transaction of blockTransactions">
+									{{transaction}}
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

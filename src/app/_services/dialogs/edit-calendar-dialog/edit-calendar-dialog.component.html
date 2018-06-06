@@ -99,7 +99,7 @@
                     </div>
                 </div>
                 <div class="editCalendar col-md-6 rightContent">
-                    <div class="mat-content calendar" style="margin-right:10px;">
+                    <div class="calendar" style="margin-right:10px;">
                         <h3>Preview Cohorts</h3>
 	                    <div class="caption margin-top-20 margin-bottom-20" *ngIf="(!recurringCalendar || recurringCalendar.length === 0) || computedConflict.length === 0">
 		                    Select from the options on the left and we will show you a list of all cohorts that will be added based on your selection.
@@ -166,7 +166,7 @@
                             </span>
                         </div>
                     </div>
-                    <!-- <div class="mat-content border-calendar calendar">
+                    <!-- <div class="border-calendar calendar">
                         <div class="flex flexContainer">
                             <div class="col-md-7">
                                 <h3 class="calendarTitle">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>

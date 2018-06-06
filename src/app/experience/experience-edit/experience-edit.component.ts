@@ -532,7 +532,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 		this.availableAssessmentStyles = ['Grades', 'Percentage', 'Percentile'];
 
-		this.nAAssessmentParams = ['attendance', 'community'];
+		this.nAAssessmentParams = ['engagement', 'commitment'];
 		this.learnerType_array = {
 			learner_type: [
 				{ id: 'auditory', display: 'Auditory' }

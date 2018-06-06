@@ -32,7 +32,6 @@ import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-st
 })
 export class ProfileComponent implements OnInit {
 	public cookieUserId;
-	public gyanBalance;
 	public loadingProfile;
 	public loadingLearningJourney;
 	public loadingPeers;
@@ -153,9 +152,6 @@ export class ProfileComponent implements OnInit {
 	public getPeerData() {
 		this._profileService.getPeerNode(this.urluserId).subscribe(result => {
 			this.peerObj = result;
-		});
-		this._profileService.getGyanBalance(this.urluserId).subscribe(result => {
-			this.gyanBalance = result;
 		});
 	}
 	private getIdentities() {
@@ -662,7 +658,7 @@ export class ProfileComponent implements OnInit {
 
 	public generateKnowledgeStoryDialog() {
 		const inputs = {
-			title: 'Select some or all of the topics you learn and teach...',
+			title: 'Select some or all of the topics you learn or teach...',
 			minSelection: 1,
 			searchTopicURL: this.searchTopicURL,
 			suggestedTopics: []
@@ -685,8 +681,9 @@ export class ProfileComponent implements OnInit {
 					}).flatMap((res: any) => {
 						console.log(res);
 						createdKnowledgeStoryId = res.id;
-						return this._knowledgeStoryService.connectTopics(res.id, { targetIds: topics }).map
-							(result => {
+						return this._knowledgeStoryService.connectTopics(res.id, { targetIds: topics })
+							.map(
+								result => {
 								this._knowledgeStoryService.connectPeers(res.id, { targetIds: peers }).subscribe(peersConnected => {
 									console.log('peers connected');
 								});

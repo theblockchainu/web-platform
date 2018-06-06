@@ -201,14 +201,24 @@ export class ProfileService {
 				});
 	}
 
-	public getGyanBalance(userId, convertTo = 'GYAN') {
-		return this.http
-			.get(environment.apiUrl + '/api/peers/' + userId + '/gyanBalance?convertTo=' + convertTo, this._requestHeaderService.options)
-			.map(
-				(response: any) => response,
-				(err) => {
-					console.log('Error: ' + err);
-				});
+	public getGyanBalance(userId, type = 'floating', convertTo = 'GYAN') {
+		if (type === 'fixed') {
+			return this.http
+				.get(environment.apiUrl + '/api/peers/' + userId + '/fixedGyanBalance?convertTo=' + convertTo, this._requestHeaderService.options)
+				.map(
+					(response: any) => response,
+					(err) => {
+						console.log('Error: ' + err);
+					});
+		} else {
+			return this.http
+				.get(environment.apiUrl + '/api/peers/' + userId + '/floatingGyanBalance?convertTo=' + convertTo, this._requestHeaderService.options)
+				.map(
+					(response: any) => response,
+					(err) => {
+						console.log('Error: ' + err);
+					});
+		}
 	}
 
 	public sendVerifyEmail(userId, emailAddress) {

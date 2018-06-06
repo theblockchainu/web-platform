@@ -475,7 +475,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						}]
 				},
 				'rooms',
-				{ 'assessment_models': ['assessment_na_rules', {'assessment_rules' : {'assessment_result': 'assessees'}}] }
+				{ 'assessment_models': [{'assessment_na_rules' : {'assessment_result': 'assessees'}}, {'assessment_rules' : {'assessment_result': 'assessees'}}] }
 			],
 			'relInclude': 'calendarId'
 		};

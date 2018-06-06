@@ -27,19 +27,27 @@
 					</div>
 					<div class="col-xs-4">
 						<mat-form-field>
-							<mat-select formControlName="rule_obj" placeholder="Assessment result">
+							<mat-select formControlName="rule_obj" placeholder="Academic Assessment">
 								<mat-option *ngFor="let assessment_rule of data.assessment_models[0].assessment_rules" [value]="assessment_rule">
 									{{ assessment_rule.value }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
+						<div *ngFor="let assessment_na_rule of data.assessment_models[0].assessment_na_rules">
+							<mat-form-field *ngIf="assessment_na_rule.value === 'engagement'">
+								<mat-slider thumbLabel tickInterval="1" min="1" max="100" formControlName="engagement_result"></mat-slider>
+							</mat-form-field>
+							<mat-form-field *ngIf="assessment_na_rule.value === 'commitment'">
+								<mat-slider thumbLabel tickInterval="1" min="1" max="100" formControlName="commitment_result"></mat-slider>
+							</mat-form-field>
+						</div>
 					</div>
 					<div class="col-xs-4">
 						<div class="row" *ngIf="!participant.value.isAssessed">
 							<div class="col-sm-12">
 								+
 								<span *ngIf="participant.value.rule_obj">
-									{{getGyanForRule(participant.get('rule_obj').gyan, data.academicGyan) }}
+									{{getGyanForRule(participant['controls']['rule_obj'].value.gyan, data.academicGyan) }}
 								</span> Gyan from Academics
 							</div>
 						</div>

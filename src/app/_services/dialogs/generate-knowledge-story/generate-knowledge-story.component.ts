@@ -268,8 +268,8 @@ export class GenerateKnowledgeStoryComponent implements OnInit {
 
 	submitPeers() {
 		this.dialogRef.close({
-			selectedPeers: this.selectedPeers,
-			selectedTopics: this.allPeers ? [] : this.selected
+			selectedPeers: this.allPeers ? [] : this.selectedPeers,
+			selectedTopics: this.selected
 		});
 	}
 	

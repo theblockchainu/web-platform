@@ -291,7 +291,7 @@
                         <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe
                         </div>
 	                    <div *ngIf="peer.ethAddress">
-		                    <i class="fab fa-ethereum"></i> {{peer.id | gyanBalance | async}} Gyan
+		                    <i class="fab fa-ethereum"></i> {{peer.id | gyanBalance : 'fixed' | async}} Gyan
 	                    </div>
 	                    <div *ngIf="!peer.ethAddress"><i class="fab fa-ethereum"></i> 0 Gyan</div>
                         <div class="col-sm-12 padding-left-0">
