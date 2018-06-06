@@ -45,8 +45,12 @@
             </div>
             <div class="row">
               <mat-radio-group [formControl]="usePreviousLocation">
-                <mat-radio-button>New location</mat-radio-button>
-                <mat-radio-button *ngFor="let locationObj of previousLocations;let i=index" value="{{i}}" class="col-md-2">{{locationObj.location_name}}</mat-radio-button>
+                <div class="col-xs-12 col-md-3">
+                  <mat-radio-button>New location</mat-radio-button>
+                </div>
+                <div class="col-xs-12 col-md-3" *ngFor="let locationObj of previousLocations;let i=index">
+                  <mat-radio-button value="{{i}}" class="col-md-2">{{locationObj.location_name}}</mat-radio-button>
+                </div>
               </mat-radio-group>
             </div>
             <div formGroupName="location" class="margin-top-20 margin-bottom-20 row">
