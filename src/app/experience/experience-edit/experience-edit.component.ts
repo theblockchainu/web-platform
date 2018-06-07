@@ -289,6 +289,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	}
 
 	getGyanBalance() {
+		this.gyanBalance = 0;
 		this.profileService.getGyanBalance(this.userId).subscribe(res => {
 			this.gyanBalance = Number(res);
 		});
@@ -846,7 +847,6 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	}
 
 	public submitExperience(data, timeline?, step?) {
-
 		if (this.calendarIsValid(step)) {
 			switch (Number(this.step)) {
 				case 11:
@@ -894,7 +894,6 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	}
 
 	private totalHours(): void {
-		console.log(this.timeline);
 		let totalLength = 0;
 		this.timeline.value.contentGroup.itenary.forEach((itenaryObj: any) => {
 			itenaryObj.contents.forEach(contentObj => {
