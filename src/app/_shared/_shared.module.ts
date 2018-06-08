@@ -79,9 +79,10 @@ import { ScholarshipService } from '../_services/scholarship/scholarship.service
 import { GyanBalancePipe } from './gyan-balance/gyan-balance.pipe';
 import { KarmaBalancePipe } from './karma-balance/karma-balance.pipe';
 import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-story.service';
-import {ClipboardModule} from 'ngx-clipboard';
-import {ShareModule} from '@ngx-share/core';
+import { ClipboardModule } from 'ngx-clipboard';
+import { ShareModule } from '@ngx-share/core';
 import { QRCodeModule } from 'angularx-qrcode';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 @NgModule({
     imports: [
@@ -111,7 +112,7 @@ import { QRCodeModule } from 'angularx-qrcode';
         Ng4GeoautocompleteModule.forRoot(),
         MatIconModule,
         MatButtonModule,
-		ShareModule.forRoot()
+        ShareModule.forRoot()
     ],
     declarations: [
         ExtractTimePipe,
@@ -216,9 +217,11 @@ import { QRCodeModule } from 'angularx-qrcode';
         TopicRowComponent,
         NguCarouselModule,
         MatStepperModule,
-		ClipboardModule,
-		ShareModule,
-        QRCodeModule
+        ClipboardModule,
+        ShareModule,
+        QRCodeModule,
+        OwlDateTimeModule,
+        OwlNativeDateTimeModule
     ]
 })
 export class SharedModule {

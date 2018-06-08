@@ -2,11 +2,11 @@
 	<div class="col-md-3">
 		<mat-list>
 			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/all'" [class.bold]="getActiveTab() === 'all'">
-			  View All
+				View All
 			</mat-list-item>
-			<!--<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/workshops'" [class.bold]="getActiveTab() === 'workshops'">
-			  Workshops
-			</mat-list-item>-->
+			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/workshops'" [class.bold]="getActiveTab() === 'workshops'">
+				Workshops
+			</mat-list-item>
 			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/experiences'" [class.bold]="getActiveTab() === 'experiences'">
 				Experiences
 			</mat-list-item>
@@ -14,39 +14,43 @@
 				Sessions
 			</mat-list-item>
 			<mat-list-item *ngIf="getActiveTab() === 'workshops' ">
-		        <span matTooltip="Please wait for your account to be verified before creating a new workshop." [matTooltipDisabled]="accountVerified">
-		          <button mat-raised-button (click)="createWorkshop()" [disabled]="!accountVerified" color="primary">New Workshop</button>
-		        </span>
+				<span matTooltip="Please wait for your account to be verified before creating a new workshop." [matTooltipDisabled]="accountVerified">
+					<button mat-raised-button (click)="createWorkshop()" [disabled]="!accountVerified" color="primary">New Workshop</button>
+				</span>
 			</mat-list-item>
 			<mat-list-item *ngIf="activeTab === 'experiences'">
-		        <span matTooltip="Please wait for your account to be verified before creating a new experience." [matTooltipDisabled]="accountVerified">
-		          <button mat-raised-button (click)="createExperience()" [disabled]="!accountVerified" color="primary">New Experience</button>
-		        </span>
+				<span matTooltip="Please wait for your account to be verified before creating a new experience." [matTooltipDisabled]="accountVerified">
+					<button mat-raised-button (click)="createExperience()" [disabled]="!accountVerified" color="primary">New Experience</button>
+				</span>
 			</mat-list-item>
 			<mat-list-item *ngIf="getActiveTab() === 'sessions'">
-        <span matTooltip="You can enable your account for peer sessions once our team has completed preliminary verification of your account." [matTooltipDisabled]="accountVerified">
-          <button mat-raised-button [disabled]="!accountVerified" color="primary" (click)="enableSessions()" *ngIf="session === undefined">
-            <span>
-              Enable Peer Sessions
-            </span>
-          </button>
-	        <button mat-raised-button *ngIf="session && session.status === 'draft'" (click)="editSessions()" [disabled]="!accountVerified" color="primary">
-		        <span>
-              Continue Session Setup
-            </span>
-	        </button>
-	        <button mat-raised-button *ngIf="session && session.status === 'active'" (click)="editSessions()" [disabled]="!accountVerified" color="primary">
-		        <span>
-              Edit Session Preferences
-            </span>
-	        </button>
-	        <button mat-raised-button *ngIf="session && session.status === 'submitted'" (click)="editSessions()" [disabled]="!accountVerified || (session && session.status === 'submitted')" color="primary">
-		        <span>
-              Profile Under Review
-            </span>
-	        </button>
+				<span matTooltip="You can enable your account for peer sessions once our team has completed preliminary verification of your account."
+				 [matTooltipDisabled]="accountVerified">
+					<button mat-raised-button [disabled]="!accountVerified" color="primary" (click)="enableSessions()" *ngIf="session === undefined">
+						<span>
+							Enable Peer Sessions
+						</span>
+					</button>
+					<button mat-raised-button *ngIf="session && session.status === 'draft'" (click)="editSessions()" [disabled]="!accountVerified"
+					 color="primary">
+						<span>
+							Continue Session Setup
+						</span>
+					</button>
+					<button mat-raised-button *ngIf="session && session.status === 'active'" (click)="editSessions()" [disabled]="!accountVerified"
+					 color="primary">
+						<span>
+							Edit Session Preferences
+						</span>
+					</button>
+					<button mat-raised-button *ngIf="session && session.status === 'submitted'" (click)="editSessions()" [disabled]="!accountVerified || (session && session.status === 'submitted')"
+					 color="primary">
+						<span>
+							Profile Under Review
+						</span>
+					</button>
 
-        </span>
+				</span>
 			</mat-list-item>
 		</mat-list>
 	</div>

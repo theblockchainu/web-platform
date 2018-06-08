@@ -203,9 +203,17 @@ export class ContentViewComponent implements OnInit {
     }
   }
 
+
   getContentTimeRange(content) {
-    const startTime = moment('01-02-1990 ' + content.controls.schedule.controls.startTime.value).format('hh:mm a');
-    const endTime = moment('01-02-1990 ' + content.controls.schedule.controls.endTime.value).format('hh:mm a');
+    // console.log('Start time is: ' + content.controls.schedule.controls.startTime.value);
+    let startTime, endTime;
+    if (moment(content.controls.schedule.controls.startTime.value).isValid()) {
+      startTime = moment(content.controls.schedule.controls.startTime.value).format('hh:mm a');
+      endTime = moment(content.controls.schedule.controls.endTime.value).format('hh:mm a');
+    } else {
+      startTime = moment('01-02-1990 ' + content.controls.schedule.controls.startTime.value).format('hh:mm a');
+      endTime = moment('01-02-1990 ' + content.controls.schedule.controls.endTime.value).format('hh:mm a');
+    }
     return startTime + ' - ' + endTime;
   }
 
@@ -217,7 +225,7 @@ export class ContentViewComponent implements OnInit {
     if (date) {
       return moment(date).format('MM/DD/YYYY');
     } else {
-      return 'Select date';
+      return 'Select a calendar date';
     }
   }
 

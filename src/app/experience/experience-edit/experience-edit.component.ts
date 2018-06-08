@@ -172,7 +172,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
 			this.experienceId = params['collectionId'];
-			this.step = params['step'];
+			this.step = Number(params['step']);
 			if (this.step && this.step.toString() === '5') {
 				this.showBackground = true;
 			} else {
@@ -544,6 +544,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.availableAssessmentStyles = ['Grades', 'Percentage', 'Percentile'];
 
 		this.nAAssessmentParams = ['attendance', 'community'];
+
 		this.learnerType_array = {
 			learner_type: [
 				{ id: 'auditory', display: 'Auditory' }
@@ -746,7 +747,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		// Currency, Amount, Cancellation Policy
 		this.experience.controls.price.patchValue(res.price);
 		if (res.price === 0) {
-
+			this.freeExperience = true;
 		}
 		if (res.currency) { this.experience.controls.currency.patchValue(res.currency); }
 		if (res.cancellationPolicy) { this.experience.controls.cancellationPolicy.setValue(res.cancellationPolicy); }
@@ -872,7 +873,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 					}
 					break;
 				default:
-					this.executeSubmitExperience(data, timeline, this.step);
+					this.checkStatusAndSubmit(data, timeline, this.step);
 					break;
 			}
 		}
@@ -1398,6 +1399,10 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	back() {
 		this.goto(this.step - 1);
+	}
+
+	next() {
+		this.goto(this.step + 1);
 	}
 
 	public addAssessmentRule() {
