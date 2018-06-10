@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import {AuthenticationService} from '../authentication/authentication.service';
 
 @Injectable()
 export class QuestionService {
@@ -9,7 +10,9 @@ export class QuestionService {
     public envVariable;
 
     constructor(private http: HttpClient,
-        private requestHeaderService: RequestHeaderService) {
+        private requestHeaderService: RequestHeaderService,
+				private _authService: AuthenticationService
+	) {
         this.envVariable = environment;
     }
 
@@ -23,6 +26,20 @@ export class QuestionService {
         return this.http
             .post(environment.apiUrl + '/api/questions/' + questionId + '/answers', answerBody, this.requestHeaderService.options);
     }
+	
+	/**
+	 * Add an answer to given question
+	 * @param questionId
+	 * @param answerId
+	 * @param peerAddress
+	 */
+	public acceptAnswerToQuestion(questionId, answerId, peerAddress) {
+		const body = {
+			peerAddress: peerAddress
+		};
+		return this.http
+			.post(environment.apiUrl + '/api/questions/' + questionId + '/answers/' + answerId + '/accept', body, this.requestHeaderService.options);
+	}
 
     /**
      * Add the current user as follower of this question

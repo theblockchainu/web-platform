@@ -582,7 +582,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 								});
 							});
 						} else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
-							const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay');
+							const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000});
 							snackBarRef.onAction().subscribe(() => {
 								this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
 							});
@@ -1175,7 +1175,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				{
 					'relation': 'collections', 'scope': {
 						'include':
-							[{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars',
+							[{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', 'participants',
 							{ 'contents': 'locations' }], 'where': { 'type': 'experience' }
 					}
 				}
@@ -1186,20 +1186,30 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				for (const responseObj of response) {
 					responseObj.collections.forEach(collection => {
 						let experienceLocation = 'Unknown location';
-						if (collection.status === 'active' && collection.id !== this.experienceId) {
+						let lat = 37.5293864;
+						let lng = -122.008471;
+						if (collection.status === 'active') {
 							if (collection.contents) {
 								collection.contents.forEach(content => {
-									if (content.locations && content.locations.length > 0 &&
-										content.locations[0].city !== undefined && content.locations[0].city.length > 0) {
+									if (content.locations && content.locations.length > 0
+										&& content.locations[0].city !== undefined
+										&& content.locations[0].city.length > 0
+										&& content.locations[0].map_lat !== undefined
+										&& content.locations[0].map_lat.length > 0) {
 										experienceLocation = content.locations[0].city;
+										lat = parseFloat(content.locations[0].map_lat);
+										lng = parseFloat(content.locations[0].map_lng);
 									}
 								});
 								collection.location = experienceLocation;
+								collection.lat = lat;
+								collection.lng = lng;
 							}
 							if (collection.owners && collection.owners[0].reviewsAboutYou) {
-								collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
-								collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id,
-									collection.owners[0].reviewsAboutYou);
+								collection.rating = this._collectionService
+									.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+								collection.ratingCount = this._collectionService
+									.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
 							}
 							let hasActiveCalendar = false;
 							if (collection.calendars) {
@@ -1720,7 +1730,15 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				'nonAcademicGyan': this.experience.nonAcademicGyan
 			}
 		).subscribe(dialogSelection => {
+			let assessmentEngagementRule, assessmentCommitmentRule;
 			if (dialogSelection) {
+				this.experience.assessment_models[0].assessment_na_rules.forEach(assessment_na_rule => {
+					if (assessment_na_rule.value === 'engagement') {
+						assessmentEngagementRule = assessment_na_rule;
+					} else if (assessment_na_rule.value === 'commitment' ) {
+						assessmentCommitmentRule = assessment_na_rule;
+					}
+				});
 				const assessmentArray: Array<AssessmentResult> = [];
 				dialogSelection.participants.forEach(participant => {
 					if (participant.rule_obj && participant.rule_obj.id) {
@@ -1728,7 +1746,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 							assesserId: this.userId,
 							assesseeId: participant.id,
 							calendarId: this.calendarId,
-							assessmentRuleId: participant.rule_obj.id
+							assessmentRuleId: participant.rule_obj.id,
+							assessmentEngagementRuleId: assessmentEngagementRule.id,
+							assessmentCommitmentRuleId: assessmentCommitmentRule.id,
+							assessmentEngagementResult: participant.engagement_result,
+							assessmentCommitmentResult: participant.commitment_result
 						});
 					}
 				});
@@ -1740,6 +1762,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
+	
+	public onExperienceRefresh(event) {
+		if (event) {
+			this.getRecommendations();
+		}
+	}
 
 }
 
@@ -1748,4 +1776,8 @@ interface AssessmentResult {
 	assesserId: string;
 	assesseeId: string;
 	assessmentRuleId: string;
+	assessmentEngagementRuleId: string;
+	assessmentCommitmentRuleId: string;
+	assessmentEngagementResult: number;
+	assessmentCommitmentResult: number;
 }

@@ -15,6 +15,7 @@ import { CommunityService } from '../../_services/community/community.service';
 import { environment } from '../../../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import {TitleCasePipe} from "@angular/common";
 
 @Component({
     selector: 'app-communities',
@@ -61,7 +62,9 @@ export class CommunitiesComponent implements OnInit {
         private titleService: Title,
         private metaService: Meta,
         private router: Router,
-        public _communityService: CommunityService) {
+		private titlecasepipe: TitleCasePipe,
+        public _communityService: CommunityService
+	) {
         this.userId = _cookieUtilsService.getValue('userId');
         this.envVariable = environment;
     }
@@ -144,13 +147,15 @@ export class CommunitiesComponent implements OnInit {
                         'include': [
                             'topics',
                             'views',
+							'questions',
                             'invites',
                             'rooms',
                             { 'collections': ['owners'] },
                             'links',
                             { 'participants': [{ 'profiles': ['work'] }] },
                             { 'owners': [{ 'profiles': ['work'] }] }
-                        ]
+                        ],
+						'order': 'createdAt desc'
                     }
                 }
             ],
@@ -163,9 +168,38 @@ export class CommunitiesComponent implements OnInit {
                     const communities = [];
                     for (const responseObj of response) {
                         responseObj.communities.forEach(community => {
-                            if (community.status === 'active') {
-                                communities.push(community);
-                            }
+							if (community.status === 'active') {
+								let totalGyan = 0;
+								if (community.questions) {
+									community.questions.forEach(question => {
+										if (question.gyan !== undefined && question.gyan > 0) {
+											totalGyan += parseInt(question.gyan, 10);
+										}
+									});
+								}
+								const participants = [];
+								community.allParticipants = community.participants;
+								if (community.participants) {
+									community.participants.forEach((participant, index) => {
+										if (index < 4) {
+											participants.push(participant);
+										}
+									});
+								}
+								community.participants = participants;
+								const topics = [];
+								community.topics.forEach(topicObj => {
+									topics.push(this.titlecasepipe.transform(topicObj.name));
+								});
+								if (topics.length > 0) {
+									community.topics = topics;
+								} else {
+									topics.push('No topics selected');
+									community.topics = topics;
+								}
+								community.gyan = totalGyan;
+								communities.push(community);
+							}
                         });
                     }
                     this.communities = _.uniqBy(communities, 'id');
@@ -182,7 +216,7 @@ export class CommunitiesComponent implements OnInit {
     openTopicsDialog(): void {
         const dialogRef = this.dialog.open(SelectTopicsComponent, {
             width: '250px',
-            height: '300px', 
+            height: '300px',
             panelClass: ['responsive-dialog', 'responsive-fixed-position'],
             data: this.availableTopics,
             disableClose: true,
@@ -200,19 +234,6 @@ export class CommunitiesComponent implements OnInit {
         });
     }
 
-
-    public toggleBookmark(index: number) {
-        if (!(this.communities[index].bookmarks && this.communities[index].bookmarks[0] && this.communities[index].bookmarks[0].peer && this.communities[index].bookmarks[0].peer[0] && this.communities[index].bookmarks[0].peer[0].id === this.userId)) {
-            this._communityService.saveBookmark(this.communities[index].id, (err, response) => {
-                this.fetchData();
-            });
-        } else {
-            this._communityService.removeBookmark(this.communities[index].bookmarks[0].id, (err, response) => {
-                this.fetchData();
-            });
-        }
-    }
-
     public filterClickedTopic(index) {
         this.availableTopics = _.cloneDeep(this.topicsBackup);
         this.availableTopics[index]['checked'] = true;
@@ -223,5 +244,11 @@ export class CommunitiesComponent implements OnInit {
         this.availableTopics = _.cloneDeep(this.topicsBackup);
         this.fetchCommunities();
     }
+	
+	public onCommunityRefresh(event) {
+		if (event) {
+			this.fetchCommunities();
+		}
+	}
 
 }

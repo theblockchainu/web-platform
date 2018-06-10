@@ -233,7 +233,7 @@ export class ExperiencesComponent implements OnInit {
 		if (this.selectedTopics.length < 1) {
 			query = {
 				'include': [
-					{ 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'experience' } } }
+					{ 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'participants', 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'experience' } } }
 				]
 			};
 		} else {
@@ -253,34 +253,47 @@ export class ExperiencesComponent implements OnInit {
 					for (const responseObj of response) {
 						responseObj.collections.forEach(collection => {
 							let experienceLocation = 'Unknown location';
+							let lat = 37.5293864;
+							let lng = -122.008471;
 							if (collection.status === 'active') {
 								if (collection.contents) {
 									collection.contents.forEach(content => {
-										if (content.locations && content.locations.length > 0 && content.locations[0].city !== undefined && content.locations[0].city.length > 0) {
+										if (content.locations && content.locations.length > 0
+											&& content.locations[0].city !== undefined
+											&& content.locations[0].city.length > 0
+											&& content.locations[0].map_lat !== undefined
+											&& content.locations[0].map_lat.length > 0) {
 											experienceLocation = content.locations[0].city;
+											lat = parseFloat(content.locations[0].map_lat);
+											lng = parseFloat(content.locations[0].map_lng);
 										}
 									});
 									collection.location = experienceLocation;
+									collection.lat = lat;
+									collection.lng = lng;
 								}
 								if (collection.owners && collection.owners[0].reviewsAboutYou) {
-									collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
-									collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
+									collection.rating = this._collectionService
+										.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+									collection.ratingCount = this._collectionService
+										.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
 								}
 								let hasActiveCalendar = false;
-								collection.calendars.forEach(calendar => {
-									if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
-										hasActiveCalendar = true;
-										return;
-									}
-								});
-								if (collection.price !== undefined && hasActiveCalendar) {
+								if (collection.calendars) {
+									collection.calendars.forEach(calendar => {
+										if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+											hasActiveCalendar = true;
+											return;
+										}
+									});
+								}
+								if (hasActiveCalendar) {
 									experiences.push(collection);
-								} else {
-									console.log('price unavailable');
 								}
 							}
 						});
 					}
+					
 					this.experiences = _.uniqBy(experiences, 'id');
 					this.experiences = _.orderBy(this.experiences, ['createdAt'], ['desc']);
 					this.experiencesBackup = _.cloneDeep(this.experiences);
@@ -387,7 +400,7 @@ export class ExperiencesComponent implements OnInit {
 	public openDurationDialog(): void {
 		const dialogRef = this.dialog.open(SelectDurationComponentComponent, {
 			width: '200px',
-			height: '190px', 
+			height: '190px',
 			panelClass: ['responsive-dialog', 'responsive-fixed-position'],
 			data: {
 				availableRange: this.availableDurationRange,
@@ -407,18 +420,6 @@ export class ExperiencesComponent implements OnInit {
 		});
 	}
 
-	public toggleBookmark(index: number) {
-		if (!(this.experiences[index].bookmarks && this.experiences[index].bookmarks[0] && this.experiences[index].bookmarks[0].peer && this.experiences[index].bookmarks[0].peer[0] && this.experiences[index].bookmarks[0].peer[0].id === this.userId)) {
-			this._collectionService.saveBookmark(this.experiences[index].id, (err, response) => {
-				this.fetchData();
-			});
-		} else {
-			this._collectionService.removeBookmark(this.experiences[index].bookmarks[0].id, (err, response) => {
-				this.fetchData();
-			});
-		}
-	}
-
 	public filterClickedTopic(index) {
 		this.availableTopics = _.cloneDeep(this.topicsBackup);
 		this.availableTopics[index]['checked'] = true;
@@ -428,5 +429,11 @@ export class ExperiencesComponent implements OnInit {
 	public resetTopics() {
 		this.availableTopics = _.cloneDeep(this.topicsBackup);
 		this.fetchExperiences();
+	}
+	
+	public onExperienceRefresh(event) {
+		if (event) {
+			this.fetchExperiences();
+		}
 	}
 }

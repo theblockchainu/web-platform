@@ -20,7 +20,7 @@ export class InboxService {
 		this.envVariable = environment;
 	}
 
-	public getRoomData() {
+	public getRoomData(limit) {
 		const userId = this._cookieUtilsService.getValue(this.key);
 		const query = {
 			'include': [
@@ -47,7 +47,8 @@ export class InboxService {
 					}
 				},
 				{ 'participants': { 'profiles': 'work' } }
-			]
+			],
+			'limit': limit
 		};
 		if (userId) {
 			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/joinedRooms?filter=' + JSON.stringify(query), this._requestHeaderService.options)

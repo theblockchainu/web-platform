@@ -40,7 +40,7 @@ export class InboxDialogComponent implements OnInit {
 	
 	ngOnInit() {
 		this.loadingMessages = true;
-		this._inboxService.getRoomData()
+		this._inboxService.getRoomData(5)
 			.subscribe((response) => {
 				if (response) {
 					this.initializeInbox(response);

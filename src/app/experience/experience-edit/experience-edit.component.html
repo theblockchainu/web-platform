@@ -9,32 +9,33 @@
 				<button *ngIf="mobileQuery.matches" class="side-nav-toggle-button pull-left" mat-icon-button (click)="snav.toggle()">
 					<mat-icon>menu</mat-icon>
 				</button>
-				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && experience.controls['status'].value !== 'active'">
+				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=13 && experience.controls['status'].value !== 'active'">
 					<button mat-button (click)="saveandexit()">
 						<span *ngIf="!busySave">Save &amp; Exit</span>
 						<span *ngIf="busySave"> </span>
 						<ngx-loading [show]="busySave"></ngx-loading>
 					</button>
 				</div>
-				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12 && experience.controls['status'].value === 'active'">
+				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=13 && experience.controls['status'].value === 'active'">
 					<button mat-button (click)="exit()">Exit</button>
 				</div>
-				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12">
+				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=13">
 					<button mat-button (click)="openExperience()">
 						<span *ngIf="!busyPreview">Preview</span>
 						<span *ngIf="busyPreview"> </span>
 						<ngx-loading [show]="busyPreview"></ngx-loading>
 					</button>
 				</div>
-				<div class="pull-right">
-					<button mat-button>
-						<span> {{userId | gyanBalance | async}} GYAN </span>
-					</button>
-				</div>
 				<div class="pull-left">
 					<mat-chip-list>
-						<mat-chip>
+						<mat-chip style="margin-bottom: 15px;">
 							{{experience.controls['status'].value | titlecase}}
+						</mat-chip>
+						<mat-chip style="margin-bottom: 15px;">
+							Knowledge: {{totalGyan}} GYAN
+						</mat-chip>
+						<mat-chip style="margin-bottom: 15px;">
+							Available: {{userId | gyanBalance : 'fixed' | async}} GYAN | {{totalDuration}} learning hours
 						</mat-chip>
 					</mat-chip-list>
 				</div>
@@ -530,8 +531,8 @@
 										Back
 									</button>
 									<span class="pull-right" matTooltip="Enter a price you wish to charge for this experience, its gyan value and its cancellation policy"
-									 [matTooltipDisabled]="experience.controls['price'].value && experience.controls['currency'].value  && experience.controls['cancellationPolicy'].value && experience.controls['academicGyan'].value">
-										<button mat-raised-button color="accent" type="Submit" [disabled]="!(freeExperience || (experience.controls['price'].value && experience.controls['currency'].value)) || !experience.controls['cancellationPolicy'].value || !experience.controls['academicGyan'].value">Next</button>
+									 [matTooltipDisabled]="experience.controls['price'].value && experience.controls['currency'].value  && experience.controls['cancellationPolicy'].value && experience.controls['academicGyan'].value && experience.controls['nonAcademicGyan'].value">
+										<button mat-raised-button color="accent" type="Submit" [disabled]="!(freeExperience || (experience.controls['price'].value && experience.controls['currency'].value)) || !experience.controls['cancellationPolicy'].value || !experience.controls['academicGyan'].value || !experience.controls['nonAcademicGyan'].value">Next</button>
 									</span>
 								</div>
 							</form>
@@ -542,7 +543,7 @@
 				<div class="onboarding step-12" [hidden]="step!=12">
 					<form [formGroup]="assessmentForm" (ngSubmit)="submitAssessment()">
 						<div class="row">
-							<div class="col-xs-12">
+							<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 								<h2 class="title">How will you grade your students?</h2>
 								<p class="subtitle">
 									Choose where you will grade your students or will they grade each other or will an external party grade them?
@@ -683,9 +684,6 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Set your default timelime
-								<button *ngIf="totalDuration" mat-raised-button class="pull-right">
-									{{totalDuration}} Hours
-								</button>
 							</h2>
 							<p class="subtitle">
 								Create a default timeline for your experience and add activities to it. Later on, you can create as many cohorts with specific

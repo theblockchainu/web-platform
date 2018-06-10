@@ -136,68 +136,9 @@
                     There are no new active experiences to view right now. Browse from within your signed-up experiences
                     <a class="clickable">here</a>.
                 </div>
-                <div class="recommendation-card" *ngFor="let experience of experiences; let i =index">
-                    <span class="share-panel">
-                        <button mat-icon-button class="bookmark" (click)="toggleExperienceBookmark(i)">
-                            <mat-icon *ngIf="!(experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId)">
-                                bookmark</mat-icon>
-                            <mat-icon *ngIf="experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId"
-                                color="primary">bookmark</mat-icon>
-                        </button>
-                        <button mat-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.id,experience.title)">
-                            <mat-icon>share</mat-icon>
-                        </button>
-                    </span>
-                    <a *ngIf="i<5" [routerLink]="'/experience/'+experience.id">
-                        <div class="">
-                            <div class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + experience.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
-                                <div class="recommendation-city" [ngClass]="{'hidden': cardInFocus}">
-                                    <mat-icon style="top: 2px; position: relative; color: white; font-size: 15px;">
-                                        place
-                                    </mat-icon>
-                                    <b>{{experience.location | ucwords}}</b>
-                                </div>
-                                <div class="recommendation-map" [ngClass]="{'hidden': !cardInFocus}">
-                                    <agm-map [latitude]="experience.lat" [longitude]="experience.lng" [scrollwheel]="false" [streetViewControl]="false" [zoom]="2">
-                                        <agm-circle [latitude]="experience.lat" [longitude]="experience.lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'"
-                                            [strokeOpacity]="0.9"></agm-circle>
-                                    </agm-map>
-                                </div>
-                            </div>
-                            <div class="recommendation-thumb" *ngIf="!experience.imageUrls || experience.imageUrls.length<=0" [ngStyle]="{'background': 'url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
-                                <div class="recommendation-city">
-                                    <mat-icon style="top: 2px; position: relative; color: white; font-size: 15px;">
-                                        place
-                                    </mat-icon>
-                                    <b>{{experience.location | ucwords}}</b>
-                                </div>
-                            </div>
-                        </div>
-                        <div *ngIf="experience.currency !== undefined && experience.currency.length > 0" style="margin-top: 3px;">
-                            <span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span>
-                            / <i class="fab fa-ethereum"></i> {{experience.academicGyan + experience.nonAcademicGyan}} Gyan
-                        </div>
-                        <div *ngIf="experience.currency === undefined || experience.currency.length == 0" style="margin-top: 3px;">
-                            <span class="mat-body-2">{{experience.price | convertCurrency: 'USD' |async}}</span>
-	                        / <i class="fab fa-ethereum"></i> {{experience.academicGyan + experience.nonAcademicGyan}} Gyan
-                        </div>
-                        <div class="mat-body-2" style="margin-top: -3px;">{{experience.title | titlecase}}</div>
-                        <!--<div style="margin-top: 0px;">{{experience.headline | shorten: 20 : '...' | titlecase}}</div>-->
-                        <div style="margin-top: 0px;">{{experience.owners[0].profiles[0].first_name + ' ' + experience.owners[0].profiles[0].last_name
-                            | ucwords}}
-                        </div>
-                        <div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
-                            <p-rating class="padding-left-0" style="float: left;" [ngModel]="experience.rating" readonly="true" stars="5" [cancel]="false">
-                            </p-rating>
-                            <span class="padding-left-10" *ngIf="experience.ratingCount" style="text-align: left">
-                                <label>{{experience.ratingCount}} reviews</label>
-                            </span>
-                            <span class="padding-left-10" *ngIf="!experience.ratingCount" style="text-align: left">
-                                <label>0 reviews</label>
-                            </span>
-                        </div>
-                    </a>
-                </div>
+	            <div *ngFor="let experience of experiences; let i = index;">
+		            <app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
+	            </div>
             </div>
         </div>
     </div>
@@ -224,37 +165,8 @@
                     There are no new active communities to view right now. Browse from within your signed-up communities
                     <a class="clickable">here</a>.
                 </div>
-                <div class="community-card" *ngFor="let community of communities; let i =index">
-                    <span class="share-panel">
-                        <button mat-icon-button class="bookmark" (click)="toggleCommunityBookmark(i)">
-                            <mat-icon *ngIf="!(community.bookmarks && community.bookmarks[0] && community.bookmarks[0].peer && community.bookmarks[0].peer[0] && community.bookmarks[0].peer[0].id===userId)">
-                                bookmark</mat-icon>
-                            <mat-icon *ngIf="community.bookmarks && community.bookmarks[0] && community.bookmarks[0].peer && community.bookmarks[0].peer[0] && community.bookmarks[0].peer[0].id===userId"
-                                color="primary">bookmark</mat-icon>
-                        </button>
-                        <button mat-icon-button class="share" (click)="_dialogsService.shareCollection('community',community.id,community.title)">
-                            <mat-icon>share</mat-icon>
-                        </button>
-                    </span>
-                    <a *ngIf="i<5" [routerLink]="'/community/'+community.id">
-                        <div class="">
-                            <div class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + community.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
-                                <div class="community-title">
-                                    <div class="mat-headline" style="color: #ffffff; margin-bottom: 0px;">{{community.title | ucwords}}</div>
-                                </div>
-                            </div>
-                            <div class="recommendation-thumb" *ngIf="!community.imageUrls || community.imageUrls.length<=0" [ngStyle]="{'background': 'url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
-                                <div class="community-title">
-                                    <div class="mat-display-1">{{community.title | ucwords}}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div *ngIf="community.participants !== undefined && community.participants.length > 0" style="margin-top: 3px;">
-                            <div *ngFor="let participant of community.participants; let i = index" style="display: inline-block;" class="communityParticipants">
-                                <app-profile-popup *ngIf="i<6" [peer]="participant"></app-profile-popup>
-                            </div>
-                        </div>
-                    </a>
+                <div *ngFor="let community of communities; let i = index;">
+	                <app-community-card *ngIf="i < 5" [community]="community" (refresh)="onCommunityRefresh($event)"></app-community-card>
                 </div>
             </div>
         </div>
@@ -278,44 +190,8 @@
                 <ngx-loading [show]="true"></ngx-loading>
             </div>
             <div *ngIf="!loadingPeers" class="row feed-horizontal margin-bottom-50" style="padding: 0px 7px;">
-                <div class="peer-recommendation-card" *ngFor="let peer of peers">
-                    <a [routerLink]="'/profile/'+peer.id">
-                        <div class="">
-                            <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url + '/300'}}"
-                                alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
-                            <img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="workshpImg"
-                                (error)="_collectionService.userImgErrorHandler($event)">
-                        </div>
-                        <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}
-                        </div>
-                        <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe
-                        </div>
-	                    <div *ngIf="peer.ethAddress">
-		                    <i class="fab fa-ethereum"></i> {{peer.id | gyanBalance : 'fixed' | async}} Gyan
-	                    </div>
-	                    <div *ngIf="!peer.ethAddress"><i class="fab fa-ethereum"></i> 0 Gyan</div>
-                        <div class="col-sm-12 padding-left-0">
-                            <span *ngIf="peer.topics.length<=1">
-                                {{peer.topics}}
-                            </span>
-                            <span *ngIf="peer.topics.length>1">
-                                {{peer.topics | slice: 0:1}}
-                                <span matTooltip="{{peer.topics}}">
-                                    &nbsp;& {{peer.topics.length - 1}} more
-                                </span>
-                            </span>
-                        </div>
-                        <div class="col-sm-12 padding-left-0" style="margin-top: -2px; font-size: 13px;">
-                            <p-rating class="padding-left-0" style="float: left;" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
-                            </p-rating>
-                            <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length>0" style="text-align: left">
-                                <label>{{peer.reviewsAboutYou.length}} reviews</label>
-                            </span>
-                            <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length==0" style="text-align: left">
-                                <label>0 reviews</label>
-                            </span>
-                        </div>
-                    </a>
+                <div *ngFor="let peer of peers;">
+	                <app-peer-card [peer]="peer"></app-peer-card>
                 </div>
             </div>
         </div>

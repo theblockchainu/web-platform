@@ -115,7 +115,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-8 margin-top-20">
+						<div class="col-md-8 col-xs-8 margin-top-20">
 							<div class="row">
 								<div class="col-md-12">
 									<h5 style="font-weight:bold">LinkedIn</h5>
@@ -127,7 +127,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-4 margin-top-40">
+						<div class="col-md-4 col-xs-4 margin-top-40">
 							<a *ngIf="!connectedIdentities.linkedin" mat-button href="{{envVariable.apiUrl + '/link/linkedin?returnTo=console/profile/verification'}}">Connect</a>
 							<p *ngIf="connectedIdentities.linkedin" href="#" style="color: #33bd9e">Connected</p>
 						</div>

@@ -200,6 +200,16 @@ export class ProfileService {
 					console.log('Error: ' + err);
 				});
 	}
+	
+	public getPotentialKarmaRewards(userId, convertTo = 'KARMA') {
+		return this.http
+			.get(environment.apiUrl + '/api/peers/' + userId + '/potentialRewards?convertTo=' + convertTo, this._requestHeaderService.options)
+			.map(
+				(response: any) => response,
+				(err) => {
+					console.log('Error: ' + err);
+				});
+	}
 
 	public getGyanBalance(userId, type = 'floating', convertTo = 'GYAN') {
 		if (type === 'fixed') {

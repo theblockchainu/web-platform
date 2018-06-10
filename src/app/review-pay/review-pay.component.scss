@@ -23,6 +23,10 @@
     }
 }
 
+.reviewPayContainer {
+	margin: 3% 0;
+}
+
 .sidebar-right{
     .sidebar-box{
         padding:20px;
@@ -163,9 +167,8 @@ label .field.is-focused + span {
 }
 
 button {
-    float: left;
     display: block;
-    background: #34D08C;
+    background: #33bd9e;
     color: white;
     border-radius: 2px;
     border: 0;
@@ -214,4 +217,14 @@ button:active {
 .success .token {
     font-weight: 500;
     font-size: 15px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.reviewPayContainer {
+		margin-top: 10%;
+	}
+	.sidebar-right {
+		margin-top: 50px;
+	}
 }

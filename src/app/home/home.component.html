@@ -1,4 +1,7 @@
 <div class="main-content">
+	<button disableRipple mat-button style="min-width: 20px;padding: 6px 9px 0px 9px;vertical-align: middle; position: absolute; top: 90px; right: 30px; border-radius: 200px;" (click)="closeHome()" *ngIf="activeTab === ''">
+		<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+	</button>
 	<div class="col-md-10 col-md-offset-1 homeContainer">
 		<div *ngIf="activeTab === ''" class="row welcome-feed"  >
 			<div class="col-md-12">
@@ -184,7 +187,7 @@
 												</div>
 												<div class="row">
 													<div class="col-md-12 margin-top-20">
-														<button mat-button mat-raised-button color="primary" [routerLink]="['/home', 'homefeed']" class="margin-top-30">View Learning Content</button>
+														<button mat-button mat-raised-button color="primary" [routerLink]="['/scholarship', 'global']" class="margin-top-30">View Global Scholarship Fund</button>
 													</div>
 												</div>
 											</div>

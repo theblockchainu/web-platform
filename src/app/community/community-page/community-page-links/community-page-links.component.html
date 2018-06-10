@@ -6,16 +6,16 @@
 	</div>
 </div>
 <div *ngIf="!loadingUser">
-	<div class="row margin-top-20">
-		<div class="col-md-1">
+	<div class="row margin-top-20" *ngIf="userType !== 'public'">
+		<div class="col-md-1 col-xs-2">
 			<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
 		</div>
-		<div class="col-md-8">
+		<div class="col-md-8 col-xs-8">
 			<div class="mat-title" style="margin-bottom: 0px; line-height: 50px;">
 				Share with the community
 			</div>
 		</div>
-		<div class="col-md-3" style="text-align: right">
+		<div class="col-md-3 col-xs-2" style="text-align: right">
 			<mat-form-field [floatLabel]="'auto'" class="pb-block">
 				<mat-select [(value)]="linksFilter" placeholder="Sort">
 					<mat-option value="descending">Descending</mat-option>
@@ -26,7 +26,7 @@
 			</mat-form-field>
 		</div>
 	</div>
-	<div class="row" style="margin-top: -20px;">
+	<div class="row" style="margin-top: -20px;" *ngIf="userType !== 'public'">
 		<div class="col-md-12">
 			<form [formGroup]="linksForm" (ngSubmit)="postLink()">
 				<mat-form-field [floatLabel]="'always'" class="full-width margin-top-10" style="font-size: 15px;"  >

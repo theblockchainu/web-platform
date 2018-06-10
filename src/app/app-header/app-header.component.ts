@@ -18,7 +18,7 @@ import * as moment from 'moment';
 import { InboxDialogComponent } from '../_services/dialogs/inbox-dialog/inbox-dialog.component';
 import { SocketService } from '../_services/socket/socket.service';
 import { UcWordsPipe } from 'ngx-pipes';
-import {WalletService} from "../_services/wallet/wallet.service";
+import {WalletService} from '../_services/wallet/wallet.service';
 
 @Component({
 	selector: 'app-header',
@@ -166,7 +166,11 @@ export class AppHeaderComponent implements OnInit {
 					duration: 5000
 				});
 			} else {
-				this.router.navigate(['home']);
+				if (this._cookieService.getValue('dismissHome') === 'true') {
+					this.router.navigate(['home', 'homefeed']);
+				} else {
+					this.router.navigate(['home']);
+				}
 			}
 		} else {
 			this.router.navigate(['/']);
@@ -198,7 +202,7 @@ export class AppHeaderComponent implements OnInit {
 
 	public getMessages() {
 		if (this.userId) {
-			this._inboxService.getRoomData()
+			this._inboxService.getRoomData(5)
 				.subscribe((response) => {
 					if (response) {
 						this.sortFilterJoinedRooms(response);

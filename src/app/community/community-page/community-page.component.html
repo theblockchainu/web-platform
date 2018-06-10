@@ -138,13 +138,13 @@
 						<!--RIGHT SIDEBAR-->
 						<div class="col-md-4 col-md-offset-1 col-xs-12 col-xs-offset-0 right-content">
 							<!--ACTION BUTTONS-->
-							<div class="row" style="margin-top: 15px; text-align: right;" *ngIf="userType === 'public'">
+							<div class="row hide-small" style="margin-top: 15px; text-align: right;" *ngIf="userType === 'public'">
 								<div class="col-md-12">
 									<button mat-raised-button class="pb-block" color="primary" (click)="joinCommunity()" *ngIf="userType === 'public'">Join Community</button>
 									<hr>
 								</div>
 							</div>
-							<div class="row" style="margin-top: 15px; text-align: right" *ngIf="userType==='owner' || userType==='participant'">
+							<div class="row hide-small" style="margin-top: 15px; text-align: right" *ngIf="userType==='owner' || userType==='participant'">
 								<!--<button mat-raised-button class="" color="primary" (click)="joinGroupChat()">Join Group Chat</button> &emsp;-->
 								<button mat-button class="mat-border-button" *ngIf="userType ==='participant' || userType === 'owner'" (click)="scrollToQuestions()">Questions
 								</button> &emsp;
@@ -204,8 +204,8 @@
 													<app-profile-popup [peer]="participant"></app-profile-popup>
 												</div>
 												<div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
-													{{participant.profiles[0].first_name | ucwords}} {{participant.profiles[0].last_name | ucwords}}&emsp;
-													<span *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="lightText">{{participant.profiles[0].headline | ucwords}}</span>
+													<div>{{participant.profiles[0].first_name | ucwords}} {{participant.profiles[0].last_name | ucwords}}</div>
+													<div *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="mat-caption lightText">{{participant.profiles[0].headline | ucwords}}</div>
 												</div>
 											</div>
 										</div>
@@ -241,6 +241,28 @@
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="bottomButton">
+		<div class="row" style="text-align: left;" *ngIf="userType === 'public'">
+			<div class="col-md-12">
+				<button mat-raised-button class="pb-block" color="primary" (click)="joinCommunity()" *ngIf="userType === 'public'">Join Community</button>
+				<hr>
+			</div>
+		</div>
+		<div class="row" style="text-align: left" *ngIf="userType==='owner' || userType==='participant'">
+			<mat-icon [matMenuTriggerFor]="menu" style="cursor: pointer;top: 5px; color: #ccc;">
+				more_vert
+			</mat-icon> &emsp;
+			<button mat-button class="mat-border-button" *ngIf="userType ==='participant' || userType === 'owner'" (click)="scrollToQuestions()">Questions
+			</button>
+			<mat-menu #menu="matMenu">
+				<button mat-menu-item *ngIf="userType==='participant'" (click)="dropOutCommunity()">
+					Cancel Participation
+				</button>
+				<button mat-menu-item *ngIf="userType==='owner'" (click)="deleteCommunity()">Delete Community
+				</button>
+			</mat-menu>
 		</div>
 	</div>
 </div>

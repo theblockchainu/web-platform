@@ -8,6 +8,8 @@ import {CommunityService} from '../../../_services/community/community.service';
 import {ProfileService} from '../../../_services/profile/profile.service';
 import {CommentService} from '../../../_services/comment/comment.service';
 import {MatSnackBar} from '@angular/material';
+import {CollectionService} from "../../../_services/collection/collection.service";
+import {AuthenticationService} from "../../../_services/authentication/authentication.service";
 
 @Component({
     selector: 'app-community-page-questions',
@@ -37,13 +39,17 @@ export class CommunityPageQuestionsComponent implements OnInit {
     public busyComment = false;
     public busyReply = false;
     public userType = 'public';
+    public gyanBalance: number;
     public questionHasQuestionMark = false;
+    public questionKarmaBurn: number;
 
     constructor(activatedRoute: ActivatedRoute,
                 public communityPageComponent: CommunityPageComponent,
                 public _cookieUtilsService: CookieUtilsService,
                 public _questionsService: QuestionService,
                 public _communityService: CommunityService,
+                public _collectionService: CollectionService,
+                private _authService: AuthenticationService,
                 public _commentService: CommentService,
                 public _fb: FormBuilder,
                 public snackBar: MatSnackBar,
@@ -73,6 +79,7 @@ export class CommunityPageQuestionsComponent implements OnInit {
         this.getLoggedInUser();
         this.getQuestions();
         this.initializeForms();
+        this.getGyanBalance();
         this.questionForm.controls.text.valueChanges.subscribe(value => {
             if (value) {
                 if (value.substring(value.length - 1) !== '?' && value.substring(value.length - 2, value.length - 1) !== '?' && !this.questionHasQuestionMark) {
@@ -85,7 +92,24 @@ export class CommunityPageQuestionsComponent implements OnInit {
                 }
             }
         });
+		this.questionForm.controls.gyan.valueChanges.subscribe(value => {
+			if (value) {
+				this._collectionService.getKarmaToBurn(value).subscribe(res => {
+					this.questionKarmaBurn = res['karma'];
+				});
+			}
+		});
     }
+    
+    public getGyanBalance() {
+		this._profileService.getGyanBalance(this.userId, 'fixed').subscribe(res => {
+			this.gyanBalance = parseInt(res, 10);
+			
+			if (this.gyanBalance === 0) {
+				this.questionForm.controls['gyan'].disable();
+			}
+		});
+	}
 
     public getQuestions() {
         this.loadingQuestions = true;
@@ -100,7 +124,8 @@ export class CommunityPageQuestionsComponent implements OnInit {
                 {'flags': 'peer'},
                 {'followers': 'profiles'}
             ],
-            'order' : 'createdAt desc'
+            'order' : 'createdAt desc',
+			'limit': 10
         };
 
         if (this.communityId) {
@@ -119,10 +144,12 @@ export class CommunityPageQuestionsComponent implements OnInit {
 
     private initializeForms() {
         this.questionForm = this._fb.group({
-            text: ['', Validators.required]
+            text: ['', Validators.required],
+			gyan: ['1', [Validators.required, Validators.min(1)]],
+			scholarshipId: ['NA']
         });
         this.answerForm = this._fb.group({
-            text: ['', Validators.required]
+            text: ['', [Validators.required, Validators.minLength(50)]]
         });
         this.commentForm = this._fb.group({
             description: ['', Validators.required]
@@ -133,7 +160,7 @@ export class CommunityPageQuestionsComponent implements OnInit {
     }
 
     private getLoggedInUser() {
-        this._profileService.getPeerData(this.userId, {'include': ['profiles', 'reviewsAboutYou', 'ownedCollections']}).subscribe(res => {
+        this._profileService.getPeerData(this.userId, {'include': ['profiles', 'reviewsAboutYou', 'ownedCollections', 'scholarships_joined']}).subscribe(res => {
             this.loggedInUser = res;
             this.loadingUser = false;
             console.log(this.loggedInUser);
@@ -145,15 +172,29 @@ export class CommunityPageQuestionsComponent implements OnInit {
      * post question
      */
     public postQuestion() {
-        this.busyQuestion = true;
-        this._communityService.postQuestion(this.communityId, this.questionForm.value).subscribe(result => {
-                this.questionForm.reset();
-                this.busyQuestion = false;
-                this.getQuestions();
-            },
-            err => {
-                console.log(err);
-            });
+    	if (this.questionForm.valid && (this.questionForm.controls['gyan'].value <= this.gyanBalance || this.questionForm.controls['gyan'].disabled)) {
+    		// If user has a scholarship, make sure the scholarship is used for karma burn.
+    		if (this.loggedInUser.scholarships_joined && this.loggedInUser.scholarships_joined.length > 0) {
+    			this.questionForm.controls['scholarshipId'].patchValue(this.loggedInUser.scholarships_joined[0].id);
+			}
+			// If gyan balance is 0, make the gyan amount 1.
+			if (this.gyanBalance === 0) {
+				this.questionForm.controls['gyan'].patchValue(1);
+				this.questionForm.value['gyan'] = 1;
+			}
+			this.busyQuestion = true;
+			this._communityService.postQuestion(this.communityId, this.questionForm.value).subscribe(result => {
+					this._authService.isLoginSubject.next(true);
+					this.questionForm.reset();
+					this.busyQuestion = false;
+					this.getQuestions();
+				},
+				err => {
+					console.log(err);
+				});
+		} else {
+    		this.snackBar.open('Check if you have enough gyan balance in your account for this question.', 'Ok', {duration: 5000});
+		}
     }
 
     /**
@@ -223,6 +264,25 @@ export class CommunityPageQuestionsComponent implements OnInit {
             }
         );
     }
+	
+	/**
+	 * accept answer
+	 */
+	public acceptAnswer(question: any, answer: any) {
+		if (!answer.accept) {
+			this.busyAnswer = true;
+			this._questionsService.acceptAnswerToQuestion(question.id, answer.id, this.loggedInUser.ethAddress).subscribe(
+				response => {
+					this._authService.isLoginSubject.next(true);
+					this.busyAnswer = false;
+					this.getQuestions();
+				}, err => {
+					this.busyAnswer = false;
+					console.log(err);
+				}
+			);
+		}
+	}
 
     /**
      * post comment to answer

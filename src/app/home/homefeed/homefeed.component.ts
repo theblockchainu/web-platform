@@ -150,10 +150,6 @@ export class HomefeedComponent implements OnInit {
         }
     }
 
-    public compareCalendars(a, b) {
-        return moment(a.startDate).diff(moment(b.startDate), 'days');
-    }
-
     /**
      * Get the most upcoming content details
      */
@@ -266,6 +262,7 @@ export class HomefeedComponent implements OnInit {
                     'relation': 'collections', 'scope': {
                         'include':
                             [{ 'owners': ['reviewsAboutYou', 'profiles'] },
+								'participants',
                                 'calendars', { 'bookmarks': 'peer' }, {
                                 'contents':
                                     ['schedules', 'locations']
@@ -290,7 +287,9 @@ export class HomefeedComponent implements OnInit {
                                 collection.contents.forEach(content => {
                                     if (content.locations && content.locations.length > 0
                                         && content.locations[0].city !== undefined
-                                        && content.locations[0].city.length > 0) {
+                                        && content.locations[0].city.length > 0
+										&& content.locations[0].map_lat !== undefined
+										&& content.locations[0].map_lat.length > 0) {
                                         experienceLocation = content.locations[0].city;
                                         lat = parseFloat(content.locations[0].map_lat);
                                         lng = parseFloat(content.locations[0].map_lng);
@@ -339,6 +338,7 @@ export class HomefeedComponent implements OnInit {
                     'relation': 'communities', 'scope': {
                         'include': [
                             'topics',
+							'questions',
                             'views',
                             'invites',
                             'rooms',
@@ -360,6 +360,35 @@ export class HomefeedComponent implements OnInit {
                 for (const responseObj of response) {
                     responseObj.communities.forEach(community => {
                         if (community.status === 'active') {
+                        	let totalGyan = 0;
+                        	if (community.questions) {
+                        		community.questions.forEach(question => {
+                        			if (question.gyan !== undefined && question.gyan > 0) {
+										totalGyan += parseInt(question.gyan, 10);
+									}
+								});
+							}
+							const participants = [];
+                        	community.allParticipants = community.participants;
+                        	if (community.participants) {
+								community.participants.forEach((participant, index) => {
+									if (index < 4) {
+										participants.push(participant);
+									}
+								});
+							}
+							community.participants = participants;
+							const topics = [];
+							community.topics.forEach(topicObj => {
+								topics.push(this.titlecasepipe.transform(topicObj.name));
+							});
+							if (topics.length > 0) {
+								community.topics = topics;
+							} else {
+								topics.push('No topics selected');
+								community.topics = topics;
+							}
+							community.gyan = totalGyan;
                             this.communities.push(community);
                         }
                     });
@@ -434,14 +463,6 @@ export class HomefeedComponent implements OnInit {
         });
     }
 
-    onMouseEnter() {
-        this.cardInFocus = true;
-    }
-
-    onMouseLeave() {
-        this.cardInFocus = false;
-    }
-
     public toggleWorkshopBookmark(index: number) {
         if (!(this.workshops[index].bookmarks
             && this.workshops[index].bookmarks[0] && this.workshops[index].bookmarks[0].peer
@@ -455,35 +476,24 @@ export class HomefeedComponent implements OnInit {
             });
         }
     }
-
-
-    public toggleExperienceBookmark(index: number) {
-        if (!(this.experiences[index].bookmarks && this.experiences[index].bookmarks[0]
-            && this.experiences[index].bookmarks[0].peer && this.experiences[index].bookmarks[0].peer[0]
-            && this.experiences[index].bookmarks[0].peer[0].id === this.userId)) {
-            this._collectionService.saveBookmark(this.experiences[index].id, (err, response) => {
-                this.fetchExperiences();
-            });
-        } else {
-            this._collectionService.removeBookmark(this.experiences[index].bookmarks[0].id, (err, response) => {
-                this.fetchExperiences();
-            });
-        }
-    }
-
-    public toggleCommunityBookmark(index: number) {
-        if (!(this.communities[index].bookmarks
-            && this.communities[index].bookmarks[0] && this.communities[index].bookmarks[0].peer
-            && this.communities[index].bookmarks[0].peer[0] && this.communities[index].bookmarks[0].peer[0].id === this.userId)) {
-            this._communityService.saveBookmark(this.communities[index].id, (err, response) => {
-                this.fetchCommunities();
-            });
-        } else {
-            this._communityService.removeBookmark(this.communities[index].bookmarks[0].id, (err, response) => {
-                this.fetchCommunities();
-            });
-        }
-    }
+    
+    public onExperienceRefresh(event) {
+    	if (event) {
+    		this.fetchExperiences();
+		}
+	}
+	
+	public onCommunityRefresh(event) {
+		if (event) {
+			this.fetchCommunities();
+		}
+	}
+	
+	public onWorkshopRefresh(event) {
+		if (event) {
+			this.fetchWorkshops();
+		}
+	}
 
 }
 

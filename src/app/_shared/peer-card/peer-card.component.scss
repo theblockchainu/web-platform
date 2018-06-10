@@ -1,0 +1,42 @@
+a {
+	color: black;
+}
+
+label {
+	color: #484848;
+	font-size: 12px;
+	font-weight: 400;
+}
+
+.peer-recommendation-thumb{
+	object-fit: cover;
+	height: 238px;
+	width: 100%;
+}
+
+.peer-recommendation-card{
+	min-height:1px;
+	padding-left: 8px;
+	padding-right: 8px;
+	width: 16.66%;
+	float: left;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
+	.peer-recommendation-thumb{
+		object-fit: cover;
+		height: 145px;
+		width: 100%;
+	}
+
+	.peer-recommendation-card{
+		min-height:1px;
+		padding-left: 8px;
+		padding-right: 8px;
+		width: 50%;
+		float: left;
+		margin-bottom: 30px;
+	}
+}

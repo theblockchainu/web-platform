@@ -141,8 +141,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public gyanBalance: number;
 	public nAAssessmentParams: Array<string>;
 	public maxGyanExceding: boolean;
-	totalGyan: number;
-	totalDuration: number;
+	totalGyan = 0;
+	totalDuration = 0;
 	// TypeScript public modifiers
 	constructor(
 		public router: Router,
@@ -289,7 +289,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	}
 
 	getGyanBalance() {
-		this.profileService.getGyanBalance(this.userId).subscribe(res => {
+		this.profileService.getGyanBalance(this.userId, 'fixed').subscribe(res => {
 			this.gyanBalance = Number(res);
 		});
 	}
@@ -864,9 +864,14 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 					}
 					break;
 				case 14:
-					if ((this.totalGyan > this.gyanBalance) && (this.totalDuration <= this.totalGyan)) {
-						this.snackBar.open('You still need to add ' + (this.totalGyan - this.totalDuration) + ' hours of learning to proceed',
-							'Close', { duration: 3000 });
+					if ((this.totalGyan > this.gyanBalance) && (this.totalDuration !== this.totalGyan)) {
+						this.snackBar.open('You do not have enough Gyan balance or learning hours to justify a knowledge value of ' + this.totalGyan + ' Gyan. Knowledge value for this experience will be adjusted to ' + this.totalDuration + ' Gyan.',
+							'Ok').onAction().subscribe(result => {
+								data.controls['academicGyan'].patchValue(this.totalDuration >= 2 ? this.totalDuration - 1 : 1);
+								data.controls['nonAcademicGyan'].patchValue(1);
+								this.totalGyan = this.experience.controls['academicGyan'].value + this.experience.controls['nonAcademicGyan'].value;
+								this.checkStatusAndSubmit(data, timeline, step);
+						});
 					} else {
 						this.checkStatusAndSubmit(data, timeline, step);
 					}
@@ -1041,28 +1046,6 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.experienceStepUpdate();
 			this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
 		}
-		// let observable: Rx.Observable<any>;
-		// if (topicArray.length !== 0) {
-		//   topicArray.forEach(topicId => {
-		//     observable = this._topicService.relTopicCollection(this.experienceId, topicId)
-		//                   .map(response => response).publishReplay().refCount();
-		//     observable.subscribe((res) => {
-		//       this.step++;
-		//       this._collectionService.getCollectionDetail(this.experienceId, this.query)
-		//         .subscribe((resData) => {
-		//           this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
-		//         });
-		//       this.experienceStepUpdate();
-		//       this.busyInterest = false;
-		//       this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
-		//     });
-		//   });
-		// }
-		// else {
-		//   this.step++;
-		//   this.experienceStepUpdate();
-		//   this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
-		// }
 	}
 
 	/**

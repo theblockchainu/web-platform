@@ -8,12 +8,12 @@
 				{{data.content.title | titlecase}}
 			</div>
 		</div>
-		<div class="col-md-10" style="padding-top: 15px;">
+		<div class="col-md-10 col-xs-8" style="padding-top: 15px;">
 			<span class="mat-body-2">{{duration}} hour {{_collectionService.getContentTypeFullName(data.content.type)}}</span>
 			<br/> Taught by
 			<a [routerLink]="['/profile',data.collection.owners[0]]">{{data.collection.owners[0].profiles[0].first_name | ucwords}}</a>
 		</div>
-		<div class="col-md-2" style="text-align: right">
+		<div class="col-md-2 col-xs-4" style="text-align: right">
 			<img (click)="openProfilePage(data.collection.owners[0].id)" *ngIf="!data.collection.owners[0].profiles[0].picture_url" src="/assets/images/avatar.png"
 			     alt="A" class="clickable circle-thumb margin-top-5" style="width: 70px; height: 70px;">
 			<img (click)="openProfilePage(data.collection.owners[0].id)" *ngIf="data.collection.owners[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ data.collection.owners[0].profiles[0].picture_url}}"
@@ -25,9 +25,9 @@
 	<div *ngIf="data.content">
 		<div *ngIf="data.userType==='teacher' || data.userType==='participant' ">
 			<div class="row">
-				<div class="col-md-12 margin-bottom-20">
-					<button mat-raised-button style="float: right;" color="primary" *ngIf="userType ==='participant' && !data.content.hasRSVPd" (click)="rsvpToggle(data.content)">RSVP</button>
-					<button mat-button style="float: right;" class="mat-border-button margin-bottom-20" *ngIf="data.content.hasRSVPd" (click)="viewRSVPs(data.content)" [disabled]="true"
+				<div class="col-md-12 margin-bottom-20" style="text-align: right;">
+					<button mat-raised-button color="primary" *ngIf="userType ==='participant' && !data.content.hasRSVPd" (click)="rsvpToggle(data.content)">RSVP</button>
+					<button mat-button class="mat-border-button margin-bottom-20" *ngIf="data.content.hasRSVPd" (click)="viewRSVPs(data.content)" [disabled]="true"
 					        tabindex="-1"> View RSVPs </button>
 				</div>
 			</div>

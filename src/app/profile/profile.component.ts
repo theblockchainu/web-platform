@@ -75,7 +75,7 @@ export class ProfileComponent implements OnInit {
 	public searchTopicURL = '';
 	public knowledgeStories: Array<any>;
 	public dialogToOpen;
-
+	
 	constructor(
 		public _profileService: ProfileService,
 		private _cookieUtilsService: CookieUtilsService,
@@ -106,10 +106,10 @@ export class ProfileComponent implements OnInit {
 			this.generateKnowledgeStoryDialog();
 		}
 	}
-
+	
 	ngOnInit() {
 	}
-
+	
 	public showAll(strLength) {
 		if (strLength > this.maxLength) {
 			this.maxLength = strLength;
@@ -117,7 +117,7 @@ export class ProfileComponent implements OnInit {
 			this.maxLength = 140;
 		}
 	}
-
+	
 	private fetchData() {
 		this.cookieUserId = this._cookieUtilsService.getValue('userId');
 		this.loadingProfile = true;
@@ -148,7 +148,7 @@ export class ProfileComponent implements OnInit {
 		this.getProfileData();
 		this.getKnowledgeStories();
 	}
-
+	
 	public getPeerData() {
 		this._profileService.getPeerNode(this.urluserId).subscribe(result => {
 			this.peerObj = result;
@@ -180,7 +180,7 @@ export class ProfileComponent implements OnInit {
 			}
 		);
 	}
-
+	
 	private getRecommendedPeers() {
 		const query = {
 			'include': [
@@ -239,7 +239,7 @@ export class ProfileComponent implements OnInit {
 			console.log(err);
 		});
 	}
-
+	
 	private getTeachingTopics() {
 		this.loadingLearningJourney = true;
 		const queryTeaching = {
@@ -258,20 +258,59 @@ export class ProfileComponent implements OnInit {
 			this.getParticipatingCommunities(this.profileObj.peer[0].id);
 		});
 	}
-
+	
 	private getParticipatingCommunities(peerId: string) {
 		this.loadingCommunities = true;
 		const query = {
-			'include': { 'participants': 'profiles' }
+			'include': [
+				{'participants': 'profiles'},
+				'questions',
+				'topics'
+			]
 		};
 		this._profileService.getJoinedCommunities(peerId, query).subscribe(res => {
-			this.pariticipatingCommunities = res;
+			this.pariticipatingCommunities = [];
+			for (let i = 0; i < res.length; i++) {
+				const community = res[i];
+				if (community.status === 'active') {
+					let totalGyan = 0;
+					if (community.questions) {
+						community.questions.forEach(question => {
+							if (question.gyan !== undefined && question.gyan > 0) {
+								totalGyan += parseInt(question.gyan, 10);
+							}
+						});
+					}
+					const participants = [];
+					community.allParticipants = community.participants;
+					if (community.participants) {
+						community.participants.forEach((participant, index) => {
+							if (index < 4) {
+								participants.push(participant);
+							}
+						});
+					}
+					community.participants = participants;
+					const topics = [];
+					community.topics.forEach(topicObj => {
+						topics.push(this.titlecasepipe.transform(topicObj.name));
+					});
+					if (topics.length > 0) {
+						community.topics = topics;
+					} else {
+						topics.push('No topics selected');
+						community.topics = topics;
+					}
+					community.gyan = totalGyan;
+					this.pariticipatingCommunities.push(community);
+				}
+			}
 			this.loadingCommunities = false;
 			this.loadingProfile = false;
 		});
 	}
-
-
+	
+	
 	private getParticipatingWorkshops(response: Array<any>) {
 		response.forEach(collection => {
 			if (collection.reviews) {
@@ -283,7 +322,7 @@ export class ProfileComponent implements OnInit {
 		this.loadingLearningJourney = false;
 		this.loadingPeers = true;
 	}
-
+	
 	private getProfileData() {
 		const query = {
 			'include': [
@@ -324,7 +363,7 @@ export class ProfileComponent implements OnInit {
 			} else {
 				this.other_languages = '';
 			}
-
+			
 			this.setInterests();
 			if (this.profileObj.peer[0].ownedCollections && this.profileObj.peer[0].ownedCollections.length > 0) {
 				this.calculateCollectionDurations();
@@ -341,7 +380,7 @@ export class ProfileComponent implements OnInit {
 			this.setTags();
 		});
 	}
-
+	
 	private setTags() {
 		let peerName = '';
 		if (this.profileObj.first_name !== undefined) {
@@ -371,7 +410,7 @@ export class ProfileComponent implements OnInit {
 			content: environment.clientUrl + this.router.url
 		});
 	}
-
+	
 	private computeReviews() {
 		// Compute reviews for Peer from Learner and Teachers
 		const ownedCollectionsArray = this.profileObj.peer[0].ownedCollections;
@@ -386,7 +425,7 @@ export class ProfileComponent implements OnInit {
 			});
 		}
 	}
-
+	
 	private setInterests() {
 		this.interestsArray = [];
 		if (this.profileObj.peer[0].topicsTeaching && this.profileObj.peer[0].topicsTeaching.length > 0) {
@@ -402,7 +441,7 @@ export class ProfileComponent implements OnInit {
 			});
 		}
 	}
-
+	
 	private calculateCollectionDurations() {
 		this.pastWorkshops = [];
 		this.upcomingWorkshops = [];
@@ -448,12 +487,12 @@ export class ProfileComponent implements OnInit {
 			}
 		});
 	}
-
+	
 	private calculateCohorts(collection): any {
 		collection.pastCohortCount = 0;
 		collection.upcomingCohortCount = 0;
 		collection.currentCohortCount = 0;
-
+		
 		if (collection.calendars) {
 			collection.calendars.forEach(calendar => {
 				if (calendar.endDate < this.today.toISOString()) {
@@ -469,7 +508,7 @@ export class ProfileComponent implements OnInit {
 		}
 		return collection;
 	}
-
+	
 	private calculateItenaries(workshop) {
 		const itenariesObj = {};
 		const itenaryArray = [];
@@ -481,7 +520,7 @@ export class ProfileComponent implements OnInit {
 					itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
 				}
 			});
-
+			
 			for (const key in itenariesObj) {
 				if (itenariesObj.hasOwnProperty(key)) {
 					itenariesObj[key].sort(function (a, b) {
@@ -500,7 +539,7 @@ export class ProfileComponent implements OnInit {
 		}
 		return itenaryArray;
 	}
-
+	
 	/**
 	 * calculateTotalHours
 	 */
@@ -514,13 +553,13 @@ export class ProfileComponent implements OnInit {
 					const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
 					totalLength += parseInt(contentLength, 10);
 				} else if (content.type === 'video') {
-
+				
 				}
 			});
 		}
 		return totalLength.toString();
 	}
-
+	
 	public toggleMaxInterest() {
 		if (this.maxVisibleInterest === 3) {
 			this.maxVisibleInterest = 999;
@@ -528,7 +567,7 @@ export class ProfileComponent implements OnInit {
 			this.maxVisibleInterest = 3;
 		}
 	}
-
+	
 	public toggleMaxReviewsTeacher() {
 		if (this.maxVisibleReviewsTeacher === 4) {
 			this.maxVisibleReviewsTeacher = 999;
@@ -536,7 +575,7 @@ export class ProfileComponent implements OnInit {
 			this.maxVisibleReviewsTeacher = 4;
 		}
 	}
-
+	
 	public toggleMaxReviewsLearner() {
 		if (this.maxVisibleReviewsLearner === 4) {
 			this.maxVisibleReviewsLearner = 999;
@@ -544,7 +583,7 @@ export class ProfileComponent implements OnInit {
 			this.maxVisibleReviewsLearner = 4;
 		}
 	}
-
+	
 	public reportProfile() {
 		this._dialogsService.reportProfile().subscribe(result => {
 			if (result) {
@@ -567,15 +606,15 @@ export class ProfileComponent implements OnInit {
 			}
 		});
 	}
-
+	
 	public navigateTo(id: string) {
 		this.router.navigate(['profile', id]);
 	}
-
+	
 	imgErrorHandler(event) {
 		event.target.src = '/assets/images/user-placeholder.jpg';
 	}
-
+	
 	public getReviewedCollection(peer, collectionId) {
 		let foundCollection: any;
 		const collectionsArray = peer.collections;
@@ -594,9 +633,9 @@ export class ProfileComponent implements OnInit {
 			foundCollection = {};
 		}
 		return foundCollection;
-
+		
 	}
-
+	
 	public getReviewedCalendar(calendars, calendarId) {
 		if (calendars) {
 			return calendars.find((calendar) => {
@@ -608,12 +647,12 @@ export class ProfileComponent implements OnInit {
 			return {};
 		}
 	}
-
+	
 	public redirectToCollection(peer, reviewCollectionId, collectionCalendarId) {
 		return '/' + this.getReviewedCollection(peer, reviewCollectionId).type + '/'
 			+ reviewCollectionId + '/calendar/' + collectionCalendarId + '';
 	}
-
+	
 	/**
 	 * openCollectionGrid
 	 type:string,title:string,collecions   */
@@ -624,21 +663,21 @@ export class ProfileComponent implements OnInit {
 			}
 		});
 	}
-
+	
 	/**
 	 * bookSession
 	 */
 	public bookSession() {
 		this.router.navigateByUrl('/session/book/' + this.urluserId);
 	}
-
+	
 	/**
 	 * OPen session wizard to update availability
 	 */
 	public updateAvailability() {
 		this.router.navigateByUrl('/session/' + this.sessionId + '/edit/10');
 	}
-
+	
 	public openMessageDialog() {
 		this.peerObj.profiles = [];
 		this.peerObj.profiles.push(this.profileObj);
@@ -646,7 +685,7 @@ export class ProfileComponent implements OnInit {
 			// console.log(result);
 		});
 	}
-
+	
 	/**
 	 * openTransactionsDialog
 	 */
@@ -655,7 +694,7 @@ export class ProfileComponent implements OnInit {
 			console.log(res);
 		});
 	}
-
+	
 	public generateKnowledgeStoryDialog() {
 		const inputs = {
 			title: 'Select some or all of the topics you learn or teach...',
@@ -684,10 +723,10 @@ export class ProfileComponent implements OnInit {
 						return this._knowledgeStoryService.connectTopics(res.id, { targetIds: topics })
 							.map(
 								result => {
-								this._knowledgeStoryService.connectPeers(res.id, { targetIds: peers }).subscribe(peersConnected => {
-									console.log('peers connected');
+									this._knowledgeStoryService.connectPeers(res.id, { targetIds: peers }).subscribe(peersConnected => {
+										console.log('peers connected');
+									});
 								});
-							});
 					}).subscribe(res => {
 						console.log(res);
 						this.getKnowledgeStories();
@@ -699,9 +738,9 @@ export class ProfileComponent implements OnInit {
 					});
 				}
 			});
-
+		
 	}
-
+	
 	/**
 	 * requestKnowledgeStory
 	 */
@@ -739,7 +778,7 @@ export class ProfileComponent implements OnInit {
 				}
 			});
 	}
-
+	
 	getKnowledgeStories() {
 		const filter = {
 			'include': [{ 'protagonist': 'profiles' }, { 'peer': 'profiles' }, 'topics'],

@@ -72,51 +72,8 @@
 					There are no new active experiences to view right now. Browse from within your signed-up experiences
 					<a class="clickable">here</a>.
 				</div>
-				<div class="recommendation-card" *ngFor="let experience of experiences; let i =index">
-					<span class="share-panel">
-						<button mat-icon-button class="bookmark" (click)="toggleBookmark(i)">
-							<mat-icon *ngIf="!(experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId)">
-								bookmark</mat-icon>
-							<mat-icon *ngIf="experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId"
-							 color="primary">bookmark</mat-icon>
-						</button>
-						<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.id,experience.title)">
-							<mat-icon>share</mat-icon>
-						</button>
-					</span>
-					<a [routerLink]="'/experience/'+experience.id">
-						<div class="">
-							<div class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + experience.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
-								<div class="recommendation-city">
-									<mat-icon style="top: 2px; position: relative; color: white; font-size: 15px;">place</mat-icon>
-									<b>{{experience.location | ucwords}}</b>
-								</div>
-							</div>
-							<div class="recommendation-thumb" *ngIf="!experience.imageUrls || experience.imageUrls.length<=0" [ngStyle]="{'background': 'url(/assets/images/no-image.jpg)', 'background-size': 'cover'}">
-								<div class="recommendation-city">
-									<mat-icon style="top: 2px; position: relative; color: white; font-size: 15px;">place</mat-icon>
-									<b>{{experience.location | ucwords}}</b>
-								</div>
-							</div>
-						</div>
-						<div *ngIf="experience.currency !== undefined && experience.currency.length > 0" style="margin-top: 3px;">
-							<span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span> / <i class="fab fa-ethereum"></i> {{experience.academicGyan + experience.nonAcademicGyan}} Gyan</div>
-						<div *ngIf="experience.currency === undefined || experience.currency.length == 0" style="margin-top: 3px;">
-							<span class="mat-body-2">{{experience.price | convertCurrency: 'USD' |async}}</span> / <i class="fab fa-ethereum"></i> {{experience.academicGyan + experience.nonAcademicGyan}} Gyan</div>
-						<div class="mat-body-2" style="margin-top: -3px;">{{experience.title | titlecase}}</div>
-						<!--<div style="margin-top: 0px;">{{experience.headline | shorten: 20 : '...' | titlecase}}</div>-->
-						<div style="margin-top: 0px;">{{experience.owners[0].profiles[0].first_name + ' ' + experience.owners[0].profiles[0].last_name | ucwords}}</div>
-						<div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
-							<p-rating class="padding-left-0" style="float: left;" [ngModel]="experience.rating" readonly="true" stars="5" [cancel]="false">
-							</p-rating>
-							<span class="padding-left-10" *ngIf="experience.ratingCount" style="text-align: left">
-								<label>{{experience.ratingCount}} reviews</label>
-							</span>
-							<span class="padding-left-10" *ngIf="!experience.ratingCount" style="text-align: left">
-								<label>0 reviews</label>
-							</span>
-						</div>
-					</a>
+				<div *ngFor="let experience of experiences;">
+					<app-experience-card [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
 				</div>
 			</div>
 		</div>

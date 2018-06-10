@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, Params, NavigationStart, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import {environment} from '../../environments/environment';
 import {ProfileService} from '../_services/profile/profile.service';
+import {Meta, Title} from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-home',
@@ -28,7 +29,10 @@ export class HomeComponent implements OnInit {
 		public router: Router,
 		private activatedRoute: ActivatedRoute,
 		private _profileService: ProfileService,
-		private _cookieUtilsService: CookieUtilsService) {
+		private metaService: Meta,
+		private titleService: Title,
+		private _cookieUtilsService: CookieUtilsService
+	) {
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
@@ -58,6 +62,7 @@ export class HomeComponent implements OnInit {
 		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
 			this.loggedInPeer = res;
 			if (this.loggedInPeer) {
+				this.setTags();
 				if (this.loggedInPeer.accountVerified) {
 					this.completeVerifySteps++;
 				}
@@ -87,12 +92,41 @@ export class HomeComponent implements OnInit {
 		});
 	}
 	
+	private setTags() {
+		this.titleService.setTitle('Hello ' + this.loggedInPeer.profiles[0].first_name + '!');
+		this.metaService.updateTag({
+			property: 'og:title',
+			content: 'Welcome to Peerbuds'
+		});
+		this.metaService.updateTag({
+			property: 'og:description',
+			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+		});
+		this.metaService.updateTag({
+			property: 'og:site_name',
+			content: 'peerbuds.com'
+		});
+		this.metaService.updateTag({
+			property: 'og:image',
+			content: 'https://peerbuds.com/pb_logo_square.png'
+		});
+		this.metaService.updateTag({
+			property: 'og:url',
+			content: environment.clientUrl + this.router.url
+		});
+	}
+	
 	public updateActiveLink(location) {
 		if (location !== undefined && location.url !== undefined && location.url.split('/').length >= 3) {
 			this.activeTab = location.url.split('/')[location.url.split('/').length - 1];
 		} else {
 			this.activeTab = '';
 		}
+	}
+	
+	public closeHome() {
+		this._cookieUtilsService.setValue('dismissHome', 'true');
+		this.router.navigate(['home', 'homefeed']);
 	}
 	
 }

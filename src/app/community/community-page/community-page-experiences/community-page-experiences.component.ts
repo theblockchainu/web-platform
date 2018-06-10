@@ -8,6 +8,7 @@ import {CommunityService} from '../../../_services/community/community.service';
 import {DialogsService} from '../../../_services/dialogs/dialog.service';
 import {environment} from '../../../../environments/environment';
 import {CookieUtilsService} from '../../../_services/cookieUtils/cookie-utils.service';
+import {ProfileService} from '../../../_services/profile/profile.service';
 
 @Component({
     selector: 'app-community-page-experiences',
@@ -23,10 +24,14 @@ export class CommunityPageExperiencesComponent implements OnInit {
     private today = moment();
     public loadingExperiences = true;
     public envVariable;
+    public userType = 'public';
+    public loggedInUser;
+    public loadingUser = true;
 
     constructor(public activatedRoute: ActivatedRoute,
                 public communityPageComponent: CommunityPageComponent,
                 public _collectionService: CollectionService,
+                public _profileService: ProfileService,
                 public _communityService: CommunityService,
                 public _dialogsService: DialogsService,
                 public _cookieUtilsService: CookieUtilsService) {
@@ -51,9 +56,19 @@ export class CommunityPageExperiencesComponent implements OnInit {
     }
 
     ngOnInit() {
+    	this.getLoggedInUser();
         this.getExperiences();
         this.getCollections();
     }
+	
+	private getLoggedInUser() {
+		this._profileService.getPeerData(this.userId, {'include': ['profiles', 'reviewsAboutYou', 'ownedCollections', 'scholarships_joined']}).subscribe(res => {
+			this.loggedInUser = res;
+			this.loadingUser = false;
+			console.log(this.loggedInUser);
+			this.userType = this.communityPageComponent.getUserType();
+		});
+	}
 
     public getExperiences() {
         this._collectionService.getOwnedCollections(this.userId, JSON.stringify({'where': {'and': [{'status': 'active'}, {'type': 'experience'}]}}), (err, res) => {

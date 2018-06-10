@@ -21,7 +21,7 @@ export class GyanBalancePipe implements PipeTransform {
 			});
 		} else {
 			if (convertTo === 'USD') {
-				return this._profileService.getGyanBalance(userId, type, convertTo);
+				return this._profileService.getPotentialKarmaRewards(userId, convertTo);
 			}
 			return this._profileService.getGyanBalance(userId, type);
 		}

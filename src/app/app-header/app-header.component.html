@@ -47,7 +47,7 @@
 					<mat-icon style="top: 4px; font-size: 15px;">add</mat-icon>
 					Configure Online Sessions
 				</button>-->
-				<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async) && isEmailVerified">
+				<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async) && isEmailVerified" matTooltip="Create a new experience, class or a lot more">
 					<mat-icon class="headerNewActionButton">add_circle_outline</mat-icon>
 				</button>
 				<!--<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async) && isEmailVerified">
@@ -56,7 +56,7 @@
 				<button mat-button class="headerButtons show-small-inline" (click)="showSearchBar()" *ngIf="(isLoggedIn | async) && isEmailVerified">
 					<mat-icon>search</mat-icon>
 				</button>
-				<button mat-button class="headerButtons" #notificationsButton (click)="openNotificationsDialog()" *ngIf="(isLoggedIn | async) && isEmailVerified">
+				<button mat-button class="headerButtons" #notificationsButton (click)="openNotificationsDialog()" *ngIf="(isLoggedIn | async) && isEmailVerified" matTooltip="Notifications">
 					<mat-icon *ngIf="!hasNewNotification">notifications_none</mat-icon>
 					<mat-icon *ngIf="hasNewNotification">notifications</mat-icon>
 				</button>
@@ -64,31 +64,31 @@
 					<mat-icon class="notifDot" *ngIf="hasNewNotification">fiber_manual_record</mat-icon>
 				</div>
 
-				<button mat-button class="headerButtons" #messagesButton (click)="openMessagesDialog()" *ngIf="(isLoggedIn | async) && isEmailVerified">
+				<button mat-button class="headerButtons" #messagesButton (click)="openMessagesDialog()" *ngIf="(isLoggedIn | async) && isEmailVerified" matTooltip="Inbox">
 					<mat-icon>chat</mat-icon>
 				</button>
 				<div style="display: inline-block;" *ngIf="(isLoggedIn | async) && isEmailVerified">
 					<mat-icon class="notifDot" *ngIf="hasNewMessage">fiber_manual_record</mat-icon>
 				</div>
-				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && !profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
+				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && !profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']" matTooltip="Create your Blockchain wallet to start earning rewards!">
 					Setup Karma Wallet
 					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
 						on Ethereum Blockchain
 					</div>
 				</span>
-				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'dashboard']">
-					{{profile.peer[0].id | gyanBalance : 'floating' | async}} GYAN
+				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['story', 'me']" matTooltip="View Knowledge Story">
+					{{profile.peer[0].id | gyanBalance : 'fixed' | async}} GYAN
 					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
-						${{profile.peer[0].id | gyanBalance: 'floating' : 'USD' | async}} USD
+						+ {{profile.peer[0].id | gyanBalance: 'floating' | async}} NEW
 					</div>
 				</span>
-				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']" >
-					{{profile.peer[0].id | karmaBalance | async}} KARMA
+				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']" matTooltip="View Karma Wallet">
+					{{profile.peer[0].id | karmaBalance : 'peer' | async | currency : ' ' : ' ' : '1.0-0'}} KARMA
 					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
-						${{profile.peer[0].id | karmaBalance : 'peer': 'USD' | async}} USD
+						{{profile.peer[0].id | karmaBalance : 'peer': 'USD' | async | currency: 'USD'}} USD
 					</div>
 				</span>
-				<div class="headerButtons" [matMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem; cursor: pointer; display: inline-block; margin: 0 15px;">
+				<div class="headerButtons" [matMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)" style="font-size: 1rem; cursor: pointer; display: inline-block; margin: 0 15px;" matTooltip="{{profile.first_name | titlecase}} {{profile.last_name | titlecase}} - Scholarships, Stories, wallet and more...">
 					<div>
 						<img *ngIf="!profile.picture_url" src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb">
 						<img *ngIf="profile.picture_url" src="{{envVariable.apiUrl + profile.picture_url + '/100'}}" alt="A" class="circle-thumb">
@@ -96,9 +96,9 @@
 				</div>
 
 				<span class="example-spacer hide-small"></span>
-				<button mat-button class="headerButtons hide-small" [routerLink]="['http://blog.peerbuds.com']" *ngIf="!(isLoggedIn | async)">
+				<a mat-button class="headerButtons hide-small" href="http://blog.peerbuds.com" *ngIf="!(isLoggedIn | async)">
 					Blog
-				</button>
+				</a>
 				<button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']" *ngIf="!(isLoggedIn | async)">
 					White Paper
 				</button>
@@ -145,12 +145,30 @@
 		</mat-toolbar-row>
 		<mat-toolbar-row class="show-small" style="border-top: 1px solid #ddd;">
 			<div style="display: flex; height: 100%; width: 100%;">
-				<button mat-button class="headerButtons" [routerLink]="['/home/homefeed']" *ngIf="(isLoggedIn | async)">
+				<!--<button mat-button class="headerButtons" [routerLink]="['/home/homefeed']" *ngIf="(isLoggedIn | async)">
 					Explore
-				</button>
-				<button mat-button class="headerButtons" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)">
+				</button>-->
+				<button mat-button class="headerButtons" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)" style="text-align: left;">
 					<mat-icon class="headerNewActionButton">add_circle_outline</mat-icon>
 				</button>
+				<span class="header-progress-bar" *ngIf="isEmailVerified && !profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
+					Setup Karma Wallet
+					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
+						on Ethereum Blockchain
+					</div>
+				</span>
+				<span class="header-progress-bar" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['story', 'me']" >
+					{{profile.peer[0].id | gyanBalance : 'fixed' | async}} GYAN
+					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300; position: relative; top: -7px;">
+						+ {{profile.peer[0].id | gyanBalance: 'floating' | async}} NEW
+					</div>
+				</span>
+				<span class="header-progress-bar" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
+					{{profile.peer[0].id | karmaBalance : 'peer' | async | currency : ' ' : ' ' : '1.0-0'}} KARMA
+					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300; position: relative; top: -7px;">
+						{{profile.peer[0].id | karmaBalance : 'peer': 'USD' | async | currency: 'USD'}} USD
+					</div>
+				</span>
 				<!--<button mat-button class="headerButtons" [matMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async)">
 					Learn
 				</button>-->
@@ -167,7 +185,7 @@
 		</mat-toolbar-row>
 	</mat-toolbar>
 </header>
-<mat-menu #headerTeachMenu>
+<mat-menu #headerTeachMenu [overlapTrigger]="false">
 	<!--<button mat-menu-item [routerLink]="['/console/dashboard']" *ngIf="isTeacher">
 		<i class="fas fa-bars lighterText"></i>&nbsp;&nbsp;&nbsp; Dashboard
 	</button>-->
@@ -203,7 +221,7 @@
 	</button>-->
 </mat-menu>
 
-<mat-menu #headerLearnMenu>
+<mat-menu #headerLearnMenu [overlapTrigger]="false">
 	<!--<button mat-menu-item [routerLink]="['/console/dashboard']">
 		<i class="fas fa-bars lighterText"></i>&nbsp;&nbsp;&nbsp; Dashboard
 	</button>-->
@@ -227,9 +245,12 @@
 	</button>-->
 </mat-menu>
 
-<mat-menu #headerUserMenu>
+<mat-menu #headerUserMenu [overlapTrigger]="false">
 	<button mat-menu-item [routerLink]="['console', 'profile', 'verification']" class="mat-menu-item-colored" *ngIf="profile.peer && profile.peer.length > 0 && !profile.peer[0].accountVerified">
 		<i class="fa fa-question-circle-o" style="color: #fff;"></i>&nbsp;&nbsp;&nbsp; Verify Account >
+	</button>
+	<button mat-menu-item [routerLink]="['/console/dashboard']" class="mat-menu-item-colored" *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].accountVerified">
+		<i class="fas fa-database" style="color: #fff;"></i>&nbsp;&nbsp; Dashboard >
 	</button>
 	<button mat-menu-item [routerLink]="['/profile', userId]">
 		<i class="fas fa-user lighterText"></i>&nbsp;&nbsp;&nbsp; {{profile.first_name | titlecase}} {{profile.last_name | titlecase}}
@@ -254,7 +275,7 @@
 	</button>
 </mat-menu>
 
-<mat-menu #profileCompletionMenu>
+<mat-menu #profileCompletionMenu [overlapTrigger]="false">
 	<span *ngIf="profileCompletionObject">
 		<button mat-menu-item [routerLink]="['/console/profile/edit']">
 			<mat-icon class="profile-check-disabled" *ngIf="!profileCompletionObject['personal']">mode_edit</mat-icon>

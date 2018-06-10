@@ -44,30 +44,62 @@ export class SholarshipPageComponent implements OnInit {
 	}
 	
 	initializePage() {
-		const filter = {
-			'include': [{ 'owner': 'profiles' }, 'peers_joined',
-				{
-					'allowed_collections': [
-						'calendars',
-						{
-							'owners': ['profiles']
-						},
-						{ 'participants': 'profiles' },
-						'topics',
-					]
-				}]
-		};
-		this._scholarshipService.fetchScholarship(this.scholarshipId, filter)
-			.subscribe((res: any) => {
-				this.scholarship = res;
-				console.log(this.scholarship);
-				for (let index = 0; (!this.joined && index < this.scholarship.peers_joined.length); index++) {
-					const peer = this.scholarship.peers_joined[index];
-					if (peer.id === this.userId) {
-						this.joined = true;
-					}
+		let filter;
+		if (this.scholarshipId === 'global') {
+			filter =  {
+				'include': [{ 'owner': 'profiles' }, 'peers_joined',
+					{
+						'allowed_collections': [
+							'calendars',
+							{
+								'owners': ['profiles']
+							},
+							{ 'participants': 'profiles' },
+							'topics',
+						]
+					}],
+				'where': {
+					type: 'public'
 				}
-			});
+			};
+			this._scholarshipService.fetchScholarships(filter)
+				.subscribe((res: any) => {
+					this.scholarship = res[0];
+					this.scholarshipId = this.scholarship.id;
+					console.log(this.scholarship);
+					for (let index = 0; (!this.joined && index < this.scholarship.peers_joined.length); index++) {
+						const peer = this.scholarship.peers_joined[index];
+						if (peer.id === this.userId) {
+							this.joined = true;
+						}
+					}
+				});
+		} else {
+			filter = {
+				'include': [{ 'owner': 'profiles' }, 'peers_joined',
+					{
+						'allowed_collections': [
+							'calendars',
+							{
+								'owners': ['profiles']
+							},
+							{ 'participants': 'profiles' },
+							'topics',
+						]
+					}]
+			};
+			this._scholarshipService.fetchScholarship(this.scholarshipId, filter)
+				.subscribe((res: any) => {
+					this.scholarship = res;
+					console.log(this.scholarship);
+					for (let index = 0; (!this.joined && index < this.scholarship.peers_joined.length); index++) {
+						const peer = this.scholarship.peers_joined[index];
+						if (peer.id === this.userId) {
+							this.joined = true;
+						}
+					}
+				});
+		}
 	}
 	
 	openCollection(collection: any) {

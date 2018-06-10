@@ -198,6 +198,10 @@ mat-subheader {
 	margin: 1.5rem 0;
 }
 
+.mat-tooltip {
+	background: #000 !important;
+}
+
 .mat-toolbar {
 	position: fixed !important;
 	z-index: 1000 !important;
@@ -1286,7 +1290,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 }
 
 .mat-dialog-actions {
-	padding: 12px 24px !important;
+	padding: 12px 24px 12px 0 !important;
 }
 
 .my-full-screen-dialog .mat-dialog-container {
@@ -1588,14 +1592,12 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 .share-panel{
 	position: absolute;
 	color: white;
-	flex-direction: row;
-	justify-content: space-between;
 	z-index: 1;
 	display: none;
 	width: 18%;
 }
 .recommendation-card:hover .share-panel {
-	display: inline-flex;
+	display: inline-grid;
 }
 
 /* Chat Bubble */
@@ -1829,6 +1831,27 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	background: inherit !important;
 }
 
+.bottomButton {
+	display: none;
+}
+
+.spinner-three-bounce {
+	z-index: 2;
+}
+
+.gyanBubble {
+	margin-left: 10px !important;
+	text-align: right;
+	display: inline-grid;
+	padding: 0px 10px;
+	border-radius: 50px;
+	vertical-align: middle;
+	background: #f7f7f7;
+	color: #33bd9e;
+	position: relative;
+	top: 2px;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	.circle-thumb {
@@ -1945,6 +1968,28 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	}
 	.consoleContainer .mat-tab-nav-bar .mat-tab-links {
 		width: max-content;
+	}
+
+	.bottomButton {
+		display: block;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		background: #FF6D71;
+		color: #fff;
+		cursor: pointer;
+		padding: 12px 20px;
+		text-align: center;
+		z-index: 1000;
+	}
+
+	footer {
+		margin-bottom: 90px;
+	}
+
+	.mat-form-field {
+		width: 100% !important;
 	}
 
 }

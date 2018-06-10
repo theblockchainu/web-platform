@@ -8,6 +8,7 @@ import { KnowledgeStoryService } from '../../_services/knowledge-story/knowledge
 import { CollectionService } from '../../_services/collection/collection.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
+import {ProfileService} from "../../_services/profile/profile.service";
 
 @Component({
 	selector: 'app-knowledge-story',
@@ -29,6 +30,7 @@ export class KnowledgeStoryComponent implements OnInit {
 	public pageUrl: string;
 	public storyNotFound = false;
 	public requested: boolean;
+	public globalStory = false;
 	constructor(
 		private activatedRoute: ActivatedRoute,
 		private _cookieUtilsService: CookieUtilsService,
@@ -38,6 +40,7 @@ export class KnowledgeStoryComponent implements OnInit {
 		private titleService: Title,
 		private metaService: Meta,
 		public dialogsService: DialogsService,
+		private _profileService: ProfileService,
 		private matSnackBar: MatSnackBar,
 		public authService: AuthenticationService,
 	) {
@@ -99,7 +102,7 @@ export class KnowledgeStoryComponent implements OnInit {
 			]
 		};
 		this.storyNotFound = false;
-		if (this.knowledgeStoryId) {
+		if (this.knowledgeStoryId && this.knowledgeStoryId !== 'me') {
 			this._knowledgeStoryService.fetchKnowledgeStory(this.knowledgeStoryId, filter)
 				.subscribe((res: any) => {
 					this.knowledgeStory = res;
@@ -130,7 +133,31 @@ export class KnowledgeStoryComponent implements OnInit {
 					this.storyNotFound = true;
 					this.loadingKnowledgeStory = false;
 				});
+		} else if (this.knowledgeStoryId && this.knowledgeStoryId === 'me') {
+			this.ownerView = true;
+			this.viewerApproved = true;
+			this.globalStory = true;
+			this.fetchPeerProfile();
+		} else {
+			this.storyNotFound = true;
 		}
+	}
+	
+	private fetchPeerProfile() {
+		const filter = {
+			'include': [
+				{ 'profiles': ['work', 'education'] }
+			]
+		};
+		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
+			this.knowledgeStory = {
+				'protagonist' : []
+			};
+			this.knowledgeStory.protagonist.push(res);
+			this.setTags();
+			this.fetchBlockTransactions({});
+			this.loadingKnowledgeStory = false;
+		});
 	}
 	
 	private fetchBlockTransactions(topics) {
@@ -138,11 +165,7 @@ export class KnowledgeStoryComponent implements OnInit {
 		this._knowledgeStoryService.fetchBlockTransactions(this.knowledgeStory.protagonist[0].ethAddress, topics)
 			.subscribe(
 				res => {
-					this.blockTransactions = [];
-					res.forEach(transaction => {
-						const resultObject = JSON.parse(transaction.result);
-						this.blockTransactions.push(resultObject);
-					});
+					this.blockTransactions = res;
 					this.loadingBlockTransactions = false;
 				},
 				err => {
@@ -238,4 +261,52 @@ export class KnowledgeStoryComponent implements OnInit {
 			this.matSnackBar.open('Error', 'Close', { duration: 3000 });
 		});
 	}
+	
+	public parseTransactionLog(result) {
+		const parsedLog = {
+			events: [],
+			hash: '',
+			args: {},
+			timestamp: ''
+		};
+		const resultObject = JSON.parse(result);
+		if (resultObject.hasOwnProperty('logs')) {
+			resultObject.logs.forEach(log => {
+				parsedLog.events.push(log.event);
+				parsedLog.hash = log.transactionHash;
+				parsedLog.args = log.args;
+			});
+		}
+		return parsedLog;
+	}
 }
+
+	/* Sample logs
+	"{
+		"tx":"0xfe018d4184e86f427bc2426890c7a858b9950c11e8dcb028069d7fb40206ce8a",
+		"receipt":{
+			"transactionHash":"0xfe018d4184e86f427bc2426890c7a858b9950c11e8dcb028069d7fb40206ce8a",
+			"transactionIndex":0,
+			"blockHash":"0xaa6017694c382c01f419f0c87c6c6287cb1440bc4b8eaf92e61a178b4004f366",
+			"blockNumber":39,
+			"gasUsed":74614,
+			"cumulativeGasUsed":74614,
+			"contractAddress":null,
+			"logs":[
+				{
+					"logIndex":0,
+					"transactionIndex":0,
+					"transactionHash":"0xfe018d4184e86f427bc2426890c7a858b9950c11e8dcb028069d7fb40206ce8a",
+					"blockHash":"0xaa6017694c382c01f419f0c87c6c6287cb1440bc4b8eaf92e61a178b4004f366",
+					"blockNumber":39,
+					"address":"0x8f0483125fcb9aaaefa9209d8e9d7b9c8b9fb90f",
+					"type":"mined",
+					"event":"ScholarshipJoin",
+					"args":{
+						"_id":"0x6439353865313633383762373437333039636461323462633936316635626462",
+						"_participantAddress":"0x680fa2622aba8bfd617f5d5775edcc0b3101c67d",
+						"pbNode":"0x92797c984f57b3acb092ec89c77241060d341e41"
+					}
+				}
+			]
+	*/

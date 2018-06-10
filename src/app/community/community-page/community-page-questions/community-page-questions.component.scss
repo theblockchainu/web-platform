@@ -9,8 +9,10 @@
   color: #333;
 }
 
-.commentButton {
-  color: #333;
+.acceptButton {
+  color: #33bd9e;
+	border: 1px solid #33bd9e;
+	padding: 4px 10px;
 }
 
 .followButton {
@@ -71,4 +73,17 @@
   padding: 30px 20px;
   margin-left: 0px;
   margin-right: 0px;
+}
+
+.answerFormField {
+	margin-left: 15px;
+	width: 88%;
+	margin-bottom: 20px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.answerFormField {
+		width: 80% !important;
+	}
 }

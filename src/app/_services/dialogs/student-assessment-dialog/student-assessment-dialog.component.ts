@@ -51,7 +51,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 							}
 							if (assessment_na_rule.value === 'commitment') {
 								isParticipantCommitmentAssessed = true;
-								commitmentResult = assessmentCommitmentResult;
+								commitmentResult = result.assessmentCommitmentResult;
 								console.log(commitmentResult);
 							}
 						}
@@ -84,6 +84,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 	}
 	
 	public getGyanForRule(gyanPercent, totalGyan) {
+		console.log('Percent: ' + gyanPercent + ' of total gyan: ' + totalGyan);
 		return Math.floor((gyanPercent / 100) * totalGyan);
 	}
 	

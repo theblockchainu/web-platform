@@ -360,12 +360,12 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 		});
 	}
 
-	private joinCommunity() {
+	public joinCommunity() {
 		this._communityService.addParticipant(this.communityId, this.userId, (err: any, response: any) => {
 			if (err) {
 				console.log(err);
 			} else {
-				this.router.navigate(['community', this.communityId]);
+				this.initializeCommunity();
 				this.snackBar.open('Thanks for joining the community. Ask questions or share your' +
 					' find partners for your learning journey.', 'Close', {
 						duration: 5000

@@ -85,7 +85,7 @@ export class RavenErrorHandler implements ErrorHandler {
 		WhitepaperComponent,
 		KnowledgeeconomyComponent,
 		ShortreadComponent,
-		PrivatebetaComponent,
+		PrivatebetaComponent
 	],
 	imports: [
 		BrowserModule,

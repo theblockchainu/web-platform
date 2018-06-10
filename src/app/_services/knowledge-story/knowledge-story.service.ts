@@ -62,7 +62,9 @@ export class KnowledgeStoryService {
 	}
 	
 	public fetchBlockTransactions(userId: string, topics: any) {
-		return this._HttpClient.get(environment.apiUrl + '/api/peers/' + userId + '/blockTransactions?topics=' + JSON.stringify(topics), this._RequestHeaderService.options);
+		return this._HttpClient.get(environment.apiUrl + '/api/peers/' + userId + '/blockTransactions?topics=' + JSON.stringify(topics), this._RequestHeaderService.options)
+			.map(res => res,
+				err => err);
 	}
 
 	/**

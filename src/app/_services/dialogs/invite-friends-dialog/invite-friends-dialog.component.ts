@@ -30,7 +30,7 @@ export class InviteFriendsDialogComponent implements OnInit {
 	}
 	
 	public onEmailClicked() {
-		window.location.href = 'mailto:' + this.loggedinUserEmail + '?Subject=Want to join me for this experience?&body=Hey, I found this really fitting experience you should look at - ' + this.envVariable.clientUrl + this.url;
+		window.location.href = 'mailto:' + this.loggedinUserEmail + '?Subject=Want to join this ' + this.data.object.type + '?&body=Hey, I found this really fitting ' + this.data.object.type + ' you should look at - ' + this.envVariable.clientUrl + this.url;
 	}
 	
 }

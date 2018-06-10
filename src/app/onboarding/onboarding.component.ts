@@ -110,7 +110,7 @@ export class OnboardingComponent implements OnInit {
 	}
 	
 	private setTags() {
-		this.titleService.setTitle('Onboarding');
+		this.titleService.setTitle('Welcome to peerbuds...');
 		this.metaService.updateTag({
 			property: 'og:title',
 			content: 'Peerbuds Onboarding'
@@ -194,7 +194,12 @@ export class OnboardingComponent implements OnInit {
 	}
 	
 	public goToHome() {
-		this.router.navigate(['home']);
+		if (this._cookieUtilsService.getValue('dismissHome') === 'true') {
+			this.router.navigate(['home', 'homefeed']);
+		} else {
+			this.router.navigate(['home']);
+		}
+		
 	}
 	
 	public showConnectedSocials() {

@@ -7,20 +7,20 @@
 </div>
 <div class="row" *ngIf="!loadingExperiences">
 	<div class="col-md-12">
-		<div class="row margin-top-20">
+		<div class="row margin-top-20" *ngIf="userType !== 'public'">
 			<div class="col-md-12">
 				<div class="mat-body-2">Add your experience</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-11">
+		<div class="row" *ngIf="userType !== 'public'">
+			<div class="col-md-11 col-xs-10">
 				<mat-form-field [floatLabel]="'never'" class="pb-block workshopSelector margin-top-20">
 					<mat-select #selectedExperience placeholder="Select from your existing experiences" [disableRipple]="'true'">
 						<mat-option *ngFor="let experience of ownedExperiences" [value]="experience.id">{{experience.title | ucwords}}</mat-option>
 					</mat-select>
 				</mat-form-field>
 			</div>
-			<div class="col-md-1" style="top: 42px;">
+			<div class="col-md-1 col-xs-2" style="top: 42px;">
 				<mat-icon class="clickable" style="color: #33bd9e;" (click)="addExperience(selectedExperience.value)">check_circle</mat-icon>
 			</div>
 		</div>

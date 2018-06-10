@@ -23,39 +23,8 @@
 				<div class="noDataContainer" *ngIf="peers === undefined || peers.length === 0">
 					There are no peers to view with the selected criteria.
 				</div>
-				<div class="peer-recommendation-card" *ngFor="let peer of peers">
-					<a [routerLink]="'/profile/'+peer.id">
-						<div class="">
-							<img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url + '/300'}}"
-							 alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
-							<img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="workshpImg"
-							 (error)="_collectionService.userImgErrorHandler($event)">
-						</div>
-						<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}</div>
-						<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe</div>
-						<div *ngIf="peer.wallet && peer.wallet.length > 0"><i class="fab fa-ethereum"></i> {{peer.wallet[0].gyan_balance}} Gyan</div>
-						<div *ngIf="!peer.wallet || peer.wallet.length === 0"><i class="fab fa-ethereum"></i> 0 Gyan</div>
-						<div class="col-sm-12 padding-left-0 ">
-							<span *ngIf="!peer.topics || peer.topics.length<=2 ">
-								{{peer.topics}}
-							</span>
-							<span *ngIf="peer.topics && peer.topics.length>2"> {{peer.topics | initial: 1}}
-								<b matTooltip="{{peer.topics}}">
-									+{{peer.topics.length-2}} more
-								</b>
-							</span>
-						</div>
-						<div class="col-sm-12 padding-left-0" style="margin-top: -2px; font-size: 13px;">
-							<p-rating class="padding-left-0" style="float: left;" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
-							</p-rating>
-							<span class="padding-left-10" *ngIf="peer.reviewsAboutYou && peer.reviewsAboutYou.length>0" style="text-align: left">
-								<label>{{peer.reviewsAboutYou.length}} reviews</label>
-							</span>
-							<span class="padding-left-10" *ngIf="!peer.reviewsAboutYou || peer.reviewsAboutYou.length===0" style="text-align: left">
-								<label>0 reviews</label>
-							</span>
-						</div>
-					</a>
+				<div *ngFor="let peer of peers">
+					<app-peer-card [peer]="peer"></app-peer-card>
 				</div>
 			</div>
 		</div>
