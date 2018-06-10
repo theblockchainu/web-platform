@@ -26,7 +26,7 @@
         <mat-icon style="position: relative; top: 5px;">
           keyboard_arrow_up
         </mat-icon>
-        <span style="font-size:14px">Please select a date for this day to continue adding activities...</span>
+        <span style="font-size:14px">Please give a calendar date to this day so we know where to place it in your timeline...</span>
       </div>
     </div>
   </div>
@@ -40,8 +40,8 @@
           <mat-list-item *ngFor="let Content of itenaryForm.controls['contents']['controls']; let i=index" style="margin: 20px 0px; padding: 0px 0px; height: fit-content;">
             <div class="col-md-3" style="padding-left: 0px; margin-right: 10px;" (click)="findAndOpenDialog(i)">
               <img *ngIf="!Content.value.imageUrl" src="/assets/images/placeholder-image.jpg" style="width: 140px;">
-              <img *ngIf="Content.value.imageUrl  && Content.value.type !== 'video'" src="{{envVariable.apiUrl + Content.value.imageUrl}}/500" (error)="imgErrorHandler($event)"
-                style="width: 140px;">
+              <img *ngIf="Content.value.imageUrl  && Content.value.type !== 'video'" src="{{envVariable.apiUrl + Content.value.imageUrl}}/500"
+                (error)="imgErrorHandler($event)" style="width: 140px;">
               <video *ngIf="Content.value.imageUrl && Content.value.type === 'video'" width="100%" class="center-block itenary-media" preload="metadata"
                 poster="../../../assets/images/placeholder-image.jpg" controls>
                 <source src="{{envVariable.apiUrl + Content.value.imageUrl}}" type="video/mp4">
@@ -67,7 +67,7 @@
     <div class="row" style="margin-bottom: 80px; margin-top: 10px;font-size:16px;">
       <div class="col-md-12 margin-top-30">
         <span class="activity-title">
-          Add new activity
+          What type of activity would you like to schedule on this day?
         </span>
         &emsp;
         <span class="activity-subtitle">

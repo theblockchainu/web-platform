@@ -70,19 +70,22 @@
 				<div style="display: inline-block;" *ngIf="(isLoggedIn | async) && isEmailVerified">
 					<mat-icon class="notifDot" *ngIf="hasNewMessage">fiber_manual_record</mat-icon>
 				</div>
-				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && !profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
+				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && !profile.peer[0].ethAddress && isLoggedIn | async"
+				 [routerLink]="['console', 'account', 'wallet']">
 					Setup Karma Wallet
 					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
 						on Ethereum Blockchain
 					</div>
 				</span>
-				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'dashboard']">
+				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async"
+				 [routerLink]="['console', 'dashboard']">
 					{{profile.peer[0].id | gyanBalance | async}} GYAN
 					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
 						${{profile.peer[0].id | gyanBalance: 'USD' | async}} USD
 					</div>
 				</span>
-				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']" >
+				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async"
+				 [routerLink]="['console', 'account', 'wallet']">
 					{{profile.peer[0].id | karmaBalance | async}} KARMA
 					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
 						${{profile.peer[0].id | karmaBalance : 'peer': 'USD' | async}} USD
@@ -180,9 +183,9 @@
 	<button mat-menu-item [routerLink]="['session', sessionId,'edit','10']" *ngIf="isSessionApproved && sessionId.length > 5">
 		<i class="fas fa-plus lighterText"></i>&nbsp;&nbsp;&nbsp; Available Hours
 	</button>
-	<!--<button mat-menu-item [routerLink]="['/console/teaching/workshops']">
-	  Create a Workshop
-	</button>-->
+	<button mat-menu-item [routerLink]="['/console/teaching/workshops']">
+		<i class="fas fa-plus lighterText"></i>&nbsp;&nbsp;&nbsp;New Workshop
+	</button>
 	<button mat-menu-item [routerLink]="['/console/teaching/experiences']">
 		<i class="fas fa-plus lighterText"></i>&nbsp;&nbsp;&nbsp; New Experience
 	</button>

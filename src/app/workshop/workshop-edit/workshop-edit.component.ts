@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/switchMap';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
@@ -22,6 +22,8 @@ import { Observable } from 'rxjs/Observable';
 import { TopicService } from '../../_services/topic/topic.service';
 import { PaymentService } from '../../_services/payment/payment.service';
 import { environment } from '../../../environments/environment';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { ProfileService } from '../../_services/profile/profile.service';
 
 @Component({
 	selector: 'app-workshop-edit',
@@ -29,7 +31,7 @@ import { environment } from '../../../environments/environment';
 	styleUrls: ['./workshop-edit.component.scss']
 })
 
-export class WorkshopEditComponent implements OnInit {
+export class WorkshopEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public busySave = false;
 	public busyPreview = false;
 	public busyInterest = false;
@@ -80,13 +82,15 @@ export class WorkshopEditComponent implements OnInit {
 	public maxTopics = 3;
 	public otpSent = false;
 
+	public availableAssessmentTypes = [];
+	public availableAssessmentStyles = [];
 
 	profileImagePending: Boolean;
 	workshopVideoPending: Boolean;
 	workshopImage1Pending: Boolean;
 	workshopImage2Pending: Boolean;
 
-	public step = 1;
+	public step: number;
 	public max = 14;
 	public learnerType_array;
 	public selectedLanguages;
@@ -119,14 +123,24 @@ export class WorkshopEditComponent implements OnInit {
 			{ 'participants': [{ 'profiles': ['work'] }] },
 			{ 'owners': [{ 'profiles': ['phone_numbers'] }] },
 			{ 'contents': ['schedules'] },
-			'payoutrules'
-		]
+			'payoutrules',
+			{ 'assessment_models': ['assessment_na_rules', 'assessment_rules'] }]
 	};
 	public paymentInfo: FormGroup;
 	private payoutRuleNodeId: string;
 	private payoutRuleAccountId: string;
 	// TypeScript public modifiers
 	public currentDate: Date;
+	public mobileQuery: MediaQueryList;
+	private _mobileQueryListener: () => void;
+	public gyanBalance: number;
+	public nAAssessmentParams: Array<string>;
+	public maxGyanExceding: boolean;
+	totalGyan: number;
+	totalDuration: number;
+	public assessmentForm: FormGroup;
+	public isWorkshopActive = false;
+
 	constructor(
 		public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -144,12 +158,15 @@ export class WorkshopEditComponent implements OnInit {
 		private _cookieUtilsService: CookieUtilsService,
 		private _topicService: TopicService,
 		private _paymentService: PaymentService,
-		private location: Location
+		private location: Location,
+		private media: MediaMatcher,
+		public cd: ChangeDetectorRef,
+		private profileService: ProfileService
 	) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
 			this.workshopId = params['collectionId'];
-			this.step = params['step'];
+			this.step = Number(params['step']);
 			this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code' +
 				'&client_id=ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q&scope=read_write&redirect_uri='
 				+ environment.clientUrl + '/console/account/payoutmethods&state=' + environment.clientUrl
@@ -159,9 +176,29 @@ export class WorkshopEditComponent implements OnInit {
 		});
 		this.userId = _cookieUtilsService.getValue('userId');
 		this.currentDate = moment().toDate();
+		this.getGyanBalance();
+
+	}
+
+	getGyanBalance() {
+		this.gyanBalance = 0;
+		this.profileService.getGyanBalance(this.userId).subscribe(res => {
+			this.gyanBalance = Number(res);
+		});
+	}
+
+	validateGyan() {
+		this.totalGyan = this.workshop.controls['academicGyan'].value + this.workshop.controls['nonAcademicGyan'].value;
+		if (this.totalGyan > this.gyanBalance) {
+			this.maxGyanExceding = true;
+		} else {
+			this.maxGyanExceding = false;
+		}
 	}
 
 	public ngOnInit() {
+		this.maxGyanExceding = false;
+
 		this.interest1 = new FormGroup({
 			// interests: this._fb.array([])
 		});
@@ -204,7 +241,10 @@ export class WorkshopEditComponent implements OnInit {
 			status: 'draft',
 			// createdAt: '',
 			// updatedAt: ''
+			academicGyan: '',
+			nonAcademicGyan: ''
 		});
+
 
 		this.timeline = this._fb.group({
 			calendar: this._fb.group({
@@ -224,15 +264,119 @@ export class WorkshopEditComponent implements OnInit {
 		this.selectedTopic = new FormGroup({});
 
 		this.phoneDetails = this._fb.group({
-			phoneNo: '',
+			phoneNo: [{ value: '', disabled: true }],
 			inputOTP: '',
-			countryCode: ''
+			countryCode: [{ value: '', disabled: true }]
+		});
+
+		this.assessmentForm = this._fb.group({
+			type: ['', Validators.required],
+			style: ['', Validators.required],
+			rules: this._fb.array([
+				this._fb.group({
+					value: ['', Validators.required],
+					gyan: ['', Validators.required]
+				})
+			], Validators.minLength(1)),
+			nARules: this._fb.array([
+				this._fb.group({
+					value: ['', Validators.required],
+					gyan: ['', Validators.required]
+				})
+			], Validators.minLength(1))
 		});
 
 		this.initializeFormFields();
 		this.initializeWorkshop();
 		this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
 		this._VIDEO = document.querySelector('#main-video');
+
+
+		this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
+		this._mobileQueryListener = () => this.cd.detectChanges();
+		this.mobileQuery.addListener(this._mobileQueryListener);
+	}
+
+	private initializeAssessment(result) {
+		if (result.assessment_models[0]) {
+			this.assessmentForm.controls['type'].patchValue(result.assessment_models[0].type);
+			this.assessmentForm.controls['style'].patchValue(result.assessment_models[0].style);
+			if (result.assessment_models[0].assessment_rules && result.assessment_models[0].assessment_rules.length > 0) {
+				const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
+				rulesArray.removeAt(0);
+				result.assessment_models[0].assessment_rules.forEach(rule => {
+					rulesArray.push(this._fb.group({
+						value: rule.value,
+						gyan: rule.gyan
+					}));
+				});
+			}
+			if (result.assessment_models[0].assessment_na_rules && result.assessment_models[0].assessment_na_rules.length > 0) {
+				const rulesArray = <FormArray>this.assessmentForm.controls['nARules'];
+				rulesArray.removeAt(0);
+				result.assessment_models[0].assessment_na_rules.forEach(rule => {
+					rulesArray.push(this._fb.group({
+						value: rule.value,
+						gyan: rule.gyan
+					}));
+				});
+			}
+		}
+	}
+
+	public addAssessmentRule() {
+		const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
+		console.log(rulesArray);
+		rulesArray.push(this._fb.group({
+			value: '',
+			gyan: ''
+		}));
+	}
+
+	public deleteAssessmentRule(i: number) {
+		const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
+		rulesArray.removeAt(i);
+	}
+
+	public deleteNAAssessmentRule(i: number) {
+		const rulesArray = <FormArray>this.assessmentForm.controls['nARules'];
+		rulesArray.removeAt(i);
+	}
+
+
+	public addNAAssessmentRule() {
+		const rulesArray = <FormArray>this.assessmentForm.controls['nARules'];
+		rulesArray.push(this._fb.group({
+			value: '',
+			gyan: ''
+		}));
+	}
+
+	public submitAssessment() {
+		let assessmentModelObject;
+		this._collectionService.updateAssessmentModel(this.workshopId, {
+			type: this.assessmentForm.controls['type'].value,
+			style: this.assessmentForm.controls['style'].value
+		}).flatMap(res => {
+			console.log(res);
+			assessmentModelObject = <any>res;
+			this.workshopData.assessment_models = [assessmentModelObject];
+			return this._collectionService.updateAssessmentRules(assessmentModelObject.id, this.assessmentForm.controls['rules'].value);
+		}).flatMap(res => {
+			this.workshopData.assessment_models[0].assessment_rules = res;
+			return this._collectionService.updateNAAssessmentRules(assessmentModelObject.id, this.assessmentForm.controls['nARules'].value);
+		}).subscribe(res => {
+			this.workshopData.assessment_models[0].assessment_na_rules = res;
+			this._leftSideBarService.updateSideMenu(this.workshopData, this.sidebarMenuItems);
+			this.step++;
+			this.workshopStepUpdate();
+			this.router.navigate(['workshop', this.workshopId, 'edit', this.step]);
+		}, err => {
+			console.log(err);
+			this.snackBar.open('An error occurred', 'close', {
+				duration: 5000
+			});
+		});
 	}
 
 	private extractDate(dateString: string) {
@@ -282,21 +426,24 @@ export class WorkshopEditComponent implements OnInit {
 	}
 
 	private initializeTimeLine(res) {
+		console.log('Timeline');
+		console.log(res);
 		const sortedCalendar = this.sort(res.calendars, 'startDate', 'endDate');
-		if (sortedCalendar[0] && sortedCalendar[0].startDate) {
+		if (sortedCalendar[0] !== undefined && sortedCalendar[0].startDate) {
 			const calendar = sortedCalendar[0];
 			calendar['startDate'] = this.extractDate(calendar.startDate);
 			calendar['endDate'] = this.extractDate(calendar.endDate);
 			this._collectionService.sanitize(calendar);
 
 			if (this.workshopData.status === 'active') {
-				this.isWorkShopActive = true;
+				this.isWorkshopActive = true;
 				this.activeWorkshop = 'disabledMAT';
 			}
 			this.timeline.controls.calendar.patchValue(calendar);
 			this.initializeContentForm(res);
 		}
 		this.initializeCalendarCheck(res);
+
 	}
 
 	private initializeCalendarCheck(workshopData: any) {
@@ -456,6 +603,11 @@ export class WorkshopEditComponent implements OnInit {
 
 		this.currencies = ['USD', 'INR', 'GBP'];
 
+		this.availableAssessmentTypes = ['Peer', 'Teacher', 'Third Party'];
+
+		this.availableAssessmentStyles = ['Grades', 'Percentage', 'Percentile'];
+
+		this.nAAssessmentParams = ['attendance', 'community'];
 
 		this.learnerType_array = {
 			learner_type: [
@@ -493,6 +645,31 @@ export class WorkshopEditComponent implements OnInit {
 		this.profileImagePending = true;
 		this.workshopVideoPending = true;
 		this.workshopImage1Pending = true;
+
+		this.workshop.controls['academicGyan'].valueChanges.subscribe(res => {
+			this.validateGyan();
+		});
+		this.workshop.controls['nonAcademicGyan'].valueChanges.subscribe(res => {
+			this.validateGyan();
+		});
+		this.timeline.valueChanges.subscribe(res => {
+			this.totalHours();
+		});
+	}
+
+	private totalHours(): void {
+		let totalLength = 0;
+		this.timeline.value.contentGroup.itenary.forEach((itenaryObj: any) => {
+			itenaryObj.contents.forEach(contentObj => {
+				if (contentObj.type === 'online') {
+					const startMoment = moment(contentObj.schedule.startTime);
+					const endMoment = moment(contentObj.schedule.endTime);
+					const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
+					totalLength += parseInt(contentLength, 10);
+				}
+			});
+		});
+		this.totalDuration = totalLength;
 	}
 
 	filter(val: string): string[] {
@@ -512,6 +689,8 @@ export class WorkshopEditComponent implements OnInit {
 					this.retrieveAccounts();
 					this.initializeFormValues(res);
 					this.initializeTimeLine(res);
+					this.initializeAssessment(res);
+
 					if (res.status === 'active' && this.sidebarMenuItems) {
 						this.sidebarMenuItems[3].visible = false;
 						this.sidebarMenuItems[4].visible = true;
@@ -664,6 +843,9 @@ export class WorkshopEditComponent implements OnInit {
 
 		// Currency, Amount, Cancellation Policy
 		this.workshop.controls.price.patchValue(res.price);
+		if (res.price === 0) {
+			this.freeWorkshop = true;
+		}
 		if (res.currency) {
 			this.workshop.controls.currency.patchValue(res.currency);
 		}
@@ -674,12 +856,23 @@ export class WorkshopEditComponent implements OnInit {
 		// Status
 		this.workshop.controls.status.setValue(res.status);
 
+		// Gyan
+		this.workshop.controls['academicGyan'].patchValue(res.academicGyan);
+
+		this.workshop.controls['nonAcademicGyan'].patchValue(res.nonAcademicGyan);
+
+
 		this.isPhoneVerified = res.owners[0].phoneVerified;
 
 		this.isSubmitted = this.workshop.controls.status.value === 'submitted';
 
 		if (res.owners[0].profiles[0].phone_numbers && res.owners[0].profiles[0].phone_numbers.length) {
 			this.phoneDetails.controls.phoneNo.patchValue(res.owners[0].profiles[0].phone_numbers[0].subscriber_number);
+		}
+
+		if (res.owners[0].profiles[0].phone_numbers && res.owners[0].profiles[0].phone_numbers.length) {
+			this.phoneDetails.controls.phoneNo.patchValue(res.owners[0].profiles[0].phone_numbers[0].subscriber_number);
+			this.phoneDetails.controls.countryCode.patchValue(res.owners[0].profiles[0].phone_numbers[0].country_code);
 		}
 		if (!this.timeline.controls.calendar.value.startDate || !this.timeline.controls.calendar.value.endDate) {
 			this.makeDatesEditable();
@@ -710,7 +903,6 @@ export class WorkshopEditComponent implements OnInit {
 		const tempWorkshopData = this.workshopData;
 		tempWorkshopData.imageUrls = this.workshop.controls['imageUrls'].value;
 		this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(tempWorkshopData, this.sidebarMenuItems);
-
 	}
 
 	public addVideoUrl(value: String) {
@@ -740,9 +932,7 @@ export class WorkshopEditComponent implements OnInit {
 				this.addImageUrl(response.url);
 				this.uploadingImage = false;
 			}, err => {
-				this.snackBar.open(err.message, 'Close', {
-					duration: 5000
-				});
+				this.snackBar.open(err.message, 'Close', { duration: 5000 });
 				this.uploadingImage = false;
 			});
 		}
@@ -758,23 +948,52 @@ export class WorkshopEditComponent implements OnInit {
 	}
 
 	public submitWorkshop(data, timeline?, step?) {
-		if (this.calendarIsValid() && (step !== 13 || this.workshopHasOnlineContent(timeline))) {
-			if (this.workshop.controls.status.value === 'active') {
-				this.dialogsService.openCollectionCloneDialog({
-					type: 'workshop'
-				}).subscribe((result) => {
-					if (result === 'accept') {
-						this.executeSubmitWorkshop(data, timeline, step);
-					} else if (result === 'reject') {
-						this.router.navigate(['/console/teaching/workshops']);
+		if (this.calendarIsValid()) {
+			switch (Number(this.step)) {
+				case 11:
+					this.totalGyan = this.workshop.controls['academicGyan'].value + this.workshop.controls['nonAcademicGyan'].value;
+					console.log(this.totalGyan);
+					console.log(this.gyanBalance);
+					if (this.totalGyan > this.gyanBalance) {
+						this.dialogsService.showGyanNotif(this.gyanBalance, this.totalGyan).subscribe(res => {
+							if (res) {
+								this.checkStatusAndSubmit(data, timeline, step);
+							}
+						});
+					} else {
+						this.checkStatusAndSubmit(data, timeline, step);
 					}
-				});
-			} else {
-				console.log(step);
-				this.executeSubmitWorkshop(data, timeline, step);
+					break;
+				case 14:
+					if (!this.workshopHasOnlineContent(timeline) && (this.totalGyan > this.gyanBalance) && (this.totalDuration <= this.totalGyan)) {
+						this.snackBar.open('You still need to add ' + (this.totalGyan - this.totalDuration) + ' hours of learning to proceed',
+							'Close', { duration: 3000 });
+					} else {
+						this.checkStatusAndSubmit(data, timeline, step);
+					}
+					break;
+				default:
+					this.checkStatusAndSubmit(data, timeline, this.step);
+					break;
 			}
 		}
+	}
 
+	private checkStatusAndSubmit(data, timeline?, step?) {
+		if (this.workshop.controls.status.value === 'active') {
+			this.dialogsService.openCollectionCloneDialog({
+				type: 'workshop'
+			}).subscribe((result) => {
+				if (result === 'accept') {
+					this.executeSubmitWorkshop(data, timeline, step);
+				} else if (result === 'reject') {
+					this.router.navigate(['/console/teaching/workshops']);
+				}
+			});
+		} else {
+			console.log(step);
+			this.executeSubmitWorkshop(data, timeline, step);
+		}
 	}
 
 	public workshopHasOnlineContent(timeline: any) {
@@ -837,7 +1056,7 @@ export class WorkshopEditComponent implements OnInit {
 				result.owners = this.workshopData.owners;
 				this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
 
-				if (step && step === 13) {
+				if (step && step === 14) {
 					this.submitTimeline(collectionId, timeline);
 				} else {
 					this.step++;
@@ -982,7 +1201,7 @@ export class WorkshopEditComponent implements OnInit {
 	saveandexit() {
 		this.busySave = true;
 		this.workshopStepUpdate();
-		if (this.step === 13) {
+		if (this.step === 14) {
 			const data = this.timeline;
 			const body = data.value.calendar;
 			if (body.startDate && body.endDate) {
@@ -1204,6 +1423,21 @@ export class WorkshopEditComponent implements OnInit {
 		if (event) {
 			this.workshop.controls['price'].setValue(0);
 		}
+	}
+
+	ngOnDestroy(): void {
+		this.mobileQuery.removeListener(this._mobileQueryListener);
+	}
+
+	ngAfterViewInit() {
+		this.cd.detectChanges();
+	}
+
+	back() {
+		this.goto(this.step - 1);
+	}
+	next() {
+		this.goto(this.step + 1);
 	}
 
 }
