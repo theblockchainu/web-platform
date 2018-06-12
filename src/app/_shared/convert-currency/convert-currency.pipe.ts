@@ -18,7 +18,7 @@ export class ConvertCurrencyPipe implements PipeTransform {
 		if (fromCurrency === 'GYAN') {
 			return this._walletService.gyanToDollar(amount).map(
 				res => {
-					if (res && res['USD']) {
+					if (res && res['USD'] && res['USD'] !== 'NaN') {
 						return this._currencyPipe.transform(res['USD'], 'USD', 'symbol');
 					} else {
 						return this._currencyPipe.transform(0, 'USD', 'symbol');

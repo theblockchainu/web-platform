@@ -12,7 +12,7 @@
 	</span>
 	<a [routerLink]="'/experience/'+experience.id">
 		<div class="">
-			<div class="recommendation-thumb" (mouseenter)="onMouseEnter(experience)" (mouseleave)="onMouseLeave(experience)" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + experience.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
+			<div class="recommendation-thumb" (mouseenter)="onMouseEnter(experience)" (mouseleave)="onMouseLeave(experience)" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + experience.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
 				<div class="recommendation-price" [ngClass]="{'hidden': experience.cardInFocus}">
 					<span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span>
 				</div>
