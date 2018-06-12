@@ -121,7 +121,15 @@
                             <img src="/assets/images/powered_by_stripe.svg" class="stripe-image">
                         </button>
                     </div>
-                    <button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center" *ngIf="!collection.price || collection.price===0 ">FREE - Join Experience</button>
+	                <div class="terms-text" *ngIf="collection.academicGyan">
+		                <div class="terms-title">This {{collection.type}} is powered by Peerbuds Blockchain.</div>
+		                <p class="text-grey fs-15">
+		                    In order to earn knowledge credits and crypto-currency rewards from this {{collection.type}} you will need to burn {{karma | currency: ' ': ' ': '1.0-0'}} KARMA.
+		                    <br>
+		                    If you do not have enough KARMA balance, you can still participate without receiving any blockchain backed rewards.
+		                </p>
+	                </div>
+                    <button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center" *ngIf="!collection.price || collection.price===0 ">FREE - Join {{collection.type | ucwords}}</button>
 
                     <div class="display-inline-block margin-top-10" *ngIf="savingData">
                         <img src="{{loader}}" alt="loading" style="width:16px;" /> Processing Payment
@@ -152,11 +160,11 @@
                         </div>
                         <div class="seperate-section">
                             <div class="row">
-                                <div class="col-xs-5">
+                                <div class="col-xs-5" matTooltip="The amount of KARMA to be burned for participating in this {{collection.type}}">
                                     Karma required
                                 </div>
                                 <div class="col-xs-5 col-xs-offset-2" style="text-align: right;">
-                                    <i class="fas fa-fire"></i> {{karma}} Karma
+                                    <i class="fas fa-fire"></i> {{karma | currency : ' ' : ' ' : '1.0-0'}} Karma
                                 </div>
                             </div>
                         </div>
@@ -166,7 +174,7 @@
                                     Scholarship contribution
                                 </div>
                                 <div class="col-xs-5 col-xs-offset-2" style="text-align: right;">
-                                    <i class="fas fa-fire"></i> {{scholarshipAmount}} Karma
+                                    <i class="fas fa-fire"></i> {{scholarshipAmount | currency : ' ' : ' ' : '1.0-0'}} Karma
                                 </div>
                             </div>
                             <div class="row">
@@ -174,7 +182,7 @@
                                     Your contribution
                                 </div>
                                 <div class="col-xs-5 col-xs-offset-2" style="text-align: right;">
-                                    <i class="fas fa-fire"></i> {{paybleKarma}} Karma
+                                    <i class="fas fa-fire"></i> {{paybleKarma | currency : ' ' : ' ' : '1.0-0'}} Karma
                                 </div>
                             </div>
                         </div>
@@ -182,7 +190,7 @@
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div class="mat-subheading-1">
-                                        Pay from your scholarships?
+                                        Burn Karma from your scholarships?
                                     </div>
                                 </div>
                             </div>
@@ -194,7 +202,7 @@
                                                 <mat-checkbox formControlName="selected">
                                                     {{scholarship.value.title}}
                                                     <br>
-                                                    <i class="fas fa-fire"></i> {{scholarship.value.id | karmaBalance: 'scholarship' | async}} Karma
+                                                    <i class="fas fa-fire"></i> {{scholarship.value.id | karmaBalance: 'scholarship' | async | currency : ' ' : ' ' : '1.0-0'}} Karma
                                                 </mat-checkbox>
                                             </div>
                                         </div>
@@ -218,7 +226,10 @@
                         <div class="seperate-section">
                             <div class="fs-18 margin-bottom-10">Cancellation Policy</div>
                             <div class="fs-14 text-grey">Get a
-                                <span class="text-black">full refund</span> if you cancel within {{collection.cancellationPolicy}} of purchase.</div>
+                                <span class="text-black">full refund</span> if you cancel within {{collection.cancellationPolicy}} of purchase.
+	                            <br>
+	                            Karma once burned on participation cannot be refunded.
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -183,7 +183,7 @@ export class CollectionService {
 	public removeParticipant(collectionId: string, participantId: string) {
 		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/participants/rel/' + participantId, this.requestHeaderService.options);
 	}
-	/* Submit workshop for Review */
+	/* Submit class for Review */
 	public submitForReview(id: string) {
 		return this.httpClient.post(environment.apiUrl + '/api/collections/' + id + '/submitForReview', {}, this.requestHeaderService.options).map(
 			(response) => response, (err) => {
@@ -221,7 +221,7 @@ export class CollectionService {
 	}
 
 	/**
-	 * calculate number of days of a workshop
+	 * calculate number of days of a class
 	 */
 	public calculateNumberOfDays(calendar) {
 		if (calendar === undefined) {
@@ -279,7 +279,7 @@ export class CollectionService {
 		let fillerWord = '';
 		if (contents[0]) {
 			if (contents[0].type === 'online') {
-				fillerWord = 'session';
+				fillerWord = 'activity';
 			} else if (contents[0].type === 'video') {
 				fillerWord = 'recording';
 			} else if (contents[0].type === 'in-person') {
@@ -337,60 +337,60 @@ export class CollectionService {
 	}
 
 	/**
-	 * Get the progress bar value of this workshop
-	 * @param workshop
+	 * Get the progress bar value of this class
+	 * @param class
 	 * @returns {number}
 	 */
-	public getProgressValue(workshop) {
+	public getProgressValue(collection) {
 		let value = 0;
-		switch (workshop.status) {
+		switch (collection.status) {
 			case 'draft':
-				if (workshop.title !== undefined && workshop.title.length > 0) {
+				if (collection.title !== undefined && collection.title.length > 0) {
 					value += 10;
 				}
-				if (workshop.headline !== undefined && workshop.headline.length > 0) {
+				if (collection.headline !== undefined && collection.headline.length > 0) {
 					value += 10;
 				}
-				if (workshop.description !== undefined && workshop.description.length > 0) {
+				if (collection.description !== undefined && collection.description.length > 0) {
 					value += 10;
 				}
-				if (workshop.videoUrls !== undefined && workshop.videoUrls.length > 0) {
+				if (collection.videoUrls !== undefined && collection.videoUrls.length > 0) {
 					value += 10;
 				}
-				if (workshop.imageUrls !== undefined && workshop.imageUrls.length > 0) {
+				if (collection.imageUrls !== undefined && collection.imageUrls.length > 0) {
 					value += 10;
 				}
-				if (workshop.price !== undefined && workshop.price.length > 0) {
+				if (collection.price !== undefined && collection.price.length > 0) {
 					value += 10;
 				}
-				if (workshop.aboutHost !== undefined && workshop.aboutHost.length > 0) {
+				if (collection.aboutHost !== undefined && collection.aboutHost.length > 0) {
 					value += 10;
 				}
-				if (workshop.cancellationPolicy !== undefined && workshop.cancellationPolicy.length > 0) {
+				if (collection.cancellationPolicy !== undefined && collection.cancellationPolicy.length > 0) {
 					value += 10;
 				}
-				if (workshop.contents !== undefined && workshop.contents.length > 0) {
+				if (collection.contents !== undefined && collection.contents.length > 0) {
 					value += 10;
 				}
-				if (workshop.topics !== undefined && workshop.topics.length > 0) {
+				if (collection.topics !== undefined && collection.topics.length > 0) {
 					value += 10;
 				}
 				return value;
 			case 'active':
 				let startDate;
-				const calendarLength = workshop.calendars.length;
+				const calendarLength = collection.calendars.length;
 				if (calendarLength > 1) {
-					startDate = this.getCurrentCalendar(workshop.calendars) !==
-						undefined ? this.getCurrentCalendar(workshop.calendars).startDate : this.now;
+					startDate = this.getCurrentCalendar(collection.calendars) !==
+						undefined ? this.getCurrentCalendar(collection.calendars).startDate : this.now;
 				} else if (calendarLength === 1) {
-					startDate = workshop.calendars[0];
+					startDate = collection.calendars[0];
 				}
 				if (startDate > this.now) {
 					return 0;
 				}
 				const totalContents = calendarLength;
 				let pendingContents = 0;
-				workshop.contents.forEach((content) => {
+				collection.contents.forEach((content) => {
 					if (moment(startDate).add(content.schedules[0].startDay, 'days') > this.now) {
 						pendingContents++;
 					}
@@ -406,10 +406,10 @@ export class CollectionService {
 	}
 
 	/**
-	 *  Workshop
+	 *  Class
 	 */
-	public viewWorkshop(collection) {
-		this.router.navigate(['workshop', collection.id]);
+	public viewClass(collection) {
+		this.router.navigate(['class', collection.id]);
 	}
 
 	/**
@@ -434,10 +434,10 @@ export class CollectionService {
 	}
 
 	/**
-	 *  Edit Workshop
+	 *  Edit Class
 	 */
-	public openEditWorkshop(collection) {
-		this.router.navigate(['workshop', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
+	public openEditClass(collection) {
+		this.router.navigate(['class', collection.id, 'edit', collection.stage.length > 0 ? collection.stage : 1]);
 	}
 
 	/**
@@ -617,8 +617,8 @@ export class CollectionService {
 	public openCollection(collection) {
 		console.log(collection);
 		switch (collection.type) {
-			case 'workshop':
-				this.router.navigate(['/workshop', collection.id]);
+			case 'class':
+				this.router.navigate(['/class', collection.id]);
 				break;
 			case 'experience':
 				this.router.navigate(['/experience', collection.id]);
@@ -627,7 +627,7 @@ export class CollectionService {
 				this.router.navigate(['/session', collection.id]);
 				break;
 			default:
-				this.router.navigate(['/workshop', collection.id]);
+				this.router.navigate(['/class', collection.id]);
 				break;
 		}
 	}
@@ -643,10 +643,10 @@ export class CollectionService {
 	/**
 	 * getComments
 	 */
-	public getComments(workshopId: string, query: any, cb) {
+	public getComments(classId: string, query: any, cb) {
 		const filter = JSON.stringify(query);
 		this.httpClient
-			.get(environment.apiUrl + '/api/collections/' + workshopId + '/comments' + '?filter=' + filter, this.requestHeaderService.options)
+			.get(environment.apiUrl + '/api/collections/' + classId + '/comments' + '?filter=' + filter, this.requestHeaderService.options)
 			.map((response) => {
 				cb(null, response);
 			}, (err) => {
@@ -702,9 +702,9 @@ export class CollectionService {
 	/**
 	 * postComments
 	 worrkshopID   */
-	public postComments(workshopId: string, commentBody: any, cb) {
+	public postComments(classId: string, commentBody: any, cb) {
 		this.httpClient
-			.post(environment.apiUrl + '/api/collections/' + workshopId + '/comments', commentBody, this.requestHeaderService.options)
+			.post(environment.apiUrl + '/api/collections/' + classId + '/comments', commentBody, this.requestHeaderService.options)
 			.map((response) => {
 				cb(null, response);
 			}, (err) => {
@@ -802,10 +802,10 @@ export class CollectionService {
 	}
 
 
-	public calculateItenaries(workshop: any, currentCalendar: any) {
+	public calculateItenaries(_class: any, currentCalendar: any) {
 		const itenariesObj = {};
 		const itenaryArray = [];
-		workshop.contents.forEach(contentObj => {
+		_class.contents.forEach(contentObj => {
 			if (itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
 				itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
 			} else {
@@ -820,8 +820,8 @@ export class CollectionService {
 					startDate = this.calculateDate(currentCalendar.startDate, key);
 					endDate = this.calculateDate(currentCalendar.startDate, key);
 				} else {
-					startDate = this.calculateDate(workshop.calendars[0].startDate, key);
-					endDate = this.calculateDate(workshop.calendars[0].startDate, key);
+					startDate = this.calculateDate(_class.calendars[0].startDate, key);
+					endDate = this.calculateDate(_class.calendars[0].startDate, key);
 				}
 				itenariesObj[key].sort(function (a, b) {
 					return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);

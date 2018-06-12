@@ -21,7 +21,11 @@ export class CollectionSubmitDialogComponent implements OnInit {
 
   public closeDialog() {
     this.dialogRef.close('close');
-    this.router.navigate(['console', 'teaching', this.data.type + 's']);
+    if (this.data.type === 'class') {
+		this.router.navigate(['console', 'teaching', this.data.type + 'es']);
+	} else {
+		this.router.navigate(['console', 'teaching', this.data.type + 's']);
+	}
   }
 
 }

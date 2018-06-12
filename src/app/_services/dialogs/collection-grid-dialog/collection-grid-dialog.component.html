@@ -11,19 +11,19 @@
   </div>
   <hr>
   <div class="collection-grid">
-    <div class="recommendation-card" *ngFor="let workshop of data.collections; let i =index">
-      <a (click)="openCollectionPage(workshop.id)">
+    <div class="recommendation-card" *ngFor="let class of data.collections; let i =index">
+      <a (click)="openCollectionPage(class.id)">
         <div class="">
-          <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0" src="{{envVariable.apiUrl+workshop.imageUrls[0]}}/300"
+          <img class="recommendation-thumb" *ngIf="class.imageUrls && class.imageUrls.length>0" src="{{envVariable.apiUrl+class.imageUrls[0]}}/300"
             alt="workshpImg">
-          <img class="recommendation-thumb" *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0" src="/assets/images/no-image.jpg"
+          <img class="recommendation-thumb" *ngIf="!class.imageUrls || class.imageUrls.length<=0" src="/assets/images/no-image.jpg"
             alt="workshpImg">
         </div>
-        <div *ngIf="workshop.currency.length > 0" style="margin-top: 3px;">
-          <span class="mat-body-2">{{workshop.price | convertCurrency: workshop.currency |async}}</span> / person</div>
-        <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0" style="margin-top: -5px;">
-          <span class="mat-body-2">{{workshop.price | convertCurrency: 'USD' |async}}</span> / person</div>
-        <div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
+        <div *ngIf="class.currency.length > 0" style="margin-top: 3px;">
+          <span class="mat-body-2">{{class.price | convertCurrency: class.currency |async}}</span> / person</div>
+        <div *ngIf="class.currency === undefined || class.currency.length == 0" style="margin-top: -5px;">
+          <span class="mat-body-2">{{class.price | convertCurrency: 'USD' |async}}</span> / person</div>
+        <div class="mat-body-2" style="margin-top: -3px;">{{class.title | titlecase}}</div>
       </a>
     </div>
   </div>

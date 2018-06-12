@@ -198,9 +198,9 @@
 	<button mat-menu-item [routerLink]="['session', sessionId,'edit','10']" *ngIf="isSessionApproved && sessionId.length > 5">
 		<i class="fas fa-plus lighterText"></i>&nbsp;&nbsp;&nbsp; Available Hours
 	</button>
-	<!--<button mat-menu-item [routerLink]="['/console/teaching/workshops']">
-	  Create a Workshop
-	</button>-->
+	<button mat-menu-item [routerLink]="['/console/teaching/classes']">
+		<i class="fas fa-plus lighterText"></i>&nbsp;&nbsp;&nbsp;New Class
+	</button>
 	<button mat-menu-item [routerLink]="['/console/teaching/experiences']">
 		<i class="fas fa-plus lighterText"></i>&nbsp;&nbsp;&nbsp; New Experience
 	</button>
@@ -237,8 +237,8 @@
 	<button mat-menu-item [routerLink]="['/console/learning/story']">
 		<i class="fas fa-user lighterText"></i>&nbsp;&nbsp;&nbsp; Knowledge Stories
 	</button>
-	<!--<button mat-menu-item [routerLink]="['/console/learning/workshops']">
-	  Workshops
+	<!--<button mat-menu-item [routerLink]="['/console/learning/classes']">
+	  Classes
 	</button>-->
 	<!--<button mat-menu-item [routerLink]="['/console/calendar']">
 	  Calendar

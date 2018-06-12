@@ -50,16 +50,16 @@
 											<button mat-menu-item>
 												Delete
 											</button>
-											<button *ngIf="collection.type ==='workshop'" mat-menu-item [routerLink]="['/workshop/'+collection.id]">
-												View Workshop
+											<button *ngIf="collection.type ==='class'" mat-menu-item [routerLink]="['/class/'+collection.id]">
+												View Class
 											</button>
 											<button *ngIf="collection.type ==='experience'" mat-menu-item [routerLink]="['/experience/'+collection.id]">
 												View Experience
 											</button>
 										</mat-menu>
 										<mat-card-footer class="cardFooter" style="line-height: 30px">
-											<button mat-button (click)="approveWorkshop(collection)">Approve</button>
-											<button mat-button (click)="rejectWorkshop(collection)">Reject</button>
+											<button mat-button (click)="approveClass(collection)">Approve</button>
+											<button mat-button (click)="rejectClass(collection)">Reject</button>
 										</mat-card-footer>
 									</mat-card>
 								</div>
@@ -94,8 +94,8 @@
 											</button>
 										</mat-menu>
 										<mat-card-footer class="cardFooter" style="line-height: 30px">
-											<button mat-button (click)="approveWorkshop(collection)">Approve</button>
-											<button mat-button (click)="rejectWorkshop(collection)">Approve</button>
+											<button mat-button (click)="approveClass(collection)">Approve</button>
+											<button mat-button (click)="rejectClass(collection)">Approve</button>
 										</mat-card-footer>
 									</mat-card>
 								</div>

@@ -14,11 +14,11 @@
 						<mat-tab-group disableRipple>
 							<mat-tab label="Reviews about you">
 								<div style="margin-top: 25px; margin-bottom: 40px;" class="lightText">
-									Reviews are written at the end of the workshop or experience or session through peerbuds. Reviews you have received will
+									Reviews are written at the end of the class or experience or session through peerbuds. Reviews you have received will
 									be visible both here and on your public profile.
 								</div>
 								<div class="mat-body-2">
-									Received on workshops and experiences ({{profile.peer[0].reviewsAboutYou !== undefined ?  profile.peer[0].reviewsAboutYou.length : '0'}})
+									Received on classes and experiences ({{profile.peer[0].reviewsAboutYou !== undefined ?  profile.peer[0].reviewsAboutYou.length : '0'}})
 								</div>
 								<div class="review-section" *ngIf="!profile.peer[0].reviewsAboutYou ||profile.peer[0].reviewsAboutYou.length ===0">
 									<div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
@@ -53,7 +53,7 @@
 							</mat-tab>
 							<mat-tab label="Reviews by you">
 								<div style="margin-top: 25px; margin-bottom: 40px;" class="lightText">
-									Reviews are written at the end of the workshop or experience or session through peerbuds. Reviews you have received will
+									Reviews are written at the end of the class or experience or session through peerbuds. Reviews you have received will
 									be visible both here and on your public profile.
 								</div>
 								<div class="mat-body-2" *ngIf="pendingReviewCollections && pendingReviewCollections.length > 0">
@@ -72,7 +72,7 @@
 																<div style="text-align: center">
 																	<div class="pull-left">
 																		<mat-chip-list class="cardTypeChip">
-																			<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'workshop'">Workshop</mat-chip>
+																			<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'class'">Class</mat-chip>
 																			<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">Experience</mat-chip>
 																			<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">Session</mat-chip>
 																		</mat-chip-list>

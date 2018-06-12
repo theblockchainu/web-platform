@@ -39,11 +39,11 @@
                         <label *ngIf="calendars.length > 0">After your last existing cohort ends, the next cohort starts...</label>
                         <br>
                         <br>
-                        <mat-radio-group class="repeat-workshop-group" formControlName="repeatWorkshopGroupOption" (change)="repeatFrequency($event.value)">
-                            <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="immediate">
+                        <mat-radio-group class="repeat-class-group" formControlName="repeatClassGroupOption" (change)="repeatFrequency($event.value)">
+                            <mat-radio-button class="repeat-class-button margin-bottom-10" value="immediate">
                                 <span>Immediately</span>
                             </mat-radio-button>
-                            <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="days">
+                            <mat-radio-button class="repeat-class-button margin-bottom-10" value="days">
                                 <span class="valignMiddle">after</span>
                                 &nbsp;&nbsp;
                                 <mat-form-field [floatLabel]="'always'">
@@ -53,7 +53,7 @@
                                 </mat-form-field>
                                 <span class="valignMiddle">&nbsp;&nbsp;days</span>
                             </mat-radio-button>
-                            <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="weekdays">
+                            <mat-radio-button class="repeat-class-button margin-bottom-10" value="weekdays">
                                 <span class="valignMiddle">from the next</span>
                                 &nbsp;&nbsp;
                                 <mat-form-field [floatLabel]="'always'">
@@ -66,8 +66,8 @@
                         <div class="margin-top-40 flex-column">
                             <label>It will continue repeating up to..</label>
                             <br>
-                            <mat-radio-group class="repeat-workshop-group" formControlName="repeatTillOption" (change)="repeatTill($event.value)">
-                                <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="daysRepeat">
+                            <mat-radio-group class="repeat-class-group" formControlName="repeatTillOption" (change)="repeatTill($event.value)">
+                                <mat-radio-button class="repeat-class-button margin-bottom-10" value="daysRepeat">
                                     &nbsp;&nbsp;
                                     <mat-form-field [floatLabel]="'always'">
                                         <mat-select formControlName="daysRepeat" class="widthDays padding-top-0" (change)="repeatTillTrigger()">
@@ -76,7 +76,7 @@
                                     </mat-form-field>
                                     <span class="valignMiddle">&nbsp;&nbsp;more sessions</span>
                                 </mat-radio-button>
-                                <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="monthsRepeat">
+                                <mat-radio-button class="repeat-class-button margin-bottom-10" value="monthsRepeat">
                                     &nbsp;&nbsp;
                                     <mat-form-field [floatLabel]="'always'">
                                         <mat-select formControlName="monthsRepeat" class="widthDays padding-top-0" (change)="repeatTillTrigger()">
@@ -85,7 +85,7 @@
                                     </mat-form-field>
                                     <span class="valignMiddle">&nbsp;&nbsp;more months</span>
                                 </mat-radio-button>
-                                <mat-radio-button class="repeat-workshop-button margin-bottom-10" value="dateRepeat">
+                                <mat-radio-button class="repeat-class-button margin-bottom-10" value="dateRepeat">
                                     <span class="valignMiddle">the date</span>
                                     &nbsp;&nbsp;
                                     <mat-form-field [floatLabel]="'always'">

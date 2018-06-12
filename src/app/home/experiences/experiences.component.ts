@@ -239,7 +239,7 @@ export class ExperiencesComponent implements OnInit {
 		} else {
 			query = {
 				'include': [
-					{ 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'experience' } } }
+					{ 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'participants', 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'experience' } } }
 				],
 				'where': { or: this.selectedTopics }
 			};
@@ -352,7 +352,7 @@ export class ExperiencesComponent implements OnInit {
 
 	}
 
-	openTopicsDialog(): void {
+	public openTopicsDialog(): void {
 		const dialogRef = this.dialog.open(SelectTopicsComponent, {
 			width: '250px',
 			height: '300px',

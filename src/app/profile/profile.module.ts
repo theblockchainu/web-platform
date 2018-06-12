@@ -5,7 +5,7 @@ import { ProfileComponent } from './profile.component';
 
 import { ProfileRoutingModule } from './profile-routing.module';
 import { MatTabsModule } from '@angular/material';
-import { SeeDatesWorkshopComponent } from './see-dates-workshop/see-dates-workshop.component';
+import { SeeDatesClassComponent } from './see-dates-class/see-dates-class.component';
 import { ExtractLanguagePipe } from '../_shared/extract-language/extract-language.pipe';
 
 @NgModule({
@@ -15,6 +15,6 @@ import { ExtractLanguagePipe } from '../_shared/extract-language/extract-languag
     ProfileRoutingModule,
     MatTabsModule
   ],
-  declarations: [ProfileComponent, SeeDatesWorkshopComponent, ExtractLanguagePipe],
+  declarations: [ProfileComponent, SeeDatesClassComponent, ExtractLanguagePipe],
 })
 export class ProfileModule { }

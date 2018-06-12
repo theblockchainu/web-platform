@@ -3,8 +3,6 @@ import {environment} from '../../../environments/environment';
 import {CookieUtilsService} from '../../_services/cookieUtils/cookie-utils.service';
 import {CollectionService} from '../../_services/collection/collection.service';
 import {DialogsService} from '../../_services/dialogs/dialog.service';
-import {Router} from '@angular/router';
-import {UcWordsPipe} from 'ngx-pipes';
 
 @Component({
 	selector: 'app-experience-card',
@@ -17,6 +15,7 @@ export class ExperienceCardComponent implements OnInit {
 	public userId;
 	
 	@Input() experience: any;
+	@Input() cardsPerRow = 5;
 	@Output() refresh = new EventEmitter<any>();
 	
 	constructor(
@@ -33,7 +32,7 @@ export class ExperienceCardComponent implements OnInit {
 	
 	public toggleExperienceBookmark(experience) {
 		if (!(experience.bookmarks && experience.bookmarks[0]
-			&& this.experience.bookmarks[0].peer && experience.bookmarks[0].peer[0]
+			&& experience.bookmarks[0].peer && experience.bookmarks[0].peer[0]
 			&& experience.bookmarks[0].peer[0].id === this.userId)) {
 			this._collectionService.saveBookmark(experience.id, (err, response) => {
 				this.refresh.emit(true);

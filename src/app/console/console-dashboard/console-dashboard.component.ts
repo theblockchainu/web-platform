@@ -15,7 +15,7 @@ import * as _ from 'lodash';
 @Component({
     selector: 'app-console-dashboard',
     templateUrl: './console-dashboard.component.html',
-    styleUrls: ['./console-dashboard.component.scss'],
+    styleUrls: ['./console-dashboard.component.scss', '../console.component.scss'],
     providers: [UcWordsPipe, UcFirstPipe]
 })
 export class ConsoleDashboardComponent implements OnInit {
@@ -65,13 +65,13 @@ export class ConsoleDashboardComponent implements OnInit {
     public totalLearningRatingCount = 0;
     public totalLearning5RatingCount = 0;
 
-    public totalTeachingWorkshopCount = 0;
+    public totalTeachingClassCount = 0;
     public totalTeachingExperienceCount = 0;
     public totalTeachingTopicCount = 0;
     public totalTeachingEarningValue = 0;
     public totalTeachingViews = 0;
 
-    public totalLearningWorkshopCount = 0;
+    public totalLearningClassCount = 0;
     public totalLearningExperienceCount = 0;
     public totalLearningTopicCount = 0;
 
@@ -280,9 +280,9 @@ export class ConsoleDashboardComponent implements OnInit {
         const now = moment();
         data.forEach(collection => {
 
-            // Count the total teaching workshops and experiences
-            if (collection.type === 'workshop') {
-                this.totalTeachingWorkshopCount++;
+            // Count the total teaching classes and experiences
+            if (collection.type === 'class') {
+                this.totalTeachingClassCount++;
             } if (collection.type === 'experience') {
                 this.totalTeachingExperienceCount++;
             } if (collection.views) {
@@ -429,7 +429,7 @@ export class ConsoleDashboardComponent implements OnInit {
             }
         }
 
-        this.collections = _.union(this.ongoingArray, this.upcomingArray, this.pastArray);
+        this.collections = _.slice(_.union(this.ongoingArray, this.upcomingArray, this.pastArray), 0, 2);
     }
 
     public onSelect(collection) {
@@ -542,7 +542,7 @@ export class ConsoleDashboardComponent implements OnInit {
     }
 
     /**
-     * calculate number of days of a workshop
+     * calculate number of days of a class
      */
     public getThisCollectionDate(collection) {
         if (collection.calendarId === undefined) {
@@ -636,14 +636,14 @@ export class ConsoleDashboardComponent implements OnInit {
         return contents[0];
     }
     /**
-     * Get the progress bar value of this workshop
-     * @param workshop
+     * Get the progress bar value of this class
+     * @param class
      * @returns {number}
      */
-    public getProgressValue(workshop) {
+    public getProgressValue(_class) {
         let max = 0;
         let progress = 0;
-        workshop.contents.forEach(content => {
+		_class.contents.forEach(content => {
             max++;
             switch (content.type) {
                 case 'online':
@@ -680,8 +680,8 @@ export class ConsoleDashboardComponent implements OnInit {
     private createLearningCollectionsOutput(data: any) {
         const now = moment();
         data.forEach(collection => {
-            if (collection.type === 'workshop') {
-                this.totalLearningWorkshopCount++;
+            if (collection.type === 'class') {
+                this.totalLearningClassCount++;
             } if (collection.type === 'experience') {
                 this.totalLearningExperienceCount++;
             } collection.calendars.forEach(calendar => {
@@ -747,7 +747,7 @@ export class ConsoleDashboardComponent implements OnInit {
             }
         }
 
-        this.learningCollections = _.union(this.ongoingLearningArray, this.upcomingLearningArray, this.pastLearningArray);
+        this.learningCollections = _.slice(_.union(this.ongoingLearningArray, this.upcomingLearningArray, this.pastLearningArray), 0, 2);
 
     }
 	

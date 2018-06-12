@@ -15,6 +15,7 @@ export class CommunityCardComponent implements OnInit {
 	public userId;
 	
 	@Input() community: any;
+	@Input() cardsPerRow = 5;
 	@Output() refresh = new EventEmitter<any>();
 	
 	constructor(

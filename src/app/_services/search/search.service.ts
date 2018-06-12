@@ -58,7 +58,7 @@ export class SearchService {
         switch (option.index.split('_')[1]) {
             case 'collection':
                 switch (option.data.type) {
-                    case 'workshop':
+                    case 'class':
                         return option.data.title;
                     case 'experience':
                         return option.data.title;
@@ -89,7 +89,7 @@ export class SearchService {
 		switch (option.index.split('_')[1]) {
 			case 'collection':
 				switch (option.data.type) {
-					case 'workshop':
+					case 'class':
 						return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
 					case 'experience':
 						return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100': '/assets/images/placeholder-image.jpg';
@@ -119,8 +119,8 @@ export class SearchService {
         switch (option.index.split('_')[1]) {
             case 'collection':
                 switch (option.data.type) {
-                    case 'workshop':
-                        return 'Workshop : ';
+                    case 'class':
+                        return 'Class : ';
                     case 'experience':
                         return 'Experience : ';
                     default:
@@ -143,8 +143,8 @@ export class SearchService {
         switch (option.index.split('_')[1]) {
             case 'collection':
                 switch (option.data.type) {
-                    case 'workshop':
-                        this.router.navigate(['/workshop', option.data.id]);
+                    case 'class':
+                        this.router.navigate(['/class', option.data.id]);
                         break;
                     case 'experience':
                         this.router.navigate(['/experience', option.data.id]);

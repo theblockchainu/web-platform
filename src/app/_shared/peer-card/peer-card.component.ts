@@ -15,6 +15,7 @@ export class PeerCardComponent implements OnInit {
 	public userId;
 	
 	@Input() peer: any;
+	@Input() cardsPerRow = 6;
 	@Output() refresh = new EventEmitter<any>();
 	
 	constructor(

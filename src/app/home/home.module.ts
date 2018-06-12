@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
-import { WorkshopsComponent } from './workshops/workshops.component';
+import { ClassesComponent } from './classes/classes.component';
 import { ExperiencesComponent } from './experiences/experiences.component';
 import { PeersComponent } from './peers/peers.component';
 
@@ -26,7 +26,7 @@ import { SelectDurationComponentComponent } from './dialogs/select-duration-comp
 	],
 	declarations: [
 		HomeComponent,
-		WorkshopsComponent,
+		ClassesComponent,
 		ExperiencesComponent,
 		PeersComponent,
 		HomefeedComponent,

@@ -18,8 +18,31 @@ label {
 	min-height:1px;
 	padding-left: 8px;
 	padding-right: 8px;
-	width: 16.66%;
 	float: left;
+}
+
+.card-width-6 {
+	width: 16.66%;
+}
+
+.card-width-5 {
+	width: 20%;
+}
+
+.card-width-4 {
+	width: 25%;
+}
+
+.card-width-3 {
+	width: 33%;
+}
+
+.card-width-2 {
+	width: 50%;
+}
+
+.card-width-1 {
+	width: 100%;
 }
 
 /* Extra small devices (phones, 600px and down) */

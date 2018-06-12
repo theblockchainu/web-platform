@@ -1,9 +1,57 @@
+.homeContainer {
+	margin-top: 2%;
+	margin-bottom: 0%;
+}
+
 .homefeed a{
 	color: black;
 }
 
 .homefeed{
 	padding-top: 45px;
+}
+
+.homeFeedContainer {
+	margin-top: 0;
+}
+
+.mat-tab-nav-bar {
+	border-bottom: 0;
+}
+
+.mat-tab-nav-bar img {
+	width: 96px;
+}
+.mat-tab-nav-bar h3 {
+	padding-left: 12px;
+	padding-top: 15px
+}
+
+
+.mat-tab-link{
+	border: 0.5px solid rgba(131, 125, 125, 0.301)
+}
+
+.noJustify a.mat-tab-link {
+	justify-content: left !important;
+	padding-left: 0px !important;
+	padding-right: 5px !important;
+	width: 275px !important;
+	height: 72px !important;
+	font-size: 1rem  !important;
+	font-weight: 600  !important;
+	background-color: transparent !important;
+	border: 1px solid rgba(0,0,0,0.1) !important;
+	border-radius: 3px !important;
+	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.06) !important;
+	margin: 15px 15px 4px 0px !important;
+	overflow: hidden !important;
+	text-align: left !important;
+}
+
+
+.mat-tab-group.mat-primary .mat-tab-label:focus, .mat-tab-group.mat-primary .mat-tab-link:focus, .mat-tab-nav-bar.mat-primary .mat-tab-label:focus, .mat-tab-nav-bar.mat-primary .mat-tab-link:focus {
+	background: none;
 }
 
 .recommendation-price {
@@ -123,12 +171,12 @@ agm-map {
 	float: left;
 }
 
-.workshop-feed .title {
+.class-feed .title {
 	font-size:17px !important;
 	color: #484848 !important;
 }
 
-.workshop-feed .headline {
+.class-feed .headline {
 	font-size:16px !important;
 	color: #767676 !important;
 }

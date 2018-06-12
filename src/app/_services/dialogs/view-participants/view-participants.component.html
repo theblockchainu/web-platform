@@ -17,7 +17,7 @@
 		<div class="row margin-bottom-20" *ngFor="let participant of data.participants">
 			<div *ngIf="participant.profiles">
 				<div class="col-md-1 vcenter">
-					<img src="{{envVariable.apiUrl+participant.profiles[0].picture_url}}" style="margin-left: 0px;" class="circle-thumb" alt="dp" (error)="_collectionService.imgErrorHandler($event)">
+					<img src="{{envVariable.apiUrl+participant.profiles[0].picture_url}}/100" style="margin-left: 0px;" class="circle-thumb" alt="dp" (error)="_collectionService.imgErrorHandler($event)">
 				</div>
 				<div class="col-md-6 vcenter">
 					<b>{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name | ucwords }}</b>

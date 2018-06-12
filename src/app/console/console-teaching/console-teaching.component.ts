@@ -16,7 +16,7 @@ declare var moment: any;
 })
 export class ConsoleTeachingComponent implements OnInit {
 
-    public workshops: any;
+    public classes: any;
     public loaded: boolean;
     public activeTab: string;
     public now: Date;
@@ -62,11 +62,11 @@ export class ConsoleTeachingComponent implements OnInit {
     }
 
     /**
-     * createWorkshop
+     * createClass
      */
-    public createWorkshop() {
-        this._collectionService.postCollection(this.userId, 'workshop').subscribe((workshopObject: any) => {
-            this.router.navigate(['workshop', workshopObject.id, 'edit', 1]);
+    public createClass() {
+        this._collectionService.postCollection(this.userId, 'class').subscribe((classObject: any) => {
+            this.router.navigate(['class', classObject.id, 'edit', 1]);
         });
     }
 
@@ -133,8 +133,8 @@ export class ConsoleTeachingComponent implements OnInit {
     }
 
     /**
-     * Get the progress bar value of this workshop
-     * @param workshop
+     * Get the progress bar value of this class
+     * @param class
      * @returns {number}
      */
     public getProgressValue(collection) {

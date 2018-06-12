@@ -1,4 +1,4 @@
-<div class="peer-recommendation-card">
+<div [ngClass]="{'peer-recommendation-card': true, 'card-width-6': cardsPerRow === 6, 'card-width-5': cardsPerRow === 5, 'card-width-4': cardsPerRow === 4, 'card-width-3': cardsPerRow === 3, 'card-width-2': cardsPerRow === 2, 'card-width-1': cardsPerRow === 1}">
 	<a [routerLink]="'/profile/'+peer.id">
 		<div class="">
 			<img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url + '/300'}}"

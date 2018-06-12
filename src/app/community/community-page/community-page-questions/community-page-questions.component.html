@@ -290,10 +290,10 @@
 								</div>
 								<div class="mat-body-1 pre-wrapped">{{answer.text | ucfirst}}</div>
 								<div style="margin-top: 20px;" *ngIf="userType !== 'public'">
-									<a class="clickable acceptButton" *ngIf="question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept" (click)="acceptAnswer(question, answer)">
-										<span *ngIf="!answer.accept && question.open"><i class="fa fa-check-circle-o"></i> <b>Accept</b></span>
+									<a class="clickable acceptButton" *ngIf="question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept && question.open" (click)="acceptAnswer(question, answer)">
+										<span><i class="fa fa-check-circle-o"></i> <b>Accept</b></span>
 									</a>
-									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept">fiber_manual_record</mat-icon>
+									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept && question.open">fiber_manual_record</mat-icon>
 									<a class="clickable acceptButton" *ngIf="answer.accept">
 										<span><i class="fa fa-check-circle"></i> <b>Accepted</b>&nbsp;&nbsp;&nbsp;<span style="font-size: 10px;">+ {{question.gyan}} GYAN</span></span>
 									</a>

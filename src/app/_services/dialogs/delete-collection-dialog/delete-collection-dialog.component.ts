@@ -29,7 +29,7 @@ export class DeleteCollectionDialogComponent implements OnInit {
         this.dialogRef.close(true);
       }
     }, err => {
-      this.snackBar.open('Workshop couldn&#39;t be deleted', 'Retry', {
+      this.snackBar.open('Class couldn&#39;t be deleted', 'Retry', {
         duration: 5000
       }).onAction().subscribe(res => {
         this.delete();

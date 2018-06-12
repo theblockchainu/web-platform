@@ -79,8 +79,8 @@ import { ScholarshipService } from '../_services/scholarship/scholarship.service
 import { GyanBalancePipe } from './gyan-balance/gyan-balance.pipe';
 import { KarmaBalancePipe } from './karma-balance/karma-balance.pipe';
 import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-story.service';
-import {ClipboardModule} from 'ngx-clipboard';
-import {ShareModule} from '@ngx-share/core';
+import { ClipboardModule } from 'ngx-clipboard';
+import { ShareModule } from '@ngx-share/core';
 import { QRCodeModule } from 'angularx-qrcode';
 import { ConvertCryptoPipe } from './convert-crypto/convert-crypto.pipe';
 import { ShortNumberPipe } from './short-number/short-number.pipe';
@@ -88,7 +88,8 @@ import {RouterModule} from '@angular/router';
 import {ExperienceCardComponent} from './experience-card/experience-card.component';
 import { CommunityCardComponent } from './community-card/community-card.component';
 import { PeerCardComponent } from './peer-card/peer-card.component';
-import { WorkshopCardComponent } from './workshop-card/workshop-card.component';
+import { ClassCardComponent } from './class-card/class-card.component';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 @NgModule({
     imports: [
@@ -140,7 +141,7 @@ import { WorkshopCardComponent } from './workshop-card/workshop-card.component';
 		ExperienceCardComponent,
 		CommunityCardComponent,
 		PeerCardComponent,
-		WorkshopCardComponent
+		ClassCardComponent
     ],
     providers: [
         CollectionService,
@@ -243,7 +244,9 @@ import { WorkshopCardComponent } from './workshop-card/workshop-card.component';
 		ExperienceCardComponent,
 		CommunityCardComponent,
 		PeerCardComponent,
-		WorkshopCardComponent
+		ClassCardComponent,
+		OwlDateTimeModule,
+		OwlNativeDateTimeModule
     ]
 })
 export class SharedModule {

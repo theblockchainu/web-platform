@@ -13,7 +13,7 @@ import { VgBufferingModule } from 'videogular2/buffering';
 import { StickyModule } from 'ng2-sticky-kit';
 import {CommunityPageComponent} from './community-page.component';
 import { CommunityPageQuestionsComponent } from './community-page-questions/community-page-questions.component';
-import { CommunityPageWorkshopsComponent } from './community-page-workshops/community-page-workshops.component';
+import { CommunityPageClassesComponent } from './community-page-classes/community-page-classes.component';
 import { CommunityPageExperiencesComponent } from './community-page-experiences/community-page-experiences.component';
 import { CommunityPageLinksComponent } from './community-page-links/community-page-links.component';
 
@@ -37,7 +37,7 @@ import { CommunityPageLinksComponent } from './community-page-links/community-pa
     StickyModule
   ],
 
-  declarations: [CommunityPageComponent, ViewParticipantsComponent, MessageParticipantComponent, CommunityPageQuestionsComponent, CommunityPageWorkshopsComponent, CommunityPageExperiencesComponent, CommunityPageLinksComponent],
+  declarations: [CommunityPageComponent, ViewParticipantsComponent, MessageParticipantComponent, CommunityPageQuestionsComponent, CommunityPageClassesComponent, CommunityPageExperiencesComponent, CommunityPageLinksComponent],
   bootstrap: [ViewParticipantsComponent, MessageParticipantComponent],
   providers: [ProjectSubmissionService]
 

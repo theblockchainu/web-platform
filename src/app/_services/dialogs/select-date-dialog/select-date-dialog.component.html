@@ -51,7 +51,10 @@
 							<br>
 							<br>
 							<div class="col-md-12">
-								<button *ngIf="mode === 'chooseDate'" mat-button (click)="selectCohort(itenaryObj.calendar.id)" class="pb-block mat-border-button">Select this cohort</button>
+								<button *ngIf="mode === 'chooseDate'" mat-button (click)="selectCohort(itenaryObj.calendar.id)" class="pb-block mat-border-button" [disabled]="this.data.maxSeats - itenaryObj.participantCount <= 0">
+									<div>Select this cohort</div>
+									<div class="mat-h5 lightText">{{this.data.maxSeats - itenaryObj.participantCount}} seats remaining</div>
+								</button>
 								<span matTooltip="This cohort has a participant, so it cannot be deleted." [matTooltipDisabled]="itenaryObj.participantCount <= 0">
 									<button type="button" *ngIf="mode === 'editDelete'" mat-button color="warn" (click)="deleteCohort($event, itenaryObj.calendar.id)"
 									        [disabled]="itenaryObj.participantCount > 0" class="pb-block mat-border-button">Delete this cohort</button>

@@ -66,13 +66,13 @@
 										</div>
 										<div class="col-xs-1 vcenter clickable">
 											<button (click)="removeViewer(viewer.id)" mat-icon-button class="lightText">
-												<mat-icon class="lightText mat-h5">remove_circle</mat-icon>
+												<mat-icon class="lightText mat-h5">remove_circle_outline</mat-icon>
 											</button>
 										</div>
 									</div>
 								</div>
 								<div class="col-xs-12">
-									<div class="mat-caption lightText margin-top-10 margin-bottom-10" *ngIf="!knowledgeStory.peer || knowledgeStory.peer.length === 1">
+									<div class="mat-caption lightText margin-top-10 margin-bottom-10" *ngIf="!knowledgeStory.peer">
 										There are no approved viewers for this story
 									</div>
 								</div>

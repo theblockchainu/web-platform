@@ -17,7 +17,7 @@ declare var moment: any;
 export class ConsoleProfileComponent implements OnInit {
 
   public userId;
-  public workshops: any;
+  public classes: any;
   public loaded: boolean;
   public activeTab: string;
   private profileId;
@@ -43,7 +43,7 @@ export class ConsoleProfileComponent implements OnInit {
   }
 
   /**
-   * createWorkshop
+   * createClass
    */
   public viewProfile() {
     this.router.navigate(['profile', this.userId]);

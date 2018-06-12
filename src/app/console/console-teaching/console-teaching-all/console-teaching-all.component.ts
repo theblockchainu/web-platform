@@ -6,7 +6,7 @@ import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.
 import { MatDialog, MatSnackBar } from '@angular/material';
 import * as _ from 'lodash';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
-import { CohortDetailDialogComponent } from '../console-teaching-workshop/cohort-detail-dialog/cohort-detail-dialog.component';
+import { CohortDetailDialogComponent } from '../console-teaching-class/cohort-detail-dialog/cohort-detail-dialog.component';
 declare var moment: any;
 import { UcFirstPipe } from 'ngx-pipes';
 
@@ -202,9 +202,9 @@ export class ConsoleTeachingAllComponent implements OnInit {
 		});
 	}
 	
-	public createWorkshop() {
-		this._collectionService.postCollection(this.userId, 'workshop').subscribe((workshopObject: any) => {
-			this.router.navigate(['workshop', workshopObject.id, 'edit', 1]);
+	public createClass() {
+		this._collectionService.postCollection(this.userId, 'class').subscribe((classObject: any) => {
+			this.router.navigate(['class', classObject.id, 'edit', 1]);
 		});
 	}
 	

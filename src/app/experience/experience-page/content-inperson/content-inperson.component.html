@@ -26,9 +26,11 @@
 		<div *ngIf="data.userType==='teacher' || data.userType==='participant' ">
 			<div class="row">
 				<div class="col-md-12 margin-bottom-20" style="text-align: right;">
-					<button mat-raised-button color="primary" *ngIf="userType ==='participant' && !data.content.hasRSVPd" (click)="rsvpToggle(data.content)">RSVP</button>
-					<button mat-button class="mat-border-button margin-bottom-20" *ngIf="data.content.hasRSVPd" (click)="viewRSVPs(data.content)" [disabled]="true"
-					        tabindex="-1"> View RSVPs </button>
+					<button mat-raised-button color="primary" *ngIf="userType ==='participant' && !data.content.hasRSVPd && !hasDatePassed(data.content.schedules[0].startTime)" (click)="rsvpContent(data.content.id)">RSVP</button>
+					<button mat-button class="mat-border-button" *ngIf="data.content.hasRSVPd || userType === 'teacher'" (click)="viewRSVPs(data.content, userType)" tabindex="-1"> View RSVPs </button>
+					<a mat-button *ngIf="data.content.hasRSVPd && userType === 'participant' && !hasDatePassed(data.content.schedules[0].startTime)" class="mat-border-button" (click)="cancelRSVP(data.content)">Cancel RSVP</a>
+					<a mat-button *ngIf="userType==='participant' && isLive(data.content) && data.content.hasRSVPd && data.calendarId" class="mat-border-button" (click)="getDirections(data.content)">Get directions</a>
+					<button mat-button class="mat-border-button margin-top-10" *ngIf="userType==='participant' && !isLive(data.content) && data.content.hasRSVPd  && data.calendarId" [disabled]="true">{{data.content.timetoSession}}</button>
 				</div>
 			</div>
 		</div>
@@ -62,9 +64,9 @@
 					<div *ngIf="userType !== 'public'">
 						<p class="pre-wrapped alignJustify">{{data.content.locations[0].location_name | trim | ucwords}}</p>
 						<p class="pre-wrapped alignJustify">{{data.content.locations[0].apt_suite | ucwords}} {{data.content.locations[0].street_address | ucwords}}, {{data.content.locations[0].city
-							| ucwords}}</p>
+						                                    | ucwords}}</p>
 						<p class="pre-wrapped alignJustify">{{data.content.locations[0].state | ucwords}} {{data.content.locations[0].zip | ucwords}}, {{data.content.locations[0].country
-							| ucwords}}</p>
+						                                    | ucwords}}</p>
 					</div>
 					<div *ngIf="userType === 'public'">
 						<agm-map [latitude]="lat" [longitude]="lng" [mapDraggable]="false" [scrollwheel]="false" [usePanning]="true" [zoomControl]="false"
@@ -99,9 +101,9 @@
 						<input matInput type="text" formControlName="description" placeholder="Post your thoughts on this activity" tabindex="-1">
 					</mat-form-field>
 					<span matTooltip="Invalid input!" [matTooltipDisabled]="chatForm.valid">
-
-            <button mat-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right" tabindex="-1">Post</button>
-          </span>
+						
+						<button mat-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right" tabindex="-1">Post</button>
+					</span>
 				</form>
 			</div>
 			<div class="col-md-12">
@@ -164,9 +166,9 @@
 										<input matInput type="text" formControlName="description" placeholder="Reply to above comment..." tabindex="-1">
 									</mat-form-field>
 									<span matTooltip="Invalid input!" [matTooltipDisabled]="replyForm.valid">
-
-                    <button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary" tabindex="-1">Post</button>
-                  </span>
+										
+										<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary" tabindex="-1">Post</button>
+									</span>
 								</form>
 							</div>
 							<div class="col-md-11 col-md-offset-1 margin-top-10">

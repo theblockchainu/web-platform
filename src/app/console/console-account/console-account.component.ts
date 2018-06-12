@@ -14,7 +14,7 @@ declare var moment: any;
 })
 export class ConsoleAccountComponent implements OnInit {
 
-  public workshops: any;
+  public classes: any;
   public loaded: boolean;
   public activeTab: string;
   public userId;
@@ -38,11 +38,11 @@ export class ConsoleAccountComponent implements OnInit {
   }
 
   /**
-   * createWorkshop
+   * createClass
    */
-  public createWorkshop() {
-    this._collectionService.postCollection(this.userId, 'workshop').subscribe((workshopObject: any) => {
-      this.router.navigate(['workshop', workshopObject.id, 'edit', 1]);
+  public createClass() {
+    this._collectionService.postCollection(this.userId, 'class').subscribe((classObject: any) => {
+      this.router.navigate(['class', classObject.id, 'edit', 1]);
     });
   }
 

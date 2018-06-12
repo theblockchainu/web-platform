@@ -6,7 +6,7 @@ import { ConsoleTeachingComponent } from '../console-teaching.component';
 import * as _ from 'lodash';
 declare var moment: any;
 import { MatDialog } from '@angular/material';
-import { CohortDetailDialogComponent } from '../console-teaching-workshop/cohort-detail-dialog/cohort-detail-dialog.component';
+import { CohortDetailDialogComponent } from '../console-teaching-class/cohort-detail-dialog/cohort-detail-dialog.component';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { MatSnackBar } from '@angular/material';
@@ -196,7 +196,7 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
       width: '45vw',
       data: cohortData,
 			panelClass: 'responsive-dialog',
-      
+    
     });
   }
 

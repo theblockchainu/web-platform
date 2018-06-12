@@ -19,7 +19,7 @@ export class SubmissionViewComponent implements OnInit {
     public userId;
     public iHaveUpvoted = false;
     public userType = 'public';
-    public workshopId = '';
+    public classId = '';
     public chatForm: FormGroup;
     public replyForm: FormGroup;
     public replyingToCommentId: string;
@@ -40,7 +40,7 @@ export class SubmissionViewComponent implements OnInit {
     ) {
         this.envVariable = environment;
         this.userType = data.userType;
-        this.workshopId = data.collectionId;
+        this.classId = data.collectionId;
         this.userId = _cookieUtilsService.getValue('userId');
         if (data.submission.peer[0].id === this.userId) {
             this.isMySubmission = true;

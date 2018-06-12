@@ -16,28 +16,28 @@ import { StickyModule } from 'ng2-sticky-kit';
 import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
 
 @NgModule({
-  imports: [
-    ExperiencePageRoutingModule,
-    CommonModule,
-    SharedModule,
-    LoadingModule.forRoot({
-      animationType: ANIMATION_TYPES.threeBounce,
-      backdropBackgroundColour: 'rgba(0,0,0,0)',
-      backdropBorderRadius: '0px',
-      primaryColour: '#33bd9e',
-      secondaryColour: '#ff5b5f',
-      tertiaryColour: '#ff6d71'
-    }),
-    VgCoreModule,
-    VgControlsModule,
-    VgOverlayPlayModule,
-    VgBufferingModule,
-    StickyModule
-  ],
-
-  declarations: [ExperiencePageComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
-  bootstrap: [ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
-  providers: [ProjectSubmissionService]
-
+	imports: [
+		ExperiencePageRoutingModule,
+		CommonModule,
+		SharedModule,
+		LoadingModule.forRoot({
+			animationType: ANIMATION_TYPES.threeBounce,
+			backdropBackgroundColour: 'rgba(0,0,0,0)',
+			backdropBorderRadius: '0px',
+			primaryColour: '#33bd9e',
+			secondaryColour: '#ff5b5f',
+			tertiaryColour: '#ff6d71'
+		}),
+		VgCoreModule,
+		VgControlsModule,
+		VgOverlayPlayModule,
+		VgBufferingModule,
+		StickyModule
+	],
+	
+	declarations: [ExperiencePageComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
+	bootstrap: [ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
+	providers: [ProjectSubmissionService]
+	
 })
 export class ExperiencePageModule { }

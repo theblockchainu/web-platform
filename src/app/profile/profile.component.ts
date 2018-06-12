@@ -43,7 +43,7 @@ export class ProfileComponent implements OnInit {
 	public interestsArray: Array<string>;
 	public userRating: number;
 	public collectionTypes: Array<string>;
-	public participatingWorkshops: Array<any>;
+	public participatingClasses: Array<any>;
 	public recommendedpeers: Array<any>;
 	public socialIdentities: any;
 	public maxVisibleInterest: number;
@@ -58,9 +58,9 @@ export class ProfileComponent implements OnInit {
 	public connectedIdentities: any;
 	public other_languages;
 	public today: Date;
-	public pastWorkshops: Array<any>;
-	public ongoingWorkshops: Array<any>;
-	public upcomingWorkshops: Array<any>;
+	public pastClasses: Array<any>;
+	public ongoingClasses: Array<any>;
+	public upcomingClasses: Array<any>;
 	public pastExperiences: Array<any>;
 	public ongoingExperiences: Array<any>;
 	public upcomingExperiences: Array<any>;
@@ -126,7 +126,7 @@ export class ProfileComponent implements OnInit {
 		this.loadingCommunities = true;
 		this.loadingPeers = true;
 		this.loadingKnowledgeStories = true;
-		this.collectionTypes = ['workshops'];
+		this.collectionTypes = ['classes'];
 		this.recommendedpeers = [];
 		this.socialIdentities = {};
 		this.maxVisibleInterest = 3;
@@ -136,7 +136,7 @@ export class ProfileComponent implements OnInit {
 		this.reviewsFromLearners = [];
 		this.reviewsFromTeachers = [];
 		this.queryForSocialIdentities = { 'include': ['identities', 'credentials'] };
-		this.participatingWorkshops = [];
+		this.participatingClasses = [];
 		this.connectedIdentities = {
 			'facebook': false,
 			'google': false
@@ -249,7 +249,7 @@ export class ProfileComponent implements OnInit {
 			// console.log(response);
 			this.topicsTeaching = response;
 			if (this.profileObj.peer[0].collections) {
-				this.getParticipatingWorkshops(this.profileObj.peer[0].collections);
+				this.getParticipatingClasses(this.profileObj.peer[0].collections);
 			} else {
 				this.loadingLearningJourney = false;
 				this.loadingPeers = true;
@@ -269,9 +269,9 @@ export class ProfileComponent implements OnInit {
 			]
 		};
 		this._profileService.getJoinedCommunities(peerId, query).subscribe(res => {
+			console.log(res);
 			this.pariticipatingCommunities = [];
-			for (let i = 0; i < res.length; i++) {
-				const community = res[i];
+			/*res.forEach(community => {
 				if (community.status === 'active') {
 					let totalGyan = 0;
 					if (community.questions) {
@@ -304,21 +304,21 @@ export class ProfileComponent implements OnInit {
 					community.gyan = totalGyan;
 					this.pariticipatingCommunities.push(community);
 				}
-			}
+			});*/
 			this.loadingCommunities = false;
 			this.loadingProfile = false;
 		});
 	}
 	
 	
-	private getParticipatingWorkshops(response: Array<any>) {
+	private getParticipatingClasses(response: Array<any>) {
 		response.forEach(collection => {
 			if (collection.reviews) {
 				collection.rating = this._collectionService.calculateRating(collection.reviews);
 			}
-			this.participatingWorkshops.push(collection);
+			this.participatingClasses.push(collection);
 		});
-		this.participatingWorkshops = _.uniqBy(this.participatingWorkshops, 'id');
+		this.participatingClasses = _.uniqBy(this.participatingClasses, 'id');
 		this.loadingLearningJourney = false;
 		this.loadingPeers = true;
 	}
@@ -443,9 +443,9 @@ export class ProfileComponent implements OnInit {
 	}
 	
 	private calculateCollectionDurations() {
-		this.pastWorkshops = [];
-		this.upcomingWorkshops = [];
-		this.ongoingWorkshops = [];
+		this.pastClasses = [];
+		this.upcomingClasses = [];
+		this.ongoingClasses = [];
 		this.pastExperiences = [];
 		this.upcomingExperiences = [];
 		this.ongoingExperiences = [];
@@ -456,14 +456,14 @@ export class ProfileComponent implements OnInit {
 				collection.totalDuration = this.calculateTotalHours(collection);
 				collection.itenaryArray = this.calculateItenaries(collection);
 				collection = this.calculateCohorts(collection);
-				if (collection.type === 'workshop' && collection.pastCohortCount > 0) {
-					this.pastWorkshops.push(collection);
+				if (collection.type === 'class' && collection.pastCohortCount > 0) {
+					this.pastClasses.push(collection);
 				}
-				if (collection.type === 'workshop' && collection.upcomingCohortCount > 0) {
-					this.upcomingWorkshops.push(collection);
+				if (collection.type === 'class' && collection.upcomingCohortCount > 0) {
+					this.upcomingClasses.push(collection);
 				}
-				if (collection.type === 'workshop' && collection.currentCohortCount > 0) {
-					this.ongoingWorkshops.push(collection);
+				if (collection.type === 'class' && collection.currentCohortCount > 0) {
+					this.ongoingClasses.push(collection);
 				}
 				if (collection.type === 'experience' && collection.pastCohortCount > 0) {
 					this.pastExperiences.push(collection);
@@ -509,11 +509,11 @@ export class ProfileComponent implements OnInit {
 		return collection;
 	}
 	
-	private calculateItenaries(workshop) {
+	private calculateItenaries(_class) {
 		const itenariesObj = {};
 		const itenaryArray = [];
-		if (workshop.contents) {
-			workshop.contents.forEach(contentObj => {
+		if (_class.contents) {
+			_class.contents.forEach(contentObj => {
 				if (itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
 					itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
 				} else {
@@ -543,10 +543,10 @@ export class ProfileComponent implements OnInit {
 	/**
 	 * calculateTotalHours
 	 */
-	public calculateTotalHours(workshop) {
+	public calculateTotalHours(_class) {
 		let totalLength = 0;
-		if (workshop.contents) {
-			workshop.contents.forEach(content => {
+		if (_class.contents) {
+			_class.contents.forEach(content => {
 				if (content.type === 'online') {
 					const startMoment = moment(content.schedules[0].startTime);
 					const endMoment = moment(content.schedules[0].endTime);

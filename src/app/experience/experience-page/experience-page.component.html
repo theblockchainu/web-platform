@@ -21,7 +21,7 @@
 			</div>
 		</div>
 		<div class="row pending-actions center" *ngIf="(calendarId !== undefined && experience.status === 'active')">
-		<!--<div class="row pending-actions center" *ngIf="(calendarId !== undefined && experience.status === 'active')">-->
+			<!--<div class="row pending-actions center" *ngIf="(calendarId !== undefined && experience.status === 'active')">-->
 			<div class="col-md-10 col-md-offset-1">
 				<span>This cohort has ended. You can still add a review and participate in discussions</span>
 			</div>
@@ -67,7 +67,7 @@
 				</span>
 			</div>
 		</div>
-
+		
 		<div class="row margin-top-40">
 			<div class="col-md-10 col-md-offset-1">
 				<div class="row experience-header">
@@ -75,28 +75,29 @@
 						<div class="row">
 							<div class="col-md-12">
 								<a class="clickable margin-bottom-10" *ngIf="calendarId && userType !== 'participant'" (click)="backToCollection(experience)">
-									< Back to experience page</a>
-										<p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title | titlecase}}
-											<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
-										</p>
-										<div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
-											<span *ngIf="currentCalendar">
-												<b>{{currentCalendar.startDate | date:'d MMM'}} to {{currentCalendar.endDate| date:'d MMM'}}</b> &nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
-											</span>
-											<span> {{totalDuration | i18nPlural : hourMapping}} {{experience.type}} &nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
-											<span *ngIf="userType==='teacher'">
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.calendars.length | i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;</span>
-											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
-												<mat-icon style="top: 5px;">date_range</mat-icon> Change cohort </a>
-											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()">
-												<mat-icon style="top: 5px;">date_range</mat-icon> Select cohort to view participants </a>
-										</div>
-										<div *ngIf="userType==='public'" style="margin-top: -12px;">
-											<span>{{itenaryArray.length | i18nPlural : dayMapping}} / {{totalDuration | i18nPlural : hourMapping}} &nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}}</span>
-										</div>
+									< Back to experience page
+								</a>
+								<p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title | titlecase}}
+									<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
+								</p>
+								<div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
+									<span *ngIf="currentCalendar">
+										<b>{{currentCalendar.startDate | date:'d MMM'}} to {{currentCalendar.endDate| date:'d MMM'}}</b> &nbsp;&nbsp;&nbsp;
+										<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
+									</span>
+									<span> {{totalDuration | i18nPlural : hourMapping}} {{experience.type}} &nbsp;&nbsp;&nbsp;
+										<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
+									<span *ngIf="userType==='teacher'">
+										<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.calendars.length | i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;</span>
+									<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
+										<mat-icon style="top: 5px;">date_range</mat-icon> Change cohort </a>
+									<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()">
+										<mat-icon style="top: 5px;">date_range</mat-icon> Select cohort to view participants </a>
+								</div>
+								<div *ngIf="userType==='public'" style="margin-top: -12px;">
+									<span>{{itenaryArray.length | i18nPlural : dayMapping}} / {{totalDuration | i18nPlural : hourMapping}} &nbsp;&nbsp;&nbsp;
+										<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}}</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -112,7 +113,7 @@
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length > 0" (click)="cancelExperience()">Cancel Experience</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length === 0" (click)=" deleteCohort()">Delete Cohort</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length >= 0 && currentCalendar.status !== 'cancelled'"
-								 (click)=" cancelCohort()">Cancel Cohort</button>
+								        (click)=" cancelCohort()">Cancel Cohort</button>
 							</mat-menu>
 						</div>
 					</div>
@@ -220,7 +221,7 @@
 									</div>
 									<div class="col-xs-8 margin-top-8">
 										<agm-map *ngIf="lat !== undefined && lng !== undefined" [latitude]="lat" [longitude]="lng" [mapDraggable]="false" [scrollwheel]="false"
-										 [usePanning]="true" [zoomControl]="false" [zoom]="14" [streetViewControl]="false">
+										         [usePanning]="true" [zoomControl]="false" [zoom]="14" [streetViewControl]="false">
 											<agm-circle [latitude]="lat" [longitude]="lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'" [strokeOpacity]="0.9"></agm-circle>
 										</agm-map>
 										<p *ngIf="lat === undefined || lng === undefined">No valid location co-ordinates recorded for this experience. Please contact the teacher or Peerbuds support.</p>
@@ -271,14 +272,14 @@
 															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate | date:'EEEE, d MMMM'}}</div>
 														</div>
 														<div (mouseover)="showViewTime(content)" (mouseout)="hideViewTime(content)" [ngClass]="{'row':true, 'timelineRowItem': true, 'timeRowItemProgress': content.views !== undefined && content.views.length > 0 && userType === 'participant'}"
-														 *ngFor="let content of itenary.contents">
+														     *ngFor="let content of itenary.contents">
 															<div class="viewTime" *ngIf="content.totalUserViewTime !== undefined" [hidden]="content.isViewTimeHidden">
 																{{content.totalUserViewTime}}
 															</div>
 															<a style="cursor:pointer;color:rgba(0,0,0,0.87)" (click)="openDialog(content, itenary.startDate, itenary.endDate)">
 																<div class="col-md-5">
 																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{envVariable.apiUrl+content.imageUrl + '/300'}}"
-																	 (error)="_collectionService.imgErrorHandler($event)">
+																	     (error)="_collectionService.imgErrorHandler($event)">
 																	<video #videoContent width="100%" height="auto" *ngIf="content.type==='video'" class="itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg">
 																		<source src="{{envVariable.apiUrl+content.imageUrl}}">
 																	</video>
@@ -318,13 +319,13 @@
 																</a>
 																<div class="row margin-top-10" *ngIf="content.type==='in-person' && ( userType==='participant' || userType === 'teacher')">
 																	<div class="col-md-12">
-																		<a mat-button *ngIf="!content.hasRSVPd && userType==='participant'" class="mat-border-button" (click)="rsvpContent(content.id)">RSVP</a>
+																		<a mat-button *ngIf="!content.hasRSVPd && userType==='participant' && !hasDatePassed(content.schedules[0].startTime)" class="mat-border-button" (click)="rsvpContent(content.id)">RSVP</a>
 																		<a mat-button *ngIf="content.hasRSVPd || userType === 'teacher'" class="mat-border-button" (click)="viewRSVPs(content, userType)">View RSVPs</a>
-																		<a mat-button *ngIf="content.hasRSVPd && userType === 'participant'" class="mat-border-button" (click)="cancelRSVP(content)">Cancel RSVP</a>
+																		<a mat-button *ngIf="content.hasRSVPd && userType === 'participant' && !hasDatePassed(content.schedules[0].startTime)" class="mat-border-button" (click)="cancelRSVP(content)">Cancel RSVP</a>
 																		<a mat-button *ngIf="userType==='participant' && isLive(content) && content.hasRSVPd && calendarId" class="mat-border-button"
-																		 (click)="getDirections(content)">Get directions</a>
+																		   (click)="getDirections(content)">Get directions</a>
 																		<button mat-button class="mat-border-button margin-top-10" *ngIf="userType==='participant' && !isLive(content) && content.hasRSVPd  && calendarId"
-																		 [disabled]="true">{{content.timetoSession}}</button>
+																		        [disabled]="true">{{content.timetoSession}}</button>
 																	</div>
 																</div>
 																<div class="row margin-top-10">
@@ -428,9 +429,9 @@
 												<div style="margin-top: 10px;" class="" *ngIf="comment.peer.length>0">
 													<div class="clickable commentProfilePic">
 														<img (click)="openProfilePage(comment.peer[0].id)" *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/user-placeholder.jpg"
-														 alt="A" class="circle-thumb margin-top-5">
+														     alt="A" class="circle-thumb margin-top-5">
 														<img (click)="openProfilePage(comment.peer[0].id)" *ngIf="comment.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ comment.peer[0].profiles[0].picture_url + '/100'}}"
-														 class="circle-thumb margin-top-5" alt="dp">
+														     class="circle-thumb margin-top-5" alt="dp">
 													</div>
 													<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
 														<div>
@@ -497,7 +498,7 @@
 																</button>
 															</mat-menu>
 															<div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px;"
-															 [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
+															     [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
 																<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
 																<mat-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</mat-icon>
 																<div>
@@ -510,9 +511,9 @@
 																<div class="" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
 																	<div class="clickable" style="float: left; margin-left: 15px;">
 																		<img (click)="openProfilePage(reply.peer[0].id)" *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/user-placeholder.jpg"
-																		 alt="A" class="clickable circle-thumb margin-top-5">
+																		     alt="A" class="clickable circle-thumb margin-top-5">
 																		<img (click)="openProfilePage(reply.peer[0].id)" *ngIf="reply.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ reply.peer[0].profiles[0].picture_url + '/100'}}"
-																		 class="clickable circle-thumb margin-top-5" alt="dp">
+																		     class="clickable circle-thumb margin-top-5" alt="dp">
 																	</div>
 																	<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
 																		<div>
@@ -562,9 +563,9 @@
 										<h3 style="display: inline-block;">Reviews ({{reviews.length}})</h3> &emsp;
 										<span style="display: inline-block;">
 											<p-rating style="display: inline-flex;" *ngIf="userType==='teacher' || userType==='public' || hasReviewed(reviews)" [ngModel]="userRating"
-											 readonly="true" stars="5" [cancel]="false"></p-rating>
+											          readonly="true" stars="5" [cancel]="false"></p-rating>
 											<p-rating style="display: inline-flex;" *ngIf="userType==='participant' && !hasReviewed(reviews)" [(ngModel)]="newUserRating"
-											 (onRate)="handleRate($event)" [cancel]="false"></p-rating>
+											          (onRate)="handleRate($event)" [cancel]="false"></p-rating>
 										</span>
 									</div>
 								</div>
@@ -617,11 +618,11 @@
 																	</mat-menu>
 																	<div class="clickable" style="float: left;">
 																		<img (click)="openProfilePage(review.peer[0].id)" *ngIf="!review.peer || !review.peer[0].profiles[0].picture_url" src="/assets/images/user-placeholder.jpg"
-																		 alt="A" class="clickable circle-thumb margin-top-5" (error)="_collectionService.imgErrorHandler($event)"
-																		 style="margin-left: 10px;">
+																		     alt="A" class="clickable circle-thumb margin-top-5" (error)="_collectionService.imgErrorHandler($event)"
+																		     style="margin-left: 10px;">
 																		<img (click)="openProfilePage(review.peer[0].id)" *ngIf=" review.peer && review.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ review.peer[0].profiles[0].picture_url + '/100'}}"
-																		 class="clickable circle-thumb margin-top-5" alt="dp" (error)="_collectionService.imgErrorHandler($event)"
-																		 style="margin-left: 10px;">
+																		     class="clickable circle-thumb margin-top-5" alt="dp" (error)="_collectionService.imgErrorHandler($event)"
+																		     style="margin-left: 10px;">
 																	</div>
 																	<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
 																		<div>
@@ -701,19 +702,19 @@
 						<div class="margin-top-70"></div>
 						<!--<hr class="margin-top-70" *ngIf="userType==='teacher' || userType === 'participant'">-->
 					</div>
-
+					
 					<!--RIGHT SIDEBAR-->
 					<div class="col-md-4 col-md-offset-1 right-content">
 						<div *ngIf="(userType==='teacher' || userType==='participant')">
 							<h3 class="margin-bottom-20">Taught By</h3>
 							<div class="row">
-								<div class="col-md-12">
+								<div class="col-xs-7">
 									<div class="clickable" style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
 										<app-profile-popup [peer]="experience.owners[0]"></app-profile-popup>
 									</div>
 									<div style="display: inline-block; margin-left: 10px;">
-										<div class="row">
-											<div class="col-md-12 clickable" (click)="openProfilePage(experience.owners[0].id)">
+										<div>
+											<div class="clickable" (click)="openProfilePage(experience.owners[0].id)">
 												<span *ngIf="experience.owners[0].profiles[0].first_name !== undefined">
 													{{experience.owners[0].profiles[0].first_name | ucwords }} {{experience.owners[0].profiles[0].last_name | ucwords }}
 												</span>
@@ -721,14 +722,17 @@
 													John Doe
 												</span>
 											</div>
-											<div class="col-md-12 mat-h5" *ngIf="experience.owners[0].headline">
+											<div class="mat-h5" *ngIf="experience.owners[0].headline">
 												{{experience.owners[0].profiles[0].headline | ucwords}}
 											</div>
-											<div class="col-md-12 mat-h5" *ngIf="!experience.owners[0].headline">
+											<div class="mat-h5" *ngIf="!experience.owners[0].headline">
 												New user
 											</div>
 										</div>
 									</div>
+								</div>
+								<div class="col-xs-5">
+									<button mat-button class="mat-border-button" (click)="openMessageDialog(experience.owners[0])">Message</button>
 								</div>
 							</div>
 							<div class="row">
@@ -736,9 +740,9 @@
 									<p>
 										<span class="pre-wrapped">{{experience.aboutHost | shorten: maxLength : '... '}}</span>
 										<span *ngIf="experience.aboutHost && experience.aboutHost.length > maxLength" (click)="showAll(experience.aboutHost.length)"
-										 style="color:#33bd9e" class="clickable">read more</span>
+										      style="color:#33bd9e" class="clickable">read more</span>
 										<span *ngIf=" experience.aboutHost && experience.aboutHost.length>140  && experience.aboutHost.length <= maxLength" (click)="showAll(experience.aboutHost.length)"
-										 style="color:#33bd9e" class="clickable">show less</span>
+										      style="color:#33bd9e" class="clickable">show less</span>
 									</p>
 								</div>
 							</div>
@@ -763,8 +767,9 @@
 											<app-profile-popup [peer]="participant"></app-profile-popup>
 										</div>
 										<div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
-											{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
-											<span *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="lightText">{{participant.profiles[0].headline}}</span>
+											{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}
+											<br>
+											<span *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="mat-caption lightText">{{participant.profiles[0].headline}}</span>
 										</div>
 									</div>
 								</div>
@@ -850,7 +855,7 @@
 								<div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
 									<span class="cal-day-badge"></span>
 									<span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d MMM'
-										}})
+									      }})
 									</span>
 								</div>
 								<div class="margin-top-10 margin-bottom-10">
@@ -866,7 +871,7 @@
 								</div>
 								<div *ngFor="let key of objectKeys(eventsForTheDay);">
 									<div class="displayFlex event clickable" *ngFor="let event of eventsForTheDay[key]" (click)="openEventDialog(clickedCohortId, event.id)"
-									 style="cursor: pointer;">
+									     style="cursor: pointer;">
 										<span>{{ event.start | date:'hh:mm' }}</span>
 										<span>
 											<b>{{ event.start | date:'a' | lowercase}}</b>
@@ -920,14 +925,24 @@
 												<span *ngIf="reviews" style="font-weight: 400; float: left; margin-left: 10px;">{{reviews.length}} reviews</span>
 												<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
 											</div>
-											<div class="col-md-12" matTooltip="You would gain {{experience.academicGyan+experience.nonAcademicGyan}} Gyan from completing this experience.">
-												<i class="fab fa-ethereum"></i> {{experience.academicGyan+experience.nonAcademicGyan}} Gyan
+											<div class="col-md-12">
+												<span matTooltip="GYAN you can earn from this class" style="font-weight: 700; vertical-align: middle;">
+													<i class="fab fa-ethereum lightText"></i> {{experience.academicGyan + experience.nonAcademicGyan}}
+												</span>
+												<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
+												<span matTooltip="KARMA required to be burned for participation" style="font-weight: 700; vertical-align: middle;">
+													<i class="fas fa-fire lightText"></i> {{(experience.academicGyan + experience.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async | shortNumber}}
+												</span>
+												<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
+												<span class="mat-border-button gyanBubbleCard" style="margin-left: 0px !important;" matTooltip="Pending payout {{getPredictedGyanEarn(experience) | convertCurrency : 'GYAN' | async}} ({{getPredictedGyanEarn(experience)}} GYAN) in 7 days">
+													<div style="font-size: 11px;">{{getPredictedGyanEarn(experience) | convertCurrency : 'GYAN' | async}}</div>
+												</span>
 											</div>
 										</div>
 									</div>
 									<div class="col-xs-4" style="padding-top: 9px;">
 										<span *ngIf="userId !== undefined && userId.length > 5" matTooltip="Please wait for your account to be approved before signing up for experiences"
-										 [matTooltipDisabled]="accountApproved === 'true'">
+										      [matTooltipDisabled]="accountApproved === 'true'">
 											<button mat-raised-button (click)="selectJoiningDates()" color="primary" [disabled]="accountApproved !== 'true'">See Dates</button>
 										</span>
 										<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this experience">
@@ -998,8 +1013,18 @@
 					<span *ngIf="reviews" style="font-weight: 400; float: left; margin-left: 10px;">{{reviews.length}} reviews</span>
 					<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
 				</div>
-				<div class="col-md-12" matTooltip="You would gain {{experience.academicGyan+experience.nonAcademicGyan}} Gyan from completing this experience.">
-					<i class="fab fa-ethereum"></i> {{experience.academicGyan+experience.nonAcademicGyan}} Gyan
+				<div class="col-md-12">
+					<span matTooltip="GYAN you can earn from this class" style="font-weight: 700; vertical-align: middle;">
+						<i class="fab fa-ethereum"></i> {{experience.academicGyan + experience.nonAcademicGyan}}
+					</span>
+					<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
+					<span matTooltip="KARMA required to be burned for participation" style="font-weight: 700; vertical-align: middle;">
+						<i class="fas fa-fire"></i> {{(experience.academicGyan + experience.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async | shortNumber}}
+					</span>
+					<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
+					<span class="mat-border-button gyanBubbleCard" style="margin-left: 0px !important;" matTooltip="Pending payout {{getPredictedGyanEarn(experience) | convertCurrency : 'GYAN' | async}} ({{getPredictedGyanEarn(experience)}} GYAN) in 7 days">
+						<div style="font-size: 11px;">{{getPredictedGyanEarn(experience) | convertCurrency : 'GYAN' | async}}</div>
+					</span>
 				</div>
 			</div>
 		</div>
