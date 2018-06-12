@@ -46,10 +46,8 @@
 						<div class="continueLearning-card" *ngFor="let collection of ongoingArray; let i =index">
 							<a *ngIf="i<3" [routerLink]="'/' + collection.type + '/'+collection.id+'/calendar/' + getLearnerCalendar(collection).id + '/' + getLearnerUpcomingEvent(collection).id">
 								<div class="">
-									<img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl !== undefined" src="{{envVariable.apiUrl+getLearnerUpcomingEvent(collection).imageUrl + '/500'}}"
+									<img class="continueLearning-thumb" src="{{envVariable.apiUrl+getLearnerUpcomingEvent(collection).imageUrl + '/500'}}"
 									     alt="collectionImg" (error)="_collectionService.imgErrorHandler($event)">
-									<img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl === undefined" src="/assets/images/no-image.jpg"
-									     alt="collectionImg">
 								</div>
 								<div class="mat-body-2" style="margin-top: 0px;">{{collection.type | titlecase}} : {{collection.title | titlecase}}
 								</div>
