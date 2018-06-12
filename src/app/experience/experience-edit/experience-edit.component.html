@@ -48,18 +48,18 @@
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Peerbuds Experience Guidelines</h2>
 							<p class="subtitle">Peerbuds is a platform dedicated to connecting people who are forward thinking, passionate about education, and open-minded
-							                    in general. We're pretty sure that each individual who joins our community is a cool, high-caliber person with unique
-							                    talents and knowledge to share. That said, we'd like to establish just a few common-sense expectations so our platform
-							                    can continue to be as high quality as possible.
+								in general. We're pretty sure that each individual who joins our community is a cool, high-caliber person with unique
+								talents and knowledge to share. That said, we'd like to establish just a few common-sense expectations so our platform
+								can continue to be as high quality as possible.
 							</p>
 							<ul class="guideline-points text-grey">
 								<li>Respect others and their differences. Not everyone on Peerbuds is going to have the same worldview, and that's actually
-								    a good thing. It's how we can learn from each other. Keep all comments and observations fair, controlled and as
-								    positive as possible.</li>
+									a good thing. It's how we can learn from each other. Keep all comments and observations fair, controlled and as
+									positive as possible.</li>
 								<li>Take your responsibilities seriously. Whether you sign up to learn or to teach (or both!), be sure to communicate
-								    with all your peers as necessary and always be on time to events.</li>
+									with all your peers as necessary and always be on time to events.</li>
 								<li>You can't go wrong with the "golden rule." Treat everyone you meet on Peerbuds with the same basic courtesy and friendliness
-								    you'd like to be shown and you're pretty much good to go. Good vibes are infectious - everybody wins.
+									you'd like to be shown and you're pretty much good to go. Good vibes are infectious - everybody wins.
 								</li>
 							</ul>
 							<div class="margin-top-20">
@@ -85,8 +85,8 @@
 										<div class="row">
 											<div class="col-sm-12">
 												<app-multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
-												                              [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic [maxSelection]=maxTopics
-												                              [minSelection]="1" [suggestedTopics]="suggestedTopics"></app-multiselect-autocomplete>
+												 [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic [maxSelection]=maxTopics
+												 [minSelection]="1" [suggestedTopics]="suggestedTopics"></app-multiselect-autocomplete>
 											</div>
 										</div>
 										<div class="row">
@@ -94,7 +94,7 @@
 										</div>
 									</div>
 								</div>
-								
+
 								<!--<div class="flex flexContainer margin-top-30">
 								  <button mat-button class="padding-left-0" type="button" color="grey" [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
 									  <mat-icon class="iconVC" color="accent">
@@ -145,19 +145,19 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="onboarding step-3" [hidden]="step!=3">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Which language will you host in?</h2>
 							<p class="subtitle">You will write your descriptions and present your experience in this language. Guests will be notified of this in
-							                    your experience description.</p>
+								your experience description.</p>
 							<br/>
 							<form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
 								<div class="row margin-top-60">
 									<mat-form-field [floatLabel]="'always'" class="col-md-4">
 										<input type="text" name="other_languages" style="border-bottom: 0px;" placeholder="Select Language" matInput formControlName="selectedLanguage"
-										       [matAutocomplete]="auto">
+										 [matAutocomplete]="auto">
 										<mat-autocomplete #auto="matAutocomplete">
 											<mat-option *ngFor="let l of filteredLanguageOptions | async" [value]="l" (click)="languageChange(l)">{{l}}</mat-option>
 										</mat-autocomplete>
@@ -185,7 +185,7 @@
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Introduce yourself as a Host</h2>
 							<p class="subtitle">Describe yourself and tell guests how you came to be passionate about hosting this experience.</p>
-							
+
 							<form [formGroup]="experience" (ngSubmit)="submitExperience(experience)">
 								<div class="row margin-bottom-30 margin-top-30" style="margin-top: 30px;">
 									<div class="col-sm-12">
@@ -217,7 +217,7 @@
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8" style="background: #eeeeeedd; padding: 20px;">
 							<h2 class="title">Create the page learners will see</h2>
 							<p class="subtitle" style="color: #333333;">Write in a clear, straightforward and friendly way. We'll prompt you on when to show off your personality and be more
-							                                            descriptive.
+								descriptive.
 							</p>
 							<br/>
 							<div style="margin-top:60px;">
@@ -273,7 +273,7 @@
 									<div class="col-md-8">
 										<div class="stepHeader margin-top-20">Upload an image for your cover</div>
 										<p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
-										              maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
+										 maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
 											<ng-template pTemplate="toolbar">
 												<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
 											</ng-template>
@@ -292,7 +292,7 @@
 										</div>
 									</div>
 								</div>
-								
+
 								<div style="margin-top:60px;">
 									<button mat-raised-button type="button" (click)="back()" color="accent">
 										Back
@@ -393,7 +393,7 @@
 												Back
 											</button>
 											<span class="pull-right" matTooltip="Enter the maximum number of participants you can teach in each Cohort of this experience"
-											      [matTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
+											 [matTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
 												<button mat-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0 || maxSpots.value < 0">Next</button>
 											</span>
 										</div>
@@ -417,7 +417,7 @@
 										<div class="col-md-8">
 											<div class="stepHeader">Upload Video</div>
 											<p-fileUpload *ngIf="!uploadingVideo" #fubauto name="video" accept="video/*" customUpload="true" (uploadHandler)="uploadVideo($event)"
-											              maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'video')" multiple="multiple">
+											 maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'video')" multiple="multiple">
 												<ng-template pTemplate="toolbar">
 													<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>
 												</ng-template>
@@ -531,7 +531,7 @@
 										Back
 									</button>
 									<span class="pull-right" matTooltip="Enter a price you wish to charge for this experience, its gyan value and its cancellation policy"
-									      [matTooltipDisabled]="experience.controls['price'].value && experience.controls['currency'].value  && experience.controls['cancellationPolicy'].value && experience.controls['academicGyan'].value && experience.controls['nonAcademicGyan'].value">
+									 [matTooltipDisabled]="experience.controls['price'].value && experience.controls['currency'].value  && experience.controls['cancellationPolicy'].value && experience.controls['academicGyan'].value && experience.controls['nonAcademicGyan'].value">
 										<button mat-raised-button color="accent" type="Submit" [disabled]="!(freeExperience || (experience.controls['price'].value && experience.controls['currency'].value)) || !experience.controls['cancellationPolicy'].value || !experience.controls['academicGyan'].value || !experience.controls['nonAcademicGyan'].value">Next</button>
 									</span>
 								</div>
@@ -581,12 +581,12 @@
 								<div formArrayName="rules">
 									<div *ngFor="let ruleForm of assessmentForm.controls['rules']['controls']; let i = index" [formGroupName]="i" class="row margin-top-20">
 										<div class="col-xs-4">
-											<mat-form-field>
+											<mat-form-field class="pb-block">
 												<input matInput formControlName="value" required>
 											</mat-form-field>
 										</div>
 										<div class="col-xs-4">
-											<mat-form-field>
+											<mat-form-field class="pb-block">
 												<span matSuffix>
 													%
 												</span>
@@ -598,7 +598,7 @@
 										</div>
 									</div>
 								</div>
-								
+
 								<div class="row">
 									<div class="col-md-3 clickable">
 										<a (click)="addAssessmentRule()">
@@ -607,7 +607,7 @@
 										</a>
 									</div>
 								</div>
-								
+
 								<h3 class="margin-top-40">Assessment rules for non academic performance</h3>
 								<div class="row">
 									<div class="col-xs-4">
@@ -620,14 +620,14 @@
 								<div formArrayName="nARules">
 									<div *ngFor="let ruleForm of assessmentForm.controls['nARules']['controls']; let i = index" [formGroupName]="i" class="row">
 										<div class="col-xs-4">
-											<mat-form-field [floatLabel]="'never'">
+											<mat-form-field [floatLabel]="'never'" class="pb-block">
 												<mat-select formControlName="value">
 													<mat-option *ngFor="let c of nAAssessmentParams" [value]="c">{{c | titlecase}}</mat-option>
 												</mat-select>
 											</mat-form-field>
 										</div>
 										<div class="col-xs-4">
-											<mat-form-field>
+											<mat-form-field class="pb-block">
 												<span matSuffix>
 													%
 												</span>
@@ -656,11 +656,11 @@
 									</span>
 								</div>
 							</div>
-						
+
 						</div>
 					</form>
 				</div>
-				
+
 				<!--Step 13 - Disclaimer-->
 				<div class="onboarding step-13" [hidden]="step!=13">
 					<div class="row">
@@ -668,7 +668,7 @@
 							<h2 class="title">Add content to your Experience</h2>
 							<form [formGroup]="experience">
 								<p class="subtitle">Create a detailed timeline of your experience and add content for every event in your itinerary. Learners will see
-								                    this before they sign up for your experience.</p>
+									this before they sign up for your experience.</p>
 								<div style="margin-top:60px;">
 									<button mat-raised-button type="button" (click)="back()" color="accent">
 										Back
@@ -703,7 +703,7 @@
 										<div class="col-xs-6">
 											<mat-form-field [floatLabel]="'auto'" class="dateStyles">
 												<input matInput [matDatepicker]="endDatePicker" [min]="timeline.controls['calendar'].value.startDate" placeholder="End date"
-												       formControlName="endDate" disabled>
+												 formControlName="endDate" disabled>
 												<mat-datepicker-toggle matSuffix [for]="endDatePicker" class="svgStyle"></mat-datepicker-toggle>
 												<mat-datepicker touchUi="true" #endDatePicker disabled="false"></mat-datepicker>
 											</mat-form-field>
@@ -724,7 +724,7 @@
 								</div>
 								<div class="row" *ngIf="timeline.controls['calendar'].value.startDate && timeline.controls['calendar'].value.endDate">
 									<app-experience-content [myForm]="timeline.controls['contentGroup']" [collection]="experienceData" [calendar]="timeline.controls['calendar'].value"
-									                        (days)="daysCollection($event)">
+									 (days)="daysCollection($event)">
 									</app-experience-content>
 								</div>
 								<div class="row">
@@ -759,7 +759,7 @@
 											Back
 										</button>
 										<span class="pull-right" matTooltip="You need to agree to Peerbuds community terms to submit this experience for approval"
-										      [matTooltipDisabled]="selectedValues[0] && selectedValues[1]">
+										 [matTooltipDisabled]="selectedValues[0] && selectedValues[1]">
 											<button mat-raised-button color="accent" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
 												Submit for Review</button>
 										</span>
@@ -876,7 +876,7 @@
 														</div>
 													</mat-radio-group>
 												</form>
-											
+
 											</ng-container>
 										</div>
 									</div>
@@ -903,7 +903,7 @@
 						</div>
 					</div>
 				</div>
-			
+
 			</div>
 		</mat-sidenav-content>
 	</mat-sidenav-container>
