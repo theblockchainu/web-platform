@@ -511,3 +511,10 @@ h3 {
 .textJustify {
     text-align: justify;
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .workshopPageContainer {
+		padding: 0 20px;
+	}
+}

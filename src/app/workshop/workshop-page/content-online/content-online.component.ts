@@ -8,6 +8,7 @@ import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { ContentService } from '../../../_services/content/content.service';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'app-content-online',
@@ -25,7 +26,7 @@ export class ContentOnlineComponent implements OnInit {
     public userId;
     public attachmentUrls = [];
     public duration = 0;
-
+    public envVariable: any;
     constructor(
         public _collectionService: CollectionService,
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -49,6 +50,7 @@ export class ContentOnlineComponent implements OnInit {
         const endMoment = moment(data.content.schedules[0].endTime);
         const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
         this.duration = parseInt(contentLength, 10);
+        this.envVariable = environment;
     }
 
     ngOnInit() {
@@ -138,10 +140,10 @@ export class ContentOnlineComponent implements OnInit {
         this._commentService.addCommentUpvote(comment.id, {}).subscribe(
             response => {
                 if (comment.upvotes !== undefined) {
-                    comment.upvotes.push(response );
+                    comment.upvotes.push(response);
                 } else {
                     comment.upvotes = [];
-                    comment.upvotes.push(response );
+                    comment.upvotes.push(response);
                 }
             }, err => {
                 console.log(err);
@@ -153,10 +155,10 @@ export class ContentOnlineComponent implements OnInit {
         this._commentService.addReplyUpvote(reply.id, {}).subscribe(
             response => {
                 if (reply.upvotes !== undefined) {
-                    reply.upvotes.push(response );
+                    reply.upvotes.push(response);
                 } else {
                     reply.upvotes = [];
-                    reply.upvotes.push(response );
+                    reply.upvotes.push(response);
                 }
             }, err => {
                 console.log(err);

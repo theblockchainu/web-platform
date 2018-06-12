@@ -1,4 +1,4 @@
-<div class="main-content" style="background: #fff; padding: 0px; min-height: 100vh;">
+<div style="background: #fff; padding: 0px; min-height: 100vh;" [class.main-content]="!mobileQuery.matches" [class.mobile-main-content]="mobileQuery.matches">
   <mat-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: scroll">
     <mat-sidenav #snav [mode]="mobileQuery.matches === true ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" [opened]="!mobileQuery.matches">
       <app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
@@ -75,9 +75,9 @@
         <!-- step 1 starts here -->
         <div class="onboarding step-2" [hidden]="step!=2">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-              <h2 class="title">What topics does this Workshop cover?</h2>
-              <p class="subtitle">Select topics that this workshop covers</p>
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+              <h2 class="title">What topics does this experience cover?</h2>
+              <p class="subtitle">Select topics that this experience covers</p>
               <br/>
               <form [formGroup]="interest1" (ngSubmit)="submitInterests()">
                 <div class="row">
@@ -86,7 +86,7 @@
                       <div class="col-sm-12">
                         <app-multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
                           [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
-                          [maxSelection]=maxTopics [minSelection]="1"></app-multiselect-autocomplete>
+                          [maxSelection]=maxTopics [minSelection]="1" [suggestedTopics]="suggestedTopics"></app-multiselect-autocomplete>
                       </div>
                     </div>
                     <div class="row">
@@ -96,46 +96,46 @@
                 </div>
 
                 <!--<div class="flex flexContainer margin-top-30">
-                  <button mat-button class="padding-left-0" type="button" color="grey" [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
-                      <mat-icon class="iconVC" color="accent">
-                        add
-                      </mat-icon><span class="addIconText">Add New Topic</span></button>
-                  <span class="flex"></span>
-                  &lt;!&ndash; <div class="col-sm-12 margin-top-30">
-                    <div class="text-uppercase text-grey margin-bottom-10">Suggested Topics</div>
-                  </div>
-                  <div class="col-sm-3">
-                    <div class="lookingFor interest">
-                      <div class="lookingFor-thumb" style="text-align: center; padding-top: 20%">
-                        <a mat-button [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
-                          <mat-icon style="font-size: 30px">
-                            add
-                          </mat-icon>
-                        </a>
-                      </div>
-                    </div>
-                  </div> &ndash;&gt;
-                  &lt;!&ndash; <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
-                    <div class="lookingFor interest">
-                      <label class="check">
-                        <mat-icon *ngIf="topic.checked" color="accent">
-                          check_circle
-                        </mat-icon>
-                      </label>
-                      <div class="lookingFor-thumb">
-                        <i class="topic.id"></i>
-                      </div>
-                      <span class="lookingForTitle captitalise">{{ topic.name }}</span>
-                    </div>
-                  </div> &ndash;&gt;
-                </div>-->
+								  <button mat-button class="padding-left-0" type="button" color="grey" [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
+									  <mat-icon class="iconVC" color="accent">
+										add
+									  </mat-icon><span class="addIconText">Add New Topic</span></button>
+								  <span class="flex"></span>
+								  &lt;!&ndash; <div class="col-sm-12 margin-top-30">
+									<div class="text-uppercase text-grey margin-bottom-10">Suggested Topics</div>
+								  </div>
+								  <div class="col-sm-3">
+									<div class="lookingFor interest">
+									  <div class="lookingFor-thumb" style="text-align: center; padding-top: 20%">
+										<a mat-button [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
+										  <mat-icon style="font-size: 30px">
+											add
+										  </mat-icon>
+										</a>
+									  </div>
+									</div>
+								  </div> &ndash;&gt;
+								  &lt;!&ndash; <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
+									<div class="lookingFor interest">
+									  <label class="check">
+										<mat-icon *ngIf="topic.checked" color="accent">
+										  check_circle
+										</mat-icon>
+									  </label>
+									  <div class="lookingFor-thumb">
+										<i class="topic.id"></i>
+									  </div>
+									  <span class="lookingForTitle captitalise">{{ topic.name }}</span>
+									</div>
+								  </div> &ndash;&gt;
+								</div>-->
                 <div style="margin-top:60px;">
                   <button mat-raised-button type="button" (click)="back()" color="accent">
                     Back
                   </button>
                   <span class="pull-right" matTooltip="Add at least one interest to continue" [matTooltipDisabled]="interests.length !== 0">
-                    <button mat-raised-button color="accent" (click)="interests.length == 0 || submitInterests()" [disabled]="interests.length == 0">
-                      <span *ngIf="!busyInterest">Continue</span>
+                    <button mat-raised-button color="accent" [disabled]="interests.length == 0">
+                      <span *ngIf="!busyInterest">Next</span>
                       <span *ngIf="busyInterest"> </span>
                       <ngx-loading [show]="busyInterest"></ngx-loading>
                     </button>
@@ -148,7 +148,7 @@
 
         <div class="onboarding step-3" [hidden]="step!=3">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Which language will you host in?</h2>
               <p class="subtitle">You will write your descriptions in this language and guests will expect you to speak it during workshops.</p>
               <br/>
@@ -181,7 +181,7 @@
         <!-- step 4 ends here  -->
         <div class="onboarding step-4" [hidden]="step!=4">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Introduce yourself as a Host</h2>
               <p class="subtitle">Why are you the best person to host this workshop?</p>
 
@@ -189,7 +189,7 @@
                 <div class="row margin-bottom-30 margin-top-30" style="margin-top: 30px;">
                   <div class="col-sm-12">
                     <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
-                      <textarea matInput #aboutHost maxlength="500" rows="2" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
+                      <textarea matInput #aboutHost maxlength="500" rows="4" formControlName="aboutHost" placeholder="Put in your background information"></textarea>
                       <mat-hint align="end">{{aboutHost.value.length}} / 500</mat-hint>
                     </mat-form-field>
                   </div>
@@ -213,7 +213,7 @@
         <!--Disclaimer-->
         <div class="onboarding step-5" [hidden]="step!=5">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Create the page learners will see</h2>
               <p class="subtitle">Write in a clear, straightforward and friendly way. We will give you tips on when to show off your personality
                 and be more descriptive.
@@ -235,7 +235,7 @@
         <!-- Step 6 - Title -->
         <div class="onboarding step-6" [hidden]="step!=6">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <div class="row">
                   <div class="col-sm-12 margin-bottom-30">
@@ -306,14 +306,14 @@
         <!-- step 7 - Description  -->
         <div class="onboarding step-7" [hidden]="step!=7">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <div class="row">
                   <div class="col-sm-12 margin-bottom-30">
                     <h2 class="title">What’s the workshop about?</h2>
                     <p class="subtitle">Give a detailed description to learners of what they will do in this workshop</p>
                     <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                      <textarea matInput #description maxlength="800" rows="2" formControlName="description" placeholder="What we'll do in this workshop?"></textarea>
+                      <textarea matInput #description maxlength="800" rows="4" formControlName="description" placeholder="What we'll do in this workshop?"></textarea>
                       <mat-hint align="end">{{description.value.length}} / 800</mat-hint>
                     </mat-form-field>
                   </div>
@@ -333,7 +333,7 @@
         <!-- step 8 Difficulty Level-->
         <div class="onboarding step-8" [hidden]="step!=8">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <h2 class="title">Who should come?</h2>
                 <p class="subtitle">Start with a level of difficulty</p>
@@ -368,7 +368,7 @@
         <!-- Step 9 - Max Spots -->
         <div class="onboarding step-9" [hidden]="step!=9">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">How many seats are available in each cohort? </h2>
               <p class="subtitle">
                 Remember to keep your workshop as personal as possible.
@@ -400,7 +400,7 @@
         <!-- step 10 Photos -->
         <div class="onboarding step-10" [hidden]="step!=10">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Showcase your workshop</h2>
               <p class="subtitle">
                 Give the world a taste of your workshop by showcasing captivating videos and/or photos
@@ -450,7 +450,7 @@
         <!-- step 11 - Price -->
         <div class="onboarding step-11" [hidden]="step!=11">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <form [formGroup]="workshop" (ngSubmit)="submitWorkshop(workshop)">
                 <h2 class="title">Set a price and gyan for this workshop</h2>
                 <p class="subtitle">
@@ -574,12 +574,12 @@
                 <div formArrayName="rules">
                   <div *ngFor="let ruleForm of assessmentForm.controls['rules']['controls']; let i = index" [formGroupName]="i" class="row margin-top-20">
                     <div class="col-xs-4">
-                      <mat-form-field>
+                      <mat-form-field class="pb-block">
                         <input matInput formControlName="value" required>
                       </mat-form-field>
                     </div>
                     <div class="col-xs-4">
-                      <mat-form-field>
+                      <mat-form-field class="pb-block">
                         <span matSuffix>
                           %
                         </span>
@@ -613,14 +613,14 @@
                 <div formArrayName="nARules">
                   <div *ngFor="let ruleForm of assessmentForm.controls['nARules']['controls']; let i = index" [formGroupName]="i" class="row">
                     <div class="col-xs-4">
-                      <mat-form-field [floatLabel]="'never'">
+                      <mat-form-field class="pb-block" [floatLabel]="'never'">
                         <mat-select formControlName="value">
                           <mat-option *ngFor="let c of nAAssessmentParams" [value]="c">{{c | titlecase}}</mat-option>
                         </mat-select>
                       </mat-form-field>
                     </div>
                     <div class="col-xs-4">
-                      <mat-form-field>
+                      <mat-form-field class="pb-block">
                         <span matSuffix>
                           %
                         </span>
@@ -657,7 +657,7 @@
         <!--Step 13 - Disclaimer-->
         <div class="onboarding step-13" [hidden]="step!=13">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Add content to your Workshop</h2>
               <form [formGroup]="workshop">
                 <p class="subtitle">Create a detailed timeline of your workshop and add content for every event in your itinerary. Learners will
@@ -677,7 +677,7 @@
         <!--Step 14 - Itinerary-->
         <div class="onboarding step-14" [hidden]="step!=14">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Set your default timeline
                 <button *ngIf="totalDuration" mat-raised-button class="pull-right" style="position: relative;top: -2vh;">
                   {{totalDuration}} Hours
@@ -691,14 +691,14 @@
                 <!--(ngSubmit)="submitTimeline(timeline)" -->
                 <div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
                   <div class="row" style="margin: 30px 0px 15px -15px;">
-                    <div class="col-sm-6">
+                    <div class="col-xs-6">
                       <mat-form-field [floatLabel]="'auto'" class="dateStyles">
                         <input matInput [min]="currentDate" [matDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate">
                         <mat-datepicker-toggle matSuffix [for]="startDatePicker" class="svgStyle {{activeWorkshop}}"></mat-datepicker-toggle>
                       </mat-form-field>
                       <mat-datepicker touchUi="true" #startDatePicker></mat-datepicker>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-xs-6">
                       <mat-form-field [floatLabel]="'auto'" class="dateStyles">
                         <input matInput [matDatepicker]="endDatePicker" [min]="timeline.controls['calendar'].value.startDate" placeholder="End date"
                           formControlName="endDate">
@@ -823,7 +823,7 @@
         </div>
         <div class="onboarding step-17" [hidden]="step!=17">
           <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
               <h2 class="title">Connect Payment Option</h2>
               <div class="subtitle">Choose from available payout options or add a new one</div>
               <div class="row loading-container" style="padding-top: 10px; padding-bottom: 10px;" *ngIf="payoutLoading">

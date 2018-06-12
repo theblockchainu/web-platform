@@ -1,7 +1,7 @@
 
 <div mat-dialog-content class="dialog-container">
 	<div class="row">
-		<div class="col-md-12 collectionContent">
+		<div class="col-xs-12 collectionContent">
 			<button disableRipple mat-button style="min-width: 30px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
@@ -9,7 +9,7 @@
 				{{data.content.title | titlecase}}
 			</div>
 		</div>
-		<div class="col-xs-10" style="padding-top: 15px;">
+		<div class="col-xs-9" style="padding-top: 15px;">
 			<span class="mat-body-2">{{duration}} hour {{_collectionService.getContentTypeFullName(data.content.type)}}</span><br/>
 			Taught by <a [routerLink]="['/profile',data.collection.owners[0]]">{{data.collection.owners[0].profiles[0].first_name | ucwords}}</a>
 		</div>

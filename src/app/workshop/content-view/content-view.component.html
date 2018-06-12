@@ -75,20 +75,24 @@
         </span>
         <br>
         <br>
-        <button mat-button type="button" (click)="addContent('online'); findAndOpenDialog(-1);" style="padding-left: 0px">
+      </div>
+      <div class="col-xs-4">
+        <button mat-button type="button" class="pb-block" (click)="addContent('online'); findAndOpenDialog(-1);" style="padding-left: 0px">
           <mat-icon color="primary" style="font-size: 20px">add_circle</mat-icon>
           Online Session
-        </button>&emsp;
-
-        <button mat-button type="button" (click)="addContent('video'); findAndOpenDialog(-1);">
+        </button>
+      </div>
+      <div class="col-xs-4">
+        <button mat-button type="button" class="pb-block" (click)="addContent('video'); findAndOpenDialog(-1);">
           <mat-icon color="primary" style="font-size: 20px">add_circle</mat-icon>
           Video
-        </button>&emsp;
-
-        <button mat-button type="button" (click)="addContent('project'); findAndOpenDialog(-1);">
+        </button>
+      </div>
+      <div class="col-xs-4">
+        <button mat-button type="button" class="pb-block" (click)="addContent('project'); findAndOpenDialog(-1);">
           <mat-icon color="primary" style="font-size: 20px">add_circle</mat-icon>
           Project
-        </button>&emsp;
+        </button>
       </div>
     </div>
   </div>
