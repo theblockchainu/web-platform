@@ -1,136 +1,194 @@
+.homeContainer {
+	margin-top: 2%;
+	margin-bottom: 0%;
+}
+
 .homefeed a{
-    color: black;
+	color: black;
 }
 
 .homefeed{
-    padding-top: 45px;
+	padding-top: 45px;
+}
+
+.homeFeedContainer {
+	margin-top: 0;
+}
+
+.mat-tab-nav-bar {
+	border-bottom: 0;
+}
+
+.mat-tab-nav-bar img {
+	width: 96px;
+}
+.mat-tab-nav-bar h3 {
+	padding-left: 12px;
+	padding-top: 15px
+}
+
+
+.mat-tab-link{
+	border: 0.5px solid rgba(131, 125, 125, 0.301)
+}
+
+.noJustify a.mat-tab-link {
+	justify-content: left !important;
+	padding-left: 0px !important;
+	padding-right: 5px !important;
+	width: 275px !important;
+	height: 72px !important;
+	font-size: 1rem  !important;
+	font-weight: 600  !important;
+	background-color: transparent !important;
+	border: 1px solid rgba(0,0,0,0.1) !important;
+	border-radius: 3px !important;
+	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.06) !important;
+	margin: 15px 15px 4px 0px !important;
+	overflow: hidden !important;
+	text-align: left !important;
+}
+
+
+.mat-tab-group.mat-primary .mat-tab-label:focus, .mat-tab-group.mat-primary .mat-tab-link:focus, .mat-tab-nav-bar.mat-primary .mat-tab-label:focus, .mat-tab-nav-bar.mat-primary .mat-tab-link:focus {
+	background: none;
+}
+
+.recommendation-price {
+	padding: 0 6px;
+	background-color: rgba(255,255,255,0.7);
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	color: #333333;
+	width: auto;
 }
 
 .recommendation-thumb{
-    object-fit: cover;
-    height: 290px;
-    width: 100%;
-    position: relative;
+	object-fit: cover;
+	height: 290px;
+	width: 100%;
+	position: relative;
 }
 
 .community-thumb{
-  object-fit: cover;
-  height: 200px;
-  width: 100%;
-  position: relative;
+	object-fit: cover;
+	height: 200px;
+	width: 100%;
+	position: relative;
 }
 
 .community-card{
-  min-height:1px;
-  padding-left: 8px;
-  padding-right: 8px;
-  width: 20%;
-  float: left;
+	min-height:1px;
+	padding-left: 8px;
+	padding-right: 8px;
+	width: 20%;
+	float: left;
 }
 
 .community-title {
-  padding: 10px;
-  background-color: rgba(0,0,0,0.7);
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  color: white !important;
-  width: 100%;
+	padding: 10px;
+	background-color: rgba(0,0,0,0.7);
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	color: white !important;
+	width: 100%;
 }
 
 .community-feed .title {
-  font-size:17px !important;
-  color: #484848 !important;
+	font-size:17px !important;
+	color: #484848 !important;
 }
 
 .community-feed .headline {
-  font-size:16px !important;
-  color: #767676 !important;
+	font-size:16px !important;
+	color: #767676 !important;
 }
 
 .continueLearning-thumb{
-    object-fit: cover;
-    height: 200px;
-    width: 100%;
+	object-fit: cover;
+	height: 200px;
+	width: 100%;
 }
 
 .peer-recommendation-thumb{
-    object-fit: cover;
-    height: 238px;
-    width: 100%;
+	object-fit: cover;
+	height: 238px;
+	width: 100%;
 }
 
 .recommendation-card{
-    min-height:1px;
-    padding-left: 8px;
-    padding-right: 8px;
-    width: 20%;
-    float: left;
+	min-height:1px;
+	padding-left: 8px;
+	padding-right: 8px;
+	width: 20%;
+	float: left;
 }
 
 .recommendation-city {
-    padding: 7px;
-    background-color: rgba(0,0,0,0.7);
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    color: white;
-    width: 100%;
+	padding: 7px;
+	background-color: rgba(0,0,0,0.7);
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	color: white;
+	width: 100%;
 }
 
 .recommendation-map {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
 }
 
 agm-map {
-    height: 290px;
+	height: 290px;
 }
 
 .continueLearning-card{
-    min-height:1px;
-    padding-left: 8px;
-    padding-right: 8px;
-    width: 33.3%;
-    float: left;
+	min-height:1px;
+	padding-left: 8px;
+	padding-right: 8px;
+	width: 33.3%;
+	float: left;
 }
 
 .homefeed label{
-    color: #484848;
-    font-size: 12px;
-    font-weight: 400;
+	color: #484848;
+	font-size: 12px;
+	font-weight: 400;
 
 }
 
 .peer-recommendation-card{
-    min-height:1px;
-    padding-left: 8px;
-    padding-right: 8px;
-    width: 16.66%;
-    float: left;
+	min-height:1px;
+	padding-left: 8px;
+	padding-right: 8px;
+	width: 16.66%;
+	float: left;
 }
 
-.workshop-feed .title {
-    font-size:17px !important;
-    color: #484848 !important;
+.class-feed .title {
+	font-size:17px !important;
+	color: #484848 !important;
 }
 
-.workshop-feed .headline {
-    font-size:16px !important;
-    color: #767676 !important;
+.class-feed .headline {
+	font-size:16px !important;
+	color: #767676 !important;
 }
 
 .mat-display-1 {
-    margin-bottom: 25px !important;
+	margin-bottom: 25px !important;
 }
 
 .communityParticipants {
-  &:not(:first-child) {
-    margin-left: -15px !important;
-  }
+	&:not(:first-child):not(:last-child) {
+		margin-left: -15px !important;
+	}
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -155,6 +213,7 @@ agm-map {
 		padding-right: 8px;
 		width: 50%;
 		float: left;
+		margin-bottom: 30px;
 	}
 
 	.continueLearning-thumb{
@@ -175,6 +234,7 @@ agm-map {
 		padding-right: 8px;
 		width: 50%;
 		float: left;
+		margin-bottom: 30px;
 	}
 
 	agm-map {
@@ -185,8 +245,9 @@ agm-map {
 		min-height:1px;
 		padding-left: 8px;
 		padding-right: 8px;
-		width: 25%;
+		width: 50%;
 		float: left;
+		margin-bottom: 30px;
 	}
 
 	.peer-recommendation-card{
@@ -195,6 +256,7 @@ agm-map {
 		padding-right: 8px;
 		width: 50%;
 		float: left;
+		margin-bottom: 30px;
 	}
 	.homefeed {
 		padding-top: 10px;

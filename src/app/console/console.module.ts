@@ -15,12 +15,12 @@ import { ConsoleLearningComponent } from './console-learning/console-learning.co
 import { ConsoleTeachingComponent } from './console-teaching/console-teaching.component';
 import { ConsoleProfileComponent } from './console-profile/console-profile.component';
 import { ConsoleAccountComponent } from './console-account/console-account.component';
-import { ConsoleTeachingWorkshopComponent } from './console-teaching/console-teaching-workshop/console-teaching-workshop.component';
+import { ConsoleTeachingClassComponent } from './console-teaching/console-teaching-class/console-teaching-class.component';
 import { ConsoleTeachingExperienceComponent } from './console-teaching/console-teaching-experience/console-teaching-experience.component';
 import { ConsoleTeachingSessionComponent } from './console-teaching/console-teaching-session/console-teaching-session.component';
 import { ConsoleTeachingAllComponent } from './console-teaching/console-teaching-all/console-teaching-all.component';
 import { ConsoleLearningAllComponent } from './console-learning/console-learning-all/console-learning-all.component';
-import { ConsoleLearningWorkshopsComponent } from './console-learning/console-learning-workshops/console-learning-workshops.component';
+import { ConsoleLearningClassesComponent } from './console-learning/console-learning-classes/console-learning-classes.component';
 import { ConsoleLearningExperiencesComponent } from './console-learning/console-learning-experiences/console-learning-experiences.component';
 import { ConsoleLearningSessionsComponent } from './console-learning/console-learning-sessions/console-learning-sessions.component';
 import { ConsoleProfileEditComponent } from './console-profile/console-profile-edit/console-profile-edit.component';
@@ -36,7 +36,7 @@ import { ConsoleAccountSecurityComponent } from './console-account/console-accou
 import { ConsoleAccountPrivacyComponent } from './console-account/console-account-privacy/console-account-privacy.component';
 import { ConsoleAccountSettingsComponent } from './console-account/console-account-settings/console-account-settings.component';
 import { TimezonePickerService } from '../_services/timezone-picker/timezone-picker.service';
-import { CohortDetailDialogComponent } from './console-teaching/console-teaching-workshop/cohort-detail-dialog/cohort-detail-dialog.component';
+import { CohortDetailDialogComponent } from './console-teaching/console-teaching-class/cohort-detail-dialog/cohort-detail-dialog.component';
 import { ConsoleAdminComponent } from './console-admin/console-admin.component';
 import { ContentLearningBookmarksComponent } from './console-learning/content-learning-bookmarks/content-learning-bookmarks.component';
 import { ConsoleAccountWalletComponent } from './console-account/console-account-wallet/console-account-wallet.component';
@@ -71,12 +71,12 @@ import { ConsoleLearningKnowledgeStoryComponent } from './console-learning/conso
 		ConsoleTeachingComponent,
 		ConsoleProfileComponent,
 		ConsoleAccountComponent,
-		ConsoleTeachingWorkshopComponent,
+		ConsoleTeachingClassComponent,
 		ConsoleTeachingExperienceComponent,
 		ConsoleTeachingSessionComponent,
 		ConsoleTeachingAllComponent,
 		ConsoleLearningAllComponent,
-		ConsoleLearningWorkshopsComponent,
+		ConsoleLearningClassesComponent,
 		ConsoleLearningExperiencesComponent,
 		ConsoleLearningSessionsComponent,
 		ConsoleProfileEditComponent,

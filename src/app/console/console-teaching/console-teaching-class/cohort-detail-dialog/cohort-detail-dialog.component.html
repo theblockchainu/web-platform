@@ -1,0 +1,36 @@
+<div mat-dialog-content class="dialog-container">
+    <div class="row">
+    <div class="col-md-12 collectionContent">
+      <button disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+        <mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+      </button>
+      <div>
+        <div class="mat-display-1" style="margin-bottom: 20px;">{{data.status | ucwords}} cohorts</div>
+      </div>
+    </div>
+  </div>
+  <hr>
+    <div class="row">
+        <div class="loading-container" [hidden]="!loadingCohortDetail">
+            <ngx-loading [show]="true"></ngx-loading>
+        </div>
+    </div>
+    <div *ngIf="!loadingCohortDetail">
+        <div class="row" *ngIf="!cohortsDataArray || (cohortsDataArray && cohortsDataArray.length === 0)">
+            <div class="col-md-12">
+                There are no {{data.status}} cohorts yet for this class
+            </div>
+        </div>
+        <div class="row" *ngFor="let cohort of cohortsDataArray" style="margin-top: 10px;">
+            <div class="col-md-4">
+                <p>{{cohort.startDate |extractTime:'Do MMM'}} - {{cohort.endDate| extractTime:'Do MMM'}}</p>
+            </div>
+            <div class="col-md-4">
+                <p>{{cohort.participants.length}} participants</p>
+            </div>
+            <div class="col-md-4">
+                <button mat-button class="mat-border-button" [mat-dialog-close] [routerLink]="[data.type, data.id, 'calendar', cohort.id]">Open cohort</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -20,7 +20,7 @@ import { map, startWith } from 'rxjs/operators';
 export class ScholarshipDialogComponent implements OnInit {
 	
 	public scholarshipForm: FormGroup;
-	public selectedWorkshops: Array<any>;
+	public selectedClasses: Array<any>;
 	public myControl = new FormControl('');
 	public userId: string;
 	public options: Array<any>;

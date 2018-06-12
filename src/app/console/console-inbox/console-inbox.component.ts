@@ -22,7 +22,7 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 	public joinedRooms = [];
 	public tempJoinedRooms = [];
 	public experienceCollection = [];
-	public workshopCollection = [];
+	public classCollection = [];
 	public selectedRoom;
 	public userId;
 	private key = 'userId';
@@ -60,7 +60,7 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 	
 	ngOnInit() {
 		this.loadingMessages = true;
-		this._inboxService.getRoomData()
+		this._inboxService.getRoomData(50)
 			.subscribe((response) => {
 				if (response) {
 					this.getPeerDataAndInitialize(response);
@@ -213,13 +213,13 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 		});
 		
 		this.joinedRooms.forEach(element => {
-			this.workshopCollection = _.filter(element.collection, function(o) { return o.type === 'workshop'; });
+			this.classCollection = _.filter(element.collection, function(o) { return o.type === 'class'; });
 		});
 	}
 	
 	public getSelectedCollection() {
-		if (this.selected === 'workshop') {
-			this.tempJoinedRooms = this.workshopCollection;
+		if (this.selected === 'class') {
+			this.tempJoinedRooms = this.classCollection;
 		} else if (this.selected === 'experience') {
 			this.tempJoinedRooms = this.experienceCollection;
 		} else {

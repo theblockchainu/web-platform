@@ -22,7 +22,7 @@
                 <div class="row margin-top-20 margin-bottom-20" *ngFor="let conflict of data.conflicts; let i=index">
                     <div class="col-md-7">
                         <span class="mat-body-2">Event on {{ conflict.event.startDateTime | date:'dd MMM' }}, {{ conflict.event.startDateTime | date:'hh:mm a' }} to {{ conflict.event.endDateTime | date:'hh:mm a' }}</span>
-                        <h5>conflicts with <b>{{conflict.conflictWith.contentName | titlecase}}</b> of workshop <b>{{conflict.conflictWith.collectionName | titlecase}}</b> </h5>
+                        <h5>conflicts with <b>{{conflict.conflictWith.contentName | titlecase}}</b> of class <b>{{conflict.conflictWith.collectionName | titlecase}}</b> </h5>
                     </div>
                     <div class="col-md-offset-1 col-md-3">
                         <button mat-button *ngIf= "!conflict.markedForDelete" class="mat-border-button" color="warn" (click)="deleteCalendar(i)" style="margin-left:25px">Remove from plan</button>

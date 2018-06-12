@@ -1,83 +1,51 @@
-<div class="feed communityFeed">
-    <div class="row community-feed">
-        <div class="col-md-12">
-            <div class="row margin-bottom-20 filterRow">
-                <!--<div class="col-md-7">
-                  <div class="mat-display-1" *ngIf="!selectedTopics || selectedTopics.length<1">Experiences</div>
-                  <div *ngIf="selectedTopics && selectedTopics.length>0">
-                    <div class="mat-display-1" style="display:inline-block;">Experiences in <span>{{selectedTopics[0].name | titlecase}}</span></div>
-                    <span *ngIf="selectedTopics.length>1" class="mat-h4 lightText">&emsp;  and {{selectedTopics.length-1}} more topics</span>
-                  </div>
-                </div>-->
-                <div class="col-md-12">
-                    <div style="float: left;">
-                        <button mat-button class="mat-border-button" #topicButton (click)="openTopicsDialog()" style="color: rgba(0,0,0,0.54) !important; margin-bottom: 17px;">Topics</button>
-                    </div>
-                </div>
-            </div>
-            <div class="mat-display-1" style="margin-bottom: 5px !important; margin-top: 34px;">
-                Explore Peerbuds
-            </div>
-            <app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
-            <div class="mat-display-1" style="margin-bottom: 25px !important;">
-                Communities
-                <span class="mat-display-1" *ngIf="selectedTopics && availableTopics && selectedTopics.length !== availableTopics.length">
-                    in
-                    <span *ngFor="let topicObj of selectedTopics;let i=index">
-                        {{topicObj.name}}
-                    </span>
-                    <mat-icon class="clickable" style="font-size: 12px; font-weight: 200;" (click)="resetTopics()">
-                        close
-                    </mat-icon>
-                </span>
-            </div>
-            <div class="loading-container" [hidden]="!loading">
-                <ngx-loading [show]="true"></ngx-loading>
-            </div>
-            <div class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
-                <div class="noDataContainer" *ngIf="communities === undefined || communities.length === 0">
-                    There are no new active communities to view right now. Browse from within your signed-up communities
-                    <a class="clickable">here</a>.
-                </div>
-                <div class="community-card" *ngFor="let community of communities; let i =index">
-                    <span class="share-panel">
-                        <button mat-icon-button class="bookmark" (click)="toggleBookmark(i)">
-                            <mat-icon *ngIf="!(community.bookmarks && community.bookmarks[0] && community.bookmarks[0].peer && community.bookmarks[0].peer[0] && community.bookmarks[0].peer[0].id===userId)">
-                                bookmark</mat-icon>
-                            <mat-icon *ngIf="community.bookmarks && community.bookmarks[0] && community.bookmarks[0].peer && community.bookmarks[0].peer[0] && community.bookmarks[0].peer[0].id===userId"
-                                color="primary">bookmark</mat-icon>
-                        </button>
-                        <button mat-icon-button class="share" (click)="_dialogsService.shareCollection('community',community.id,community.title)">
-                            <mat-icon>share</mat-icon>
-                        </button>
-                    </span>
-                    <a *ngIf="i<5" [routerLink]="'/community/'+community.id">
-                        <div class="">
-                            <div class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + community.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
-                                <div class="community-title">
-                                    <div class="mat-headline" style="color: #ffffff; margin-bottom: 0px;">{{community.title | ucwords}}</div>
-                                </div>
-                            </div>
-                            <div class="recommendation-thumb" *ngIf="!community.imageUrls || community.imageUrls.length<=0" [ngStyle]="{'background': 'url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
-                                <div class="community-title">
-                                    <div class="mat-display-1">{{community.title | ucwords}}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div *ngIf="community.participants  && community.participants.length > 0" style="margin-top: 3px;">
-                            <div *ngFor="let participant of community.participants; let i = index" class="communityParticipants" style="display: inline-block;">
-                                <app-profile-popup *ngIf="i<6" [peer]="participant"></app-profile-popup>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-	        <div class="row more-actions center">
-		        <div class="col-md-10 col-md-offset-1">
-			        <span>Didn't find a community you belong to?
-				        <b class="clickable" (click)="_dialogsService.requestCommunityDialog()">Let us know</b> and we'll do our best to create one for your like</span>
+<div class="main-content">
+	<div class="col-md-10 col-md-offset-1 homeContainer">
+		<div class="feed communityFeed">
+		    <div class="row community-feed">
+		        <div class="col-md-12">
+		            <div class="row margin-bottom-20 filterRow">
+		                <div class="col-md-12">
+		                    <div style="float: left;">
+		                        <button mat-button class="mat-border-button" #topicButton (click)="openTopicsDialog()" style="color: rgba(0,0,0,0.54) !important; margin-bottom: 17px;">Topics</button>
+		                    </div>
+		                </div>
+		            </div>
+		            <div class="mat-display-1" style="margin-bottom: 5px !important; margin-top: 34px;">
+		                Explore Peerbuds
+		            </div>
+		            <app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
+		            <div class="mat-display-1" style="margin-bottom: 25px !important;">
+		                Communities
+		                <span class="mat-display-1" *ngIf="selectedTopics && availableTopics && selectedTopics.length !== availableTopics.length">
+		                    in
+		                    <span *ngFor="let topicObj of selectedTopics;let i=index">
+		                        {{topicObj.name}}
+		                    </span>
+		                    <mat-icon class="clickable" style="font-size: 12px; font-weight: 200;" (click)="resetTopics()">
+		                        close
+		                    </mat-icon>
+		                </span>
+		            </div>
+		            <div class="loading-container" [hidden]="!loading">
+		                <ngx-loading [show]="true"></ngx-loading>
+		            </div>
+		            <div class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+		                <div class="noDataContainer" *ngIf="communities === undefined || communities.length === 0">
+		                    There are no new active communities to view right now. Browse from within your signed-up communities
+		                    <a class="clickable">here</a>.
+		                </div>
+		                <div *ngFor="let community of communities;">
+		                    <app-community-card [community]="community" (refresh)="onCommunityRefresh($event)"></app-community-card>
+		                </div>
+		            </div>
+			        <div class="row more-actions center">
+				        <div class="col-md-10 col-md-offset-1">
+					        <span>Didn't find a community you belong to?
+						        <b class="clickable" (click)="_dialogsService.requestCommunityDialog()">Let us know</b> and we'll do our best to create one for your like</span>
+				        </div>
+			        </div>
 		        </div>
-	        </div>
-        </div>
-    </div>
+		    </div>
+		</div>
+	</div>
 </div>

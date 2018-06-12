@@ -63,7 +63,7 @@ export class SessionEditComponent implements OnInit {
 
 	private sessionId: string;
 	public sessionData: any;
-	public isWorkShopActive = false;
+	public isClassActive = false;
 	public activeSession = '';
 	// Set our default values
 	public localState = { value: '' };

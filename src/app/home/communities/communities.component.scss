@@ -1,59 +1,64 @@
+.homeContainer {
+	margin-top: 2%;
+	margin-bottom: 0%;
+}
+
 .community-thumb{
-  object-fit: cover;
-  height: 200px;
-  width: 100%;
-  position: relative;
+	object-fit: cover;
+	height: 200px;
+	width: 100%;
+	position: relative;
 }
 
 .community-card{
-  min-height:1px;
-  padding-left: 8px;
-  padding-right: 8px;
-  width: 20%;
-  float: left;
+	min-height:1px;
+	padding-left: 8px;
+	padding-right: 8px;
+	width: 20%;
+	float: left;
 }
 
 .community-title {
-  padding: 10px;
-  background-color: rgba(0,0,0,0.7);
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  color: white !important;
-  width: 100%;
+	padding: 10px;
+	background-color: rgba(0,0,0,0.7);
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	color: white !important;
+	width: 100%;
 }
 
 .community-feed .title {
-  font-size:17px !important;
-  color: #484848 !important;
+	font-size:17px !important;
+	color: #484848 !important;
 }
 
 .community-feed .headline {
-  font-size:16px !important;
-  color: #767676 !important;
+	font-size:16px !important;
+	color: #767676 !important;
 }
 
 .communityFeed a{
-  color: black;
+	color: black;
 }
 
 .communityFeed{
-  padding-top: 30px;
+	padding-top: 30px;
 }
 
 .sticky {
-  border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
 }
 
 .rightLinks span {
-  color: #767676 !important;
-  font-size:16px !important;
+	color: #767676 !important;
+	font-size:16px !important;
 }
 
 .communityParticipants {
-  &:not(:first-child) {
-    margin-left: -15px !important;
-  }
+	&:not(:first-child) {
+		margin-left: -15px !important;
+	}
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -71,6 +76,7 @@
 		padding-right: 8px;
 		width: 50%;
 		float: left;
+		margin-bottom: 30px;
 	}
 
 	.communityFeed {

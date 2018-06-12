@@ -1,83 +1,106 @@
-.workshopSelector {
-  border: 1px solid #dbdbdb;
-  padding: 6px;
+.classSelector {
+	border: 1px solid #dbdbdb;
+	padding: 6px;
 }
 
 ::ng-deep .mat-select-underline {
-  display: none;
+	display: none;
 }
 
-.workshopsFeed a{
-  color: black;
+.classesFeed a{
+	color: black;
 }
 
-.workshopsFeed{
-  padding-top: 30px;
+.classesFeed{
+	padding-top: 30px;
 }
 
-.workshop-feed label{
-  color: #484848;
-  font-size: 13px;
-  font-weight: 400;
+.class-feed label{
+	color: #484848;
+	font-size: 13px;
+	font-weight: 400;
 }
 
-.workshop-feed .title {
-  font-size:17px !important;
-  color: #484848 !important;
+.class-feed .title {
+	font-size:17px !important;
+	color: #484848 !important;
 }
 
-.workshop-feed .headline {
-  font-size:16px !important;
-  color: #767676 !important;
+.class-feed .headline {
+	font-size:16px !important;
+	color: #767676 !important;
 
 }
 
 .rightLinks span {
-  color: #767676 !important;
-  font-size:16px !important;
+	color: #767676 !important;
+	font-size:16px !important;
 }
 
 .homefeed {
-  padding-top: 30px;
+	padding-top: 30px;
 }
 
 .recommendation-thumb{
-  object-fit: cover;
-  height: 290px;
-  width: 100%;
+	object-fit: cover;
+	height: 290px;
+	width: 100%;
 }
 
 .sticky {
-  border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
 }
 
 .peer-recommendation-thumb{
-  object-fit: cover;
-  height: 238px;
-  width: 100%;
+	object-fit: cover;
+	height: 238px;
+	width: 100%;
 }
 
 .recommendation-card{
-  min-height:1px;
-  padding-left: 8px;
-  padding-right: 8px;
-  width: 33%;
-  float: left;
-  margin-bottom: 25px;
+	min-height:1px;
+	padding-left: 8px;
+	padding-right: 8px;
+	width: 33%;
+	float: left;
+	margin-bottom: 25px;
 }
 
 .peer-recommendation-card{
-  min-height:1px;
-  padding-left: 8px;
-  padding-right: 8px;
-  width: 16.66%;
-  float: left;
+	min-height:1px;
+	padding-left: 8px;
+	padding-right: 8px;
+	width: 16.66%;
+	float: left;
 }
 
 .mat-display-1 {
-  margin-bottom: 25px !important;
+	margin-bottom: 25px !important;
 }
 
 a {
-  color: #000000;
+	color: #000000;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.recommendation-thumb{
+		object-fit: cover;
+		height: 145px;
+		width: 100%;
+		position: relative;
+	}
+
+	.recommendation-card{
+		min-height:1px;
+		padding-left: 8px;
+		padding-right: 8px;
+		width: 50%;
+		float: left;
+		margin-bottom: 30px;
+	}
+
+	agm-map {
+		height: 145px;
+	}
 }

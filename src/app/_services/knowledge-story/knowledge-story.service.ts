@@ -60,6 +60,12 @@ export class KnowledgeStoryService {
 	public fetchKnowledgeStory(storyId: string, filter: any) {
 		return this._HttpClient.get(environment.apiUrl + '/api/knowledge_stories/' + storyId + '?filter=' + JSON.stringify(filter), this._RequestHeaderService.options);
 	}
+	
+	public fetchBlockTransactions(userId: string, topics: any) {
+		return this._HttpClient.get(environment.apiUrl + '/api/peers/' + userId + '/blockTransactions?topics=' + JSON.stringify(topics), this._RequestHeaderService.options)
+			.map(res => res,
+				err => err);
+	}
 
 	/**
 	 * getavailableKnowledgeStories

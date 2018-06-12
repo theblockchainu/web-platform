@@ -175,7 +175,7 @@ export class ConsoleAdminComponent implements OnInit {
 		);
 	}
 
-	public approveWorkshop(collection: any) {
+	public approveClass(collection: any) {
 
 		this._collectionService.approveCollection(collection).subscribe(
 			(result: any) => {
@@ -191,7 +191,7 @@ export class ConsoleAdminComponent implements OnInit {
 		);
 	}
 
-	public rejectWorkshop(collection: any) {
+	public rejectClass(collection: any) {
 
 		this._collectionService.rejectCollection(collection).subscribe(
 			(result: any) => {

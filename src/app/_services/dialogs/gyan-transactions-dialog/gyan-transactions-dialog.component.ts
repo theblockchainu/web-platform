@@ -9,8 +9,6 @@ import {ProfileService} from '../../profile/profile.service';
 })
 export class GyanTransactionsDialogComponent implements OnInit {
 	
-	public gyanBalance = 0;
-	public loadingGyanBalance = true;
 	constructor(
 		public dialogRef: MatDialogRef<GyanTransactionsDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -20,10 +18,6 @@ export class GyanTransactionsDialogComponent implements OnInit {
 	}
 	
 	ngOnInit() {
-		this._profileService.getGyanBalance(this.data.peer[0].id).subscribe(result => {
-			this.gyanBalance = result;
-			this.loadingGyanBalance = false;
-		});
 	}
 	
 }

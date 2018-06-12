@@ -35,7 +35,7 @@ export class SocketService {
                 id: userId
             };
             this.socket.emit('addUser', user);
-            this._inboxService.getRoomData().subscribe(joinedRooms => {
+            this._inboxService.getRoomData(5).subscribe(joinedRooms => {
             	if (joinedRooms) {
             		joinedRooms.forEach(joinedRoom => {
             			this.joinRoom(joinedRoom.id);

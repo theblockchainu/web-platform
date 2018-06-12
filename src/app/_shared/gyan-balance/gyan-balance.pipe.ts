@@ -13,7 +13,7 @@ export class GyanBalancePipe implements PipeTransform {
 	
 	}
 	
-	transform(userId: string, convertTo = 'GYAN'): any {
+	transform(userId: string, type = 'floating', convertTo = 'GYAN'): any {
 		if (!userId || userId.length === 0) {
 			// create observable
 			return new Observable((observer) => {
@@ -21,9 +21,9 @@ export class GyanBalancePipe implements PipeTransform {
 			});
 		} else {
 			if (convertTo === 'USD') {
-				return this._profileService.getGyanBalance(userId, convertTo);
+				return this._profileService.getPotentialKarmaRewards(userId, convertTo);
 			}
-			return this._profileService.getGyanBalance(userId);
+			return this._profileService.getGyanBalance(userId, type);
 		}
 	}
 	

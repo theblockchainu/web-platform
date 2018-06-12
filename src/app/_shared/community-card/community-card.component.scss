@@ -1,0 +1,93 @@
+a {
+	color: black;
+}
+
+label {
+	color: #484848;
+	font-size: 12px;
+	font-weight: 400;
+}
+
+.recommendation-thumb{
+	object-fit: cover;
+	height: 290px;
+	width: 100%;
+	position: relative;
+}
+
+.community-thumb{
+	object-fit: cover;
+	height: 200px;
+	width: 100%;
+	position: relative;
+}
+
+.community-card{
+	min-height:1px;
+	padding-left: 8px;
+	padding-right: 8px;
+	float: left;
+	margin-bottom: 20px;
+}
+
+.card-width-5 {
+	width: 20%;
+}
+
+.card-width-4 {
+	width: 25%;
+}
+
+.card-width-3 {
+	width: 33%;
+}
+
+.card-width-2 {
+	width: 50%;
+}
+
+.card-width-1 {
+	width: 100%;
+}
+
+.community-title {
+	padding: 10px;
+	background-color: rgba(0,0,0,0.7);
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	color: white !important;
+	width: 100%;
+}
+
+.communityParticipants {
+	&:not(:first-child):not(:last-child) {
+		margin-left: -15px !important;
+	}
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.recommendation-thumb{
+		object-fit: cover;
+		height: 145px;
+		width: 100%;
+		position: relative;
+	}
+
+	.community-thumb{
+		object-fit: cover;
+		height: 145px;
+		width: 100%;
+		position: relative;
+	}
+
+	.community-card{
+		min-height:1px;
+		padding-left: 8px;
+		padding-right: 8px;
+		width: 50%;
+		float: left;
+		margin-bottom: 30px;
+	}
+}

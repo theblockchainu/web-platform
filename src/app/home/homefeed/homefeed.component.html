@@ -1,323 +1,177 @@
-<div class="feed homefeed">
-    <div class="row continue-learning-feed" *ngIf="!loadingContinueLearning && ongoingArray.length > 0">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="mat-display-1">Continue learning</div>
-                </div>
-                <div class="col-md-2 pull-right" style="text-align: right">
-                    <a [routerLink]="'/console/learning/workshops'">
-                        <span class="mat-body-1">
-                            See all
-                            <mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
-                        </span>
-                    </a>
-                </div>
-            </div>
-            <div class="loading-container" [hidden]="!loadingContinueLearning">
-                <ngx-loading [show]="true"></ngx-loading>
-            </div>
-            <div *ngIf="!loadingContinueLearning" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
-                <div class="continueLearning-card" *ngFor="let collection of ongoingArray; let i =index">
-                    <a *ngIf="i<3" [routerLink]="'/' + collection.type + '/'+collection.id+'/calendar/' + getLearnerCalendar(collection).id + '/' + getLearnerUpcomingEvent(collection).id">
-                        <div class="">
-                            <img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl !== undefined" src="{{envVariable.apiUrl+getLearnerUpcomingEvent(collection).imageUrl + '/500'}}"
-                                alt="collectionImg" (error)="_collectionService.imgErrorHandler($event)">
-                            <img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl === undefined" src="/assets/images/no-image.jpg"
-                                alt="collectionImg">
-                        </div>
-                        <div class="mat-body-2" style="margin-top: 0px;">{{collection.type | titlecase}} : {{collection.title | titlecase}}
-                        </div>
-                        <div style="margin-top: 0px;">Recent {{getLearnerUpcomingEvent(collection).type}} {{getLearnerUpcomingEvent(collection).fillerWord}}:
-                            {{getLearnerUpcomingEvent(collection).title | shorten: 70 : '...' | titlecase}}
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--<div class="row workshop-feed">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="mat-display-1">Workshops</div>
-                </div>
-                <div class="col-md-2 pull-right" style="text-align: right">
-                    <a [routerLink]="'/home/workshops'">
-            <span class="mat-body-1">
-              See all
-              <mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
-            </span>
-                    </a>
-                </div>
-            </div>
-            <div class="loading-container" [hidden]="!loadingWorkshops">
-                <ngx-loading [show]="true"></ngx-loading>
-            </div>
-            <div *ngIf="!loadingWorkshops" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
-                <div class="noDataContainer" *ngIf="workshops === undefined || workshops.length === 0">
-                    There are no new active workshops to view right now. Browse from within your signed-up workshops <a class="clickable">here</a>.
-                </div>
-                <div class="recommendation-card" *ngFor="let workshop of workshops; let i =index">
-          <span class="share-panel">
-            <button mat-icon-button class="bookmark" (click)="toggleWorkshopBookmark(i)">
-              <mat-icon
-                      *ngIf="!(workshop.bookmarks && workshop.bookmarks[0] && workshop.bookmarks[0].peer && workshop.bookmarks[0].peer[0] && workshop.bookmarks[0].peer[0].id===userId)">
-                bookmark</mat-icon>
-              <mat-icon
-                      *ngIf="workshop.bookmarks && workshop.bookmarks[0] && workshop.bookmarks[0].peer && workshop.bookmarks[0].peer[0] && workshop.bookmarks[0].peer[0].id===userId"
-                      color="primary">bookmark</mat-icon>
-            </button>
-            <button mat-icon-button class="share"
-                    (click)="_dialogsService.shareCollection('workshop',workshop.id,workshop.title)">
-              <mat-icon>share</mat-icon>
-            </button>
-          </span>
-                    <a *ngIf="i<5" [routerLink]="'/workshop/'+workshop.id">
-                        <div class="">
-                            <img class="recommendation-thumb" *ngIf="workshop.imageUrls && workshop.imageUrls.length>0"
-                                 src="{{envVariable.apiUrl+workshop.imageUrls[0] + '/300'}}"
-                                 alt="workshpImg" (error)="_collectionService.imgErrorHandler($event)">
-                            <img class="recommendation-thumb"
-                                 *ngIf="!workshop.imageUrls || workshop.imageUrls.length<=0"
-                                 src="/assets/images/no-image.jpg"
-                                 alt="workshpImg" (error)="_collectionService.imgErrorHandler($event)">
-                        </div>
-                        <div *ngIf="workshop.currency !== undefined && workshop.currency.length > 0"
-                             style="margin-top: 3px;">
-                            <span class="mat-body-2">{{workshop.price | convertCurrency: workshop.currency |async}}</span>
-                            / person
-                        </div>
-                        <div *ngIf="workshop.currency === undefined || workshop.currency.length == 0"
-                             style="margin-top: 3px;">
-                            <span class="mat-body-2">{{workshop.price | convertCurrency: 'USD' |async}}</span> / person
-                        </div>
-                        <div class="mat-body-2" style="margin-top: -3px;">{{workshop.title | titlecase}}</div>
-                        &lt;!&ndash;<div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>&ndash;&gt;
-                        <div style="margin-top: 0px;">{{workshop.owners[0].profiles[0].first_name + ' ' +
-                            workshop.owners[0].profiles[0].last_name | ucwords}}
-                        </div>
-                        <div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
-                            <p-rating class="padding-left-0" style="float: left;" [ngModel]="workshop.rating"
-                                      readonly="true" stars="5" [cancel]="false">
-                            </p-rating>
-                            <span class="padding-left-10" *ngIf="workshop.ratingCount" style="text-align: left">
-                <label>{{workshop.ratingCount}} reviews</label>
-              </span>
-                            <span class="padding-left-10" *ngIf="!workshop.ratingCount" style="text-align: left">
-                <label>0 reviews</label>
-              </span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>-->
-    <div class="row experience-feed">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="mat-display-1">Experiences</div>
-                </div>
-                <div class="col-md-2 pull-right" style="text-align: right">
-                    <a [routerLink]="'/home/experiences'">
-                        <span class="mat-body-1">
-                            See all
-                            <mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
-                        </span>
-                    </a>
-                </div>
-            </div>
-            <div class="loading-container" [hidden]="!loadingExperiences">
-                <ngx-loading [show]="true"></ngx-loading>
-            </div>
-            <div *ngIf="!loadingExperiences" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
-                <div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
-                    There are no new active experiences to view right now. Browse from within your signed-up experiences
-                    <a class="clickable">here</a>.
-                </div>
-                <div class="recommendation-card" *ngFor="let experience of experiences; let i =index">
-                    <span class="share-panel">
-                        <button mat-icon-button class="bookmark" (click)="toggleExperienceBookmark(i)">
-                            <mat-icon *ngIf="!(experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId)">
-                                bookmark</mat-icon>
-                            <mat-icon *ngIf="experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId"
-                                color="primary">bookmark</mat-icon>
-                        </button>
-                        <button mat-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.id,experience.title)">
-                            <mat-icon>share</mat-icon>
-                        </button>
-                    </span>
-                    <a *ngIf="i<5" [routerLink]="'/experience/'+experience.id">
-                        <div class="">
-                            <div class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + experience.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
-                                <div class="recommendation-city" [ngClass]="{'hidden': cardInFocus}">
-                                    <mat-icon style="top: 2px; position: relative; color: white; font-size: 15px;">
-                                        place
-                                    </mat-icon>
-                                    <b>{{experience.location | ucwords}}</b>
-                                </div>
-                                <div class="recommendation-map" [ngClass]="{'hidden': !cardInFocus}">
-                                    <agm-map [latitude]="experience.lat" [longitude]="experience.lng" [scrollwheel]="false" [streetViewControl]="false" [zoom]="2">
-                                        <agm-circle [latitude]="experience.lat" [longitude]="experience.lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'"
-                                            [strokeOpacity]="0.9"></agm-circle>
-                                    </agm-map>
-                                </div>
-                            </div>
-                            <div class="recommendation-thumb" *ngIf="!experience.imageUrls || experience.imageUrls.length<=0" [ngStyle]="{'background': 'url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
-                                <div class="recommendation-city">
-                                    <mat-icon style="top: 2px; position: relative; color: white; font-size: 15px;">
-                                        place
-                                    </mat-icon>
-                                    <b>{{experience.location | ucwords}}</b>
-                                </div>
-                            </div>
-                        </div>
-                        <div *ngIf="experience.currency !== undefined && experience.currency.length > 0" style="margin-top: 3px;">
-                            <span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span>
-                            / <i class="fab fa-ethereum"></i> {{experience.academicGyan + experience.nonAcademicGyan}} Gyan
-                        </div>
-                        <div *ngIf="experience.currency === undefined || experience.currency.length == 0" style="margin-top: 3px;">
-                            <span class="mat-body-2">{{experience.price | convertCurrency: 'USD' |async}}</span>
-	                        / <i class="fab fa-ethereum"></i> {{experience.academicGyan + experience.nonAcademicGyan}} Gyan
-                        </div>
-                        <div class="mat-body-2" style="margin-top: -3px;">{{experience.title | titlecase}}</div>
-                        <!--<div style="margin-top: 0px;">{{experience.headline | shorten: 20 : '...' | titlecase}}</div>-->
-                        <div style="margin-top: 0px;">{{experience.owners[0].profiles[0].first_name + ' ' + experience.owners[0].profiles[0].last_name
-                            | ucwords}}
-                        </div>
-                        <div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
-                            <p-rating class="padding-left-0" style="float: left;" [ngModel]="experience.rating" readonly="true" stars="5" [cancel]="false">
-                            </p-rating>
-                            <span class="padding-left-10" *ngIf="experience.ratingCount" style="text-align: left">
-                                <label>{{experience.ratingCount}} reviews</label>
-                            </span>
-                            <span class="padding-left-10" *ngIf="!experience.ratingCount" style="text-align: left">
-                                <label>0 reviews</label>
-                            </span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row community-feed">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="mat-display-1">Communities</div>
-                </div>
-                <div class="col-md-2 pull-right" style="text-align: right">
-                    <a [routerLink]="'/home/communities'">
-                        <span class="mat-body-1">
-                            See all
-                            <mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
-                        </span>
-                    </a>
-                </div>
-            </div>
-            <div class="loading-container" [hidden]="!loadingCommunities">
-                <ngx-loading [show]="true"></ngx-loading>
-            </div>
-            <div *ngIf="!loadingCommunities" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
-                <div class="noDataContainer" *ngIf="communities === undefined || communities.length === 0">
-                    There are no new active communities to view right now. Browse from within your signed-up communities
-                    <a class="clickable">here</a>.
-                </div>
-                <div class="community-card" *ngFor="let community of communities; let i =index">
-                    <span class="share-panel">
-                        <button mat-icon-button class="bookmark" (click)="toggleCommunityBookmark(i)">
-                            <mat-icon *ngIf="!(community.bookmarks && community.bookmarks[0] && community.bookmarks[0].peer && community.bookmarks[0].peer[0] && community.bookmarks[0].peer[0].id===userId)">
-                                bookmark</mat-icon>
-                            <mat-icon *ngIf="community.bookmarks && community.bookmarks[0] && community.bookmarks[0].peer && community.bookmarks[0].peer[0] && community.bookmarks[0].peer[0].id===userId"
-                                color="primary">bookmark</mat-icon>
-                        </button>
-                        <button mat-icon-button class="share" (click)="_dialogsService.shareCollection('community',community.id,community.title)">
-                            <mat-icon>share</mat-icon>
-                        </button>
-                    </span>
-                    <a *ngIf="i<5" [routerLink]="'/community/'+community.id">
-                        <div class="">
-                            <div class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + community.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg.)', 'background-size': 'cover'}">
-                                <div class="community-title">
-                                    <div class="mat-headline" style="color: #ffffff; margin-bottom: 0px;">{{community.title | ucwords}}</div>
-                                </div>
-                            </div>
-                            <div class="recommendation-thumb" *ngIf="!community.imageUrls || community.imageUrls.length<=0" [ngStyle]="{'background': 'url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
-                                <div class="community-title">
-                                    <div class="mat-display-1">{{community.title | ucwords}}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div *ngIf="community.participants !== undefined && community.participants.length > 0" style="margin-top: 3px;">
-                            <div *ngFor="let participant of community.participants; let i = index" style="display: inline-block;" class="communityParticipants">
-                                <app-profile-popup *ngIf="i<6" [peer]="participant"></app-profile-popup>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row peer-feed margin-bottom-40">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="mat-display-1">Peers</div>
-                </div>
-                <div class="col-md-2 pull-right" style="text-align: right">
-                    <a [routerLink]="'/home/peers'">
-                        <span class="mat-body-1">
-                            See all
-                            <mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
-                        </span>
-                    </a>
-                </div>
-            </div>
-            <div class="loading-container" [hidden]="!loadingPeers">
-                <ngx-loading [show]="true"></ngx-loading>
-            </div>
-            <div *ngIf="!loadingPeers" class="row feed-horizontal margin-bottom-50" style="padding: 0px 7px;">
-                <div class="peer-recommendation-card" *ngFor="let peer of peers">
-                    <a [routerLink]="'/profile/'+peer.id">
-                        <div class="">
-                            <img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url + '/300'}}"
-                                alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
-                            <img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="workshpImg"
-                                (error)="_collectionService.userImgErrorHandler($event)">
-                        </div>
-                        <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}
-                        </div>
-                        <div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe
-                        </div>
-	                    <div *ngIf="peer.ethAddress">
-		                    <i class="fab fa-ethereum"></i> {{peer.id | gyanBalance | async}} Gyan
-	                    </div>
-	                    <div *ngIf="!peer.ethAddress"><i class="fab fa-ethereum"></i> 0 Gyan</div>
-                        <div class="col-sm-12 padding-left-0">
-                            <span *ngIf="peer.topics.length<=1">
-                                {{peer.topics}}
-                            </span>
-                            <span *ngIf="peer.topics.length>1">
-                                {{peer.topics | slice: 0:1}}
-                                <span matTooltip="{{peer.topics}}">
-                                    &nbsp;& {{peer.topics.length - 1}} more
-                                </span>
-                            </span>
-                        </div>
-                        <div class="col-sm-12 padding-left-0" style="margin-top: -2px; font-size: 13px;">
-                            <p-rating class="padding-left-0" style="float: left;" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
-                            </p-rating>
-                            <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length>0" style="text-align: left">
-                                <label>{{peer.reviewsAboutYou.length}} reviews</label>
-                            </span>
-                            <span class="padding-left-10" *ngIf="peer.reviewsAboutYou.length==0" style="text-align: left">
-                                <label>0 reviews</label>
-                            </span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="main-content">
+	<div class="col-md-10 col-md-offset-1 homeContainer">
+		<div class="homefeedContainer">
+			<div class="mat-display-1" style="margin-bottom: 5px;">
+				Explore Peerbuds
+			</div>
+			<nav mat-tab-nav-bar disableRipple class="noJustify home">
+				<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive" matTooltip="Classes are a way to learn any subject completely online with videos, projects & live sessions.">
+					<img src="/assets/images/class_icon2.jpg" alt="logo" style="height: 100%;">
+					<h3 class="margin-left-10">Classes</h3>
+				</a>
+				<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive" matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
+					<img src="/assets/images/experiences_icon.jpeg" alt="logo" style="height: 100%;">
+					<h3 class="margin-left-10">Experiences</h3>
+				</a>
+				<a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive" matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
+					<img src="/assets/images/communities_icon1.jpg" alt="logo" style="height: 100%;">
+					<h3>Communities</h3>
+				</a>
+				<a mat-tab-link [routerLink]="'/home/peers'" routerLinkActive #peerLink="routerLinkActive" [active]="peerLink.isActive" matTooltip="Peers are teachers around the world who can teach you something over a live video session.">
+					<img src="/assets/images/peers_icon1.jpg" alt="logo" style="height: 100%;">
+					<h3 class="margin-left-10">Peers</h3>
+				</a>
+			</nav>
+		</div>
+		<div class="feed homefeed">
+			<div class="row continue-learning-feed" *ngIf="!loadingContinueLearning && ongoingArray.length > 0">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-5">
+							<div class="mat-display-1">Continue learning</div>
+						</div>
+						<div class="col-md-2 pull-right" style="text-align: right">
+							<a [routerLink]="'/console/learning/all'">
+								<span class="mat-body-1">
+									See all
+									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loadingContinueLearning">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loadingContinueLearning" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="continueLearning-card" *ngFor="let collection of ongoingArray; let i =index">
+							<a *ngIf="i<3" [routerLink]="'/' + collection.type + '/'+collection.id+'/calendar/' + getLearnerCalendar(collection).id + '/' + getLearnerUpcomingEvent(collection).id">
+								<div class="">
+									<img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl !== undefined" src="{{envVariable.apiUrl+getLearnerUpcomingEvent(collection).imageUrl + '/500'}}"
+									     alt="collectionImg" (error)="_collectionService.imgErrorHandler($event)">
+									<img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).imageUrl === undefined" src="/assets/images/no-image.jpg"
+									     alt="collectionImg">
+								</div>
+								<div class="mat-body-2" style="margin-top: 0px;">{{collection.type | titlecase}} : {{collection.title | titlecase}}
+								</div>
+								<div style="margin-top: 0px;">Recent {{getLearnerUpcomingEvent(collection).type}} {{getLearnerUpcomingEvent(collection).fillerWord}}:
+								                              {{getLearnerUpcomingEvent(collection).title | shorten: 70 : '...' | titlecase}}
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row class-feed">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-5">
+							<div class="mat-display-1">Classes</div>
+						</div>
+						<div class="col-md-2 pull-right" style="text-align: right">
+							<a [routerLink]="'/home/classes'">
+								<span class="mat-body-1">
+									See all
+									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loadingClasses">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loadingClasses" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="classes === undefined || classes.length === 0">
+							There are no new active classes to view right now. Browse from within your signed-up classes <a class="clickable">here</a>.
+						</div>
+						<div *ngFor="let class of classes; let i =index">
+							<app-class-card [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row experience-feed">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-5">
+							<div class="mat-display-1">Experiences</div>
+						</div>
+						<div class="col-md-2 pull-right" style="text-align: right">
+							<a [routerLink]="'/home/experiences'">
+								<span class="mat-body-1">
+									See all
+									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loadingExperiences">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loadingExperiences" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
+							There are no new active experiences to view right now. Browse from within your signed-up experiences
+							<a class="clickable">here</a>.
+						</div>
+						<div *ngFor="let experience of experiences; let i = index;">
+							<app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row community-feed">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-5">
+							<div class="mat-display-1">Communities</div>
+						</div>
+						<div class="col-md-2 pull-right" style="text-align: right">
+							<a [routerLink]="'/home/communities'">
+								<span class="mat-body-1">
+									See all
+									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loadingCommunities">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loadingCommunities" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="communities === undefined || communities.length === 0">
+							There are no new active communities to view right now. Browse from within your signed-up communities
+							<a class="clickable">here</a>.
+						</div>
+						<div *ngFor="let community of communities; let i = index;">
+							<app-community-card *ngIf="i < 5" [community]="community" (refresh)="onCommunityRefresh($event)"></app-community-card>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row peer-feed margin-bottom-40">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-5">
+							<div class="mat-display-1">Peers</div>
+						</div>
+						<div class="col-md-2 pull-right" style="text-align: right">
+							<a [routerLink]="'/home/peers'">
+								<span class="mat-body-1">
+									See all
+									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loadingPeers">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loadingPeers" class="row feed-horizontal margin-bottom-50" style="padding: 0px 7px;">
+						<div *ngFor="let peer of peers;">
+							<app-peer-card [peer]="peer"></app-peer-card>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

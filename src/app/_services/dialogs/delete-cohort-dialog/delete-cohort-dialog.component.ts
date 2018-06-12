@@ -26,7 +26,7 @@ export class DeleteCohortDialogComponent implements OnInit {
         this.dialogRef.close(true);
       }
     }, err => {
-      this.snackBar.open('Workshop Couldn&#39;t be deleted', 'Retry', {
+      this.snackBar.open('Class Couldn&#39;t be deleted', 'Retry', {
         duration: 5000
       }).onAction().subscribe(res => {
         this.deleteCohort();

@@ -18,7 +18,7 @@
 			</div>
 			<div class="row margin-top-10 margin-bottom-10">
 				<div class="col-md-12 mat-body-2" style="height: 18px;">
-					<h5><i class="fab fa-ethereum"></i> {{data.id | gyanBalance | async}} Gyan</h5>
+					<h5><i class="fab fa-ethereum"></i> {{data.id | gyanBalance : 'fixed' | async}} Gyan</h5>
 				</div>
 			</div>
 			<div class="row" *ngIf="data.reviewsAboutYou">
@@ -37,7 +37,7 @@
 			<hr style="margin-top: 10px; margin-bottom: 10px;">
 			<div class="row" *ngIf="ownedCollections && ownedCollections.length>0">
 				<div class="col-md-12">
-					<b>Workshops & Experiences ({{ownedCollections.length}})</b>
+					<b>Classes & Experiences ({{ownedCollections.length}})</b>
 				</div>
 			</div>
 			<div class="row" *ngIf="ownedCollections.length === 0">
@@ -46,9 +46,9 @@
 				</div>
 			</div>
 			<div class="row" *ngIf="ownedCollections && ownedCollections.length>0" style="margin-top: 5px;">
-				<div style="padding-left: 10px; padding-right: 10px;" *ngFor="let workshop of ownedCollections; let i=index">
+				<div style="padding-left: 10px; padding-right: 10px;" *ngFor="let class of ownedCollections; let i=index">
 					<div class="col-md-4" style="padding-left: 5px; padding-right: 5px;" *ngIf="i<3">
-						<img style="width: 100%; height: auto; max-height: 80px;" src="{{envVariable.apiUrl+ workshop.imageUrls[0] + '/100'}}" (error)="_collectionService.imgErrorHandler($event)">
+						<img style="width: 100%; height: auto; max-height: 80px;" src="{{envVariable.apiUrl+ class.imageUrls[0] + '/100'}}" (error)="_collectionService.imgErrorHandler($event)">
 					</div>
 				</div>
 			</div>

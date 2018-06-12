@@ -109,6 +109,6 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
   }
 
   public editPayout(collectionId: string) {
-    this.router.navigateByUrl('/workshop/' + collectionId + '/edit/17');
+    this.router.navigateByUrl('/class/' + collectionId + '/edit/17');
   }
 }

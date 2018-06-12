@@ -241,7 +241,7 @@ export class EditCalendarDialogComponent implements OnInit {
                 console.log(this.eventCalendar);
             });
         this.recurring = this._fb.group({
-            repeatWorkshopGroupOption: ['', Validators.required],
+            repeatClassGroupOption: ['', Validators.required],
             days: [2],
             weekdays: [1],
             daysRepeat: [2],
@@ -504,21 +504,21 @@ export class EditCalendarDialogComponent implements OnInit {
     public createCalendars(end, days, weekday) {
         let start = end;
         let tempEnd;
-        if (this.recurring.value.repeatWorkshopGroupOption === 'immediate') {
+        if (this.recurring.value.repeatClassGroupOption === 'immediate') {
             // start = moment(start).utcOffset(0).set({hour:18,minute:30,second:0});
             start = moment(start).add(1, 'days');
             // tempEnd = moment(start).add(this.duration, 'days').utcOffset(0).set({hour:18,minute:29,second:59});
             tempEnd = moment(start).add(this.duration - 1, 'days');
             this.recurringCalendar.push({ startDate: start.toDate(), endDate: tempEnd.toDate(), markedForDelete: false });
             end = tempEnd; // .format('YYYY-MM-DD');
-        } else if (this.recurring.value.repeatWorkshopGroupOption === 'days') {
+        } else if (this.recurring.value.repeatClassGroupOption === 'days') {
             // start = moment(start).add(days, 'days').utcOffset(0).set({hour:18,minute:30,second:0});
             // tempEnd = moment(start).add(this.duration, 'days').utcOffset(0).set({hour:18,minute:29,second:59});
             start = moment(start).add(days + 1, 'days');
             tempEnd = moment(start).add(this.duration - 1, 'days');
             this.recurringCalendar.push({ startDate: start.toDate(), endDate: tempEnd.toDate(), markedForDelete: false });
             end = tempEnd; // .format('YYYY-MM-DD');
-        } else if (this.recurring.value.repeatWorkshopGroupOption === 'weekdays') {
+        } else if (this.recurring.value.repeatClassGroupOption === 'weekdays') {
             const isoWeekDayForLastDate = moment(end).isoWeekday();
             if (isoWeekDayForLastDate < weekday) {
                 // then just give me this week's instance of that day
@@ -626,10 +626,10 @@ export class EditCalendarDialogComponent implements OnInit {
      */
     public viewCohorts() {
         this.dialog.open(SelectDateDialogComponent, {
-            width: '70vw',
-            height: '90vh',
-            panelClass: 'responsive-dialog',
-            data: { itineraries: this.allItenaries, mode: 'editDelete', participants: this.participants, userType: 'teacher', collectionType: this.collection.type }
+			panelClass: 'responsive-dialog',
+            width: '45vw',
+            height: '100vh',
+            data: { itineraries: this.allItenaries, mode: 'editDelete', participants: this.participants, userType: 'teacher', collectionType: this.collection.type, maxSeats: this.collection.maxSpots}
         }).afterClosed()
             .subscribe((data) => {
                 // Handle the deleted calendar if any

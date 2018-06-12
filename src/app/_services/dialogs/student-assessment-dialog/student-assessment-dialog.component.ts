@@ -23,7 +23,11 @@ export class StudentAssessmentDialogComponent implements OnInit {
 		this.pendingParticipants = false;
 		this.data.participants.forEach(participant => {
 			let isParticipantAssessed = false;
+			let isParticipantEngagementAssessed = false;
+			let isParticipantCommitmentAssessed = false;
 			let participantResult = '';
+			let engagementResult = '';
+			let commitmentResult = '';
 			this.data.assessment_models[0].assessment_rules.forEach(assessment_rule => {
 				if (assessment_rule.assessment_result) {
 					assessment_rule.assessment_result.forEach(result => {
@@ -31,6 +35,25 @@ export class StudentAssessmentDialogComponent implements OnInit {
 							isParticipantAssessed = true;
 							participantResult = assessment_rule;
 							console.log(participantResult);
+						}
+					});
+				}
+				
+			});
+			this.data.assessment_models[0].assessment_na_rules.forEach(assessment_na_rule => {
+				if (assessment_na_rule.assessment_result) {
+					assessment_na_rule.assessment_result.forEach(result => {
+						if (result.assessees && result.assessees.length > 0 && result.assessees[0].id === participant.id) {
+							if (assessment_na_rule.value === 'engagement') {
+								isParticipantEngagementAssessed = true;
+								engagementResult = result.assessmentEngagementResult;
+								console.log(engagementResult);
+							}
+							if (assessment_na_rule.value === 'commitment') {
+								isParticipantCommitmentAssessed = true;
+								commitmentResult = result.assessmentCommitmentResult;
+								console.log(commitmentResult);
+							}
 						}
 					});
 				}
@@ -45,6 +68,8 @@ export class StudentAssessmentDialogComponent implements OnInit {
 					name: participant.profiles[0].first_name + ' ' + participant.profiles[0].last_name,
 					id: participant.id,
 					rule_obj: [{value: participantResult, disabled: isParticipantAssessed}, Validators.required],
+					engagement_result: [{value: engagementResult, disabled: isParticipantEngagementAssessed}, Validators.required],
+					commitment_result: [{value: commitmentResult, disabled: isParticipantCommitmentAssessed}, Validators.required],
 					isAssessed: isParticipantAssessed
 				})
 			);
@@ -59,6 +84,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 	}
 	
 	public getGyanForRule(gyanPercent, totalGyan) {
+		console.log('Percent: ' + gyanPercent + ' of total gyan: ' + totalGyan);
 		return Math.floor((gyanPercent / 100) * totalGyan);
 	}
 	

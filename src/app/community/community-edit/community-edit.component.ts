@@ -58,7 +58,7 @@ export class CommunityEditComponent implements OnInit {
 
   public communityId: string;
   public communityData: any;
-  public isWorkShopActive = false;
+  public isClassActive = false;
   public activeCommunity = '';
   // Set our default values
   public localState = { value: '' };
@@ -254,7 +254,7 @@ export class CommunityEditComponent implements OnInit {
       this._collectionService.sanitize(calendar);
 
       if (this.communityData.status === 'active') {
-        this.isWorkShopActive = true;
+        this.isClassActive = true;
         this.activeCommunity = 'disabledMAT';
       }
       this.timeline.controls.calendar.patchValue(calendar);

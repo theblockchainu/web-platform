@@ -198,6 +198,10 @@ mat-subheader {
 	margin: 1.5rem 0;
 }
 
+.mat-tooltip {
+	background: #000 !important;
+}
+
 .mat-toolbar {
 	position: fixed !important;
 	z-index: 1000 !important;
@@ -691,12 +695,7 @@ h3.calendarTitle  {
 }
 
 .onboarding.step-10 .ui-widget-header {
-	border: 1px solid #eeeeee !important;
 	background: #ffffff !important;
-}
-
-.onboarding.step-10 .ui-widget-content {
-	border: 1px solid #eeeeee !important;
 }
 
 .fc .fc-axis {
@@ -1286,7 +1285,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 }
 
 .mat-dialog-actions {
-	padding: 12px 24px !important;
+	padding: 12px 24px 12px 0 !important;
 }
 
 .my-full-screen-dialog .mat-dialog-container {
@@ -1435,7 +1434,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	padding: 0px !important;
 }
 
-.workshop-content carousel-pins{
+.class-content carousel-pins{
 	display: none;
 }
 
@@ -1588,14 +1587,12 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 .share-panel{
 	position: absolute;
 	color: white;
-	flex-direction: row;
-	justify-content: space-between;
 	z-index: 1;
 	display: none;
 	width: 18%;
 }
 .recommendation-card:hover .share-panel {
-	display: inline-flex;
+	display: inline-grid;
 }
 
 /* Chat Bubble */
@@ -1774,7 +1771,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	padding: 0 !important;
 }
 
-.workshopSelector .mat-form-field-underline {
+.classSelector .mat-form-field-underline {
 	height: 0px;
 }
 
@@ -1827,6 +1824,48 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 
 .welcome-feed-accordian .mat-content {
 	background: inherit !important;
+}
+
+.bottomButton {
+	display: none;
+}
+
+.spinner-three-bounce {
+	z-index: 2;
+}
+
+.gyanBubble {
+	margin-left: 10px !important;
+	text-align: right;
+	display: inline-grid;
+	padding: 0px 10px;
+	border-radius: 50px;
+	vertical-align: middle;
+	background: #f7f7f7;
+	color: #33bd9e;
+	position: relative;
+	top: 2px;
+}
+
+.ui-slider-horizontal {
+	height: 0.4rem !important;
+	margin-bottom: 15px !important;
+}
+
+.ui-slider {
+	background: #ddd !important;
+	box-shadow: none !important;
+}
+
+.ui-slider .ui-slider-handle {
+	background: #33bd9e !important;
+	height: 17px !important;
+	border-radius: 200px !important;
+	box-shadow: 1px 0 10px #ccc;
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+	top: -5px !important;
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -1945,6 +1984,28 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	}
 	.consoleContainer .mat-tab-nav-bar .mat-tab-links {
 		width: max-content;
+	}
+
+	.bottomButton {
+		display: block;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		background: #FF6D71;
+		color: #fff;
+		cursor: pointer;
+		padding: 12px 20px;
+		text-align: center;
+		z-index: 1000;
+	}
+
+	footer {
+		margin-bottom: 90px;
+	}
+
+	.mat-form-field {
+		width: 100% !important;
 	}
 
 }

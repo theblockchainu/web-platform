@@ -50,20 +50,12 @@ export class WalletService {
 	
 	public karmaToDollar(karma) {
 		return this.http
-			.get(environment.apiUrl + '/karmaToDollar?karma=' + karma, this.requestHeaderService.options)
-			.map(
-				res => res['USD'],
-				err => console.log('Error: ' + err)
-			);
+			.get(environment.apiUrl + '/karmaToDollar?karma=' + karma, this.requestHeaderService.options);
 	}
 	
 	public gyanToDollar(gyan) {
 		return this.http
-			.get(environment.apiUrl + '/gyanToDollar?karma=' + gyan, this.requestHeaderService.options)
-			.map(
-				res => res['USD'],
-				err => console.log('Error: ' + err)
-			);
+			.get(environment.apiUrl + '/gyanToDollar?gyan=' + gyan, this.requestHeaderService.options);
 	}
 
 	/**
@@ -75,6 +67,15 @@ export class WalletService {
 			'karma_balance': 0
 		}, this.requestHeaderService.options);
 
+	}
+	
+	public getKarmaToBurn(gyan: number) {
+		return this.http.post(environment.apiUrl + '/getKarmaToBurn', {gyan: gyan}, this.requestHeaderService.options)
+			.map(
+				(response: any) => response.karma,
+				(err) => {
+					console.log('Error: ' + err);
+				});
 	}
 
 }

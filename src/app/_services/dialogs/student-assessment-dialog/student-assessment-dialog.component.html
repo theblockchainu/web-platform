@@ -27,26 +27,39 @@
 					</div>
 					<div class="col-xs-4">
 						<mat-form-field>
-							<mat-select formControlName="rule_obj" placeholder="Assessment result">
+							<mat-select formControlName="rule_obj" placeholder="Academic Assessment">
 								<mat-option *ngFor="let assessment_rule of data.assessment_models[0].assessment_rules" [value]="assessment_rule">
 									{{ assessment_rule.value }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
+						<div *ngFor="let assessment_na_rule of data.assessment_models[0].assessment_na_rules">
+							<div class="mat-caption lightText" *ngIf="assessment_na_rule.value === 'engagement'">
+								Assess community engagement
+							</div>
+							<mat-slider class="pb-block" *ngIf="assessment_na_rule.value === 'engagement'" thumbLabel tickInterval="1" min="1" max="100" formControlName="engagement_result"></mat-slider>
+							<div class="mat-caption lightText" *ngIf="assessment_na_rule.value === 'commitment'">
+								Assess student commitment
+							</div>
+							<mat-slider class="pb-block" *ngIf="assessment_na_rule.value === 'commitment'" thumbLabel tickInterval="1" min="1" max="100" formControlName="commitment_result"></mat-slider>
+						</div>
 					</div>
 					<div class="col-xs-4">
 						<div class="row" *ngIf="!participant.value.isAssessed">
 							<div class="col-sm-12">
 								+
 								<span *ngIf="participant.value.rule_obj">
-									{{getGyanForRule(participant.get('rule_obj').gyan, data.academicGyan) }}
+									{{getGyanForRule(participant['controls']['rule_obj'].value.gyan, data.academicGyan) }}
 								</span> Gyan from Academics
 							</div>
 						</div>
 						<div *ngIf="!participant.value.isAssessed">
 							<div class="row" *ngFor="let nonAcademicRule of data.assessment_models[0].assessment_na_rules">
-								<div class="col-sm-12">
-									+ {{getGyanForRule(nonAcademicRule.gyan, data.nonAcademicGyan) }} Gyan from {{nonAcademicRule.value | titlecase}}
+								<div class="col-sm-12" *ngIf="nonAcademicRule.value === 'engagement'">
+									+ {{getGyanForRule( participant['controls']['engagement_result'].value, getGyanForRule(nonAcademicRule.gyan, data.nonAcademicGyan)) }} Gyan from {{nonAcademicRule.value | titlecase}}
+								</div>
+								<div class="col-sm-12" *ngIf="nonAcademicRule.value === 'commitment'">
+									+ {{getGyanForRule( participant['controls']['commitment_result'].value, getGyanForRule(nonAcademicRule.gyan, data.nonAcademicGyan)) }} Gyan from {{nonAcademicRule.value | titlecase}}
 								</div>
 							</div>
 						</div>
@@ -57,6 +70,7 @@
 						</div>
 					</div>
 				</div>
+				<hr>
 			</div>
 		</div>
 	</form>

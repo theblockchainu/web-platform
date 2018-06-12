@@ -310,11 +310,11 @@ export class DialogsService {
         return dialogRef5.afterClosed();
     }
 
-    public selectDateDialog(allItenaries, mode, participants, userType, collectionType) {
+    public selectDateDialog(allItenaries, mode, participants, userType, collectionType, maxSeats) {
         return this.dialog.open(SelectDateDialogComponent, {
             panelClass: 'responsive-dialog', width: '45vw',
             height: '100vh',
-            data: { itineraries: allItenaries, mode: mode, participants: participants, userType: userType, collectionType: collectionType }
+            data: { itineraries: allItenaries, mode: mode, participants: participants, userType: userType, collectionType: collectionType, maxSeats: maxSeats }
         }).afterClosed();
     }
 
@@ -369,7 +369,8 @@ export class DialogsService {
     public inviteFriends(collection) {
         return this.dialog.open(InviteFriendsDialogComponent, {
             data: {
-                url: collection.type + '/' + collection.id
+                url: collection.type + '/' + collection.id,
+				object: collection
             },
             panelClass: 'responsive-dialog', width: '40vw'
         }).afterClosed();
@@ -536,7 +537,6 @@ export class DialogsService {
             {
                 panelClass: 'responsive-dialog',
                 width: '55vw',
-                height: '40vh',
                 data: {
                     availableGyan: availableGyan,
                     requiredGyan: requiredGyan

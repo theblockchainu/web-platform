@@ -1,6 +1,9 @@
 <div class="main-content">
+	<button disableRipple mat-button style="min-width: 20px;padding: 6px 9px 0px 9px;vertical-align: middle; position: absolute; top: 90px; right: 30px; border-radius: 200px;" (click)="closeHome()">
+		<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+	</button>
 	<div class="col-md-10 col-md-offset-1 homeContainer">
-		<div *ngIf="activeTab === ''" class="row welcome-feed"  >
+		<div class="row welcome-feed">
 			<div class="col-md-12">
 				<div class="row">
 					<div class="col-md-8 col-md-offset-2">
@@ -184,7 +187,7 @@
 												</div>
 												<div class="row">
 													<div class="col-md-12 margin-top-20">
-														<button mat-button mat-raised-button color="primary" [routerLink]="['/home', 'homefeed']" class="margin-top-30">View Learning Content</button>
+														<button mat-button mat-raised-button color="primary" [routerLink]="['/scholarship', 'global']" class="margin-top-30">View Global Scholarship Fund</button>
 													</div>
 												</div>
 											</div>
@@ -315,37 +318,10 @@
 				</div>
 			</div>
 		</div>
-		<div *ngIf="activeTab === 'homefeed'" class="homefeedContainer">
-			<div class="mat-display-1" style="margin-bottom: 5px;">
-				Explore Peerbuds
-			</div>
-			<nav mat-tab-nav-bar disableRipple class="noJustify home">
-				<!--<a mat-tab-link [routerLink]="'/home/homefeed'" routerLinkActive #feedLink="routerLinkActive" [active]="feedLink.isActive">
-					  <img src="/assets/images/placeholder-image.jpg" alt="logo" style="height: 100%;">
-					  <h3>Explore</h3>
-					</a>-->
-				<!--<a mat-tab-link [routerLink]="'/home/workshops'" routerLinkActive #workshopLink="routerLinkActive" [active]="workshopLink.isActive" >
-						<img src="/assets/images/placeholder-image.jpg" alt="logo" style="height: 100%;">
-						<h3 class="margin-left-10">Workshops</h3>
-					</a>-->
-				<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive">
-					<img src="/assets/images/experiences_icon.jpeg" alt="logo" style="height: 100%;">
-					<h3 class="margin-left-10">Experiences</h3>
-				</a>
-				<a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive">
-					<img src="/assets/images/communities_icon1.jpg" alt="logo" style="height: 100%;">
-					<h3>Communities</h3>
-				</a>
-				<a mat-tab-link [routerLink]="'/home/peers'" routerLinkActive #peerLink="routerLinkActive" [active]="peerLink.isActive" >
-					<img src="/assets/images/peers_icon1.jpg" alt="logo" style="height: 100%;">
-					<h3 class="margin-left-10">Peers</h3>
-				</a>
-			</nav>
-		</div>
-		<div class="row">
+		<!--<div class="row">
 			<div class="col-md-12">
 				<router-outlet></router-outlet>
 			</div>
-		</div>
+		</div>-->
 	</div>
 </div>

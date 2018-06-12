@@ -4,8 +4,8 @@
 			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/all'" [class.bold]="getActiveTab() === 'all'">
 				View All
 			</mat-list-item>
-			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/workshops'" [class.bold]="getActiveTab() === 'workshops'">
-				Workshops
+			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/classes'" [class.bold]="getActiveTab() === 'classes'">
+				Classes
 			</mat-list-item>
 			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/experiences'" [class.bold]="getActiveTab() === 'experiences'">
 				Experiences
@@ -13,9 +13,9 @@
 			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/sessions'" [class.bold]="getActiveTab() === 'sessions'">
 				Sessions
 			</mat-list-item>
-			<mat-list-item *ngIf="getActiveTab() === 'workshops' ">
-				<span matTooltip="Please wait for your account to be verified before creating a new workshop." [matTooltipDisabled]="accountVerified">
-					<button mat-raised-button (click)="createWorkshop()" [disabled]="!accountVerified" color="primary">New Workshop</button>
+			<mat-list-item *ngIf="getActiveTab() === 'classes' ">
+				<span matTooltip="Please wait for your account to be verified before creating a new class." [matTooltipDisabled]="accountVerified">
+					<button mat-raised-button (click)="createClass()" [disabled]="!accountVerified" color="primary">New Class</button>
 				</span>
 			</mat-list-item>
 			<mat-list-item *ngIf="activeTab === 'experiences'">

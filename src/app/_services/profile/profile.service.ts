@@ -200,15 +200,35 @@ export class ProfileService {
 					console.log('Error: ' + err);
 				});
 	}
-
-	public getGyanBalance(userId, convertTo = 'GYAN') {
+	
+	public getPotentialKarmaRewards(userId, convertTo = 'KARMA') {
 		return this.http
-			.get(environment.apiUrl + '/api/peers/' + userId + '/gyanBalance?convertTo=' + convertTo, this._requestHeaderService.options)
+			.get(environment.apiUrl + '/api/peers/' + userId + '/potentialRewards?convertTo=' + convertTo, this._requestHeaderService.options)
 			.map(
 				(response: any) => response,
 				(err) => {
 					console.log('Error: ' + err);
 				});
+	}
+
+	public getGyanBalance(userId, type = 'floating', convertTo = 'GYAN') {
+		if (type === 'fixed') {
+			return this.http
+				.get(environment.apiUrl + '/api/peers/' + userId + '/fixedGyanBalance?convertTo=' + convertTo, this._requestHeaderService.options)
+				.map(
+					(response: any) => response,
+					(err) => {
+						console.log('Error: ' + err);
+					});
+		} else {
+			return this.http
+				.get(environment.apiUrl + '/api/peers/' + userId + '/floatingGyanBalance?convertTo=' + convertTo, this._requestHeaderService.options)
+				.map(
+					(response: any) => response,
+					(err) => {
+						console.log('Error: ' + err);
+					});
+		}
 	}
 
 	public sendVerifyEmail(userId, emailAddress) {

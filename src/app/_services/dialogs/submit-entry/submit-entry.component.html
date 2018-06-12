@@ -26,7 +26,7 @@
 				</h5>
 				<div *ngIf="urlForImages.length" class="pic delete">
 					<div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
-						<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150"
+						<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}/100" width="150"
 						     style="border: 0.5px solid #ccc; position: relative; top: -20px;">
 						<mat-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'file')"
 						          class="delete-image">close

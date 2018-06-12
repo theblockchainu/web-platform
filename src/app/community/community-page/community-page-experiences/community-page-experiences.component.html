@@ -7,57 +7,26 @@
 </div>
 <div class="row" *ngIf="!loadingExperiences">
 	<div class="col-md-12">
-		<div class="row margin-top-20">
+		<div class="row margin-top-20" *ngIf="userType !== 'public'">
 			<div class="col-md-12">
 				<div class="mat-body-2">Add your experience</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-11">
-				<mat-form-field [floatLabel]="'never'" class="pb-block workshopSelector margin-top-20">
+		<div class="row" *ngIf="userType !== 'public'">
+			<div class="col-md-11 col-xs-10">
+				<mat-form-field [floatLabel]="'never'" class="pb-block classSelector margin-top-20">
 					<mat-select #selectedExperience placeholder="Select from your existing experiences" [disableRipple]="'true'">
 						<mat-option *ngFor="let experience of ownedExperiences" [value]="experience.id">{{experience.title | ucwords}}</mat-option>
 					</mat-select>
 				</mat-form-field>
 			</div>
-			<div class="col-md-1" style="top: 42px;">
+			<div class="col-md-1 col-xs-2" style="top: 42px;">
 				<mat-icon class="clickable" style="color: #33bd9e;" (click)="addExperience(selectedExperience.value)">check_circle</mat-icon>
 			</div>
 		</div>
 		<div class="row feed-horizontal margin-top-30 margin-bottom-40" style="padding: 0px 7px;">
-			<div class="recommendation-card" *ngFor="let experience of experiences; let i =index">
-				<span class="share-panel" style="width: 30% !important;">
-					<button mat-icon-button class="bookmark" (click)="toggleBookmark(i)">
-						<mat-icon *ngIf="!(experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId)">
-							bookmark</mat-icon>
-						<mat-icon *ngIf="experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId"
-						          color="primary">bookmark</mat-icon>
-					</button>
-					<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.id,experience.title)">
-						<mat-icon>share</mat-icon>
-					</button>
-				</span>
-				<a [routerLink]="'/experience/'+experience.id">
-					<div class="">
-						<img class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" src="{{envVariable.apiUrl+experience.imageUrls[0]}}/300" alt="experience image" (error)="_collectionService.imgErrorHandler($event)">
-						<img class="recommendation-thumb" *ngIf="!experience.imageUrls || experience.imageUrls.length<=0" src="/assets/images/no-image.jpg" alt="experience image" (error)="_collectionService.imgErrorHandler($event)">
-					</div>
-					<div *ngIf="experience.currency !== undefined && experience.currency.length > 0" style="margin-top: 3px;"><span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span> / person</div>
-					<div *ngIf="experience.currency === undefined || experience.currency.length == 0" style="margin-top: 3px;"><span class="mat-body-2">{{experience.price | convertCurrency: 'USD' |async}}</span> / person</div>
-					<div class="mat-body-2" style="margin-top: -3px;">{{experience.title | titlecase}}</div>
-					<div style="margin-top: 0px;">{{experience.owners[0].profiles[0].first_name + ' ' + experience.owners[0].profiles[0].last_name | ucwords}}</div>
-					<!--<div style="margin-top: 0px;">{{workshop.headline | shorten: 20 : '...' | titlecase}}</div>-->
-					<div class="col-sm-12 padding-left-0" style="margin-top: 0px; font-size: 13px;">
-						<p-rating class="padding-left-0" style="float: left;" [ngModel]="experience.rating" readonly="true" stars="5" [cancel]="false">
-						</p-rating>
-						<span class="padding-left-10" *ngIf="experience.ratingCount" style="text-align: left">
-							<label>{{experience.ratingCount}} reviews</label>
-						</span>
-						<span class="padding-left-10" *ngIf="!experience.ratingCount" style="text-align: left">
-							<label>0 reviews</label>
-						</span>
-					</div>
-				</a>
+			<div *ngFor="let experience of experiences; let i =index">
+				<app-experience-card [experience]="experience" (refresh)="onExperienceRefresh($event)" [cardsPerRow]="3"></app-experience-card>
 			</div>
 		</div>
 	</div>

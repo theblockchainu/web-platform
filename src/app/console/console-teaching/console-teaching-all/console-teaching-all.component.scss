@@ -1,29 +1,29 @@
 .upcoming-card{
-  text-align: center;
-  padding: 20px;
-  min-height: 440px;
+	text-align: center;
+	padding: 20px;
+	min-height: 465px;
 }
 
 .collectionTitle{
-  cursor:pointer;
+	cursor:pointer;
 }
 .draft-card{
-  text-align: center;
-  padding: 20px;
-  height: 310px;
+	text-align: center;
+	padding: 20px;
+	height: 310px;
 }
 
 .pastCard {
-  min-height: 465px;
+	min-height: 465px;
 }
 
 
 .mat-icon-button .mat-icon, .mat-icon-button i {
-  color: #777777;
+	color: #777777;
 }
 
 .disabled {
-  cursor: not-allowed !important;
-  pointer-events: none !important;
-  color: lightgray !important;
+	cursor: not-allowed !important;
+	pointer-events: none !important;
+	color: lightgray !important;
 }

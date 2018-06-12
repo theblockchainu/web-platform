@@ -62,14 +62,14 @@ export class AppComponent implements OnInit {
 			/^\/verification\/.*./.test(location.url)
 			|| /^\/onboarding\/.*./.test(location.url)
 			|| /\/console\/inbox\/.*./.test(location.url)
-			|| /^\/workshop\/.*\/edit\/./.test(location.url)
+			|| /^\/class\/.*\/edit\/./.test(location.url)
 			|| /^\/experience\/.*\/edit\/./.test(location.url)
 			|| /^\/session\/.*\/edit\/./.test(location.url));
 	}
 	
 	modifyHeader(location) {
 		this.showHeader = !(
-			/^\/workshop\/.*\/edit\/./.test(location.url)
+			/^\/class\/.*\/edit\/./.test(location.url)
 			|| /^\/experience\/.*\/edit\/./.test(location.url)
 			|| /^\/session\/.*\/edit\/./.test(location.url)
 			|| /^\/error/.test(location.url));

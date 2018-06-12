@@ -5,7 +5,7 @@ import {TeachingBenefitsComponent} from './teaching-benefits/teaching-benefits.c
 import {ResponsibleTeachingComponent} from './responsible-teaching/responsible-teaching.component';
 import {AuthGuardService} from '../_services/auth-guard/auth-guard.service';
 import {ExperienceIntroComponent} from './experience-intro/experience-intro.component';
-import {WorkshopIntroComponent} from './workshop-intro/workshop-intro.component';
+import {ClassIntroComponent} from './class-intro/class-intro.component';
 import {CommunityIntroComponent} from './community-intro/community-intro.component';
 import {PeerIntroComponent} from './peer-intro/peer-intro.component';
 
@@ -31,7 +31,7 @@ const routes: Routes = [
 			},
 			{
 				path: 'classes',
-				component: WorkshopIntroComponent
+				component: ClassIntroComponent
 			},
 			{
 				path: 'communities',

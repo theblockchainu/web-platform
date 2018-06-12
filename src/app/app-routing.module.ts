@@ -133,8 +133,8 @@ const routes: Routes = [
 		loadChildren: 'app/experience/experience.module#ExperienceModule'
 	},
 	{
-		path: 'workshop',
-		loadChildren: 'app/workshop/workshop.module#WorkshopModule'
+		path: 'class',
+		loadChildren: 'app/class/class.module#ClassModule'
 	},
 	{
 		path: 'session',

@@ -38,7 +38,7 @@ import {
     CheckboxModule, LightboxModule, RatingModule,
     AccordionModule, SliderModule
 } from 'primeng/primeng';
-import { NgPipesModule } from 'ngx-pipes';
+import { NgPipesModule, UcWordsPipe } from 'ngx-pipes';
 import { CalendarModule } from 'angular-calendar';
 import { NguCarouselModule } from '@ngu/carousel';
 import { MultiselectAutocompleteModule } from './multiselect-autocomplete/multiselect-autocomplete.module';
@@ -82,6 +82,13 @@ import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-st
 import { ClipboardModule } from 'ngx-clipboard';
 import { ShareModule } from '@ngx-share/core';
 import { QRCodeModule } from 'angularx-qrcode';
+import { ConvertCryptoPipe } from './convert-crypto/convert-crypto.pipe';
+import { ShortNumberPipe } from './short-number/short-number.pipe';
+import {RouterModule} from '@angular/router';
+import {ExperienceCardComponent} from './experience-card/experience-card.component';
+import { CommunityCardComponent } from './community-card/community-card.component';
+import { PeerCardComponent } from './peer-card/peer-card.component';
+import { ClassCardComponent } from './class-card/class-card.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 @NgModule({
@@ -94,6 +101,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
         FileUploadModule,
         PopoverModule.forRoot(),
         CalendarModule.forRoot(),
+		FormsModule,
+		RatingModule,
         LoadingModule.forRoot({
             animationType: ANIMATION_TYPES.threeBounce,
             backdropBackgroundColour: 'rgba(0,0,0,0)',
@@ -112,7 +121,10 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
         Ng4GeoautocompleteModule.forRoot(),
         MatIconModule,
         MatButtonModule,
-        ShareModule.forRoot()
+		MatTooltipModule,
+		ShareModule.forRoot(),
+		RouterModule,
+		NgPipesModule
     ],
     declarations: [
         ExtractTimePipe,
@@ -123,7 +135,13 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
         TimeToNowPipe,
         TopicRowComponent,
         GyanBalancePipe,
-        KarmaBalancePipe
+        KarmaBalancePipe,
+        ConvertCryptoPipe,
+        ShortNumberPipe,
+		ExperienceCardComponent,
+		CommunityCardComponent,
+		PeerCardComponent,
+		ClassCardComponent
     ],
     providers: [
         CollectionService,
@@ -151,7 +169,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
         AssessmentService,
         WalletService,
         ScholarshipService,
-        KnowledgeStoryService
+        KnowledgeStoryService,
+		UcWordsPipe
     ],
     exports: [
         CommonModule,
@@ -208,6 +227,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
         ConvertCurrencyPipe,
         GyanBalancePipe,
         KarmaBalancePipe,
+		ConvertCryptoPipe,
+		ShortNumberPipe,
         ProfilePopupComponent,
         TrimPipe,
         TextIconCarouselComponent,
@@ -217,11 +238,15 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
         TopicRowComponent,
         NguCarouselModule,
         MatStepperModule,
-        ClipboardModule,
-        ShareModule,
+		ClipboardModule,
+		ShareModule,
         QRCodeModule,
-        OwlDateTimeModule,
-        OwlNativeDateTimeModule
+		ExperienceCardComponent,
+		CommunityCardComponent,
+		PeerCardComponent,
+		ClassCardComponent,
+		OwlDateTimeModule,
+		OwlNativeDateTimeModule
     ]
 })
 export class SharedModule {

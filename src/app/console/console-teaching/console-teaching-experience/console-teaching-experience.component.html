@@ -52,8 +52,7 @@
 										<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
 										<!-- <mat-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></mat-progress-bar> -->
 										<div class="cohortDate">
-											<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
-											      MMM' }}</span>
+											<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
 										</div>
 										<div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
 											{{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
@@ -70,7 +69,7 @@
 												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
 											</div>
 											<div class="upcomingEventTime">
-												{{ _collectionService.getUpcomingEvent(collection).type | titlecase}} today.
+												{{ _collectionService.getUpcomingEvent(collection).type | titlecase}} {{ _collectionService.getUpcomingEvent(collection).fillerWord}} today
 											</div>
 										</span>
 										<span *ngIf=" _collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart > 0">
@@ -82,7 +81,7 @@
 											</div>
 											<div class="upcomingEventTime">
 												{{ _collectionService.getUpcomingEvent(collection).type | titlecase }} {{ _collectionService.getUpcomingEvent(collection).fillerWord
-												+ ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' Days' }}
+												+ ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' days' }}
 											</div>
 										</span>
 										<span *ngIf="_collectionService.getUpcomingEvent(collection) &&  _collectionService.getUpcomingEvent(collection).timeToStart < 0">
@@ -94,7 +93,7 @@
 											</div>
 											<div class="upcomingEventTime">
 												{{ _collectionService.getUpcomingEvent(collection).type| titlecase }} {{ _collectionService.getUpcomingEvent(collection).fillerWord
-												+ ' was ' + -(_collectionService.getUpcomingEvent(collection).timeToStart) + ' Days ago' }}
+												+ ' was ' + -(_collectionService.getUpcomingEvent(collection).timeToStart) + ' days ago' }}
 											</div>
 										</span>
 									</mat-card-content>
@@ -141,27 +140,36 @@
 											<span class="lightText">{{collection.maxSpots - collection.participants.length}} available </span>
 										</div>
 										<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
-										<!-- <div class="lighterText">
-											  Approved {{_collectionService.getDaysBetween(collection.updatedAt, now)}}
-											</div> -->
 										<div class="cohortDate">
-											<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
-											      MMM' }}</span>
+											<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
 										</div>
 										<div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
 											{{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
 											<span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
 										</div>
-										<p class="upcomingEventLabel">
-											First Session
-										</p>
-										<div class="upcomingEventTitle" *ngIf="_collectionService.getUpcomingEvent(collection)">
-											{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
-										</div>
-										<div class="upcomingEventTime" *ngIf="_collectionService.getUpcomingEvent(collection)">
-											{{ _collectionService.getUpcomingEvent(collection).type | titlecase }} {{ _collectionService.getUpcomingEvent(collection).fillerWord
-											+ ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' Days' }}
-										</div>
+										<span *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart === 0">
+											<p class="upcomingEventLabel">
+												First Activity
+											</p>
+											<div class="upcomingEventTitle">
+												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
+											</div>
+											<div class="upcomingEventTime">
+												{{ _collectionService.getUpcomingEvent(collection).type | titlecase}} {{ _collectionService.getUpcomingEvent(collection).fillerWord}} today
+											</div>
+										</span>
+										<span *ngIf=" _collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart > 0">
+											<p class="upcomingEventLabel">
+												First Activity
+											</p>
+											<div class="upcomingEventTitle">
+												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
+											</div>
+											<div class="upcomingEventTime">
+												{{ _collectionService.getUpcomingEvent(collection).type | titlecase }} {{ _collectionService.getUpcomingEvent(collection).fillerWord
+												+ ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' days' }}
+											</div>
+										</span>
 									</mat-card-content>
 									<mat-menu #upcomingCardMenu>
 										<button mat-menu-item (click)="cancelCollection(collection)">

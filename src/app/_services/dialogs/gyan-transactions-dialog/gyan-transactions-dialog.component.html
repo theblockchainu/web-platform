@@ -18,7 +18,7 @@
 			<h2 *ngIf="data.peer[0].ethAddress">
 				<i class="fab fa-ethereum">
 				</i>
-				 {{data.peer[0].id | gyanBalance | async}} Gyan
+				 {{data.peer[0].id | gyanBalance : 'fixed' | async}} Gyan
 			</h2>
 		</div>
 	</div>

@@ -14,7 +14,7 @@ declare var moment: any;
 })
 export class ConsoleLearningComponent implements OnInit {
 	
-	public workshops: any;
+	public classes: any;
 	public loaded: boolean;
 	public activeTab: string;
 	public now: Date;
@@ -42,7 +42,7 @@ export class ConsoleLearningComponent implements OnInit {
 	}
 	
 	/**
-	 * createWorkshop
+	 * createClass
 	 */
 	public viewReceipt(collection) {
 		this.router.navigate(['receipt']);
@@ -67,7 +67,7 @@ export class ConsoleLearningComponent implements OnInit {
 	
 	
 	/**
-	 * calculate number of days of a workshop
+	 * calculate number of days of a class
 	 */
 	public getThisCollectionDate(collection) {
 		if (collection.calendarId === undefined) {
@@ -177,14 +177,14 @@ export class ConsoleLearningComponent implements OnInit {
 		return contents[0];
 	}
 	/**
-	 * Get the progress bar value of this workshop
-	 * @param workshop
+	 * Get the progress bar value of this class
+	 * @param class
 	 * @returns {number}
 	 */
-	public getProgressValue(workshop) {
+	public getProgressValue(_class) {
 		let max = 0;
 		let progress = 0;
-		workshop.contents.forEach(content => {
+		_class.contents.forEach(content => {
 			max++;
 			switch (content.type) {
 				case 'online':
@@ -225,10 +225,10 @@ export class ConsoleLearningComponent implements OnInit {
 	}
 	
 	/**
-	 * viewWorkshop
+	 * viewClass
 	 */
-	public viewWorkshop(collection) {
-		this.router.navigate(['workshop', collection.id]);
+	public viewClass(collection) {
+		this.router.navigate(['class', collection.id]);
 	}
 	
 	/**

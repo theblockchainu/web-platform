@@ -1,27 +1,28 @@
 <div mat-dialog-content class="dialog-container">
-  <div class="row">
-    <div class="col-xs-12">
-      <h2>Insufficient Gyan Balance</h2>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12">
-      <p>
-        You wish to create an experience of
-        <b>{{data.requiredGyan}}</b> Gyan which is higher than your current Gyan score (
-        <b>{{data.availableGyan}}</b>). Please make sure your experience has at least
-        <b>{{data.requiredGyan}}</b> learning hours to be eligible for this Gyan level.
-      </p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12">
-      <button mat-raised-button (click)="continue(false)" color="accent">
-        Cancel
-      </button>
-      <button class="pull-right" mat-raised-button (click)="continue(true)" color="accent">
-        Continue
-      </button>
-    </div>
-  </div>
+	<div class="row">
+		<div class="col-xs-12">
+			<h2>Insufficient Gyan Balance</h2>
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-xs-12">
+			<p>
+				You wish to create an experience of
+				<b>{{data.requiredGyan}}</b> Gyan which is higher than your current Gyan score (<b>{{data.availableGyan}}</b>).
+				<br><br>Please make sure your experience has at least
+				<b>{{data.requiredGyan}}</b> learning hours to successfully submit this experience for review.
+			</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<button mat-raised-button (click)="continue(false)" color="accent">
+				Cancel
+			</button>
+			<button class="pull-right" mat-raised-button (click)="continue(true)" color="accent">
+				Continue
+			</button>
+		</div>
+	</div>
 </div>

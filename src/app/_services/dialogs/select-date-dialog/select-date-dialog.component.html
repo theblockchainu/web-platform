@@ -51,10 +51,13 @@
 							<br>
 							<br>
 							<div class="col-md-12">
-								<button *ngIf="mode === 'chooseDate'" mat-button (click)="selectCohort(itenaryObj.calendar.id)" class="mat-border-button">Select this cohort</button>
-								<span matTooltip="Participant present!" [matTooltipDisabled]="itenaryObj.participantCount <= 0">
+								<button *ngIf="mode === 'chooseDate'" mat-button (click)="selectCohort(itenaryObj.calendar.id)" class="pb-block mat-border-button" [disabled]="this.data.maxSeats - itenaryObj.participantCount <= 0">
+									<div>Select this cohort</div>
+									<div class="mat-h5 lightText">{{this.data.maxSeats - itenaryObj.participantCount}} seats remaining</div>
+								</button>
+								<span matTooltip="This cohort has a participant, so it cannot be deleted." [matTooltipDisabled]="itenaryObj.participantCount <= 0">
 									<button type="button" *ngIf="mode === 'editDelete'" mat-button color="warn" (click)="deleteCohort($event, itenaryObj.calendar.id)"
-									        [disabled]="itenaryObj.participantCount > 0" class="mat-border-button">Delete this cohort</button>
+									        [disabled]="itenaryObj.participantCount > 0" class="pb-block mat-border-button">Delete this cohort</button>
 								</span>
 							</div>
 						</div>
@@ -69,13 +72,28 @@
 						</div>
 						<div class="col-md-12" *ngFor="let content of itenary.contents">
 							<div *ngIf="content.type === 'online' || content.type === 'in-person'" style="margin: 3px 0px 10px 0px;">
-								<b>({{content.type | ucwords}}) {{ content.title | titlecase}}</b> &emsp; {{content.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.schedules[content.schedules.length-1].endTime | extractTime:'h:mm a'}}
+								<b>[{{content.type | ucwords}} activity]
+								   <br/>
+								   {{ content.title | titlecase}}
+								</b>
+								<br/>
+								{{content.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.schedules[content.schedules.length-1].endTime | extractTime:'h:mm a'}}
 							</div>
 							<div *ngIf="content.type === 'project'" style="margin: 3px 0px 10px 0px;">
-								<b>({{content.type | ucwords}}) {{ content.title | titlecase}}</b> &emsp; Entries open until {{calculateDate(itenary.startDate, content.schedules[content.schedules.length-1].endDay) | extractTime:'Do MMM'}}
+								<b>[{{content.type | ucwords}}]
+								   <br>
+								   {{ content.title | titlecase}}
+								</b>
+								<br>
+								Entries open until {{calculateDate(itenary.startDate, content.schedules[content.schedules.length-1].endDay) | extractTime:'Do MMM'}}
 							</div>
 							<div *ngIf="content.type === 'video'" style="margin: 3px 0px 10px 0px;">
-								<b>({{content.type | ucwords}}) {{ content.title | titlecase}}</b> &emsp; Available all day
+								<b>[{{content.type | ucwords}} activity]
+								   <br>
+								   {{ content.title | titlecase}}
+								</b>
+								<br>
+								Available all day
 							</div>
 						</div>
 					</div>
