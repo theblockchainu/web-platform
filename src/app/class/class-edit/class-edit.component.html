@@ -32,10 +32,7 @@
 							{{class.controls['status'].value | titlecase}}
 						</mat-chip>
 						<mat-chip style="margin-bottom: 15px;">
-							Knowledge: {{totalGyan}} GYAN
-						</mat-chip>
-						<mat-chip style="margin-bottom: 15px;">
-							Available: {{userId | gyanBalance : 'fixed' | async}} GYAN | {{totalDuration}} learning hours
+							{{totalGyan}} / {{userId | gyanBalance : 'fixed' | async}} GYAN | {{totalDuration}} learning hours
 						</mat-chip>
 					</mat-chip-list>
 				</div>
@@ -76,7 +73,7 @@
 				<!-- step 1 starts here -->
 				<div class="onboarding step-2" [hidden]="step!=2">
 					<div class="row">
-						<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">What topics does this Class cover?</h2>
 							<p class="subtitle">Select topics that this class covers</p>
 							<br/>
