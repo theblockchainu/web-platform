@@ -5,7 +5,7 @@
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<button disableRipple mat-button *ngIf="isEdit" style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;"
-			        (click)="dialogRef.close()">
+			 (click)="dialogRef.close()">
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<div>
@@ -26,20 +26,24 @@
 						<mat-form-field class="pb-block margin-top-20 margin-bot-20">
 							<input matInput #title formControlName="title" placeholder="Title" class="title" [required]="true">
 						</mat-form-field>
-						
+
 						<div formGroupName="schedule" class="row">
 							<div class="col-md-4 col-xs-6">
 								<mat-form-field class="timeInput margin-top-20 margin-bot-20">
-									<input matInput #startTime [owlDateTimeTrigger]="startTimePicker" [owlDateTime]="startTimePicker" formControlName="startTime"
-									       placeholder="Start Time" [required]="'true'">
-									<owl-date-time #startTimePicker [hour12Timer]="'true'" [pickerType]="'timer'"></owl-date-time>
+									<!-- <input matInput #startTime [owlDateTimeTrigger]="startTimePicker" [owlDateTime]="startTimePicker" formControlName="startTime"
+									 placeholder="Start Time" [required]="'true'">
+									<owl-date-time #startTimePicker [hour12Timer]="'true'" [pickerType]="'timer'"></owl-date-time> -->
+									<input matInput #startTime type="time" atp-time-picker placeholder="Start Time" formControlName="startTime" arrowStyle="{'background': '#33bd9e', 'color': 'white'}"
+									/>
 								</mat-form-field>
 							</div>
 							<div class="col-md-4 col-xs-6">
 								<mat-form-field class="timeInput margin-top-20 margin-bot-20">
-									<input matInput #endTime [owlDateTimeTrigger]="endTimePicker" [owlDateTime]="endTimePicker" formControlName="endTime" placeholder="End Time"
-									       [required]="'true'">
-									<owl-date-time #endTimePicker [hour12Timer]="'true'" [pickerType]="'timer'"></owl-date-time>
+									<!-- <input matInput #endTime [owlDateTimeTrigger]="endTimePicker" [owlDateTime]="endTimePicker" formControlName="endTime" placeholder="End Time"
+									 [required]="'true'">
+									<owl-date-time #endTimePicker [hour12Timer]="'true'" [pickerType]="'timer'"></owl-date-time> -->
+									<input matInput type="time" #endTime atp-time-picker placeholder="End Time" formControlName="endTime" arrowStyle="{'background': '#33bd9e', 'color': 'white'}"
+									/>
 								</mat-form-field>
 							</div>
 						</div>
@@ -49,7 +53,8 @@
 								<div class="loading-container" [hidden]="!uploadingImage">
 									<ngx-loading [show]="true"></ngx-loading>
 								</div>
-								<p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000" accept="image/*" chooseLabel="Browse">
+								<p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
+								 accept="image/*" chooseLabel="Browse">
 									<ng-template pTemplate="toolbar">
 										<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
 									</ng-template>
@@ -60,18 +65,18 @@
 								<div *ngIf="image.value" class="col-md-6 padding-left-0 pic delete imageContainer">
 									<img src="{{envVariable.apiUrl + image.value}}" width="150" style="border: 0.5px solid #ccc; position: relative; top: -20px;">
 									<mat-icon (click)="deleteFromContainer(image.value, 'image')" class="delete-button">close</mat-icon>
-								
+
 								</div>
 							</div>
 						</div>
 						<mat-form-field class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                            <textarea matInput #description maxlength="500" rows="2" formControlName="description" placeholder="What will we do?" [required]="true"
-                                      class="title"></textarea>
+							<textarea matInput #description maxlength="500" rows="2" formControlName="description" placeholder="What will we do?" [required]="true"
+							 class="title"></textarea>
 							<mat-hint align="end">{{description.value.length}} / 500</mat-hint>
 						</mat-form-field>
 						<mat-form-field class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-                            <textarea matInput #prerequisites maxlength="500" rows="2" formControlName="prerequisites" placeholder="What do learners need to know?"
-                                      class="title" [required]="true"></textarea>
+							<textarea matInput #prerequisites maxlength="500" rows="2" formControlName="prerequisites" placeholder="What do learners need to know?"
+							 class="title" [required]="true"></textarea>
 							<mat-hint align="end">{{prerequisites.value.length}} / 500</mat-hint>
 						</mat-form-field>
 						<div class="form-group">
@@ -80,7 +85,8 @@
 								<ngx-loading [show]="true"></ngx-loading>
 							</div>
 							<p-fileUpload *ngIf="!uploadingAttachments" #fubauto name="file" customUpload="true" (uploadHandler)="uploadAttachments($event)"
-							              maxFileSize="10000000" chooseLabel="Browse" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*" multiple="multiple">
+							 maxFileSize="10000000" chooseLabel="Browse" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*"
+							 multiple="multiple">
 								<ng-template pTemplate="toolbar">
 									<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 attachments</div>
 								</ng-template>
