@@ -580,12 +580,12 @@
 								<div formArrayName="rules">
 									<div *ngFor="let ruleForm of assessmentForm.controls['rules']['controls']; let i = index" [formGroupName]="i" class="row margin-top-20">
 										<div class="col-xs-4">
-											<mat-form-field class="pb-block">
+											<mat-form-field>
 												<input matInput formControlName="value" required>
 											</mat-form-field>
 										</div>
 										<div class="col-xs-4">
-											<mat-form-field class="pb-block">
+											<mat-form-field>
 												<span matSuffix>
 													%
 												</span>
@@ -619,14 +619,14 @@
 								<div formArrayName="nARules">
 									<div *ngFor="let ruleForm of assessmentForm.controls['nARules']['controls']; let i = index" [formGroupName]="i" class="row">
 										<div class="col-xs-4">
-											<mat-form-field class="pb-block" [floatLabel]="'never'">
+											<mat-form-field [floatLabel]="'never'">
 												<mat-select formControlName="value">
 													<mat-option *ngFor="let c of nAAssessmentParams" [value]="c">{{c | titlecase}}</mat-option>
 												</mat-select>
 											</mat-form-field>
 										</div>
 										<div class="col-xs-4">
-											<mat-form-field class="pb-block">
+											<mat-form-field>
 												<span matSuffix>
 													%
 												</span>
