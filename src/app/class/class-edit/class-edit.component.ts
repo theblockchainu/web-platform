@@ -843,10 +843,14 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 								data.controls['academicGyan'].patchValue(this.totalDuration >= 2 ? this.totalDuration - 1 : 1);
 								data.controls['nonAcademicGyan'].patchValue(1);
 								this.totalGyan = this.class.controls['academicGyan'].value + this.class.controls['nonAcademicGyan'].value;
-								this.checkStatusAndSubmit(data, timeline, step);
+								if (this.classHasOnlineContent(timeline)) {
+									this.checkStatusAndSubmit(data, timeline, step);
+								}
 						});
 					} else {
-						this.checkStatusAndSubmit(data, timeline, step);
+						if (this.classHasOnlineContent(timeline)) {
+							this.checkStatusAndSubmit(data, timeline, step);
+						}
 					}
 					break;
 				default:
@@ -866,7 +870,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 						this.router.navigate(['/console/teaching/classes']);
 					}
 				});
-		} else if (this.classHasOnlineContent(timeline)) {
+		} else {
 			this.executeSubmitClass(data, timeline, step);
 		}
 	}
@@ -1425,19 +1429,20 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	
 	public classHasOnlineContent(timeline: any) {
-		console.log(timeline.value);
-		let classValid = false;
-		for (const ItennaryObj of timeline.value.contentGroup.itenary) {
-			for (const contentObj of ItennaryObj.contents) {
-				if (contentObj.type.toString() === 'online') {
-					classValid = true;
-					return true;
+		if (timeline) {
+			let classValid = false;
+			for (const ItennaryObj of timeline.value.contentGroup.itenary) {
+				for (const contentObj of ItennaryObj.contents) {
+					if (contentObj.type.toString() === 'online') {
+						classValid = true;
+						return true;
+					}
 				}
 			}
+			this.snackBar.open('Class should contain at least 1 online session!', 'Close', {
+				duration: 5000
+			});
 		}
-		this.snackBar.open('Class should contain at least 1 online session!', 'Close', {
-			duration: 5000
-		});
 		return false;
 	}
 	
