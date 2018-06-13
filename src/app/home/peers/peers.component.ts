@@ -187,7 +187,9 @@ export class PeersComponent implements OnInit {
 	}
 
 	fetchTopics() {
-		const query = {};
+		const query = {
+			order: 'name ASC'
+		};
 		this._topicService.getTopics(query).map(
 			(response) => {
 				const availableTopics = [];

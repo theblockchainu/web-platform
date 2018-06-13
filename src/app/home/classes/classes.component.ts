@@ -194,7 +194,9 @@ export class ClassesComponent implements OnInit {
 	}
 
 	fetchTopics(): Observable<Array<any>> {
-		const query = {};
+		const query = {
+			order: 'name ASC'
+		};
 		return this._topicService.getTopics(query).map(
 			(response) => {
 				const availableTopics = [];
