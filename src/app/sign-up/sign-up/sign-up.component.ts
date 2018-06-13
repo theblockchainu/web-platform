@@ -8,6 +8,7 @@ import { RequestHeaderService } from '../../_services/requestHeader/request-head
 import { environment } from '../../../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { SocialSharingService } from '../../_services/social-sharing/social-sharing.service';
+import {ProfileService} from "../../_services/profile/profile.service";
 
 @Component({
 	selector: 'app-sign-up',
@@ -23,6 +24,7 @@ export class SignUpComponent implements OnInit {
 	public envVariable;
 	private invitationId: string;
 	invite: any;
+	public invitor;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -30,6 +32,7 @@ export class SignUpComponent implements OnInit {
 		private _MatSnackBar: MatSnackBar,
 		private _AuthenticationService: AuthenticationService,
 		private _SocketService: SocketService,
+		private _profileService: ProfileService,
 		private titleService: Title,
 		private metaService: Meta,
 		private _RequestHeaderService: RequestHeaderService,
@@ -68,6 +71,13 @@ export class SignUpComponent implements OnInit {
 			if (res) {
 				this.invite = res;
 			}
+		}, err => {
+			this._profileService.getPeerData(this.invitationId, {'include': 'profiles'}).subscribe((res: any) => {
+				console.log(res);
+				if (res) {
+					this.invitor = res;
+				}
+			});
 		});
 	}
 

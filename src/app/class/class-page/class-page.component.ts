@@ -597,10 +597,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			property: 'og:site_name',
 			content: 'peerbuds.com'
 		});
-		this.metaService.updateTag({
-			property: 'og:image',
-			content: environment.apiUrl + this.class.imageUrls[0]
-		});
+		if (this.class.imageUrls) {
+			this.metaService.updateTag({
+				property: 'og:image',
+				content: environment.apiUrl + this.class.imageUrls[0]
+			});
+		}
 		this.metaService.updateTag({
 			property: 'og:url',
 			content: environment.clientUrl + this.router.url
