@@ -124,6 +124,19 @@ export class ProfileService {
 		}
 	}
 
+	public setPassword(userId, newPassword) {
+		if (userId) {
+			const body = {
+				userId: userId,
+				newPassword: newPassword
+			};
+			return this.http
+				.post(environment.apiUrl + '/api/peers/setPassword', body, this._requestHeaderService.options)
+				.map((response: any) => response, (err) => {
+					console.log('Error: ' + err);
+				});
+		}
+	}
 	public updatePeer(userId, body: any) {
 		if (userId) {
 			return this.http.patch(environment.apiUrl + '/api/peers/' + userId, body, this._requestHeaderService.options).map(
@@ -179,7 +192,7 @@ export class ProfileService {
 					console.log('Error: ' + err);
 				});
 	}
-	
+
 	public getScholarships(userId, filter) {
 		return this.http
 			.get(environment.apiUrl + '/api/peers/' + userId + '/scholarships_joined?filter=' + JSON.stringify(filter), this._requestHeaderService.options)
@@ -200,7 +213,7 @@ export class ProfileService {
 					console.log('Error: ' + err);
 				});
 	}
-	
+
 	public getPotentialKarmaRewards(userId, convertTo = 'KARMA') {
 		return this.http
 			.get(environment.apiUrl + '/api/peers/' + userId + '/potentialRewards?convertTo=' + convertTo, this._requestHeaderService.options)
