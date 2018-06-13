@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, OnDestroy} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar } from '@angular/material';
@@ -91,7 +91,7 @@ export class MyCalendarUtils extends CalendarUtils {
 		]),
 	]
 })
-export class ClassPageComponent implements OnInit {
+export class ClassPageComponent implements OnInit, OnDestroy {
 	
 	public classId: string;
 	public envVariable;
