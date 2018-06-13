@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, OnDestroy} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar } from '@angular/material';
@@ -91,7 +91,7 @@ export class MyCalendarUtils extends CalendarUtils {
 		]),
 	]
 })
-export class ClassPageComponent implements OnInit {
+export class ClassPageComponent implements OnInit, OnDestroy {
 	
 	public classId: string;
 	public envVariable;
@@ -597,10 +597,12 @@ export class ClassPageComponent implements OnInit {
 			property: 'og:site_name',
 			content: 'peerbuds.com'
 		});
-		this.metaService.updateTag({
-			property: 'og:image',
-			content: environment.apiUrl + this.class.imageUrls[0]
-		});
+		if (this.class.imageUrls) {
+			this.metaService.updateTag({
+				property: 'og:image',
+				content: environment.apiUrl + this.class.imageUrls[0]
+			});
+		}
 		this.metaService.updateTag({
 			property: 'og:url',
 			content: environment.clientUrl + this.router.url

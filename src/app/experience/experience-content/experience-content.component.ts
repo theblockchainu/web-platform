@@ -255,13 +255,13 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 			const startHour = startTimeArr[0];
 			const startMin = startTimeArr[1];
 			schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);*/
-			schedule.startTime = moment(schedule.startTime).format();
+			schedule.startTime = moment('01-02-1990 ' + schedule.startTime + ':00').format();
 			
 			/*const endTimeArr = schedule.endTime.toString().split(':');
 			const endHour = endTimeArr[0];
 			const endMin = endTimeArr[1];
 			schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);*/
-			schedule.endTime = moment(schedule.endTime).format();
+			schedule.endTime = moment('01-02-1990 ' + schedule.endTime + ':00').format();
 			schedule.endDay = 0;
 		}
 		schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
@@ -355,7 +355,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 			const startHour = startTimeArr[0];
 			const startMin = startTimeArr[1];
 			schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);*/
-			schedule.startTime = moment(schedule.startTime).format();
+			schedule.startTime = moment('01-02-1990 ' + schedule.startTime + ':00').format();
 		}
 		if (schedule.endTime === '') {
 			schedule.endTime = new Date(0, 0, 0, 23, 0, 0, 0);
@@ -364,7 +364,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 			const endHour = endTimeArr[0];
 			const endMin = endTimeArr[1];
 			schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);*/
-			schedule.endTime = moment(schedule.endTime).format();
+			schedule.endTime = moment('01-02-1990 ' + schedule.endTime + ':00').format();
 		}
 		this.http.put(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, contentObj, this.requestHeaderService.options)
 			.map((response: any) => {
