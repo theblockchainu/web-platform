@@ -90,6 +90,7 @@ import { CommunityCardComponent } from './community-card/community-card.componen
 import { PeerCardComponent } from './peer-card/peer-card.component';
 import { ClassCardComponent } from './class-card/class-card.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you need
 
 @NgModule({
     imports: [
@@ -246,7 +247,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 		PeerCardComponent,
 		ClassCardComponent,
 		OwlDateTimeModule,
-		OwlNativeDateTimeModule
+        OwlNativeDateTimeModule,
+        AmazingTimePickerModule
     ]
 })
 export class SharedModule {
