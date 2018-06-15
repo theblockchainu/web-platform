@@ -201,7 +201,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			language: this._fb.array([]),
 			selectedLanguage: '',
 			headline: '',
-			description: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(800)])],
+			description: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(1000)])],
 			difficultyLevel: '',
 			prerequisites: '',
 			maxSpots: '',

@@ -1,10 +1,10 @@
 <div [ngClass]="{'peer-recommendation-card': true, 'card-width-6': cardsPerRow === 6, 'card-width-5': cardsPerRow === 5, 'card-width-4': cardsPerRow === 4, 'card-width-3': cardsPerRow === 3, 'card-width-2': cardsPerRow === 2, 'card-width-1': cardsPerRow === 1}">
-	<a [routerLink]="'/profile/'+peer.id">
+	<a [routerLink]="'/profile/'+peer.id" style="margin-bottom: 20px">
 		<div class="">
 			<img class="peer-recommendation-thumb" *ngIf="peer.profiles[0].picture_url" src="{{envVariable.apiUrl+peer.profiles[0].picture_url + '/300'}}"
-			     alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
+			 alt="workshpImg" (error)="_collectionService.userImgErrorHandler($event)">
 			<img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="workshpImg"
-			     (error)="_collectionService.userImgErrorHandler($event)">
+			 (error)="_collectionService.userImgErrorHandler($event)">
 		</div>
 		<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}
 		</div>
@@ -13,7 +13,8 @@
 		<div *ngIf="peer.ethAddress">
 			<i class="fab fa-ethereum"></i> {{peer.id | gyanBalance : 'fixed' | async}} Gyan
 		</div>
-		<div *ngIf="!peer.ethAddress"><i class="fab fa-ethereum"></i> 0 Gyan</div>
+		<div *ngIf="!peer.ethAddress">
+			<i class="fab fa-ethereum"></i> 0 Gyan</div>
 		<div class="col-sm-12 padding-left-0">
 			<span *ngIf="peer.topics.length<=1">
 				{{peer.topics}}

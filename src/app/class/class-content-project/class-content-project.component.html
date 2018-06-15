@@ -6,7 +6,7 @@
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<button disableRipple mat-button *ngIf="isEdit" style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;"
-			        (click)="dialogRef.close()">
+			 (click)="dialogRef.close()">
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<div>
@@ -27,16 +27,16 @@
 						<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
 							<input matInput #title formControlName="title" placeholder="Project Title" class="title" [required]="true">
 						</mat-form-field>
-						
+
 						<div formGroupName="schedule" class="margin-top-20 margin-bottom-20">
 							<mat-form-field class="dateStyles">
-								<input #deadline matInput [matDatepicker]="endDayDatePicker" [min]="itenaryForm.value.date" placeholder="Deadline"
-								       formControlName="endDay" [required]="true">
+								<input #deadline matInput [matDatepicker]="endDayDatePicker" (click)="endDayDatePicker.open()" [min]="itenaryForm.value.date"
+								 placeholder="Deadline" formControlName="endDay" [required]="true">
 								<mat-datepicker-toggle matSuffix [for]="endDayDatePicker" class="svgStyle"></mat-datepicker-toggle>
 								<mat-datepicker touchUi="true" #endDayDatePicker></mat-datepicker>
 							</mat-form-field>
 						</div>
-						
+
 						<div class="form-group margin-top-40">
 							<label>Upload a photo/video that best describes this content</label>
 							<div class="upload-image-section imageHolder">
@@ -44,7 +44,7 @@
 									<ngx-loading [show]="true"></ngx-loading>
 								</div>
 								<p-fileUpload *ngIf="!uploadingVideo" #fubauto name="image" customUpload="true" (uploadHandler)="imageUploadNew($event)"
-								              maxFileSize="10000000" chooseLabel="Browse" accept="image/*,video/*"></p-fileUpload>
+								 maxFileSize="10000000" chooseLabel="Browse" accept="image/*,video/*"></p-fileUpload>
 								<h5>Max File Size
 									<b>10MB</b>
 								</h5>
@@ -58,18 +58,18 @@
 								</div>
 							</div>
 						</div>
-						
+
 						<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
-							<textarea matInput #description maxlength="500" rows="5" formControlName="description" placeholder="What will we do?" [required]="true"></textarea>
-							<mat-hint align="end">{{description.value.length}} / 500</mat-hint>
+							<textarea matInput #description maxlength="1000" rows="1" matTextareaAutosize formControlName="description" placeholder="What will we do?" [required]="true"></textarea>
+							<mat-hint align="end">{{description.value.length}} / 1000</mat-hint>
 						</mat-form-field>
-						
+
 						<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
-                            <textarea matInput #prerequisites maxlength="500" rows="5" formControlName="prerequisites" placeholder="What do learners need to know?"
-                                      [required]="true"></textarea>
-							<mat-hint align="end">{{prerequisites.value.length}} / 500</mat-hint>
+							<textarea matInput #prerequisites maxlength="1000" rows="1" matTextareaAutosize formControlName="prerequisites" placeholder="What do learners need to know?"
+							 [required]="true"></textarea>
+							<mat-hint align="end">{{prerequisites.value.length}} / 1000</mat-hint>
 						</mat-form-field>
-						
+
 						<div class="form-group">
 							<label class="display-block">Add supporting material</label>
 							<div class="loading-container" [hidden]="!uploadingAttachments">
@@ -77,11 +77,11 @@
 							</div>
 							<p-fileUpload *ngIf="!uploadingAttachments" name="attachments" accept="application/pdf,application/msword,
                         application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*" customUpload="true"
-							              (uploadHandler)="uploadNew($event)" maxFileSize="10000000" (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)">
+							 (uploadHandler)="uploadNew($event)" maxFileSize="10000000" (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)">
 								<ng-template pTemplate="toolbar">
 									<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image/video</div>
 								</ng-template>
-							
+
 							</p-fileUpload>
 							<h5>Max File Size
 								<b>10MB</b>
@@ -98,7 +98,7 @@
 										<source src="{{envVariable.apiUrl + file.url}}">
 									</video>
 									<mat-icon *ngIf="file.type.includes('video')" (click)="deleteFromContainer(file.url, '')" class="delete-button2">close</mat-icon>
-								
+
 								</div>
 							</div>
 						</div>
