@@ -79,6 +79,8 @@
 								</a>
 								<p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title | titlecase}}
 									<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
+									<span *ngIf="!checkingEthereum && isOnEthereum" matTooltip="Verified on Peerbuds Blockchain">&emsp;<i class="fa fa-globe lightText" style="color: #ff6d71; font-size: 14px;"></i></span>
+									<span *ngIf="!checkingEthereum && !isOnEthereum" matTooltip="Add to Peerbuds Blockchain" (click)="addToEthereum()" class="clickable">&emsp;<i class="fa fa-plus lightText" style="font-size: 14px;"></i></span>
 								</p>
 								<div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
 									<span *ngIf="currentCalendar">

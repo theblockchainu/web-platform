@@ -159,6 +159,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public clickedCohortEndDate;
 	public eventsForTheDay: any;
 	public toOpenDialogName;
+	public checkingEthereum = true;
+	public isOnEthereum = false;
 	objectKeys = Object.keys;
 	
 	public view = 'month';
@@ -481,6 +483,13 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		};
 		
 		if (this.experienceId) {
+			this._collectionService.getCollectionEthereumInfo(this.experienceId, {})
+				.subscribe(res => {
+					this.checkingEthereum = false;
+					if (res && res[6] && res[6] !== '0') {
+						this.isOnEthereum = true;
+					}
+				});
 			this._collectionService.getCollectionDetail(this.experienceId, query)
 				.subscribe(res => {
 						console.log(res);
@@ -1781,6 +1790,15 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.dialogsService.messageParticipant(peer).subscribe(result => {
 			// console.log(result);
 		});
+	}
+	
+	public addToEthereum() {
+		this._collectionService.addToEthereum(this.experienceId)
+			.subscribe(res => {
+				this.initializeExperience();
+			}, err => {
+				this.snackBar.open('Could not add to Peerbuds Blockchain. Try again later.', 'Ok', {duration: 5000});
+			});
 	}
 	
 }
