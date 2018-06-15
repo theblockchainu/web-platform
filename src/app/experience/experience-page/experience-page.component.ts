@@ -92,7 +92,7 @@ export class MyCalendarUtils extends CalendarUtils {
 	]
 })
 export class ExperiencePageComponent implements OnInit, OnDestroy {
-	
+
 	public experienceId: string;
 	public envVariable;
 	public userId;
@@ -137,7 +137,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public bookmarking = false;
 	public editCommentForm: FormGroup;
 	public editReplyForm: FormGroup;
-	
+
 	public replyForm: FormGroup;
 	public reviewForm: FormGroup;
 	public recommendations = {
@@ -146,10 +146,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public result;
 	public lat;
 	public lng;
-	
+
 	public comments: Array<any>;
 	private today = moment();
-	
+
 	// Calendar Start
 	public dateClicked = false;
 	public clickedDate;
@@ -160,9 +160,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public eventsForTheDay: any;
 	public toOpenDialogName;
 	objectKeys = Object.keys;
-	
+
 	public view = 'month';
-	
+
 	public activityMapping:
 		{ [k: string]: string } = { '=0': 'No activity', '=1': 'One activity', 'other': '# activities' };
 	public hourMapping:
@@ -177,17 +177,17 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		{ [k: string]: string } = { '=0': 'Less than a day', '=1': 'One day', 'other': '# days' };
 	public discussionMapping:
 		{ [k: string]: string } = { '=0': 'No Comments', '=1': 'One comment', 'other': '# comments' };
-	
+
 	public viewDate: Date = new Date();
-	
+
 	refresh: Subject<any> = new Subject();
-	
+
 	events: CalendarEvent[] = [
 	];
-	
-	
+
+
 	public carouselImages: Array<string>;
-	
+
 	activeDayIsOpen = true;
 	public loadingSimilarExperiences = true;
 	public loadingComments = true;
@@ -197,32 +197,33 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public accountApproved = 'false';
 	public carouselBanner: any;
 	public startedView;
-	
+	public inviteLink = '';
+
 	constructor(public router: Router,
-				private activatedRoute: ActivatedRoute,
-				private _cookieUtilsService: CookieUtilsService,
-				public _collectionService: CollectionService,
-				public _contentService: ContentService,
-				public _topicService: TopicService,
-				private _commentService: CommentService,
-				private _fb: FormBuilder,
-				private dialog: MatDialog,
-				private dialogsService: DialogsService,
-				private snackBar: MatSnackBar,
-				private _socketService: SocketService,
-				private _authenticationService: AuthenticationService,
-				private titleService: Title,
-				private metaService: Meta,
-				private _assessmentService: AssessmentService
-				// private location: Location
+		private activatedRoute: ActivatedRoute,
+		private _cookieUtilsService: CookieUtilsService,
+		public _collectionService: CollectionService,
+		public _contentService: ContentService,
+		public _topicService: TopicService,
+		private _commentService: CommentService,
+		private _fb: FormBuilder,
+		private dialog: MatDialog,
+		private dialogsService: DialogsService,
+		private snackBar: MatSnackBar,
+		private _socketService: SocketService,
+		private _authenticationService: AuthenticationService,
+		private titleService: Title,
+		private metaService: Meta,
+		private _assessmentService: AssessmentService
+		// private location: Location
 	) {
 		this.envVariable = environment;
 	}
-	
+
 	ngOnInit() {
 		this.initializePage();
 	}
-	
+
 	ngOnDestroy() {
 		if (this.startedView) {
 			this.startedView.viewer = {
@@ -236,7 +237,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-	
+
 	initializePage() {
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.experienceId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
@@ -249,7 +250,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.userId = this._cookieUtilsService.getValue('userId');
 		console.log('userId is ' + this.userId);
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
-		
+
 		this.initialised = true;
 		this.initializeExperience();
 		this.initializeForms();
@@ -268,14 +269,14 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			touch: true
 		};
 	}
-	
+
 	refreshView(): void {
 		this.refresh.next();
 	}
-	
+
 	dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
 		this.eventsForTheDay = {};
-		
+
 		if (events.length === 0) {
 			this.dateClicked = false;
 			return;
@@ -323,11 +324,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		}
 	}
-	
+
 	// Modal
 	public editCalendar() {
 		const sortedCalendar = this.sort(this.experience.calendars, 'startDate', 'endDate');
-		
+
 		this.dialogsService
 			.editCalendar({ id: this.experienceId, type: this.experience.type, name: this.experience.title },
 				this.experience.contents, this.experience.calendars, this.allItenaries, this.allParticipants,
@@ -345,7 +346,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-	
+
 	private initializeUserType() {
 		if (this.experience) {
 			for (const owner of this.experience.owners) {
@@ -371,12 +372,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			if (this.userType === 'public' || this.userType === 'teacher') {
 				this.initializeAllItenaries();
 			}
-			
+
 			this.loadingExperience = false;
-			
+
 		}
 	}
-	
+
 	private initializeAllItenaries() {
 		this.events = [];
 		const sortedCalendar = this.sort(this.experience.calendars, 'startDate', 'endDate');
@@ -433,7 +434,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		}
 		this.refreshView();
 	}
-	
+
 	private processContent(key) {
 		const contentObj = this.itenariesObj[key];
 		const self = this;
@@ -456,7 +457,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		}
 		return contentObj;
 	}
-	
+
 	private initializeExperience() {
 		this.allParticipants = [];
 		this.allItenaries = [];
@@ -471,97 +472,98 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 					'contents': ['locations', 'schedules', { 'rsvps': 'peer' },
 						{ 'views': 'peer' }, {
 							'submissions': [{ 'upvotes': 'peer' },
-								{ 'peer': 'profiles' }]
+							{ 'peer': 'profiles' }]
 						}]
 				},
 				'rooms',
-				{ 'assessment_models': [{'assessment_na_rules' : {'assessment_result': 'assessees'}}, {'assessment_rules' : {'assessment_result': 'assessees'}}] }
+				{ 'assessment_models': [{ 'assessment_na_rules': { 'assessment_result': 'assessees' } }, { 'assessment_rules': { 'assessment_result': 'assessees' } }] }
 			],
 			'relInclude': 'calendarId'
 		};
-		
+
 		if (this.experienceId) {
 			this._collectionService.getCollectionDetail(this.experienceId, query)
 				.subscribe(res => {
-						console.log(res);
-						this.experience = res;
-						this.setTags();
-						this.setCurrentCalendar();
-						this.itenariesObj = {};
-						this.itenaryArray = [];
-						// Scan through all contents and group them under their respective start days.
-						// Also scan through all contents and check if the user has made submission for a project.
-						this.experience.contents.forEach(contentObj => {
-							if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
-								this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
-							} else {
-								this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
-							}
-							
-							if (contentObj.submissions && contentObj.submissions.length > 0) {
-								contentObj.submissions.forEach(submission => {
-									if (submission.peer) {
-										if (this.userId === submission.peer[0].id) {
-											this.peerHasSubmission = true;
-										}
-									}
-								});
-							}
-							
-							if (contentObj.locations && contentObj.locations.length > 0
-								&& contentObj.locations[0].map_lat !== undefined
-								&& contentObj.locations[0].map_lng !== undefined) {
-								this.lat = parseFloat(contentObj.locations[0].map_lat);
-								this.lng = parseFloat(contentObj.locations[0].map_lng);
-								console.log('Lat is: ' + this.lat + ' & Lng is: ' + this.lng);
-							}
-						});
-						console.log(this.itenariesObj);
-						// Scan through all the start-day-groups of contents
-						// Calculate the calendar start and end date of each content group
-						// Sort the contents inside a group based on their start times
-						// Format the start time and end time of each of the individual content in that group
-						// Calculate the viewing metrics of each individual content
-						// Set hasRSVPd toggle on each of the content
-						// Create an object for the content group with properties: startDay, startDate, endDate and array of contents.
-						// Add content group to itinerary array
-						for (const key in this.itenariesObj) {
-							if (this.itenariesObj.hasOwnProperty(key)) {
-								let startDate, endDate;
-								if (this.currentCalendar) {
-									startDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
-									endDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
-								} else {
-									startDate = this._collectionService.calculateDate(this.experience.calendars[0].startDate, key);
-									endDate = this._collectionService.calculateDate(this.experience.calendars[0].startDate, key);
-								}
-								this.itenariesObj[key].sort(function (a, b) {
-									return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
-								});
-								this.itenariesObj[key].forEach(content => {
-									if (content.schedules[0].startTime !== undefined) {
-										content.schedules[0].startTime = startDate.format().toString().split('T')[0] +
-											'T' + content.schedules[0].startTime.split('T')[1];
-										content.schedules[0].endTime = startDate.format().toString().split('T')[0] +
-											'T' + content.schedules[0].endTime.split('T')[1];
-									}
-								});
-								this.setContentViews(this.itenariesObj[key]);
-								const contentObj = this.processContent(key);
-								const itenary = {
-									startDay: key,
-									startDate: startDate,
-									endDate: endDate,
-									contents: contentObj
-								};
-								this.itenaryArray.push(itenary);
-							}
+					console.log(res);
+					this.experience = res;
+					this.inviteLink = environment.clientUrl + '/experience/' + this.experience.id;
+					this.setTags();
+					this.setCurrentCalendar();
+					this.itenariesObj = {};
+					this.itenaryArray = [];
+					// Scan through all contents and group them under their respective start days.
+					// Also scan through all contents and check if the user has made submission for a project.
+					this.experience.contents.forEach(contentObj => {
+						if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
+							this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
+						} else {
+							this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
 						}
-						// Sort itinerary array in ascending order of content group start days.
-						this.itenaryArray.sort(function (a, b) {
-							return parseFloat(a.startDay) - parseFloat(b.startDay);
-						});
-					},
+
+						if (contentObj.submissions && contentObj.submissions.length > 0) {
+							contentObj.submissions.forEach(submission => {
+								if (submission.peer) {
+									if (this.userId === submission.peer[0].id) {
+										this.peerHasSubmission = true;
+									}
+								}
+							});
+						}
+
+						if (contentObj.locations && contentObj.locations.length > 0
+							&& contentObj.locations[0].map_lat !== undefined
+							&& contentObj.locations[0].map_lng !== undefined) {
+							this.lat = parseFloat(contentObj.locations[0].map_lat);
+							this.lng = parseFloat(contentObj.locations[0].map_lng);
+							console.log('Lat is: ' + this.lat + ' & Lng is: ' + this.lng);
+						}
+					});
+					console.log(this.itenariesObj);
+					// Scan through all the start-day-groups of contents
+					// Calculate the calendar start and end date of each content group
+					// Sort the contents inside a group based on their start times
+					// Format the start time and end time of each of the individual content in that group
+					// Calculate the viewing metrics of each individual content
+					// Set hasRSVPd toggle on each of the content
+					// Create an object for the content group with properties: startDay, startDate, endDate and array of contents.
+					// Add content group to itinerary array
+					for (const key in this.itenariesObj) {
+						if (this.itenariesObj.hasOwnProperty(key)) {
+							let startDate, endDate;
+							if (this.currentCalendar) {
+								startDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
+								endDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
+							} else {
+								startDate = this._collectionService.calculateDate(this.experience.calendars[0].startDate, key);
+								endDate = this._collectionService.calculateDate(this.experience.calendars[0].startDate, key);
+							}
+							this.itenariesObj[key].sort(function (a, b) {
+								return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
+							});
+							this.itenariesObj[key].forEach(content => {
+								if (content.schedules[0].startTime !== undefined) {
+									content.schedules[0].startTime = startDate.format().toString().split('T')[0] +
+										'T' + content.schedules[0].startTime.split('T')[1];
+									content.schedules[0].endTime = startDate.format().toString().split('T')[0] +
+										'T' + content.schedules[0].endTime.split('T')[1];
+								}
+							});
+							this.setContentViews(this.itenariesObj[key]);
+							const contentObj = this.processContent(key);
+							const itenary = {
+								startDay: key,
+								startDate: startDate,
+								endDate: endDate,
+								contents: contentObj
+							};
+							this.itenaryArray.push(itenary);
+						}
+					}
+					// Sort itinerary array in ascending order of content group start days.
+					this.itenaryArray.sort(function (a, b) {
+						return parseFloat(a.startDay) - parseFloat(b.startDay);
+					});
+				},
 					err => console.log('error'),
 					() => {
 						this.initializeUserType();
@@ -582,7 +584,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 								});
 							});
 						} else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
-							const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000});
+							const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
 							snackBarRef.onAction().subscribe(() => {
 								this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
 							});
@@ -593,7 +595,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			console.log('NO COLLECTION');
 		}
 	}
-	
+
 	private setTags() {
 		this.titleService.setTitle(this.experience.title);
 		this.metaService.updateTag({
@@ -619,13 +621,13 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			content: environment.clientUrl + this.router.url
 		});
 	}
-	
+
 	private setUpCarousel() {
 		if (this.experience.imageUrls && this.experience.imageUrls.length > 0) {
 			this.carouselImages = this.experience.imageUrls.map(url => environment.apiUrl + url);
 		}
 	}
-	
+
 	private recordStartView() {
 		// Send start view msg on socket
 		const view = {
@@ -646,7 +648,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			console.log(startedView);
 		});
 	}
-	
+
 	private getReviews() {
 		this.loadingReviews = true;
 		let query = {};
@@ -695,7 +697,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this.maxLength = 140;
 		}
 	}
-	
+
 	private getBookmarks() {
 		const query = {
 			'include': [
@@ -723,7 +725,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	private getDiscussions() {
 		this.loadingComments = true;
 		const query = {
@@ -762,11 +764,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	private fixTopics() {
 		this.topicFix = _.uniqBy(this.experience.topics, 'id');
 	}
-	
+
 	private initializeForms() {
 		this.chatForm = this._fb.group({
 			description: ['', Validators.required],
@@ -780,11 +782,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			collectionCalendarId: this.calendarId,
 		});
 	}
-	
+
 	gotoEdit() {
 		this.router.navigate(['experience', this.experienceId, 'edit', this.experience.stage ? this.experience.stage : '1']);
 	}
-	
+
 	public setCurrentCalendar() {
 		if (this.calendarId) {
 			const calendarIndex = this.experience.calendars.findIndex(calendar => {
@@ -799,7 +801,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			console.log('Calendar id not found');
 		}
 	}
-	
+
 	/**
 	 * changeDates
 	 */
@@ -811,7 +813,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-	
+
 	/**
 	 * cancelExperience
 	 */
@@ -822,7 +824,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	/**
 	 * dropoutExperience
 	 */
@@ -833,7 +835,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	/**
 	 * deleteExperience
 	 */
@@ -844,9 +846,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
-	
-	
+
+
+
 	/**
 	 * postComment
 	 */
@@ -862,7 +864,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	/**
 	 * saveBookmark
 	 */
@@ -894,7 +896,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-	
+
 	/**
 	 * calculateTotalHours
 	 */
@@ -907,12 +909,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
 				totalLength += parseInt(contentLength, 10);
 			} else if (content.type === 'video') {
-			
+
 			}
 		});
 		this.totalDuration = totalLength.toString();
 	}
-	
+
 	/**
 	 * isLive
 	 */
@@ -922,16 +924,16 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		const endMoment = startMoment.clone();
 		endMoment.add(content.schedules[0].endDay, 'day');
 		const currentMoment = moment();
-		
+
 		const startTime = moment(content.schedules[0].startTime);
 		const endTime = moment(content.schedules[0].endTime);
-		
+
 		startMoment.hours(startTime.hours());
 		startMoment.minutes(startTime.minutes());
-		
+
 		endMoment.hours(endTime.hours());
 		endMoment.minutes(endTime.minutes());
-		
+
 		if (currentMoment.isBetween(startMoment, endMoment)) {
 			content.isLive = true;
 			return true;
@@ -940,12 +942,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			return false;
 		}
 	}
-	
+
 	public hasRSVPd(content) {
 		// TODO: check if the user has RSVPd for this content
 		console.log('called');
 	}
-	
+
 	rsvpContent(contentId) {
 		this._contentService.createRSVP(contentId, this.calendarId)
 			.subscribe((response: any) => {
@@ -953,7 +955,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				this.initializeExperience();
 			});
 	}
-	
+
 	cancelRSVP(content) {
 		console.log(content);
 		this._contentService.deleteRSVP(content.rsvpId)
@@ -962,7 +964,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				this.initializeExperience();
 			});
 	}
-	
+
 	public viewRSVPs(content, userType) {
 		let attendies = this.allParticipants;
 		if (content.rsvps) {
@@ -992,19 +994,19 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			width: '45vw',
 			height: '90vh'
 		});
-		
+
 		dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				location.reload();
 			}
 		});
 	}
-	
+
 	public getDirections(content) {
 		// TODO: get directions to this content location
 	}
-	
-	
+
+
 	public getContentCount(type: string) {
 		let count = 0;
 		for (const content of this.experience.contents) {
@@ -1014,7 +1016,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		}
 		return count;
 	}
-	
+
 	/**
 	 * toggleReviews
 	 */
@@ -1025,7 +1027,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this.noOfReviews = 3;
 		}
 	}
-	
+
 	public cancelCohort() {
 		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res) => {
 			if (res) {
@@ -1035,7 +1037,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			console.log(err);
 		});
 	}
-	
+
 	public deleteCohort() {
 		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res) => {
 			if (res) {
@@ -1043,7 +1045,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	viewParticipants() {
 		const dialogRef = this.dialog.open(ViewParticipantsComponent, {
 			data: {
@@ -1056,7 +1058,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			height: '100vh'
 		});
 	}
-	
+
 	viewAllParticipants() {
 		const dialogRef = this.dialog.open(ViewParticipantsComponent, {
 			data: {
@@ -1068,7 +1070,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			height: '100vh'
 		});
 	}
-	
+
 	/**
 	 * openDialog
 	 content:any   */
@@ -1076,72 +1078,72 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.modalContent = content;
 		switch (content.type) {
 			case 'in-person':
-			{
-				const dialogRef = this.dialog.open(ContentInpersonComponent, {
-					data: {
-						content: content,
-						startDate: startDate,
-						endDate: endDate,
-						userType: this.userType,
-						collectionId: this.experienceId,
-						collection: this.experience,
-						calendarId: this.calendarId,
-						participants: this.participants
-					},
-					panelClass: 'responsive-dialog',
-					width: '45vw',
-					height: '100vh'
-				});
-				break;
-			}
+				{
+					const dialogRef = this.dialog.open(ContentInpersonComponent, {
+						data: {
+							content: content,
+							startDate: startDate,
+							endDate: endDate,
+							userType: this.userType,
+							collectionId: this.experienceId,
+							collection: this.experience,
+							calendarId: this.calendarId,
+							participants: this.participants
+						},
+						panelClass: 'responsive-dialog',
+						width: '45vw',
+						height: '100vh'
+					});
+					break;
+				}
 			case 'video':
-			{
-				const dialogRef = this.dialog.open(ContentVideoComponent, {
-					data: {
-						content: content,
-						startDate: startDate,
-						endDate: endDate,
-						userType: this.userType,
-						collectionId: this.experienceId,
-						collection: this.experience,
-						calendarId: this.calendarId
-					},
-					panelClass: 'responsive-dialog',
-					width: '45vw',
-					height: '100vh'
-				});
-				break;
-			}
+				{
+					const dialogRef = this.dialog.open(ContentVideoComponent, {
+						data: {
+							content: content,
+							startDate: startDate,
+							endDate: endDate,
+							userType: this.userType,
+							collectionId: this.experienceId,
+							collection: this.experience,
+							calendarId: this.calendarId
+						},
+						panelClass: 'responsive-dialog',
+						width: '45vw',
+						height: '100vh'
+					});
+					break;
+				}
 			case 'project':
-			{
-				const dialogRef = this.dialog.open(ContentProjectComponent, {
-					data: {
-						content: content,
-						startDate: startDate,
-						endDate: endDate,
-						userType: this.userType,
-						peerHasSubmission: this.peerHasSubmission,
-						collectionId: this.experienceId,
-						collection: this.experience,
-						calendarId: this.calendarId
-					},
-					panelClass: 'responsive-dialog',
-					width: '45vw',
-					height: '100vh'
-				});
-				dialogRef.afterClosed().subscribe(res => {
-					if (res) {
-						this.initializePage();
-					}
-				});
-				break;
-			}
+				{
+					const dialogRef = this.dialog.open(ContentProjectComponent, {
+						data: {
+							content: content,
+							startDate: startDate,
+							endDate: endDate,
+							userType: this.userType,
+							peerHasSubmission: this.peerHasSubmission,
+							collectionId: this.experienceId,
+							collection: this.experience,
+							calendarId: this.calendarId
+						},
+						panelClass: 'responsive-dialog',
+						width: '45vw',
+						height: '100vh'
+					});
+					dialogRef.afterClosed().subscribe(res => {
+						if (res) {
+							this.initializePage();
+						}
+					});
+					break;
+				}
 			default:
 				break;
 		}
-		
+
 	}
-	
+
 	/**
 	 * timetoSession
 	 content:any   */
@@ -1151,23 +1153,23 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		const endMoment = startMoment.clone();
 		endMoment.add(content.schedules[0].endDay, 'day');
 		const currentMoment = moment();
-		
+
 		const startTime = moment(content.schedules[0].startTime);
 		const endTime = moment(content.schedules[0].endTime);
-		
+
 		startMoment.hours(startTime.hours());
 		startMoment.minutes(startTime.minutes());
-		
+
 		endMoment.hours(endTime.hours());
 		endMoment.minutes(endTime.minutes());
-		
+
 		if (startMoment.diff(currentMoment, 'minutes') < 0) {
 			content.timetoSession = 'Ended ' + endMoment.fromNow();
 		} else {
 			content.timetoSession = 'We will remind you ' + startMoment.fromNow();
 		}
 	}
-	
+
 	/**
 	 * getRecommendations
 	 */
@@ -1179,7 +1181,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 					'relation': 'collections', 'scope': {
 						'include':
 							[{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', 'participants',
-								{ 'contents': 'locations' }], 'where': { 'type': 'experience' }
+							{ 'contents': 'locations' }], 'where': { 'type': 'experience' }
 					}
 				}
 			]
@@ -1238,12 +1240,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	/**
 	 * selectJoiningDates
 	 */
 	public selectJoiningDates() {
-		
+
 		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.experience.type, this.experience.maxSpots)
 			.subscribe(result => {
 				if (result) {
@@ -1255,27 +1257,27 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-	
+
 	private extractTime(dateString: string) {
 		const time = moment.utc(dateString).local().format('HH:mm:ss');
 		return time;
 	}
-	
+
 	public viewDetails(key) {
 		this.router.navigate(['experience', this.experienceId, 'calendar', key]);
 	}
-	
+
 	public openEventDialog(calendarId, eventId) {
 		this.router.navigate(['experience', this.experienceId, 'calendar', calendarId, eventId]);
 	}
-	
+
 	public createReplyForm(comment: any) {
 		this.replyingToCommentId = comment.id;
 		this.replyForm = this._fb.group({
 			description: ''
 		});
 	}
-	
+
 	/**
 	 * postReply
 	 */
@@ -1292,7 +1294,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	/**
 	 * deleteReply
 	 */
@@ -1305,7 +1307,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	/**
 	 * deleteComment
 	 */
@@ -1318,7 +1320,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	/**
 	 * deleteReview
 	 */
@@ -1331,7 +1333,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	/**
 	 * handleRate
 	 */
@@ -1339,11 +1341,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.reviewForm.controls['score'].setValue(event.value);
 		this.isRatingReceived = true;
 	}
-	
+
 	public updateRating(event) {
 		this.editReviewForm.controls['score'].setValue(event.value);
 	}
-	
+
 	/**
 	 * postReview
 	 */
@@ -1361,7 +1363,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	public updateReview() {
 		this.busyReview = true;
 		const reviewBody = this.editReviewForm.value;
@@ -1381,7 +1383,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	public updateComment() {
 		this.busyDiscussion = true;
 		const commentBody = this.editCommentForm.value;
@@ -1400,7 +1402,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	public updateReply() {
 		this.busyReply = true;
 		const replyBody = this.editReplyForm.value;
@@ -1419,7 +1421,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	addCommentUpvote(comment: any) {
 		this._commentService.addCommentUpvote(comment.id, {}).subscribe(
 			response => {
@@ -1434,7 +1436,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	addReplyUpvote(reply: any) {
 		this._commentService.addReplyUpvote(reply.id, {}).subscribe(
 			response => {
@@ -1449,7 +1451,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	public getParticipants() {
 		this.participants = [];
 		this.loadingParticipants = true;
@@ -1484,7 +1486,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	public hasUpvoted(upvotes) {
 		let result = false;
 		if (upvotes !== undefined) {
@@ -1500,11 +1502,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		}
 		return result;
 	}
-	
+
 	public isMyComment(comment) {
 		return comment.peer && comment.peer.length > 0 && comment.peer[0].id === this.userId;
 	}
-	
+
 	public hasReviewed(reviews) {
 		let result = false;
 		reviews.forEach(review => {
@@ -1514,17 +1516,17 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		});
 		return result;
 	}
-	
+
 	public isMyReview(review) {
 		return review.peer[0].id === this.userId;
 	}
-	
+
 	public hasCohortEnded() {
 		const cohortEndDate = moment(this.currentCalendar.endDate);
 		const currentDate = moment();
 		return cohortEndDate.diff(currentDate) > 0;
 	}
-	
+
 	public hasLiveCohort() {
 		let result = false;
 		this.experience.calendars.forEach(calendar => {
@@ -1540,7 +1542,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		});
 		return result;
 	}
-	
+
 	public hasUpcomingCohort() {
 		let result = false;
 		this.experience.calendars.forEach(calendar => {
@@ -1553,7 +1555,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		});
 		return result;
 	}
-	
+
 	public shareOnFb() {
 		FB.ui({
 			method: 'share_open_graph',
@@ -1573,17 +1575,17 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			console.log('response is ', response);
 		});
 	}
-	
+
 	public shareOnTwitter() {
 		// TODO twitter sharing code
 	}
-	
+
 	public hasDatePassed(date) {
 		const eventDate = moment(date);
 		const currentDate = moment();
 		return (this.calendarId !== undefined && eventDate.diff(currentDate, 'seconds') < 0) && this.oneDay();
 	}
-	
+
 	public setContentViews(contents) {
 		contents.forEach(content => {
 			if (content.type !== 'project' && content.views !== undefined) {
@@ -1620,66 +1622,66 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	public showViewTime(content) {
 		if (this.userType === 'participant') {
 			content.isViewTimeHidden = false;
 		}
 	}
-	
+
 	public hideViewTime(content) {
 		if (this.userType === 'participant') {
 			content.isViewTimeHidden = true;
 		}
 	}
-	
+
 	public openVerificationPage() {
 		this.router.navigate(['console', 'profile', 'verification']);
 	}
-	
+
 	public openLoginPage() {
 		this.router.navigate(['login']);
 	}
-	
+
 	public openProfilePage(peerId) {
 		this.router.navigate(['profile', peerId]);
 	}
-	
+
 	public openInviteFriendsDialog() {
 		this.dialogsService.inviteFriends(this.experience);
 	}
-	
+
 	private sort(calendars, param1, param2) {
 		return _.sortBy(calendars, [param1, param2]);
 	}
-	
-	
+
+
 	scrollToDiscussion() {
 		const el = document.getElementById('discussionTarget');
 		el.scrollIntoView();
 	}
-	
+
 	add1ToIndex(index) {
 		return 'Day ' + (+index + 1);
 	}
-	
+
 	oneDay() {
 		return true;
 		// return this.itenaryArray.length > 1;
 	}
-	
+
 	displayNone() {
 		return 'display: none';
 	}
-	
+
 	public parseTitle(title) {
 		return title.split(':');
 	}
-	
+
 	public backToCollection(collection) {
 		this.router.navigate([collection.type, collection.id]);
 	}
-	
+
 	public editReview(review: any) {
 		this.editReviewForm = this._fb.group({
 			description: [review.description, Validators.required],
@@ -1691,7 +1693,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		});
 		this.newUserRating = review.score;
 	}
-	
+
 	public editComment(comment: any) {
 		this.editCommentForm = this._fb.group({
 			description: [comment.description, Validators.required],
@@ -1699,7 +1701,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			id: comment.id
 		});
 	}
-	
+
 	public editReply(reply: any) {
 		console.log(reply);
 		this.editReplyForm = this._fb.group({
@@ -1707,13 +1709,13 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			id: reply.id
 		});
 	}
-	
+
 	public isCancelable() {
 		if (this.currentCalendar) {
 			return moment(this.currentCalendar.endDate) > this.today;
 		}
 	}
-	
+
 	public openGroupChat() {
 		if (this.experience.rooms && this.experience.rooms.length > 0) {
 			this.router.navigate(['console', 'inbox', this.experience.rooms[0].id]);
@@ -1723,7 +1725,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-	
+
 	public openAssessmentDialog() {
 		this.dialogsService.studentAssessmentDialog(
 			{
@@ -1738,7 +1740,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				this.experience.assessment_models[0].assessment_na_rules.forEach(assessment_na_rule => {
 					if (assessment_na_rule.value === 'engagement') {
 						assessmentEngagementRule = assessment_na_rule;
-					} else if (assessment_na_rule.value === 'commitment' ) {
+					} else if (assessment_na_rule.value === 'commitment') {
 						assessmentCommitmentRule = assessment_na_rule;
 					}
 				});
@@ -1759,30 +1761,30 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				});
 				this._assessmentService.submitAssessment(assessmentArray).subscribe(result => {
 					console.log(result);
-					this.snackBar.open('Your assessment has been submitted. Students will be informed over email.', 'Ok', { duration: 5000});
+					this.snackBar.open('Your assessment has been submitted. Students will be informed over email.', 'Ok', { duration: 5000 });
 					this._authenticationService.isLoginSubject.next(true);
 				});
 			}
 		});
 	}
-	
+
 	public onExperienceRefresh(event) {
 		if (event) {
 			this.getRecommendations();
 		}
 	}
-	
+
 	public getPredictedGyanEarn(collection) {
 		const participantCount = collection.participants ? collection.participants.length : 0;
 		return (collection.academicGyan + collection.nonAcademicGyan) * participantCount;
 	}
-	
+
 	public openMessageDialog(peer) {
 		this.dialogsService.messageParticipant(peer).subscribe(result => {
 			// console.log(result);
 		});
 	}
-	
+
 }
 
 interface AssessmentResult {

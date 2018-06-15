@@ -58,7 +58,7 @@
 									
 									<div class="topic-experience col-md-8 col-xs-12 padding-left-0">
 										<mat-form-field [floatLabel]="'always'" style="margin-bottom: 20px; width:100%" #experienceContainer>
-                                            <textarea matInput #experience name="experience" rows="3" class="form-control" [(ngModel)]="topic.experience" placeholder="How much do you know this topic?" required></textarea>
+                                            <textarea matInput #experience name="experience" rows="1" matTextareaAutosize class="form-control" [(ngModel)]="topic.experience" placeholder="How much do you know this topic?" required></textarea>
 											<mat-error>This field is required</mat-error>
 											<mat-hint align="end">{{experience.value.length}} / 1000</mat-hint>
 										</mat-form-field>

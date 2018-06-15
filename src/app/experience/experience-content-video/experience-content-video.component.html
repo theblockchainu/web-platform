@@ -28,8 +28,8 @@
                         </mat-form-field>
 
                         <mat-form-field class="pb-block margin-top-20 margin-bot-20">
-                            <textarea matInput #description maxlength="500" rows="5" formControlName="description" placeholder="What will we do?" [required]="true"></textarea>
-                            <mat-hint align="end">{{description.value.length}} / 500</mat-hint>
+                            <textarea matInput #description maxlength="1000" rows="1" matTextareaAutosize formControlName="description" placeholder="What will we do?" [required]="true"></textarea>
+                            <mat-hint align="end">{{description.value.length}} / 1000</mat-hint>
                         </mat-form-field>
 
                         <div class="form-group">
