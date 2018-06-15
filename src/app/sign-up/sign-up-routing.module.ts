@@ -7,7 +7,7 @@ const routes: Routes = [
     component: SignUpComponent
   },
   {
-    path: 'invite/:invitationId',
+    path: ':invitationId',
     component: SignUpComponent
   }
 ];
