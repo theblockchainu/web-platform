@@ -12,6 +12,9 @@ declare var FB: any;
 export class ShareDialogComponent implements OnInit {
 	
 	public generatedUrl: string;
+	public generatedTitle: string;
+	public generatedDescription: string;
+	public generatedImage: string;
 	public tweetUrl: string;
 	public envVariable;
 	public LinkedInShareUrl: string;
@@ -24,12 +27,15 @@ export class ShareDialogComponent implements OnInit {
 		} else {
 			this.generatedUrl = environment.clientUrl + '/' + data.type + '/' + data.id;
 		}
+		this.generatedTitle = data.title;
+		this.generatedDescription = data.description;
+		this.generatedImage = data.image;
 		if (data.type === 'story') {
 			this.tweetUrl = 'https://twitter.com/intent/tweet?text=See my knowledge story&url=' + this.generatedUrl;
 			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Knowledge Story&summary=See my knowledge story on ' + this.generatedUrl;
 		} else {
-			this.tweetUrl = 'https://twitter.com/intent/tweet?text=Join me for the ' + this.data.type + ' ' + this.data.title + '&url=' + this.generatedUrl;
-			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=' + this.data.title + '&summary=Join me for the ' + this.data.type + ' ' + this.data.title + ' on ' + this.generatedUrl;
+			this.tweetUrl = 'https://twitter.com/intent/tweet?text=Join me for the ' + this.data.type + ', ' + this.data.title + '&url=' + this.generatedUrl;
+			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Join me for the ' + this.data.type + ', ' + this.data.title + '&summary=' + this.data.description + '&source=Peerbuds';
 		}
 	}
 	
@@ -57,9 +63,10 @@ export class ShareDialogComponent implements OnInit {
 			action_properties: JSON.stringify({
 				object: {
 					'og:url': this.generatedUrl, // your url to share
-					'og:title': (this.data.type === 'story') ? 'Knowledge story of ' + this.data.title : 'Join me for this ' + this.data.type + ', ' + this.data.title,
+					'og:title': (this.data.type === 'story') ? 'Knowledge story of ' + this.data.title : 'Join me for the ' + this.data.type + ', ' + this.data.title,
 					'og:site_name': 'Peerbuds',
-					'og:description': (this.data.type === 'story') ? 'View my knowledge story at ' + this.generatedUrl : 'Join me for this ' + this.data.type + ' at ' + this.generatedUrl,
+					'og:image': this.data.image,
+					'og:description': (this.data.type === 'story') ? 'View my knowledge story at ' + this.generatedUrl : this.data.description,
 				}
 			})
 		}, function (response) {

@@ -186,6 +186,9 @@
 	</mat-toolbar>
 </header>
 <mat-menu #headerTeachMenu [overlapTrigger]="false">
+	<button mat-menu-item [routerLink]="['invite', '1']" class="mat-menu-item-colored">
+		<i class="fas fa-plus lighterText" style="color: #fff;"></i>&nbsp;&nbsp;&nbsp; Invite & Earn
+	</button>
 	<!--<button mat-menu-item [routerLink]="['/console/dashboard']" *ngIf="isTeacher">
 		<i class="fas fa-bars lighterText"></i>&nbsp;&nbsp;&nbsp; Dashboard
 	</button>-->
@@ -212,9 +215,6 @@
 	</button>
 	<button mat-menu-item [routerLink]="['console', 'profile', 'topics']">
 		<i class="fas fa-plus lighterText"></i>&nbsp;&nbsp;&nbsp; Add Topics
-	</button>
-	<button mat-menu-item [routerLink]="['invite', '1']">
-		<i class="fas fa-plus lighterText"></i>&nbsp;&nbsp;&nbsp; Invite & Earn
 	</button>
 	<!--<button mat-menu-item [routerLink]="['/console/calendar']" *ngIf="isTeacher">
 	  Calendar

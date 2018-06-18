@@ -165,7 +165,11 @@ export class KnowledgeStoryComponent implements OnInit {
 		this._knowledgeStoryService.fetchBlockTransactions(this.knowledgeStory.protagonist[0].ethAddress, topics)
 			.subscribe(
 				res => {
-					this.blockTransactions = res;
+					if (res && typeof res !== 'object') {
+						this.blockTransactions = res;
+					} else {
+						this.blockTransactions = [];
+					}
 					this.loadingBlockTransactions = false;
 				},
 				err => {
@@ -187,7 +191,7 @@ export class KnowledgeStoryComponent implements OnInit {
 
 	shareDialog() {
 		const name = (this.knowledgeStory) ? this.knowledgeStory.protagonist[0].profiles[0].first_name + ' ' + this.knowledgeStory.protagonist[0].profiles[0].last_name : 'Knowledge Story';
-		this.dialogsService.shareCollection('story', this.knowledgeStoryId, name).subscribe();
+		this.dialogsService.shareCollection('story', this.knowledgeStoryId, name, 'Verified on Peerbuds Blockchain', this.envVariable.apiUrl + this.knowledgeStory.protagonist[0].profiles[0].picture_url).subscribe();
 	}
 
 	deleteStory() {

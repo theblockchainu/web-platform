@@ -35,6 +35,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Meta, Title } from '@angular/platform-browser';
+import {UcWordsPipe} from 'ngx-pipes';
 
 declare var FB: any;
 
@@ -135,7 +136,9 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 		public dialogsService: DialogsService,
 		private titleService: Title,
 		private metaService: Meta,
-		private snackBar: MatSnackBar) {
+		private ucwords: UcWordsPipe,
+		private snackBar: MatSnackBar
+	) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && this.communityId !== params['communityId']) {
@@ -242,7 +245,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	}
 
 	private setTags() {
-		this.titleService.setTitle(this.community.title);
+		this.titleService.setTitle(this.ucwords.transform(this.community.title));
 		this.metaService.updateTag({
 			property: 'og:title',
 			content: this.community.title

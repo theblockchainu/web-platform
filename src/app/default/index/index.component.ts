@@ -7,6 +7,7 @@ import { AuthenticationService } from '../../_services/authentication/authentica
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { environment } from '../../../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
+import {CookieUtilsService} from "../../_services/cookieUtils/cookie-utils.service";
 
 @Component({
 	selector: 'app-index',
@@ -18,6 +19,7 @@ export class IndexComponent implements OnInit {
 	private email: string;
 	notifyForm: FormGroup;
 	public loggedIn = false;
+	public userId;
 	constructor(
 		private authenticationService: AuthenticationService,
 		public _fb: FormBuilder,
@@ -25,10 +27,12 @@ export class IndexComponent implements OnInit {
 		public dialog: MatDialog,
 		private http: HttpClient,
 		public snackBar: MatSnackBar,
+		private _cookieUtilsService: CookieUtilsService,
 		private titleService: Title,
 		private metaService: Meta,
 		private dialogsService: DialogsService,
 		private _activatedRoute: ActivatedRoute) {
+		this.userId = this._cookieUtilsService.getValue('userId');
 		authenticationService.isLoggedIn().subscribe((res) => {
 			this.loggedIn = res;
 			if (this.loggedIn) {

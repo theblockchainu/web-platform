@@ -6,7 +6,7 @@
 			<mat-icon *ngIf="experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId"
 			          color="primary">bookmark</mat-icon>
 		</button>
-		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.id,experience.title)" matTooltip="Share">
+		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.id,experience.title, experience.description, envVariable.apiUrl + experience.imageUrls[0])" matTooltip="Share">
 			<mat-icon>share</mat-icon>
 		</button>
 	</span>
@@ -50,16 +50,16 @@
 			</div>
 		</div>
 		<div style="margin-top: 5px; font-size: 12px;">
-			<span matTooltip="GYAN" style="font-weight: 700; vertical-align: middle;">
+			<span matTooltip="Earn upto {{experience.academicGyan + experience.nonAcademicGyan}} GYAN from this experience" style="font-weight: 700; vertical-align: middle;">
 				<i class="fab fa-ethereum lightText"></i> {{experience.academicGyan + experience.nonAcademicGyan}}
 			</span>
 			<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
-			<span matTooltip="KARMA" style="font-weight: 700; vertical-align: middle;">
+			<span matTooltip="Burn {{(experience.academicGyan + experience.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async}} KARMA to participate" style="font-weight: 700; vertical-align: middle;">
 				<i class="fas fa-fire lightText" matTooltip="KARMA"></i> {{(experience.academicGyan + experience.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async | shortNumber}}
 			</span>
 			<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
-			<span class="mat-border-button gyanBubbleCard" style="margin-left: 0px !important;" matTooltip="Pending payout {{getPredictedGyanEarn(experience) | convertCurrency : 'GYAN' | async}} ({{getPredictedGyanEarn(experience)}} GYAN) in 7 days">
-				<div style="font-size: 11px;">{{getPredictedGyanEarn(experience) | convertCurrency : 'GYAN' | async}}</div>
+			<span class="mat-border-button gyanBubbleCard" style="margin-left: 0 !important;" matTooltip="Pending payout {{getPredictedGyanEarn(experience) | convertCurrency : 'GYAN' | async}} ({{getPredictedGyanEarn(experience)}} GYAN) in 7 days">
+				<div style="font-size: 12px;">{{getPredictedGyanEarn(experience) | convertCurrency : 'GYAN' | async}}</div>
 			</span>
 		</div>
 		<div class="mat-body-2" style="margin-top: -3px;">{{experience.title | titlecase}}</div>

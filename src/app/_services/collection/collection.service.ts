@@ -108,6 +108,26 @@ export class CollectionService {
 			});
 
 	}
+	
+	public getCollectionEthereumInfo(id: string, param: any) {
+		const filter = JSON.stringify(param);
+		return this.httpClient
+			.get(environment.apiUrl + '/api/collections/' + id + '/ether?filter=' + filter, this.requestHeaderService.options)
+			.map((response: any) => response, (err) => {
+				console.log('Error: ' + err);
+			});
+		
+	}
+	
+	public addToEthereum(id: string) {
+		const body = {};
+		return this.httpClient
+			.post(environment.apiUrl + '/api/collections/' + id + '/ether', body, this.requestHeaderService.options)
+			.map((response: any) => response, (err) => {
+				console.log('Error: ' + err);
+			});
+		
+	}
 
 	/**
 	 * postCollection
