@@ -270,6 +270,23 @@ export class ConsoleAdminComponent implements OnInit {
 
 	}
 
+	public createCommunity() {
+		this._dialogsService.createCommunityDialog(
+			{ type: 'public' }
+		).flatMap(res => {
+			if (res) {
+				return this._communityService.createCommunity(res.communityFormData);
+			}
+		}).subscribe(res => {
+			console.log(res);
+			this.fetchScholarShips();
+			this.snackBar.open('Scholarship created', 'close', { duration: 5000 });
+		}, err => {
+			this.snackBar.open('Error', 'close', { duration: 5000 });
+		});
+
+	}
+
 	/**
 	 * deleteScholarship
 	 */
@@ -324,4 +341,5 @@ export class ConsoleAdminComponent implements OnInit {
 			this.snackBar.open('Error', 'close', { duration: 3000 });
 		});
 	}
+
 }

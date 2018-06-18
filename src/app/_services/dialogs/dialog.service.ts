@@ -47,6 +47,7 @@ import { RequestKnowledgeStoryComponent } from './request-knowledge-story/reques
 import { ConfirmPasswordDialogComponent } from './confirm-password-dialog/confirm-password-dialog.component';
 import { AddViewerDialogComponent } from './add-viewer-dialog/add-viewer-dialog.component';
 import { GyanPromptComponent } from './gyan-prompt/gyan-prompt.component';
+import { AddCommunityDialogComponent } from './add-community-dialog/add-community-dialog.component';
 
 @Injectable()
 export class DialogsService {
@@ -370,7 +371,7 @@ export class DialogsService {
         return this.dialog.open(InviteFriendsDialogComponent, {
             data: {
                 url: collection.type + '/' + collection.id,
-				object: collection
+                object: collection
             },
             panelClass: 'responsive-dialog', width: '40vw'
         }).afterClosed();
@@ -546,4 +547,13 @@ export class DialogsService {
         return dialogRef5.afterClosed();
     }
 
+
+    public createCommunityDialog(data?: any) {
+        return this.dialog.open(AddCommunityDialogComponent, {
+            panelClass: 'responsive-dialog',
+            width: '80vw',
+            height: '75vh',
+            data: data ? data : {}
+        }).afterClosed();
+    }
 }
