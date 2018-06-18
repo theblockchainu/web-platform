@@ -51,10 +51,11 @@ export class ConsoleAccountScholarshipsComponent implements OnInit {
 	
 	private fetchScholarships() {
 		const filter = { 'include': [{ 'owner': 'profiles' }, 'peers_joined', 'allowed_collections'] };
-		this._scholarshipService.fetchUserScholarships(filter).subscribe((res: any) => {
-			this.scholarships = res;
-			this.scholarshipsLoaded = true;
-			console.log(this.scholarships);
+		this._scholarshipService.fetchUserScholarships(filter)
+			.subscribe((res: any) => {
+				this.scholarships = res;
+				this.scholarshipsLoaded = true;
+				console.log(this.scholarships);
 		}, err => {
 			this.scholarshipsLoaded = true;
 		});

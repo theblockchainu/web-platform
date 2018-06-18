@@ -12,8 +12,14 @@
 			<div class="lightText">
 				You are not teaching any class
 				<br>
-				<br> Start by hosting a
-				<a color="default" (click)="createClass()">Class </a>
+				<br>
+				<div *ngIf="accountVerified">
+					Start by creating your first
+					<a color="default" (click)="createClass()">Class </a>
+				</div>
+				<div *ngIf="!accountVerified">
+					You will be able to create a new class once your account has been approved!
+				</div>
 			</div>
 		</div>
 		<div *ngIf="ongoingArray.length > 0 || upcomingArray.length>0">

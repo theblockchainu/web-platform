@@ -34,7 +34,7 @@
 							<br>
 							Balance Fund
 							<div class="mat-body-2">
-								<i class="fas fa-fire"></i> {{scholarship.id | karmaBalance: 'scholarship' | async}} Karma
+								<i class="fas fa-fire"></i> {{scholarship.id | karmaBalance: 'scholarship' | async | currency : ' ' : ' ' : '1.0-0'}} Karma
 							</div>
 						</mat-card-content>
 						<mat-menu #scholarCardMenu>
@@ -90,7 +90,7 @@
 							<br>
 							Balance Fund
 							<div class="mat-body-2">
-								<i class="fas fa-fire"></i> {{scholarship.id | karmaBalance: 'scholarship' | async}} Karma
+								<i class="fas fa-fire"></i> {{scholarship.id | karmaBalance: 'scholarship' | async | currency : ' ' : ' ' : '1.0-0'}} Karma
 							</div>
 						</mat-card-content>
 						<mat-menu #scholarCardMenu>

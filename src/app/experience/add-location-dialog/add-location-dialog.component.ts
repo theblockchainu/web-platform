@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
 import { Observable } from 'rxjs/Observable';
@@ -125,7 +125,7 @@ export class AddLocationDialogComponent implements OnInit {
             this.locationForm.controls['country'].patchValue(addressObj.country);
             this.locationForm.controls['street_address'].patchValue(addressObj.route && addressObj.route.length > 0 ? addressObj.route + ', ' : '' + addressObj.neighborhood && addressObj.neighborhood.length > 0 ? addressObj.neighborhood + ', ' : '' + addressObj.locality && addressObj.locality.length > 0 ? addressObj.locality : '');
             this.locationForm.controls['apt_suite'].patchValue(addressObj.subpremise);
-            this.locationForm.controls['city'].patchValue(addressObj.administrative_area_level_2);
+            this.locationForm.controls['city'].patchValue(addressObj.locality);
             this.locationForm.controls['state'].patchValue(addressObj.administrative_area_level_1);
             this.locationForm.controls['zip'].patchValue(addressObj.postal_code);
             this.lat = data.geometry.location.lat;

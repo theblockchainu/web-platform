@@ -12,13 +12,15 @@
 	<hr>
 	<div class="row" *ngIf="receivingUser">
 		<form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
-			<div *ngIf="existingChatRoom" class="col-md-12 clickable mat-caption lightText margin-bottom-20" style="text-align: right" (click)="openChatRoom()">See message history with {{receivingUser.profiles[0].first_name | ucwords}}</div>
+			<div *ngIf="existingChatRoom" class="col-md-12 clickable mat-caption lightText margin-bottom-20" style="text-align: right"
+			 (click)="openChatRoom()">See message history with {{receivingUser.profiles[0].first_name | ucwords}}</div>
 			<div class="col-md-1 padding-top-10">
 				<app-profile-popup [peer]="receivingUser"></app-profile-popup>
 			</div>
 			<div class="col-md-11">
 				<mat-form-field class="pb-block" [floatLabel]="'never'">
-					<textarea matInput type="text" formControlName="message" class="form-control" placeholder="Type your message here" rows="4" matTextareaAutosize matAutosizeMinRows="3"></textarea>
+					<textarea matInput type="text" formControlName="message" class="form-control" placeholder="Type your message here" rows="1"
+					 matTextareaAutosize matAutosizeMinRows="3"></textarea>
 				</mat-form-field>
 			</div>
 			<div class="col-md-11 col-md-offset-1">

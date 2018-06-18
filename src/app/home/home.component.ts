@@ -93,7 +93,8 @@ export class HomeComponent implements OnInit {
 	}
 	
 	private setTags() {
-		this.titleService.setTitle('Hello ' + this.loggedInPeer.profiles[0].first_name + '!');
+		const username = this.loggedInPeer && this.loggedInPeer.profiles && this.loggedInPeer.profiles.length > 0 ? this.loggedInPeer.profiles[0].first_name : 'there';
+		this.titleService.setTitle('Hello ' + username + '!');
 		this.metaService.updateTag({
 			property: 'og:title',
 			content: 'Welcome to Peerbuds'

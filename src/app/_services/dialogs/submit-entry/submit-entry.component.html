@@ -10,39 +10,32 @@
 		</div>
 		<hr>
 		<div class="form-group">
-			<label class="title fw-bold text-dark-grey margin-top-20 margin-bottom-20">Upload submission file (pdf, doc, jpg,
-				png, gif, mp4 etc.)</label>
+			<label class="title fw-bold text-dark-grey margin-top-20 margin-bottom-20">Upload submission file (pdf, doc, jpg, png, gif, mp4 etc.)</label>
 			<div class="upload-image-section imageHolder">
 				<div class="loading-container" [hidden]="!uploadingImage">
 					<ngx-loading [show]="true"></ngx-loading>
 				</div>
-				<p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" customUpload="true"
-				              (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
-				              accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*"
-				              chooseLabel="Browse" multiple="multiple">
+				<p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
+				 accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*"
+				 chooseLabel="Browse" multiple="multiple">
 				</p-fileUpload>
 				<h5>Max File Size
 					<b>10MB</b>
 				</h5>
 				<div *ngIf="urlForImages.length" class="pic delete">
 					<div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
-						<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}/100" width="150"
-						     style="border: 0.5px solid #ccc; position: relative; top: -20px;">
-						<mat-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'file')"
-						          class="delete-image">close
+						<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}/100" width="150" style="border: 0.5px solid #ccc; position: relative; top: -20px;">
+						<mat-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'file')" class="delete-image">close
 						</mat-icon>
 						<div *ngIf="file.type.includes('application')" class="uploaded_file">
 							<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
 						</div>
-						<mat-icon *ngIf="file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')"
-						          class="delete-file">close
+						<mat-icon *ngIf="file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')" class="delete-file">close
 						</mat-icon>
-						<video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc"
-						       preload="metadata">
+						<video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
 							<source src="{{envVariable.apiUrl + file.url}}">
 						</video>
-						<mat-icon *ngIf="file.type.includes('video')" (click)="deleteFromContainer(file.url, '')"
-						          class="delete-button">close
+						<mat-icon *ngIf="file.type.includes('video')" (click)="deleteFromContainer(file.url, '')" class="delete-button">close
 						</mat-icon>
 					</div>
 				</div>
@@ -55,7 +48,8 @@
 					<mat-hint align="end">{{name.value.length}}/200</mat-hint>
 				</mat-form-field>
 				<mat-form-field [floatLabel]="'auto'" class="pb-block margin-bottom-30">
-					<textarea matInput #description formControlName="description" type="text" rows="5" placeholder="Submission Description" required></textarea>
+					<textarea matInput #description formControlName="description" type="text" rows="1" matTextareaAutosize placeholder="Submission Description"
+					 required></textarea>
 					<mat-hint align="end">{{description.value.length}}/1000</mat-hint>
 				</mat-form-field>
 				<div class="margin-bottom-10">

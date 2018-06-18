@@ -6,7 +6,7 @@
 			<mat-icon *ngIf="class.bookmarks && class.bookmarks[0] && class.bookmarks[0].peer && class.bookmarks[0].peer[0] && class.bookmarks[0].peer[0].id===userId"
 			          color="primary">bookmark</mat-icon>
 		</button>
-		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('class',class.id,class.title)" matTooltip="Share">
+		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('class',class.id,class.title, class.description, envVariable.apiUrl + class.imageUrls[0])" matTooltip="Share">
 			<mat-icon>share</mat-icon>
 		</button>
 	</span>
@@ -24,11 +24,11 @@
 			</div>
 		</div>
 		<div style="margin-top: 5px; font-size: 12px;">
-			<span matTooltip="GYAN" style="font-weight: 700; vertical-align: middle;">
+			<span matTooltip="Earn upto {{class.academicGyan + class.nonAcademicGyan}} GYAN from this class" style="font-weight: 700; vertical-align: middle;">
 				<i class="fab fa-ethereum lightText"></i> {{class.academicGyan + class.nonAcademicGyan}}
 			</span>
 			<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
-			<span matTooltip="KARMA" style="font-weight: 700; vertical-align: middle;">
+			<span matTooltip="Burn {{(class.academicGyan + class.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async}} KARMA to participate" style="font-weight: 700; vertical-align: middle;">
 				<i class="fas fa-fire lightText" matTooltip="KARMA"></i> {{(class.academicGyan + class.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async | shortNumber}}
 			</span>
 			<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>

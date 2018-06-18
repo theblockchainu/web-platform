@@ -31,6 +31,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
 	public pastCollectionsObject: any;
 	public liveCollectionsObject: any;
 	public upcomingCollectionsObject: any;
+	public accountVerified = false;
 	
 	constructor(
 		public activatedRoute: ActivatedRoute,
@@ -56,6 +57,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
 	ngOnInit() {
 		this.loaded = false;
 		this.fetchData();
+		this.accountVerified = (this._cookieUtilsService.getValue('accountApproved') === 'true');
 	}
 	
 	private fetchData() {

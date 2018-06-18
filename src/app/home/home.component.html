@@ -1,5 +1,6 @@
 <div class="main-content">
-	<button disableRipple mat-button style="min-width: 20px;padding: 6px 9px 0px 9px;vertical-align: middle; position: absolute; top: 90px; right: 30px; border-radius: 200px;" (click)="closeHome()">
+	<button disableRipple mat-button style="min-width: 20px;padding: 6px 9px 0px 9px;vertical-align: middle; position: absolute; top: 90px; right: 30px; border-radius: 200px;"
+	 (click)="closeHome()">
 		<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 	</button>
 	<div class="col-md-10 col-md-offset-1 homeContainer">
@@ -7,7 +8,9 @@
 			<div class="col-md-12">
 				<div class="row">
 					<div class="col-md-8 col-md-offset-2">
-						<div class="mat-display-1" style="margin-bottom: 30px;">Welcome, <span *ngIf="!loadingPeerData && loggedInPeer">{{loggedInPeer.profiles[0].first_name | ucwords}}!</span></div>
+						<div class="mat-display-1" style="margin-bottom: 30px;">Welcome,
+							<span *ngIf="!loadingPeerData && loggedInPeer">{{loggedInPeer.profiles[0].first_name | ucwords}}!</span>
+						</div>
 					</div>
 					<!--<div class="col-md-2 pull-right" style="text-align: right" *ngIf="!loadingPeerData && loggedInPeer">
 						<a [routerLink]="['/profile', loggedInPeer.id]">
@@ -30,8 +33,7 @@
 						<div class="col-md-8 col-md-offset-2">
 							<div class="mat-subheading-1">
 								Peerbuds lets you get credits for learning that happens anywhere, even when you do the things you love.
-								<br>
-								Follow the steps below to get started.
+								<br> Follow the steps below to get started.
 							</div>
 						</div>
 					</div>
@@ -80,7 +82,8 @@
 										</mat-expansion-panel-header>
 										<div class="row margin-top-30">
 											<div class="col-md-12">
-												Complete your identity to ensure your information is accurate and trustworthy. Once completed, you can record your learning activities on the blockchain and start earning tokens.
+												Complete your identity to ensure your information is accurate and trustworthy. Once completed, you can record your learning
+												activities on the blockchain and start earning tokens.
 											</div>
 										</div>
 										<div class="row margin-top-30 margin-bottom-30">
@@ -90,7 +93,8 @@
 													<div class="mat-subheading-1 margin-top-10">
 														Verify Social Accounts
 													</div>
-													<button mat-button color="primary" *ngIf="!loggedInPeer.accountVerified" [routerLink]="['/console', 'profile', 'verification']" class="margin-top-60 mat-border-button">Verify</button>
+													<button mat-button color="primary" *ngIf="!loggedInPeer.accountVerified" [routerLink]="['/console', 'profile', 'verification']"
+													 class="margin-top-60 mat-border-button">Verify</button>
 													<button mat-button color="primary" *ngIf="loggedInPeer.accountVerified" class="margin-top-60 mat-border-button" disabled>Verified</button>
 												</mat-card>
 											</div>
@@ -101,8 +105,10 @@
 														Complete Your Profile
 													</div>
 													<mat-progress-bar mode="determinate" value="{{profileCompletionObject.progress}}" style="width:50%;display: inline-block"></mat-progress-bar>
-													<button mat-button color="primary" *ngIf="profileCompletionObject.progress < 100" [routerLink]="['/console', 'profile', 'edit']" class="margin-top-30 mat-border-button">Complete Profile</button>
-													<button mat-button color="primary" *ngIf="profileCompletionObject.progress === 100" class="margin-top-30 mat-border-button" disabled>Profile Complete</button>
+													<button mat-button color="primary" *ngIf="profileCompletionObject.progress < 100" [routerLink]="['/console', 'profile', 'edit']"
+													 class="margin-top-30 mat-border-button">Complete Profile</button>
+													<button mat-button color="primary" *ngIf="profileCompletionObject.progress === 100" class="margin-top-30 mat-border-button"
+													 disabled>Profile Complete</button>
 												</mat-card>
 											</div>
 										</div>
@@ -114,8 +120,10 @@
 									<mat-expansion-panel [expanded]="true">
 										<mat-expansion-panel-header>
 											<mat-panel-title>
-												<i *ngIf="!socialConnections.linkedin || !socialConnections.google || !socialConnections.fb" class="fa fa-check-circle-o expansion-panel-header-icon pending" style="top: 3px; position: relative;"></i>
-												<i *ngIf="socialConnections.linkedin && socialConnections.google && socialConnections.fb" class="fa fa-check-circle expansion-panel-header-icon complete" style="top: 3px; position: relative;"></i>
+												<i *ngIf="!socialConnections.linkedin || !socialConnections.google || !socialConnections.fb" class="fa fa-check-circle-o expansion-panel-header-icon pending"
+												 style="top: 3px; position: relative;"></i>
+												<i *ngIf="socialConnections.linkedin && socialConnections.google && socialConnections.fb" class="fa fa-check-circle expansion-panel-header-icon complete"
+												 style="top: 3px; position: relative;"></i>
 												&emsp; Grab your network
 											</mat-panel-title>
 										</mat-expansion-panel-header>
@@ -165,7 +173,8 @@
 											<div class="col-md-7">
 												<div class="row">
 													<div class="col-md-12">
-														We believe in building a network that brings value to everyone involved. That’s why we’re rewarding you for each friend that joins peerbuds and verifies their account.
+														We believe in building a network that brings value to everyone involved. That’s why we’re rewarding you for each friend that
+														joins peerbuds and verifies their account.
 													</div>
 												</div>
 												<div class="row">
@@ -193,9 +202,10 @@
 											<div class="col-md-7">
 												<div class="row">
 													<div class="col-md-12">
-														As an early adopter of your peerbuds platform, you have been enrolled in to <b>Peerbuds Global Scholarship</b>, a 10 Million Karma fund setup by Peerbuds Inc.
-														<br><br>
-														You can use these funds towards your learning costs till they last.
+														As an early adopter of your peerbuds platform, you have been enrolled in to
+														<b>Peerbuds Global Scholarship</b>, a 100 Million Karma fund setup by Peerbuds Inc.
+														<br>
+														<br> You can use these funds towards your learning costs till they last.
 													</div>
 												</div>
 												<div class="row">
@@ -223,7 +233,8 @@
 											<div class="col-md-7">
 												<div class="row">
 													<div class="col-md-12">
-														Select from a list of available topics the ones you wish to learn more about and the ones you can teach to others. We keep adding more new topics every day. So be sure to check out again if you missed out last time.
+														Select from a list of available topics the ones you wish to learn more about and the ones you can teach to others. We keep
+														adding more new topics every day. So be sure to check out again if you missed out last time.
 													</div>
 												</div>
 												<div class="row">
@@ -246,7 +257,8 @@
 										</mat-expansion-panel-header>
 										<div class="row margin-top-30">
 											<div class="col-md-12">
-												Be the first to know about peerbuds's latest partnerships and product updates, and take part in the evolving conversation about the future of our project.
+												Be the first to know about peerbuds's latest partnerships and product updates, and take part in the evolving conversation
+												about the future of our project.
 											</div>
 										</div>
 										<div class="row margin-top-30 margin-bottom-30">

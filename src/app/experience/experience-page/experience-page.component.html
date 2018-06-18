@@ -25,7 +25,7 @@
 			<div class="col-md-10 col-md-offset-1">
 				<span>This cohort has ended. You can still add a review and participate in discussions</span>
 			</div>
-			<div class="col-md-10 col-md-offset-1" *ngIf="(experience && experience.assessment_models && experience.assessment_models.length>0 && experience.assessment_models[0].type && userType === experience.assessment_models[0].type.toLowerCase())" >
+			<div class="col-md-10 col-md-offset-1" *ngIf="(experience && experience.assessment_models && experience.assessment_models.length>0 && experience.assessment_models[0].type && userType === experience.assessment_models[0].type.toLowerCase())">
 				<span>This cohort has ended.
 					<a href="javascript:void(0);" (click)="openAssessmentDialog()">Assess your student's performance now.</a>
 				</span>
@@ -67,7 +67,7 @@
 				</span>
 			</div>
 		</div>
-		
+
 		<div class="row margin-top-40">
 			<div class="col-md-10 col-md-offset-1">
 				<div class="row experience-header">
@@ -115,7 +115,7 @@
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length > 0" (click)="cancelExperience()">Cancel Experience</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length === 0" (click)=" deleteCohort()">Delete Cohort</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length >= 0 && currentCalendar.status !== 'cancelled'"
-								        (click)=" cancelCohort()">Cancel Cohort</button>
+								 (click)=" cancelCohort()">Cancel Cohort</button>
 							</mat-menu>
 						</div>
 					</div>
@@ -223,7 +223,7 @@
 									</div>
 									<div class="col-xs-8 margin-top-8">
 										<agm-map *ngIf="lat !== undefined && lng !== undefined" [latitude]="lat" [longitude]="lng" [mapDraggable]="false" [scrollwheel]="false"
-										         [usePanning]="true" [zoomControl]="false" [zoom]="14" [streetViewControl]="false">
+										 [usePanning]="true" [zoomControl]="false" [zoom]="14" [streetViewControl]="false">
 											<agm-circle [latitude]="lat" [longitude]="lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'" [strokeOpacity]="0.9"></agm-circle>
 										</agm-map>
 										<p *ngIf="lat === undefined || lng === undefined">No valid location co-ordinates recorded for this experience. Please contact the teacher or Peerbuds support.</p>
@@ -274,14 +274,14 @@
 															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate | date:'EEEE, d MMMM'}}</div>
 														</div>
 														<div (mouseover)="showViewTime(content)" (mouseout)="hideViewTime(content)" [ngClass]="{'row':true, 'timelineRowItem': true, 'timeRowItemProgress': content.views !== undefined && content.views.length > 0 && userType === 'participant'}"
-														     *ngFor="let content of itenary.contents">
+														 *ngFor="let content of itenary.contents">
 															<div class="viewTime" *ngIf="content.totalUserViewTime !== undefined" [hidden]="content.isViewTimeHidden">
 																{{content.totalUserViewTime}}
 															</div>
 															<a style="cursor:pointer;color:rgba(0,0,0,0.87)" (click)="openDialog(content, itenary.startDate, itenary.endDate)">
 																<div class="col-md-5">
 																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{envVariable.apiUrl+content.imageUrl + '/300'}}"
-																	     (error)="_collectionService.imgErrorHandler($event)">
+																	 (error)="_collectionService.imgErrorHandler($event)">
 																	<video #videoContent width="100%" height="auto" *ngIf="content.type==='video'" class="itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg">
 																		<source src="{{envVariable.apiUrl+content.imageUrl}}">
 																	</video>
@@ -321,13 +321,15 @@
 																</a>
 																<div class="row margin-top-10" *ngIf="content.type==='in-person' && ( userType==='participant' || userType === 'teacher')">
 																	<div class="col-md-12">
-																		<a mat-button *ngIf="!content.hasRSVPd && userType==='participant' && !hasDatePassed(content.schedules[0].startTime)" class="mat-border-button" (click)="rsvpContent(content.id)">RSVP</a>
+																		<a mat-button *ngIf="!content.hasRSVPd && userType==='participant' && !hasDatePassed(content.schedules[0].startTime)" class="mat-border-button"
+																		 (click)="rsvpContent(content.id)">RSVP</a>
 																		<a mat-button *ngIf="content.hasRSVPd || userType === 'teacher'" class="mat-border-button" (click)="viewRSVPs(content, userType)">View RSVPs</a>
-																		<a mat-button *ngIf="content.hasRSVPd && userType === 'participant' && !hasDatePassed(content.schedules[0].startTime)" class="mat-border-button" (click)="cancelRSVP(content)">Cancel RSVP</a>
+																		<a mat-button *ngIf="content.hasRSVPd && userType === 'participant' && !hasDatePassed(content.schedules[0].startTime)" class="mat-border-button"
+																		 (click)="cancelRSVP(content)">Cancel RSVP</a>
 																		<a mat-button *ngIf="userType==='participant' && isLive(content) && content.hasRSVPd && calendarId" class="mat-border-button"
-																		   (click)="getDirections(content)">Get directions</a>
+																		 (click)="getDirections(content)">Get directions</a>
 																		<button mat-button class="mat-border-button margin-top-10" *ngIf="userType==='participant' && !isLive(content) && content.hasRSVPd  && calendarId"
-																		        [disabled]="true">{{content.timetoSession}}</button>
+																		 [disabled]="true">{{content.timetoSession}}</button>
 																	</div>
 																</div>
 																<div class="row margin-top-10">
@@ -431,9 +433,9 @@
 												<div style="margin-top: 10px;" class="" *ngIf="comment.peer.length>0">
 													<div class="clickable commentProfilePic">
 														<img (click)="openProfilePage(comment.peer[0].id)" *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/user-placeholder.jpg"
-														     alt="A" class="circle-thumb margin-top-5">
+														 alt="A" class="circle-thumb margin-top-5">
 														<img (click)="openProfilePage(comment.peer[0].id)" *ngIf="comment.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ comment.peer[0].profiles[0].picture_url + '/100'}}"
-														     class="circle-thumb margin-top-5" alt="dp">
+														 class="circle-thumb margin-top-5" alt="dp">
 													</div>
 													<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
 														<div>
@@ -500,7 +502,7 @@
 																</button>
 															</mat-menu>
 															<div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px;"
-															     [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
+															 [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
 																<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
 																<mat-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</mat-icon>
 																<div>
@@ -513,9 +515,9 @@
 																<div class="" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
 																	<div class="clickable" style="float: left; margin-left: 15px;">
 																		<img (click)="openProfilePage(reply.peer[0].id)" *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/user-placeholder.jpg"
-																		     alt="A" class="clickable circle-thumb margin-top-5">
+																		 alt="A" class="clickable circle-thumb margin-top-5">
 																		<img (click)="openProfilePage(reply.peer[0].id)" *ngIf="reply.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ reply.peer[0].profiles[0].picture_url + '/100'}}"
-																		     class="clickable circle-thumb margin-top-5" alt="dp">
+																		 class="clickable circle-thumb margin-top-5" alt="dp">
 																	</div>
 																	<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
 																		<div>
@@ -565,9 +567,9 @@
 										<h3 style="display: inline-block;">Reviews ({{reviews.length}})</h3> &emsp;
 										<span style="display: inline-block;">
 											<p-rating style="display: inline-flex;" *ngIf="userType==='teacher' || userType==='public' || hasReviewed(reviews)" [ngModel]="userRating"
-											          readonly="true" stars="5" [cancel]="false"></p-rating>
+											 readonly="true" stars="5" [cancel]="false"></p-rating>
 											<p-rating style="display: inline-flex;" *ngIf="userType==='participant' && !hasReviewed(reviews)" [(ngModel)]="newUserRating"
-											          (onRate)="handleRate($event)" [cancel]="false"></p-rating>
+											 (onRate)="handleRate($event)" [cancel]="false"></p-rating>
 										</span>
 									</div>
 								</div>
@@ -620,11 +622,11 @@
 																	</mat-menu>
 																	<div class="clickable" style="float: left;">
 																		<img (click)="openProfilePage(review.peer[0].id)" *ngIf="!review.peer || !review.peer[0].profiles[0].picture_url" src="/assets/images/user-placeholder.jpg"
-																		     alt="A" class="clickable circle-thumb margin-top-5" (error)="_collectionService.imgErrorHandler($event)"
-																		     style="margin-left: 10px;">
+																		 alt="A" class="clickable circle-thumb margin-top-5" (error)="_collectionService.imgErrorHandler($event)"
+																		 style="margin-left: 10px;">
 																		<img (click)="openProfilePage(review.peer[0].id)" *ngIf=" review.peer && review.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ review.peer[0].profiles[0].picture_url + '/100'}}"
-																		     class="clickable circle-thumb margin-top-5" alt="dp" (error)="_collectionService.imgErrorHandler($event)"
-																		     style="margin-left: 10px;">
+																		 class="clickable circle-thumb margin-top-5" alt="dp" (error)="_collectionService.imgErrorHandler($event)"
+																		 style="margin-left: 10px;">
 																	</div>
 																	<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
 																		<div>
@@ -704,7 +706,7 @@
 						<div class="margin-top-70"></div>
 						<!--<hr class="margin-top-70" *ngIf="userType==='teacher' || userType === 'participant'">-->
 					</div>
-					
+
 					<!--RIGHT SIDEBAR-->
 					<div class="col-md-4 col-md-offset-1 right-content">
 						<div *ngIf="(userType==='teacher' || userType==='participant')">
@@ -742,9 +744,9 @@
 									<p>
 										<span class="pre-wrapped">{{experience.aboutHost | shorten: maxLength : '... '}}</span>
 										<span *ngIf="experience.aboutHost && experience.aboutHost.length > maxLength" (click)="showAll(experience.aboutHost.length)"
-										      style="color:#33bd9e" class="clickable">read more</span>
+										 style="color:#33bd9e" class="clickable">read more</span>
 										<span *ngIf=" experience.aboutHost && experience.aboutHost.length>140  && experience.aboutHost.length <= maxLength" (click)="showAll(experience.aboutHost.length)"
-										      style="color:#33bd9e" class="clickable">show less</span>
+										 style="color:#33bd9e" class="clickable">show less</span>
 									</p>
 								</div>
 							</div>
@@ -857,7 +859,7 @@
 								<div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
 									<span class="cal-day-badge"></span>
 									<span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d MMM'
-									      }})
+										}})
 									</span>
 								</div>
 								<div class="margin-top-10 margin-bottom-10">
@@ -873,7 +875,7 @@
 								</div>
 								<div *ngFor="let key of objectKeys(eventsForTheDay);">
 									<div class="displayFlex event clickable" *ngFor="let event of eventsForTheDay[key]" (click)="openEventDialog(clickedCohortId, event.id)"
-									     style="cursor: pointer;">
+									 style="cursor: pointer;">
 										<span>{{ event.start | date:'hh:mm' }}</span>
 										<span>
 											<b>{{ event.start | date:'a' | lowercase}}</b>
@@ -944,7 +946,7 @@
 									</div>
 									<div class="col-xs-4" style="padding-top: 9px;">
 										<span *ngIf="userId !== undefined && userId.length > 5" matTooltip="Please wait for your account to be approved before signing up for experiences"
-										      [matTooltipDisabled]="accountApproved === 'true'">
+										 [matTooltipDisabled]="accountApproved === 'true'">
 											<button mat-raised-button (click)="selectJoiningDates()" color="primary" [disabled]="accountApproved !== 'true'">See Dates</button>
 										</span>
 										<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this experience">
@@ -967,10 +969,16 @@
 									<span *ngIf="hasBookmarked">Saved</span>
 								</span>
 							</div>
-							<div class="col-xs-4" style="cursor: pointer;">
-								Share&nbsp;
-								<i class="fa fa-facebook-square clickable" aria-hidden="true" style="font-size: 1rem;" (click)="shareOnFb()"></i>
-								<i class="fa fa-twitter-square clickable" aria-hidden="true" style="font-size: 1rem;" (click)="shareOnTwitter()"></i>
+							<div class="col-xs-4">
+								<a shareButton="facebook" href="javascript:;" [url]="inviteLink">
+									<i class="fab fa-facebook-square"></i>
+								</a>&nbsp;
+								<a shareButton="linkedin" href="javascript:;" [url]="inviteLink">
+									<i class="fab fa-linkedin"></i>
+								</a>&nbsp;
+								<a shareButton="twitter" href="javascript:;" [url]="inviteLink">
+									<i class="fab fa-twitter-square"></i>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -1032,7 +1040,7 @@
 		</div>
 		<div class="col-xs-4" style="padding-top: 9px;">
 			<span *ngIf="userId !== undefined && userId.length > 5" matTooltip="Please wait for your account to be approved before signing up for experiences"
-			      [matTooltipDisabled]="accountApproved === 'true'">
+			 [matTooltipDisabled]="accountApproved === 'true'">
 				<button mat-raised-button (click)="selectJoiningDates()" color="primary" [disabled]="accountApproved !== 'true'">See Dates</button>
 			</span>
 			<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this experience">
