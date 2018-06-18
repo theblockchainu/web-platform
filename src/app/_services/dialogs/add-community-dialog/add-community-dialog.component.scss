@@ -1,0 +1,83 @@
+
+.video .mat-grid-tile {
+	height: 100px !important;
+	width: calc(((35% - 5px) * 1) + 0px) !important;
+}
+
+.mat-grid-list {
+	height: 200px !important;
+}
+
+.profileVideo:before {
+	// display: inline-block;
+	content: "";
+	vertical-align: middle;
+	min-height: 100px;
+}
+
+.profileVideo {
+	max-height: 100%;
+	// display: inline-block;
+	min-height: 100px;
+	margin-bottom: 10px;
+	// border: 0.5px solid grey;
+	// padding: 10px;
+}
+
+.delete {
+	position: relative;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.delete-button, .delete-video {
+	position:absolute;
+	height: 20px;
+	width: 20px;
+	color: #33bd9e;
+	cursor: pointer;
+	border: 1px solid #33bd9e;
+	background: white;
+	border-radius: 20px;
+	font-size: 18px;
+}
+
+.profileVideo .delete-video {
+	top:-10px;
+	right:5px;
+}
+
+.pic:before {
+	display: inline-block;
+	content: "";
+	vertical-align: middle;
+	// min-height: 210px;
+}
+
+// .pic {
+//   max-height: 200px;
+//   display: inline-block;
+//   min-height: 210px;
+//   margin-bottom: 10px;
+// padding: 10px;
+// }
+
+.pic img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.pic .delete-button {
+	top:-8px;
+	right:6px;
+}
+
+.pic .imageContainer {
+	height: auto;
+	width: 200px;
+	margin-bottom: 10px;
+}
+
+.videoContainer {
+	width: 165px;
+}

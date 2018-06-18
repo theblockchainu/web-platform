@@ -299,4 +299,15 @@ export class CommunityService {
         return this.http.delete(environment.apiUrl + '/api/community_requests/' + id, this.requestHeaderService.options);
 
     }
+
+    /**
+     * createCommunity
+     */
+    public createCommunity(data: any) {
+        return this.http.post(environment.apiUrl + '/api/communities', data, this.requestHeaderService.options);
+    }
+
+    public linkTopics(communityID, body) {
+        return this.http.patch(environment.apiUrl + '/api/communities/' + communityID + '/topics/rel', body, this.requestHeaderService.options);
+    }
 }

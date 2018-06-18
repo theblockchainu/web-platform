@@ -8,7 +8,6 @@ import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar } from '@angular/
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { CommentService } from '../../_services/comment/comment.service';
-import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { CommunityService } from '../../_services/community/community.service';
 import { QuestionService } from '../../_services/question/question.service';
 import { HttpClient } from '@angular/common/http';
@@ -349,15 +348,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	 * View participants
 	 */
 	public viewParticipants() {
-		const dialogRef = this.dialog.open(ViewParticipantsComponent, {
-			data: {
-				participants: this.participants,
-				communityId: this.communityId
-			},
-			panelClass: 'responsive-dialog',
-			width: '45vw',
-			height: '100vh'
-		});
+		this.dialogsService.viewParticipantstDialog(this.participants, this.communityId).subscribe();
 	}
 
 	public joinCommunity() {

@@ -1,16 +1,16 @@
-import {AfterViewChecked, Component, DoCheck, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { AfterViewChecked, Component, DoCheck, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConsoleComponent } from '../console.component';
 import { InboxService } from '../../_services/inbox/inbox.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import {SocketService} from '../../_services/socket/socket.service';
-import {environment} from '../../../environments/environment';
-import {ProfileService} from '../../_services/profile/profile.service';
-import {CollectionService} from '../../_services/collection/collection.service';
-import {ViewParticipantsComponent} from '../../_services/dialogs/view-participants/view-participants.component';
-import {MatDialog} from '@angular/material';
+import { SocketService } from '../../_services/socket/socket.service';
+import { environment } from '../../../environments/environment';
+import { ProfileService } from '../../_services/profile/profile.service';
+import { CollectionService } from '../../_services/collection/collection.service';
+import { MatDialog } from '@angular/material';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
 
 @Component({
 	selector: 'app-console-inbox',
@@ -35,7 +35,7 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 	@ViewChild('messageContainer') private messageContainer: ElementRef;
 	@ViewChild('scrollMe') private myScrollContainer: ElementRef;
 	@ViewChild('messageNotification') messageNotification;
-	
+
 	constructor(
 		public activatedRoute: ActivatedRoute,
 		public consoleComponent: ConsoleComponent,
@@ -45,7 +45,8 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 		public _collectionService: CollectionService,
 		private _cookieUtilsService: CookieUtilsService,
 		public router: Router,
-		private dialog: MatDialog
+		private dialog: MatDialog,
+		private dialogsService: DialogsService
 	) {
 		this.envVariable = environment;
 		activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
@@ -57,7 +58,7 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 		});
 		this.userId = this._cookieUtilsService.getValue(this.key);
 	}
-	
+
 	ngOnInit() {
 		this.loadingMessages = true;
 		this._inboxService.getRoomData(50)
@@ -70,7 +71,7 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 				}
 			});
 	}
-	
+
 	public initializeInbox(response) {
 		this.sortFilterJoinedRooms(response);
 		if (this.urlRoomId) {
@@ -120,11 +121,11 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 		this.scrollToBottom();
 		this.loadingMessages = false;
 	}
-	
+
 	ngAfterViewChecked() {
 		this.scrollToBottom();
 	}
-	
+
 	public sortFilterJoinedRooms(response) {
 		// this.joinedRooms = response.filter(room => (room.collection && room.collection.length > 0));
 		this.joinedRooms = response;
@@ -137,7 +138,7 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 		});
 		this.tempJoinedRooms = this.joinedRooms;
 	}
-	
+
 	public enterRoom(room) {
 		if (room !== undefined) {
 			this.selectedRoom = room;
@@ -161,19 +162,19 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 			}
 		}
 	}
-	
+
 	public getPeerDataAndInitialize(response) {
-		this._profileService.getPeerData(this.userId, {include: 'profiles'}).subscribe(result => {
+		this._profileService.getPeerData(this.userId, { include: 'profiles' }).subscribe(result => {
 			this.loggedInPeer = result;
 			this.initializeInbox(response);
 		});
 	}
-	
+
 	public postMsg(event, roomId) {
 		event.preventDefault();
 		const body = {
-			'text' : this.message,
-			'type' : 'user',
+			'text': this.message,
+			'type': 'user',
 			'localId': moment().unix()
 		};
 		this.message = '';
@@ -202,21 +203,21 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 				this.scrollToBottom();
 			});
 	}
-	
+
 	public imgErrorHandler(event) {
 		event.target.src = '/assets/images/placeholder-image.jpg';
 	}
-	
+
 	public getCollections() {
 		this.joinedRooms.forEach(element => {
-			this.experienceCollection = _.filter(element.collection, function(o) { return o.type === 'experience'; });
+			this.experienceCollection = _.filter(element.collection, function (o) { return o.type === 'experience'; });
 		});
-		
+
 		this.joinedRooms.forEach(element => {
-			this.classCollection = _.filter(element.collection, function(o) { return o.type === 'class'; });
+			this.classCollection = _.filter(element.collection, function (o) { return o.type === 'class'; });
 		});
 	}
-	
+
 	public getSelectedCollection() {
 		if (this.selected === 'class') {
 			this.tempJoinedRooms = this.classCollection;
@@ -226,25 +227,19 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 			this.tempJoinedRooms = this.joinedRooms;
 		}
 	}
-	
+
 	public scrollToBottom() {
 		try {
 			this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
 		} catch (err) { }
 	}
-	
+
 	public viewAllParticipants() {
-		const dialogRef = this.dialog.open(ViewParticipantsComponent, {
-			data: {
-				participants: this.selectedRoom.participants,
-				experienceId: this.selectedRoom.collection[0].id,
-				userType: this.selectedRoom.belongsToUser ? 'teacher' : 'participant'
-			},
-			width: '45vw',
-			height: '100vh',
-			panelClass: 'responsive-dialog',
-			
-		});
+		this.dialogsService.viewParticipantstDialog(
+			this.selectedRoom.participants,
+			this.selectedRoom.collection[0].id,
+			this.selectedRoom.belongsToUser ? 'teacher' : 'participant'
+		);
 	}
 }
 
