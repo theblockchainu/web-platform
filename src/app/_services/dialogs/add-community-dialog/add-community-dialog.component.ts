@@ -261,4 +261,8 @@ export class AddCommunityDialogComponent implements OnInit {
       this.submitInterests(res.id);
     });
   }
+
+  public removed(event) {
+    console.log('remove');
+  }
 }
