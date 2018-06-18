@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../_shared/_shared.module';
-import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { MessageParticipantComponent } from './message-participant/message-participant.component';
 import { CommunityPageRoutingModule } from './community-page-routing.module';
 import { ProjectSubmissionService } from '../../_services/project-submission/project-submission.service';
@@ -11,7 +10,7 @@ import { VgControlsModule } from 'videogular2/controls';
 import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
 import { StickyModule } from 'ng2-sticky-kit';
-import {CommunityPageComponent} from './community-page.component';
+import { CommunityPageComponent } from './community-page.component';
 import { CommunityPageQuestionsComponent } from './community-page-questions/community-page-questions.component';
 import { CommunityPageClassesComponent } from './community-page-classes/community-page-classes.component';
 import { CommunityPageExperiencesComponent } from './community-page-experiences/community-page-experiences.component';
@@ -37,8 +36,8 @@ import { CommunityPageLinksComponent } from './community-page-links/community-pa
     StickyModule
   ],
 
-  declarations: [CommunityPageComponent, ViewParticipantsComponent, MessageParticipantComponent, CommunityPageQuestionsComponent, CommunityPageClassesComponent, CommunityPageExperiencesComponent, CommunityPageLinksComponent],
-  bootstrap: [ViewParticipantsComponent, MessageParticipantComponent],
+  declarations: [CommunityPageComponent, MessageParticipantComponent, CommunityPageQuestionsComponent, CommunityPageClassesComponent, CommunityPageExperiencesComponent, CommunityPageLinksComponent],
+  bootstrap: [MessageParticipantComponent],
   providers: [ProjectSubmissionService]
 
 })

@@ -48,7 +48,7 @@ import { ConfirmPasswordDialogComponent } from './confirm-password-dialog/confir
 import { AddViewerDialogComponent } from './add-viewer-dialog/add-viewer-dialog.component';
 import { GyanPromptComponent } from './gyan-prompt/gyan-prompt.component';
 import { AddCommunityDialogComponent } from './add-community-dialog/add-community-dialog.component';
-
+import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 @Injectable()
 export class DialogsService {
 
@@ -554,6 +554,22 @@ export class DialogsService {
             width: '80vw',
             height: '75vh',
             data: data ? data : {}
+        }).afterClosed();
+    }
+
+    /**
+     * viewParticipantsDialog
+     */
+    public viewParticipantstDialog(participants: any, collectionId: string, userType?: string) {
+        return this.dialog.open(ViewParticipantsComponent, {
+            data: {
+                participants: participants,
+                collectionId: collectionId,
+                userType: userType ? userType : ''
+            },
+            panelClass: 'responsive-dialog',
+            width: '45vw',
+            height: '100vh'
         }).afterClosed();
     }
 }
