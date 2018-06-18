@@ -58,7 +58,7 @@ export class CollectionService {
 				});
 		}
 	}
-	
+
 	public getOwnedCollectionCount(userId, options: string, cb) {
 		if (userId) {
 			this.httpClient
@@ -1029,5 +1029,13 @@ export class CollectionService {
 		return this.httpClient.post(environment.apiUrl + '/getKarmaToBurn', {
 			gyan: gyan
 		}, this.requestHeaderService.options);
+	}
+
+	public unlinkTopic(experienceId, topicId) {
+		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + experienceId + '/topics/rel/' + topicId, this.requestHeaderService.options);
+	}
+
+	public linkTopics(experienceId, body) {
+		return this.httpClient.patch(environment.apiUrl + '/api/collections/' + experienceId + '/topics/rel', body, this.requestHeaderService.options);
 	}
 }

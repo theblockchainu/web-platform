@@ -9,7 +9,6 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { CollectionService } from '../../_services/collection/collection.service';
 import { ContentService } from '../../_services/content/content.service';
 import { CommentService } from '../../_services/comment/comment.service';
-import { ViewParticipantsComponent } from '../../_services/dialogs/view-participants/view-participants.component';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
 import { ShowRSVPPopupComponent } from './show-rsvp-participants-dialog/show-rsvp-dialog.component';
@@ -1058,28 +1057,14 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	viewParticipants() {
-		const dialogRef = this.dialog.open(ViewParticipantsComponent, {
-			data: {
-				participants: this.participants,
-				experienceId: this.experienceId,
-				userType: this.userType
-			},
-			panelClass: 'responsive-dialog',
-			width: '45vw',
-			height: '100vh'
-		});
+		this.dialogsService.viewParticipantstDialog(
+			this.participants,
+			this.experienceId,
+			this.userType).subscribe();
 	}
 
 	viewAllParticipants() {
-		const dialogRef = this.dialog.open(ViewParticipantsComponent, {
-			data: {
-				participants: this.allParticipants,
-				experienceId: this.experienceId
-			},
-			panelClass: 'responsive-dialog',
-			width: '45vw',
-			height: '100vh'
-		});
+		this.dialogsService.viewParticipantstDialog(this.allParticipants, this.experienceId).subscribe();
 	}
 
 	/**

@@ -35,4 +35,8 @@ export class MediaUploaderService {
 			.map((response: any) => response);
 	}
 
+	delete(file) {
+		return this.http.delete(environment.apiUrl + file, this.requestHeaderService.options);
+	}
+
 }
