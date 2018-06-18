@@ -13,7 +13,7 @@ import { RequestHeaderService } from '../../_services/requestHeader/request-head
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const PHONE_REGEX = /^(\+\d{1,3}[- ]?)?\d{7,10}$/;
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
-import {startWith, map} from 'rxjs/Operators';
+import {startWith, map} from 'rxjs/operators';
 import {Observable} from 'rxjs/Observable';
 
 @Component({
