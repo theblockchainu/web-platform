@@ -32,7 +32,8 @@ import { ConsoleAdminComponent } from './console-admin/console-admin.component';
 import { ContentLearningBookmarksComponent } from './console-learning/content-learning-bookmarks/content-learning-bookmarks.component';
 import { ConsoleAccountWalletComponent } from './console-account/console-account-wallet/console-account-wallet.component';
 import { ConsoleAccountScholarshipsComponent } from './console-account/console-account-scholarships/console-account-scholarships.component';
-import {ConsoleLearningKnowledgeStoryComponent} from './console-learning/console-learning-knowledge-story/console-learning-knowledge-story.component';
+import { ConsoleLearningKnowledgeStoryComponent } from './console-learning/console-learning-knowledge-story/console-learning-knowledge-story.component';
+import { ConsoleTeachingAccreditationComponent } from './console-teaching/console-teaching-accreditation/console-teaching-accreditation.component';
 
 const routes: Routes = [{
 	path: '',
@@ -109,7 +110,11 @@ const routes: Routes = [{
 				{
 					path: 'sessions',
 					component: ConsoleTeachingSessionComponent
-				},
+				}, {
+					path: 'accreditation',
+					component: ConsoleTeachingAccreditationComponent
+				}
+				,
 				{
 					path: '',
 					component: ConsoleTeachingAllComponent
