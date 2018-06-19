@@ -40,6 +40,7 @@ import { environment } from '../../../environments/environment';
 import { SocketService } from '../../_services/socket/socket.service';
 import { AssessmentService } from '../../_services/assessment/assessment.service';
 import { ContentOnlineComponent } from './content-online/content-online.component';
+import {UcWordsPipe} from 'ngx-pipes';
 
 declare var FB: any;
 
@@ -210,7 +211,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		private _authenticationService: AuthenticationService,
 		private titleService: Title,
 		private metaService: Meta,
-		private _assessmentService: AssessmentService
+		private _assessmentService: AssessmentService,
+		private ucwords: UcWordsPipe
 		// private location: Location
 	) {
 		this.envVariable = environment;
@@ -585,7 +587,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	private setTags() {
-		this.titleService.setTitle(this.class.title);
+		this.titleService.setTitle(this.ucwords.transform(this.class.title));
 		this.metaService.updateTag({
 			property: 'og:title',
 			content: this.class.title

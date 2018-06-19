@@ -13,6 +13,8 @@ import { RequestHeaderService } from '../../_services/requestHeader/request-head
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const PHONE_REGEX = /^(\+\d{1,3}[- ]?)?\d{7,10}$/;
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
+import {startWith, map} from 'rxjs/operators';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
 	selector: 'upload-docs',
@@ -39,6 +41,7 @@ export class UploadDocsComponent implements OnInit {
 	public envVariable;
 	public httpLoading = false;
 	public countryCodes: Array<CountryCode>;
+	public filteredCountryCodes: Observable<CountryCode[]>;
 
 	constructor(
 		public router: Router,
@@ -97,16 +100,34 @@ export class UploadDocsComponent implements OnInit {
 			});
 		this.countryCodes = [];
 		this.countryPickerService.getCountries().subscribe((res: any) => {
-			console.log(res);
 			res.forEach(country => {
-				console.log(country);
 				this.countryCodes.push({
 					code: country.callingCode[0],
 					country: country.name
 				});
 			});
-			console.log(this.countryCodes);
 			this.phoneForm.enable();
+			this.filteredCountryCodes = this.phoneForm.controls.countryCode.valueChanges
+				.pipe(
+					startWith<string | CountryCode>(''),
+					map(value => {
+						console.log(value);
+						return typeof value === 'string' ? value : value.country;
+					}),
+					map(country =>  {
+						console.log(country);
+						return country ? this.filter(country) : this.countryCodes.slice();
+					})
+				);
+		});
+	}
+	
+	filter(country: string): CountryCode[] {
+		return this.countryCodes.filter(option => {
+			if (option.country.toLowerCase().indexOf(country.toLowerCase()) === 0) {
+				console.log('Matched');
+			}
+			return option.country.toLowerCase().indexOf(country.toLowerCase()) === 0;
 		});
 	}
 
@@ -173,7 +194,7 @@ export class UploadDocsComponent implements OnInit {
 	public sendPhoneOTP(nextStep) {
 		this.httpLoading = true;
 		this.phoneFormError = null;
-		this._profileService.sendVerifySms(this.phoneForm.controls.phone.value, this.phoneForm.controls.countryCode.value)
+		this._profileService.sendVerifySms(this.phoneForm.controls.phone.value, this.phoneForm.controls.countryCode.value.code)
 			.subscribe(response => {
 				this.httpLoading = false;
 				this.step = nextStep;
@@ -205,7 +226,7 @@ export class UploadDocsComponent implements OnInit {
 
 	public resendPhoneOTP() {
 		this.httpLoading = true;
-		this._profileService.sendVerifySms(this.phoneForm.controls.phone.value, this.phoneForm.controls.countryCode.value)
+		this._profileService.sendVerifySms(this.phoneForm.controls.phone.value, this.phoneForm.controls.countryCode.value.code)
 			.subscribe((response) => {
 				this.httpLoading = false;
 				this.snackBar.open('Code Resent', 'OK', {
@@ -305,6 +326,10 @@ export class UploadDocsComponent implements OnInit {
 	}
 	public openIdPolicy() {
 		this.dialogsService.openIdPolicy().subscribe();
+	}
+	
+	displayFn(country: CountryCode) {
+		return country ? country.country : undefined;
 	}
 }
 

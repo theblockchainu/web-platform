@@ -194,12 +194,7 @@ export class OnboardingComponent implements OnInit {
 	}
 	
 	public goToHome() {
-		if (this._cookieUtilsService.getValue('dismissHome') === 'true') {
-			this.router.navigate(['home', 'homefeed']);
-		} else {
-			this.router.navigate(['home']);
-		}
-		
+		this.router.navigate(['home']);
 	}
 	
 	public showConnectedSocials() {

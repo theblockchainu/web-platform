@@ -41,6 +41,7 @@ import { AuthenticationService } from '../../_services/authentication/authentica
 import { environment } from '../../../environments/environment';
 import { SocketService } from '../../_services/socket/socket.service';
 import { AssessmentService } from '../../_services/assessment/assessment.service';
+import {UcWordsPipe} from 'ngx-pipes';
 
 declare var FB: any;
 
@@ -158,6 +159,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public clickedCohortEndDate;
 	public eventsForTheDay: any;
 	public toOpenDialogName;
+	public checkingEthereum = true;
+	public isOnEthereum = false;
 	objectKeys = Object.keys;
 
 	public view = 'month';
@@ -213,7 +216,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		private _authenticationService: AuthenticationService,
 		private titleService: Title,
 		private metaService: Meta,
-		private _assessmentService: AssessmentService
+		private _assessmentService: AssessmentService,
+		private ucwords: UcWordsPipe
 		// private location: Location
 	) {
 		this.envVariable = environment;
@@ -481,6 +485,13 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		};
 
 		if (this.experienceId) {
+			this._collectionService.getCollectionEthereumInfo(this.experienceId, {})
+				.subscribe(res => {
+					this.checkingEthereum = false;
+					if (res && res[6] && res[6] !== '0') {
+						this.isOnEthereum = true;
+					}
+				});
 			this._collectionService.getCollectionDetail(this.experienceId, query)
 				.subscribe(res => {
 					console.log(res);
@@ -596,7 +607,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	private setTags() {
-		this.titleService.setTitle(this.experience.title);
+		this.titleService.setTitle(this.ucwords.transform(this.experience.title));
 		this.metaService.updateTag({
 			property: 'og:title',
 			content: this.experience.title
@@ -1769,7 +1780,16 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			// console.log(result);
 		});
 	}
-
+	
+	public addToEthereum() {
+		this._collectionService.addToEthereum(this.experienceId)
+			.subscribe(res => {
+				this.initializeExperience();
+			}, err => {
+				this.snackBar.open('Could not add to Peerbuds Blockchain. Try again later.', 'Ok', {duration: 5000});
+			});
+	}
+	
 }
 
 interface AssessmentResult {

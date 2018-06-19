@@ -204,7 +204,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			language: this._fb.array([]),
 			selectedLanguage: '',
 			headline: '',
-			description: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(1000)])],
+			description: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(2000)])],
 			difficultyLevel: '',
 			prerequisites: '',
 			maxSpots: '',

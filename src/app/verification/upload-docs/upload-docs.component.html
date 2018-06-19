@@ -66,11 +66,15 @@
 							<br/>Peerbuds needs to verify uniqueness of phone numbers to make sure you only have a single account.</p>
 						<mat-form-field class="margin-bottom-60 margin-top-20" [floatLabel]="'auto'">
 							<!-- <input type="number" matInput placeholder="Country Code"> -->
-							<mat-select #countryCode formControlName="countryCode" placeholder="Country ">
+							<input type="text" matInput formControlName="countryCode" [matAutocomplete]="auto" placeholder="Country " />
+							<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+								<mat-option *ngFor="let country of filteredCountryCodes | async" [value]="country">{{country.country}}</mat-option>
+							</mat-autocomplete>
+							<!--<mat-select #countryCode formControlName="countryCode" placeholder="Country ">
 								<mat-option *ngFor="let country of countryCodes" [value]="country.code">
 									{{ country.country }}
 								</mat-option>
-							</mat-select>
+							</mat-select>-->
 						</mat-form-field>
 						<mat-form-field [floatLabel]="'auto'" class="margin-bottom-60 margin-top-20">
 							<input type="number" matInput #phone formControlName="phone" placeholder="Phone Number" />
@@ -162,7 +166,7 @@
 							need to verify their email IDs to receive notifications and updates from the platform.</p>
 
 						<mat-form-field [floatLabel]="'auto'" style="width:20% !important" class="margin-bottom-10">
-							<input type="number" matInput #inputEmailOTP formControlName="inputOTP" />
+							<input type="text" matInput #inputEmailOTP formControlName="inputOTP" />
 						</mat-form-field>
 						<div *ngIf="emailOtpError" style="color:red;">{{emailOtpError}}</div>
 						<div>

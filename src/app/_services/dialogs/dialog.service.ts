@@ -401,14 +401,16 @@ export class DialogsService {
         }).afterClosed();
     }
 
-    public shareCollection(type: string, Id: string, title: string, cohortId?: string) {
+    public shareCollection(type: string, Id: string, title: string, description: string, imageUrl: string, cohortId?: string) {
         return this.dialog.open(ShareDialogComponent,
             {
                 data: {
                     type: type,
                     id: Id,
                     cohortId: cohortId,
-                    title: title
+                    title: title,
+					description: description,
+					image: imageUrl
                 },
                 panelClass: 'responsive-dialog', width: '40vw'
             }

@@ -75,28 +75,31 @@
 						<div class="row">
 							<div class="col-md-12">
 								<a class="clickable margin-bottom-10" *ngIf="calendarId && userType !== 'participant'" (click)="backToCollection(experience)">
-									< Back to experience page </a>
-										<p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title | titlecase}}
-											<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
-										</p>
-										<div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
-											<span *ngIf="currentCalendar">
-												<b>{{currentCalendar.startDate | date:'d MMM'}} to {{currentCalendar.endDate| date:'d MMM'}}</b> &nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
-											</span>
-											<span> {{totalDuration | i18nPlural : hourMapping}} {{experience.type}} &nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
-											<span *ngIf="userType==='teacher'">
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.calendars.length | i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;</span>
-											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
-												<mat-icon style="top: 5px;">date_range</mat-icon> Change cohort </a>
-											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()">
-												<mat-icon style="top: 5px;">date_range</mat-icon> Select cohort to view participants </a>
-										</div>
-										<div *ngIf="userType==='public'" style="margin-top: -12px;">
-											<span>{{itenaryArray.length | i18nPlural : dayMapping}} / {{totalDuration | i18nPlural : hourMapping}} &nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}}</span>
-										</div>
+									< Back to experience page
+								</a>
+								<p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title | titlecase}}
+									<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
+									<span *ngIf="!checkingEthereum && isOnEthereum" matTooltip="Verified on Peerbuds Blockchain">&emsp;<i class="fa fa-globe lightText" style="color: #ff6d71; font-size: 14px;"></i></span>
+									<span *ngIf="!checkingEthereum && !isOnEthereum" matTooltip="Add to Peerbuds Blockchain" (click)="addToEthereum()" class="clickable">&emsp;<i class="fa fa-plus lightText" style="font-size: 14px;"></i></span>
+								</p>
+								<div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
+									<span *ngIf="currentCalendar">
+										<b>{{currentCalendar.startDate | date:'d MMM'}} to {{currentCalendar.endDate| date:'d MMM'}}</b> &nbsp;&nbsp;&nbsp;
+										<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
+									</span>
+									<span> {{totalDuration | i18nPlural : hourMapping}} {{experience.type}} &nbsp;&nbsp;&nbsp;
+										<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
+									<span *ngIf="userType==='teacher'">
+										<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.calendars.length | i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;</span>
+									<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
+										<mat-icon style="top: 5px;">date_range</mat-icon> Change cohort </a>
+									<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()">
+										<mat-icon style="top: 5px;">date_range</mat-icon> Select cohort to view participants </a>
+								</div>
+								<div *ngIf="userType==='public'" style="margin-top: -12px;">
+									<span>{{itenaryArray.length | i18nPlural : dayMapping}} / {{totalDuration | i18nPlural : hourMapping}} &nbsp;&nbsp;&nbsp;
+										<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}}</span>
+								</div>
 							</div>
 						</div>
 					</div>
