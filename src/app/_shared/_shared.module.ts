@@ -84,13 +84,14 @@ import { ShareModule } from '@ngx-share/core';
 import { QRCodeModule } from 'angularx-qrcode';
 import { ConvertCryptoPipe } from './convert-crypto/convert-crypto.pipe';
 import { ShortNumberPipe } from './short-number/short-number.pipe';
-import {RouterModule} from '@angular/router';
-import {ExperienceCardComponent} from './experience-card/experience-card.component';
+import { RouterModule } from '@angular/router';
+import { ExperienceCardComponent } from './experience-card/experience-card.component';
 import { CommunityCardComponent } from './community-card/community-card.component';
 import { PeerCardComponent } from './peer-card/peer-card.component';
 import { ClassCardComponent } from './class-card/class-card.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
-import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you need
+import { AmazingTimePickerModule } from 'amazing-time-picker';
+import { AccreditationService } from '../_services/accreditation/accreditation.service';
 
 @NgModule({
     imports: [
@@ -102,8 +103,8 @@ import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you 
         FileUploadModule,
         PopoverModule.forRoot(),
         CalendarModule.forRoot(),
-		FormsModule,
-		RatingModule,
+        FormsModule,
+        RatingModule,
         LoadingModule.forRoot({
             animationType: ANIMATION_TYPES.threeBounce,
             backdropBackgroundColour: 'rgba(0,0,0,0)',
@@ -122,10 +123,10 @@ import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you 
         Ng4GeoautocompleteModule.forRoot(),
         MatIconModule,
         MatButtonModule,
-		MatTooltipModule,
-		ShareModule.forRoot(),
-		RouterModule,
-		NgPipesModule
+        MatTooltipModule,
+        ShareModule.forRoot(),
+        RouterModule,
+        NgPipesModule
     ],
     declarations: [
         ExtractTimePipe,
@@ -139,10 +140,10 @@ import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you 
         KarmaBalancePipe,
         ConvertCryptoPipe,
         ShortNumberPipe,
-		ExperienceCardComponent,
-		CommunityCardComponent,
-		PeerCardComponent,
-		ClassCardComponent
+        ExperienceCardComponent,
+        CommunityCardComponent,
+        PeerCardComponent,
+        ClassCardComponent
     ],
     providers: [
         CollectionService,
@@ -171,7 +172,8 @@ import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you 
         WalletService,
         ScholarshipService,
         KnowledgeStoryService,
-		UcWordsPipe
+        UcWordsPipe,
+        AccreditationService
     ],
     exports: [
         CommonModule,
@@ -228,8 +230,8 @@ import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you 
         ConvertCurrencyPipe,
         GyanBalancePipe,
         KarmaBalancePipe,
-		ConvertCryptoPipe,
-		ShortNumberPipe,
+        ConvertCryptoPipe,
+        ShortNumberPipe,
         ProfilePopupComponent,
         TrimPipe,
         TextIconCarouselComponent,
@@ -239,14 +241,14 @@ import { AmazingTimePickerModule } from 'amazing-time-picker'; // this line you 
         TopicRowComponent,
         NguCarouselModule,
         MatStepperModule,
-		ClipboardModule,
-		ShareModule,
+        ClipboardModule,
+        ShareModule,
         QRCodeModule,
-		ExperienceCardComponent,
-		CommunityCardComponent,
-		PeerCardComponent,
-		ClassCardComponent,
-		OwlDateTimeModule,
+        ExperienceCardComponent,
+        CommunityCardComponent,
+        PeerCardComponent,
+        ClassCardComponent,
+        OwlDateTimeModule,
         OwlNativeDateTimeModule,
         AmazingTimePickerModule
     ]

@@ -1,26 +1,17 @@
 .upcoming-card{
 	text-align: center;
 	padding: 20px;
-	min-height: 465px;
+	min-height: 200px;
 }
 
-.collectionTitle{
-    cursor:pointer;
-}
-.draft-card{
-    text-align: center;
-    padding: 20px;
-    height: 310px;
+.accreditationTitle{
+    margin-top: 3vh;
 }
 
 
 .mat-icon-button .mat-icon, .mat-icon-button i {
     color: #777777;
   }
-
-.pastCard {
-    min-height: 465px;
-}
 
 .disabled {
     cursor: not-allowed !important;

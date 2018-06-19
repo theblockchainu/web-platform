@@ -6,11 +6,8 @@ import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../collection/collection.service';
 
 import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
-import { environment } from '../../../../environments/environment';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
-import { map, startWith } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-scholarship-dialog',
@@ -18,7 +15,7 @@ import { map, startWith } from 'rxjs/operators';
 	styleUrls: ['./scholarship-dialog.component.scss']
 })
 export class ScholarshipDialogComponent implements OnInit {
-	
+
 	public scholarshipForm: FormGroup;
 	public selectedClasses: Array<any>;
 	public myControl = new FormControl('');
@@ -27,19 +24,19 @@ export class ScholarshipDialogComponent implements OnInit {
 	public selectedCollections: Array<CollectionObject>;
 	public filteredCollection: Observable<Array<any>>;
 	public allCollection = false;
-	
+
 	visible = true;
 	selectable = true;
 	removable = true;
 	addOnBlur = true;
-	
+
 	// Enter, comma
 	separatorKeysCodes = [ENTER, COMMA];
-	
+
 	@ViewChild('collctionInput') collctionInput: ElementRef;
-	
-	
-	
+
+
+
 	constructor(
 		private _fb: FormBuilder,
 		private _communityService: CommunityService,
@@ -52,7 +49,7 @@ export class ScholarshipDialogComponent implements OnInit {
 	) {
 		this.userId = this._CookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.scholarshipForm = this._fb.group({
 			ethAddress: this.data.ethAddress ? this.data.ethAddress : '',
@@ -62,7 +59,7 @@ export class ScholarshipDialogComponent implements OnInit {
 			title: this.data.title ? this.data.title : '',
 			description: this.data.description ? this.data.description : ''
 		});
-		
+
 		this.myControl.valueChanges.subscribe((value) => {
 			this._searchService.getAllSearchResults(this.userId, value, (err, result) => {
 				if (!err) {
@@ -74,24 +71,24 @@ export class ScholarshipDialogComponent implements OnInit {
 		});
 		this.selectedCollections = [];
 	}
-	
+
 	public submitForm() {
 		this.dialogRef.close({
 			scholarshipForm: this.scholarshipForm.value,
 			selectedCollections: this.allCollection ? [] : this.selectedCollections
 		});
 	}
-	
-	
+
+
 	remove(collection: any): void {
 		const index = this.selectedCollections.indexOf(collection);
-		
+
 		if (index >= 0) {
 			this.selectedCollections.splice(index, 1);
 		}
 	}
-	
-	
+
+
 	onSearchOptionClicked(event: any): void {
 		console.log(event);
 		this.selectedCollections.push(
@@ -103,7 +100,7 @@ export class ScholarshipDialogComponent implements OnInit {
 		console.log(this.selectedCollections);
 		this.collctionInput.nativeElement.value = '';
 	}
-	
+
 }
 
 interface CollectionObject {

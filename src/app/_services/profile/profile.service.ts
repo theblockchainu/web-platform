@@ -834,4 +834,11 @@ export class ProfileService {
 	public getJoinedCommunities(peerId: string, filter: any) {
 		return this.http.get(environment.apiUrl + '/api/peers/' + peerId + '/communities?filter=' + JSON.stringify(filter), this._requestHeaderService.options);
 	}
+
+	/**
+	 * getAccreditations
+	 */
+	public getAccreditationsCreated(peerId: string, filter: any) {
+		return this.http.get(environment.apiUrl + '/api/peers/' + peerId + '/accreditationsCreated?filter=' + JSON.stringify(filter), this._requestHeaderService.options);
+	}
 }

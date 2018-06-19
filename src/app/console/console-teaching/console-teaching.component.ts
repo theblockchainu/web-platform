@@ -7,14 +7,16 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 
 import { ConsoleComponent } from '../console.component';
 import { ProfileService } from '../../_services/profile/profile.service';
-
+import { Subject } from 'rxjs/Subject'
 declare var moment: any;
+
 @Component({
     selector: 'app-console-teaching',
     templateUrl: './console-teaching.component.html',
     styleUrls: ['./console-teaching.component.scss', '../console.component.scss']
 })
 export class ConsoleTeachingComponent implements OnInit {
+    public accreditationSubject = new Subject<any>();
 
     public classes: any;
     public loaded: boolean;
@@ -31,7 +33,8 @@ export class ConsoleTeachingComponent implements OnInit {
         private _cookieUtilsService: CookieUtilsService,
         private _profileService: ProfileService,
         public consoleComponent: ConsoleComponent,
-        private dialogsService: DialogsService) {
+        private dialogsService: DialogsService,
+    ) {
         activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
             console.log(urlSegment[0].path);
             consoleComponent.setActiveTab(urlSegment[0].path);
@@ -198,7 +201,9 @@ export class ConsoleTeachingComponent implements OnInit {
     }
 
     public createAccreditation() {
-        
+        this.dialogsService.createAccreditationDialog().subscribe(res => {
+            this.accreditationSubject.next(true)
+        });
     }
 
 }

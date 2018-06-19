@@ -195,8 +195,8 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
     const dialogRef = this.dialog.open(CohortDetailDialogComponent, {
       width: '45vw',
       data: cohortData,
-			panelClass: 'responsive-dialog',
-    
+      panelClass: 'responsive-dialog',
+
     });
   }
 

@@ -9,22 +9,21 @@
   <div class="col-md-12 margin-top-10" *ngIf="loaded">
     <div #noContentView *ngIf="accreditationArray.length === 0" class="center" style="margin-top: 10%">
       <div class="lightText">
-        You have not subscribed to any Accreditation
+        You have not Created any Accreditation
         <br>
-        <br> Start by hostisubscribing to an
-        <!-- <a color="default" (click)="createClass()">Accreditation </a> -->
+        <br> Start by hosting one
       </div>
     </div>
     <div *ngIf="accreditationArray.length > 0">
       <div style="display:inline;">
-        <h2>Ongoing & Upcoming</h2>
+        <h2>Accreditations Created</h2>
       </div>
       <div class="row">
         <div>
           <div style="margin-top:20px;" class="col-md-12">
             <div class="row">
-              <div *ngFor="let collection of accreditationArray" class="col-md-4" style="margin-top: 20px;">
-                <ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
+              <div *ngFor="let accreditation of accreditationArray" class="col-md-4" style="margin-top: 20px;">
+                <ng-template #topicName>{{accreditation.topics[0].name | titlecase}}</ng-template>
                 <ng-template #noTopicText>No Topics</ng-template>
                 <mat-card class="upcoming-card">
                   <mat-card-content>
@@ -36,82 +35,29 @@
                       </div>
                     </div>
                     <div class="collectionParticipantImageCarousel">
-                      <span *ngFor="let participant of collection.participants; let i=index">
+                      <span *ngFor="let participant of accreditation.subscribedBy; let i=index">
                         <div *ngIf="i<7" class="image-inline">
                           <app-profile-popup style="margin-left: -15px;" [peer]="participant"></app-profile-popup>
                         </div>
                       </span>
-                      <div class="image-inline" *ngIf="collection.participants.length === 0">
+                      <div class="image-inline" *ngIf="accreditation.subscribedBy.length === 0">
                         <img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
                       </div>
                     </div>
+                    <div class="accreditationTitle mat-body-2 clickable" [routerLink]="'/accreditation/'+accreditation.id">{{ accreditation.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+                    <div class="accreditationTitle mat-body-3 clickable">{{ accreditation.description | shorten:30 :'...'}} </div>
                     <div class="participantCount">
-                      <span>{{collection.participants.length}} Participants </span>
+                      <span>{{accreditation.subscribedBy.length}} Subscribers </span>
                     </div>
-                    <div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
-                    <!-- <mat-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></mat-progress-bar> -->
-                    <div class="cohortDate">
-                      <span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
-                        MMM' }}</span>
+                    <div class="collectionSubtitle clickable">
+                      <span *ngIf="accreditation.topics.length > 0; then topicName else noTopicText"></span>
                     </div>
-                    <div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
-                      {{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
-                      <span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
-                    </div>
-                    <span matTooltip="{{consoleTeachingComponent.getProgressValue(collection)}}% completed">
-                      <mat-progress-bar style="margin-bottom: 15px;" mode="determinate" value="{{consoleTeachingComponent.getProgressValue(collection)}}"></mat-progress-bar>
-                    </span>
-                    <span *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart === 0">
-                      <p class="upcomingEventLabel">
-                        Today
-                      </p>
-                      <div class="upcomingEventTitle">
-                        {{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
-                      </div>
-                      <div class="upcomingEventTime">
-                        {{ _collectionService.getUpcomingEvent(collection).type | titlecase}} {{ _collectionService.getUpcomingEvent(collection).fillerWord}}
-                        today
-                      </div>
-                    </span>
-                    <span *ngIf=" _collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart > 0">
-                      <p class="upcomingEventLabel">
-                        Up Next
-                      </p>
-                      <div class="upcomingEventTitle">
-                        {{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
-                      </div>
-                      <div class="upcomingEventTime">
-                        {{ _collectionService.getUpcomingEvent(collection).type | titlecase }} {{ _collectionService.getUpcomingEvent(collection).fillerWord
-                        + ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' days' }}
-                      </div>
-                    </span>
-                    <span *ngIf="_collectionService.getUpcomingEvent(collection) &&  _collectionService.getUpcomingEvent(collection).timeToStart < 0">
-                      <p class="upcomingEventLabel">
-                        Last Event
-                      </p>
-                      <div class="upcomingEventTitle">
-                        {{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
-                      </div>
-                      <div class="upcomingEventTime">
-                        {{ _collectionService.getUpcomingEvent(collection).type| titlecase }} {{ _collectionService.getUpcomingEvent(collection).fillerWord
-                        + ' was ' + -(_collectionService.getUpcomingEvent(collection).timeToStart) + ' days ago' }}
-                      </div>
-                    </span>
                   </mat-card-content>
                   <mat-menu #ongoingCardMenu>
-                    <button mat-menu-item (click)="cancelCollection(collection)">
+                    <button mat-menu-item (click)="cancelAccreditation(accreditation)">
                       Cancel
                     </button>
-                    <button mat-menu-item (click)="_collectionService.openEditClass(collection)">
-                      Edit Accreditation
-                    </button>
                   </mat-menu>
-                  <mat-card-actions *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).hasStarted">
-                    <button mat-raised-button (click)="_collectionService.viewClass(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
-                  </mat-card-actions>
-                  <mat-card-footer class="cardFooter" style="margin-top: -4px">
-                    <button mat-button [routerLink]="['/class/'+collection.id+'/calendar/'+collection.calendars[0].id]">Continue Teaching</button>
-                  </mat-card-footer>
                 </mat-card>
               </div>
             </div>
