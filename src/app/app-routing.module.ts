@@ -169,6 +169,10 @@ const routes: Routes = [
 		loadChildren: 'app/scholarship/scholarship.module#ScholarshipModule'
 	},
 	{
+		path: 'accreditation',
+		loadChildren: 'app/accreditation/accreditation.module#AccreditationModule'
+	},
+	{
 		path: 'story',
 		loadChildren: 'app/knowledge-story/knowledge-story.module#KnowledgeStoryModule'
 	},

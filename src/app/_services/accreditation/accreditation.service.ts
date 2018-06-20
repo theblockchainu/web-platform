@@ -26,11 +26,24 @@ export class AccreditationService {
     return this.http.post(environment.apiUrl + '/api/peers/' + this.userId + '/accreditationsCreated', data, this.requestHeaderService.options);
   }
 
+  public deleteAccreditation(accreditationId) {
+    return this.http.delete(environment.apiUrl + '/api/accreditations/' + accreditationId, this.requestHeaderService.options);
+  }
+
   public linkTopics(accreditationId, body) {
     return this.http.patch(environment.apiUrl + '/api/accreditations/' + accreditationId + '/topics/rel', body, this.requestHeaderService.options);
   }
 
-  public openAccreditation(accreditation: any) {
-
+  public fetchAccreditation(accreditationId: string, filter: any) {
+    return this.http.get(environment.apiUrl + '/api/accreditations/' + accreditationId + '?filter=' + JSON.stringify(filter), this.requestHeaderService.options);
   }
+
+  joinAccreditation(userId: string, accreditationId: string) {
+    return this.http.put(environment.apiUrl + '/api/accreditations/' + accreditationId + '/subscribedBy/rel/' + userId, {}, this.requestHeaderService.options);
+  }
+
+  leaveAccreditation(userId: string, accreditationId: string) {
+    return this.http.delete(environment.apiUrl + '/api/accreditations/' + accreditationId + '/subscribedBy/rel/' + userId, this.requestHeaderService.options);
+  }
+
 }

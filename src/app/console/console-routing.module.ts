@@ -111,7 +111,7 @@ const routes: Routes = [{
 					path: 'sessions',
 					component: ConsoleTeachingSessionComponent
 				}, {
-					path: 'accreditation',
+					path: 'accreditations',
 					component: ConsoleTeachingAccreditationComponent
 				}
 				,
