@@ -29,7 +29,7 @@ export class ConsoleTeachingAccreditationComponent implements OnInit {
     private matSnackBar: MatSnackBar) {
     activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
       if (urlSegment[0] === undefined) {
-        consoleTeachingComponent.setActiveTab('accreditation');
+        consoleTeachingComponent.setActiveTab('accreditations');
       } else {
         consoleTeachingComponent.setActiveTab(urlSegment[0].path);
       }
@@ -45,6 +45,9 @@ export class ConsoleTeachingAccreditationComponent implements OnInit {
   }
 
   fetchAccreditations() {
+    this.loadedCreatedAccreditations = false;
+    this.loadedSubscribedAccreditations = false;
+
     const filter = {
       'include': [{ 'subscribedBy': ['reviewsAboutYou', 'ownedCollections', 'profiles'] }, 'topics']
     };
@@ -55,8 +58,8 @@ export class ConsoleTeachingAccreditationComponent implements OnInit {
     });
 
     this.profileService.getAccreditationsSubscribed(this.userId, filter).subscribe((res: any) => {
-      this.accreditationsCreatedArray = res;
-      console.log(this.accreditationsCreatedArray);
+      this.accreditationsSubscribedArray = res;
+      console.log(this.accreditationsSubscribedArray);
       this.loadedSubscribedAccreditations = true;
     });
 
