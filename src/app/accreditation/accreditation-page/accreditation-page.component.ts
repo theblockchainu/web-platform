@@ -94,13 +94,30 @@ export class AccreditationPageComponent implements OnInit {
     }
     this.profileService.getGyanBalance(this.userId, 'fixed').subscribe(res => {
       this.userGyan = res;
+      this.userGyan = 10;
       if (this.userGyan < this.accreditation.minimum_gyan) {
         this.eligibilityReason = 'Your gyan value ' + this.userGyan
           + ' is lower than than the minimum gyan '
           + this.accreditation.minimum_gyan + ' required for joining the accreditation';
       } else {
-        this.isEligible = true;
-        this.eligibilityReason = 'Join Accreditation?';
+        const query = { 'include': 'accreditationsSubscribed' };
+        console.log('querying for peerdata');
+        this.profileService.getPeerData(this.userId, query).subscribe(result => {
+          if (result.accreditationsSubscribed && result.accreditationsSubscribed.length > 0) {
+            let totalSalaryShare = 0;
+            result.accreditationsSubscribed.forEach(accreditation => {
+              totalSalaryShare += accreditation.fees;
+            });
+            console.log('total share = ' + totalSalaryShare);
+            if (totalSalaryShare + Number(this.accreditation.fees) >= 100) {
+              this.eligibilityReason = 'Join Accreditation?';
+            } else {
+              this.isEligible = true;
+            }
+          } else {
+            this.isEligible = true;
+          }
+        });
       }
     });
   }
@@ -143,7 +160,9 @@ export class AccreditationPageComponent implements OnInit {
   }
 
   removeSubscriber(subscriberId: string) {
-
+    this._accreditationService.leaveAccreditation(subscriberId, this.accreditationId).subscribe(res => {
+      this.matSnackBar.open('Removed from Accreditation', 'Close', { duration: 3000 });
+    });
   }
 
   leaveAccreditation() {
