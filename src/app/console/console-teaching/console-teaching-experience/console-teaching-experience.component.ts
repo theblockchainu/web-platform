@@ -19,7 +19,7 @@ import { UcFirstPipe } from 'ngx-pipes';
 	providers: [UcFirstPipe]
 })
 export class ConsoleTeachingExperienceComponent implements OnInit {
-	
+
 	public collections: any;
 	public loaded: boolean;
 	public now: Date;
@@ -32,7 +32,7 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 	public liveExperiencesObject: any;
 	public upcomingExperiencesObject: any;
 	public accountVerified = false;
-	
+
 	constructor(
 		public activatedRoute: ActivatedRoute,
 		public consoleTeachingComponent: ConsoleTeachingComponent,
@@ -53,13 +53,13 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 		});
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.loaded = false;
 		this.fetchData();
 		this.accountVerified = (this._cookieUtilsService.getValue('accountApproved') === 'true');
 	}
-	
+
 	private fetchData() {
 		this._collectionService.getOwnedCollections(this.userId,
 			'{ "where": {"type":"experience"}, "include": ["calendars", "owners",' +
@@ -81,7 +81,7 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 				}
 			});
 	}
-	
+
 	private createOutput(data: any) {
 		const now = moment();
 		data.forEach(experience => {
@@ -115,7 +115,7 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 									this.liveExperiencesObject[experience.id]['experience']['calendars'] = [calendar];
 								}
 							}
-							
+
 						} else {
 							if (experience.id in this.pastExperiencesObject) {
 								this.pastExperiencesObject[experience.id]['experience']['calendars'].push(calendar);
@@ -136,11 +136,11 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 				});
 			}
 		});
-		
+
 		this.drafts.sort((a, b) => {
 			return moment(b.updatedAt).diff(moment(a.updatedAt), 'days');
 		});
-		
+
 		for (const key in this.pastExperiencesObject) {
 			if (this.pastExperiencesObject.hasOwnProperty(key)) {
 				this.pastExperiencesObject[key].experience.calendars.sort((a, b) => {
@@ -149,11 +149,11 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 				this.pastArray.push(this.pastExperiencesObject[key].experience);
 			}
 		}
-		
+
 		this.pastArray.sort((a, b) => {
 			return moment(b.calendars[0].endDate).diff(moment(a.calendars[0].endDate), 'days');
 		});
-		
+
 		for (const key in this.upcomingExperiencesObject) {
 			if (this.upcomingExperiencesObject.hasOwnProperty(key)) {
 				this.upcomingExperiencesObject[key].experience.calendars.sort((a, b) => {
@@ -162,46 +162,46 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 				this.upcomingArray.push(this.upcomingExperiencesObject[key].experience);
 			}
 		}
-		
+
 		this.upcomingArray.sort((a, b) => {
 			return moment(a.calendars[0].startDate).diff(moment(b.calendars[0].startDate), 'days');
 		});
-		
-		
+
+
 		for (const key in this.liveExperiencesObject) {
 			if (this.liveExperiencesObject.hasOwnProperty(key)) {
 				this.ongoingArray.push(this.liveExperiencesObject[key].experience);
 			}
 		}
 	}
-	
+
 	public onSelect(experience) {
 		this.router.navigate(['/experience/', experience.id, 'edit', experience.stage ? experience.stage : 1]);
 	}
-	
+
 	public createExperience() {
 		this._collectionService.postCollection(this.userId, 'experience').subscribe((experienceObject: any) => {
 			this.router.navigate(['experience', experienceObject.id, 'edit', 1]);
 		});
 	}
-	
+
 	/**
 	 * compareCalendars
 	 */
 	public compareCalendars(a, b) {
 		return moment(a.startDate).diff(moment(b.startDate), 'days');
 	}
-	
+
 	public openCohortDetailDialog(cohortData: any, status) {
 		cohortData['status'] = status;
 		const dialogRef = this.dialog.open(CohortDetailDialogComponent, {
 			width: '45vw',
 			data: cohortData,
 			panelClass: 'responsive-dialog',
-			
+
 		});
 	}
-	
+
 	public deleteCollection(collection: any) {
 		this._dialogService.openDeleteCollection(collection).subscribe(result => {
 			if (result) {
@@ -212,7 +212,7 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	/**
 	 * cancelCollection
 	 collection:any     */
@@ -226,5 +226,5 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 			}
 		});
 	}
-	
+
 }

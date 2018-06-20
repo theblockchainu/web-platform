@@ -49,6 +49,7 @@ import { AddViewerDialogComponent } from './add-viewer-dialog/add-viewer-dialog.
 import { GyanPromptComponent } from './gyan-prompt/gyan-prompt.component';
 import { AddCommunityDialogComponent } from './add-community-dialog/add-community-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
+import { CreateAccreditationDialogComponent } from './create-accreditation-dialog/create-accreditation-dialog.component';
 @Injectable()
 export class DialogsService {
 
@@ -572,6 +573,15 @@ export class DialogsService {
             panelClass: 'responsive-dialog',
             width: '45vw',
             height: '100vh'
+        }).afterClosed();
+    }
+
+    public createAccreditationDialog(data?: any) {
+        return this.dialog.open(CreateAccreditationDialogComponent, {
+            panelClass: 'responsive-dialog',
+            width: '55vw',
+            height: '56vh',
+            data: data ? data : {}
         }).afterClosed();
     }
 }

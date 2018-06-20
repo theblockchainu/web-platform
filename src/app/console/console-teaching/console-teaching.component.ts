@@ -6,15 +6,17 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 
 import { ConsoleComponent } from '../console.component';
-import {ProfileService} from "../../_services/profile/profile.service";
-
+import { ProfileService } from '../../_services/profile/profile.service';
+import { Subject } from 'rxjs/Subject'
 declare var moment: any;
+
 @Component({
     selector: 'app-console-teaching',
     templateUrl: './console-teaching.component.html',
     styleUrls: ['./console-teaching.component.scss', '../console.component.scss']
 })
 export class ConsoleTeachingComponent implements OnInit {
+    public accreditationSubject = new Subject<any>();
 
     public classes: any;
     public loaded: boolean;
@@ -31,7 +33,8 @@ export class ConsoleTeachingComponent implements OnInit {
         private _cookieUtilsService: CookieUtilsService,
         private _profileService: ProfileService,
         public consoleComponent: ConsoleComponent,
-        private dialogsService: DialogsService) {
+        private dialogsService: DialogsService,
+    ) {
         activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
             console.log(urlSegment[0].path);
             consoleComponent.setActiveTab(urlSegment[0].path);
@@ -46,19 +49,19 @@ export class ConsoleTeachingComponent implements OnInit {
         this.accountVerified = (this._cookieUtilsService.getValue('accountApproved') === 'true');
         this.getSessions();
         this._profileService.getProfileData(this.userId, {}).subscribe(res => {
-        	this.profile = res[0];
-		});
+            this.profile = res[0];
+        });
     }
 
     public getSessions() {
         const option = {
-			where: {type: 'session'}
+            where: { type: 'session' }
         };
         this._collectionService.getOwnedCollections(this.userId, JSON.stringify(option), (err, res) => {
-			if (res && res.length > 0) {
-				this.session = res[0];
-			}
-		});
+            if (res && res.length > 0) {
+                this.session = res[0];
+            }
+        });
     }
 
     /**
@@ -83,10 +86,10 @@ export class ConsoleTeachingComponent implements OnInit {
      * createSessions
      */
     public enableSessions() {
-    	const body = {
-    		type: 'session',
-			title: (this.profile) ? this.profile.first_name + ' ' + this.profile.last_name : 'Peerbuds User'
-		};
+        const body = {
+            type: 'session',
+            title: (this.profile) ? this.profile.first_name + ' ' + this.profile.last_name : 'Peerbuds User'
+        };
         this._collectionService.postCollectionWithData(this.userId, body).subscribe((sessionObject: any) => {
             this.router.navigate(['session', sessionObject.id, 'edit', 1]);
         });
@@ -114,7 +117,7 @@ export class ConsoleTeachingComponent implements OnInit {
      */
     public showRateStudentsPopup(collection) {
         // Show popup here
-        const query = {'relInclude': 'calendarId', 'include': ['profiles', 'reviewsAboutYou']};
+        const query = { 'relInclude': 'calendarId', 'include': ['profiles', 'reviewsAboutYou'] };
         this._collectionService.getParticipants(collection.id, query).subscribe(
             result => {
                 const participants = result;
@@ -122,7 +125,7 @@ export class ConsoleTeachingComponent implements OnInit {
                 data.participants = participants;
                 this.dialogsService.rateParticipant(data)
                     .subscribe();
-        },
+            },
             err => {
                 console.log('Could not fetch participants of this collection');
             });
@@ -195,6 +198,12 @@ export class ConsoleTeachingComponent implements OnInit {
 
     public editSessions() {
         this.router.navigateByUrl('/session/' + this.session.id + '/edit/' + 1);
+    }
+
+    public createAccreditation() {
+        this.dialogsService.createAccreditationDialog().subscribe(res => {
+            this.accreditationSubject.next(true)
+        });
     }
 
 }
