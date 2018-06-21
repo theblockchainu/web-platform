@@ -25,5 +25,19 @@
 .disabled {
 	cursor: not-allowed !important;
 	pointer-events: none !important;
-	color: lightgray !important;
+}
+
+.card-button{
+	height: 250px; 
+	text-align: left;
+	background-size: cover !important; 
+	color: #fff;
+}
+
+.pending-actions{
+	background-color: #eeeeee;
+	color: #333;
+	padding: 12px 0px;
+	font-size: 14px;
+	border-bottom: 1px solid #dddddd;
 }
