@@ -841,4 +841,8 @@ export class ProfileService {
 	public getAccreditationsCreated(peerId: string, filter: any) {
 		return this.http.get(environment.apiUrl + '/api/peers/' + peerId + '/accreditationsCreated?filter=' + JSON.stringify(filter), this._requestHeaderService.options);
 	}
+
+	public getAccreditationsSubscribed(peerId: string, filter: any) {
+		return this.http.get(environment.apiUrl + '/api/peers/' + peerId + '/accreditationsSubscribed?filter=' + JSON.stringify(filter), this._requestHeaderService.options);
+	}
 }

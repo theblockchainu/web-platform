@@ -7,7 +7,7 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 
 import { ConsoleComponent } from '../console.component';
 import { ProfileService } from '../../_services/profile/profile.service';
-import { Subject } from 'rxjs/Subject'
+import { Subject } from 'rxjs/Subject';
 declare var moment: any;
 
 @Component({
@@ -202,7 +202,7 @@ export class ConsoleTeachingComponent implements OnInit {
 
     public createAccreditation() {
         this.dialogsService.createAccreditationDialog().subscribe(res => {
-            this.accreditationSubject.next(true)
+            this.accreditationSubject.next(true);
         });
     }
 
