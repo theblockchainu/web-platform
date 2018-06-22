@@ -31,7 +31,14 @@
 	height: 250px; 
 	text-align: left;
 	background-size: cover !important; 
-	color: #fff;
+}
+
+.card-button .mat-subheading-1{
+	color: #ffffff !important;
+}
+
+.card-button .lightText{
+	color: #dddddd !important;
 }
 
 .pending-actions{
