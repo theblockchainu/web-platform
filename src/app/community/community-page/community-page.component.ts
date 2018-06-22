@@ -35,7 +35,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Meta, Title } from '@angular/platform-browser';
-import {UcWordsPipe} from 'ngx-pipes';
+import { UcWordsPipe } from 'ngx-pipes';
 
 declare var FB: any;
 
@@ -72,53 +72,43 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	public userType;
 	public totalDuration: string;
 	public userRating: number;
-	public newUserRating = 0;
-	public busyQuestion = false;
-	public busyAnswer = false;
-	public initialLoad = true;
 	public loggedInUser;
-	public noOfQuestions = 3;
-	private initialised = false;
 	public bookmarks;
-	public hasBookmarked = false;
 	public answeringToQuestionId: string;
 	public community: any;
 	public questionForm: FormGroup;
 	public topicFix: any;
 	public participants: Array<any>;
-	public isRatingReceived = false;
-	public maxLength = 140;
 	public answerForm: FormGroup;
-	public recommendations = {
-		communities: []
-	};
 	public result;
 	public questions: Array<any>;
 	private today = moment();
 	public toOpenDialogName;
 	objectKeys = Object.keys;
 
-	public questionMapping: { [k: string]: string } = {
-		'=0': 'No Questions',
-		'=1': 'One question',
-		'other': '# questions'
-	};
-
-	public viewDate: Date = new Date();
-
-	refresh: Subject<any> = new Subject();
-
-	events: CalendarEvent[] = [];
-
-	public loadingQuestions = true;
-	public loadingParticipants = true;
-	public loadingCommunity = true;
-	public accountApproved = 'false';
+	public loadingQuestions: boolean;
+	public loadingParticipants: boolean;
+	public loadingCommunity: boolean;
+	public accountApproved: string;
 	public carouselImages: Array<string>;
 	public activeTab: string;
-	public searchControl = new FormControl('');
+	public searchControl: FormControl;
 	public searchResults: any[];
 	public carouselBanner: any;
+	public newUserRating: number;
+	public busyQuestion: boolean;
+	public busyAnswer: boolean;
+	public initialLoad: boolean;
+	public noOfQuestions: number;
+	private initialized: boolean;
+	public hasBookmarked: boolean;
+	public isRatingReceived: boolean;
+	public maxLength: number;
+	public recommendations: any;
+	public questionMapping: { [k: string]: string };
+	public viewDate: Date;
+	refresh: Subject<any>;
+	events: CalendarEvent[];
 
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -141,20 +131,21 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
-			if (this.initialised && this.communityId !== params['communityId']) {
+			if (this.initialized && this.communityId !== params['communityId']) {
 				location.reload();
 			}
 			this.communityId = params['communityId'];
 			this.toOpenDialogName = params['dialogName'];
 		});
-		this.userId = _cookieUtilsService.getValue('userId');
-		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
 	}
 
 	ngOnInit() {
-		this.initialised = true;
+		this.initializePage();
+	}
+
+	private initializePage() {
+		this.initializeVariables();
 		this.initializeCommunity();
-		this.initialLoad = false;
 		this.searchControl.valueChanges.subscribe((value) => {
 			this._searchService.getCommunitySearchResults(this.userId, value, (err, result) => {
 				if (!err) {
@@ -164,6 +155,36 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 				}
 			});
 		});
+	}
+
+	private initializeVariables() {
+		this.loadingCommunity = true;
+		this.initialLoad = false;
+		this.loadingQuestions = true;
+		this.loadingParticipants = true;
+		this.accountApproved = 'false';
+		this.searchControl = new FormControl('');
+		this.newUserRating = 0;
+		this.busyQuestion = false;
+		this.busyAnswer = false;
+		this.initialLoad = true;
+		this.noOfQuestions = 3;
+		this.initialized = false;
+		this.hasBookmarked = false;
+		this.isRatingReceived = false;
+		this.maxLength = 140;
+		this.recommendations = {
+			communities: []
+		};
+		this.questionMapping = {
+			'=0': 'No Questions',
+			'=1': 'One question',
+			'other': '# questions'
+		};
+		this.viewDate = new Date();
+		this.refresh = new Subject();
+		this.events = [];
+		this.initialized = true;
 		this.carouselBanner = {
 			grid: { xs: 1, sm: 1, md: 1, lg: 1, all: 0 },
 			slide: 1,
@@ -176,6 +197,8 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 			loop: true,
 			touch: true
 		};
+		this.userId = this._cookieUtilsService.getValue('userId');
+		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
 	}
 
 	ngAfterViewChecked(): void {
@@ -187,6 +210,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 
 
 	private initializeUserType() {
+		delete this.userType;
 		if (this.community) {
 			for (const owner of this.community.owners) {
 				if (owner.id === this.userId) {
@@ -203,9 +227,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 					}
 				}
 			}
-
 			this.loadingCommunity = false;
-
 		}
 	}
 
@@ -315,9 +337,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	 */
 	public dropOutCommunity() {
 		this.dialogsService.openExitCommunity(this.communityId, this.userId).subscribe((response) => {
-			if (response) {
-				this.router.navigate(['community', this.communityId]);
-			}
+			this.initializePage();
 		});
 	}
 
@@ -359,7 +379,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 			if (err) {
 				console.log(err);
 			} else {
-				this.initializeCommunity();
+				this.initializePage();
 				this.snackBar.open('Thanks for joining the community. Ask questions or share your' +
 					' find partners for your learning journey.', 'Close', {
 						duration: 5000
