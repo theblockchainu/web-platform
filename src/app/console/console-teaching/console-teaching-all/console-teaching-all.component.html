@@ -9,7 +9,7 @@
 	<div class="col-md-12" *ngIf="loaded">
 		<div class="row pending-actions center" *ngIf="!accountVerified">
 			<div class="col-md-10 col-md-offset-1">
-				<span>Your Account is pending approval from peerbuds team</span>
+				<span class="lightText" style="color:#ffff">Your Account is pending approval from peerbuds team</span>
 			</div>
 		</div>
 		<div #noContentView *ngIf="ongoingArray.length === 0 && upcomingArray.length===0 && drafts.length === 0 && pastArray.length === 0"
@@ -21,74 +21,84 @@
 			</div>
 			<div class="row">
 				<div class="col-md-4 padding-top-20">
-					<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createExperience()" class="pb-block clickable card-button"
-					 style="background: url('/assets/images/experiences_icon.jpeg');	">
-						<div style="position: absolute; bottom: 0; padding: 10px 15px; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
-							<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create an Experience</span>
-							&emsp;
-							<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
-							<br/>
-							<span class="mat-caption lightText">Explore classes, experiences and communities</span>
-						</div>
-					</button>
+					<span matTooltip="Your Account is pending approval from peerbuds team." [matTooltipDisabled]="accountVerified">
+						<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createExperience()" class="pb-block clickable card-button"
+						 style="background: url('/assets/images/experiences_icon.jpeg');	">
+							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create an Experience</span>
+								&emsp;
+								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
+								<br/>
+								<span class="mat-caption lightText">Create an in-person experience</span>
+							</div>
+						</button>
+					</span>
 				</div>
 				<div class="col-md-4 padding-top-20">
-					<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createClass()" class="pb-block clickable card-button"
-					 style="background: url('/assets/images/class_icon2.jpg');">
-						<div style="position: absolute; bottom: 0; padding: 10px 15px; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
-							<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Class</span>
-							&emsp;
-							<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
-							<br/>
-							<span class="mat-caption lightText">Explore classes, experiences and communities</span>
-						</div>
-					</button>
+					<span matTooltip="Your Account is pending approval from peerbuds team." [matTooltipDisabled]="accountVerified">
+						<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createClass()" class="pb-block clickable card-button"
+						 style="background: url('/assets/images/class_icon2.jpg');">
+							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Class</span>
+								&emsp;
+								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
+								<br/>
+								<span class="mat-caption lightText">Create an online course</span>
+							</div>
+						</button>
+					</span>
 				</div>
 				<div class="col-md-4 padding-top-20">
-					<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="editSessions()" class="pb-block clickable card-button"
-					 style="background: url('/assets/images/session_img.jpg');">
-						<div style="position: absolute; bottom: 0; padding: 10px 15px; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
-							<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">
-								<span *ngIf="session === undefined">
-									Enable Peer Sessions
+					<span matTooltip="Your Account is pending approval from peerbuds team." [matTooltipDisabled]="accountVerified">
+						<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="editSessions()" class="pb-block clickable card-button"
+						 style="background: url('/assets/images/session_img.jpg');">
+							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">
+									<span *ngIf="session === undefined">
+										Enable Peer Sessions
+									</span>
+									<span *ngIf="session && session.status === 'draft'">
+										Continue Session Setup
+									</span>
+									<span *ngIf="session && session.status === 'active'">
+										Edit Session Preferences
+									</span>
 								</span>
-								<span *ngIf="session && session.status === 'draft'">
-									Continue Session Setup
-								</span>
-								<span *ngIf="session && session.status === 'active'">
-									Edit Session Preferences
-								</span>
-							</span>
-							&emsp;
-							<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
-							<br/>
-							<span class="mat-caption lightText">Explore classes, experiences and communities</span>
-						</div>
-					</button>
+								&emsp;
+								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
+								<br/>
+								<span class="mat-caption lightText">Enable live sessions</span>
+							</div>
+						</button>
+					</span>
 				</div>
 				<div class="col-md-4 padding-top-20">
-					<button mat-button mat-raised-button [disabled]="!accountVerified" [routerLink]="'/console/account/scholarships'" class="pb-block clickable card-button"
-					 style="background: url('/assets/images/scholarship_img.jpg');">
-						<div style="position: absolute; bottom: 0; padding: 10px 15px; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
-							<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Scholarship</span>
-							&emsp;
-							<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
-							<br/>
-							<span class="mat-caption lightText">Explore classes, experiences and communities</span>
-						</div>
-					</button>
+					<span matTooltip="Your Account is pending approval from peerbuds team." [matTooltipDisabled]="accountVerified">
+						<button mat-button mat-raised-button [disabled]="!accountVerified" [routerLink]="'/console/account/scholarships'" class="pb-block clickable card-button"
+						 style="background: url('/assets/images/scholarship_img.jpg');">
+							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Scholarship</span>
+								&emsp;
+								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
+								<br/>
+								<span class="mat-caption lightText">Create scholarships for students</span>
+							</div>
+						</button>
+					</span>
 				</div>
 				<div class="col-md-4 padding-top-20">
-					<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createAccreditation()" class="pb-block clickable card-button"
-					 style="background: url('/assets/images/accreditation_img.jpg');">
-						<div style="position: absolute; bottom: 0; padding: 10px 15px; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
-							<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create an Accreditation</span>
-							&emsp;
-							<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
-							<br/>
-							<span class="mat-caption lightText">Explore classes, experiences and communities</span>
-						</div>
-					</button>
+					<span matTooltip="Your Account is pending approval from peerbuds team." [matTooltipDisabled]="accountVerified">
+						<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createAccreditation()" class="pb-block clickable card-button"
+						 style="background: url('/assets/images/accreditation_img.jpg');">
+							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create an Accreditation</span>
+								&emsp;
+								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
+								<br/>
+								<span class="mat-caption lightText">Create accreditations for teachers</span>
+							</div>
+						</button>
+					</span>
 				</div>
 			</div>
 		</div>

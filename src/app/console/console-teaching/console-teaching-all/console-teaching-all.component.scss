@@ -42,9 +42,17 @@
 }
 
 .pending-actions{
-	background-color: #eeeeee;
-	color: #333;
+	background-color: #FF6D71;
 	padding: 12px 0px;
 	font-size: 14px;
 	border-bottom: 1px solid #dddddd;
+}
+
+.card-button[disabled]{
+	background-color: grey !important;
+    background-blend-mode: lighten;
+}
+
+.fa-arrow-right{
+	color: #ffffff !important;
 }
