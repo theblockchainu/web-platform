@@ -13,7 +13,8 @@
 			</div>
 			<div class="col-xs-12 margin-top-10">
 				<mat-form-field class="pb-block">
-					<textarea style="height:13vh" matInput placeholder="Describe this community" formControlName="description"></textarea>
+					<textarea style="height:13vh" matInput placeholder="Describe this community" #description maxlength="2000" formControlName="description"></textarea>
+					<mat-hint align="end">{{description.value.length}}/2000</mat-hint>
 				</mat-form-field>
 			</div>
 			<div class="col-xs-12 margin-top-10">

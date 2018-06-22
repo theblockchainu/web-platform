@@ -12,10 +12,11 @@
 			<span *ngIf="data.submission.upvotes === undefined">0</span>
 		</span>
 		<button class="pull-right mat-border-button" mat-button (click)="editSubmission()" *ngIf="data.userType==='participant' && isMySubmission"
-		        tabindex="-1">Edit</button>
+		 tabindex="-1">Edit</button>
 		<div class="pull-right" *ngIf="!isMySubmission">
 			<div class="position-relative" *ngIf="data.submission.peer && data.submission.peer.length>0">
-				<img class="circle-thumb" src="{{data.submission.peer[0].profiles[0].picture_url}}/100" alt="thumb" (error)="_collectionService.imgErrorHandler($event)"/>
+				<img class="circle-thumb" src="{{data.submission.peer[0].profiles[0].picture_url}}/100" alt="thumb" (error)="_collectionService.imgErrorHandler($event)"
+				/>
 				<div style="display: inline-block; position: relative; top: 11px;">
 					{{data.submission.peer[0].profiles[0].first_name | ucwords}} {{data.submission.peer[0].profiles[0].last_name | ucwords}}
 					<br>
@@ -26,7 +27,8 @@
 	</div>
 	<hr>
 	<div class="content-image" *ngIf="data.submission.picture_url">
-		<img class="img-responsive media-middle" style="width: 100%" src="{{envVariable.apiUrl+data.submission.picture_url.split(',')[0]}}/500" alt="image" (error)="_collectionService.imgErrorHandler($event)">
+		<img class="img-responsive media-middle" style="width: 100%" src="{{envVariable.apiUrl+data.submission.picture_url.split(',')[0]}}/500"
+		 alt="image" (error)="_collectionService.imgErrorHandler($event)">
 	</div>
 	<div class="default-image" *ngIf="!data.submission.picture_url">
 		<i class="fa fa-picture-o"></i>
@@ -51,7 +53,9 @@
 			</div>
 			<form [formGroup]="chatForm" (ngSubmit)="postComment()">
 				<mat-form-field [floatLabel]="'always'" class="full-width margin-top-10">
-					<input matInput type="text" formControlName="description" placeholder="Post your thoughts on this project submission" tabindex="-1">
+					<input matInput type="text" #description1 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this project submission"
+					 tabindex="-1">
+					<mat-hint align="end">{{description1.value.length}}/2000</mat-hint>
 				</mat-form-field>
 				<span matTooltip="Invalid Input!" [matTooltipDisabled]="chatForm.valid">
 					<button mat-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right" tabindex="-1">Post</button>
@@ -78,7 +82,7 @@
 						<div class="row" *ngIf="!editCommentForm || (editCommentForm && editCommentForm.value['id']!==comment.id)">
 							<div class="col-md-12">
 								<button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuComment" style="float: right; margin-right: 15px; margin-top: 15px;"
-								        tabindex="-1">
+								 tabindex="-1">
 									<mat-icon style="color: #cccccc">more_vert</mat-icon>
 								</button>
 								<mat-menu #menuComment="matMenu">
@@ -119,21 +123,24 @@
 									<form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
 										<img src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
 										<mat-form-field [floatLabel]="'always'" style="margin-left: 15px; width: 88%;">
-											<input matInput type="text" formControlName="description" placeholder="Reply to above comment..." tabindex="-1">
+											<input matInput type="text" #description2 maxlength="2000" formControlName="description" placeholder="Reply to above comment..."
+											 tabindex="-1">
+											<mat-hint align="end">{{description2.value.length}}/2000</mat-hint>
 										</mat-form-field>
 										<span matTooltip="Invalid Input!" [matTooltipDisabled]="replyForm.valid">
 											<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary" tabindex="-1">Post</button>
 										</span>
 									</form>
 								</div>
-							
+
 							</div>
 						</div>
 						<div class="row" *ngIf="editCommentForm && editCommentForm.value['id']===comment.id">
 							<div class="col-md-12">
 								<form [formGroup]="editCommentForm" (ngSubmit)="updateComment()">
 									<mat-form-field class="full-width margin-top-10">
-										<input matInput type="text" formControlName="description" placeholder="Post your thoughts on this experience">
+										<input matInput type="text" #description3 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this experience">
+										<mat-hint align="end">{{description3.value.length}}/2000</mat-hint>
 									</mat-form-field>
 									<button mat-raised-button color="primary" [disabled]="!editCommentForm.valid" class="pull-right">
 										Update
@@ -147,7 +154,7 @@
 									<div class="row" *ngIf="!editReplyForm || (editReplyForm && editReplyForm.value['id']!==reply.id)">
 										<div class="col-md-12">
 											<button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuReply" style="float: right; margin-right: 15px; margin-top: 15px;"
-											        tabindex="-1">
+											 tabindex="-1">
 												<mat-icon style="color: #cccccc;">more_vert</mat-icon>
 											</button>
 											<mat-menu #menuReply="matMenu">
@@ -165,7 +172,7 @@
 												</button>
 											</mat-menu>
 											<div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px;"
-											     [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
+											 [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
 												<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
 												<mat-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</mat-icon>
 												<div>
@@ -197,11 +204,12 @@
 										<form [formGroup]="editReplyForm" (ngSubmit)="updateReply()">
 											<img src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb margin-top-5">
 											<mat-form-field style="margin-left: 15px; width: 88%;">
-												<input matInput type="text" formControlName="description" placeholder="Reply to above comment...">
+												<input matInput type="text" #description4 maxlength="2000" formControlName="description" placeholder="Reply to above comment...">
+												<mat-hint align="end">{{description4.value.length}}/2000</mat-hint>
 											</mat-form-field>
 											<button [disabled]="!editReplyForm.valid" mat-raised-button class="pull-right" color="primary">
-												<span *ngIf="!busyReply">update</span>
-												<ngx-loading [show]="busyReply"></ngx-loading>
+												<!-- <span *ngIf="!busyReply">update</span>
+												<ngx-loading [show]="busyReply"></ngx-loading> -->
 											</button>
 										</form>
 									</div>

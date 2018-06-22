@@ -19,10 +19,11 @@
 					</div>
 					<div class="col-xs-12 margin-top-10">
 						<mat-form-field class="pb-block">
-							<textarea matInput placeholder="Description" formControlName="description"></textarea>
+							<textarea matInput placeholder="Description" #description maxlength="2000" formControlName="description"></textarea>
 							<mat-hint align="start">
 								<strong>Describe this scholarship</strong>
 							</mat-hint>
+							<mat-hint align="end">{{description.value.length}}/2000</mat-hint>
 						</mat-form-field>
 					</div>
 					<div class="col-xs-6 margin-top-10">

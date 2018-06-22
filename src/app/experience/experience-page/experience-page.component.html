@@ -75,31 +75,34 @@
 						<div class="row">
 							<div class="col-md-12">
 								<a class="clickable margin-bottom-10" *ngIf="calendarId && userType !== 'participant'" (click)="backToCollection(experience)">
-									< Back to experience page
-								</a>
-								<p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title | titlecase}}
-									<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
-									<span *ngIf="!checkingEthereum && isOnEthereum" matTooltip="Verified on Peerbuds Blockchain">&emsp;<i class="fa fa-globe lightText" style="color: #ff6d71; font-size: 14px;"></i></span>
-									<span *ngIf="!checkingEthereum && !isOnEthereum" matTooltip="Add to Peerbuds Blockchain" (click)="addToEthereum()" class="clickable">&emsp;<i class="fa fa-plus lightText" style="font-size: 14px;"></i></span>
-								</p>
-								<div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
-									<span *ngIf="currentCalendar">
-										<b>{{currentCalendar.startDate | date:'d MMM'}} to {{currentCalendar.endDate| date:'d MMM'}}</b> &nbsp;&nbsp;&nbsp;
-										<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
-									</span>
-									<span> {{totalDuration | i18nPlural : hourMapping}} {{experience.type}} &nbsp;&nbsp;&nbsp;
-										<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
-									<span *ngIf="userType==='teacher'">
-										<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.calendars.length | i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;</span>
-									<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
-										<mat-icon style="top: 5px;">date_range</mat-icon> Change cohort </a>
-									<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()">
-										<mat-icon style="top: 5px;">date_range</mat-icon> Select cohort to view participants </a>
-								</div>
-								<div *ngIf="userType==='public'" style="margin-top: -12px;">
-									<span>{{itenaryArray.length | i18nPlural : dayMapping}} / {{totalDuration | i18nPlural : hourMapping}} &nbsp;&nbsp;&nbsp;
-										<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}}</span>
-								</div>
+									< Back to experience page </a>
+										<p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title | titlecase}}
+											<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
+											<span *ngIf="!checkingEthereum && isOnEthereum" matTooltip="Verified on Peerbuds Blockchain">&emsp;
+												<i class="fa fa-globe lightText" style="color: #ff6d71; font-size: 14px;"></i>
+											</span>
+											<span *ngIf="!checkingEthereum && !isOnEthereum" matTooltip="Add to Peerbuds Blockchain" (click)="addToEthereum()" class="clickable">&emsp;
+												<i class="fa fa-plus lightText" style="font-size: 14px;"></i>
+											</span>
+										</p>
+										<div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
+											<span *ngIf="currentCalendar">
+												<b>{{currentCalendar.startDate | date:'d MMM'}} to {{currentCalendar.endDate| date:'d MMM'}}</b> &nbsp;&nbsp;&nbsp;
+												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
+											</span>
+											<span> {{totalDuration | i18nPlural : hourMapping}} {{experience.type}} &nbsp;&nbsp;&nbsp;
+												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
+											<span *ngIf="userType==='teacher'">
+												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.calendars.length | i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;</span>
+											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
+												<mat-icon style="top: 5px;">date_range</mat-icon> Change cohort </a>
+											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()">
+												<mat-icon style="top: 5px;">date_range</mat-icon> Select cohort to view participants </a>
+										</div>
+										<div *ngIf="userType==='public'" style="margin-top: -12px;">
+											<span>{{itenaryArray.length | i18nPlural : dayMapping}} / {{totalDuration | i18nPlural : hourMapping}} &nbsp;&nbsp;&nbsp;
+												<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}}</span>
+										</div>
 							</div>
 						</div>
 					</div>
@@ -358,7 +361,8 @@
 								<h3 *ngIf="comments === undefined">Discussion (0)</h3>
 								<form [formGroup]="chatForm" (ngSubmit)="postComment()">
 									<mat-form-field class="full-width margin-top-10">
-										<input matInput type="text" formControlName="description" placeholder="Post your thoughts on this experience">
+										<input matInput type="text" #description1 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this experience">
+										<mat-hint align="end">{{description1.value.length}} / 2000</mat-hint>
 									</mat-form-field>
 									<mat-checkbox [formControlName]="'isAnnouncement'" *ngIf="userType==='teacher'">Make Announcement</mat-checkbox>
 									<button mat-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right">
@@ -456,7 +460,8 @@
 													<form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
 														<img src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb margin-top-5">
 														<mat-form-field style="margin-left: 15px; width: 88%;">
-															<input matInput type="text" formControlName="description" placeholder="Reply to above comment...">
+															<input matInput type="text" #description2 maxlength="2000" formControlName="description" placeholder="Reply to above comment...">
+															<mat-hint align="end">{{description2.value.length}} / 2000</mat-hint>
 														</mat-form-field>
 														<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary">
 															<span *ngIf="!busyReply">Post</span>
@@ -469,7 +474,8 @@
 												<div class="col-md-12">
 													<form [formGroup]="editCommentForm" (ngSubmit)="updateComment()">
 														<mat-form-field class="full-width margin-top-10">
-															<input matInput type="text" formControlName="description" placeholder="Post your thoughts on this experience">
+															<input matInput type="text" #description3 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this experience">
+															<mat-hint align="end">{{description3.value.length}} / 2000</mat-hint>
 														</mat-form-field>
 														<mat-checkbox [formControlName]="'isAnnouncement'" *ngIf="userType==='teacher'">Make Announcement</mat-checkbox>
 														<button mat-raised-button color="primary" [disabled]="!editCommentForm.valid" class="pull-right">
@@ -536,7 +542,8 @@
 															<form [formGroup]="editReplyForm" (ngSubmit)="updateReply()">
 																<img src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb margin-top-5">
 																<mat-form-field style="margin-left: 15px; width: 88%;">
-																	<input matInput type="text" formControlName="description" placeholder="Reply to above comment...">
+																	<input matInput type="text" #description4 maxlength="2000" formControlName="description" placeholder="Reply to above comment...">
+																	<mat-hint align="end">{{description4.value.length}} / 2000</mat-hint>
 																</mat-form-field>
 																<button [disabled]="!editReplyForm.valid" mat-raised-button class="pull-right" color="primary">
 																	<span *ngIf="!busyReply">update</span>
@@ -577,7 +584,8 @@
 									<div class="col-md-12">
 										<form [formGroup]="reviewForm" (ngSubmit)="postReview()">
 											<mat-form-field class="full-width">
-												<input matInput formControlName="description" placeholder="Describe your experience with this experience">
+												<input matInput #description5 maxlength="2000" formControlName="description" placeholder="Describe your experience with this experience">
+												<mat-hint align="end">{{description5.value.length}} / 2000</mat-hint>
 											</mat-form-field>
 											<span matTooltip="Have you given a star rating for this review?" [matTooltipDisabled]="isRatingReceived" class="pull-right">
 												<button [disabled]="!isRatingReceived || !reviewForm.valid" mat-raised-button color="primary">
@@ -654,7 +662,8 @@
 															<p-rating style="display: inline-flex;" [(ngModel)]="newUserRating" (onRate)="updateRating($event)" [cancel]="false"></p-rating>
 															<form [formGroup]="editReviewForm" (ngSubmit)="updateReview()">
 																<mat-form-field class="full-width">
-																	<input matInput formControlName="description" placeholder="Review this experience">
+																	<input matInput #description6 maxlength="2000" formControlName="description" placeholder="Review this experience">
+																	<mat-hint align="end">{{description6.value.length}} / 2000</mat-hint>
 																</mat-form-field>
 																<button [disabled]="!editReviewForm.valid" mat-raised-button color="primary">
 																	<span *ngIf="!busyReview">Submit</span>

@@ -6,6 +6,10 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { environment } from '../../../environments/environment';
 import { MatSnackBar } from '@angular/material';
 import { ProfileService } from '../../_services/profile/profile.service';
+import { CollectionService } from '../../_services/collection/collection.service';
+import { Title, Meta } from '@angular/platform-browser';
+import { UcWordsPipe } from 'ngx-pipes';
+
 declare var FB: any;
 
 @Component({
@@ -25,6 +29,7 @@ export class AccreditationPageComponent implements OnInit {
   eligibilityReason: string;
   userGyan: number;
   accountApproved: string;
+  envVariable: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -33,7 +38,11 @@ export class AccreditationPageComponent implements OnInit {
     private router: Router,
     private dialogsService: DialogsService,
     private matSnackBar: MatSnackBar,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    public collectionService: CollectionService,
+    private titleService: Title,
+    private metaService: Meta,
+    private ucwords: UcWordsPipe
   ) {
   }
 
@@ -48,6 +57,7 @@ export class AccreditationPageComponent implements OnInit {
     this.initialised = true;
     this.initializePage();
     this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
+    this.envVariable = environment;
   }
 
   initializePage() {
@@ -65,6 +75,7 @@ export class AccreditationPageComponent implements OnInit {
       .subscribe((res: any) => {
         this.accreditation = res;
         console.log(this.accreditation);
+        this.setTags();
         for (let index = 0; (!this.joined && !this.isOwner && index < this.accreditation.subscribedBy.length); index++) {
           const peer = this.accreditation.subscribedBy[index];
           if (peer.id === this.userId) {
@@ -162,6 +173,7 @@ export class AccreditationPageComponent implements OnInit {
   removeSubscriber(subscriberId: string) {
     this._accreditationService.leaveAccreditation(subscriberId, this.accreditationId).subscribe(res => {
       this.matSnackBar.open('Removed from Accreditation', 'Close', { duration: 3000 });
+      this.initializePage();
     });
   }
 
@@ -171,4 +183,25 @@ export class AccreditationPageComponent implements OnInit {
       this.initializePage();
     });
   }
+
+  private setTags() {
+    this.titleService.setTitle(this.ucwords.transform('Accreditation: ' + this.accreditation.title));
+    this.metaService.updateTag({
+      property: 'og:title',
+      content: this.accreditation.title
+    });
+    this.metaService.updateTag({
+      property: 'og:description',
+      content: this.accreditation.description
+    });
+    this.metaService.updateTag({
+      property: 'og:site_name',
+      content: 'peerbuds.com'
+    });
+    this.metaService.updateTag({
+      property: 'og:url',
+      content: environment.clientUrl + this.router.url
+    });
+  }
+
 }
