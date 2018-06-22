@@ -79,7 +79,7 @@
                 </div>
               </div>
               <div class="col-xs-12 col-md-6">
-                <div class="stepHeader margin-top-20">Upload an image for your cover</div>
+                <div class="stepHeader margin-top-20">Upload a video for your Community</div>
                 <p-fileUpload *ngIf="!uploadingVideo" #fubauto name="video" accept="video/*" customUpload="true" (uploadHandler)="uploadVideo($event)"
                   maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'video')" multiple="multiple">
                   <ng-template pTemplate="toolbar">
