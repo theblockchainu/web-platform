@@ -217,9 +217,6 @@
 	<button mat-menu-item [routerLink]="['/console/teaching/sessions']" *ngIf="!isSessionApproved">
 		<i class="fas fa-plus lighterText"></i>&nbsp;&nbsp;&nbsp; New Session
 	</button>
-	<button mat-menu-item [routerLink]="['/console/teaching/accreditations']">
-		<i class="fas fa-plus lighterText"></i>&nbsp;&nbsp;&nbsp; New Accreditations
-	</button>
 	<button mat-menu-item (click)="openGenerateStoryDialog()" *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].ethAddress">
 		<i class="fas fa-plus lighterText"></i>&nbsp;&nbsp;&nbsp; New Knowledge Story
 	</button>

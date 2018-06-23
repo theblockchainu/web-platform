@@ -48,9 +48,9 @@
 					<mat-hint align="end">{{name.value.length}}/200</mat-hint>
 				</mat-form-field>
 				<mat-form-field [floatLabel]="'auto'" class="pb-block margin-bottom-30">
-					<textarea matInput #description formControlName="description" type="text" rows="1" matTextareaAutosize placeholder="Submission Description"
+					<textarea matInput #description maxlength="2000" formControlName="description" type="text" rows="1" matTextareaAutosize placeholder="Submission Description"
 					 required></textarea>
-					<mat-hint align="end">{{description.value.length}}/1000</mat-hint>
+					<mat-hint align="end">{{description.value.length}}/2000</mat-hint>
 				</mat-form-field>
 				<div class="margin-bottom-10">
 					<div class="margin-bottom-20; font-weight: 500;">Do you wish to make your submission public?</div>

@@ -9,7 +9,7 @@ import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { CohortDetailDialogComponent } from '../console-teaching-class/cohort-detail-dialog/cohort-detail-dialog.component';
 declare var moment: any;
 import { UcFirstPipe } from 'ngx-pipes';
-
+import { ProfileService } from '../../../_services/profile/profile.service';
 @Component({
 	selector: 'app-console-teaching-all',
 	templateUrl: './console-teaching-all.component.html',
@@ -17,7 +17,7 @@ import { UcFirstPipe } from 'ngx-pipes';
 	providers: [UcFirstPipe]
 })
 export class ConsoleTeachingAllComponent implements OnInit {
-	
+
 	public collections: any;
 	public loaded: boolean;
 	public now: Date;
@@ -32,7 +32,9 @@ export class ConsoleTeachingAllComponent implements OnInit {
 	public liveCollectionsObject: any;
 	public upcomingCollectionsObject: any;
 	public accountVerified = false;
-	
+	public session: any;
+	public profile: any;
+
 	constructor(
 		public activatedRoute: ActivatedRoute,
 		public consoleTeachingComponent: ConsoleTeachingComponent,
@@ -42,7 +44,8 @@ export class ConsoleTeachingAllComponent implements OnInit {
 		private _cookieUtilsService: CookieUtilsService,
 		public dialog: MatDialog,
 		public snackBar: MatSnackBar,
-		private ucFirstPipe: UcFirstPipe
+		private ucFirstPipe: UcFirstPipe,
+		private profileService: ProfileService
 	) {
 		activatedRoute.pathFromRoot[4].url.subscribe((urlSegment) => {
 			if (urlSegment[0] === undefined) {
@@ -53,23 +56,42 @@ export class ConsoleTeachingAllComponent implements OnInit {
 		});
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.loaded = false;
 		this.fetchData();
+		this.getSessions();
 		this.accountVerified = (this._cookieUtilsService.getValue('accountApproved') === 'true');
+		this.getProfile();
 	}
-	
+
+	private getProfile() {
+		this.profileService.getProfileData(this.userId, {}).subscribe(res => {
+			this.profile = res[0];
+		});
+	}
+
+	public getSessions() {
+		const option = {
+			where: { type: 'session' }
+		};
+		this._collectionService.getOwnedCollections(this.userId, JSON.stringify(option), (err, res) => {
+			if (res && res.length > 0) {
+				this.session = res[0];
+			}
+		});
+	}
+
 	private fetchData() {
 		const query = {
 			include: [
 				'calendars',
 				'owners',
-				{'participants': ['reviewsAboutYou', 'ownedCollections', 'profiles']},
+				{ 'participants': ['reviewsAboutYou', 'ownedCollections', 'profiles'] },
 				'topics',
-				{'contents': 'schedules'}
+				{ 'contents': 'schedules' }
 			],
-			where: {type: {'neq': 'session'}}
+			where: { type: { 'neq': 'session' } }
 		};
 		this._collectionService.getOwnedCollections(this.userId,
 			JSON.stringify(query), (err, result) => {
@@ -89,7 +111,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
 				}
 			});
 	}
-	
+
 	private createOutput(data: any) {
 		const now = moment();
 		data.forEach(collection => {
@@ -123,7 +145,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
 									this.liveCollectionsObject[collection.id]['collection']['calendars'] = [calendar];
 								}
 							}
-							
+
 						} else {
 							if (collection.id in this.pastCollectionsObject) {
 								this.pastCollectionsObject[collection.id]['collection']['calendars'].push(calendar);
@@ -144,11 +166,11 @@ export class ConsoleTeachingAllComponent implements OnInit {
 				});
 			}
 		});
-		
+
 		this.drafts.sort((a, b) => {
 			return moment(b.updatedAt).diff(moment(a.updatedAt), 'days');
 		});
-		
+
 		for (const key in this.pastCollectionsObject) {
 			if (this.pastCollectionsObject.hasOwnProperty(key)) {
 				this.pastCollectionsObject[key].collection.calendars.sort((a, b) => {
@@ -157,11 +179,11 @@ export class ConsoleTeachingAllComponent implements OnInit {
 				this.pastArray.push(this.pastCollectionsObject[key].collection);
 			}
 		}
-		
+
 		this.pastArray.sort((a, b) => {
 			return moment(b.calendars[0].endDate).diff(moment(a.calendars[0].endDate), 'days');
 		});
-		
+
 		for (const key in this.upcomingCollectionsObject) {
 			if (this.upcomingCollectionsObject.hasOwnProperty(key)) {
 				this.upcomingCollectionsObject[key].collection.calendars.sort((a, b) => {
@@ -170,52 +192,52 @@ export class ConsoleTeachingAllComponent implements OnInit {
 				this.upcomingArray.push(this.upcomingCollectionsObject[key].collection);
 			}
 		}
-		
+
 		this.upcomingArray.sort((a, b) => {
 			return moment(a.calendars[0].startDate).diff(moment(b.calendars[0].startDate), 'days');
 		});
-		
-		
+
+
 		for (const key in this.liveCollectionsObject) {
 			if (this.liveCollectionsObject.hasOwnProperty(key)) {
 				this.ongoingArray.push(this.liveCollectionsObject[key].collection);
 			}
 		}
 	}
-	
+
 	public onSelect(collection) {
 		this.router.navigate([collection.type, collection.id, 'edit', collection.stage && collection.stage.length > 0 ? collection.stage : 1]);
 	}
-	
+
 	/**
 	 * compareCalendars
 	 */
 	public compareCalendars(a, b) {
 		return moment(a.startDate).diff(moment(b.startDate), 'days');
 	}
-	
+
 	public openCohortDetailDialog(cohortData: any, status) {
 		cohortData['status'] = status;
 		const dialogRef = this.dialog.open(CohortDetailDialogComponent, {
 			width: '45vw',
 			data: cohortData,
 			panelClass: 'responsive-dialog',
-			
+
 		});
 	}
-	
+
 	public createClass() {
 		this._collectionService.postCollection(this.userId, 'class').subscribe((classObject: any) => {
 			this.router.navigate(['class', classObject.id, 'edit', 1]);
 		});
 	}
-	
+
 	public createExperience() {
 		this._collectionService.postCollection(this.userId, 'experience').subscribe((experienceObject: any) => {
 			this.router.navigate(['experience', experienceObject.id, 'edit', 1]);
 		});
 	}
-	
+
 	public deleteCollection(collection: any) {
 		this._dialogService.openDeleteCollection(collection).subscribe(result => {
 			if (result) {
@@ -226,7 +248,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	/**
 	 * cancelCollection
 	 collection:any     */
@@ -240,5 +262,24 @@ export class ConsoleTeachingAllComponent implements OnInit {
 			}
 		});
 	}
-	
+
+	public editSessions() {
+		if (this.session) {
+			this.router.navigateByUrl('/session/' + this.session.id + '/edit/' + 1);
+		} else {
+			const body = {
+				type: 'session',
+				title: (this.profile) ? this.profile.first_name + ' ' + this.profile.last_name : 'Peerbuds User'
+			};
+			this._collectionService.postCollectionWithData(this.userId, body).subscribe((sessionObject: any) => {
+				this.router.navigate(['session', sessionObject.id, 'edit', 1]);
+			});
+		}
+	}
+
+	public createAccreditation() {
+		this._dialogService.createAccreditationDialog().subscribe(res => {
+			this.router.navigateByUrl('/console/teaching/accreditations');
+		});
+	}
 }

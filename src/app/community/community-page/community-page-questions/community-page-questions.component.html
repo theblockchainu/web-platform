@@ -29,17 +29,19 @@
 	<div class="row" style="margin-top: -20px;" *ngIf="userType !== 'public'">
 		<div class="col-md-12">
 			<form [formGroup]="questionForm" (ngSubmit)="postQuestion()" autocomplete="off">
-				<mat-form-field [floatLabel]="'auto'" class="full-width margin-top-10" style="font-size: 15px;"  >
+				<mat-form-field [floatLabel]="'auto'" class="full-width margin-top-10" style="font-size: 15px;">
 					<input matInput formControlName="text" placeholder="Start your question with 'What', 'How', or 'Why', etc" required>
 				</mat-form-field>
 				<div class="row">
 					<div class="col-md-6 col-xs-3 mat-caption">
 						<span *ngIf="questionKarmaBurn > 0">
 							<span *ngIf="gyanBalance > 0">
-								You would need to burn a total of <i class="fa fa-fire"></i> {{questionKarmaBurn}} Karma
+								You would need to burn a total of
+								<i class="fa fa-fire"></i> {{questionKarmaBurn}} Karma
 							</span>
 							<span *ngIf="gyanBalance === 0">
-								Your scholarship would need to burn a total of <i class="fa fa-fire"></i> {{questionKarmaBurn}} Karma
+								Your scholarship would need to burn a total of
+								<i class="fa fa-fire"></i> {{questionKarmaBurn}} Karma
 							</span>
 						</span>
 					</div>
@@ -56,7 +58,7 @@
 						</button>
 					</div>
 				</div>
-				
+
 			</form>
 		</div>
 	</div>
@@ -67,7 +69,7 @@
 		<div class="col-md-12">
 			<div class="row lighterText" *ngIf="questions !== undefined && questions.length === 0">
 				<div class="col-md-12">
-					<div class="emptySectionText" >Be the first one to ask a question on this community</div>
+					<div class="emptySectionText">Be the first one to ask a question on this community</div>
 				</div>
 			</div>
 			<div class="row margin-top-10" *ngFor="let question of questions">
@@ -83,10 +85,10 @@
 					</mat-menu>
 					<div class="mat-title margin-bottom-10">
 						{{question.text | ucfirst}}?
-							<span class="mat-h5 mat-border-button gyanBubble" *ngIf="question.gyan" matTooltip="{{question.gyan}} Gyan for the right answer.">
-								<!--<div style="position: relative; top: 5px;"><i class="fab fa-ethereum"></i>&nbsp; {{question.gyan}} GYAN</div>-->
-								<div style="font-size: 11px;">{{question.gyan | convertCurrency : 'GYAN' | async}} USD</div>
-							</span>
+						<span class="mat-h5 mat-border-button gyanBubble" *ngIf="question.gyan" matTooltip="{{question.gyan}} Gyan for the right answer.">
+							<!--<div style="position: relative; top: 5px;"><i class="fab fa-ethereum"></i>&nbsp; {{question.gyan}} GYAN</div>-->
+							<div style="font-size: 11px;">{{question.gyan | convertCurrency : 'GYAN' | async}} USD</div>
+						</span>
 					</div>
 					<div *ngIf="question.peer.length>0">
 						<div class="clickable" style="float: left; ">
@@ -108,23 +110,37 @@
 							<b>Answer</b>
 						</a>
 						<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer[0].id !== userId && question.open">fiber_manual_record</mat-icon>
-						<a *ngIf="!hasUpvoted(question.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(question.upvotes)}" (click)="addQuestionUpvote(question)">
-							<b>Upvote <mat-chip class="square smallSquare" *ngIf="question.upvotes">{{question.upvotes.length}}</mat-chip></b>
+						<a *ngIf="!hasUpvoted(question.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(question.upvotes)}"
+						 (click)="addQuestionUpvote(question)">
+							<b>Upvote
+								<mat-chip class="square smallSquare" *ngIf="question.upvotes">{{question.upvotes.length}}</mat-chip>
+							</b>
 						</a>
 						<a *ngIf="hasUpvoted(question.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(question.upvotes)}">
-							<b>Upvote <mat-chip class="square smallSquare" *ngIf="question.upvotes">{{question.upvotes.length}}</mat-chip></b>
+							<b>Upvote
+								<mat-chip class="square smallSquare" *ngIf="question.upvotes">{{question.upvotes.length}}</mat-chip>
+							</b>
 						</a>
 						<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;margin-left: 12px;">fiber_manual_record</mat-icon>
-						<a class="clickable commentButton" (click)="createQuestionCommentForm(question)"><b>Comment <mat-chip class="square smallSquare" *ngIf="question.comments">{{question.comments.length}}</mat-chip></b></a>
+						<a class="clickable commentButton" (click)="createQuestionCommentForm(question)">
+							<b>Comment
+								<mat-chip class="square smallSquare" *ngIf="question.comments">{{question.comments.length}}</mat-chip>
+							</b>
+						</a>
 						<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;margin-left: 12px;">fiber_manual_record</mat-icon>
-						<a class="clickable followButton" [ngClass]="{'hasFollowed': !!isFollowing(question.followers)}" (click)="addFollower(question)"><b>Follow <mat-chip class="square smallSquare" *ngIf="question.followers">{{question.followers.length}}</mat-chip></b></a>
+						<a class="clickable followButton" [ngClass]="{'hasFollowed': !!isFollowing(question.followers)}" (click)="addFollower(question)">
+							<b>Follow
+								<mat-chip class="square smallSquare" *ngIf="question.followers">{{question.followers.length}}</mat-chip>
+							</b>
+						</a>
 					</div>
 					<!--FORM TO ADD NEW ANSWER-->
 					<div class="col-md-12 margin-top-30 answerForm" *ngIf="answerForm && answeringToQuestionId===question.id">
 						<form [formGroup]="answerForm" (ngSubmit)="postAnswer(question)">
 							<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
 							<mat-form-field [floatLabel]="'auto'" class="answerFormField">
-								<textarea matInput matTextareaAutosize #answerText maxlength="1000" rows="1" formControlName="text" placeholder="Answer the above question"  cdkAutosizeTextarea="true"></textarea>
+								<textarea matInput matTextareaAutosize #answerText maxlength="1000" rows="1" formControlName="text" placeholder="Answer the above question"
+								 cdkAutosizeTextarea="true"></textarea>
 								<mat-hint align="end" *ngIf="answerText.value.length < 50">At least {{50 - answerText.value.length}} more characters</mat-hint>
 							</mat-form-field>
 							<div style="text-align: right;">
@@ -142,7 +158,8 @@
 							<form [formGroup]="commentForm" (ngSubmit)="postCommentToQuestion(question)">
 								<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
 								<mat-form-field [floatLabel]="'auto'" style="margin-left: 15px; width: 88%;">
-									<input matInput type="text" formControlName="description" placeholder="Write your comment on the above question">
+									<input matInput type="text" #description1 maxlength="2000" formControlName="description" placeholder="Write your comment on the above question">
+									<mat-hint align="end">{{description1.value.length}} / 2000</mat-hint>
 								</mat-form-field>
 								<div style="text-align: right">
 									<button [disabled]="!commentForm.valid" mat-raised-button color="primary">
@@ -198,7 +215,8 @@
 									<form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
 										<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
 										<mat-form-field [floatLabel]="'auto'" style="margin-left: 15px; width: 85%;">
-											<input matInput type="text" formControlName="description" placeholder="Reply to above comment...">
+											<input matInput type="text" #description2 maxlength="2000" formControlName="description" placeholder="Reply to above comment...">
+											<mat-hint align="end">{{description2.value.length}} / 2000</mat-hint>
 										</mat-form-field>
 										<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary">
 											<span *ngIf="!busyReply">Post</span>
@@ -222,7 +240,7 @@
 											</button>
 										</mat-menu>
 										<div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px; float: left;"
-										     [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
+										 [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
 											<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
 											<mat-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</mat-icon>
 											<div>
@@ -284,39 +302,58 @@
 											</div>
 										</div>
 										<div class="">
-											<span class="mat-caption">Answered {{answer.createdAt |extractTime:'MMM Do'}}<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;">fiber_manual_record</mat-icon> {{(answer.upvotes) ? answer.upvotes.length : '0'}} upvotes</span>
+											<span class="mat-caption">Answered {{answer.createdAt |extractTime:'MMM Do'}}
+												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;">fiber_manual_record</mat-icon> {{(answer.upvotes) ? answer.upvotes.length : '0'}} upvotes</span>
 										</div>
 									</div>
 								</div>
 								<div class="mat-body-1 pre-wrapped">{{answer.text | ucfirst}}</div>
 								<div style="margin-top: 20px;" *ngIf="userType !== 'public'">
-									<a class="clickable acceptButton" *ngIf="question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept && question.open" (click)="acceptAnswer(question, answer)">
-										<span><i class="fa fa-check-circle-o"></i> <b>Accept</b></span>
+									<a class="clickable acceptButton" *ngIf="question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept && question.open"
+									 (click)="acceptAnswer(question, answer)">
+										<span>
+											<i class="fa fa-check-circle-o"></i>
+											<b>Accept</b>
+										</span>
 									</a>
 									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept && question.open">fiber_manual_record</mat-icon>
 									<a class="clickable acceptButton" *ngIf="answer.accept">
-										<span><i class="fa fa-check-circle"></i> <b>Accepted</b>&nbsp;&nbsp;&nbsp;<span style="font-size: 10px;">+ {{question.gyan}} GYAN</span></span>
+										<span>
+											<i class="fa fa-check-circle"></i>
+											<b>Accepted</b>&nbsp;&nbsp;&nbsp;
+											<span style="font-size: 10px;">+ {{question.gyan}} GYAN</span>
+										</span>
 									</a>
 									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="answer.accept">fiber_manual_record</mat-icon>
 									<a class="clickable commentButton" (click)="createAnswerCommentForm(answer)">
-										<b>Comment <mat-chip class="square smallSquare" *ngIf="answer.comments">{{answer.comments.length}}</mat-chip></b>
+										<b>Comment
+											<mat-chip class="square smallSquare" *ngIf="answer.comments">{{answer.comments.length}}</mat-chip>
+										</b>
 									</a>
 									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;">fiber_manual_record</mat-icon>
-									<a *ngIf="!hasUpvoted(answer.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(answer.upvotes)}" (click)="addAnswerUpvote(answer)">
-										<b>Upvote <mat-chip class="square smallSquare" *ngIf="answer.upvotes">{{answer.upvotes.length}}</mat-chip></b>
+									<a *ngIf="!hasUpvoted(answer.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(answer.upvotes)}"
+									 (click)="addAnswerUpvote(answer)">
+										<b>Upvote
+											<mat-chip class="square smallSquare" *ngIf="answer.upvotes">{{answer.upvotes.length}}</mat-chip>
+										</b>
 									</a>
 									<a *ngIf="hasUpvoted(answer.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(answer.upvotes)}">
-										<b>Upvote <mat-chip class="square smallSquare" *ngIf="answer.upvotes">{{answer.upvotes.length}}</mat-chip></b>
+										<b>Upvote
+											<mat-chip class="square smallSquare" *ngIf="answer.upvotes">{{answer.upvotes.length}}</mat-chip>
+										</b>
 									</a>
 									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;margin-left: 12px;">fiber_manual_record</mat-icon>
-									<a class="clickable reportButton"><b>Report</b></a>
+									<a class="clickable reportButton">
+										<b>Report</b>
+									</a>
 								</div>
 								<!--FORM TO ADD NEW COMMENT TO ANSWER-->
 								<div class="margin-top-30 commentForm" *ngIf="commentForm && commentingToAnswerId===answer.id">
 									<form [formGroup]="commentForm" (ngSubmit)="postCommentToAnswer(answer)">
 										<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
 										<mat-form-field [floatLabel]="'auto'" style="margin-left: 15px; width: 88%;">
-											<input matInput type="text" formControlName="description" placeholder="Write your comment on the above answer">
+											<input matInput type="text" #description3 maxlength="2000" formControlName="description" placeholder="Write your comment on the above answer">
+											<mat-hint align="end">{{description3.value.length}} / 2000</mat-hint>
 										</mat-form-field>
 										<div style="text-align: right">
 											<button [disabled]="!commentForm.valid" mat-raised-button color="primary">
@@ -373,7 +410,8 @@
 											<form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
 												<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
 												<mat-form-field [floatLabel]="'auto'" style="margin-left: 15px; width: 85%;">
-													<input matInput type="text" formControlName="description" placeholder="Reply to above comment...">
+													<input matInput type="text" #description4 maxlength="2000" formControlName="description" placeholder="Reply to above comment...">
+													<mat-hint align="end">{{description4.value.length}} / 2000</mat-hint>
 												</mat-form-field>
 												<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary">
 													<span *ngIf="!busyReply">Post</span>
@@ -397,7 +435,7 @@
 													</button>
 												</mat-menu>
 												<div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px; float: left;"
-												     [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
+												 [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
 													<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
 													<mat-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</mat-icon>
 													<div>
@@ -443,4 +481,3 @@
 		</div>
 	</div>
 </div>
-
