@@ -182,8 +182,9 @@
           <button matStepperPrevious mat-raised-button>
             Back
           </button>
-          <button (click)="submitCommunity()" class="pull-right" mat-raised-button color="accent">
-            Submit
+          <button [disabled]="submitting" (click)="submitCommunity()" class="pull-right" mat-raised-button color="accent">
+            <span *ngIf="!submitting">Submit</span>
+            <ngx-loading *ngIf="submitting" [show]="true"></ngx-loading>
           </button>
         </div>
       </div>

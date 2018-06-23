@@ -39,6 +39,7 @@ export class AddCommunityDialogComponent implements OnInit {
   public createTopicURL = '';
   public placeholderStringTopic = 'Search for a topic ';
   public maxTopics = 3;
+  public submitting: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<AddCommunityDialogComponent>,
@@ -245,12 +246,17 @@ export class AddCommunityDialogComponent implements OnInit {
       'targetIds': topicArray
     };
     this.communityService.linkTopics(communityId, body).subscribe((res) => {
+      this.submitting = false;
       this.dialogRef.close(true);
+    }, err => {
+      this.submitting = false;
+      this.snackBar.open('Error', 'Close', { duration: 3000 });
     });
   }
 
 
   submitCommunity() {
+    this.submitting = true;
     console.log('submitting community');
     const body = this.communityForm.value;
     body.language.pop();
