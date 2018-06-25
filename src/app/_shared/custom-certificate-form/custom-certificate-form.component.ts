@@ -23,6 +23,8 @@ export class CustomCertificateFormComponent implements OnInit {
   public fieldsArray: Array<FormGroup>;
   public expandedPanelIndex: number;
   public availableVariables: Array<string>;
+  public logoFile: any;
+
   constructor(
     private _fb: FormBuilder,
     private mediaUploader: MediaUploaderService,
@@ -132,7 +134,7 @@ export class CustomCertificateFormComponent implements OnInit {
         text_alignment: ['center'],
         color: ['#000000'],
         value: [''],
-        font_size: [15],
+        font_size: [100],
         name: ['logo'],
         icon: ['add_a_photo'],
         bold: [false],
@@ -187,43 +189,6 @@ export class CustomCertificateFormComponent implements OnInit {
     }
   }
 
-  uploadImage(event, controlIndex, uploader: FileUpload) {
-    this.uploadingImage = true;
-    const file = event.files[0];
-    this.mediaUploader.upload(file).subscribe((response) => {
-      console.log('uploaded');
-      console.log(response);
-      const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
-      const formGroup = <FormGroup>groupArray.controls[controlIndex];
-      formGroup.controls['value'].patchValue(response.url);
-      uploader.clear();
-      this.uploadingImage = false;
-    }, err => {
-      this.matSnackBar.open(err.message, 'Close', {
-        duration: 5000
-      });
-      this.uploadingImage = false;
-    });
-
-  }
-
-
-  deleteFromContainer(controlIndex, uploader: FileUpload) {
-    this.uploadingImage = true;
-    const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
-    const formGroup = <FormGroup>groupArray.controls[controlIndex];
-    let fileUrl = formGroup.controls['value'].value;
-    fileUrl = _.replace(fileUrl, 'download', 'files');
-    this.mediaUploader.delete(fileUrl).subscribe((response) => {
-      formGroup.controls['value'].reset();
-      uploader.clear();
-      this.uploadingImage = false;
-
-    }, err => {
-      this.uploadingImage = false;
-    });
-  }
-
   up(controlIndex: number) {
     const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
     if (groupArray.length > 1 && controlIndex > 0) {
@@ -256,6 +221,26 @@ export class CustomCertificateFormComponent implements OnInit {
         this.expandedPanelIndex = controlIndex;
       }
     }
+  }
+
+  encodeImageFileAsURL(event, controlIndex) {
+    this.uploadingImage = true;
+    const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
+    const formGroup = <FormGroup>groupArray.controls[controlIndex];
+    const fileList: FileList = event.target.files;
+    const file: File = fileList.item(0);
+    const myReader: FileReader = new FileReader();
+    myReader.onloadend = (e) => {
+      formGroup.controls['value'].patchValue(myReader.result);
+      this.uploadingImage = false;
+    };
+    myReader.readAsDataURL(file);
+  }
+
+  deleteImage(controlIndex) {
+    const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
+    const formGroup = <FormGroup>groupArray.controls[controlIndex];
+    formGroup.controls['value'].reset();
   }
 
 }
