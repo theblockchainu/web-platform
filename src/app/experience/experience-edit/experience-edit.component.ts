@@ -45,7 +45,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public sidebarFilePath = 'assets/menu/experience-static-left-sidebar-menu.json';
 	public sidebarMenuItems;
 	public itenariesForMenu = [];
-	
+
 	public interest1: FormGroup;
 	public newTopic: FormGroup;
 	public experience: FormGroup;
@@ -55,11 +55,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public phoneDetails: FormGroup;
 	public paymentInfo: FormGroup;
 	public assessmentForm: FormGroup;
-	
+
 	public supplementUrls = new FormArray([]);
 	public uploadingImage = false;
 	public uploadingVideo = false;
-	
+
 	public experienceId: string;
 	public experienceData: any;
 	public isExperienceActive = false;
@@ -71,13 +71,13 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public userId;
 	public selectedValues: boolean[] = [false, false];
 	public selectedOption = -1;
-	
+
 	public searchTopicURL = '';
 	public createTopicURL = '';
 	public placeholderStringTopic = 'Search for a topic ';
 	public maxTopicMsg = 'Choose max 3 related topics';
-	
-	
+
+
 	public difficulties = [];
 	public cancellationPolicies = [];
 	public contentComplete = false;
@@ -87,12 +87,12 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public key;
 	public maxTopics = 3;
 	public otpSent = false;
-	
+
 	profileImagePending: Boolean;
 	experienceVideoPending: Boolean;
 	experienceImage1Pending: Boolean;
 	experienceImage2Pending: Boolean;
-	
+
 	public step = 1;
 	public max = 14;
 	public learnerType_array;
@@ -101,24 +101,24 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public interests = [];
 	public removedInterests = [];
 	public relTopics = [];
-	
+
 	public days;
-	
+
 	public _CANVAS;
 	public _VIDEO;
 	public _CTX;
 	public showBackground = false;
 	public urlForVideo = [];
 	public urlForImages = [];
-	
+
 	public datesEditable = false;
 	public isPhoneVerified = false;
 	public isSubmitted = false;
 	public connectPaymentUrl = '';
 	private payoutRuleAccountId: string;
-	
+
 	filteredLanguageOptions: Observable<string[]>;
-	
+
 	public query = {
 		'include': [
 			'topics',
@@ -130,7 +130,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			{ 'assessment_models': ['assessment_na_rules', 'assessment_rules'] }
 		]
 	};
-	
+
 	private payoutRuleNodeId: string;
 	public payoutLoading = true;
 	public payoutAccounts: Array<any>;
@@ -143,6 +143,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public maxGyanExceding: boolean;
 	totalGyan = 0;
 	totalDuration = 0;
+	timelineStep = 15;
 	// TypeScript public modifiers
 	constructor(
 		public router: Router,
@@ -181,22 +182,22 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.searchTopicURL = environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
 			this.createTopicURL = environment.apiUrl + '/api/' + environment.uniqueDeveloperCode + '_topics';
 		});
-		
-		
+
+
 		this.userId = _cookieUtilsService.getValue('userId');
 		this.currentDate = moment().toDate();
-		
+
 	}
-	
+
 	public ngOnInit() {
 		console.log('Inside oninit experience');
 		this.setTags();
 		this.interest1 = new FormGroup({});
-		
+
 		this.newTopic = this._fb.group({
 			topicName: ['', Validators.requiredTrue]
 		});
-		
+
 		this.experience = this._fb.group({
 			type: 'experience',
 			title: '',
@@ -223,7 +224,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			academicGyan: '',
 			nonAcademicGyan: ''
 		});
-		
+
 		this.timeline = this._fb.group({
 			calendar: this._fb.group({
 				startDate: null,
@@ -233,28 +234,28 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				itenary: this._fb.array([])
 			})
 		});
-		
+
 		this.timeline.valueChanges.subscribe(res => {
 			this._dataSharingService.data = this.timeline.value;
 		});
-		
+
 		this.conditions = this._fb.group({
 			standards: '',
 			terms: ''
 		});
-		
+
 		this.selectedTopic = new FormGroup({});
-		
+
 		this.phoneDetails = this._fb.group({
 			phoneNo: [{ value: '', disabled: true }],
 			inputOTP: '',
 			countryCode: [{ value: '', disabled: true }]
 		});
-		
+
 		this.paymentInfo = this._fb.group({
 			id: ''
 		});
-		
+
 		this.assessmentForm = this._fb.group({
 			type: ['', Validators.required],
 			style: ['', Validators.required],
@@ -271,26 +272,26 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				})
 			], Validators.minLength(1))
 		});
-		
+
 		this.initializeFormFields();
 		this.initializeExperience();
 		this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
 		this._VIDEO = document.querySelector('#main-video');
 		this.getGyanBalance();
-		
+
 		this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
 		this._mobileQueryListener = () => this.cd.detectChanges();
 		this.mobileQuery.addListener(this._mobileQueryListener);
-		
+
 	}
-	
+
 	getGyanBalance() {
 		this.gyanBalance = 0;
 		this.profileService.getGyanBalance(this.userId, 'fixed').subscribe(res => {
 			this.gyanBalance = Number(res);
 		});
 	}
-	
+
 	private setTags() {
 		this.titleService.setTitle('Create Experience');
 		this.metaService.updateTag({
@@ -314,7 +315,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			content: environment.clientUrl + this.router.url
 		});
 	}
-	
+
 	private initializeAssessment(result) {
 		if (result.assessment_models[0]) {
 			this.assessmentForm.controls['type'].patchValue(result.assessment_models[0].type);
@@ -341,34 +342,34 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			}
 		}
 	}
-	
+
 	ngOnDestroy(): void {
 		this.mobileQuery.removeListener(this._mobileQueryListener);
 	}
-	
+
 	ngAfterViewInit() {
 		this.cd.detectChanges();
 	}
-	
-	
+
+
 	private extractDate(dateString: string) {
 		return moment.utc(dateString).local().toDate();
 	}
-	
+
 	private extractTime(dateString: string) {
 		const time = moment.utc(dateString).local().format('HH:mm:ss');
 		return time;
 	}
-	
+
 	private initializeTimeLine(res) {
-		
+
 		const sortedCalendar = this.sort(res.calendars, 'startDate', 'endDate');
 		if (sortedCalendar[0] !== undefined && sortedCalendar[0].startDate) {
 			const calendar = sortedCalendar[0];
 			calendar['startDate'] = this.extractDate(calendar.startDate);
 			calendar['endDate'] = this.extractDate(calendar.endDate);
 			this._collectionService.sanitize(calendar);
-			
+
 			if (this.experienceData.status === 'active') {
 				this.isExperienceActive = true;
 				this.activeExperience = 'disabledMAT';
@@ -377,7 +378,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.initializeContentForm(res);
 		}
 		this.initializeCalendarCheck(res);
-		
+
 	}
 	private initializeCalendarCheck(experienceData: any) {
 		const calendarForm = <FormGroup>this.timeline.controls['calendar'];
@@ -398,7 +399,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			}
 		});
 	}
-	
+
 	public initializeContentForm(res) {
 		const contentGroup = <FormGroup>this.timeline.controls.contentGroup;
 		const itenary = <FormArray>contentGroup.controls.itenary;
@@ -420,7 +421,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		}
 		console.log(itenary);
 	}
-	
+
 	/**
 	 * assignFormValues
 	 */
@@ -447,7 +448,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			}
 		}
 	}
-	
+
 	public InitItenary() {
 		return this._fb.group({
 			contents: this._fb.array([]),
@@ -455,7 +456,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			startDay: ['']
 		});
 	}
-	
+
 	public InitContent() {
 		return this._fb.group({
 			id: [''],
@@ -489,7 +490,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			pending: ['']
 		});
 	}
-	
+
 	public getContents(contents) {
 		const itenaries = {};
 		for (const contentObj of contents) {
@@ -523,22 +524,22 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			// this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(this.experience.value, this.sidebarMenuItems);
 			// this.sidebarMenuItems[2]['submenu'] = [];
 		}
-		
+
 		return itenaries;
 	}
-	
+
 	private initializeFormFields() {
 		this.maxGyanExceding = false;
 		this.difficulties = ['Beginner', 'Intermediate', 'Advanced'];
-		
+
 		this.cancellationPolicies = ['24 Hours', '3 Days', '1 Week'];
-		
+
 		this.currencies = ['USD', 'INR', 'GBP'];
-		
+
 		this.availableAssessmentTypes = ['Peer', 'Teacher', 'Third Party'];
-		
+
 		this.availableAssessmentStyles = ['Grades', 'Percentage', 'Percentile'];
-		
+
 		this.nAAssessmentParams = ['engagement', 'commitment'];
 		this.learnerType_array = {
 			learner_type: [
@@ -548,14 +549,14 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				, { id: 'kinesthetic', display: 'Kinesthetic' }
 			]
 		};
-		
+
 		this.placeholderStringTopic = 'Start typing to to see a list of suggested topics...';
-		
+
 		this.key = 'access_token';
-		
+
 		this.countryPickerService.getCountries()
 			.subscribe((countries) => this.countries = countries);
-		
+
 		this.languagePickerService.getLanguages()
 			.subscribe((languages) => {
 				this.languagesArray = _.map(languages, 'name');
@@ -564,7 +565,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 					.map(val => val ? this.filter(val) : this.languagesArray.slice());
 				console.log(this.filteredLanguageOptions);
 			});
-		
+
 		if (this.interests.length === 0) {
 			this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.requestHeaderService.options)
 				.map((response: any) => {
@@ -573,11 +574,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		} else {
 			this.suggestedTopics = this.interests;
 		}
-		
+
 		this.profileImagePending = true;
 		this.experienceVideoPending = true;
 		this.experienceImage1Pending = true;
-		
+
 		this.experience.controls['academicGyan'].valueChanges.subscribe(res => {
 			this.validateGyan();
 		});
@@ -588,7 +589,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.totalHours();
 		});
 	}
-	
+
 	validateGyan() {
 		this.totalGyan = this.experience.controls['academicGyan'].value + this.experience.controls['nonAcademicGyan'].value;
 		if (this.totalGyan > this.gyanBalance) {
@@ -597,46 +598,46 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.maxGyanExceding = false;
 		}
 	}
-	
+
 	filter(val: string): string[] {
 		console.log('filtering');
 		return this.languagesArray.filter(option =>
 			option.toLowerCase().indexOf(val.toLowerCase()) === 0);
 	}
-	
+
 	private initializeExperience() {
 		console.log('Inside init experience');
 		if (this.experienceId) {
 			this._collectionService.getCollectionDetail(this.experienceId, this.query)
 				.subscribe((res) => {
-						console.log(res);
-						this.experienceData = res;
-						if (this.experienceData.payoutrules && this.experienceData.payoutrules.length > 0) {
-							this.payoutRuleNodeId = this.experienceData.payoutrules[0].id;
-							this.payoutRuleAccountId = this.experienceData.payoutrules[0].payoutId1;
-						}
-						this.retrieveAccounts();
-						this.initializeFormValues(res);
-						this.initializeTimeLine(res);
-						this.initializeAssessment(res);
-						
-						if (res.status === 'active' && this.sidebarMenuItems) {
-							this.sidebarMenuItems[3].visible = false;
-							this.sidebarMenuItems[4].visible = true;
-							this.sidebarMenuItems[4].active = true;
-							this.sidebarMenuItems[4].submenu[0].visible = true;
-							this.sidebarMenuItems[4].submenu[1].visible = true;
-						}
-						
-					},
+					console.log(res);
+					this.experienceData = res;
+					if (this.experienceData.payoutrules && this.experienceData.payoutrules.length > 0) {
+						this.payoutRuleNodeId = this.experienceData.payoutrules[0].id;
+						this.payoutRuleAccountId = this.experienceData.payoutrules[0].payoutId1;
+					}
+					this.retrieveAccounts();
+					this.initializeFormValues(res);
+					this.initializeTimeLine(res);
+					this.initializeAssessment(res);
+
+					if (res.status === 'active' && this.sidebarMenuItems) {
+						this.sidebarMenuItems[3].visible = false;
+						this.sidebarMenuItems[4].visible = true;
+						this.sidebarMenuItems[4].active = true;
+						this.sidebarMenuItems[4].submenu[0].visible = true;
+						this.sidebarMenuItems[4].submenu[1].visible = true;
+					}
+
+				},
 					err => console.log('error'),
 					() => console.log('Completed!'));
-			
+
 		} else {
 			console.log('NO COLLECTION');
 		}
 	}
-	
+
 	public languageChange(event) {
 		this.busyLanguage = true;
 		if (event) {
@@ -646,9 +647,9 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			// this.experience.controls.selectedLanguage.setValue(event.value);
 		}
 	}
-	
-	
-	
+
+
+
 	public selected(event) {
 		if (event.length > 3) {
 			this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
@@ -660,7 +661,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			return obj;
 		});
 	}
-	
+
 	public removed(event) {
 		const body = {};
 		this.removedInterests = event;
@@ -671,10 +672,10 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 						console.log(response);
 					}).subscribe();
 			});
-			
+
 		}
 	}
-	
+
 	public daysCollection(event) {
 		this.days = event;
 		this.sidebarMenuItems[2]['submenu'] = [];
@@ -690,12 +691,12 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			});
 		}, this);
 	}
-	
+
 	public getMenuArray(event) {
 		this.sidebarMenuItems = event;
 	}
-	
-	
+
+
 	private initializeFormValues(res) {
 		// Topics
 		this.relTopics = _.uniqBy(res.topics, 'id');
@@ -710,25 +711,25 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		}
 		// aboutHost TBD
 		this.experience.controls.aboutHost.patchValue(res.aboutHost);
-		
+
 		// Title
 		this.experience.controls.title.patchValue(res.title);
-		
+
 		// Headline
 		this.experience.controls.headline.patchValue(res.headline);
-		
+
 		// Description
 		this.experience.controls.description.patchValue(res.description);
-		
+
 		// Difficulty Level
 		this.experience.controls.difficultyLevel.patchValue(res.difficultyLevel);
-		
+
 		// Notes
 		this.experience.controls.notes.patchValue(res.notes);
-		
+
 		// Seats
 		this.experience.controls.maxSpots.patchValue(res.maxSpots);
-		
+
 		// Photos and Videos
 		if (res.videoUrls && res.videoUrls.length > 0) {
 			this.experience.controls['videoUrls'].patchValue(res.videoUrls);
@@ -738,7 +739,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.experience.controls['imageUrls'].patchValue(res.imageUrls);
 			this.urlForImages = res.imageUrls;
 		}
-		
+
 		// Currency, Amount, Cancellation Policy
 		this.experience.controls.price.patchValue(res.price);
 		if (res.price === 0) {
@@ -746,19 +747,19 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		}
 		if (res.currency) { this.experience.controls.currency.patchValue(res.currency); }
 		if (res.cancellationPolicy) { this.experience.controls.cancellationPolicy.setValue(res.cancellationPolicy); }
-		
+
 		// Status
 		this.experience.controls.status.setValue(res.status);
-		
+
 		// Gyan
 		this.experience.controls['academicGyan'].patchValue(res.academicGyan);
-		
+
 		this.experience.controls['nonAcademicGyan'].patchValue(res.nonAcademicGyan);
-		
+
 		this.isPhoneVerified = res.owners[0].phoneVerified;
-		
+
 		this.isSubmitted = this.experience.controls.status.value === 'submitted';
-		
+
 		if (res.owners[0].profiles[0].phone_numbers && res.owners[0].profiles[0].phone_numbers.length) {
 			this.phoneDetails.controls.phoneNo.patchValue(res.owners[0].profiles[0].phone_numbers[0].subscriber_number);
 			this.phoneDetails.controls.countryCode.patchValue(res.owners[0].profiles[0].phone_numbers[0].country_code);
@@ -767,7 +768,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.makeDatesEditable();
 		}
 	}
-	
+
 	initAddress() {
 		// initialize our address
 		return this._fb.group({
@@ -775,16 +776,16 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			postcode: ['']
 		});
 	}
-	
+
 	public experienceStepUpdate() {
 		if (this.experience.value.stage < this.step) {
 			this.experience.patchValue({
 				'stage': this.step
 			});
 		}
-		
+
 	}
-	
+
 	public addImageUrl(value: String) {
 		console.log('Adding image url: ' + value);
 		this.urlForImages.push(value);
@@ -794,9 +795,9 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		const tempExperienceData = this.experienceData;
 		tempExperienceData.imageUrls = this.experience.controls['imageUrls'].value;
 		this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(tempExperienceData, this.sidebarMenuItems);
-		
+
 	}
-	
+
 	public addVideoUrl(value: String) {
 		console.log('Adding video url: ' + value);
 		this.urlForVideo.push(value);
@@ -807,7 +808,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		tempExperienceData.videoUrls = this.experience.controls['videoUrls'].value;
 		this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(tempExperienceData, this.sidebarMenuItems);
 	}
-	
+
 	uploadVideo(event) {
 		this.uploadingVideo = true;
 		for (const file of event.files) {
@@ -817,7 +818,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			});
 		}
 	}
-	
+
 	uploadImage(event) {
 		this.uploadingImage = true;
 		for (const file of event.files) {
@@ -832,7 +833,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			});
 		}
 	}
-	
+
 	public changeInterests(topic: any) {
 		const index = this.interests.indexOf(topic);
 		if (index > -1) {
@@ -841,44 +842,42 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.interests.push(topic); // Otherwise add this topic.
 		}
 	}
-	
-	public submitExperience(data, timeline?, step?) {
+
+	public submitExperienceTimeline(data, timeline?, step?) {
 		if (this.calendarIsValid(step)) {
-			switch (Number(this.step)) {
-				case 11:
-					this.totalGyan = this.experience.controls['academicGyan'].value + this.experience.controls['nonAcademicGyan'].value;
-					console.log(this.totalGyan);
-					console.log(this.gyanBalance);
-					if (this.totalGyan > this.gyanBalance) {
-						this.dialogsService.showGyanNotif(this.gyanBalance, this.totalGyan).subscribe(res => {
-							if (res) {
-								this.checkStatusAndSubmit(data, timeline, step);
-							}
-						});
-					} else {
+			if ((this.totalGyan > this.gyanBalance) && (this.totalDuration !== this.totalGyan)) {
+				this.snackBar.open('You do not have enough Gyan balance or learning hours to justify a knowledge value of ' + this.totalGyan + ' Gyan. Knowledge value for this experience will be adjusted to ' + this.totalDuration + ' Gyan.',
+					'Ok').onAction().subscribe(result => {
+						data.controls['academicGyan'].patchValue(this.totalDuration >= 2 ? this.totalDuration - 1 : 1);
+						data.controls['nonAcademicGyan'].patchValue(1);
+						this.totalGyan = this.experience.controls['academicGyan'].value + this.experience.controls['nonAcademicGyan'].value;
 						this.checkStatusAndSubmit(data, timeline, step);
-					}
-					break;
-				case 14:
-					if ((this.totalGyan > this.gyanBalance) && (this.totalDuration !== this.totalGyan)) {
-						this.snackBar.open('You do not have enough Gyan balance or learning hours to justify a knowledge value of ' + this.totalGyan + ' Gyan. Knowledge value for this experience will be adjusted to ' + this.totalDuration + ' Gyan.',
-							'Ok').onAction().subscribe(result => {
-							data.controls['academicGyan'].patchValue(this.totalDuration >= 2 ? this.totalDuration - 1 : 1);
-							data.controls['nonAcademicGyan'].patchValue(1);
-							this.totalGyan = this.experience.controls['academicGyan'].value + this.experience.controls['nonAcademicGyan'].value;
-							this.checkStatusAndSubmit(data, timeline, step);
-						});
-					} else {
-						this.checkStatusAndSubmit(data, timeline, step);
-					}
-					break;
-				default:
-					this.checkStatusAndSubmit(data, timeline, this.step);
-					break;
+					});
+			} else {
+				this.checkStatusAndSubmit(data, timeline, step);
 			}
 		}
 	}
-	
+
+	public submitExperienceGyan(data, timeline?, step?) {
+		this.totalGyan = this.experience.controls['academicGyan'].value + this.experience.controls['nonAcademicGyan'].value;
+		console.log(this.totalGyan);
+		console.log(this.gyanBalance);
+		if (this.totalGyan > this.gyanBalance) {
+			this.dialogsService.showGyanNotif(this.gyanBalance, this.totalGyan).subscribe(res => {
+				if (res) {
+					this.checkStatusAndSubmit(data, timeline, step);
+				}
+			});
+		} else {
+			this.checkStatusAndSubmit(data, timeline, step);
+		}
+	}
+
+	public submitExperience(data, timeline?, step?) {
+		this.checkStatusAndSubmit(data, timeline, this.step);
+	}
+
 	private checkStatusAndSubmit(data, timeline?, step?) {
 		if (this.experience.controls.status.value === 'active') {
 			this.dialogsService.openCollectionCloneDialog({ type: 'experience' })
@@ -893,7 +892,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.executeSubmitExperience(data, timeline, step);
 		}
 	}
-	
+
 	private totalHours(): void {
 		let totalLength = 0;
 		this.timeline.value.contentGroup.itenary.forEach((itenaryObj: any) => {
@@ -914,12 +913,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		});
 		this.totalDuration = totalLength;
 	}
-	
+
 	private calendarIsValid(step) {
-		if (step !== 14) {
-			// Skip calendar validation for all steps except timeline
-			return true;
-		}
 		const calendarGroup = <FormGroup>this.timeline.controls['calendar'];
 		const startMoment = moment(calendarGroup.controls['startDate'].value).local();
 		const endMoment = moment(calendarGroup.controls['endDate'].value).local();
@@ -938,14 +933,14 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		}
 		return true;
 	}
-	
+
 	private executeSubmitExperience(data, timeline?, step?) {
 		const lang = <FormArray>this.experience.controls.language;
 		lang.removeAt(0);
 		lang.push(this._fb.control(data.value.selectedLanguage));
 		const body = data.value;
 		delete body.selectedLanguage;
-		
+
 		this._collectionService.patchCollection(this.experienceId, body).subscribe(
 			(response: any) => {
 				const result = response;
@@ -960,8 +955,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				result.contents = this.experienceData.contents;
 				result.owners = this.experienceData.owners;
 				this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
-				
-				if (step && step === 14) {
+
+				if (step && step === this.timelineStep) {
 					this.submitTimeline(collectionId, timeline);
 				} else {
 					this.step++;
@@ -970,7 +965,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				}
 			});
 	}
-	
+
 	/**
 	 * numberOfdays
 	 */
@@ -979,7 +974,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		const start = moment(startDate);
 		return current.diff(start, 'days');
 	}
-	
+
 	/**
 	 * calculatedDate
 	 currenDate,day */
@@ -988,7 +983,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		current.add(day, 'days');
 		return current.toDate();
 	}
-	
+
 	public submitTimeline(collectionId, data: FormGroup) {
 		const body = data.value.calendar;
 		const itinerary = data.controls.contentGroup.value.itenary;
@@ -1012,7 +1007,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			}
 		}
 	}
-	
+
 	public submitInterests() {
 		this.busyInterest = true;
 		let body = {};
@@ -1027,7 +1022,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		body = {
 			'targetIds': topicArray
 		};
-		
+
 		if (topicArray.length !== 0) {
 			let observable: Observable<any>;
 			observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel', body, this.requestHeaderService.options)
@@ -1048,7 +1043,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
 		}
 	}
-	
+
 	/**
 	 * goto(toggleStep)  */
 	public goto(toggleStep) {
@@ -1061,14 +1056,14 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.busyBasics = false;
 		}
 		this.showBackground = !!(this.step && this.step.toString() === '5');
-		
+
 		if (toggleStep === 6) {
 			this.busyExperiencePage = true;
 		}
 	}
-	
-	
-	
+
+
+
 	submitForReview() {
 		// Post Experience for review
 		this._collectionService.submitForReview(this.experienceId)
@@ -1084,16 +1079,16 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 					this.sidebarMenuItems[4].active = true;
 					this.sidebarMenuItems[4].submenu[0].visible = true;
 					this.sidebarMenuItems[4].submenu[1].visible = true;
-					
+
 				}
 			});
-		
+
 	}
-	
+
 	saveandexit() {
 		this.busySave = true;
 		this.experienceStepUpdate();
-		if (this.step === 14) {
+		if (this.step === this.timelineStep) {
 			const data = this.timeline;
 			const body = data.value.calendar;
 			if (body.startDate && body.endDate) {
@@ -1106,7 +1101,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			} else {
 				console.log('Enter Date!');
 			}
-			
+
 		} else {
 			const data = this.experience;
 			const lang = <FormArray>this.experience.controls.language;
@@ -1120,11 +1115,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				}).subscribe();
 		}
 	}
-	
+
 	exit() {
 		this.router.navigate(['console/teaching/experiences']);
 	}
-	
+
 	addNewTopic() {
 		let tempArray = [];
 		tempArray = _.union(this.interests, tempArray);
@@ -1141,7 +1136,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				}
 			});
 	}
-	
+
 	addNewLanguage() {
 		this.dialogsService
 			.addNewLanguage()
@@ -1151,42 +1146,42 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 					this.experience.controls.selectedLanguage.patchValue(res.name);
 				}
 			});
-		
+
 	}
-	
+
 	uploadImage1(event) {
 		if (event.target.files == null || event.target.files === undefined) {
 			document.write('This Browser has no support for HTML5 FileReader yet!');
 			return false;
 		}
-		
+
 		for (let i = 0; i < event.target.files.length; i++) {
 			const file = event.target.files[i];
 			const imageType = /image.*/;
-			
+
 			if (!file.type.match(imageType)) {
 				continue;
-				
+
 			}
-			
+
 			const reader = new FileReader();
-			
+
 			if (reader != null) {
-				
+
 				reader.onload = this.GetThumbnail;
 				reader.readAsDataURL(file);
 			}
-			
-			
+
+
 		}
 	}
-	
+
 	GetThumbnail(e) {
 		const myCan = document.createElement('canvas');
 		const img = new Image();
 		img.src = e.target.result;
 		img.onload = function () {
-			
+
 			myCan.id = 'myTempCanvas';
 			const tsize = 100;
 			myCan.width = Number(tsize);
@@ -1195,22 +1190,22 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				const cntxt = myCan.getContext('2d');
 				cntxt.drawImage(img, 0, 0, myCan.width, myCan.height);
 				const dataURL = myCan.toDataURL();
-				
-				
+
+
 				if (dataURL != null && dataURL !== undefined) {
 					const nImg = document.createElement('img');
 					nImg.src = dataURL;
 					document.getElementById('image-holder').appendChild(nImg);
-					
+
 				} else {
 					alert('unable to get context');
 				}
-				
+
 			}
 		};
-		
+
 	}
-	
+
 	deleteFromContainer(fileUrl, fileType) {
 		const fileurl = fileUrl;
 		fileUrl = _.replace(fileUrl, 'download', 'files');
@@ -1230,9 +1225,9 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				}
 				this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(this.experience.value, this.sidebarMenuItems);
 			}).subscribe();
-		
+
 	}
-	
+
 	deleteFromContainerArr(event, fileType) {
 		for (let i = 0; i < event.target.files.length; i++) {
 			let file = event.target.files[i];
@@ -1253,19 +1248,19 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 						this.experience.controls.imageUrls.patchValue(this.urlForImages);
 					}
 				}).subscribe();
-			
+
 		}
 	}
-	
+
 	toggleChoice(choice) {
 		this.selectedOption = choice;
 	}
-	
-	
+
+
 	submitPhoneNo(element, text) {
 		// Call the OTP service
 		// Post Experience for review
-		
+
 		element.textContent = text;
 		this._collectionService.sendVerifySMS(this.phoneDetails.controls.phoneNo.value, this.phoneDetails.controls.countryCode.value)
 			.subscribe((res) => {
@@ -1275,46 +1270,46 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				element.textContent = 'Verification code sent';
 			});
 	}
-	
+
 	submitOTP() {
 		this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
 			.subscribe((res) => {
-					console.log(res);
-					this.snackBar.open('Token Verified', 'Close', {
-						duration: 5000
-					});
-					this.step++;
-				},
+				console.log(res);
+				this.snackBar.open('Token Verified', 'Close', {
+					duration: 5000
+				});
+				this.step++;
+			},
 				(error) => {
 					this.snackBar.open(error.message, 'Close', {
 						duration: 5000
 					});
 				});
 	}
-	
+
 	takeToPayment() {
 		this.busyPayment = true;
 		this.step++;
 		this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
 	}
-	
+
 	/**
 	 * Make the dates section of this page editable
 	 */
 	makeDatesEditable() {
 		this.datesEditable = true;
 	}
-	
+
 	openExperience() {
 		this.busyPreview = true;
 		this.router.navigate(['/experience', this.experienceId]);
 		this.busyPreview = false;
 	}
-	
+
 	sort(calendars, param1, param2) {
 		return _.sortBy(calendars, [param1, param2]);
 	}
-	
+
 	private retrieveAccounts() {
 		this.payoutAccounts = [];
 		this._paymentService.retrieveConnectedAccount().subscribe(result => {
@@ -1330,14 +1325,14 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.paymentInfo.controls['id'].valueChanges.subscribe(res => {
 				this.updatePayoutRule(res);
 			});
-			
+
 			this.payoutLoading = false;
 		}, err => {
 			console.log(err);
 			this.payoutLoading = false;
 		});
 	}
-	
+
 	private updatePayoutRule(newPayoutId) {
 		if (this.payoutRuleNodeId) {
 			this.payoutLoading = true;
@@ -1371,24 +1366,24 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 					duration: 5000
 				});
 			});
-			
+
 		}
 	}
-	
+
 	onFreeChange(event) {
 		if (event) {
 			this.experience.controls['price'].setValue(0);
 		}
 	}
-	
+
 	back() {
 		this.goto(this.step - 1);
 	}
-	
+
 	next() {
 		this.goto(this.step + 1);
 	}
-	
+
 	public addAssessmentRule() {
 		const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
 		console.log(rulesArray);
@@ -1397,18 +1392,18 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			gyan: ''
 		}));
 	}
-	
+
 	public deleteAssessmentRule(i: number) {
 		const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
 		rulesArray.removeAt(i);
 	}
-	
+
 	public deleteNAAssessmentRule(i: number) {
 		const rulesArray = <FormArray>this.assessmentForm.controls['nARules'];
 		rulesArray.removeAt(i);
 	}
-	
-	
+
+
 	public addNAAssessmentRule() {
 		const rulesArray = <FormArray>this.assessmentForm.controls['nARules'];
 		rulesArray.push(this._fb.group({
@@ -1416,7 +1411,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			gyan: ''
 		}));
 	}
-	
+
 	public submitAssessment() {
 		let assessmentModelObject;
 		this._collectionService.updateAssessmentModel(this.experienceId, {
@@ -1443,6 +1438,6 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			});
 		});
 	}
-	
+
 }
 

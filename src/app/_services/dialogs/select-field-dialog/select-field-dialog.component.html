@@ -1,0 +1,21 @@
+<div mat-dialog-content class="dialog-container">
+  <div class="row">
+    <div class="col-xs-12 center">
+      <h2>
+        Please select a Field
+      </h2>
+    </div>
+    <div class="col-xs-6" *ngFor="let group of data">
+      <button mat-raised-button [mat-dialog-close]="group" class="pb-block padding-10">
+        <div class="row">
+          <div class="col-xs-4">
+            <mat-icon>{{group.controls['icon'].value}}</mat-icon>
+          </div>
+          <div class="col-xs-8">
+            <b>{{group.controls['name'].value | titlecase}}</b>
+          </div>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>

@@ -43,7 +43,7 @@ import { ShortreadComponent } from './shortread/shortread.component';
 import { PrivatebetaComponent } from './privatebeta/privatebeta.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { LandingPageModule } from './landing-page/landing-page.module';
-import {SharedModule} from './_shared/_shared.module';
+import { SharedModule } from './_shared/_shared.module';
 
 
 Raven
@@ -121,10 +121,10 @@ export class RavenErrorHandler implements ErrorHandler {
 	providers: [
 		CookieService,
 		UcWordsPipe,
-		{
-			provide: ErrorHandler,
-			useClass: RavenErrorHandler
-		},
+		// {
+		// 	provide: ErrorHandler,
+		// 	useClass: RavenErrorHandler
+		// },
 		Title,
 		Meta
 	],

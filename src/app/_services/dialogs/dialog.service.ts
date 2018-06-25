@@ -50,6 +50,9 @@ import { GyanPromptComponent } from './gyan-prompt/gyan-prompt.component';
 import { AddCommunityDialogComponent } from './add-community-dialog/add-community-dialog.component';
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { CreateAccreditationDialogComponent } from './create-accreditation-dialog/create-accreditation-dialog.component';
+import { SelectFieldDialogComponent } from './select-field-dialog/select-field-dialog.component';
+import { FormGroup } from '@angular/forms';
+
 @Injectable()
 export class DialogsService {
 
@@ -409,8 +412,8 @@ export class DialogsService {
                     id: Id,
                     cohortId: cohortId,
                     title: title,
-					description: description,
-					image: imageUrl
+                    description: description,
+                    image: imageUrl
                 },
                 panelClass: 'responsive-dialog', width: '40vw'
             }
@@ -582,6 +585,15 @@ export class DialogsService {
             width: '55vw',
             height: '56vh',
             data: data ? data : {}
+        }).afterClosed();
+    }
+
+    public viewFields(fieldsArray: Array<FormGroup>) {
+        return this.dialog.open(SelectFieldDialogComponent, {
+            panelClass: 'responsive-dialog',
+            width: '40vw',
+            height: '40vh',
+            data: fieldsArray
         }).afterClosed();
     }
 }
