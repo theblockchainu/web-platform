@@ -23,7 +23,7 @@ export class CustomCertificateFormComponent implements OnInit {
   public fieldsArray: Array<FormGroup>;
   public expandedPanelIndex: number;
   public availableVariables: Array<string>;
-  public logoFile: any;
+  public logoFile: File;
 
   constructor(
     private _fb: FormBuilder,
@@ -229,6 +229,7 @@ export class CustomCertificateFormComponent implements OnInit {
     const formGroup = <FormGroup>groupArray.controls[controlIndex];
     const fileList: FileList = event.target.files;
     const file: File = fileList.item(0);
+    this.logoFile = file;
     const myReader: FileReader = new FileReader();
     myReader.onloadend = (e) => {
       formGroup.controls['value'].patchValue(myReader.result);
@@ -241,6 +242,7 @@ export class CustomCertificateFormComponent implements OnInit {
     const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
     const formGroup = <FormGroup>groupArray.controls[controlIndex];
     formGroup.controls['value'].reset();
+    delete this.logoFile;
   }
 
 }
