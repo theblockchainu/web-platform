@@ -55,6 +55,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public phoneDetails: FormGroup;
 	public paymentInfo: FormGroup;
 	public assessmentForm: FormGroup;
+	public certificateForm: FormGroup;
 
 	public supplementUrls = new FormArray([]);
 	public uploadingImage = false;
@@ -271,6 +272,12 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 					gyan: ['', Validators.required]
 				})
 			], Validators.minLength(1))
+		});
+
+		this.certificateForm = this._fb.group({
+			certificateHTML: [''],
+			expiryDate: [null],
+			formData: [null]
 		});
 
 		this.initializeFormFields();
@@ -876,6 +883,16 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	public submitExperience(data, timeline?, step?) {
 		this.checkStatusAndSubmit(data, timeline, this.step);
+	}
+
+	public submitCertificate(certificate: any) {
+		this.certificateForm.controls['certificateHTML'].patchValue(certificate.htmlData);
+		this.certificateForm.controls['formData'].patchValue(JSON.stringify(certificate.formData));
+		this._collectionService.submitCertificate(this.experienceId, this.certificateForm.value).subscribe(res => {
+			this.step++;
+			this.experienceStepUpdate();
+			this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
+		});
 	}
 
 	private checkStatusAndSubmit(data, timeline?, step?) {

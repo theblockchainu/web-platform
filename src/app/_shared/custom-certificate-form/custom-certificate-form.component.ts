@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, Renderer2, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { MatSnackBar } from '@angular/material';
@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { FileUpload } from 'primeng/fileupload';
 import * as _ from 'lodash';
-
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-custom-certificate-form',
   templateUrl: './custom-certificate-form.component.html',
@@ -25,11 +25,21 @@ export class CustomCertificateFormComponent implements OnInit {
   public availableVariables: Array<string>;
   public logoFile: File;
 
+  @Input() formData: any;
+
+  @Output() back = new EventEmitter<any>();
+  @Output() next = new EventEmitter<any>();
+
+  @ViewChild('certificate') certificate: ElementRef;
+
+
   constructor(
     private _fb: FormBuilder,
     private mediaUploader: MediaUploaderService,
     private matSnackBar: MatSnackBar,
-    private dialogsService: DialogsService
+    private dialogsService: DialogsService,
+    private renderer: Renderer2,
+    private domSanitizer: DomSanitizer
   ) {
     this.envVariable = environment;
   }
@@ -48,7 +58,7 @@ export class CustomCertificateFormComponent implements OnInit {
         text_alignment: ['center'],
         color: ['#000000'],
         value: [''],
-        font_size: [23],
+        font_size: [2],
         name: ['text'],
         icon: ['text_fields'],
         bold: [false],
@@ -60,7 +70,7 @@ export class CustomCertificateFormComponent implements OnInit {
         text_alignment: ['center'],
         color: ['#000000'],
         value: [''],
-        font_size: [15],
+        font_size: [1],
         name: ['multi-line'],
         icon: ['format_align_left'],
         bold: [false],
@@ -72,7 +82,7 @@ export class CustomCertificateFormComponent implements OnInit {
         text_alignment: ['center'],
         color: ['#000000'],
         value: [''],
-        font_size: [15],
+        font_size: [1],
         name: ['date'],
         icon: ['insert_invitation'],
         bold: [false],
@@ -85,7 +95,7 @@ export class CustomCertificateFormComponent implements OnInit {
         text_alignment: ['center'],
         color: ['#000000'],
         value: ['', [Validators.email]],
-        font_size: [15],
+        font_size: [1],
         name: ['email'],
         icon: ['email'],
         bold: [false],
@@ -98,7 +108,7 @@ export class CustomCertificateFormComponent implements OnInit {
         text_alignment: ['center'],
         color: ['#000000'],
         value: [''],
-        font_size: [15],
+        font_size: [1],
         name: ['url'],
         icon: ['link'],
         bold: [false],
@@ -110,7 +120,7 @@ export class CustomCertificateFormComponent implements OnInit {
         text_alignment: ['center'],
         color: ['#000000'],
         value: [''],
-        font_size: [15],
+        font_size: [1],
         name: ['number'],
         icon: ['looks_one'],
         bold: [false],
@@ -122,7 +132,7 @@ export class CustomCertificateFormComponent implements OnInit {
         text_alignment: ['center'],
         color: ['#777777'],
         value: [''],
-        font_size: [15],
+        font_size: [1],
         name: ['variable'],
         icon: ['code'],
         bold: [false],
@@ -134,7 +144,7 @@ export class CustomCertificateFormComponent implements OnInit {
         text_alignment: ['center'],
         color: ['#000000'],
         value: [''],
-        font_size: [100],
+        font_size: [6],
         name: ['logo'],
         icon: ['add_a_photo'],
         bold: [false],
@@ -243,6 +253,19 @@ export class CustomCertificateFormComponent implements OnInit {
     const formGroup = <FormGroup>groupArray.controls[controlIndex];
     formGroup.controls['value'].reset();
     delete this.logoFile;
+  }
+
+  cancel() {
+    this.back.next(true);
+  }
+
+  submitCertificate() {
+    const nativeElement: Element = this.certificate.nativeElement;
+    // console.log(nativeElement.outerHTML);
+    this.next.emit({
+      formData: this.customCertificateForm.value,
+      htmlData: nativeElement.outerHTML
+    });
   }
 
 }

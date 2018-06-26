@@ -1,6 +1,6 @@
 <div class="row">
-  <div class="col-xs-11 col-md-7 editSection">
-    <div class="row">
+  <div class="col-xs-11 col-md-7 ">
+    <div class="row editSection">
       <div class="col-xs-12">
         <h2 class="title">Lets create a certificate for this course</h2>
       </div>
@@ -527,11 +527,11 @@
                         <b>Logo</b>
                       </div>
                       <div class="col-xs-6 padding-top-10">
-                        <button *ngIf="!logoFile" [hidden]="uploadingImage" (click)="fileInput.click()" mat-raised-button color="accent">
+                        <button *ngIf="!logoFile" [hidden]="uploadingImage" (click)="fileInput.click()" mat-raised-button>
                           Upload File
                         </button>
                         <span *ngIf="logoFile">
-                          <button mat-raised-button color="accent" *ngIf="customCertificateForm.value.groupArray[i].value && customCertificateForm.value.groupArray[i].value.length>0"
+                          <button style="width: 90%;" mat-raised-button *ngIf="customCertificateForm.value.groupArray[i].value && customCertificateForm.value.groupArray[i].value.length>0"
                             (click)="deleteImage(i)">
                             <span style="
                             max-width: 80%;
@@ -624,30 +624,38 @@
               </mat-card>
             </div>
           </div>
-          <!-- <div class="row">
+          <div class="row padding-top-20">
             <div class="col-xs-12">
-              {{customCertificateForm.value|json}}
+              <button mat-raised-button color="accent" (click)="cancel()">
+                Back
+              </button>
+              <button class="pull-right" mat-raised-button color="accent" (click)="submitCertificate()">
+                Next
+              </button>
             </div>
-          </div> -->
+          </div>
         </div>
       </form>
     </div>
   </div>
   <div class="col-xs-11 col-md-5">
     <mat-card class="certificate">
-      <div>
+      <div #certificate>
         <div style="
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            min-height: 56vh;
+            min-height: 30em;
+            padding: 0 1em;
+            word-wrap: break-word;
+            line-height: 1;
         ">
-          <div style="padding: 2vh 0;" *ngFor="let element of customCertificateForm.value.groupArray">
+          <div style="padding: 2em 0;" *ngFor="let element of customCertificateForm.value.groupArray">
             <div [ngSwitch]="element.name">
               <div *ngSwitchCase="'text'">
                 <span [ngStyle]="{
                       'color': element.color,
-                      'font-size':element.font_size+'px',
+                      'font-size':element.font_size+'em',
                       'text-align':element.text_alignment,
                       'font-weight':(element.bold)?'bold':'normal',
                       'font-style':(element.italic)?'italic':'normal',
@@ -658,7 +666,7 @@
               <div *ngSwitchCase="'multi-line'">
                 <span [ngStyle]="{
                         'color': element.color,
-                        'font-size':element.font_size+'px',
+                        'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
                         'font-weight':(element.bold)?'bold':'normal',
                         'font-style':(element.italic)?'italic':'normal',
@@ -669,7 +677,7 @@
               <div *ngSwitchCase="'date'">
                 <span [ngStyle]="{
                         'color': element.color,
-                        'font-size':element.font_size+'px',
+                        'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
                         'font-weight':(element.bold)?'bold':'normal',
                         'font-style':(element.italic)?'italic':'normal',
@@ -680,7 +688,7 @@
               <div *ngSwitchCase="'email'">
                 <span [ngStyle]="{
                         'color': element.color,
-                        'font-size':element.font_size+'px',
+                        'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
                         'font-weight':(element.bold)?'bold':'normal',
                         'font-style':(element.italic)?'italic':'normal',
@@ -693,7 +701,7 @@
               <div *ngSwitchCase="'url'">
                 <span [ngStyle]="{
                         'color': element.color,
-                        'font-size':element.font_size+'px',
+                        'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
                         'font-weight':(element.bold)?'bold':'normal',
                         'font-style':(element.italic)?'italic':'normal',
@@ -706,7 +714,7 @@
               <div *ngSwitchCase="'number'">
                 <span [ngStyle]="{
                         'color': element.color,
-                        'font-size':element.font_size+'px',
+                        'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
                         'font-weight':(element.bold)?'bold':'normal',
                         'font-style':(element.italic)?'italic':'normal',
@@ -717,7 +725,7 @@
               <div *ngSwitchCase="'variable'">
                 <span [ngStyle]="{
                         'color': element.color,
-                        'font-size':element.font_size+'px',
+                        'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
                         'font-weight':(element.bold)?'bold':'normal',
                         'font-style':(element.italic)?'italic':'normal',
@@ -734,7 +742,7 @@
               <div *ngSwitchCase="'logo'">
                 <span [ngStyle]="{
                         'color': element.color,
-                        'height':element.font_size+'px',
+                        'height':element.font_size+'em',
                         'text-align':element.text_alignment,
                         'font-weight':(element.bold)?'bold':'normal',
                         'font-style':(element.italic)?'italic':'normal',
@@ -748,7 +756,7 @@
           </div>
         </div>
         <div style="
-              height: 17vh;
+              height: 8em;
               width: 100%;
               display: inline-block;
               text-align: center;
