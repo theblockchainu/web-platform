@@ -642,18 +642,21 @@
     <mat-card class="certificate">
       <div #certificate>
         <div style="
+            padding: 1em;
+            word-wrap: break-word;
+            line-height: 1;
+            font-family: sans-serif; 
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            min-height: 30em;
-            padding: 0 1em;
-            word-wrap: break-word;
-            line-height: 1;
-        ">
-          <div style="padding: 2em 0;" *ngFor="let element of customCertificateForm.value.groupArray">
-            <div [ngSwitch]="element.name">
-              <div *ngSwitchCase="'text'">
-                <span [ngStyle]="{
+            width: 100%;
+            background-color: #ffffff;
+            ">
+          <div style="min-height: 30em;">
+            <div style="padding: 1em 0;" *ngFor="let element of customCertificateForm.value.groupArray">
+              <div [ngSwitch]="element.name">
+                <div *ngSwitchCase="'text'">
+                  <span [ngStyle]="{
                       'color': element.color,
                       'font-size':element.font_size+'em',
                       'text-align':element.text_alignment,
@@ -662,9 +665,9 @@
                       'text-decoration-line': (element.underline)?'underline':'none'
                     }" style="width: 100%;
                     display: inline-block;">{{element.value}}</span>
-              </div>
-              <div *ngSwitchCase="'multi-line'">
-                <span [ngStyle]="{
+                </div>
+                <div *ngSwitchCase="'multi-line'">
+                  <span [ngStyle]="{
                         'color': element.color,
                         'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
@@ -673,9 +676,9 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">{{element.value}}</span>
-              </div>
-              <div *ngSwitchCase="'date'">
-                <span [ngStyle]="{
+                </div>
+                <div *ngSwitchCase="'date'">
+                  <span [ngStyle]="{
                         'color': element.color,
                         'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
@@ -684,9 +687,9 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">{{element.value|date:'mediumDate'}}</span>
-              </div>
-              <div *ngSwitchCase="'email'">
-                <span [ngStyle]="{
+                </div>
+                <div *ngSwitchCase="'email'">
+                  <span [ngStyle]="{
                         'color': element.color,
                         'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
@@ -695,11 +698,11 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">
-                  <a href="mailto:{{element.value}}" target="_blank">{{element.value}}</a>
-                </span>
-              </div>
-              <div *ngSwitchCase="'url'">
-                <span [ngStyle]="{
+                    <a href="mailto:{{element.value}}" target="_blank">{{element.value}}</a>
+                  </span>
+                </div>
+                <div *ngSwitchCase="'url'">
+                  <span [ngStyle]="{
                         'color': element.color,
                         'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
@@ -708,11 +711,11 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">
-                  <a href="{{element.meta}}" target="_blank">{{element.value}}</a>
-                </span>
-              </div>
-              <div *ngSwitchCase="'number'">
-                <span [ngStyle]="{
+                    <a href="{{element.meta}}" target="_blank">{{element.value}}</a>
+                  </span>
+                </div>
+                <div *ngSwitchCase="'number'">
+                  <span [ngStyle]="{
                         'color': element.color,
                         'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
@@ -721,9 +724,9 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">{{element.value}}</span>
-              </div>
-              <div *ngSwitchCase="'variable'">
-                <span [ngStyle]="{
+                </div>
+                <div *ngSwitchCase="'variable'">
+                  <span [ngStyle]="{
                         'color': element.color,
                         'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
@@ -732,11 +735,11 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">
-                  {{element.value}}
-                </span>
-              </div>
-              <div *ngSwitchCase="'logo'">
-                <span [ngStyle]="{
+                    {{element.value}}
+                  </span>
+                </div>
+                <div *ngSwitchCase="'logo'">
+                  <span [ngStyle]="{
                         'color': element.color,
                         'height':element.font_size+'em',
                         'text-align':element.text_alignment,
@@ -745,20 +748,21 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">
-                  <img style="height: 100%; width: auto;" src="{{element.value}}">
-                </span>
+                    <img style="height: 100%; width: auto;" src="{{element.value}}">
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div style="
+          <div style="
               height: 8em;
               width: 100%;
               display: inline-block;
               text-align: center;
               position: relative;       
          ">
-          <img style="max-height: 100%;width: auto;" src="assets/images/peerbuds-qr.png">
+            <img style="max-height: 100%;width: auto;" src="{{qrcode}}">
+          </div>
         </div>
       </div>
     </mat-card>
