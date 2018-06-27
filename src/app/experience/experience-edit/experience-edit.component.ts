@@ -128,7 +128,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			{ 'owners': [{ 'profiles': ['phone_numbers'] }] },
 			{ 'contents': ['schedules', 'locations'] },
 			'payoutrules',
-			{ 'assessment_models': ['assessment_na_rules', 'assessment_rules'] }
+			{ 'assessment_models': ['assessment_na_rules', 'assessment_rules'] },
 		]
 	};
 
@@ -394,7 +394,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		calendarForm.valueChanges.subscribe(res => {
 			const contentGroupForm = <FormGroup>this.timeline.controls['contentGroup'];
 			const itenaryArray = <FormArray>contentGroupForm.controls['itenary'];
-			if (this.step.toString() === '13' && this.timeline) {
+			if (this.step.toString() === this.timelineStep + '' && this.timeline) {
 				if (itenaryArray.length > 0) {
 					itenariesArray.controls.forEach((itenary: FormGroup) => {
 						if (itenary.controls['startDay']) {
@@ -515,11 +515,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		if (this.sidebarMenuItems) {
 			this.sidebarMenuItems[2]['submenu'] = [];
 			let i = 1;
-			this.itenariesForMenu.forEach(function (item) {
+			this.itenariesForMenu.forEach((item) => {
 				const index = i;
 				this.sidebarMenuItems[2]['submenu'].push({
 					'title': 'Day ' + index,
-					'step': 13 + '_' + index,
+					'step': this.timelineStep + '_' + index,
 					'active': false,
 					'visible': true,
 					'locked': false,
@@ -686,11 +686,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public daysCollection(event) {
 		this.days = event;
 		this.sidebarMenuItems[2]['submenu'] = [];
-		this.days.controls.forEach(function (item, index) {
+		this.days.controls.forEach((item, index) => {
 			const index2 = +index + 1;
 			this.sidebarMenuItems[2]['submenu'].push({
 				'title': 'Day ' + index2,
-				'step': 13 + '_' + index2,
+				'step': this.timelineStep + '_' + index2,
 				'active': false,
 				'visible': true,
 				'locked': false,
@@ -850,18 +850,18 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		}
 	}
 
-	public submitExperienceTimeline(data, timeline?, step?) {
-		if (this.calendarIsValid(step)) {
+	public submitExperienceTimeline() {
+		if (this.calendarIsValid(this.step)) {
 			if ((this.totalGyan > this.gyanBalance) && (this.totalDuration !== this.totalGyan)) {
 				this.snackBar.open('You do not have enough Gyan balance or learning hours to justify a knowledge value of ' + this.totalGyan + ' Gyan. Knowledge value for this experience will be adjusted to ' + this.totalDuration + ' Gyan.',
 					'Ok').onAction().subscribe(result => {
-						data.controls['academicGyan'].patchValue(this.totalDuration >= 2 ? this.totalDuration - 1 : 1);
-						data.controls['nonAcademicGyan'].patchValue(1);
+						this.experience.controls['academicGyan'].patchValue(this.totalDuration >= 2 ? this.totalDuration - 1 : 1);
+						this.experience.controls['nonAcademicGyan'].patchValue(1);
 						this.totalGyan = this.experience.controls['academicGyan'].value + this.experience.controls['nonAcademicGyan'].value;
-						this.checkStatusAndSubmit(data, timeline, step);
+						this.checkStatusAndSubmit(this.experience, this.timeline, this.step);
 					});
 			} else {
-				this.checkStatusAndSubmit(data, timeline, step);
+				this.checkStatusAndSubmit(this.experience, this.timeline, this.step);
 			}
 		}
 	}

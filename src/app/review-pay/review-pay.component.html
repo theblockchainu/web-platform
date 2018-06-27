@@ -25,7 +25,7 @@
                             </span>.
                         </div>
                         <div class="col-xs-12 margin-top-20">
-                            <div class="row" *ngFor="let assessment_rule of collection.assessment_models[0].assessment_rules">
+                            <div class="row" *ngFor="let assessment_rule of assessmentRules">
                                 <div class="col-xs-4">
                                     For {{assessment_rule.value | titlecase}}
                                 </div>
@@ -121,14 +121,15 @@
                             <img src="/assets/images/powered_by_stripe.svg" class="stripe-image">
                         </button>
                     </div>
-	                <div class="terms-text" *ngIf="collection.academicGyan">
-		                <div class="terms-title">This {{collection.type}} is powered by Peerbuds Blockchain.</div>
-		                <p class="text-grey fs-15">
-		                    In order to earn knowledge credits and crypto-currency rewards from this {{collection.type}} you will need to burn {{karma | currency: ' ': ' ': '1.0-0'}} KARMA.
-		                    <br>
-		                    If you do not have enough KARMA balance, you can still participate without receiving any blockchain backed rewards.
-		                </p>
-	                </div>
+                    <div class="terms-text" *ngIf="collection.academicGyan">
+                        <div class="terms-title">This {{collection.type}} is powered by Peerbuds Blockchain.</div>
+                        <p class="text-grey fs-15">
+                            In order to earn knowledge credits and crypto-currency rewards from this {{collection.type}} you will need to burn {{karma
+                            | currency: ' ': ' ': '1.0-0'}} KARMA.
+                            <br> If you do not have enough KARMA balance, you can still participate without receiving any blockchain
+                            backed rewards.
+                        </p>
+                    </div>
                     <button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center" *ngIf="!collection.price || collection.price===0 ">FREE - Join {{collection.type | ucwords}}</button>
 
                     <div class="display-inline-block margin-top-10" *ngIf="savingData">
@@ -149,12 +150,14 @@
                                     <br>
                                     <span class="fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type }}</span>
                                     <br>
-                                    <span class="fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by {{collection.owners[0].profiles[0].first_name | titlecase}} {{collection.owners[0].profiles[0].last_name | ucwords}}</span>
+                                    <span class="fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by {{collection.owners[0].profiles[0].first_name | titlecase}} {{collection.owners[0].profiles[0].last_name
+                                        | ucwords}}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="seperate-section">
-                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate | date: 'EEE, MMM dd' }}</div>
+                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate | date: 'EEE,
+                                MMM dd' }}</div>
                             <div class="" *ngIf="collection.contents">{{collection.contents.length}} Activities</div>
                             <!--<a href="#">See details</a>-->
                         </div>
@@ -202,7 +205,8 @@
                                                 <mat-checkbox formControlName="selected">
                                                     {{scholarship.value.title}}
                                                     <br>
-                                                    <i class="fas fa-fire"></i> {{scholarship.value.id | karmaBalance: 'scholarship' | async | currency : ' ' : ' ' : '1.0-0'}} Karma
+                                                    <i class="fas fa-fire"></i> {{scholarship.value.id | karmaBalance: 'scholarship' | async | currency
+                                                    : ' ' : ' ' : '1.0-0'}} Karma
                                                 </mat-checkbox>
                                             </div>
                                         </div>
@@ -227,8 +231,7 @@
                             <div class="fs-18 margin-bottom-10">Cancellation Policy</div>
                             <div class="fs-14 text-grey">Get a
                                 <span class="text-black">full refund</span> if you cancel within {{collection.cancellationPolicy}} of purchase.
-	                            <br>
-	                            Karma once burned on participation cannot be refunded.
+                                <br> Karma once burned on participation cannot be refunded.
                             </div>
                         </div>
                     </div>

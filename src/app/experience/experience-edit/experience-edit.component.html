@@ -663,7 +663,7 @@
 
 				<!-- step 13 - Certificate -->
 				<div class="onboarding step-13" [hidden]="step!=13">
-					<app-custom-certificate-form (back)="back()" (next)="submitCertificate($event)"></app-custom-certificate-form>
+					<app-custom-certificate-form [formData]="this.certificateForm.value" (back)="back()" (next)="submitCertificate($event)"></app-custom-certificate-form>
 				</div>
 				<!--Step 13 - Disclaimer-->
 				<div class="onboarding step-14" [hidden]="step!=14">
@@ -677,7 +677,7 @@
 									<button mat-raised-button type="button" (click)="back()" color="accent">
 										Back
 									</button>
-									<button class="pull-right" mat-raised-button color="accent" (click)="goto(14)">Next</button>
+									<button class="pull-right" mat-raised-button color="accent" (click)="next()">Next</button>
 								</div>
 							</form>
 						</div>
@@ -693,7 +693,7 @@
 								Create a default timeline for your experience and add activities to it. Later on, you can create as many cohorts with specific
 								start dates.
 							</p>
-							<form [formGroup]="timeline" (ngSubmit)="submitExperienceTimeline(experience, timeline, 14)" novalidate>
+							<form [formGroup]="timeline" (ngSubmit)="submitExperienceTimeline()" novalidate>
 								<!--(ngSubmit)="submitTimeline(timeline)" -->
 								<div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
 									<div class="row" style="margin: 30px 0px 15px -15px;">
@@ -827,7 +827,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="onboarding step-18" [hidden]="step!=19">
+				<div class="onboarding step-18" [hidden]="step!=18">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Connect Payment Option</h2>

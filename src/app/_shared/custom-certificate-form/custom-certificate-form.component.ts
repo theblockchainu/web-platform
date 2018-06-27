@@ -22,7 +22,7 @@ export class CustomCertificateFormComponent implements OnInit {
   public text_align: Array<string>;
   public fieldsArray: Array<FormGroup>;
   public expandedPanelIndex: number;
-  public availableVariables: Array<string>;
+  public availableVariables: Array<VariableObject>;
   public logoFile: File;
 
   @Input() formData: any;
@@ -155,14 +155,33 @@ export class CustomCertificateFormComponent implements OnInit {
     ]);
 
     this.availableVariables = [
-      'participantName',
-      'topics',
-      'assessmentResult',
-      'issuerName',
-      'difficultyLevel',
-      'gyanEarned',
-      'expiryDate'
+      {
+        name: 'Participant Name',
+        value: '{{participantName}}'
+      }, {
+        name: 'Topics',
+        value: '{{topics}}'
+      }, {
+        name: 'Assessment Result',
+        value: '{{assessmentResult}}'
+      }, {
+        name: 'Issuer Name',
+        value: '{{issuerName}}'
+      }, {
+        name: 'Difficulty Level',
+        value: '{{difficultyLevel}}'
+      }, {
+        name: 'Gyan Earned',
+        value: '{{gyanEarned}}'
+      }, {
+        name: 'Expiry Date',
+        value: '{{expiryDate}}'
+      }
     ];
+
+    console.log(this.availableVariables);
+
+    this.customCertificateForm.patchValue(this.formData);
   }
 
   add() {
@@ -268,4 +287,9 @@ export class CustomCertificateFormComponent implements OnInit {
     });
   }
 
+}
+
+interface VariableObject {
+  name: string;
+  value: string;
 }

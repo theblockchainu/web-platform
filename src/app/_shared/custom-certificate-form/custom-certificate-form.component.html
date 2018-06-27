@@ -455,8 +455,8 @@
                         <mat-form-field class="pb-block" [floatLabel]="'never'">
                           <mat-label>Variable</mat-label>
                           <mat-select formControlName="value">
-                            <mat-option *ngFor="let availableVariable of availableVariables" [value]="availableVariable">
-                              {{ availableVariable | titlecase }}
+                            <mat-option *ngFor="let availableVariable of availableVariables" [value]="availableVariable.value">
+                              {{ availableVariable.name | titlecase }}
                             </mat-option>
                           </mat-select>
                           <button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
@@ -732,11 +732,7 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">
-                  <span ngNonBindable>{{</span>
                   {{element.value}}
-                  <span ngNonBindable>
-                    }}
-                  </span>
                 </span>
               </div>
               <div *ngSwitchCase="'logo'">

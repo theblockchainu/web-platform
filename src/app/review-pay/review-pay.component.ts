@@ -8,7 +8,7 @@ import { CollectionService } from '../_services/collection/collection.service';
 import { environment } from '../../environments/environment';
 import { ScholarshipService } from '../_services/scholarship/scholarship.service';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
-import {Meta, Title} from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 
 declare var Stripe: any;
 
@@ -52,6 +52,8 @@ export class ReviewPayComponent implements OnInit {
     public burnAddress: string;
     public selectedScholarship = 'NA';
     paybleKarma: number;
+    public assessmentRules: Array<any>;
+
     constructor(
         private _cookieUtilsService: CookieUtilsService,
         private activatedRoute: ActivatedRoute,
@@ -73,7 +75,7 @@ export class ReviewPayComponent implements OnInit {
     }
 
     ngOnInit() {
-    	this.setTags();
+        this.setTags();
         this.stripe = Stripe(environment.stripePublishableKey);
         const elements = this.stripe.elements();
         this.card = elements.create('card', {
@@ -112,6 +114,7 @@ export class ReviewPayComponent implements OnInit {
                 this.getkarma(collectionData.academicGyan + collectionData.nonAcademicGyan);
                 this.setCurrentCalendar();
                 this.calculateTotalHours();
+                this.sortAssessmentRules();
                 const inputs = document.querySelectorAll('input.field');
                 Array.prototype.forEach.call(inputs, function (input) {
                     input.addEventListener('focus', function () {
@@ -157,30 +160,43 @@ export class ReviewPayComponent implements OnInit {
         this.fetchScholarships();
         this.scholarshipAmount = 0;
     }
-	
-	private setTags() {
-		this.titleService.setTitle('Review & Pay');
-		this.metaService.updateTag({
-			property: 'og:title',
-			content: 'Review & Pay'
-		});
-		this.metaService.updateTag({
-			property: 'og:description',
-			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
-		});
-		this.metaService.updateTag({
-			property: 'og:site_name',
-			content: 'peerbuds.com'
-		});
-		this.metaService.updateTag({
-			property: 'og:image',
-			content: 'https://peerbuds.com/pb_logo_square.png'
-		});
-		this.metaService.updateTag({
-			property: 'og:url',
-			content: environment.clientUrl + this.router.url
-		});
-	}
+
+    private sortAssessmentRules() {
+        const assessmentRulesUnsorted = <Array<any>>this.collection.assessment_models[0].assessment_rules;
+        this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
+            if (a.value > b.value) {
+                return 1;
+            } else if (a.value === b.value) {
+                return 0;
+            } else {
+                return -1;
+            }
+        })
+    }
+
+    private setTags() {
+        this.titleService.setTitle('Review & Pay');
+        this.metaService.updateTag({
+            property: 'og:title',
+            content: 'Review & Pay'
+        });
+        this.metaService.updateTag({
+            property: 'og:description',
+            content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+        });
+        this.metaService.updateTag({
+            property: 'og:site_name',
+            content: 'peerbuds.com'
+        });
+        this.metaService.updateTag({
+            property: 'og:image',
+            content: 'https://peerbuds.com/pb_logo_square.png'
+        });
+        this.metaService.updateTag({
+            property: 'og:url',
+            content: environment.clientUrl + this.router.url
+        });
+    }
 
 
     public processPayment(e: Event) {
@@ -313,24 +329,24 @@ export class ReviewPayComponent implements OnInit {
                 if (scholarship.type === 'public' || scholarship.allowed_collections.length === 0) {
                     // this.availableScholarships.push(scholarship);
                     scholarships.push(this._fb.group({
-						id: scholarship.id,
+                        id: scholarship.id,
                         title: scholarship.title,
                         karma: scholarship.karma,
                         min_gyan: scholarship.min_gyan,
                         max_karma: scholarship.max_karma,
-						ethAddress: scholarship.ethAddress,
+                        ethAddress: scholarship.ethAddress,
                         selected: false
                     }));
                 } else {
                     scholarship.allowed_collections.forEach(collection => {
                         if (this.collectionId === collection.id) {
                             scholarships.push(this._fb.group({
-								id: scholarship.id,
+                                id: scholarship.id,
                                 title: scholarship.title,
                                 karma: scholarship.karma,
                                 min_gyan: scholarship.min_gyan,
                                 max_karma: scholarship.max_karma,
-								ethAddress: scholarship.ethAddress,
+                                ethAddress: scholarship.ethAddress,
                                 selected: false
                             }));
                             // this.availableScholarships.push(scholarship);
@@ -350,19 +366,19 @@ export class ReviewPayComponent implements OnInit {
         this.selectedScholarship = 'NA';
         this.scholarshipForm.value.scholarships.forEach(scholarship => {
             if (scholarship.selected) {
-            	this._scholarshipService.getKarmaBalance(scholarship.id).subscribe(res => {
-					this.scholarshipAmount += Math.min(Math.min(this.karma, res), scholarship.max_karma);
-					this.burnAddress = scholarship.ethAddress;
-					this.selectedScholarship = scholarship.id;
-		
-					const paybleKarma = this.karma - this.scholarshipAmount;
-					this.paybleKarma = (paybleKarma > 0) ? paybleKarma : 0;
-				});
+                this._scholarshipService.getKarmaBalance(scholarship.id).subscribe(res => {
+                    this.scholarshipAmount += Math.min(Math.min(this.karma, res), scholarship.max_karma);
+                    this.burnAddress = scholarship.ethAddress;
+                    this.selectedScholarship = scholarship.id;
+
+                    const paybleKarma = this.karma - this.scholarshipAmount;
+                    this.paybleKarma = (paybleKarma > 0) ? paybleKarma : 0;
+                });
             }
         });
     }
-    
+
     public getGyanForRule(gyanPercent, totalGyan) {
-    	return Math.floor((gyanPercent / 100) * totalGyan);
-	}
+        return Math.floor((gyanPercent / 100) * totalGyan);
+    }
 }

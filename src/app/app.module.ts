@@ -121,10 +121,10 @@ export class RavenErrorHandler implements ErrorHandler {
 	providers: [
 		CookieService,
 		UcWordsPipe,
-		// {
-		// 	provide: ErrorHandler,
-		// 	useClass: RavenErrorHandler
-		// },
+		{
+			provide: ErrorHandler,
+			useClass: RavenErrorHandler
+		},
 		Title,
 		Meta
 	],
