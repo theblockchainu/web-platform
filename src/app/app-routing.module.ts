@@ -177,6 +177,10 @@ const routes: Routes = [
 		loadChildren: 'app/knowledge-story/knowledge-story.module#KnowledgeStoryModule'
 	},
 	{
+		path: 'certificate',
+		loadChildren: 'app/certificate/certificate.module#CertificateModule'
+	},
+	{
 		path: 'sign-up',
 		loadChildren: 'app/sign-up/sign-up.module#SignUpModule'
 	},
