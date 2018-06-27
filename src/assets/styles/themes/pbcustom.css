@@ -1427,6 +1427,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 
 .ui-button .ui-button-text {
 	display: inline-block !important;
+	padding: 0.5em !important;
 }
 
 

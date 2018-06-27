@@ -41,7 +41,7 @@ import { AuthenticationService } from '../../_services/authentication/authentica
 import { environment } from '../../../environments/environment';
 import { SocketService } from '../../_services/socket/socket.service';
 import { AssessmentService } from '../../_services/assessment/assessment.service';
-import {UcWordsPipe} from 'ngx-pipes';
+import { UcWordsPipe } from 'ngx-pipes';
 
 declare var FB: any;
 
@@ -236,7 +236,6 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this._socketService.sendEndView(this.startedView);
 			this._socketService.listenForViewEnded().subscribe(endedView => {
 				delete this.startedView;
-				console.log(endedView);
 			});
 		}
 	}
@@ -251,7 +250,6 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this.toOpenDialogName = params['dialogName'];
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
-		console.log('userId is ' + this.userId);
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
 
 		this.initialised = true;
@@ -385,6 +383,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.events = [];
 		const sortedCalendar = this.sort(this.experience.calendars, 'startDate', 'endDate');
 		this.viewDate = new Date(sortedCalendar[sortedCalendar.length - 1].endDate);
+		console.log('viewDate' + this.viewDate);
+		console.log(this.experience.calendars);
+
 		sortedCalendar.forEach((calendar, index) => {
 			const calendarItenary = [];
 			for (const key in this.itenariesObj) {
@@ -399,7 +400,6 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						startDate: eventDate,
 						contents: contentObj
 					};
-					console.log(itenary);
 					calendarItenary.push(itenary);
 				}
 			}
@@ -525,10 +525,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 							&& contentObj.locations[0].map_lng !== undefined) {
 							this.lat = parseFloat(contentObj.locations[0].map_lat);
 							this.lng = parseFloat(contentObj.locations[0].map_lng);
-							console.log('Lat is: ' + this.lat + ' & Lng is: ' + this.lng);
 						}
 					});
-					console.log(this.itenariesObj);
 					// Scan through all the start-day-groups of contents
 					// Calculate the calendar start and end date of each content group
 					// Sort the contents inside a group based on their start times
@@ -655,7 +653,6 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this._socketService.sendStartView(view);
 		this._socketService.listenForViewStarted().subscribe(startedView => {
 			this.startedView = startedView;
-			console.log(startedView);
 		});
 	}
 
@@ -683,7 +680,6 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			if (err) {
 				console.log(err);
 			} else {
-				console.log(response);
 				const currentPeerReviews = [];
 				const otherPeerReviews = [];
 				response.forEach(review => {
@@ -694,7 +690,6 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 					}
 				});
 				this.reviews = currentPeerReviews.concat(otherPeerReviews);
-				console.log(this.reviews);
 				this.userRating = this._collectionService.calculateRating(this.reviews);
 				this.loadingReviews = false;
 			}
@@ -723,11 +718,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			if (err) {
 				console.log(err);
 			} else {
-				console.log(response);
 				this.hasBookmarked = false;
 				response.forEach(bookmark => {
 					if (bookmark.peer[0].id === this.userId) {
-						console.log('user bookmarked');
 						this.hasBookmarked = true;
 						this.bookmark = bookmark;
 					}
@@ -961,16 +954,13 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	rsvpContent(contentId) {
 		this._contentService.createRSVP(contentId, this.calendarId)
 			.subscribe((response: any) => {
-				console.log(response);
 				this.initializeExperience();
 			});
 	}
 
 	cancelRSVP(content) {
-		console.log(content);
 		this._contentService.deleteRSVP(content.rsvpId)
 			.subscribe((response: any) => {
-				console.log(response);
 				this.initializeExperience();
 			});
 	}
@@ -1568,7 +1558,6 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				}
 			})
 		}, function (response) {
-			console.log('response is ', response);
 		});
 	}
 
@@ -1592,9 +1581,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						thisUserView.push(view);
 						const startTime = moment(view.startTime);
 						const endTime = moment(view.endTime);
-						console.log(endTime.toString());
 						const thisViewTime = endTime.diff(startTime);
-						console.log(thisViewTime);
 						totalUserViewTime += thisViewTime;
 					}
 				});
@@ -1699,7 +1686,6 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	public editReply(reply: any) {
-		console.log(reply);
 		this.editReplyForm = this._fb.group({
 			description: reply.description,
 			id: reply.id
@@ -1756,7 +1742,6 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 					}
 				});
 				this._assessmentService.submitAssessment(assessmentArray).subscribe(result => {
-					console.log(result);
 					this.snackBar.open('Your assessment has been submitted. Students will be informed over email.', 'Ok', { duration: 5000 });
 					this._authenticationService.isLoginSubject.next(true);
 				});
@@ -1777,19 +1762,18 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 
 	public openMessageDialog(peer) {
 		this.dialogsService.messageParticipant(peer).subscribe(result => {
-			// console.log(result);
 		});
 	}
-	
+
 	public addToEthereum() {
 		this._collectionService.addToEthereum(this.experienceId)
 			.subscribe(res => {
 				this.initializeExperience();
 			}, err => {
-				this.snackBar.open('Could not add to Peerbuds Blockchain. Try again later.', 'Ok', {duration: 5000});
+				this.snackBar.open('Could not add to Peerbuds Blockchain. Try again later.', 'Ok', { duration: 5000 });
 			});
 	}
-	
+
 }
 
 interface AssessmentResult {

@@ -27,7 +27,9 @@ import {
     MatSnackBarModule,
     MatAutocompleteModule,
     MatTooltipModule,
-    MatStepperModule
+    MatStepperModule,
+    MatFormFieldModule,
+    MatButtonToggleModule
 } from '@angular/material';
 import {
     ModalModule, BsDropdownModule, ProgressbarModule,
@@ -36,7 +38,7 @@ import {
 import {
     FileUploadModule, ScheduleModule, DialogModule,
     CheckboxModule, LightboxModule, RatingModule,
-    AccordionModule, SliderModule
+    AccordionModule, SliderModule, ColorPickerModule
 } from 'primeng/primeng';
 import { NgPipesModule, UcWordsPipe } from 'ngx-pipes';
 import { CalendarModule } from 'angular-calendar';
@@ -92,6 +94,7 @@ import { ClassCardComponent } from './class-card/class-card.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { AccreditationService } from '../_services/accreditation/accreditation.service';
+import { CustomCertificateFormComponent } from './custom-certificate-form/custom-certificate-form.component';
 
 @NgModule({
     imports: [
@@ -126,7 +129,15 @@ import { AccreditationService } from '../_services/accreditation/accreditation.s
         MatTooltipModule,
         ShareModule.forRoot(),
         RouterModule,
-        NgPipesModule
+        NgPipesModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        ColorPickerModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonToggleModule,
+        MatCardModule,
+        MatDatepickerModule
     ],
     declarations: [
         ExtractTimePipe,
@@ -143,7 +154,8 @@ import { AccreditationService } from '../_services/accreditation/accreditation.s
         ExperienceCardComponent,
         CommunityCardComponent,
         PeerCardComponent,
-        ClassCardComponent
+        ClassCardComponent,
+        CustomCertificateFormComponent
     ],
     providers: [
         CollectionService,
@@ -250,7 +262,8 @@ import { AccreditationService } from '../_services/accreditation/accreditation.s
         ClassCardComponent,
         OwlDateTimeModule,
         OwlNativeDateTimeModule,
-        AmazingTimePickerModule
+        AmazingTimePickerModule,
+        CustomCertificateFormComponent
     ]
 })
 export class SharedModule {

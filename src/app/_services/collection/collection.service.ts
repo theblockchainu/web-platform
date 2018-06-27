@@ -108,7 +108,7 @@ export class CollectionService {
 			});
 
 	}
-	
+
 	public getCollectionEthereumInfo(id: string, param: any) {
 		const filter = JSON.stringify(param);
 		return this.httpClient
@@ -116,9 +116,9 @@ export class CollectionService {
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
-		
+
 	}
-	
+
 	public addToEthereum(id: string) {
 		const body = {};
 		return this.httpClient
@@ -126,7 +126,7 @@ export class CollectionService {
 			.map((response: any) => response, (err) => {
 				console.log('Error: ' + err);
 			});
-		
+
 	}
 
 	/**
@@ -1038,4 +1038,9 @@ export class CollectionService {
 	public linkTopics(experienceId, body) {
 		return this.httpClient.patch(environment.apiUrl + '/api/collections/' + experienceId + '/topics/rel', body, this.requestHeaderService.options);
 	}
+
+	public submitCertificate(experienceId: string, body: any) {
+		return this.httpClient.patch(environment.apiUrl + '/api/collections/' + experienceId + '/certificate_template', body, this.requestHeaderService.options);
+	}
+
 }
