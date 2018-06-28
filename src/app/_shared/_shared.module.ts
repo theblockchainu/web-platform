@@ -95,7 +95,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { AccreditationService } from '../_services/accreditation/accreditation.service';
 import { CustomCertificateFormComponent } from './custom-certificate-form/custom-certificate-form.component';
-
+import { CertificateService } from '../_services/certificate/certificate.service';
+import { SafePipe } from './safe-pipe/safe.pipe';
 @NgModule({
     imports: [
         CommonModule,
@@ -155,7 +156,8 @@ import { CustomCertificateFormComponent } from './custom-certificate-form/custom
         CommunityCardComponent,
         PeerCardComponent,
         ClassCardComponent,
-        CustomCertificateFormComponent
+        CustomCertificateFormComponent,
+        SafePipe
     ],
     providers: [
         CollectionService,
@@ -185,7 +187,8 @@ import { CustomCertificateFormComponent } from './custom-certificate-form/custom
         ScholarshipService,
         KnowledgeStoryService,
         UcWordsPipe,
-        AccreditationService
+        AccreditationService,
+        CertificateService
     ],
     exports: [
         CommonModule,
@@ -263,7 +266,8 @@ import { CustomCertificateFormComponent } from './custom-certificate-form/custom
         OwlDateTimeModule,
         OwlNativeDateTimeModule,
         AmazingTimePickerModule,
-        CustomCertificateFormComponent
+        CustomCertificateFormComponent,
+        SafePipe
     ]
 })
 export class SharedModule {
