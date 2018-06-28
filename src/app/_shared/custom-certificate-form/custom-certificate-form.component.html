@@ -6,7 +6,7 @@
 			</div>
 			<form [formGroup]="customCertificateForm">
 				<div class="col-xs-12" formArrayName="groupArray">
-					<div class="row padding-bottom-20" *ngFor="let group of customCertificateForm.controls['groupArray'].controls; let i=index">
+					<div class="row padding-bottom-20" *ngFor="let group of customCertificateForm.controls['groupArray']['controls']; let i=index">
 						<div class="col-xs-12" [ngSwitch]="group.controls['name'].value">
 							<mat-card class="padding-top-10 padding-left-10 padding-right-10 padding-bottom-5" formGroupName="{{i}}">
 								<div class="row" *ngSwitchCase="'text'">
