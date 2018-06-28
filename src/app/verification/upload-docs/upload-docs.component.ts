@@ -13,8 +13,8 @@ import { RequestHeaderService } from '../../_services/requestHeader/request-head
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const PHONE_REGEX = /^(\+\d{1,3}[- ]?)?\d{7,10}$/;
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
-import {startWith, map} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
+import { startWith, map } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
 	selector: 'upload-docs',
@@ -114,14 +114,14 @@ export class UploadDocsComponent implements OnInit {
 						console.log(value);
 						return typeof value === 'string' ? value : value.country;
 					}),
-					map(country =>  {
+					map(country => {
 						console.log(country);
 						return country ? this.filter(country) : this.countryCodes.slice();
 					})
 				);
 		});
 	}
-	
+
 	filter(country: string): CountryCode[] {
 		return this.countryCodes.filter(option => {
 			if (option.country.toLowerCase().indexOf(country.toLowerCase()) === 0) {
@@ -201,7 +201,7 @@ export class UploadDocsComponent implements OnInit {
 				this.router.navigate(['verification', +this.step]);
 			}, err => {
 				this.httpLoading = false;
-				this.phoneFormError = err.error.error.message;
+				this.phoneFormError = err;
 			}
 			);
 		console.log('sms sent');
@@ -262,7 +262,7 @@ export class UploadDocsComponent implements OnInit {
 				this.success = res;
 				this.step = nextStep;
 				this.router.navigate(['invite', '1']);
-				
+
 			},
 				(err) => {
 					this.httpLoading = false;
@@ -327,7 +327,7 @@ export class UploadDocsComponent implements OnInit {
 	public openIdPolicy() {
 		this.dialogsService.openIdPolicy().subscribe();
 	}
-	
+
 	displayFn(country: CountryCode) {
 		return country ? country.country : undefined;
 	}
