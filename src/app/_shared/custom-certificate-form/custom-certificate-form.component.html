@@ -1,662 +1,658 @@
 <div class="row">
-  <div class="col-xs-11 col-md-7 ">
-    <div class="row editSection">
-      <div class="col-xs-12">
-        <h2 class="title">Lets create a certificate for this course</h2>
-      </div>
-      <form [formGroup]="customCertificateForm">
-        <div class="col-xs-12" formArrayName="groupArray">
-          <div class="row padding-bottom-20" *ngFor="let group of customCertificateForm.controls['groupArray'].controls; let i=index">
-            <div class="col-xs-12" [ngSwitch]="group.controls['name'].value">
-              <mat-card class="padding-top-10 padding-left-10 padding-right-10 padding-bottom-5" formGroupName="{{i}}">
-                <div class="row" *ngSwitchCase="'text'">
-                  <div class="col-xs-12">
-                    <div class="row">
-                      <div class="col-xs-2 padding-top-20 center">
-                        <b>Text</b>
-                      </div>
-                      <div class="col-xs-7">
-                        <mat-form-field class="pb-block" [floatLabel]="'never'">
-                          <mat-label>Text</mat-label>
-                          <input matInput formControlName="value">
-                          <button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
-                            <mat-icon>text_format</mat-icon>
-                          </button>
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="deleteField($event,i)">
-                          <mat-icon>delete_outline</mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="up(i)">
-                          <mat-icon>keyboard_arrow_up </mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="down(i)">
-                          <mat-icon>keyboard_arrow_down </mat-icon>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="row" *ngIf="expandedPanelIndex===i">
-                      <div class="col-xs-1 padding-top-10">
-                        <p-colorPicker formControlName="color"></p-colorPicker>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-right-0">
-                        <mat-form-field class="pb-block" [floatLabel]="'auto'">
-                          <mat-label>font size</mat-label>
-                          <input matInput placeholder="Amount" type="number" formControlName="font_size">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle-group formControlName="text_alignment">
-                          <mat-button-toggle value="left">
-                            <mat-icon>format_align_left</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="center">
-                            <mat-icon>format_align_center</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="right">
-                            <mat-icon>format_align_right</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="justify">
-                            <mat-icon>format_align_justify</mat-icon>
-                          </mat-button-toggle>
-                        </mat-button-toggle-group>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
-                          <mat-icon>format_bold</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
-                          <mat-icon>format_italic</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
-                          <mat-icon>format_underlined</mat-icon>
-                        </mat-button-toggle>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" *ngSwitchCase="'multi-line'">
-                  <div class="col-xs-12">
-                    <div class="row">
-                      <div class="col-xs-2 padding-top-20 center">
-                        <b>Multiline</b>
-                      </div>
-                      <div class="col-xs-7">
-                        <mat-form-field [floatLabel]="'never'" class="pb-block">
-                          <mat-label>Text</mat-label>
-                          <textarea matInput #description maxlength="2000" rows="1" maxRows="3" matTextareaAutosize formControlName="value" class="title"></textarea>
-                          <button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
-                            <mat-icon>text_format</mat-icon>
-                          </button>
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="deleteField($event,i)">
-                          <mat-icon>delete_outline</mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="up(i)">
-                          <mat-icon>keyboard_arrow_up </mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="down(i)">
-                          <mat-icon>keyboard_arrow_down </mat-icon>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="row" *ngIf="expandedPanelIndex===i">
-                      <div class="col-xs-1 padding-top-10">
-                        <p-colorPicker formControlName="color"></p-colorPicker>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-right-0">
-                        <mat-form-field class="pb-block" [floatLabel]="'auto'">
-                          <mat-label>font size</mat-label>
-                          <input matInput placeholder="Amount" type="number" formControlName="font_size">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle-group formControlName="text_alignment">
-                          <mat-button-toggle value="left">
-                            <mat-icon>format_align_left</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="center">
-                            <mat-icon>format_align_center</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="right">
-                            <mat-icon>format_align_right</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="justify">
-                            <mat-icon>format_align_justify</mat-icon>
-                          </mat-button-toggle>
-                        </mat-button-toggle-group>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
-                          <mat-icon>format_bold</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
-                          <mat-icon>format_italic</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
-                          <mat-icon>format_underlined</mat-icon>
-                        </mat-button-toggle>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" *ngSwitchCase="'date'">
-                  <div class="col-xs-12">
-                    <div class="row">
-                      <div class="col-xs-2 padding-top-20 center">
-                        <b>Date</b>
-                      </div>
-                      <div class="col-xs-7">
-                        <mat-form-field [floatLabel]="'never'" class="dateStyles pb-block">
-                          <mat-label>Date</mat-label>
-                          <input matInput [matDatepicker]="startDatePicker" (click)="startDatePicker.open()" placeholder="Start date" formControlName="value">
-                          <mat-datepicker touchUi="true" #startDatePicker disabled="false"></mat-datepicker>
-                          <button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
-                            <mat-icon>text_format</mat-icon>
-                          </button>
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="deleteField($event,i)">
-                          <mat-icon>delete_outline</mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="up(i)">
-                          <mat-icon>keyboard_arrow_up </mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="down(i)">
-                          <mat-icon>keyboard_arrow_down </mat-icon>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="row" *ngIf="expandedPanelIndex===i">
-                      <div class="col-xs-1 padding-top-10">
-                        <p-colorPicker formControlName="color"></p-colorPicker>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-right-0">
-                        <mat-form-field class="pb-block" [floatLabel]="'auto'">
-                          <mat-label>font size</mat-label>
-                          <input matInput placeholder="Amount" type="number" formControlName="font_size">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle-group formControlName="text_alignment">
-                          <mat-button-toggle value="left">
-                            <mat-icon>format_align_left</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="center">
-                            <mat-icon>format_align_center</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="right">
-                            <mat-icon>format_align_right</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="justify">
-                            <mat-icon>format_align_justify</mat-icon>
-                          </mat-button-toggle>
-                        </mat-button-toggle-group>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
-                          <mat-icon>format_bold</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
-                          <mat-icon>format_italic</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
-                          <mat-icon>format_underlined</mat-icon>
-                        </mat-button-toggle>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" *ngSwitchCase="'email'">
-                  <div class="col-xs-12">
-                    <div class="row">
-                      <div class="col-xs-2 padding-top-20 center">
-                        <b>E-mail</b>
-                      </div>
-                      <div class="col-xs-7">
-                        <mat-form-field class="pb-block" [floatLabel]="'never'">
-                          <mat-label>Email</mat-label>
-                          <input matInput type="email" placeholder="Email" formControlName="value">
-                          <mat-error *ngIf="group.controls['value'].hasError('email')">
-                            Please enter a valid email address
-                          </mat-error>
-                          <button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
-                            <mat-icon>text_format</mat-icon>
-                          </button>
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="deleteField($event,i)">
-                          <mat-icon>delete_outline</mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="up(i)">
-                          <mat-icon>keyboard_arrow_up </mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="down(i)">
-                          <mat-icon>keyboard_arrow_down </mat-icon>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="row" *ngIf="expandedPanelIndex===i">
-                      <div class="col-xs-1 padding-top-10">
-                        <p-colorPicker formControlName="color"></p-colorPicker>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-right-0">
-                        <mat-form-field class="pb-block" [floatLabel]="'auto'">
-                          <mat-label>font size</mat-label>
-                          <input matInput placeholder="Amount" type="number" formControlName="font_size">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle-group formControlName="text_alignment">
-                          <mat-button-toggle value="left">
-                            <mat-icon>format_align_left</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="center">
-                            <mat-icon>format_align_center</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="right">
-                            <mat-icon>format_align_right</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="justify">
-                            <mat-icon>format_align_justify</mat-icon>
-                          </mat-button-toggle>
-                        </mat-button-toggle-group>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
-                          <mat-icon>format_bold</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
-                          <mat-icon>format_italic</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
-                          <mat-icon>format_underlined</mat-icon>
-                        </mat-button-toggle>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" *ngSwitchCase="'url'">
-                  <div class="col-xs-12">
-                    <div class="row">
-                      <div class="col-xs-2 padding-top-20 center">
-                        <b>URL</b>
-                      </div>
-                      <div class="col-xs-3">
-                        <mat-form-field class="pb-block" [floatLabel]="'auto'">
-                          <mat-label>Text</mat-label>
-                          <input matInput type="text" formControlName="value">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-4">
-                        <mat-form-field class="pb-block" [floatLabel]="'auto'">
-                          <mat-label>Url</mat-label>
-                          <input matInput type="url" formControlName="meta">
-                          <button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
-                            <mat-icon>text_format</mat-icon>
-                          </button>
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="deleteField($event,i)">
-                          <mat-icon>delete_outline</mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="up(i)">
-                          <mat-icon>keyboard_arrow_up </mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="down(i)">
-                          <mat-icon>keyboard_arrow_down </mat-icon>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="row" *ngIf="expandedPanelIndex===i">
-                      <div class="col-xs-1 padding-top-10">
-                        <p-colorPicker formControlName="color"></p-colorPicker>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-right-0">
-                        <mat-form-field class="pb-block" [floatLabel]="'auto'">
-                          <mat-label>font size</mat-label>
-                          <input matInput placeholder="Amount" type="number" formControlName="font_size">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle-group formControlName="text_alignment">
-                          <mat-button-toggle value="left">
-                            <mat-icon>format_align_left</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="center">
-                            <mat-icon>format_align_center</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="right">
-                            <mat-icon>format_align_right</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="justify">
-                            <mat-icon>format_align_justify</mat-icon>
-                          </mat-button-toggle>
-                        </mat-button-toggle-group>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
-                          <mat-icon>format_bold</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
-                          <mat-icon>format_italic</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
-                          <mat-icon>format_underlined</mat-icon>
-                        </mat-button-toggle>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" *ngSwitchCase="'number'">
-                  <div class="col-xs-12">
-                    <div class="row">
-                      <div class="col-xs-2 padding-top-20 center">
-                        <b>Number</b>
-                      </div>
-                      <div class="col-xs-7">
-                        <mat-form-field class="pb-block" [floatLabel]="'never'">
-                          <mat-label>Number</mat-label>
-                          <input type="number" matInput formControlName="value">
-                          <button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
-                            <mat-icon>text_format</mat-icon>
-                          </button>
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="deleteField($event,i)">
-                          <mat-icon>delete_outline</mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="up(i)">
-                          <mat-icon>keyboard_arrow_up </mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="down(i)">
-                          <mat-icon>keyboard_arrow_down </mat-icon>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="row" *ngIf="expandedPanelIndex===i">
-                      <div class="col-xs-1 padding-top-10">
-                        <p-colorPicker formControlName="color"></p-colorPicker>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-right-0">
-                        <mat-form-field class="pb-block" [floatLabel]="'auto'">
-                          <mat-label>font size</mat-label>
-                          <input matInput placeholder="Amount" type="number" formControlName="font_size">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle-group formControlName="text_alignment">
-                          <mat-button-toggle value="left">
-                            <mat-icon>format_align_left</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="center">
-                            <mat-icon>format_align_center</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="right">
-                            <mat-icon>format_align_right</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="justify">
-                            <mat-icon>format_align_justify</mat-icon>
-                          </mat-button-toggle>
-                        </mat-button-toggle-group>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
-                          <mat-icon>format_bold</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
-                          <mat-icon>format_italic</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
-                          <mat-icon>format_underlined</mat-icon>
-                        </mat-button-toggle>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" *ngSwitchCase="'variable'">
-                  <div class="col-xs-12">
-                    <div class="row">
-                      <div class="col-xs-2 padding-top-20 center">
-                        <b>Variable</b>
-                      </div>
-                      <div class="col-xs-7">
-                        <mat-form-field class="pb-block" [floatLabel]="'never'">
-                          <mat-label>Variable</mat-label>
-                          <mat-select formControlName="value">
-                            <mat-option *ngFor="let availableVariable of availableVariables" [value]="availableVariable.value">
-                              {{ availableVariable.name | titlecase }}
-                            </mat-option>
-                          </mat-select>
-                          <button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
-                            <mat-icon>text_format</mat-icon>
-                          </button>
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="deleteField($event,i)">
-                          <mat-icon>delete_outline</mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="up(i)">
-                          <mat-icon>keyboard_arrow_up </mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="down(i)">
-                          <mat-icon>keyboard_arrow_down </mat-icon>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="row" *ngIf="expandedPanelIndex===i">
-                      <div class="col-xs-1 padding-top-10">
-                        <p-colorPicker formControlName="color"></p-colorPicker>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-right-0">
-                        <mat-form-field class="pb-block" [floatLabel]="'auto'">
-                          <mat-label>font size</mat-label>
-                          <input matInput placeholder="Amount" type="number" formControlName="font_size">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle-group formControlName="text_alignment">
-                          <mat-button-toggle value="left">
-                            <mat-icon>format_align_left</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="center">
-                            <mat-icon>format_align_center</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="right">
-                            <mat-icon>format_align_right</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="justify">
-                            <mat-icon>format_align_justify</mat-icon>
-                          </mat-button-toggle>
-                        </mat-button-toggle-group>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
-                          <mat-icon>format_bold</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
-                          <mat-icon>format_italic</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
-                          <mat-icon>format_underlined</mat-icon>
-                        </mat-button-toggle>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" *ngSwitchCase="'logo'">
-                  <div class="col-xs-12">
-                    <div class="row">
-                      <div class="col-xs-2 padding-top-20 center">
-                        <b>Logo</b>
-                      </div>
-                      <div class="col-xs-6 padding-top-10">
-                        <button *ngIf="!logoFile" [hidden]="uploadingImage" (click)="fileInput.click()" mat-raised-button>
-                          Upload File
-                        </button>
-                        <span *ngIf="logoFile">
-                          <button style="width: 90%;" mat-raised-button *ngIf="customCertificateForm.value.groupArray[i].value && customCertificateForm.value.groupArray[i].value.length>0"
-                            (click)="deleteImage(i)">
-                            <span style="
+	<div class="col-xs-11 col-md-7 ">
+		<div class="row editSection">
+			<div class="col-xs-12">
+				<h2 class="title">Lets create a certificate for this experience</h2>
+			</div>
+			<form [formGroup]="customCertificateForm">
+				<div class="col-xs-12" formArrayName="groupArray">
+					<div class="row padding-bottom-20" *ngFor="let group of customCertificateForm.controls['groupArray']['controls']; let i=index">
+						<div class="col-xs-12" [ngSwitch]="group.controls['name'].value">
+							<mat-card class="padding-top-10 padding-left-10 padding-right-10 padding-bottom-5" formGroupName="{{i}}">
+								<div class="row" *ngSwitchCase="'text'">
+									<div class="col-xs-12">
+										<div class="row">
+											<div class="col-xs-2 padding-top-20 center">
+												<b>Text</b>
+											</div>
+											<div class="col-xs-7">
+												<mat-form-field class="pb-block" [floatLabel]="'never'">
+													<mat-label>Text</mat-label>
+													<input matInput formControlName="value">
+													<button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
+														<mat-icon>text_format</mat-icon>
+													</button>
+												</mat-form-field>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="deleteField($event,i)">
+													<mat-icon>delete_outline</mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="up(i)">
+													<mat-icon>keyboard_arrow_up </mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="down(i)">
+													<mat-icon>keyboard_arrow_down </mat-icon>
+												</button>
+											</div>
+										</div>
+										<div class="row" *ngIf="expandedPanelIndex===i">
+											<div class="col-xs-1 padding-top-10">
+												<p-colorPicker formControlName="color"></p-colorPicker>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-right-0">
+												<mat-form-field class="pb-block" [floatLabel]="'auto'">
+													<mat-label>font size</mat-label>
+													<input matInput placeholder="Amount" type="number" formControlName="font_size">
+												</mat-form-field>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle-group formControlName="text_alignment">
+													<mat-button-toggle value="left">
+														<mat-icon>format_align_left</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="center">
+														<mat-icon>format_align_center</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="right">
+														<mat-icon>format_align_right</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="justify">
+														<mat-icon>format_align_justify</mat-icon>
+													</mat-button-toggle>
+												</mat-button-toggle-group>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
+													<mat-icon>format_bold</mat-icon>
+												</mat-button-toggle>
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
+													<mat-icon>format_italic</mat-icon>
+												</mat-button-toggle>
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
+													<mat-icon>format_underlined</mat-icon>
+												</mat-button-toggle>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row" *ngSwitchCase="'multi-line'">
+									<div class="col-xs-12">
+										<div class="row">
+											<div class="col-xs-2 padding-top-20 center">
+												<b>Multiline</b>
+											</div>
+											<div class="col-xs-7">
+												<mat-form-field [floatLabel]="'never'" class="pb-block">
+													<mat-label>Text</mat-label>
+													<textarea matInput #description maxlength="2000" rows="1" maxRows="3" matTextareaAutosize formControlName="value" class="title"></textarea>
+													<button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
+														<mat-icon>text_format</mat-icon>
+													</button>
+												</mat-form-field>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="deleteField($event,i)">
+													<mat-icon>delete_outline</mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="up(i)">
+													<mat-icon>keyboard_arrow_up </mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="down(i)">
+													<mat-icon>keyboard_arrow_down </mat-icon>
+												</button>
+											</div>
+										</div>
+										<div class="row" *ngIf="expandedPanelIndex===i">
+											<div class="col-xs-1 padding-top-10">
+												<p-colorPicker formControlName="color"></p-colorPicker>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-right-0">
+												<mat-form-field class="pb-block" [floatLabel]="'auto'">
+													<mat-label>font size</mat-label>
+													<input matInput placeholder="Amount" type="number" formControlName="font_size">
+												</mat-form-field>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle-group formControlName="text_alignment">
+													<mat-button-toggle value="left">
+														<mat-icon>format_align_left</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="center">
+														<mat-icon>format_align_center</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="right">
+														<mat-icon>format_align_right</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="justify">
+														<mat-icon>format_align_justify</mat-icon>
+													</mat-button-toggle>
+												</mat-button-toggle-group>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
+													<mat-icon>format_bold</mat-icon>
+												</mat-button-toggle>
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
+													<mat-icon>format_italic</mat-icon>
+												</mat-button-toggle>
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
+													<mat-icon>format_underlined</mat-icon>
+												</mat-button-toggle>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row" *ngSwitchCase="'date'">
+									<div class="col-xs-12">
+										<div class="row">
+											<div class="col-xs-2 padding-top-20 center">
+												<b>Date</b>
+											</div>
+											<div class="col-xs-7">
+												<mat-form-field [floatLabel]="'never'" class="dateStyles pb-block">
+													<mat-label>Date</mat-label>
+													<input matInput [matDatepicker]="startDatePicker" (click)="startDatePicker.open()" placeholder="Start date" formControlName="value">
+													<mat-datepicker touchUi="true" #startDatePicker disabled="false"></mat-datepicker>
+													<button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
+														<mat-icon>text_format</mat-icon>
+													</button>
+												</mat-form-field>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="deleteField($event,i)">
+													<mat-icon>delete_outline</mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="up(i)">
+													<mat-icon>keyboard_arrow_up </mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="down(i)">
+													<mat-icon>keyboard_arrow_down </mat-icon>
+												</button>
+											</div>
+										</div>
+										<div class="row" *ngIf="expandedPanelIndex===i">
+											<div class="col-xs-1 padding-top-10">
+												<p-colorPicker formControlName="color"></p-colorPicker>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-right-0">
+												<mat-form-field class="pb-block" [floatLabel]="'auto'">
+													<mat-label>font size</mat-label>
+													<input matInput placeholder="Amount" type="number" formControlName="font_size">
+												</mat-form-field>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle-group formControlName="text_alignment">
+													<mat-button-toggle value="left">
+														<mat-icon>format_align_left</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="center">
+														<mat-icon>format_align_center</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="right">
+														<mat-icon>format_align_right</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="justify">
+														<mat-icon>format_align_justify</mat-icon>
+													</mat-button-toggle>
+												</mat-button-toggle-group>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
+													<mat-icon>format_bold</mat-icon>
+												</mat-button-toggle>
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
+													<mat-icon>format_italic</mat-icon>
+												</mat-button-toggle>
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
+													<mat-icon>format_underlined</mat-icon>
+												</mat-button-toggle>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row" *ngSwitchCase="'email'">
+									<div class="col-xs-12">
+										<div class="row">
+											<div class="col-xs-2 padding-top-20 center">
+												<b>E-mail</b>
+											</div>
+											<div class="col-xs-7">
+												<mat-form-field class="pb-block" [floatLabel]="'never'">
+													<mat-label>Email</mat-label>
+													<input matInput type="email" placeholder="Email" formControlName="value">
+													<mat-error *ngIf="group.controls['value'].hasError('email')">
+														Please enter a valid email address
+													</mat-error>
+													<button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
+														<mat-icon>text_format</mat-icon>
+													</button>
+												</mat-form-field>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="deleteField($event,i)">
+													<mat-icon>delete_outline</mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="up(i)">
+													<mat-icon>keyboard_arrow_up </mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="down(i)">
+													<mat-icon>keyboard_arrow_down </mat-icon>
+												</button>
+											</div>
+										</div>
+										<div class="row" *ngIf="expandedPanelIndex===i">
+											<div class="col-xs-1 padding-top-10">
+												<p-colorPicker formControlName="color"></p-colorPicker>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-right-0">
+												<mat-form-field class="pb-block" [floatLabel]="'auto'">
+													<mat-label>font size</mat-label>
+													<input matInput placeholder="Amount" type="number" formControlName="font_size">
+												</mat-form-field>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle-group formControlName="text_alignment">
+													<mat-button-toggle value="left">
+														<mat-icon>format_align_left</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="center">
+														<mat-icon>format_align_center</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="right">
+														<mat-icon>format_align_right</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="justify">
+														<mat-icon>format_align_justify</mat-icon>
+													</mat-button-toggle>
+												</mat-button-toggle-group>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
+													<mat-icon>format_bold</mat-icon>
+												</mat-button-toggle>
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
+													<mat-icon>format_italic</mat-icon>
+												</mat-button-toggle>
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
+													<mat-icon>format_underlined</mat-icon>
+												</mat-button-toggle>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row" *ngSwitchCase="'url'">
+									<div class="col-xs-12">
+										<div class="row">
+											<div class="col-xs-2 padding-top-20 center">
+												<b>URL</b>
+											</div>
+											<div class="col-xs-3">
+												<mat-form-field class="pb-block" [floatLabel]="'auto'">
+													<mat-label>Text</mat-label>
+													<input matInput type="text" formControlName="value">
+												</mat-form-field>
+											</div>
+											<div class="col-xs-4">
+												<mat-form-field class="pb-block" [floatLabel]="'auto'">
+													<mat-label>Url</mat-label>
+													<input matInput type="url" formControlName="meta">
+													<button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
+														<mat-icon>text_format</mat-icon>
+													</button>
+												</mat-form-field>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="deleteField($event,i)">
+													<mat-icon>delete_outline</mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="up(i)">
+													<mat-icon>keyboard_arrow_up </mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="down(i)">
+													<mat-icon>keyboard_arrow_down </mat-icon>
+												</button>
+											</div>
+										</div>
+										<div class="row" *ngIf="expandedPanelIndex===i">
+											<div class="col-xs-1 padding-top-10">
+												<p-colorPicker formControlName="color"></p-colorPicker>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-right-0">
+												<mat-form-field class="pb-block" [floatLabel]="'auto'">
+													<mat-label>font size</mat-label>
+													<input matInput placeholder="Amount" type="number" formControlName="font_size">
+												</mat-form-field>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle-group formControlName="text_alignment">
+													<mat-button-toggle value="left">
+														<mat-icon>format_align_left</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="center">
+														<mat-icon>format_align_center</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="right">
+														<mat-icon>format_align_right</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="justify">
+														<mat-icon>format_align_justify</mat-icon>
+													</mat-button-toggle>
+												</mat-button-toggle-group>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
+													<mat-icon>format_bold</mat-icon>
+												</mat-button-toggle>
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
+													<mat-icon>format_italic</mat-icon>
+												</mat-button-toggle>
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
+													<mat-icon>format_underlined</mat-icon>
+												</mat-button-toggle>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row" *ngSwitchCase="'number'">
+									<div class="col-xs-12">
+										<div class="row">
+											<div class="col-xs-2 padding-top-20 center">
+												<b>Number</b>
+											</div>
+											<div class="col-xs-7">
+												<mat-form-field class="pb-block" [floatLabel]="'never'">
+													<mat-label>Number</mat-label>
+													<input type="number" matInput formControlName="value">
+													<button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
+														<mat-icon>text_format</mat-icon>
+													</button>
+												</mat-form-field>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="deleteField($event,i)">
+													<mat-icon>delete_outline</mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="up(i)">
+													<mat-icon>keyboard_arrow_up </mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="down(i)">
+													<mat-icon>keyboard_arrow_down </mat-icon>
+												</button>
+											</div>
+										</div>
+										<div class="row" *ngIf="expandedPanelIndex===i">
+											<div class="col-xs-1 padding-top-10">
+												<p-colorPicker formControlName="color"></p-colorPicker>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-right-0">
+												<mat-form-field class="pb-block" [floatLabel]="'auto'">
+													<mat-label>font size</mat-label>
+													<input matInput placeholder="Amount" type="number" formControlName="font_size">
+												</mat-form-field>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle-group formControlName="text_alignment">
+													<mat-button-toggle value="left">
+														<mat-icon>format_align_left</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="center">
+														<mat-icon>format_align_center</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="right">
+														<mat-icon>format_align_right</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="justify">
+														<mat-icon>format_align_justify</mat-icon>
+													</mat-button-toggle>
+												</mat-button-toggle-group>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
+													<mat-icon>format_bold</mat-icon>
+												</mat-button-toggle>
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
+													<mat-icon>format_italic</mat-icon>
+												</mat-button-toggle>
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
+													<mat-icon>format_underlined</mat-icon>
+												</mat-button-toggle>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row" *ngSwitchCase="'variable'">
+									<div class="col-xs-12">
+										<div class="row">
+											<div class="col-xs-2 padding-top-20 center">
+												<b>Variable</b>
+											</div>
+											<div class="col-xs-7">
+												<mat-form-field class="pb-block" [floatLabel]="'never'">
+													<mat-label>Variable</mat-label>
+													<mat-select formControlName="value">
+														<mat-option *ngFor="let availableVariable of availableVariables" [value]="availableVariable.value">
+															{{ availableVariable.name | titlecase }}
+														</mat-option>
+													</mat-select>
+													<button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
+														<mat-icon>text_format</mat-icon>
+													</button>
+												</mat-form-field>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="deleteField($event,i)">
+													<mat-icon>delete_outline</mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="up(i)">
+													<mat-icon>keyboard_arrow_up </mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="down(i)">
+													<mat-icon>keyboard_arrow_down </mat-icon>
+												</button>
+											</div>
+										</div>
+										<div class="row" *ngIf="expandedPanelIndex===i">
+											<div class="col-xs-1 padding-top-10">
+												<p-colorPicker formControlName="color"></p-colorPicker>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-right-0">
+												<mat-form-field class="pb-block" [floatLabel]="'auto'">
+													<mat-label>font size</mat-label>
+													<input matInput placeholder="Amount" type="number" formControlName="font_size">
+												</mat-form-field>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle-group formControlName="text_alignment">
+													<mat-button-toggle value="left">
+														<mat-icon>format_align_left</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="center">
+														<mat-icon>format_align_center</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="right">
+														<mat-icon>format_align_right</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="justify">
+														<mat-icon>format_align_justify</mat-icon>
+													</mat-button-toggle>
+												</mat-button-toggle-group>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
+													<mat-icon>format_bold</mat-icon>
+												</mat-button-toggle>
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
+													<mat-icon>format_italic</mat-icon>
+												</mat-button-toggle>
+												<mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
+													<mat-icon>format_underlined</mat-icon>
+												</mat-button-toggle>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row" *ngSwitchCase="'logo'">
+									<div class="col-xs-12">
+										<div class="row">
+											<div class="col-xs-2 padding-top-20 center">
+												<b>Logo</b>
+											</div>
+											<div class="col-xs-6 padding-top-10">
+												<button *ngIf="!logoFile" [hidden]="uploadingImage" (click)="fileInput.click()" mat-raised-button>
+													Upload File
+												</button>
+												<span *ngIf="logoFile">
+													<button style="width: 90%;" mat-raised-button *ngIf="customCertificateForm.value.groupArray[i].value && customCertificateForm.value.groupArray[i].value.length>0"
+													        (click)="deleteImage(i)">
+														<span style="
                             max-width: 80%;
                             display: inline-block;
                             overflow-x: hidden;
                             ">
-                              {{logoFile.name}}
-                            </span>
-                            <mat-icon>close</mat-icon>
-                          </button>
-                        </span>
-                        <input type="file" #fileInput (change)="encodeImageFileAsURL($event,i)" style="display:none;">
-                        <span class="padding-top-40">
-                          <ngx-loading [show]="uploadingImage"></ngx-loading>
-                        </span>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="toggleExpansion(i)">
-                          <mat-icon>text_format</mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="deleteField($event,i)">
-                          <mat-icon>delete_outline</mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="up(i)">
-                          <mat-icon>keyboard_arrow_up </mat-icon>
-                        </button>
-                      </div>
-                      <div class="col-xs-1 padding-left-0 padding-top-10">
-                        <button mat-icon-button (click)="down(i)">
-                          <mat-icon>keyboard_arrow_down </mat-icon>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="row" *ngIf="expandedPanelIndex===i">
-                      <div class="col-xs-1 padding-top-10">
-                        <!-- <p-colorPicker formControlName="color"></p-colorPicker> -->
-                      </div>
-                      <div class="col-xs-3 padding-left-0 padding-right-0">
-                        <mat-form-field class="pb-block" [floatLabel]="'auto'">
-                          <mat-label>Image size</mat-label>
-                          <input matInput placeholder="Amount" type="number" formControlName="font_size">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle-group formControlName="text_alignment">
-                          <mat-button-toggle value="left">
-                            <mat-icon>format_align_left</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="center">
-                            <mat-icon>format_align_center</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="right">
-                            <mat-icon>format_align_right</mat-icon>
-                          </mat-button-toggle>
-                          <mat-button-toggle value="justify">
-                            <mat-icon>format_align_justify</mat-icon>
-                          </mat-button-toggle>
-                        </mat-button-toggle-group>
-                      </div>
-                      <!-- <div class="col-xs-5 padding-top-5">
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
-                          <mat-icon>format_bold</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
-                          <mat-icon>format_italic</mat-icon>
-                        </mat-button-toggle>
-                        <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
-                          <mat-icon>format_underlined</mat-icon>
-                        </mat-button-toggle>
-                      </div> -->
-                    </div>
-                  </div>
-                </div>
-              </mat-card>
-            </div>
-          </div>
-          <div class="row padding-top-30">
-            <div class="col-xs-12">
-              <mat-card class="padding-top-10 padding-bottom-10">
-                <button (click)="add()" mat-icon-button color="accent">
-                  <mat-icon>add_circle</mat-icon>
-                  <b class="lightText">
-                    Add New Field
-                  </b>
-                </button>
-              </mat-card>
-            </div>
-          </div>
-          <div class="row padding-top-20">
-            <div class="col-xs-12">
-              <button mat-raised-button color="accent" (click)="cancel()">
-                Back
-              </button>
-              <button class="pull-right" mat-raised-button color="accent" (click)="submitCertificate()">
-                Next
-              </button>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="col-xs-11 col-md-5">
-    <mat-card class="certificate">
-      <div #certificate>
-        <div style="
-            padding: 1em;
-            word-wrap: break-word;
-            line-height: 1;
-            font-family: sans-serif; 
+															{{logoFile.name}}
+														</span>
+														<mat-icon>close</mat-icon>
+													</button>
+												</span>
+												<input type="file" #fileInput (change)="encodeImageFileAsURL($event,i)" style="display:none;">
+												<span class="padding-top-40">
+													<ngx-loading [show]="uploadingImage"></ngx-loading>
+												</span>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="toggleExpansion(i)">
+													<mat-icon>text_format</mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="deleteField($event,i)">
+													<mat-icon>delete_outline</mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="up(i)">
+													<mat-icon>keyboard_arrow_up </mat-icon>
+												</button>
+											</div>
+											<div class="col-xs-1 padding-left-0 padding-top-10">
+												<button mat-icon-button (click)="down(i)">
+													<mat-icon>keyboard_arrow_down </mat-icon>
+												</button>
+											</div>
+										</div>
+										<div class="row" *ngIf="expandedPanelIndex===i">
+											<div class="col-xs-1 padding-top-10">
+												<!-- <p-colorPicker formControlName="color"></p-colorPicker> -->
+											</div>
+											<div class="col-xs-3 padding-left-0 padding-right-0">
+												<mat-form-field class="pb-block" [floatLabel]="'auto'">
+													<mat-label>Image size</mat-label>
+													<input matInput placeholder="Amount" type="number" formControlName="font_size">
+												</mat-form-field>
+											</div>
+											<div class="col-xs-5 padding-top-5">
+												<mat-button-toggle-group formControlName="text_alignment">
+													<mat-button-toggle value="left">
+														<mat-icon>format_align_left</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="center">
+														<mat-icon>format_align_center</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="right">
+														<mat-icon>format_align_right</mat-icon>
+													</mat-button-toggle>
+													<mat-button-toggle value="justify">
+														<mat-icon>format_align_justify</mat-icon>
+													</mat-button-toggle>
+												</mat-button-toggle-group>
+											</div>
+											<!-- <div class="col-xs-5 padding-top-5">
+											  <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].bold" (change)="toggleButton($event,i,'bold')">
+												<mat-icon>format_bold</mat-icon>
+											  </mat-button-toggle>
+											  <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].italic" (change)="toggleButton($event,i,'italic')">
+												<mat-icon>format_italic</mat-icon>
+											  </mat-button-toggle>
+											  <mat-button-toggle [value]="customCertificateForm.value.groupArray[i].underline" (change)="toggleButton($event,i,'underline')">
+												<mat-icon>format_underlined</mat-icon>
+											  </mat-button-toggle>
+											</div> -->
+										</div>
+									</div>
+								</div>
+							</mat-card>
+						</div>
+					</div>
+					<div class="row padding-top-30">
+						<div class="col-xs-12">
+							<mat-card class="padding-top-10 padding-bottom-10">
+								<button (click)="add()" mat-icon-button color="accent">
+									<mat-icon>add_circle</mat-icon>&nbsp;&nbsp;
+									<b class="lightText">
+										Add new field
+									</b>
+								</button>
+							</mat-card>
+						</div>
+					</div>
+					<div class="row padding-top-20">
+						<div class="col-xs-12">
+							<button mat-raised-button color="accent" (click)="cancel()">
+								Back
+							</button>
+							<button class="pull-right" mat-raised-button color="accent" (click)="submitCertificate()">
+								Next
+							</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="col-xs-11 col-md-5">
+		<mat-card class="certificate">
+			<div #certificate>
+				<div style="
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             width: 100%;
             background-color: #ffffff;
             ">
-          <div style="min-height: 30em;">
-            <div style="padding: 1em 0;" *ngFor="let element of customCertificateForm.value.groupArray">
-              <div [ngSwitch]="element.name">
-                <div *ngSwitchCase="'text'">
-                  <span [ngStyle]="{
+					<div style="min-height: 30em;">
+						<div style="padding: 1em 0;" *ngFor="let element of customCertificateForm.value.groupArray">
+							<div [ngSwitch]="element.name">
+								<div *ngSwitchCase="'text'">
+									<span [ngStyle]="{
                       'color': element.color,
                       'font-size':element.font_size+'em',
                       'text-align':element.text_alignment,
@@ -665,9 +661,9 @@
                       'text-decoration-line': (element.underline)?'underline':'none'
                     }" style="width: 100%;
                     display: inline-block;">{{element.value}}</span>
-                </div>
-                <div *ngSwitchCase="'multi-line'">
-                  <span [ngStyle]="{
+								</div>
+								<div *ngSwitchCase="'multi-line'">
+									<span [ngStyle]="{
                         'color': element.color,
                         'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
@@ -676,9 +672,9 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">{{element.value}}</span>
-                </div>
-                <div *ngSwitchCase="'date'">
-                  <span [ngStyle]="{
+								</div>
+								<div *ngSwitchCase="'date'">
+									<span [ngStyle]="{
                         'color': element.color,
                         'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
@@ -687,9 +683,9 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">{{element.value|date:'mediumDate'}}</span>
-                </div>
-                <div *ngSwitchCase="'email'">
-                  <span [ngStyle]="{
+								</div>
+								<div *ngSwitchCase="'email'">
+									<span [ngStyle]="{
                         'color': element.color,
                         'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
@@ -698,11 +694,11 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">
-                    <a href="mailto:{{element.value}}" target="_blank">{{element.value}}</a>
-                  </span>
-                </div>
-                <div *ngSwitchCase="'url'">
-                  <span [ngStyle]="{
+										<a href="mailto:{{element.value}}" target="_blank">{{element.value}}</a>
+									</span>
+								</div>
+								<div *ngSwitchCase="'url'">
+									<span [ngStyle]="{
                         'color': element.color,
                         'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
@@ -711,11 +707,11 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">
-                    <a href="{{element.meta}}" target="_blank">{{element.value}}</a>
-                  </span>
-                </div>
-                <div *ngSwitchCase="'number'">
-                  <span [ngStyle]="{
+										<a href="{{element.meta}}" target="_blank">{{element.value}}</a>
+									</span>
+								</div>
+								<div *ngSwitchCase="'number'">
+									<span [ngStyle]="{
                         'color': element.color,
                         'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
@@ -724,9 +720,9 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">{{element.value}}</span>
-                </div>
-                <div *ngSwitchCase="'variable'">
-                  <span [ngStyle]="{
+								</div>
+								<div *ngSwitchCase="'variable'">
+									<span [ngStyle]="{
                         'color': element.color,
                         'font-size':element.font_size+'em',
                         'text-align':element.text_alignment,
@@ -735,11 +731,11 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">
-                    {{element.value}}
-                  </span>
-                </div>
-                <div *ngSwitchCase="'logo'">
-                  <span [ngStyle]="{
+										{{element.value}}
+									</span>
+								</div>
+								<div *ngSwitchCase="'logo'">
+									<span [ngStyle]="{
                         'color': element.color,
                         'height':element.font_size+'em',
                         'text-align':element.text_alignment,
@@ -748,23 +744,23 @@
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }" style="width: 100%;
                       display: inline-block;">
-                    <img style="height: 100%; width: auto;" src="{{element.value}}">
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div style="
+										<img style="height: 100%; width: auto;" src="{{element.value}}">
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="
               height: 8em;
               width: 100%;
               display: inline-block;
               text-align: center;
-              position: relative;       
+              position: relative;
          ">
-            <img style="max-height: 100%;width: auto;" src="{{qrcode}}">
-          </div>
-        </div>
-      </div>
-    </mat-card>
-  </div>
+						<img style="max-height: 100%;width: auto;" src="{{qrcode}}">
+					</div>
+				</div>
+			</div>
+		</mat-card>
+	</div>
 </div>
