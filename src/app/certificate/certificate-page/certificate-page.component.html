@@ -3,7 +3,7 @@
     <ngx-loading [show]="true"></ngx-loading>
   </div>
   <div *ngIf="certificate" class="row padding-top-50 padding-bottom-50">
-    <div class="col-xs-8 col-xs-offset-2 col-md-6 col-md-offset-3 padding-top-30 padding-bottom-30">
+    <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3 padding-top-30 padding-bottom-30">
       <div class="row">
         <div class="col-xs-12">
           <mat-card>
@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="row padding-top-50 ">
-        <div class="col-xs-2">
+        <div class="col-md-2 col-xs-6">
           <span class="lightText">
             Recipient
           </span>
@@ -21,21 +21,21 @@
             {{certificate.recipient.profile.first_name + ' '+ certificate.recipient.profile.last_name |titlecase}}
           </b>
         </div>
-        <div class="col-xs-2">
+        <div class="col-md-2 col-xs-6">
           <span class="lightText">
             Issue Date
           </span>
           <br>
           <b>{{certificate.issuedOn | date:'mediumDate' }}</b>
         </div>
-        <div class="col-xs-2">
+        <div class="col-md-2 col-xs-6">
           <span class="lightText">
             Issuer
           </span>
           <br>
           <b>{{certificate.issuer.profile.first_name+' '+certificate.issuer.profile.last_name |titlecase}}</b>
         </div>
-        <div class="col-xs-2">
+        <div class="col-md-2 col-xs-6">
           <div *ngIf="certificate.signature.anchors[0].sourceId">
             <span class="lightText">
               Transaction ID
@@ -44,12 +44,12 @@
             <b>{{certificate.signature.anchors[0].sourceId}}</b>
           </div>
         </div>
-        <div class="col-xs-2">
+        <div class="col-md-2 col-xs-6">
           <button mat-raised-button color="primary" (click)="verify()">
             Verify
           </button>
         </div>
-        <div class="col-xs-2">
+        <div class="col-md-2 col-xs-12">
           <span class="lightText">
             Verified by
           </span>
