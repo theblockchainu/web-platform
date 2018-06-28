@@ -63,6 +63,7 @@ import { GyanPromptComponent } from './gyan-prompt/gyan-prompt.component';
 import { AddCommunityDialogComponent } from './add-community-dialog/add-community-dialog.component';
 import { CreateAccreditationDialogComponent } from './create-accreditation-dialog/create-accreditation-dialog.component';
 import { SelectFieldDialogComponent } from './select-field-dialog/select-field-dialog.component';
+import { CertificateVerificationComponent } from './certificate-verification/certificate-verification.component';
 
 @NgModule({
 	imports: [
@@ -105,7 +106,8 @@ import { SelectFieldDialogComponent } from './select-field-dialog/select-field-d
 		GyanPromptComponent,
 		AddCommunityDialogComponent,
 		CreateAccreditationDialogComponent,
-		SelectFieldDialogComponent
+		SelectFieldDialogComponent,
+		CertificateVerificationComponent
 	],
 	providers: [
 		DialogsService,
@@ -126,7 +128,8 @@ import { SelectFieldDialogComponent } from './select-field-dialog/select-field-d
 		EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent,
 		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent, RequestCommunityDialogComponent,
 		ScholarshipDialogComponent, GenerateKnowledgeStoryComponent, RequestKnowledgeStoryComponent, ConfirmPasswordDialogComponent,
-		AddViewerDialogComponent, GyanPromptComponent, AddCommunityDialogComponent, CreateAccreditationDialogComponent, SelectFieldDialogComponent
+		AddViewerDialogComponent, GyanPromptComponent, AddCommunityDialogComponent, CreateAccreditationDialogComponent, SelectFieldDialogComponent,
+		CertificateVerificationComponent
 	],
 })
 export class DialogsModule { }

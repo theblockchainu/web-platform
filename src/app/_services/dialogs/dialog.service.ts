@@ -23,6 +23,7 @@ import { AddLanguageDialogComponent } from './add-language-dialog/add-language-d
 import {
     CalendarEvent
 } from 'angular-calendar';
+import { FormGroup } from '@angular/forms';
 import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
 import { CollectionCloneDialogComponent } from './collection-clone-dialog/collection-clone-dialog.component';
 import { CollectionSubmitDialogComponent } from './collection-submit-dialog/collection-submit-dialog.component';
@@ -51,7 +52,7 @@ import { AddCommunityDialogComponent } from './add-community-dialog/add-communit
 import { ViewParticipantsComponent } from './view-participants/view-participants.component';
 import { CreateAccreditationDialogComponent } from './create-accreditation-dialog/create-accreditation-dialog.component';
 import { SelectFieldDialogComponent } from './select-field-dialog/select-field-dialog.component';
-import { FormGroup } from '@angular/forms';
+import { CertificateVerificationComponent } from './certificate-verification/certificate-verification.component';
 
 @Injectable()
 export class DialogsService {
@@ -594,6 +595,15 @@ export class DialogsService {
             width: '40vw',
             height: '40vh',
             data: fieldsArray
+        }).afterClosed();
+    }
+
+    public verifyCertificateDialog(data?: any) {
+        return this.dialog.open(CertificateVerificationComponent, {
+            panelClass: 'responsive-dialog',
+            width: '55vw',
+            height: '56vh',
+            data: data ? data : {}
         }).afterClosed();
     }
 }

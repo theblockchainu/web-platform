@@ -9,9 +9,10 @@ export const environment = {
     apiUrl: 'http://localhost:3000',
     searchUrl: 'https://localhost:4000',
     clientUrl: 'http://localhost:8080',
+    one0xUrl: 'http://localhost:5000/v1',
     uniqueDeveloperCode: 'aakash',
     stripeClientId: 'ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q',
     stripePublishableKey: 'pk_test_i9RmJ8HN4UygSzCchZMEGgwn',
-	karmaRate : 1000
+    karmaRate: 1000
 };
 
