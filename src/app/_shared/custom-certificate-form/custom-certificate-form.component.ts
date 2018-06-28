@@ -24,7 +24,7 @@ export class CustomCertificateFormComponent implements OnInit {
 	public expandedPanelIndex: number;
 	public availableVariables: Array<VariableObject>;
 	public logoFile: File;
-	
+	public qrcode = '{{QRCode}}';
 	@Input() formData: any;
 	
 	@Output() back = new EventEmitter<any>();
