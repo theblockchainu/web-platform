@@ -26,6 +26,7 @@ import { DataSharingService } from '../../_services/data-sharing-service/data-sh
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Meta, Title } from '@angular/platform-browser';
 import { ProfileService } from '../../_services/profile/profile.service';
+import { CertificateService } from '../../_services/certificate/certificate.service';
 @Component({
 	selector: 'app-experience-edit',
 	templateUrl: './experience-edit.component.html',
@@ -119,7 +120,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	private payoutRuleAccountId: string;
 
 	filteredLanguageOptions: Observable<string[]>;
-
+	certificateLoaded: boolean;
 	public query = {
 		'include': [
 			'topics',
@@ -169,7 +170,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		private media: MediaMatcher,
 		private titleService: Title,
 		private metaService: Meta,
-		private profileService: ProfileService
+		private profileService: ProfileService,
+		private certificateService: CertificateService
 	) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
@@ -627,7 +629,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 					this.initializeFormValues(res);
 					this.initializeTimeLine(res);
 					this.initializeAssessment(res);
-
+					this.initializeCertificate();
 					if (res.status === 'active' && this.sidebarMenuItems) {
 						this.sidebarMenuItems[3].visible = false;
 						this.sidebarMenuItems[4].visible = true;
@@ -643,6 +645,17 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		} else {
 			console.log('NO COLLECTION');
 		}
+	}
+
+	initializeCertificate() {
+		this.certificateService.getCertificateTemplate(this.experienceId).subscribe((res: any) => {
+			this.certificateForm.controls['formData'].patchValue(JSON.parse(res.formData));
+			this.certificateForm.controls['expiryDate'].patchValue(res.expiryDate);
+			console.log(this.certificateForm.value);
+			this.certificateLoaded = true;
+		}, err => {
+			console.log(err);
+		});
 	}
 
 	public languageChange(event) {

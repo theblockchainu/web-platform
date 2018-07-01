@@ -527,18 +527,18 @@
 												<b>Logo</b>
 											</div>
 											<div class="col-xs-6 padding-top-10">
-												<button *ngIf="!logoFile" [hidden]="uploadingImage" (click)="fileInput.click()" mat-raised-button>
+												<button *ngIf="!customCertificateForm.value.groupArray[i].value || customCertificateForm.value.groupArray[i].value.length<=0"
+												 [hidden]="uploadingImage" (click)="fileInput.click()" mat-raised-button>
 													Upload File
 												</button>
-												<span *ngIf="logoFile">
-													<button style="width: 90%;" mat-raised-button *ngIf="customCertificateForm.value.groupArray[i].value && customCertificateForm.value.groupArray[i].value.length>0"
-													        (click)="deleteImage(i)">
+												<span *ngIf="customCertificateForm.value.groupArray[i].value && customCertificateForm.value.groupArray[i].value.length>0">
+													<button style="width: 90%;" mat-raised-button (click)="deleteImage(i)">
 														<span style="
-                            max-width: 80%;
-                            display: inline-block;
-                            overflow-x: hidden;
-                            ">
-															{{logoFile.name}}
+                            										max-width: 80%;
+																	display: inline-block;
+																	overflow-x: hidden;
+																	">
+															{{customCertificateForm.value.groupArray[i].meta}}
 														</span>
 														<mat-icon>close</mat-icon>
 													</button>
@@ -646,7 +646,8 @@
             flex-direction: column;
             justify-content: flex-start;
             width: 100%;
-            background-color: #ffffff;
+			background-color: #ffffff;
+			line-height: 1;
             ">
 					<div style="min-height: 30em;">
 						<div style="padding: 1em 0;" *ngFor="let element of customCertificateForm.value.groupArray">

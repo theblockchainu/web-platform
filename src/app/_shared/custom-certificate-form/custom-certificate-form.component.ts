@@ -14,7 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 
 export class CustomCertificateFormComponent implements OnInit {
-	
+
 	public customCertificateForm: FormGroup;
 	public uploadingImage: boolean;
 	public urlForImages: Array<any>;
@@ -23,16 +23,15 @@ export class CustomCertificateFormComponent implements OnInit {
 	public fieldsArray: Array<FormGroup>;
 	public expandedPanelIndex: number;
 	public availableVariables: Array<VariableObject>;
-	public logoFile: File;
 	public qrcode = '{{QRCode}}';
 	@Input() formData: any;
-	
+
 	@Output() back = new EventEmitter<any>();
 	@Output() next = new EventEmitter<any>();
-	
+
 	@ViewChild('certificate') certificate: ElementRef;
-	
-	
+
+
 	constructor(
 		private _fb: FormBuilder,
 		private mediaUploader: MediaUploaderService,
@@ -43,7 +42,7 @@ export class CustomCertificateFormComponent implements OnInit {
 	) {
 		this.envVariable = environment;
 	}
-	
+
 	ngOnInit() {
 		this.customCertificateForm = this._fb.group({
 			groupArray: this._fb.array([])
@@ -52,7 +51,7 @@ export class CustomCertificateFormComponent implements OnInit {
 		this.text_align = [
 			'center', 'left', 'right', 'justify'
 		];
-		
+
 		this.fieldsArray = ([
 			this._fb.group({
 				text_alignment: ['center'],
@@ -91,7 +90,6 @@ export class CustomCertificateFormComponent implements OnInit {
 				meta: ['']
 			}),
 			this._fb.group({
-				
 				text_alignment: ['center'],
 				color: ['#000000'],
 				value: ['', [Validators.email]],
@@ -104,7 +102,6 @@ export class CustomCertificateFormComponent implements OnInit {
 				meta: ['']
 			}),
 			this._fb.group({
-				
 				text_alignment: ['center'],
 				color: ['#000000'],
 				value: [''],
@@ -153,7 +150,7 @@ export class CustomCertificateFormComponent implements OnInit {
 				meta: ['']
 			})
 		]);
-		
+
 		this.availableVariables = [
 			{
 				name: 'Participant Name',
@@ -178,12 +175,23 @@ export class CustomCertificateFormComponent implements OnInit {
 				value: '{{expiryDate}}'
 			}
 		];
-		
-		console.log(this.availableVariables);
-		
-		this.customCertificateForm.patchValue(this.formData);
+
+		if (this.formData) {
+			console.log(this.formData);
+			this.formData.groupArray.forEach(group => {
+				const control = <FormGroup>this.fieldsArray.find((fg: FormGroup) => {
+					console.log(fg);
+					if (fg.controls['name'].value === group.name) {
+						return true;
+					}
+				});
+				control.patchValue(group);
+				const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
+				groupArray.push(control);
+			});
+		}
 	}
-	
+
 	add() {
 		this.dialogsService.viewFields(this.fieldsArray).subscribe(
 			(field: FormGroup) => {
@@ -196,7 +204,7 @@ export class CustomCertificateFormComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	toggleButton(event: any, controlIndex: number, controlName: string) {
 		const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
 		const formGroup = <FormGroup>groupArray.controls[controlIndex];
@@ -204,12 +212,12 @@ export class CustomCertificateFormComponent implements OnInit {
 		// formGroup.controls['value'].invalid
 		// console.log(this.customCertificateForm.value);
 	}
-	
+
 	deleteField(event: any, controlIndex: number) {
 		const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
 		groupArray.removeAt(controlIndex);
 	}
-	
+
 	toggleExpansion(index: number) {
 		if (this.expandedPanelIndex === index) {
 			this.expandedPanelIndex = -1;
@@ -217,7 +225,7 @@ export class CustomCertificateFormComponent implements OnInit {
 			this.expandedPanelIndex = index;
 		}
 	}
-	
+
 	up(controlIndex: number) {
 		const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
 		if (groupArray.length > 1 && controlIndex > 0) {
@@ -234,7 +242,7 @@ export class CustomCertificateFormComponent implements OnInit {
 			}
 		}
 	}
-	
+
 	down(controlIndex: number) {
 		const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
 		if (groupArray.length > 1 && controlIndex < groupArray.length - 1) {
@@ -251,33 +259,33 @@ export class CustomCertificateFormComponent implements OnInit {
 			}
 		}
 	}
-	
+
 	encodeImageFileAsURL(event, controlIndex) {
 		this.uploadingImage = true;
 		const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
 		const formGroup = <FormGroup>groupArray.controls[controlIndex];
 		const fileList: FileList = event.target.files;
 		const file: File = fileList.item(0);
-		this.logoFile = file;
 		const myReader: FileReader = new FileReader();
 		myReader.onloadend = (e) => {
 			formGroup.controls['value'].patchValue(myReader.result);
+			formGroup.controls['meta'].patchValue(file.name);
 			this.uploadingImage = false;
 		};
 		myReader.readAsDataURL(file);
 	}
-	
+
 	deleteImage(controlIndex) {
 		const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
 		const formGroup = <FormGroup>groupArray.controls[controlIndex];
 		formGroup.controls['value'].reset();
-		delete this.logoFile;
+		formGroup.controls['meta'].reset();
 	}
-	
+
 	cancel() {
 		this.back.next(true);
 	}
-	
+
 	submitCertificate() {
 		const nativeElement: Element = this.certificate.nativeElement;
 		// console.log(nativeElement.outerHTML);
@@ -286,7 +294,7 @@ export class CustomCertificateFormComponent implements OnInit {
 			htmlData: nativeElement.outerHTML
 		});
 	}
-	
+
 }
 
 interface VariableObject {
