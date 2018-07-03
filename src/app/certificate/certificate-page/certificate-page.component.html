@@ -2,60 +2,223 @@
   <div class="loading-container" [hidden]="!loadingCertificate" style="margin-left: 8.5%; margin-top: 3%;">
     <ngx-loading [show]="true"></ngx-loading>
   </div>
-  <div *ngIf="certificate" class="row padding-top-50 padding-bottom-50">
-    <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3 padding-top-30 padding-bottom-30">
-      <div class="row">
-        <div class="col-xs-12">
-          <mat-card>
-            <div [innerHTML]="certificate.displayHtml | safe: 'html'"></div>
-          </mat-card>
-        </div>
-      </div>
-      <div class="row padding-top-50 ">
-        <div class="col-md-2 col-xs-6">
-          <span class="lightText">
-            Recipient
-          </span>
-          <br>
-          <b>
-            {{certificate.recipient.profile.first_name + ' '+ certificate.recipient.profile.last_name |titlecase}}
-          </b>
-        </div>
-        <div class="col-md-2 col-xs-6">
-          <span class="lightText">
-            Issue Date
-          </span>
-          <br>
-          <b>{{certificate.issuedOn | date:'mediumDate' }}</b>
-        </div>
-        <div class="col-md-2 col-xs-6">
-          <span class="lightText">
-            Issuer
-          </span>
-          <br>
-          <b>{{certificate.issuer.profile.first_name+' '+certificate.issuer.profile.last_name |titlecase}}</b>
-        </div>
-        <div class="col-md-2 col-xs-6">
-          <div *ngIf="certificate.signature.anchors[0].sourceId">
-            <span class="lightText">
-              Transaction ID
-            </span>
-            <br>
-            <b>{{certificate.signature.anchors[0].sourceId}}</b>
+  <div *ngIf="certificate">
+    <mat-sidenav-container class="certificate">
+      <mat-sidenav style="background: white;" #snav [mode]="'over'" position="end">
+        <div class="row">
+          <div class="col-xs-12 padding-top-30" *ngIf="issuer">
+            <h2 class="lightText">Issuer</h2>
+          </div>
+          <div class="col-xs-12" *ngIf="issuer">
+            <div class="clickable" style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
+              <app-profile-popup [peer]="issuer"></app-profile-popup>
+            </div>
+            <div style="display: inline-block; margin-left: 10px; width: 77%;">
+              <div class="row">
+                <div class="col-md-12 clickable" [routerLink]="'/profile'+issuer.id">
+                  <span *ngIf="issuer.profiles[0].first_name !== undefined">
+                    {{issuer.profiles[0].first_name | titlecase }} {{issuer.profiles[0].last_name | titlecase }}
+                  </span>
+                  <span *ngIf="issuer.profiles[0].first_name === undefined">
+                    John Doe
+                  </span>
+                </div>
+                <div class="col-md-12 mat-h5" *ngIf="issuer.headline">
+                  {{issuer.profiles[0].headline}}
+                </div>
+                <div class="col-md-12 mat-h5" *ngIf="!issuer.headline">
+                  New user
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+          <div class="col-xs-12 padding-top-10" *ngIf="recipient">
+            <h2 class="lightText">Recipient</h2>
+          </div>
+          <div class="col-xs-12" *ngIf="recipient">
+            <div class="clickable" style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
+              <app-profile-popup [peer]="recipient"></app-profile-popup>
+            </div>
+            <div style="display: inline-block; margin-left: 10px; width: 77%; width: 77%;">
+              <div class="row">
+                <div class="col-md-12 clickable" [routerLink]="'/profile'+recipient.id">
+                  <span *ngIf="recipient.profiles[0].first_name !== undefined">
+                    {{recipient.profiles[0].first_name | titlecase }} {{recipient.profiles[0].last_name | titlecase }}
+                  </span>
+                  <span *ngIf="recipient.profiles[0].first_name === undefined">
+                    John Doe
+                  </span>
+                </div>
+                <div class="col-md-12 mat-h5" *ngIf="recipient.headline">
+                  {{recipient.profiles[0].headline}}
+                </div>
+                <div class="col-md-12 mat-h5" *ngIf="!recipient.headline">
+                  New user
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+          <div class="col-xs-12 padding-top-10" *ngIf="accreditation">
+            <h2 class="lightText">Accreditation</h2>
+          </div>
+          <div class="col-xs-12" *ngIf="accreditation">
+            <h3>{{accreditation.title}}</h3>
+            <p>{{accreditation.description}}</p>
+          </div>
+          <div class="col-xs-12 padding-top-10" *ngIf="accreditation">
+            <span class="lightText">Accredited for</span>
+          </div>
+          <div class="col-xs-12 padding-top-10" *ngIf="accreditation">
+            <mat-chip-list>
+              <mat-chip *ngFor="let topic of accreditation.topics">{{topic.name|titlecase}}</mat-chip>
+            </mat-chip-list>
+          </div>
+          <div class="col-xs-12 padding-top-10" *ngIf="accreditation">
+            <span class="lightText">Accredited by</span>
+          </div>
+          <div class="col-xs-12 padding-top-10" *ngIf="accreditation">
+            <div class="clickable" style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
+              <app-profile-popup [peer]="accreditation.createdBy[0]"></app-profile-popup>
+            </div>
+            <div style="display: inline-block; margin-left: 10px; width: 77%;">
+              <div class="row">
+                <div class="col-md-12 clickable" [routerLink]="'/profile'+accreditation.createdBy[0].id">
+                  <span *ngIf="accreditation.createdBy[0].profiles[0].first_name !== undefined">
+                    {{accreditation.createdBy[0].profiles[0].first_name | titlecase }} {{accreditation.createdBy[0].profiles[0].last_name | titlecase
+                    }}
+                  </span>
+                  <span *ngIf="accreditation.createdBy[0].profiles[0].first_name === undefined">
+                    John Doe
+                  </span>
+                </div>
+                <div class="col-md-12 mat-h5" *ngIf="accreditation.createdBy[0].headline">
+                  {{accreditation.createdBy[0].profiles[0].headline}}
+                </div>
+                <div class="col-md-12 mat-h5" *ngIf="!accreditation.createdBy[0].headline">
+                  New user
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+          <div class="col-xs-12 padding-top-10" *ngIf="certificate && certificate.collection.assessment">
+            <h2 class="lightText"> Assessment Result</h2>
+          </div>
+          <div class="col-xs-12 center" *ngIf="certificate && certificate.collection.assessment">
+            <span class="mat-display-1">{{certificate.collection.assessment.result}}</span>
+          </div>
+          <div class="col-xs-12 padding-top-10" *ngIf="certificate && certificate.collection.assessment">
+            <span class="lightText">Gyan Earned</span>
+          </div>
+          <div class="col-xs-12" *ngIf="certificate && certificate.collection.assessment">
+            <div class="row">
+              <div class="col-xs-8">
+                <b>
+                  Academic gyan
+                </b>
+              </div>
+              <div class="col-xs-4">
+                {{certificate.collection.assessment.academicGyanEarned}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-8">
+                <b>
+                  Non academic gyan
+                </b>
+              </div>
+              <div class="col-xs-4">
+                {{certificate.collection.assessment.academicGyanEarned}}
+              </div>
+            </div>
+            <hr>
           </div>
         </div>
-        <div class="col-md-2 col-xs-6">
-          <button mat-raised-button color="primary" (click)="verify()">
-            Verify
-          </button>
+      </mat-sidenav>
+      <!-- Page Content -->
+      <mat-sidenav-content>
+        <div class="row padding-top-50 padding-bottom-50">
+          <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3 padding-top-30 padding-bottom-30">
+            <div class="row lightText padding-bottom-20">
+              <div class="col-xs-12">
+                <button class="pull-right" (click)="snav.open()" mat-icon-button>
+                  <mat-icon>info</mat-icon>
+                </button>
+                <a class="pull-right" [href]="downloadJsonHref" download="{{certificate.recipient.profile.first_name}}.json" mat-icon-button>
+                  <mat-icon>save</mat-icon>
+                </a>
+                <button class="pull-right" (click)="share()" mat-icon-button>
+                  <mat-icon>share</mat-icon>
+                </button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <mat-card>
+                  <div [innerHTML]="certificate.displayHtml | safe: 'html'"></div>
+                </mat-card>
+              </div>
+            </div>
+            <div class="row padding-top-50 ">
+              <div class="col-md-2 col-xs-6">
+                <span class="lightText">
+                  Recipient
+                </span>
+                <br>
+                <b>
+                  {{certificate.recipient.profile.first_name + ' '+ certificate.recipient.profile.last_name |titlecase}}
+                </b>
+              </div>
+              <div class="col-md-2 col-xs-6">
+                <span class="lightText">
+                  Issue Date
+                </span>
+                <br>
+                <b>{{certificate.issuedOn | date:'mediumDate' }}</b>
+              </div>
+              <div class="col-md-2 col-xs-6">
+                <span class="lightText">
+                  Issuer
+                </span>
+                <br>
+                <b>{{certificate.issuer.profile.first_name+' '+certificate.issuer.profile.last_name |titlecase}}</b>
+              </div>
+              <div class="col-md-2 col-xs-6">
+                <div *ngIf="certificate.signature.anchors[0].sourceId">
+                  <span class="lightText">
+                    Transaction ID
+                  </span>
+                  <br>
+                  <b>{{certificate.signature.anchors[0].sourceId}}</b>
+                </div>
+              </div>
+              <div class="col-md-2 col-xs-6">
+                <button mat-raised-button color="primary" (click)="verify()">
+                  Verify
+                </button>
+                <a>
+                  <span *ngIf="verified">
+                    <mat-icon style="position: relative;top: 0.3em;">check_circle</mat-icon>
+                    Verified
+                  </span>
+                  <span *ngIf="!verified">
+                    <mat-icon style="position: relative;top: 0.3em;">highlight_off</mat-icon>
+                    Not Yet Verified
+                  </span>
+                </a>
+              </div>
+              <div class="col-md-2 col-xs-12">
+                <span class="lightText">
+                  Verified by
+                </span>
+                <img style="width: 100px" src="assets/images/one0x.png" alt="logo">
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-md-2 col-xs-12">
-          <span class="lightText">
-            Verified by
-          </span>
-          <img style="width: 100px" src="assets/images/one0x.png" alt="logo">
-        </div>
-      </div>
-    </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
   </div>
 </div>

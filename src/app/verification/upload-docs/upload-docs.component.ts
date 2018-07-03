@@ -17,7 +17,7 @@ import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
-	selector: 'upload-docs',
+	selector: 'app-upload-docs',
 	templateUrl: './upload-docs.component.html',
 	styleUrls: ['./upload-docs.component.scss']
 })
@@ -201,7 +201,16 @@ export class UploadDocsComponent implements OnInit {
 				this.router.navigate(['verification', +this.step]);
 			}, err => {
 				this.httpLoading = false;
-				this.phoneFormError = err;
+				console.log(err);
+				if (err && err.error && err.error.error && err.error.error.message) {
+					this.phoneFormError = err.error.error.message;
+				} else {
+					this.snackBar.open('An error occured', 'Retry?', {
+						duration: 3000
+					}).onAction().subscribe(res => {
+						this.sendPhoneOTP(nextStep);
+					});
+				}
 			}
 			);
 		console.log('sms sent');
