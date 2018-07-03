@@ -456,7 +456,7 @@
 				<div class="onboarding step-11" [hidden]="step!=11">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-							<form [formGroup]="class" (ngSubmit)="submitClass(class)">
+							<form [formGroup]="class" (ngSubmit)="submitClassGyan(class)">
 								<h2 class="title">Set a price and gyan for this class</h2>
 								<p class="subtitle">
 									The price of your class is entirely up to you. Gyan is the unit measure of knowledge. You decide the amount of Gyan you will
@@ -659,8 +659,14 @@
 					</form>
 				</div>
 
-				<!--Step 13 - Disclaimer-->
+				<!-- step 13 - Certificate -->
 				<div class="onboarding step-13" [hidden]="step!=13">
+					<app-custom-certificate-form *ngIf="certificateLoaded" [formData]="certificateForm.controls['formData'].value" (back)="back()"
+					 (next)="submitCertificate($event)"></app-custom-certificate-form>
+				</div>
+
+				<!--Step 14 - Disclaimer-->
+				<div class="onboarding step-14" [hidden]="step!=14">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Add content to your Class</h2>
@@ -671,14 +677,14 @@
 									<button mat-raised-button type="button" (click)="back()" color="accent">
 										Back
 									</button>
-									<button class="pull-right" mat-raised-button color="accent" (click)="goto(14)">Next</button>
+									<button class="pull-right" mat-raised-button color="accent" (click)="next()">Next</button>
 								</div>
 							</form>
 						</div>
 					</div>
 				</div>
-				<!--Step 14 - Itinerary-->
-				<div class="onboarding step-14" [hidden]="step!=14">
+				<!--Step 15 - Itinerary-->
+				<div class="onboarding step-15" [hidden]="step!=15">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Set your default timeline
@@ -687,7 +693,7 @@
 								Create a default timeline for your class and add activities to it. Later on, you can create as many cohorts with specific
 								start dates.
 							</p>
-							<form [formGroup]="timeline" (ngSubmit)="submitClass(class, timeline, 14)" novalidate>
+							<form [formGroup]="timeline" (ngSubmit)="submitClassTimeline(class, timeline, 14)" novalidate>
 								<!--(ngSubmit)="submitTimeline(timeline)" -->
 								<div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
 									<div class="row" style="margin: 30px 0px 15px -15px;">
@@ -740,8 +746,8 @@
 						</div>
 					</div>
 				</div>
-				<!--Step 15 - Submit for review-->
-				<div class="onboarding step-15" [hidden]="step!=15">
+				<!--Step 16 - Submit for review-->
+				<div class="onboarding step-16" [hidden]="step!=16">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Review and submit</h2>
@@ -772,7 +778,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="onboarding step-16" [hidden]="step!=16">
+				<div class="onboarding step-17" [hidden]="step!=17">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Do you want to provide your phone number to learners?</h2>
@@ -821,7 +827,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="onboarding step-17" [hidden]="step!=17">
+				<div class="onboarding step-18" [hidden]="step!=18">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Connect Payment Option</h2>

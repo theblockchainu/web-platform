@@ -649,9 +649,10 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	initializeCertificate() {
 		this.certificateService.getCertificateTemplate(this.experienceId).subscribe((res: any) => {
-			this.certificateForm.controls['formData'].patchValue(JSON.parse(res.formData));
-			this.certificateForm.controls['expiryDate'].patchValue(res.expiryDate);
-			console.log(this.certificateForm.value);
+			if (res.formData && res.expiryDate) {
+				this.certificateForm.controls['formData'].patchValue(JSON.parse(res.formData));
+				this.certificateForm.controls['expiryDate'].patchValue(res.expiryDate);
+			}
 			this.certificateLoaded = true;
 		}, err => {
 			console.log(err);
