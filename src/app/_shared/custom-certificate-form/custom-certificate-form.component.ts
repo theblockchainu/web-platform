@@ -299,6 +299,7 @@ export class CustomCertificateFormComponent implements OnInit {
 				htmlData: nativeElement.outerHTML
 			});
 			this.busySavingData = false;
+			this.qrcode = '/assets/images/peerbuds-qr.png';
 		});
 	}
 
