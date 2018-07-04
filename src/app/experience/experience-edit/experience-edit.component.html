@@ -62,6 +62,7 @@
 							</ul>
 							<div class="margin-top-20">
 								<button mat-raised-button (click)="next()" color="accent" class="pull-right">
+									Next
 								</button>
 							</div>
 						</div>
@@ -79,9 +80,9 @@
 									<div class="col-sm-12 margin-bottom-30">
 										<div class="row">
 											<div class="col-sm-12">
-												<app-multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
-												 [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic [maxSelection]=maxTopics
-												 [minSelection]="1" [suggestedTopics]="suggestedTopics"></app-multiselect-autocomplete>
+												<app-multiselect-autocomplete (selectedOutput)="selected($event)" [preSelectedTopics]=interests [searchUrl]=searchTopicURL
+												 [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic [maxSelection]=maxTopics [minSelection]="1"
+												 [suggestedTopics]="suggestedTopics"></app-multiselect-autocomplete>
 											</div>
 										</div>
 										<div class="row">

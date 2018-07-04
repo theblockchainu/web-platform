@@ -28,7 +28,8 @@ import { Meta, Title } from '@angular/platform-browser';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { CustomCertificateFormComponent } from '../../_shared/custom-certificate-form/custom-certificate-form.component';
-import { FindValueSubscriber } from 'rxjs/operators/find';
+import { merge } from 'rxjs/observable/merge';
+
 @Component({
 	selector: 'app-experience-edit',
 	templateUrl: './experience-edit.component.html',
@@ -101,6 +102,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public selectedLanguages;
 	public suggestedTopics = [];
 	public interests = [];
+	public originalInterests = [];
+
 	public removedInterests = [];
 	public relTopics = [];
 
@@ -186,7 +189,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				+ '/console/account/payoutmethods&state=' + environment.clientUrl + '/experience/' + this.experienceId
 				+ '/edit/' + this.step;
 			this.searchTopicURL = environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
-			this.createTopicURL = environment.apiUrl + '/api/' + environment.uniqueDeveloperCode + '_topics';
+			this.createTopicURL = environment.apiUrl + '/api/topics';
 		});
 
 
@@ -684,20 +687,6 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		});
 	}
 
-	public removed(event) {
-		const body = {};
-		this.removedInterests = event;
-		if (this.removedInterests.length !== 0) {
-			this.removedInterests.forEach((topic) => {
-				this.http.delete(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel/' + topic.id, this.requestHeaderService.options)
-					.map((response) => {
-						console.log(response);
-					}).subscribe();
-			});
-
-		}
-	}
-
 	public daysCollection(event) {
 		this.days = event;
 		this.sidebarMenuItems[2]['submenu'] = [];
@@ -724,7 +713,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.relTopics = _.uniqBy(res.topics, 'id');
 		this.interests = this.relTopics;
 		if (this.interests) {
-			this.suggestedTopics = this.interests;
+			this.suggestedTopics = _.cloneDeep(this.interests);
+			this.originalInterests = _.cloneDeep(this.interests);
 		}
 		// Language
 		if (res.language && res.language.length > 0) {
@@ -1071,12 +1061,9 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public submitInterests() {
 		this.busySavingData = true;
 		let body = {};
-		let topicArray = [];
+		const topicArray = [];
 		this.interests.forEach((topic) => {
 			topicArray.push(topic.id);
-		});
-		this.relTopics.forEach((topic) => {
-			topicArray = _.without(topicArray, topic.id);
 		});
 		console.log(topicArray);
 		body = {
@@ -1084,24 +1071,50 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		};
 
 		if (topicArray.length !== 0) {
-			let observable: Observable<any>;
-			observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel', body, this.requestHeaderService.options)
-				.map(response => response).publishReplay().refCount();
-			observable.subscribe((res) => {
-				this._collectionService.getCollectionDetail(this.experienceId, this.query)
-					.subscribe((resData) => {
-						this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
+			if (this.originalInterests.length > 0) {
+				const unlinkObeservables: Array<Observable<ArrayBuffer>> = [];
+				this.originalInterests.forEach(interest => {
+					console.log(interest);
+					unlinkObeservables.push(this._collectionService.unlinkTopic(this.experienceId, interest.id));
+				});
+				console.log(unlinkObeservables);
+				const finalObservable = merge(...unlinkObeservables);
+				finalObservable.flatMap(res => {
+					console.log(res);
+					return this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel', body, this.requestHeaderService.options);
+				}).subscribe((res) => {
+					this._collectionService.getCollectionDetail(this.experienceId, this.query)
+						.subscribe((resData) => {
+							this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
+						});
+					this.busySavingData = false;
+					if (this.exitAfterSave) {
+						this.exit();
+					} else {
+						this.step++;
+						this.experienceStepUpdate();
+						this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
+					}
+				});
+			} else {
+				this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel', body, this.requestHeaderService.options)
+					.subscribe((res) => {
+						this._collectionService.getCollectionDetail(this.experienceId, this.query)
+							.subscribe((resData) => {
+								this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
+							});
+						this.busySavingData = false;
+						if (this.exitAfterSave) {
+							this.exit();
+						} else {
+							this.step++;
+							this.experienceStepUpdate();
+							this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
+						}
 					});
-				this.busySavingData = false;
+			}
 
-				if (this.exitAfterSave) {
-					this.exit();
-				} else {
-					this.step++;
-					this.experienceStepUpdate();
-					this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
-				}
-			});
+
 		} else {
 			if (this.exitAfterSave) {
 				this.exit();

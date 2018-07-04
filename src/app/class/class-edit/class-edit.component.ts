@@ -27,6 +27,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { CustomCertificateFormComponent } from '../../_shared/custom-certificate-form/custom-certificate-form.component';
+import { merge } from 'rxjs/observable/merge';
 
 @Component({
 	selector: 'app-class-edit',
@@ -145,6 +146,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	timelineStep = 15;
 	@ViewChild('certificateComponent') certificateComponent: CustomCertificateFormComponent;
 	exitAfterSave = false;
+	public originalInterests = [];
 
 	// TypeScript public modifiers
 	constructor(
@@ -182,7 +184,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				+ '/console/account/payoutmethods&state=' + environment.clientUrl + '/class/' + this.classId
 				+ '/edit/' + this.step;
 			this.searchTopicURL = environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
-			this.createTopicURL = environment.apiUrl + '/api/' + environment.uniqueDeveloperCode + '_topics';
+			this.createTopicURL = environment.apiUrl + '/api/topics';
 		});
 
 
@@ -701,7 +703,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.relTopics = _.uniqBy(res.topics, 'id');
 		this.interests = this.relTopics;
 		if (this.interests) {
-			this.suggestedTopics = this.interests;
+			this.suggestedTopics = _.cloneDeep(this.interests);
+			this.originalInterests = _.cloneDeep(this.interests);
 		}
 		// Language
 		if (res.language && res.language.length > 0) {
@@ -1052,12 +1055,9 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public submitInterests() {
 		this.busySavingData = false;
 		let body = {};
-		let topicArray = [];
+		const topicArray = [];
 		this.interests.forEach((topic) => {
 			topicArray.push(topic.id);
-		});
-		this.relTopics.forEach((topic) => {
-			topicArray = _.without(topicArray, topic.id);
 		});
 		console.log(topicArray);
 		body = {
@@ -1065,24 +1065,50 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		};
 
 		if (topicArray.length !== 0) {
-			let observable: Observable<any>;
-			observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.classId + '/topics/rel', body, this.requestHeaderService.options)
-				.map(response => response).publishReplay().refCount();
-			observable.subscribe((res) => {
-				this._collectionService.getCollectionDetail(this.classId, this.query)
-					.subscribe((resData) => {
-						this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
+			if (this.originalInterests.length > 0) {
+				const unlinkObeservables: Array<Observable<ArrayBuffer>> = [];
+				this.originalInterests.forEach(interest => {
+					console.log(interest);
+					unlinkObeservables.push(this._collectionService.unlinkTopic(this.classId, interest.id));
+				});
+				console.log(unlinkObeservables);
+				const finalObservable = merge(...unlinkObeservables);
+				finalObservable.flatMap(res => {
+					console.log(res);
+					return this.http.patch(environment.apiUrl + '/api/collections/' + this.classId + '/topics/rel', body, this.requestHeaderService.options);
+				}).subscribe((res) => {
+					this._collectionService.getCollectionDetail(this.classId, this.query)
+						.subscribe((resData) => {
+							this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
+						});
+					this.busySavingData = false;
+					if (this.exitAfterSave) {
+						this.exit();
+					} else {
+						this.step++;
+						this.classStepUpdate();
+						this.router.navigate(['class', this.classId, 'edit', this.step]);
+					}
+				});
+			} else {
+				this.http.patch(environment.apiUrl + '/api/collections/' + this.classId + '/topics/rel', body, this.requestHeaderService.options)
+					.subscribe((res) => {
+						this._collectionService.getCollectionDetail(this.classId, this.query)
+							.subscribe((resData) => {
+								this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
+							});
+						this.busySavingData = false;
+						if (this.exitAfterSave) {
+							this.exit();
+						} else {
+							this.step++;
+							this.classStepUpdate();
+							this.router.navigate(['class', this.classId, 'edit', this.step]);
+						}
 					});
-				this.busySavingData = false;
+			}
 
-				if (this.exitAfterSave) {
-					this.exit();
-				} else {
-					this.step++;
-					this.classStepUpdate();
-					this.router.navigate(['class', this.classId, 'edit', this.step]);
-				}
-			});
+
 		} else {
 			if (this.exitAfterSave) {
 				this.exit();
