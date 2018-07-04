@@ -15,6 +15,10 @@ export class CertificateService {
   public getCertificate(id: string) {
     return this.httpClient.get(environment.apiUrl + '/api/certificates/' + id, this.requestHeaderService.options);
   }
+	
+	public getCertificates(userId: string) {
+		return this.httpClient.get(environment.apiUrl + '/api/peers/' + userId + '/certificates', this.requestHeaderService.options);
+	}
 
   public getBlockchainHash(collectionId: string, peerEthAddress: string) {
     return this.httpClient.get(environment.one0xUrl + '/collections/' + collectionId + '/peers/' + peerEthAddress + '/hash', this.requestHeaderService.options);

@@ -156,6 +156,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public clickedCohortEndDate;
 	public eventsForTheDay: any;
 	public toOpenDialogName;
+	public checkingEthereum = true;
+	public isOnEthereum = false;
 	objectKeys = Object.keys;
 
 	public view = 'month';
@@ -480,6 +482,13 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		};
 
 		if (this.classId) {
+			this._collectionService.getCollectionEthereumInfo(this.classId, {})
+				.subscribe(res => {
+					this.checkingEthereum = false;
+					if (res && res[6] && res[6] !== '0') {
+						this.isOnEthereum = true;
+					}
+				});
 			this._collectionService.getCollectionDetail(this.classId, query)
 				.subscribe(res => {
 					console.log(res);
@@ -1686,6 +1695,15 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.dialogsService.messageParticipant(peer).subscribe(result => {
 			// console.log(result);
 		});
+	}
+	
+	public addToEthereum() {
+		this._collectionService.addToEthereum(this.classId)
+			.subscribe(res => {
+				this.initializeClass();
+			}, err => {
+				this.snackBar.open('Could not add to one0x Blockchain. Try again later.', 'Ok', { duration: 5000 });
+			});
 	}
 
 }

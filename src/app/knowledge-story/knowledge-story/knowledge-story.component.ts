@@ -8,7 +8,8 @@ import { KnowledgeStoryService } from '../../_services/knowledge-story/knowledge
 import { CollectionService } from '../../_services/collection/collection.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
-import {ProfileService} from "../../_services/profile/profile.service";
+import {ProfileService} from '../../_services/profile/profile.service';
+import {CertificateService} from '../../_services/certificate/certificate.service';
 
 @Component({
 	selector: 'app-knowledge-story',
@@ -18,6 +19,7 @@ import {ProfileService} from "../../_services/profile/profile.service";
 export class KnowledgeStoryComponent implements OnInit {
 	public loadingKnowledgeStory: boolean;
 	public loadingBlockTransactions = true;
+	public loadingCertificates = true;
 	public blockTransactions: any;
 	public knowledgeStory: any;
 	public knowledgeStoryId: string;
@@ -31,6 +33,8 @@ export class KnowledgeStoryComponent implements OnInit {
 	public storyNotFound = false;
 	public requested: boolean;
 	public globalStory = false;
+	public certificates: any;
+	
 	constructor(
 		private activatedRoute: ActivatedRoute,
 		private _cookieUtilsService: CookieUtilsService,
@@ -43,6 +47,7 @@ export class KnowledgeStoryComponent implements OnInit {
 		private _profileService: ProfileService,
 		private matSnackBar: MatSnackBar,
 		public authService: AuthenticationService,
+		private _certificateService: CertificateService
 	) {
 		this.envVariable = environment;
 	}
@@ -156,6 +161,7 @@ export class KnowledgeStoryComponent implements OnInit {
 			this.knowledgeStory.protagonist.push(res);
 			this.setTags();
 			this.fetchBlockTransactions({});
+			this.fetchCertificates({});
 			this.loadingKnowledgeStory = false;
 		});
 	}
@@ -165,7 +171,7 @@ export class KnowledgeStoryComponent implements OnInit {
 		this._knowledgeStoryService.fetchBlockTransactions(this.knowledgeStory.protagonist[0].ethAddress, topics)
 			.subscribe(
 				res => {
-					if (res && typeof res !== 'object') {
+					if (res) {
 						this.blockTransactions = res;
 					} else {
 						this.blockTransactions = [];
@@ -175,6 +181,25 @@ export class KnowledgeStoryComponent implements OnInit {
 				err => {
 					this.loadingBlockTransactions = false;
 					this.blockTransactions = [];
+				}
+			);
+	}
+	
+	private fetchCertificates(topics) {
+		this.loadingCertificates = true;
+		this._certificateService.getCertificates(this.userId)
+			.subscribe(
+				res => {
+					if (res) {
+						this.certificates = res;
+					} else {
+						this.certificates = [];
+					}
+					this.loadingCertificates = false;
+				},
+				err => {
+					this.loadingCertificates = false;
+					this.certificates = [];
 				}
 			);
 	}
@@ -191,7 +216,7 @@ export class KnowledgeStoryComponent implements OnInit {
 
 	shareDialog() {
 		const name = (this.knowledgeStory) ? this.knowledgeStory.protagonist[0].profiles[0].first_name + ' ' + this.knowledgeStory.protagonist[0].profiles[0].last_name : 'Knowledge Story';
-		this.dialogsService.shareCollection('story', this.knowledgeStoryId, name, 'Verified on Peerbuds Blockchain', this.envVariable.apiUrl + this.knowledgeStory.protagonist[0].profiles[0].picture_url).subscribe();
+		this.dialogsService.shareCollection('story', this.knowledgeStoryId, name, 'Verified on one0x Blockchain', this.envVariable.apiUrl + this.knowledgeStory.protagonist[0].profiles[0].picture_url).subscribe();
 	}
 
 	deleteStory() {
@@ -282,6 +307,14 @@ export class KnowledgeStoryComponent implements OnInit {
 			});
 		}
 		return parsedLog;
+	}
+	
+	public parseCertificate(certificate) {
+		return JSON.parse(certificate);
+	}
+	
+	public openCertificate(certId) {
+		this.router.navigate(['certificate', certId]);
 	}
 }
 

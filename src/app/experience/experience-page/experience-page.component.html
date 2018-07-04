@@ -78,10 +78,10 @@
 									< Back to experience page </a>
 										<p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title | titlecase}}
 											<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
-											<span *ngIf="!checkingEthereum && isOnEthereum" matTooltip="Verified on Peerbuds Blockchain">&emsp;
+											<span *ngIf="!checkingEthereum && isOnEthereum" matTooltip="one0x Compliant">&emsp;
 												<i class="fa fa-globe lightText" style="color: #ff6d71; font-size: 14px;"></i>
 											</span>
-											<span *ngIf="!checkingEthereum && !isOnEthereum" matTooltip="Add to Peerbuds Blockchain" (click)="addToEthereum()" class="clickable">&emsp;
+											<span *ngIf="!checkingEthereum && !isOnEthereum" matTooltip="Add to one0x Blockchain" (click)="addToEthereum()" class="clickable">&emsp;
 												<i class="fa fa-plus lightText" style="font-size: 14px;"></i>
 											</span>
 										</p>
@@ -360,7 +360,7 @@
 								<h3 *ngIf="comments !== undefined">Discussion ({{comments.length}})</h3>
 								<h3 *ngIf="comments === undefined">Discussion (0)</h3>
 								<form [formGroup]="chatForm" (ngSubmit)="postComment()">
-									<mat-form-field class="full-width margin-top-10">
+									<mat-form-field class="full-width margin-top-10 margin-bottom-10">
 										<input matInput type="text" #description1 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this experience">
 										<mat-hint align="end">{{description1.value.length}} / 2000</mat-hint>
 									</mat-form-field>
@@ -583,7 +583,7 @@
 								<div class="row margin-top-20" *ngIf="userType==='participant' && !hasReviewed(reviews)">
 									<div class="col-md-12">
 										<form [formGroup]="reviewForm" (ngSubmit)="postReview()">
-											<mat-form-field class="full-width">
+											<mat-form-field class="full-width margin-bottom-10">
 												<input matInput #description5 maxlength="2000" formControlName="description" placeholder="Describe your experience with this experience">
 												<mat-hint align="end">{{description5.value.length}} / 2000</mat-hint>
 											</mat-form-field>
