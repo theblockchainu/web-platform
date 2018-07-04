@@ -7,6 +7,8 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { FileUpload } from 'primeng/fileupload';
 import * as _ from 'lodash';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Observable } from 'rxjs/observable';
+import { timer } from 'rxjs/observable/timer';
 @Component({
 	selector: 'app-custom-certificate-form',
 	templateUrl: './custom-certificate-form.component.html',
@@ -14,7 +16,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 
 export class CustomCertificateFormComponent implements OnInit {
-
+	busySavingData = false;
 	public customCertificateForm: FormGroup;
 	public uploadingImage: boolean;
 	public urlForImages: Array<any>;
@@ -23,7 +25,7 @@ export class CustomCertificateFormComponent implements OnInit {
 	public fieldsArray: Array<FormGroup>;
 	public expandedPanelIndex: number;
 	public availableVariables: Array<VariableObject>;
-	public qrcode = '{{QRCode}}';
+	public qrcode = '/assets/images/peerbuds-qr.png';
 	@Input() formData: any;
 
 	@Output() back = new EventEmitter<any>();
@@ -287,11 +289,16 @@ export class CustomCertificateFormComponent implements OnInit {
 	}
 
 	submitCertificate() {
-		const nativeElement: Element = this.certificate.nativeElement;
-		// console.log(nativeElement.outerHTML);
-		this.next.emit({
-			formData: this.customCertificateForm.value,
-			htmlData: nativeElement.outerHTML
+		this.busySavingData = true;
+		this.qrcode = '{{QRCode}}';
+		timer(500).subscribe(res => {
+			const nativeElement: Element = this.certificate.nativeElement;
+			// console.log(nativeElement.outerHTML);
+			this.next.emit({
+				formData: this.customCertificateForm.value,
+				htmlData: nativeElement.outerHTML
+			});
+			this.busySavingData = false;
 		});
 	}
 

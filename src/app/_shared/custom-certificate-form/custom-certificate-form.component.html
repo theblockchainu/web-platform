@@ -629,8 +629,11 @@
 							<button mat-raised-button color="accent" (click)="cancel()">
 								Back
 							</button>
-							<button class="pull-right" mat-raised-button color="accent" (click)="submitCertificate()">
-								Next
+							<button class="pull-right" mat-raised-button [disabled]="busySavingData" color="accent" (click)="submitCertificate()">
+								<span *ngIf="!busySavingData">Next</span>
+								<span>
+									<ngx-loading [show]="busySavingData"></ngx-loading>
+								</span>
 							</button>
 						</div>
 					</div>
@@ -752,12 +755,12 @@
 						</div>
 					</div>
 					<div style="
-              height: 8em;
-              width: 100%;
-              display: inline-block;
-              text-align: center;
-              position: relative;
-         ">
+							height: 8em;
+							width: 100%;
+							display: inline-block;
+							text-align: center;
+							position: relative;
+						">
 						<img style="max-height: 100%;width: auto;" src="{{qrcode}}">
 					</div>
 				</div>
