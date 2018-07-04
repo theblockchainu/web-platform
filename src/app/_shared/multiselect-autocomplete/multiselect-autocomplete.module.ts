@@ -1,7 +1,7 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatIconModule } from '@angular/material';
+import { MatIconModule, MatChipsModule, MatButtonModule } from '@angular/material';
 import { MultiselectAutocompleteComponent } from './multiselect-autocomplete.component';
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 
@@ -17,7 +17,9 @@ import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
             primaryColour: '#33bd9e',
             secondaryColour: '#ff5b5f',
             tertiaryColour: '#ff6d71'
-        })
+        }),
+        MatChipsModule,
+        MatButtonModule
     ],
     exports: [
         MultiselectAutocompleteComponent,

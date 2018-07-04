@@ -37,11 +37,13 @@
 							<div class="mat-caption lightText" *ngIf="assessment_na_rule.value === 'engagement'">
 								Assess community engagement
 							</div>
-							<mat-slider class="pb-block" *ngIf="assessment_na_rule.value === 'engagement'" thumbLabel tickInterval="1" min="1" max="100" formControlName="engagement_result"></mat-slider>
+							<mat-slider class="pb-block" *ngIf="assessment_na_rule.value === 'engagement'" thumbLabel tickInterval="1" min="1" max="100"
+							 formControlName="engagement_result"></mat-slider>
 							<div class="mat-caption lightText" *ngIf="assessment_na_rule.value === 'commitment'">
 								Assess student commitment
 							</div>
-							<mat-slider class="pb-block" *ngIf="assessment_na_rule.value === 'commitment'" thumbLabel tickInterval="1" min="1" max="100" formControlName="commitment_result"></mat-slider>
+							<mat-slider class="pb-block" *ngIf="assessment_na_rule.value === 'commitment'" thumbLabel tickInterval="1" min="1" max="100"
+							 formControlName="commitment_result"></mat-slider>
 						</div>
 					</div>
 					<div class="col-xs-4">
@@ -56,10 +58,12 @@
 						<div *ngIf="!participant.value.isAssessed">
 							<div class="row" *ngFor="let nonAcademicRule of data.assessment_models[0].assessment_na_rules">
 								<div class="col-sm-12" *ngIf="nonAcademicRule.value === 'engagement'">
-									+ {{getGyanForRule( participant['controls']['engagement_result'].value, getGyanForRule(nonAcademicRule.gyan, data.nonAcademicGyan)) }} Gyan from {{nonAcademicRule.value | titlecase}}
+									+ {{getGyanForRule( participant['controls']['engagement_result'].value, getGyanForRule(nonAcademicRule.gyan, data.nonAcademicGyan))
+									}} Gyan from {{nonAcademicRule.value | titlecase}}
 								</div>
 								<div class="col-sm-12" *ngIf="nonAcademicRule.value === 'commitment'">
-									+ {{getGyanForRule( participant['controls']['commitment_result'].value, getGyanForRule(nonAcademicRule.gyan, data.nonAcademicGyan)) }} Gyan from {{nonAcademicRule.value | titlecase}}
+									+ {{getGyanForRule( participant['controls']['commitment_result'].value, getGyanForRule(nonAcademicRule.gyan, data.nonAcademicGyan))
+									}} Gyan from {{nonAcademicRule.value | titlecase}}
 								</div>
 							</div>
 						</div>
@@ -76,7 +80,8 @@
 	</form>
 	<div class="row">
 		<div class="col-xs-12">
-			<button type="submit" [disabled]="!assessmentForm.valid || !pendingParticipants" class="pull-right" (click)="submitForm()" mat-raised-button color="accent">Submit Assessment</button>
+			<button type="button" [disabled]="!assessmentForm.valid || !pendingParticipants" class="pull-right" (click)="submitForm()"
+			 mat-raised-button color="accent">Submit Assessment</button>
 		</div>
 	</div>
 </div>

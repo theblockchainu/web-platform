@@ -92,6 +92,14 @@
                 "visible": true,
                 "locked": false,
                 "complete": false
+            },
+            {
+                "title": "Certification",
+                "step": 13,
+                "active": false,
+                "visible": true,
+                "locked": false,
+                "complete": false
             }
         ],
         "visible": true,
@@ -100,11 +108,11 @@
     {
         "title": "Class Itinerary",
         "active": false,
-        "step": 13,
+        "step": 14,
         "submenu": [
             {
                 "title": "Select Dates",
-                "step": 14,
+                "step": 15,
                 "active": false,
                 "visible": true,
                 "locked": false,
@@ -117,7 +125,7 @@
     {
         "title": "Review & Submit",
         "active": false,
-        "step": 15,
+        "step": 16,
         "visible": true,
         "locked": false
     },
@@ -125,11 +133,11 @@
         "title": "Finishing Touches",
         "active": false,
         "visible": false,
-        "step": 16,
+        "step": 17,
         "submenu": [
             {
                 "title": "Phone Number",
-                "step": 16,
+                "step": 17,
                 "active": false,
                 "visible": false,
                 "locked": false,
@@ -137,7 +145,7 @@
             },
             {
                 "title": "Payments",
-                "step": 17,
+                "step": 18,
                 "active": false,
                 "visible": false,
                 "locked": false,

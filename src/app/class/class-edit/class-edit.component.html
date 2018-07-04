@@ -9,7 +9,7 @@
 				<button *ngIf="mobileQuery.matches" class="side-nav-toggle-button pull-left" mat-icon-button (click)="snav.toggle()">
 					<mat-icon>menu</mat-icon>
 				</button>
-				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=13 && class.controls['status'].value !== 'active'">
+				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=14 && step !=16 && class.controls['status'].value !== 'active'">
 					<button mat-button (click)="saveandexit()">
 						<span *ngIf="!busySave">Save &amp; Exit</span>
 						<span *ngIf="busySave"> </span>
@@ -20,10 +20,8 @@
 					<button mat-button (click)="exit()">Exit</button>
 				</div>
 				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=13">
-					<button mat-button (click)="openClass()">
-						<span *ngIf="!busyPreview">Preview</span>
-						<span *ngIf="busyPreview"> </span>
-						<ngx-loading [show]="busyPreview"></ngx-loading>
+					<button mat-button [routerLink]="'/class/'+classId" [queryParams]="{mode: 'preview'}">
+						Preview
 					</button>
 				</div>
 				<div class="pull-left">
@@ -60,10 +58,8 @@
 								</li>
 							</ul>
 							<div class="margin-top-20">
-								<button mat-raised-button (click)="goto(2)" color="accent" class="pull-right">
-									<span *ngIf="!busyBasics">Next</span>
-									<span *ngIf="busyBasics"> </span>
-									<ngx-loading [show]="busyBasics"></ngx-loading>
+								<button mat-raised-button (click)="next()" color="accent" class="pull-right">
+									Next
 								</button>
 							</div>
 						</div>
@@ -131,10 +127,11 @@
 										Back
 									</button>
 									<span class="pull-right" matTooltip="Add at least one interest to continue" [matTooltipDisabled]="interests.length !== 0">
-										<button mat-raised-button color="accent" [disabled]="interests.length == 0">
-											<span *ngIf="!busyInterest">Next</span>
-											<span *ngIf="busyInterest"> </span>
-											<ngx-loading [show]="busyInterest"></ngx-loading>
+										<button mat-raised-button color="accent" [disabled]="interests.length == 0 || busySavingData">
+											<span *ngIf="!busySavingData">Next</span>
+											<span>
+												<ngx-loading [show]="busySavingData"></ngx-loading>
+											</span>
 										</button>
 									</span>
 								</div>
@@ -150,7 +147,7 @@
 							<p class="subtitle">You will write your descriptions and present your class in this language. Guests will be notified of this in your
 								class description.</p>
 							<br/>
-							<form [formGroup]="class" (ngSubmit)="submitClass(class)">
+							<form [formGroup]="class" (ngSubmit)="submitClass()">
 								<div class="row margin-top-60">
 									<mat-form-field [floatLabel]="'always'" class="col-md-4">
 										<input type="text" name="other_languages" style="border-bottom: 0px;" placeholder="Select Language" matInput formControlName="selectedLanguage"
@@ -165,10 +162,11 @@
 										Back
 									</button>
 									<span class="pull-right" matTooltip="Select a language to continue" [matTooltipDisabled]="selectedLanguages!==undefined">
-										<button mat-raised-button color="accent" type="Submit" [disabled]="selectedLanguages===undefined">
-											<span *ngIf="!busyLanguage">Next</span>
-											<span *ngIf="busyLanguage"> </span>
-											<ngx-loading [show]="busyLanguage"></ngx-loading>
+										<button mat-raised-button color="accent" type="Submit" [disabled]="selectedLanguages===undefined || busySavingData">
+											<span *ngIf="!busySavingData">Next</span>
+											<span>
+												<ngx-loading [show]="busySavingData"></ngx-loading>
+											</span>
 										</button>
 									</span>
 								</div>
@@ -183,7 +181,7 @@
 							<h2 class="title">Introduce yourself as a Host</h2>
 							<p class="subtitle">Describe yourself and tell guests how you came to be passionate about hosting this class.</p>
 
-							<form [formGroup]="class" (ngSubmit)="submitClass(class)">
+							<form [formGroup]="class" (ngSubmit)="submitClass()">
 								<div class="row margin-bottom-30 margin-top-30" style="margin-top: 30px;">
 									<div class="col-sm-12">
 										<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
@@ -197,10 +195,11 @@
 										Back
 									</button>
 									<span class="pull-right" matTooltip="A brief description about yourself is mandatory to continue" [matTooltipDisabled]="aboutHost.value.length !== 0">
-										<button mat-raised-button color="accent" type="Submit" [disabled]="aboutHost.value.length == 0">
-											<span *ngIf="!busyHost">Next</span>
-											<span *ngIf="busyHost"> </span>
-											<ngx-loading [show]="busyHost"></ngx-loading>
+										<button mat-raised-button color="accent" type="Submit" [disabled]="aboutHost.value.length == 0 || busySavingData">
+											<span *ngIf="!busySavingData">Next</span>
+											<span>
+												<ngx-loading [show]="busySavingData"></ngx-loading>
+											</span>
 										</button>
 									</span>
 								</div>
@@ -221,11 +220,9 @@
 								<button mat-raised-button type="button" (click)="back()" color="accent">
 									Back
 								</button>
-								<a mat-raised-button (click)="goto(6)" color="accent" class="pull-right">
-									<span *ngIf="!busyClassPage">Next</span>
-									<span *ngIf="busyClassPage"> </span>
-									<ngx-loading [show]="busyClassPage"></ngx-loading>
-								</a>
+								<button mat-raised-button (click)="next()" color="accent" class="pull-right">
+									Next
+								</button>
 							</div>
 						</div>
 					</div>
@@ -234,7 +231,7 @@
 				<div class="onboarding step-6" [hidden]="step!=6">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-							<form [formGroup]="class" (ngSubmit)="submitClass(class)">
+							<form [formGroup]="class" (ngSubmit)="submitClass()">
 								<div class="row">
 									<div class="col-sm-12 margin-bottom-30">
 										<div class="form-group">
@@ -296,7 +293,12 @@
 									</button>
 									<span class="pull-right" matTooltip="Please type in a headline to continue." [matTooltipDisabled]="title.value.length !== 0 || headline.value.length !== 0">
 										<span matTooltip="An image is mandatory to continue" [matTooltipDisabled]="urlForImages.length !== 0">
-											<button mat-raised-button color="accent" type="Submit" [disabled]="urlForImages.length === 0 || title.value.length === 0 || headline.value.length === 0">Next</button>
+											<button mat-raised-button color="accent" type="Submit" [disabled]="urlForImages.length === 0 || title.value.length === 0 || headline.value.length === 0 || busySavingData">
+												<span *ngIf="!busySavingData">Next</span>
+												<span>
+													<ngx-loading [show]="busySavingData"></ngx-loading>
+												</span>
+											</button>
 										</span>
 									</span>
 								</div>
@@ -308,7 +310,7 @@
 				<div class="onboarding step-7" [hidden]="step!=7">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-							<form [formGroup]="class" (ngSubmit)="submitClass(class)">
+							<form [formGroup]="class" (ngSubmit)="submitClass()">
 								<div class="row">
 									<div class="col-sm-12 margin-bottom-30">
 										<h2 class="title">What’s the class about?</h2>
@@ -324,7 +326,12 @@
 										Back
 									</button>
 									<span class="pull-right" matTooltip="Describe your class in detail to continue" [matTooltipDisabled]="description.value.length !== 0">
-										<button mat-raised-button color="accent" type="Submit" [disabled]="description.value.length == 0">Next</button>
+										<button mat-raised-button color="accent" type="Submit" [disabled]="description.value.length == 0 || busySavingData">
+											<span *ngIf="!busySavingData">Next</span>
+											<span>
+												<ngx-loading [show]="busySavingData"></ngx-loading>
+											</span>
+										</button>
 									</span>
 								</div>
 							</form>
@@ -335,7 +342,7 @@
 				<div class="onboarding step-8" [hidden]="step!=8">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-							<form [formGroup]="class" (ngSubmit)="submitClass(class)">
+							<form [formGroup]="class" (ngSubmit)="submitClass()">
 								<h2 class="title">Who should come?</h2>
 								<p class="subtitle">Start with a level of difficulty</p>
 								<div class="col-sm-12 margin-bottom-30 padding-left-0">
@@ -359,7 +366,12 @@
 										Back
 									</button>
 									<span class="pull-right" matTooltip="Please fill all the details" [matTooltipDisabled]="class.controls['difficultyLevel'].value && class.controls['notes'].value">
-										<button mat-raised-button color="accent" type="Submit" [disabled]="!class.controls['difficultyLevel'].value && notes.value.length == 0">Next</button>
+										<button mat-raised-button color="accent" type="Submit" [disabled]="(!class.controls['difficultyLevel'].value && notes.value.length == 0) || busySavingData">
+											<span *ngIf="!busySavingData">Next</span>
+											<span>
+												<ngx-loading [show]="busySavingData"></ngx-loading>
+											</span>
+										</button>
 									</span>
 								</div>
 							</form>
@@ -375,7 +387,7 @@
 								Remember to keep your class as personal as possible.
 								<br>The fuller your class, the less attention you can give to each individual learner.
 							</p>
-							<form [formGroup]="class" (ngSubmit)="submitClass(class)">
+							<form [formGroup]="class" (ngSubmit)="submitClass()">
 								<div class="row">
 									<div class="col-sm-4">
 										<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
@@ -391,7 +403,12 @@
 											</button>
 											<span class="pull-right" matTooltip="Enter the maximum number of participants you can teach in each Cohort of this class"
 											 [matTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
-												<button mat-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0 || maxSpots.value < 0">Next</button>
+												<button mat-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0 || maxSpots.value < 0 || busySavingData">
+													<span *ngIf="!busySavingData">Next</span>
+													<span>
+														<ngx-loading [show]="busySavingData"></ngx-loading>
+													</span>
+												</button>
 											</span>
 										</div>
 									</div>
@@ -409,7 +426,7 @@
 								Give the world a taste of your class by showcasing captivating videos and/or photos
 							</p>
 							<div class="row" style="margin-top:25px;">
-								<form [formGroup]="class" (ngSubmit)="submitClass(class)" novalidate>
+								<form [formGroup]="class" (ngSubmit)="submitClass()" novalidate>
 									<div class="row margin-left-0" style="margin-top:40px">
 										<div class="col-md-8">
 											<div class="stepHeader">Upload Video</div>
@@ -442,7 +459,12 @@
 													Back
 												</button>
 												<span class="pull-right">
-													<button mat-raised-button color="accent" type="Submit">Next</button>
+													<button mat-raised-button color="accent" [disabled]="busySavingData" type="Submit">
+														<span *ngIf="!busySavingData">Next</span>
+														<span>
+															<ngx-loading [show]="busySavingData"></ngx-loading>
+														</span>
+													</button>
 												</span>
 											</div>
 										</div>
@@ -456,7 +478,7 @@
 				<div class="onboarding step-11" [hidden]="step!=11">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-							<form [formGroup]="class" (ngSubmit)="submitClass(class)">
+							<form [formGroup]="class" (ngSubmit)="submitClassGyan(class)">
 								<h2 class="title">Set a price and gyan for this class</h2>
 								<p class="subtitle">
 									The price of your class is entirely up to you. Gyan is the unit measure of knowledge. You decide the amount of Gyan you will
@@ -529,7 +551,12 @@
 									</button>
 									<span class="pull-right" matTooltip="Enter a price you wish to charge for this class, its gyan value and its cancellation policy"
 									 [matTooltipDisabled]="class.controls['price'].value && class.controls['currency'].value  && class.controls['cancellationPolicy'].value && class.controls['academicGyan'].value && class.controls['nonAcademicGyan'].value">
-										<button mat-raised-button color="accent" type="Submit" [disabled]="!(freeClass || (class.controls['price'].value && class.controls['currency'].value)) || !class.controls['cancellationPolicy'].value || !class.controls['academicGyan'].value || !class.controls['nonAcademicGyan'].value">Next</button>
+										<button mat-raised-button color="accent" type="Submit" [disabled]="!(freeClass || (class.controls['price'].value && class.controls['currency'].value)) || !class.controls['cancellationPolicy'].value || !class.controls['academicGyan'].value || !class.controls['nonAcademicGyan'].value || busySavingData">
+											<span *ngIf="!busySavingData">Next</span>
+											<span>
+												<ngx-loading [show]="busySavingData"></ngx-loading>
+											</span>
+										</button>
 									</span>
 								</div>
 							</form>
@@ -650,7 +677,12 @@
 										Back
 									</button>
 									<span class="pull-right">
-										<button mat-raised-button color="accent" type="Submit">Next</button>
+										<button mat-raised-button color="accent" type="Submit" [disabled]="busySavingData">
+											<span *ngIf="!busySavingData">Next</span>
+											<span>
+												<ngx-loading [show]="busySavingData"></ngx-loading>
+											</span>
+										</button>
 									</span>
 								</div>
 							</div>
@@ -659,8 +691,14 @@
 					</form>
 				</div>
 
-				<!--Step 13 - Disclaimer-->
+				<!-- step 13 - Certificate -->
 				<div class="onboarding step-13" [hidden]="step!=13">
+					<app-custom-certificate-form #certificateComponent *ngIf="certificateLoaded" [formData]="certificateForm.controls['formData'].value"
+					 (back)="back()" (next)="submitCertificate($event)"></app-custom-certificate-form>
+				</div>
+
+				<!--Step 14 - Disclaimer-->
+				<div class="onboarding step-14" [hidden]="step!=14">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Add content to your Class</h2>
@@ -671,14 +709,14 @@
 									<button mat-raised-button type="button" (click)="back()" color="accent">
 										Back
 									</button>
-									<button class="pull-right" mat-raised-button color="accent" (click)="goto(14)">Next</button>
+									<button class="pull-right" mat-raised-button color="accent" (click)="next()">Next</button>
 								</div>
 							</form>
 						</div>
 					</div>
 				</div>
-				<!--Step 14 - Itinerary-->
-				<div class="onboarding step-14" [hidden]="step!=14">
+				<!--Step 15 - Itinerary-->
+				<div class="onboarding step-15" [hidden]="step!=15">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Set your default timeline
@@ -687,7 +725,7 @@
 								Create a default timeline for your class and add activities to it. Later on, you can create as many cohorts with specific
 								start dates.
 							</p>
-							<form [formGroup]="timeline" (ngSubmit)="submitClass(class, timeline, 14)" novalidate>
+							<form [formGroup]="timeline" (ngSubmit)="submitClassTimeline(class, timeline, 14)" novalidate>
 								<!--(ngSubmit)="submitTimeline(timeline)" -->
 								<div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
 									<div class="row" style="margin: 30px 0px 15px -15px;">
@@ -732,7 +770,12 @@
 											Back
 										</button>
 										<span class="pull-right" matTooltip="A minimum of 1 day class is mandatory to continue" [matTooltipDisabled]="(timeline.controls['calendar'].value.startDate || timeline.controls['calendar'].value.endDate)">
-											<button mat-raised-button color="accent" type="Submit" [disabled]="(!timeline.controls['calendar'].value.startDate && !timeline.controls['calendar'].value.endDate)">Next</button>
+											<button mat-raised-button color="accent" type="Submit" [disabled]="(!timeline.controls['calendar'].value.startDate && !timeline.controls['calendar'].value.endDate) || busySavingData">
+												<span *ngIf="!busySavingData">Next</span>
+												<span>
+													<ngx-loading [show]="busySavingData"></ngx-loading>
+												</span>
+											</button>
 										</span>
 									</div>
 								</div>
@@ -740,8 +783,8 @@
 						</div>
 					</div>
 				</div>
-				<!--Step 15 - Submit for review-->
-				<div class="onboarding step-15" [hidden]="step!=15">
+				<!--Step 16 - Submit for review-->
+				<div class="onboarding step-16" [hidden]="step!=16">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Review and submit</h2>
@@ -772,7 +815,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="onboarding step-16" [hidden]="step!=16">
+				<div class="onboarding step-17" [hidden]="step!=17">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Do you want to provide your phone number to learners?</h2>
@@ -811,17 +854,15 @@
 									Back
 								</button>
 								<span class="pull-right" matTooltip="Please verify your phone number to continue" [matTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
-									<button mat-raised-button (click)="takeToPayment()" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
-										<span *ngIf="!busyPayment">Next</span>
-										<span *ngIf="busyPayment"> </span>
-										<ngx-loading [show]="busyPayment"></ngx-loading>
+									<button mat-raised-button (click)="next()" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
+										Next
 									</button>
 								</span>
 							</form>
 						</div>
 					</div>
 				</div>
-				<div class="onboarding step-17" [hidden]="step!=17">
+				<div class="onboarding step-18" [hidden]="step!=18">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Connect Payment Option</h2>

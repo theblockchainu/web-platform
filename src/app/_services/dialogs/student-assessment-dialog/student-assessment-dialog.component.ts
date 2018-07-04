@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import {FormGroup, FormBuilder, FormArray, Validators} from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 
 @Component({
 	selector: 'app-student-assessment-dialog',
@@ -8,16 +8,16 @@ import {FormGroup, FormBuilder, FormArray, Validators} from '@angular/forms';
 	styleUrls: ['./student-assessment-dialog.component.scss']
 })
 export class StudentAssessmentDialogComponent implements OnInit {
-	
+
 	public assessmentForm: FormGroup;
 	public pendingParticipants = false;
-	
+
 	constructor(public dialogRef: MatDialogRef<StudentAssessmentDialogComponent>,
-				@Inject(MAT_DIALOG_DATA) public data: any,
-				private _fb: FormBuilder) { }
-	
+		@Inject(MAT_DIALOG_DATA) public data: any,
+		private _fb: FormBuilder) { }
+
 	ngOnInit() {
-		
+
 		const participantsInitArray = [];
 		console.log(this.data);
 		this.pendingParticipants = false;
@@ -38,7 +38,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 						}
 					});
 				}
-				
+
 			});
 			this.data.assessment_models[0].assessment_na_rules.forEach(assessment_na_rule => {
 				if (assessment_na_rule.assessment_result) {
@@ -57,7 +57,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 						}
 					});
 				}
-				
+
 			});
 			if (!isParticipantAssessed) {
 				this.pendingParticipants = true;
@@ -67,29 +67,31 @@ export class StudentAssessmentDialogComponent implements OnInit {
 				this._fb.group({
 					name: participant.profiles[0].first_name + ' ' + participant.profiles[0].last_name,
 					id: participant.id,
-					rule_obj: [{value: participantResult, disabled: isParticipantAssessed}, Validators.required],
-					engagement_result: [{value: engagementResult, disabled: isParticipantEngagementAssessed}, Validators.required],
-					commitment_result: [{value: commitmentResult, disabled: isParticipantCommitmentAssessed}, Validators.required],
+					rule_obj: [{ value: participantResult, disabled: isParticipantAssessed }],
+					engagement_result: [{ value: engagementResult, disabled: isParticipantEngagementAssessed }],
+					commitment_result: [{ value: commitmentResult, disabled: isParticipantCommitmentAssessed }],
 					isAssessed: isParticipantAssessed
 				})
 			);
 		});
-		
+
 		this.assessmentForm = this._fb.group({
 			participants: this._fb.array(participantsInitArray)
 		});
-		
-		console.log(this.assessmentForm);
-		
 	}
-	
+
 	public getGyanForRule(gyanPercent, totalGyan) {
-		console.log('Percent: ' + gyanPercent + ' of total gyan: ' + totalGyan);
 		return Math.floor((gyanPercent / 100) * totalGyan);
 	}
-	
+
 	submitForm() {
-		this.dialogRef.close(this.assessmentForm.value);
+		const participants = [];
+		this.assessmentForm.value.participants.forEach(participantObj => {
+			if (participantObj.rule_obj && participantObj.rule_obj.value) {
+				participants.push(participantObj);
+			}
+		});
+		this.dialogRef.close({ participants: participants });
 	}
-	
+
 }

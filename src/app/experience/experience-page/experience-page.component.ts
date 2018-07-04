@@ -1743,6 +1743,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				});
 				this._assessmentService.submitAssessment(assessmentArray).subscribe(result => {
 					console.log(result);
+					this.initializeExperience();
 					this.snackBar.open('Your assessment has been submitted. Students will be informed over email.', 'Ok', { duration: 5000 });
 					this._authenticationService.isLoginSubject.next(true);
 				});
