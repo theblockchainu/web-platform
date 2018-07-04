@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/switchMap';
-import { Component, OnInit, OnDestroy, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
@@ -27,6 +27,8 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Meta, Title } from '@angular/platform-browser';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { CertificateService } from '../../_services/certificate/certificate.service';
+import { CustomCertificateFormComponent } from '../../_shared/custom-certificate-form/custom-certificate-form.component';
+import { FindValueSubscriber } from 'rxjs/operators/find';
 @Component({
 	selector: 'app-experience-edit',
 	templateUrl: './experience-edit.component.html',
@@ -35,14 +37,12 @@ import { CertificateService } from '../../_services/certificate/certificate.serv
 
 export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public busySave = false;
-	public busyPreview = false;
 	public busyInterest = false;
-	public busyLanguage = false;
-	public busyBasics = false;
-	public busyHost = false;
 	public envVariable;
-	public busyExperiencePage = false;
 	public busyPayment = false;
+	public busySavingData = false;
+
+
 	public sidebarFilePath = 'assets/menu/experience-static-left-sidebar-menu.json';
 	public sidebarMenuItems;
 	public itenariesForMenu = [];
@@ -146,6 +146,9 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	totalGyan = 0;
 	totalDuration = 0;
 	timelineStep = 15;
+	exitAfterSave = false;
+	@ViewChild('certificateComponent') certificateComponent: CustomCertificateFormComponent;
+
 	// TypeScript public modifiers
 	constructor(
 		public router: Router,
@@ -649,8 +652,10 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	initializeCertificate() {
 		this.certificateService.getCertificateTemplate(this.experienceId).subscribe((res: any) => {
-			if (res.formData && res.expiryDate) {
+			if (res.formData) {
 				this.certificateForm.controls['formData'].patchValue(JSON.parse(res.formData));
+			}
+			if (res.expiryDate) {
 				this.certificateForm.controls['expiryDate'].patchValue(res.expiryDate);
 			}
 			this.certificateLoaded = true;
@@ -660,12 +665,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	}
 
 	public languageChange(event) {
-		this.busyLanguage = true;
 		if (event) {
-			console.log(event);
 			this.selectedLanguages = event;
-			this.busyLanguage = false;
-			// this.experience.controls.selectedLanguage.setValue(event.value);
 		}
 	}
 
@@ -865,6 +866,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	}
 
 	public submitExperienceTimeline() {
+		this.busySavingData = true;
 		if (this.calendarIsValid(this.step)) {
 			if ((this.totalGyan > this.gyanBalance) && (this.totalDuration !== this.totalGyan)) {
 				this.snackBar.open('You do not have enough Gyan balance or learning hours to justify a knowledge value of ' + this.totalGyan + ' Gyan. Knowledge value for this experience will be adjusted to ' + this.totalDuration + ' Gyan.',
@@ -880,32 +882,48 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		}
 	}
 
-	public submitExperienceGyan(data, timeline?, step?) {
+	public submitExperienceGyan() {
+		this.busySavingData = true;
 		this.totalGyan = this.experience.controls['academicGyan'].value + this.experience.controls['nonAcademicGyan'].value;
 		console.log(this.totalGyan);
 		console.log(this.gyanBalance);
 		if (this.totalGyan > this.gyanBalance) {
 			this.dialogsService.showGyanNotif(this.gyanBalance, this.totalGyan).subscribe(res => {
 				if (res) {
-					this.checkStatusAndSubmit(data, timeline, step);
+					this.checkStatusAndSubmit(this.experience, this.timeline, this.step);
+				} else {
+					this.busySavingData = false;
 				}
 			});
 		} else {
-			this.checkStatusAndSubmit(data, timeline, step);
+			this.checkStatusAndSubmit(this.experience, this.timeline, this.step);
 		}
 	}
 
-	public submitExperience(data, timeline?, step?) {
-		this.checkStatusAndSubmit(data, timeline, this.step);
+	public submitExperience() {
+		this.busySavingData = true;
+		this.checkStatusAndSubmit(this.experience, this.timeline, this.step);
 	}
 
 	public submitCertificate(certificate: any) {
+		this.busySavingData = true;
 		this.certificateForm.controls['certificateHTML'].patchValue(certificate.htmlData);
 		this.certificateForm.controls['formData'].patchValue(JSON.stringify(certificate.formData));
 		this._collectionService.submitCertificate(this.experienceId, this.certificateForm.value).subscribe(res => {
-			this.step++;
-			this.experienceStepUpdate();
-			this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
+			if (this.exitAfterSave) {
+				this.exit();
+			} else {
+				this.step++;
+				this.experienceStepUpdate();
+				this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
+				this.busySavingData = false;
+			}
+		}, err => {
+			this.snackBar.open('An Error Occured', 'Retry', {
+				duration: 3000
+			}).onAction().subscribe(res => {
+				this.submitCertificate(certificate);
+			});
 		});
 	}
 
@@ -990,9 +1008,14 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				if (step && step === this.timelineStep) {
 					this.submitTimeline(collectionId, timeline);
 				} else {
-					this.step++;
-					this.experienceStepUpdate();
-					this.router.navigate(['experience', collectionId, 'edit', this.step]);
+					if (this.exitAfterSave) {
+						this.exit();
+					} else {
+						this.step++;
+						this.experienceStepUpdate();
+						this.router.navigate(['experience', collectionId, 'edit', this.step]);
+						this.busySavingData = false;
+					}
 				}
 			});
 	}
@@ -1021,11 +1044,17 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		if (body.startDate && body.endDate && itinerary && itinerary.length > 0) {
 			this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body, this.requestHeaderService.options)
 				.subscribe((response) => {
-					this.step++;
-					this.experienceStepUpdate();
-					this.router.navigate(['experience', collectionId, 'edit', this.step]);
+					if (this.exitAfterSave) {
+						this.exit();
+					} else {
+						this.step++;
+						this.experienceStepUpdate();
+						this.router.navigate(['experience', collectionId, 'edit', this.step]);
+						this.busySavingData = false;
+					}
 				});
 		} else {
+			this.busySavingData = false;
 			console.log('No date selected or no content added to itinerary! - ' + JSON.stringify(itinerary));
 			if (!itinerary || itinerary.length === 0) {
 				this.snackBar.open('You need to add at least 1 activity to your experience to proceed.', 'Close', {
@@ -1040,7 +1069,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	}
 
 	public submitInterests() {
-		this.busyInterest = true;
+		this.busySavingData = true;
 		let body = {};
 		let topicArray = [];
 		this.interests.forEach((topic) => {
@@ -1063,34 +1092,34 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 					.subscribe((resData) => {
 						this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
 					});
-				this.step++;
-				this.experienceStepUpdate();
-				this.busyInterest = false;
-				this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
+				this.busySavingData = false;
+
+				if (this.exitAfterSave) {
+					this.exit();
+				} else {
+					this.step++;
+					this.experienceStepUpdate();
+					this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
+				}
 			});
 		} else {
-			this.step++;
-			this.experienceStepUpdate();
-			this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
+			if (this.exitAfterSave) {
+				this.exit();
+			} else {
+				this.step++;
+				this.experienceStepUpdate();
+				this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
+				this.busySavingData = false;
+			}
 		}
 	}
 
 	/**
 	 * goto(toggleStep)  */
 	public goto(toggleStep) {
-		this.busyBasics = false;
-		this.busyExperiencePage = false;
 		this.step = toggleStep;
 		this.router.navigate(['experience', this.experienceId, 'edit', +toggleStep]);
-		if (toggleStep === 2) {
-			this.busyBasics = true;
-			this.busyBasics = false;
-		}
 		this.showBackground = !!(this.step && this.step.toString() === '5');
-
-		if (toggleStep === 6) {
-			this.busyExperiencePage = true;
-		}
 	}
 
 
@@ -1116,34 +1145,32 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	}
 
-	saveandexit() {
-		this.busySave = true;
-		this.experienceStepUpdate();
-		if (this.step === this.timelineStep) {
-			const data = this.timeline;
-			const body = data.value.calendar;
-			if (body.startDate && body.endDate) {
-				this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/calendar', body, this.requestHeaderService.options)
-					.map((response) => {
-						this.busySave = false;
-						this.router.navigate(['console/teaching/experiences']);
-					})
-					.subscribe();
-			} else {
-				console.log('Enter Date!');
-			}
-
-		} else {
-			const data = this.experience;
-			const lang = <FormArray>this.experience.controls.language;
-			lang.removeAt(0);
-			lang.push(this._fb.control(data.value.selectedLanguage));
-			const body = data.value;
-			delete body.selectedLanguage;
-			this._collectionService.patchCollection(this.experienceId, body).map(
-				(response) => {
-					this.router.navigate(['console/teaching/experiences']);
-				}).subscribe();
+	saveandexit(certificateComponent?: any) {
+		this.exitAfterSave = true;
+		switch (this.step) {
+			case 2:
+				this.submitInterests();
+				break;
+			case 11:
+				this.submitExperienceGyan();
+				break;
+			case 12:
+				this.submitAssessment();
+				break;
+			case 13:
+				console.log('submitting certificate');
+				this.certificateComponent.submitCertificate();
+				break;
+			case 15:
+				this.submitExperienceTimeline();
+				break;
+			case 17:
+			case 18:
+				this.exit();
+				break;
+			default:
+				this.submitExperience();
+				break;
 		}
 	}
 
@@ -1318,23 +1345,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				});
 	}
 
-	takeToPayment() {
-		this.busyPayment = true;
-		this.step++;
-		this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
-	}
-
 	/**
 	 * Make the dates section of this page editable
 	 */
 	makeDatesEditable() {
 		this.datesEditable = true;
-	}
-
-	openExperience() {
-		this.busyPreview = true;
-		this.router.navigate(['/experience', this.experienceId]);
-		this.busyPreview = false;
 	}
 
 	sort(calendars, param1, param2) {
@@ -1445,6 +1460,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	public submitAssessment() {
 		let assessmentModelObject;
+		this.busySavingData = true;
 		this._collectionService.updateAssessmentModel(this.experienceId, {
 			type: this.assessmentForm.controls['type'].value,
 			style: this.assessmentForm.controls['style'].value
@@ -1459,11 +1475,18 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		}).subscribe(res => {
 			this.experienceData.assessment_models[0].assessment_na_rules = res;
 			this._leftSideBarService.updateSideMenu(this.experienceData, this.sidebarMenuItems);
-			this.step++;
-			this.experienceStepUpdate();
-			this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
+
+			if (this.exitAfterSave) {
+				this.exit();
+			} else {
+				this.step++;
+				this.experienceStepUpdate();
+				this.router.navigate(['experience', this.experienceId, 'edit', this.step]);
+				this.busySavingData = false;
+			}
 		}, err => {
 			console.log(err);
+			this.busySavingData = false;
 			this.snackBar.open('An error occurred', 'close', {
 				duration: 5000
 			});

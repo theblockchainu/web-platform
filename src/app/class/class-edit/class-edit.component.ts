@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/switchMap';
-import { Component, OnInit, Input, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -26,6 +26,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Meta, Title } from '@angular/platform-browser';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { CertificateService } from '../../_services/certificate/certificate.service';
+import { CustomCertificateFormComponent } from '../../_shared/custom-certificate-form/custom-certificate-form.component';
 
 @Component({
 	selector: 'app-class-edit',
@@ -35,13 +36,10 @@ import { CertificateService } from '../../_services/certificate/certificate.serv
 
 export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public busySave = false;
-	public busyPreview = false;
 	public busyInterest = false;
-	public busyLanguage = false;
-	public busyBasics = false;
-	public busyHost = false;
-	public busyClassPage = false;
 	public busyPayment = false;
+	public busySavingData = false;
+
 	public sidebarFilePath = 'assets/menu/class-static-left-sidebar-menu.json';
 	public sidebarMenuItems;
 	public itenariesForMenu = [];
@@ -145,6 +143,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	certificateLoaded: boolean;
 	public certificateForm: FormGroup;
 	timelineStep = 15;
+	@ViewChild('certificateComponent') certificateComponent: CustomCertificateFormComponent;
+	exitAfterSave = false;
 
 	// TypeScript public modifiers
 	constructor(
@@ -292,8 +292,10 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	initializeCertificate() {
 		this.certificateService.getCertificateTemplate(this.classId).subscribe((res: any) => {
-			if (res.formData && res.expiryDate) {
+			if (res.formData) {
 				this.certificateForm.controls['formData'].patchValue(JSON.parse(res.formData));
+			}
+			if (res.expiryDate) {
 				this.certificateForm.controls['expiryDate'].patchValue(res.expiryDate);
 			}
 			this.certificateLoaded = true;
@@ -642,12 +644,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	public languageChange(event) {
-		this.busyLanguage = true;
 		if (event) {
-			console.log(event);
 			this.selectedLanguages = event;
-			this.busyLanguage = false;
-			// this.class.controls.selectedLanguage.setValue(event.value);
 		}
 	}
 
@@ -844,6 +842,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	public submitClassTimeline() {
+		this.busySavingData = true;
+
 		if (this.calendarIsValid(this.step)) {
 			if ((this.totalGyan > this.gyanBalance) && (this.totalDuration !== this.totalGyan)) {
 				this.snackBar.open('You do not have enough Gyan balance or learning hours to justify a knowledge value of ' + this.totalGyan + ' Gyan. Knowledge value for this class will be adjusted to ' + this.totalDuration + ' Gyan.',
@@ -859,33 +859,49 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 	}
 
-	public submitClassGyan(data, timeline?, step?) {
+	public submitClassGyan() {
+		this.busySavingData = true;
 		this.totalGyan = this.class.controls['academicGyan'].value + this.class.controls['nonAcademicGyan'].value;
 		console.log(this.totalGyan);
 		console.log(this.gyanBalance);
 		if (this.totalGyan > this.gyanBalance) {
 			this.dialogsService.showGyanNotif(this.gyanBalance, this.totalGyan).subscribe(res => {
 				if (res) {
-					this.checkStatusAndSubmit(data, timeline, step);
+					this.checkStatusAndSubmit(this.class, this.timeline, this.step);
+				} else {
+					this.busySavingData = false;
 				}
 			});
 		} else {
-			this.checkStatusAndSubmit(data, timeline, step);
+			this.checkStatusAndSubmit(this.class, this.timeline, this.step);
 		}
 	}
 
 	public submitCertificate(certificate: any) {
+		this.busySavingData = true;
 		this.certificateForm.controls['certificateHTML'].patchValue(certificate.htmlData);
 		this.certificateForm.controls['formData'].patchValue(JSON.stringify(certificate.formData));
 		this._collectionService.submitCertificate(this.classId, this.certificateForm.value).subscribe(res => {
-			this.step++;
-			this.classStepUpdate();
-			this.router.navigate(['class', this.classId, 'edit', this.step]);
+			this.busySavingData = false;
+
+			if (this.exitAfterSave) {
+				this.exit();
+			} else {
+				this.step++;
+				this.classStepUpdate();
+				this.router.navigate(['class', this.classId, 'edit', this.step]);
+			}
+		}, err => {
+			this.snackBar.open('An Error Occured', 'Retry', {
+				duration: 3000
+			}).onAction().subscribe(res => {
+				this.submitCertificate(certificate);
+			});
 		});
 	}
 
-	public submitClass(data, timeline?, step?) {
-		this.checkStatusAndSubmit(data, timeline, this.step);
+	public submitClass() {
+		this.checkStatusAndSubmit(this.class, this.timeline, this.step);
 	}
 
 	private checkStatusAndSubmit(data, timeline?, step?) {
@@ -971,9 +987,14 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				if (step && step === 14) {
 					this.submitTimeline(collectionId, timeline);
 				} else {
-					this.step++;
-					this.classStepUpdate();
-					this.router.navigate(['class', collectionId, 'edit', this.step]);
+					if (this.exitAfterSave) {
+						this.exit();
+					} else {
+						this.step++;
+						this.classStepUpdate();
+						this.router.navigate(['class', collectionId, 'edit', this.step]);
+						this.busySavingData = false;
+					}
 				}
 			});
 	}
@@ -1002,11 +1023,17 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (body.startDate && body.endDate && itinerary && itinerary.length > 0) {
 			this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body, this.requestHeaderService.options)
 				.subscribe((response) => {
-					this.step++;
-					this.classStepUpdate();
-					this.router.navigate(['class', collectionId, 'edit', this.step]);
+					if (this.exitAfterSave) {
+						this.exit();
+					} else {
+						this.step++;
+						this.classStepUpdate();
+						this.router.navigate(['class', collectionId, 'edit', this.step]);
+						this.busySavingData = false;
+					}
 				});
 		} else {
+			this.busySavingData = false;
 			console.log('No date selected or no content added to itinerary! - ' + JSON.stringify(itinerary));
 			if (!itinerary || itinerary.length === 0) {
 				this.snackBar.open('You need to add at least 1 activity to your class to proceed.', 'Close', {
@@ -1023,7 +1050,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	public submitInterests() {
-		this.busyInterest = true;
+		this.busySavingData = false;
 		let body = {};
 		let topicArray = [];
 		this.interests.forEach((topic) => {
@@ -1046,34 +1073,33 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 					.subscribe((resData) => {
 						this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
 					});
-				this.step++;
-				this.classStepUpdate();
-				this.busyInterest = false;
-				this.router.navigate(['class', this.classId, 'edit', this.step]);
+				this.busySavingData = false;
+
+				if (this.exitAfterSave) {
+					this.exit();
+				} else {
+					this.step++;
+					this.classStepUpdate();
+					this.router.navigate(['class', this.classId, 'edit', this.step]);
+				}
 			});
 		} else {
-			this.step++;
-			this.classStepUpdate();
-			this.router.navigate(['class', this.classId, 'edit', this.step]);
+			if (this.exitAfterSave) {
+				this.exit();
+			} else {
+				this.step++;
+				this.classStepUpdate();
+				this.router.navigate(['class', this.classId, 'edit', this.step]);
+			}
 		}
 	}
 
 	/**
 	 * goto(toggleStep)  */
 	public goto(toggleStep) {
-		this.busyBasics = false;
-		this.busyClassPage = false;
 		this.step = toggleStep;
 		this.router.navigate(['class', this.classId, 'edit', +toggleStep]);
-		if (toggleStep === 2) {
-			this.busyBasics = true;
-			this.busyBasics = false;
-		}
 		this.showBackground = !!(this.step && this.step.toString() === '5');
-
-		if (toggleStep === 6) {
-			this.busyClassPage = true;
-		}
 	}
 
 
@@ -1098,36 +1124,35 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	}
 
-	saveandexit() {
-		this.busySave = true;
-		this.classStepUpdate();
-		if (this.step === this.timelineStep) {
-			const data = this.timeline;
-			const body = data.value.calendar;
-			if (body.startDate && body.endDate) {
-				this.http.patch(environment.apiUrl + '/api/collections/' + this.classId + '/calendar', body, this.requestHeaderService.options)
-					.map((response) => {
-						this.busySave = false;
-						this.router.navigate(['console/teaching/classes']);
-					})
-					.subscribe();
-			} else {
-				console.log('Enter Date!');
-			}
-
-		} else {
-			const data = this.class;
-			const lang = <FormArray>this.class.controls.language;
-			lang.removeAt(0);
-			lang.push(this._fb.control(data.value.selectedLanguage));
-			const body = data.value;
-			delete body.selectedLanguage;
-			this._collectionService.patchCollection(this.classId, body).map(
-				(response) => {
-					this.router.navigate(['console/teaching/classes']);
-				}).subscribe();
+	saveandexit(certificateComponent?: any) {
+		this.exitAfterSave = true;
+		switch (this.step) {
+			case 2:
+				this.submitInterests();
+				break;
+			case 11:
+				this.submitClassGyan();
+				break;
+			case 12:
+				this.submitAssessment();
+				break;
+			case 13:
+				console.log('submitting certificate');
+				this.certificateComponent.submitCertificate();
+				break;
+			case 15:
+				this.submitClassTimeline();
+				break;
+			case 17:
+			case 18:
+				this.exit();
+				break;
+			default:
+				this.submitClass();
+				break;
 		}
 	}
+
 
 	exit() {
 		this.router.navigate(['console/teaching/classes']);
@@ -1300,23 +1325,11 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				});
 	}
 
-	takeToPayment() {
-		this.busyPayment = true;
-		this.step++;
-		this.router.navigate(['class', this.classId, 'edit', this.step]);
-	}
-
 	/**
 	 * Make the dates section of this page editable
 	 */
 	makeDatesEditable() {
 		this.datesEditable = true;
-	}
-
-	openClass() {
-		this.busyPreview = true;
-		this.router.navigate(['/class', this.classId]);
-		this.busyPreview = false;
 	}
 
 	sort(calendars, param1, param2) {
@@ -1427,6 +1440,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	public submitAssessment() {
 		let assessmentModelObject;
+		this.busySavingData = true;
+
 		this._collectionService.updateAssessmentModel(this.classId, {
 			type: this.assessmentForm.controls['type'].value,
 			style: this.assessmentForm.controls['style'].value
@@ -1441,11 +1456,19 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		}).subscribe(res => {
 			this.classData.assessment_models[0].assessment_na_rules = res;
 			this._leftSideBarService.updateSideMenu(this.classData, this.sidebarMenuItems);
-			this.step++;
-			this.classStepUpdate();
-			this.router.navigate(['class', this.classId, 'edit', this.step]);
+			if (this.exitAfterSave) {
+				this.exit();
+			} else {
+				this.step++;
+				this.classStepUpdate();
+				this.router.navigate(['class', this.classId, 'edit', this.step]);
+				this.busySavingData = false;
+
+			}
 		}, err => {
 			console.log(err);
+			this.busySavingData = false;
+
 			this.snackBar.open('An error occurred', 'close', {
 				duration: 5000
 			});
