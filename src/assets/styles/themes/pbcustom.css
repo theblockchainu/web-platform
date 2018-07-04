@@ -1280,7 +1280,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 }
 
 .mat-dialog-content {
-	max-height: 100vh !important;
+	max-height: 100% !important;
 	margin: 0px !important;
 }
 
