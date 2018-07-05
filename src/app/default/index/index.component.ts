@@ -83,14 +83,10 @@ export class IndexComponent implements OnInit {
 	}
 
 	private setTags() {
-		this.titleService.setTitle('Peerbuds - Own and Control Your Knowledge Story');
+		this.titleService.setTitle('Peerbuds - Immersive & Incentivized Education');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds - Own and Control Your Knowledge Story'
-		});
-		this.metaService.updateTag({
-			property: 'og:description',
-			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+			content: 'Peerbuds - Immersive & Incentivized Education'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

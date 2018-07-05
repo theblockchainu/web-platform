@@ -74,10 +74,10 @@
 					<mat-icon class="notifDot" *ngIf="hasNewMessage">fiber_manual_record</mat-icon>
 				</div>
 				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && !profile.peer[0].ethAddress && isLoggedIn | async"
-				 [routerLink]="['console', 'account', 'wallet']" matTooltip="Create your Blockchain wallet to start earning rewards!">
+				 [routerLink]="['console', 'account', 'wallet']" matTooltip="Create your one0x account to start earning rewards!">
 					Setup Karma Wallet
 					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
-						on Ethereum Blockchain
+						on one0x Blockchain
 					</div>
 				</span>
 				<span class="header-progress-bar hide-small" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async"
@@ -161,7 +161,7 @@
 				<span class="header-progress-bar" *ngIf="isEmailVerified && !profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
 					Setup Karma Wallet
 					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
-						on Ethereum Blockchain
+						on one0x Blockchain
 					</div>
 				</span>
 				<span class="header-progress-bar" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['story', 'me']">

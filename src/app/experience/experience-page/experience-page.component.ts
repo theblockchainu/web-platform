@@ -1772,7 +1772,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			.subscribe(res => {
 				this.initializeExperience();
 			}, err => {
-				this.snackBar.open('Could not add to Peerbuds Blockchain. Try again later.', 'Ok', { duration: 5000 });
+				this.snackBar.open('Could not add to one0x Blockchain. Try again later.', 'Ok', { duration: 5000 });
 			});
 	}
 

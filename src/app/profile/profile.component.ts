@@ -395,7 +395,7 @@ export class ProfileComponent implements OnInit {
 		});
 		this.metaService.updateTag({
 			property: 'og:description',
-			content: this.profileObj.headline || 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+			content: this.profileObj.headline || 'Peerbuds is the world\'s first blockchain powered education platform focused around interactive and community based learning'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
