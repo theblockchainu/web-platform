@@ -643,7 +643,7 @@
 	</div>
 	<div class="col-xs-11 col-md-5">
 		<mat-card class="certificate">
-			<div [hidden]="customCertificateForm.controls['groupArray'].length<1" #certificate>
+			<div [hidden]="customCertificateForm.controls['groupArray'].value.length < 1" #certificate>
 				<div style="
             display: flex;
             flex-direction: column;
@@ -765,7 +765,7 @@
 					</div>
 				</div>
 			</div>
-			<div *ngIf="customCertificateForm.controls['groupArray'].length<1">
+			<div *ngIf="customCertificateForm.controls['groupArray'].value.length < 1">
 				<div class="lighterText">
 					<div style="
 						display: flex;

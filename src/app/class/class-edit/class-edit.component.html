@@ -478,7 +478,7 @@
 				<div class="onboarding step-11" [hidden]="step!=11">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-							<form [formGroup]="class" (ngSubmit)="submitClassGyan(class)">
+							<form [formGroup]="class" (ngSubmit)="submitClassGyan()">
 								<h2 class="title">Set a price and gyan for this class</h2>
 								<p class="subtitle">
 									The price of your class is entirely up to you. Gyan is the unit measure of knowledge. You decide the amount of Gyan you will
@@ -729,7 +729,7 @@
 								Create a default timeline for your class and add activities to it. Later on, you can create as many cohorts with specific
 								start dates.
 							</p>
-							<form [formGroup]="timeline" (ngSubmit)="submitClassTimeline(class, timeline, 14)" novalidate>
+							<form [formGroup]="timeline" (ngSubmit)="submitClassTimeline()" novalidate>
 								<!--(ngSubmit)="submitTimeline(timeline)" -->
 								<div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
 									<div class="row" style="margin: 30px 0px 15px -15px;">
