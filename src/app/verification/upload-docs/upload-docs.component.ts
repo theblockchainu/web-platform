@@ -17,7 +17,7 @@ import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
-	selector: 'upload-docs',
+	selector: 'app-upload-docs',
 	templateUrl: './upload-docs.component.html',
 	styleUrls: ['./upload-docs.component.scss']
 })
@@ -138,10 +138,6 @@ export class UploadDocsComponent implements OnInit {
 			content: 'Peerbuds Verification'
 		});
 		this.metaService.updateTag({
-			property: 'og:description',
-			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
-		});
-		this.metaService.updateTag({
 			property: 'og:site_name',
 			content: 'peerbuds.com'
 		});
@@ -201,7 +197,16 @@ export class UploadDocsComponent implements OnInit {
 				this.router.navigate(['verification', +this.step]);
 			}, err => {
 				this.httpLoading = false;
-				this.phoneFormError = err;
+				console.log(err);
+				if (err && err.error && err.error.error && err.error.error.message) {
+					this.phoneFormError = err.error.error.message;
+				} else {
+					this.snackBar.open('An error occured', 'Retry?', {
+						duration: 3000
+					}).onAction().subscribe(res => {
+						this.sendPhoneOTP(nextStep);
+					});
+				}
 			}
 			);
 		console.log('sms sent');

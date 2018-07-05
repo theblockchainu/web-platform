@@ -28,4 +28,7 @@ export class CertificateService {
     return sha256(data);
   }
 
+  public getCertificateTemplate(collectionId: string) {
+    return this.httpClient.get(environment.apiUrl + '/api/collections/' + collectionId + '/certificate_template', this.requestHeaderService.options);
+  }
 }

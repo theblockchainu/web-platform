@@ -527,18 +527,18 @@
 												<b>Logo</b>
 											</div>
 											<div class="col-xs-6 padding-top-10">
-												<button *ngIf="!logoFile" [hidden]="uploadingImage" (click)="fileInput.click()" mat-raised-button>
+												<button *ngIf="!customCertificateForm.value.groupArray[i].value || customCertificateForm.value.groupArray[i].value.length<=0"
+												 [hidden]="uploadingImage" (click)="fileInput.click()" mat-raised-button>
 													Upload File
 												</button>
-												<span *ngIf="logoFile">
-													<button style="width: 90%;" mat-raised-button *ngIf="customCertificateForm.value.groupArray[i].value && customCertificateForm.value.groupArray[i].value.length>0"
-													        (click)="deleteImage(i)">
+												<span *ngIf="customCertificateForm.value.groupArray[i].value && customCertificateForm.value.groupArray[i].value.length>0">
+													<button style="width: 90%;" mat-raised-button (click)="deleteImage(i)">
 														<span style="
-                            max-width: 80%;
-                            display: inline-block;
-                            overflow-x: hidden;
-                            ">
-															{{logoFile.name}}
+                            										max-width: 80%;
+																	display: inline-block;
+																	overflow-x: hidden;
+																	">
+															{{customCertificateForm.value.groupArray[i].meta}}
 														</span>
 														<mat-icon>close</mat-icon>
 													</button>
@@ -629,8 +629,11 @@
 							<button mat-raised-button color="accent" (click)="cancel()">
 								Back
 							</button>
-							<button class="pull-right" mat-raised-button color="accent" (click)="submitCertificate()">
-								Next
+							<button class="pull-right" mat-raised-button [disabled]="busySavingData" color="accent" (click)="submitCertificate()">
+								<span *ngIf="!busySavingData">Next</span>
+								<span>
+									<ngx-loading [show]="busySavingData"></ngx-loading>
+								</span>
 							</button>
 						</div>
 					</div>
@@ -640,13 +643,14 @@
 	</div>
 	<div class="col-xs-11 col-md-5">
 		<mat-card class="certificate">
-			<div #certificate>
+			<div [hidden]="customCertificateForm.controls['groupArray'].length<1" #certificate>
 				<div style="
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             width: 100%;
-            background-color: #ffffff;
+			background-color: #ffffff;
+			line-height: 1;
             ">
 					<div style="min-height: 30em;">
 						<div style="padding: 1em 0;" *ngFor="let element of customCertificateForm.value.groupArray">
@@ -751,13 +755,87 @@
 						</div>
 					</div>
 					<div style="
-              height: 8em;
-              width: 100%;
-              display: inline-block;
-              text-align: center;
-              position: relative;
-         ">
+							height: 8em;
+							width: 100%;
+							display: inline-block;
+							text-align: center;
+							position: relative;
+						">
 						<img style="max-height: 100%;width: auto;" src="{{qrcode}}">
+					</div>
+				</div>
+			</div>
+			<div *ngIf="customCertificateForm.controls['groupArray'].length<1">
+				<div class="lighterText">
+					<div style="
+						display: flex;
+						flex-direction: column;
+						justify-content: flex-start;
+						width: 100%;
+						background-color: #ffffff;
+						">
+						<div style="min-height: 30em;">
+							<div style="padding: 1em 0;">
+								<div>
+									<div>
+										<span style="width: 100%; display: inline-block;  height: 3em; text-align: left; font-weight: normal; font-style: normal; text-decoration-line: none;">
+											<img style="height: 100%; width: auto;filter: grayscale(100%);" src="/assets/images/pb_logo.png">
+										</span>
+									</div>
+								</div>
+							</div>
+							<div style="padding: 1em 0;">
+								<div>
+									<div>
+										<span style="width: 100%; display: inline-block; font-size: 1.1em; text-align: left; font-weight: bold; font-style: normal; text-decoration-line: none;">SAMPLE CERTIFICATE</span>
+									</div>
+								</div>
+							</div>
+							<div style="padding: 1em 0;">
+								<div>
+									<div>
+										<span style="width: 100%; display: inline-block;  font-size: 1.5em; text-align: left; font-weight: normal; font-style: normal; text-decoration-line: none;">Create your own certificate with all the relevant details</span>
+									</div>
+								</div>
+							</div>
+							<div style="padding: 1em 0;">
+								<div>
+									<div>
+										<span style="width: 100%; display: inline-block; font-size: 1.2em; text-align: left; font-weight: normal; font-style: normal; text-decoration-line: none;">This is a sample certificate. Please add more fields and start creating your own certificate.</span>
+									</div>
+								</div>
+							</div>
+							<div style="padding: 1em 0;">
+								<div>
+									<div>
+										<span style="width: 100%; display: inline-block;  font-size: 1.3em; text-align: center; font-weight: normal; font-style: normal; text-decoration-line: none;">Sahil Parekh</span>
+									</div>
+								</div>
+							</div>
+							<div style="padding: 1em 0;">
+								<div>
+									<div>
+										<span style="width: 100%; display: inline-block;  font-size: 1.2em; text-align: center; font-weight: normal; font-style: normal; text-decoration-line: none;">CEO, Peerbuds</span>
+									</div>
+								</div>
+							</div>
+							<div style="padding: 1em 0;">
+								<div>
+									<div>
+										<span style="width: 100%; display: inline-block; font-size: 0.9em; text-align: center; font-weight: normal; font-style: italic; text-decoration-line: none;">This is sample certificate for educational purposes only</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div style="
+						  height: 8em;
+						  width: 100%;
+						  display: inline-block;
+						  text-align: center;
+						  position: relative;
+					 ">
+							<img style="max-height: 100%;width: auto;filter: opacity(40%);" src="/assets/images/peerbuds-qr.png">
+						</div>
 					</div>
 				</div>
 			</div>

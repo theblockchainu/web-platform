@@ -97,6 +97,7 @@ import { AccreditationService } from '../_services/accreditation/accreditation.s
 import { CustomCertificateFormComponent } from './custom-certificate-form/custom-certificate-form.component';
 import { CertificateService } from '../_services/certificate/certificate.service';
 import { SafePipe } from './safe-pipe/safe.pipe';
+
 @NgModule({
     imports: [
         CommonModule,

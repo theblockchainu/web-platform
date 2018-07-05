@@ -10,7 +10,6 @@ const routes: Routes = [
       {
         path: ':certificateId',
         component: CertificatePageComponent,
-        canActivateChild: [AuthGuardService]
       }
 
     ]

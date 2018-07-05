@@ -2,19 +2,28 @@
 	<ul class="ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all" style="padding-left: 0.0em">
 		<li class="ui-autocomplete-input-token col-sm-12">
 			<mat-icon icon="search" aria-label="search" role="img" class="vAlignMiddle">search</mat-icon>
-			<input #box id="list" type="text" class="form-control input-topic" [(ngModel)]=query (keyup)=filter() placeholder="{{ title }}" autocomplete="off">
+			<input #box id="list" type="text" class="form-control input-topic" [(ngModel)]=query (keyup)=filter() placeholder="{{ title }}"
+			 autocomplete="off">
 		</li>
-	
+
 	</ul>
 </span>
 <div class="margin-top-20">
-	<span *ngFor="let item of selected">
-		<li class="ui-autocomplete-token ui-state-highlight ui-corner-all margin-bottom-0">
-			<a (click)="remove(item)" class="ui-autocomplete-token-icon fa fa-fw fa-close" style="text-decoration:none"></a>
-			<span class="ui-autocomplete-token-label captitalise">{{item.name}}</span>
-		</li>
-	</span>
+	<mat-chip-list>
+		<mat-chip *ngFor="let item of selected" [selectable]="false" [removable]="true" (removed)="remove(item)">{{item.name |titlecase}}
+			<mat-icon matChipRemove>cancel</mat-icon>
+		</mat-chip>
+	</mat-chip-list>
 	<span class="col-sm-4 pull-right" style="font-size: 12px; color: #f5393e; line-height: 15px; width: 42%; text-align: justify;">{{maxTopicMsg}}</span>
+</div>
+
+<div class="margin-top-20">
+	<span [hidden]="query.length<1">Didn't find
+		<span class="mat-body-2">{{query|titlecase}}</span>. Do you want to add this topic ?
+		<button mat-button type="button" class="mat-border-button" (click)="addTopic()" color="primary">
+			Yes, add {{query|titlecase}}
+		</button>
+	</span>
 </div>
 
 <div class="loading-container col-md-offset-4" style="width:100%" [hidden]="!loadingSuggestions">
@@ -22,17 +31,17 @@
 </div>
 <div class="suggestions" *ngIf="!loadingSuggestions && filteredList.length > 0">
 	<ul *ngFor="let item of filteredList" style="list-style:none" class="padding-left-0">
-		<li class="captitalise topic" (click)="select(item)">
-			<a>
-				<img src="{{envVariable.apiUrl+ item.imageUrl}}/100" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
-				<span style="margin-left:20px">{{item.name}}</span>
-				<span *ngIf="!item.inSelect">
-					<mat-icon class="pull-right" style="top: 1.1em; right: 0.6em; color: #cccccc;">check_circle</mat-icon>
-				</span>
-				<span *ngIf="item.inSelect">
-					<mat-icon [color]="'primary'" class="pull-right" style="top: 1.1em; right: 0.6em;">check_circle</mat-icon>
-				</span>
-			</a>
+
+		<li class="captitalise topic" *ngIf="!item.inSelect" (click)="select(item)">
+			<img src="{{envVariable.apiUrl+ item.imageUrl}}/100" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
+			<span style="margin-left:20px">{{item.name}}</span>
+			<mat-icon class="pull-right" style="top: 1.1em; right: 0.6em; color: #cccccc;">check_circle</mat-icon>
+		</li>
+
+		<li class="captitalise topic" *ngIf="item.inSelect">
+			<img src="{{envVariable.apiUrl+ item.imageUrl}}/100" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
+			<span style="margin-left:20px">{{item.name}}</span>
+			<mat-icon [color]="'primary'" class="pull-right" style="top: 1.1em; right: 0.6em;">check_circle</mat-icon>
 		</li>
 	</ul>
 </div>

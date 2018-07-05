@@ -32,10 +32,6 @@ export class WhitepaperComponent implements OnInit {
 			content: 'Peerbuds White Paper'
 		});
 		this.metaService.updateTag({
-			property: 'og:description',
-			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
-		});
-		this.metaService.updateTag({
 			property: 'og:site_name',
 			content: 'peerbuds.com'
 		});

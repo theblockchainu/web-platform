@@ -75,10 +75,6 @@ export class KnowledgeStoryComponent implements OnInit {
 			content: this.knowledgeStory.protagonist[0].profiles[0].first_name + '\'s Knowledge Story'
 		});
 		this.metaService.updateTag({
-			property: 'og:description',
-			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
-		});
-		this.metaService.updateTag({
 			property: 'og:site_name',
 			content: 'peerbuds.com'
 		});

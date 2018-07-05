@@ -8,6 +8,7 @@ import { RequestHeaderService } from '../../_services/requestHeader/request-head
 import * as _ from 'lodash';
 import { environment } from '../../../environments/environment';
 import { CollectionService } from '../../_services/collection/collection.service';
+import { TopicService } from '../../_services/topic/topic.service';
 
 @Component({
 	selector: 'app-multiselect-autocomplete',
@@ -91,7 +92,8 @@ export class MultiselectAutocompleteComponent implements OnChanges {
 	constructor(myElement: ElementRef,
 		private http: HttpClient,
 		public _collectionService: CollectionService,
-		public requestHeaderService: RequestHeaderService) {
+		public requestHeaderService: RequestHeaderService,
+		private topicService: TopicService) {
 		this.elementRef = myElement;
 		this.placeholderString = this.title;
 		this.envVariable = environment;
@@ -229,13 +231,27 @@ export class MultiselectAutocompleteComponent implements OnChanges {
 	}
 
 	public remove(item) {
+		console.log(item);
 		this.selected.splice(this.selected.indexOf(item), 1);
 		if (this.selected.length < this.maxSelection && this.maxSelection !== -1) {
 			this.maxTopicMsg = '';
 		}
 		this.removed.push(item);
 		this.selectedOutput.emit(this.selected);
-		this.removedOutput.emit(this.removed);
+	}
+
+	addTopic() {
+		if (this.selected.length >= this.maxSelection && this.maxSelection !== -1) {
+			this.maxTopicMsg = 'You cannot select more than ' + this.maxSelection + ' topics. Please delete any existing one and then try to add.';
+			return;
+		} else {
+			this.topicService.addNewTopic(this.query).subscribe(res => {
+				this.selected.push(res);
+				this.selectedOutput.emit(this.selected);
+				this.query = '';
+			});
+		}
+
 	}
 
 }
