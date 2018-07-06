@@ -310,4 +310,8 @@ export class CommunityService {
     public linkTopics(communityID, body) {
         return this.http.patch(environment.apiUrl + '/api/communities/' + communityID + '/topics/rel', body, this.requestHeaderService.options);
     }
+
+    public totalCommunititesCount() {
+        return this.http.get(environment.apiUrl + '/api/communities/count', this.requestHeaderService.options);
+    }
 }

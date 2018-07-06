@@ -18,20 +18,18 @@ export class SearchService {
         this.envVariable = environment;
     }
 
-    public getAllSearchResults(userId, query: any, cb) {
-        if (userId) {
-            if (this.httpSubscription) {
-                this.httpSubscription.unsubscribe();
-            }
-            this.httpSubscription = this.http
-                .get(environment.searchUrl + '/searchAll?' + 'query=' + query, this.requestHeaderService.options)
-                .map((response) => {
-                    console.log(response);
-                    cb(null, response);
-                }, (err) => {
-                    cb(err);
-                }).subscribe();
+    public getAllSearchResults(userId?, query?: any, cb?) {
+        if (this.httpSubscription) {
+            this.httpSubscription.unsubscribe();
         }
+        this.httpSubscription = this.http
+            .get(environment.searchUrl + '/searchAll?' + 'query=' + query, this.requestHeaderService.options)
+            .map((response) => {
+                console.log(response);
+                cb(null, response);
+            }, (err) => {
+                cb(err);
+            }).subscribe();
     }
 
     public getPeerSearchResults(query: any) {
