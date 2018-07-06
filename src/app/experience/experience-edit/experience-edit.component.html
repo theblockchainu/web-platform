@@ -621,7 +621,8 @@
 												<span matSuffix>
 													%
 												</span>
-												<input type="number" matInput formControlName="gyan" min="1" required>
+												<input type="number" min="0" max="100" matInput formControlName="gyan" min="1" required>
+												<mat-error>Please enter a value between 0 and 100</mat-error>
 											</mat-form-field>
 										</div>
 										<div class="col-xs-4">
@@ -642,42 +643,46 @@
 								<h3 class="margin-top-40">Assessment rules for non academic performance</h3>
 								<div class="row">
 									<div class="col-xs-4">
-										Attendance / Community Engagement
+										Engagement
 									</div>
 									<div class="col-xs-4">
-										covers how much non academic Gyan?
+										Covers how much non academic Gyan?
 									</div>
 								</div>
 								<div formArrayName="nARules">
 									<div *ngFor="let ruleForm of assessmentForm.controls['nARules']['controls']; let i = index" [formGroupName]="i" class="row">
 										<div class="col-xs-4">
-											<mat-form-field [floatLabel]="'never'" class="pb-block">
+											<!-- <mat-form-field [floatLabel]="'never'" class="pb-block">
 												<mat-select formControlName="value">
 													<mat-option *ngFor="let c of nAAssessmentParams" [value]="c">{{c | titlecase}}</mat-option>
 												</mat-select>
-											</mat-form-field>
+											</mat-form-field> -->
+											<span style="line-height: 4">
+												{{ruleForm.value.value | titlecase}}
+											</span>
 										</div>
 										<div class="col-xs-4">
 											<mat-form-field class="pb-block">
 												<span matSuffix>
 													%
 												</span>
-												<input type="number" matInput formControlName="gyan" min="1" required>
+												<input type="number" matInput formControlName="gyan">
+												<mat-error>Total Gyan distribution cannot be greater than 100% or less than 0%</mat-error>
 											</mat-form-field>
 										</div>
-										<div class="col-xs-4">
+										<!-- <div class="col-xs-4">
 											<mat-icon class="clickable" (click)="deleteNAAssessmentRule(i)" matTooltip="Delete this rule?" style="color: #aaaaaa;">delete</mat-icon>
-										</div>
+										</div> -->
 									</div>
 								</div>
-								<div class="row">
+								<!-- <div class="row">
 									<div class="col-md-3 clickable">
 										<a (click)="addNAAssessmentRule()">
 											<mat-icon style="top: 5px;">add_circle_outline</mat-icon>
 											Add a rule
 										</a>
 									</div>
-								</div>
+								</div> -->
 								<div class="row" style="margin-top:100px;">
 									<button mat-raised-button type="button" (click)="back()" color="accent">
 										Back
