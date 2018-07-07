@@ -40,7 +40,8 @@ import { environment } from '../../../environments/environment';
 import { SocketService } from '../../_services/socket/socket.service';
 import { AssessmentService } from '../../_services/assessment/assessment.service';
 import { ContentOnlineComponent } from './content-online/content-online.component';
-import {UcWordsPipe} from 'ngx-pipes';
+import { UcWordsPipe } from 'ngx-pipes';
+import { CertificateService } from '../../_services/certificate/certificate.service';
 
 declare var FB: any;
 
@@ -136,6 +137,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public bookmarking = false;
 	public editCommentForm: FormGroup;
 	public editReplyForm: FormGroup;
+	certificateHTML: string;
+	loadingCertificate: boolean;
 
 	public replyForm: FormGroup;
 	public reviewForm: FormGroup;
@@ -198,6 +201,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public startedView;
 	public inviteLink = '';
 	public isPreview = false;
+	public assessmentRules: Array<any>;
 
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -215,7 +219,9 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		private titleService: Title,
 		private metaService: Meta,
 		private _assessmentService: AssessmentService,
-		private ucwords: UcWordsPipe
+		private ucwords: UcWordsPipe,
+		private certificateService: CertificateService
+
 		// private location: Location
 	) {
 		this.envVariable = environment;
@@ -466,6 +472,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	private initializeClass() {
+		this.loadingCertificate = true;
 		this.allParticipants = [];
 		this.allItenaries = [];
 		const query = {
@@ -581,6 +588,9 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						this.getDiscussions();
 						this.getBookmarks();
 						this.setUpCarousel();
+						this.getCertificatetemplate();
+						this.sortAssessmentRules();
+
 						if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
 							this.itenaryArray.forEach(itinerary => {
 								itinerary.contents.forEach(content => {
@@ -1711,6 +1721,34 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}, err => {
 				this.snackBar.open('Could not add to one0x Blockchain. Try again later.', 'Ok', { duration: 5000 });
 			});
+	}
+
+	private sortAssessmentRules() {
+		if (this.class.assessment_models && this.class.assessment_models.length > 0) {
+			const assessmentRulesUnsorted = <Array<any>>this.class.assessment_models[0].assessment_rules;
+			this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
+				if (a.value > b.value) {
+					return 1;
+				} else if (a.value === b.value) {
+					return 0;
+				} else {
+					return -1;
+				}
+			});
+		}
+	}
+
+	private getCertificatetemplate() {
+		this.certificateService.getCertificateTemplate(this.classId).subscribe((res: any) => {
+			if (res !== undefined && res !== null) {
+				this.certificateHTML = res.certificateHTML;
+			}
+			this.loadingCertificate = false;
+		});
+	}
+
+	public getGyanForRule(gyanPercent, totalGyan) {
+		return Math.floor((gyanPercent / 100) * totalGyan);
 	}
 
 }

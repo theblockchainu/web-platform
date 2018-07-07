@@ -406,7 +406,7 @@
 								</div>
 								<div class="margin-top-30"></div>
 								<div class="row margin-top-10" *ngFor="let comment of comments">
-									<div *ngIf="comment.isAnnouncement === false">
+									<div *ngIf="!comment.isAnnouncement">
 										<div class="col-xs-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
 											<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
 											<mat-icon *ngIf="hasUpvoted(comment.upvotes)">arrow_drop_up</mat-icon>
@@ -833,8 +833,48 @@
 								</div>
 							</div>
 						</div>
+						<div *ngIf="userType==='teacher' && experience.isApproved && certificateHTML !== undefined">
+							<hr class="margin-top-30 margin-bottom-30">
+							<div>
+								<h3 style="display: inline-block;">Certificate</h3>
+								<!-- <span (click)="editCalendar()" class="pull-right clickable" style="cursor: pointer;">
+									<mat-icon style="font-size: 1rem; top: 15px;">edit</mat-icon>
+								</span> -->
+								<!-- <br> -->
+								<div class="row padding-top-20">
+									<div class="col-xs-12">
+										<ngx-loading [show]="loadingCertificate"></ngx-loading>
+										<mat-card>
+											<div [innerHTML]="certificateHTML | safe: 'html'"></div>
+										</mat-card>
+									</div>
+								</div>
+							</div>
+							<br>
+						</div>
+						<div *ngIf="userType==='teacher' && experience.isApproved && assessmentRules !== undefined">
+							<hr class="margin-top-30 margin-bottom-30">
+							<div>
+								<h3 style="display: inline-block;">Assessment Rules</h3>
+								<!-- <span (click)="editCalendar()" class="pull-right clickable" style="cursor: pointer;">
+										<mat-icon style="font-size: 1rem; top: 15px;">edit</mat-icon>
+									</span> -->
+								<!-- <br> -->
+								<div class="row padding-top-20" *ngFor="let assessment_rule of assessmentRules">
+									<div class="col-xs-4">
+										For {{assessment_rule.value | titlecase}}
+									</div>
+									<div class="col-xs-6">
+										student gets &nbsp;
+										<i class="fab fa-ethereum"></i>
+										<b>{{getGyanForRule(assessment_rule.gyan, experience.academicGyan)}} Gyan</b>
+									</div>
+								</div>
+							</div>
+							<br>
+						</div>
 						<div *ngIf="userType==='teacher' && experience.isApproved">
-							<hr class="margin-top-30 margin-bottom-30" *ngIf="userType==='teacher'">
+							<hr class="margin-top-30 margin-bottom-30">
 							<div>
 								<h3 style="display: inline-block;">Experience Batches</h3>
 								<span (click)="editCalendar()" class="pull-right clickable" style="cursor: pointer;">
