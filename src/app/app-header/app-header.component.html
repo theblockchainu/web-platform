@@ -103,17 +103,14 @@
 				</div>
 
 				<span class="example-spacer hide-small"></span>
+				<button mat-button class="headerButtons hide-small" [routerLink]="['/sign-up']" *ngIf="!(isLoggedIn | async)">
+					<b>Become a teacher</b>
+				</button>
 				<a mat-button class="headerButtons hide-small" href="http://blog.peerbuds.com" *ngIf="!(isLoggedIn | async)">
 					Blog
 				</a>
 				<button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']" *ngIf="!(isLoggedIn | async)">
 					White Paper
-				</button>
-				<button mat-button class="headerButtons hide-small" [routerLink]="['/shortread']" *ngIf="!(isLoggedIn | async)">
-					Short Paper
-				</button>
-				<button mat-button class="headerButtons hide-small" [routerLink]="['/privatebeta']" *ngIf="!(isLoggedIn | async)">
-					Private Beta
 				</button>
 				<!--<button mat-button class="headerButtons" [routerLink]="['/home/homefeed']" *ngIf="!(isLoggedIn | async)">
 					Explore
@@ -121,14 +118,16 @@
 				<!--<a mat-button class="headerButtons" href="/signup.html" *ngIf="!(isLoggedIn | async)">
 					Sign Up
 				</a>-->
+				<button mat-button class="headerButtons" (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
+					Log in
+				</button>
 				<button mat-button class="headerButtons mat-border-button" color="accent" style="border: 2px solid #FF6D71 !important;color: #ff6d71 !important;"
-				 (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
-					Login
+				        [routerLink]="['/sign-up']" *ngIf="!(isLoggedIn | async)">
+					Sign up
 				</button>
 			</span>
 		</mat-toolbar-row>
-		<mat-toolbar-row [ngClass]="{'show-small': true, 'searchBar' : true, 'searchBarHeight': isSearchBarVisible}" *ngIf="(isLoggedIn | async) && isEmailVerified"
-		 style="border-top: 1px solid #ddd;">
+		<mat-toolbar-row [ngClass]="{'show-small': true, 'searchBar' : true, 'searchBarHeight': isSearchBarVisible}" *ngIf="(isLoggedIn | async) && isEmailVerified" style="border-top: 1px solid #ddd;">
 			<div class="search-form">
 				<mat-form-field style="color:#333333 !important" class="pb-block" *ngIf="(isLoggedIn | async)" [floatLabel]="'never'">
 					<input #searchInputBar name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="myControl"
@@ -182,11 +181,8 @@
 				<button mat-button class="headerButtons" [routerLink]="['/whitepaper']" *ngIf="!(isLoggedIn | async)">
 					White Paper
 				</button>
-				<button mat-button class="headerButtons" [routerLink]="['/shortread']" *ngIf="!(isLoggedIn | async)">
-					Short Paper
-				</button>
-				<button mat-button class="headerButtons" [routerLink]="['/privatebeta']" *ngIf="!(isLoggedIn | async)">
-					Private Beta
+				<button mat-button class="headerButtons" [routerLink]="['/sign-up']" *ngIf="!(isLoggedIn | async)">
+					Become a teacher
 				</button>
 			</div>
 		</mat-toolbar-row>

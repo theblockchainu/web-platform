@@ -197,6 +197,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public carouselBanner: any;
 	public startedView;
 	public inviteLink = '';
+	public isPreview = false;
 
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -246,6 +247,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.classId = params['collectionId'];
 			this.calendarId = params['calendarId'];
 			this.toOpenDialogName = params['dialogName'];
+		});
+		this.activatedRoute.queryParams.subscribe(params => {
+			if (params['preview']) {
+				this.isPreview = params['preview'];
+				console.log('This is a preview');
+			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
 		console.log('userId is ' + this.userId);
@@ -350,7 +357,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	private initializeUserType() {
 		if (this.class) {
 			for (const owner of this.class.owners) {
-				if (owner.id === this.userId) {
+				if (owner.id === this.userId && (!this.isPreview)) {
 					this.userType = 'teacher';
 					break;
 				}

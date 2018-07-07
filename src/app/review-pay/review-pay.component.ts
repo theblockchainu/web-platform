@@ -39,7 +39,7 @@ export class ReviewPayComponent implements OnInit {
     public isCardExist = false;
     public listAllCards = [];
     public cardDetails = {};
-    public defaultImageUrl = 'assets/images/no-image.jpg';
+    public defaultImageUrl = 'assets/images/collection-placeholder.jpg';
     public guestCount = 1;
     public hourMapping:
         { [k: string]: string } = { '=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours' };

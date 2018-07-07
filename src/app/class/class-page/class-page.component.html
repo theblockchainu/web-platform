@@ -13,7 +13,7 @@
 				<span>This class is pending approval from peerbuds team</span>
 			</div>
 		</div>
-		<div class="row pending-actions center" *ngIf="(class.status === 'draft' || class.status === '' ) && userType==='teacher' ">
+		<div class="row pending-actions center" *ngIf="(class.status === 'draft' || class.status === '' ) && isPreview ">
 			<div class="col-md-10 col-md-offset-1">
 				<span>This is a preview. Submit your class to get it approved</span>
 			</div>
@@ -535,7 +535,7 @@
 											<p-rating style="display: inline-flex;" *ngIf="userType==='participant' && !hasReviewed(reviews)" [(ngModel)]="newUserRating"
 											 (onRate)="handleRate($event)" [cancel]="false"></p-rating>
 										</span>
-									</div>k
+									</div>
 								</div>
 								<div class="row margin-top-20" *ngIf="userType==='participant' && !hasReviewed(reviews)">
 									<div class="col-md-12">
