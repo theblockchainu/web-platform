@@ -42,7 +42,7 @@ import { environment } from '../../../environments/environment';
 import { SocketService } from '../../_services/socket/socket.service';
 import { AssessmentService } from '../../_services/assessment/assessment.service';
 import { UcWordsPipe } from 'ngx-pipes';
-
+import { CertificateService } from '../../_services/certificate/certificate.service';
 declare var FB: any;
 
 const colors: any = {
@@ -201,6 +201,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public startedView;
 	public inviteLink = '';
 
+	certificateHTML: string;
+	loadingCertificate: boolean;
+	public assessmentRules: Array<any>;
+
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
 		private _cookieUtilsService: CookieUtilsService,
@@ -217,7 +221,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		private titleService: Title,
 		private metaService: Meta,
 		private _assessmentService: AssessmentService,
-		private ucwords: UcWordsPipe
+		private ucwords: UcWordsPipe,
+		private certificateService: CertificateService
 		// private location: Location
 	) {
 		this.envVariable = environment;
@@ -462,6 +467,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	private initializeExperience() {
+		this.loadingCertificate = true;
 		this.allParticipants = [];
 		this.allItenaries = [];
 		const query = {
@@ -583,6 +589,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						this.getDiscussions();
 						this.getBookmarks();
 						this.setUpCarousel();
+						this.getCertificatetemplate();
+						this.sortAssessmentRules();
 						if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
 							this.itenaryArray.forEach(itinerary => {
 								itinerary.contents.forEach(content => {
@@ -1774,6 +1782,31 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}, err => {
 				this.snackBar.open('Could not add to one0x Blockchain. Try again later.', 'Ok', { duration: 5000 });
 			});
+	}
+
+	private sortAssessmentRules() {
+		const assessmentRulesUnsorted = <Array<any>>this.experience.assessment_models[0].assessment_rules;
+		this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
+			if (a.value > b.value) {
+				return 1;
+			} else if (a.value === b.value) {
+				return 0;
+			} else {
+				return -1;
+			}
+		});
+	}
+
+	private getCertificatetemplate() {
+		this.certificateService.getCertificateTemplate(this.experienceId).subscribe((res: any) => {
+			this.certificateHTML = res.certificateHTML;
+			this.loadingCertificate = false;
+		});
+	}
+
+
+	public getGyanForRule(gyanPercent, totalGyan) {
+		return Math.floor((gyanPercent / 100) * totalGyan);
 	}
 
 }
