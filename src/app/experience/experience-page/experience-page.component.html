@@ -13,7 +13,7 @@
 				<span>This experience is pending approval from peerbuds team</span>
 			</div>
 		</div>
-		<div class="row pending-actions center" *ngIf="(experience.status === 'draft' || experience.status === '' ) && userType==='teacher' ">
+		<div class="row pending-actions center" *ngIf="(experience.status === 'draft' || experience.status === '' ) && isPreview ">
 			<div class="col-md-10 col-md-offset-1">
 				<span>This is a preview. Submit your experience to get it approved.
 					<a href="javascript:void(0);" (click)="_collectionService.openEditCollection(experience)">Continue editing?</a>
@@ -833,7 +833,7 @@
 								</div>
 							</div>
 						</div>
-						<div *ngIf="userType==='teacher' && experience.isApproved">
+						<div *ngIf="userType==='teacher' && experience.isApproved && certificateHTML !== undefined">
 							<hr class="margin-top-30 margin-bottom-30">
 							<div>
 								<h3 style="display: inline-block;">Certificate</h3>
@@ -852,7 +852,7 @@
 							</div>
 							<br>
 						</div>
-						<div *ngIf="userType==='teacher' && experience.isApproved">
+						<div *ngIf="userType==='teacher' && experience.isApproved && assessmentRules !== undefined">
 							<hr class="margin-top-30 margin-bottom-30">
 							<div>
 								<h3 style="display: inline-block;">Assessment Rules</h3>

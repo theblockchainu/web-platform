@@ -200,6 +200,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public carouselBanner: any;
 	public startedView;
 	public inviteLink = '';
+	public isPreview = false;
 	public assessmentRules: Array<any>;
 
 	constructor(public router: Router,
@@ -252,6 +253,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.classId = params['collectionId'];
 			this.calendarId = params['calendarId'];
 			this.toOpenDialogName = params['dialogName'];
+		});
+		this.activatedRoute.queryParams.subscribe(params => {
+			if (params['preview']) {
+				this.isPreview = params['preview'];
+				console.log('This is a preview');
+			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
 		console.log('userId is ' + this.userId);
@@ -356,7 +363,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	private initializeUserType() {
 		if (this.class) {
 			for (const owner of this.class.owners) {
-				if (owner.id === this.userId) {
+				if (owner.id === this.userId && (!this.isPreview)) {
 					this.userType = 'teacher';
 					break;
 				}
@@ -1717,21 +1724,25 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	private sortAssessmentRules() {
-		const assessmentRulesUnsorted = <Array<any>>this.class.assessment_models[0].assessment_rules;
-		this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
-			if (a.value > b.value) {
-				return 1;
-			} else if (a.value === b.value) {
-				return 0;
-			} else {
-				return -1;
-			}
-		});
+		if (this.class.assessment_models && this.class.assessment_models.length > 0) {
+			const assessmentRulesUnsorted = <Array<any>>this.class.assessment_models[0].assessment_rules;
+			this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
+				if (a.value > b.value) {
+					return 1;
+				} else if (a.value === b.value) {
+					return 0;
+				} else {
+					return -1;
+				}
+			});
+		}
 	}
 
 	private getCertificatetemplate() {
 		this.certificateService.getCertificateTemplate(this.classId).subscribe((res: any) => {
-			this.certificateHTML = res.certificateHTML;
+			if (res !== undefined && res !== null) {
+				this.certificateHTML = res.certificateHTML;
+			}
 			this.loadingCertificate = false;
 		});
 	}

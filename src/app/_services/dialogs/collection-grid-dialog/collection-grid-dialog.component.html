@@ -16,7 +16,7 @@
 				<div class="">
 					<img class="recommendation-thumb" *ngIf="class.imageUrls && class.imageUrls.length>0" src="{{envVariable.apiUrl+class.imageUrls[0]}}/300"
 					     alt="workshpImg">
-					<img class="recommendation-thumb" *ngIf="!class.imageUrls || class.imageUrls.length<=0" src="/assets/images/no-image.jpg"
+					<img class="recommendation-thumb" *ngIf="!class.imageUrls || class.imageUrls.length<=0" src="/assets/images/collection-placeholder.jpg"
 					     alt="workshpImg">
 				</div>
 				<div *ngIf="class.currency.length > 0" style="margin-top: 3px;">

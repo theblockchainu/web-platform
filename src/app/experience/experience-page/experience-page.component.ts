@@ -200,6 +200,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public carouselBanner: any;
 	public startedView;
 	public inviteLink = '';
+	public isPreview = false;
 
 	certificateHTML: string;
 	loadingCertificate: boolean;
@@ -253,6 +254,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this.experienceId = params['collectionId'];
 			this.calendarId = params['calendarId'];
 			this.toOpenDialogName = params['dialogName'];
+		});
+		this.activatedRoute.queryParams.subscribe(params => {
+			if (params['preview']) {
+				this.isPreview = params['preview'];
+				console.log('This is a preview');
+			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
@@ -356,7 +363,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	private initializeUserType() {
 		if (this.experience) {
 			for (const owner of this.experience.owners) {
-				if (owner.id === this.userId) {
+				if (owner.id === this.userId && (!this.isPreview)) {
 					this.userType = 'teacher';
 					break;
 				}
@@ -1785,21 +1792,25 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	private sortAssessmentRules() {
-		const assessmentRulesUnsorted = <Array<any>>this.experience.assessment_models[0].assessment_rules;
-		this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
-			if (a.value > b.value) {
-				return 1;
-			} else if (a.value === b.value) {
-				return 0;
-			} else {
-				return -1;
-			}
-		});
+		if (this.experience.assessment_models && this.experience.assessment_models.length > 0) {
+			const assessmentRulesUnsorted = <Array<any>>this.experience.assessment_models[0].assessment_rules;
+			this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
+				if (a.value > b.value) {
+					return 1;
+				} else if (a.value === b.value) {
+					return 0;
+				} else {
+					return -1;
+				}
+			});
+		}
 	}
 
 	private getCertificatetemplate() {
 		this.certificateService.getCertificateTemplate(this.experienceId).subscribe((res: any) => {
-			this.certificateHTML = res.certificateHTML;
+			if (res !== null && res !== undefined) {
+				this.certificateHTML = res.certificateHTML;
+			}
 			this.loadingCertificate = false;
 		});
 	}
