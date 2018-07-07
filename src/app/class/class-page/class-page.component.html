@@ -333,7 +333,7 @@
 									</div>
 								</div>
 								<div class="row" *ngFor="let comment of comments">
-									<div *ngIf="comment.isAnnouncement === true">
+									<div *ngIf="!comment.isAnnouncement">
 										<div class="announcement">
 											<button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuComment" style="float: right;">
 												<mat-icon style="color: #cccccc">more_vert</mat-icon>

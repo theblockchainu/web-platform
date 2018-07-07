@@ -406,7 +406,7 @@
 								</div>
 								<div class="margin-top-30"></div>
 								<div class="row margin-top-10" *ngFor="let comment of comments">
-									<div *ngIf="comment.isAnnouncement === false">
+									<div *ngIf="!comment.isAnnouncement">
 										<div class="col-xs-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
 											<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
 											<mat-icon *ngIf="hasUpvoted(comment.upvotes)">arrow_drop_up</mat-icon>
