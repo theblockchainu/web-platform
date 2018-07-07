@@ -171,7 +171,7 @@ export class ReviewPayComponent implements OnInit {
             } else {
                 return -1;
             }
-        })
+        });
     }
 
     private setTags() {
