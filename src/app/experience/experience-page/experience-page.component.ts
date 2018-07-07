@@ -200,6 +200,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public carouselBanner: any;
 	public startedView;
 	public inviteLink = '';
+	public isPreview = false;
 
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -248,6 +249,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this.experienceId = params['collectionId'];
 			this.calendarId = params['calendarId'];
 			this.toOpenDialogName = params['dialogName'];
+		});
+		this.activatedRoute.queryParams.subscribe(params => {
+			if (params['preview']) {
+				this.isPreview = params['preview'];
+				console.log('This is a preview');
+			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
@@ -351,7 +358,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	private initializeUserType() {
 		if (this.experience) {
 			for (const owner of this.experience.owners) {
-				if (owner.id === this.userId) {
+				if (owner.id === this.userId && (!this.isPreview)) {
 					this.userType = 'teacher';
 					break;
 				}
