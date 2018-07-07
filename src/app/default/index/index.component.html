@@ -1,97 +1,544 @@
-<div class="main-content" *ngIf="!loadingHome">
-	<div class="row">
-		<div class="col-md-12">
-			<div class="center margin-top-100">
-				<p class="mat-display-3 margin-bottom-20 homepageTitle" style="color:black">your knowledge has a story</p>
-				<p class="mat-headline margin-bottom-20 homepageTitle" style="color:#33bd9e;">peerbuds makes it possible to get credits for learning that happens anywhere
-					<br/>even when you're just doing the things you love</p>
-				<p class="mat-subheading-2 margin-top-80">
-					 <button mat-button [routerLink]="['/whitepaper']" class="mat-border-button" color="accent" style="border-color: #ff6d71;">Read White Paper</button>
-					<button mat-button (click)="openTelegram()" class="mat-border-button" color="accent">
-						<i class="fa fa-telegram" style="top: -2px;position: relative;font-size: 20px;left: -5px;"></i> Join Telegram</button>
-				</p>
+<!-- header start here -->
+<header>
+	<nav class="navbar navbar-expand-md navbar-dark">
+		<a class="navbar-brand" href="#">
+			<img src="/assets/images/peerbuds-logo.png" alt="peerbuds-logo">
+		</a>
+		<span class="example-spacer"></span>
+		<span class="options">
+			<button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']">
+				White Paper
+			</button>
+			<button mat-button class="headerButtons hide-small" [routerLink]="['/shortread']">
+				Short Paper
+			</button>
+			<button mat-button class="headerButtons hide-small" [routerLink]="['/privatebeta']">
+				Private Beta
+			</button>
+			<button mat-button class="headerButtons hide-small" (click)="openLogin()">
+				Login
+			</button>
+		</span>
+	</nav>
+</header>
+<!-- header end here -->
+<div class="index">
+	<section class="home-banner">
+		<div class="dark-gray-overlay"></div>
+		<div class="container">
+			<div class="content">
+				<h1>Find unique local &amp; online
+					<br>learning experiences all over the world.</h1>
+				<mat-form-field [floatLabel]="'never'" class="search-form pb-block">
+					<input #searchInputBar name="search" matInput [formControl]="myControl" [matAutocomplete]="auto">
+					<!-- <mat-label>Try "Learning Experience Locally or Online"</mat-label> -->
+					<mat-autocomplete #auto="matAutocomplete">
+						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)">
+							<span>
+								<img src="{{_searchService.getSearchOptionImage(option)}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
+								 (error)="_collectionService.imgErrorHandler($event)" />
+							</span>
+							<span>
+								{{_searchService.getSearchOptionText(option)}}
+							</span>
+						</mat-option>
+					</mat-autocomplete>
+				</mat-form-field>
 			</div>
 		</div>
-	</div>
+	</section>
 
-	<div class="row">
-		<div class="col-md-12 margin-top-60">
-			<img src="/assets/images/images_landing/Waves_above_the_fold.png" />
-			<a (click)="openVideo()">
-				<img src="/assets/images/homepageVideoPlaceholder01.png" class="videoContainer" />
-				<img src="/assets/images/images_landing/Play_button.png" class="videoPlayButton" />
-			</a>
-		</div>
-	</div>
-	<div class="row margin-top-150">
-		<div class="col-md-5 col-md-offset-1">
-			<img src="/assets/images/images_landing/Illustration_1.png" />
-		</div>
-		<div class="col-md-4 col-md-offset-1 margin-top-60 homepageTitle">
-			<p class="mat-display-1">Learning is continuous, not episodic</p>
-			<p class="mat-subheading-1 lightText">Education is no longer episodic that could be gained from 15 years of school. Most people now learn their entire lives
-				even from individuals or informal groups like a community center or an app.</p>
-		</div>
-	</div>
-	<div class="row margin-top-150">
-		<div class="col-md-4 col-md-offset-1 margin-top-60 homepageTitle">
-			<p class="mat-display-1">From degrees to reputation metrics</p>
-			<p class="mat-subheading-1 lightText">Degrees do not do justice to the modern day learner. 'Gyan' is an objective measure of your knowledge that gets continuously
-				recorded on a global distributed ledger.</p>
-		</div>
-		<div class="col-md-5 col-md-offset-1">
-			<img src="/assets/images/images_landing/Illustration_2.png" />
-		</div>
-	</div>
-	<div class="row margin-top-150">
-		<div class="col-md-5 col-md-offset-1">
-			<img src="/assets/images/images_landing/Illustration_3.png" />
-		</div>
-		<div class="col-md-4 col-md-offset-1 margin-top-60 homepageTitle">
-			<p class="mat-display-1" style="color: #484848;margin-bottom: 20px;">Teach for free, earn back Karma as rewards</p>
-			<p class="mat-subheading-1 lightText">'Gyan' is your stake in the economy. 'Karma' is your earning through weekly rewards or payments. All your earning from
-				every Gyan is tracked to give feedback on your teachers.</p>
-		</div>
-	</div>
-	<div class="row margin-top-350">
-		<div class="col-md-12">
-			<div class="faqCarousel">
-				<app-text-icon-carousel></app-text-icon-carousel>
-			</div>
-			<img src="/assets/images/images_landing/Shape_testimoni.png" class="faqBackground" />
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12 ctaContainer">
-			<img src="/assets/images/images_landing/shape_journey.png" class="ctaBackground" />
-			<div class="center mat-headline ctaTitle">Free education was possible. We made it sustainable at scale.</div>
-			<div class="center ctaSubtitle margin-top-60" (click)="openSignup()">
-				<span class="mat-subheading-1">Join Now to start earning 'Gyan'</span>
+	<section class="explore-peerbuds spacing">
+		<div class="container">
+			<h2 class="section-title">Explore Peerbuds</h2>
+			<div class="homefeedContainer">
+				<nav mat-tab-nav-bar disableRipple class="noJustify home">
+					<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive"
+					 matTooltip="Classes are a way to learn any subject completely online with videos, projects & live sessions.">
+						<img src="/assets/images/class_icon2.jpg" alt="logo" style="height: 100%;">
+						<h3 class="margin-left-10">Classes</h3>
+					</a>
+					<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
+					 matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
+						<img src="/assets/images/experiences_icon.jpeg" alt="logo" style="height: 100%;">
+						<h3 class="margin-left-10">Experiences</h3>
+					</a>
+					<a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive"
+					 matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
+						<img src="/assets/images/communities_icon1.jpg" alt="logo" style="height: 100%;">
+						<h3>Communities</h3>
+					</a>
+					<a mat-tab-link [routerLink]="'/home/peers'" routerLinkActive #peerLink="routerLinkActive" [active]="peerLink.isActive" matTooltip="Peers are teachers around the world who can teach you something over a live video session.">
+						<img src="/assets/images/peers_icon1.jpg" alt="logo" style="height: 100%;">
+						<h3 class="margin-left-10">Peers</h3>
+					</a>
+				</nav>
 			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12 newsletterBackground">
-			<img class="newsLetterBackgroundImg" src="/assets/images/images_landing/shape_footer.png" />
-		</div>
-		<div class="col-md-12 newsLetterForm">
-			<p class="center newsLetterTitle margin-bottom-40"> Sign up to receive all our latest developments </p>
-			<form [formGroup]="notifyForm" (submit)="sendEmailSubscriptions()">
-				<div class="center">
-					<input matInput class="newsLetterInput" type="text" placeholder="Your email here" formControlName="email">
-					<div id="emailBase" class="newsLetterButtonContainer">
-						<button mat-button class="mat-raised-button newsLetterButton" type="submit">Notify me!</button>
+	</section>
+
+	<section class="introducing-experience spacing">
+		<div class="container">
+			<h2 class="section-title">Introducing Experiences </h2>
+			<div class="gradient-banner">
+				<div class="hero-banner-bg">
+					<div class="gray-gradient-overlay"></div>
+					<div class="d-table">
+						<div class="d-table-cell align-middle">
+							<div class="content">
+								<h3>Educational excursions &amp; activities designed and led by local peers</h3>
+								<div class="action-btn">
+									<a [routerLink]="'/digest/experiences'">Explore Experiences</a>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-			</form>
+			</div>
 		</div>
-		<div class="col-md-12 newsLetterBottomBackground">
-			<img src="/assets/images/images_landing/oval-footer.png" class="oval" />
+	</section>
+
+	<section class="experience-around-world spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Experiences around the world</h2>
+			<div class="loading-container" [hidden]="!loadingExperiences">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingExperiences" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
+					There are no new active experiences to view right now. Browse from within your signed-up experiences
+					<a class="clickable" [routerLink]="['console','teaching','experiences']">here</a>.
+				</div>
+				<div *ngFor="let experience of experiences; let i = index;">
+					<app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
+				</div>
+			</div>
+			<div class="read-more mt-2">
+				<a [routerLink]="['home','experiences']">Show all ({{experiencesCount}})+</a>
+			</div>
 		</div>
-	</div>
-	<!--<div style="position: fixed; bottom: 40px; right: 40px;">
-		<button mat-fab color="white" (click)="openTelegram()">
-			<i class="fa fa-telegram" style="font-size: 56px; color: #0088cc;"></i>
-		</button>
-	</div>-->
+	</section>
+
+	<section class="unique-experience spacing">
+		<div class="container">
+			<h2 class="section-title  pb-0">Unique experiences for your taste</h2>
+			<div class="row">
+				<div class="col-12 col-sm-6">
+					<div class="custom-card">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Technology</span>
+							</div>
+							<img src="/assets/images/landscape1.jpg" alt="landscape1">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>100 + experiences</span>
+							</p>
+							<h3 class="title">Experiences that matter</h3>
+							<p>Find the type of experiences you love</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-sm-6">
+					<div class="custom-card">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Language</span>
+							</div>
+							<img src="/assets/images/landscape2.jpg" alt="landscape2">
+						</div>
+						<div class="card-content">
+							<h3 class="title">Coming soon</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-spotlight spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Experiences in the spotlight</h2>
+			<div class="row small-margin">
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Workshops</span>
+							</div>
+							<img src="/assets/images/pexels-photo-1157859.jpeg" alt="Workshops">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>100+ Surfing Experiences</span>
+							</p>
+							<h3 class="title">Microsoft Patch Management For Home Users</h3>
+							<p>Audio player software is used to play back sound recordings in one of the many formats available for computers today.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Meetups</span>
+							</div>
+							<img src="/assets/images/pexels-photo-1172207.jpeg" alt="Meetups">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>100+ Surfing Experiences</span>
+							</p>
+							<h3 class="title">Compatible Inkjet Cartridge</h3>
+							<p>Many people were hoping that if the Democrats won control of Congress they would reverse the online gambling ban,
+								but experts doubt </p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Hackathons</span>
+							</div>
+							<img src="/assets/images/pexels-photo-1182338.jpeg" alt="Hackathons">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>100+ Surfing Experiences</span>
+							</p>
+							<h3 class="title">Party Jokes Startling But Unnecessary</h3>
+							<p>With easy access to Broadband and DSL the number of people using the Internet has skyrocket in recent years. Email,
+								instant messaging </p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="classes-anywhere spacing">
+		<div class="container">
+			<h2 class="section-title">Classes from anywhere in the world</h2>
+			<div class="jumbo-image-box">
+				<div class="row">
+					<div class="col-xs-4 image align-top">
+						<div class="image-container">
+							<img src="/assets/images/classes-anywhere.jpg" alt="classes-anywhere" class="img-fluid">
+						</div>
+					</div>
+					<div class="col-xs-8 content align-middle">
+						<h3>Interactive online classes designed by peers</h3>
+						<div class="intro mb-3">Host your own class to earn extra income</div>
+						<a [routerLink]="'/digest/classes'" class="theme-btn">Find out more</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-around-world top-rated-classes spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Top Rated Classes</h2>
+			<div class="loading-container" [hidden]="!loadingClasses">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingClasses" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="classes === undefined || classes.length === 0">
+					There are no new active classes to view right now. Browse from within your signed-up classes
+					<a class="clickable">here</a>.
+				</div>
+				<div *ngFor="let class of classes; let i =index">
+					<app-class-card [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>
+				</div>
+			</div>
+			<div class="read-more mt-2">
+				<a [routerLink]="'/home/classes'">Show all ({{classesCount}}+)</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-spotlight classes-spotlight spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Classes in the spotlight</h2>
+			<div class="row small-margin">
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Blockchain</span>
+							</div>
+							<img src="/assets/images/pexels-photo-1157859.jpeg" alt="Workshops">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>100+ Surfing Experiences</span>
+							</p>
+							<h3 class="title">Microsoft Patch Management For Home Users</h3>
+							<p>Audio player software is used to play back sound recordings in one of the many formats available for computers today.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">UI/UX</span>
+							</div>
+							<img src="/assets/images/pexels-photo-1172207.jpeg" alt="Meetups">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>100+ Surfing Experiences</span>
+							</p>
+							<h3 class="title">Compatible Inkjet Cartridge</h3>
+							<p>Many people were hoping that if the Democrats won control of Congress they would reverse the online gambling ban,
+								but experts doubt </p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Artificial Intelligence</span>
+							</div>
+							<img src="/assets/images/pexels-photo-1182338.jpeg" alt="Hackathons">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>100+ Surfing Experiences</span>
+							</p>
+							<h3 class="title">Party Jokes Startling But Unnecessary</h3>
+							<p>With easy access to Broadband and DSL the number of people using the Internet has skyrocket in recent years. Email,
+								instant messaging </p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="peer-sessions spacing">
+		<div class="container">
+			<h2 class="section-title">Peer sessions</h2>
+			<div class="jumbo-image-box">
+				<div class="row">
+					<div class="col-xs-4 image align-top">
+						<div class="image-container">
+							<img src="/assets/images/pexels-photo-1181244.jpeg" alt="Peer sessions" class="img-fluid">
+						</div>
+					</div>
+					<div class="col-xs-8 content align-middle">
+						<h3>Learn online from your peers</h3>
+						<div class="intro mb-3">earn extra income from teaching what you love</div>
+						<a [routerLink]="'/digest/peers'" class="theme-btn">Learn more</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="peers-teaching spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Peers teaching their passion</h2>
+			<div class="loading-container" [hidden]="!loadingPeers">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingPeers" class="row feed-horizontal margin-bottom-50" style="padding: 0px 7px;">
+				<div *ngFor="let peer of peers;">
+					<app-peer-card [peer]="peer"></app-peer-card>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-spotlight super-teacher spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Super Peer Teachers</h2>
+			<div class="row small-margin">
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Blockchain</span>
+							</div>
+							<img src="/assets/images/pexels-photo-1157859.jpeg" alt="Workshops">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>100+ Surfing Experiences</span>
+							</p>
+							<p class="para">Audio player software is used to play back sound recordings in one of the many formats available for computers today.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">AWS</span>
+							</div>
+							<img src="/assets/images/pexels-photo-1172207.jpeg" alt="Meetups">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>100+ Surfing Experiences</span>
+							</p>
+							<p class="para">Many people were hoping that if the Democrats won control of Congress they would reverse the online gambling ban,
+								but experts doubt </p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Android</span>
+							</div>
+							<img src="/assets/images/pexels-photo-1182338.jpeg" alt="Hackathons">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>100+ Surfing Experiences</span>
+							</p>
+							<p class="para">With easy access to Broadband and DSL the number of people using the Internet has skyrocket in recent years. Email,
+								instant messaging </p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="introducing-communities spacing">
+		<div class="container">
+			<h2 class="section-title">Introducing Communities</h2>
+			<div class="gradient-banner">
+				<div class="hero-banner-bg">
+					<div class="gray-gradient-overlay"></div>
+					<div class="d-table">
+						<div class="d-table-cell align-middle">
+							<div class="content">
+								<h3>Topic-specific communities for questions &amp; answers</h3>
+								<div class="action-btn">
+									<a [routerLink]="'/digest/communities'">Explore Communities</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-spotlight trending-communities spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Trending Communities</h2>
+			<div class="row small-margin">
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Blockchain</span>
+							</div>
+							<img src="/assets/images/pexels-photo-1157859.jpeg" alt="Workshops">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Blockchain + Experiences</span>
+							</p>
+							<h3 class="title">Microsoft Patch Management For Home Users</h3>
+							<p>Audio player software is used to play back sound recordings in one of the many formats available for computers today.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">UI/UX</span>
+							</div>
+							<img src="/assets/images/pexels-photo-1172207.jpeg" alt="Meetups">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>UI/UX + Experiences</span>
+							</p>
+							<h3 class="title">Compatible Inkjet Cartridge</h3>
+							<p>Many people were hoping that if the Democrats won control of Congress they would reverse the online gambling ban,
+								but experts doubt </p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Artificial Intelligence</span>
+							</div>
+							<img src="/assets/images/pexels-photo-1182338.jpeg" alt="Hackathons">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Artificial Intelligence + Surfing Experiences</span>
+							</p>
+							<h3 class="title">Party Jokes Startling But Unnecessary</h3>
+							<p>With easy access to Broadband and DSL the number of people using the Internet has skyrocket in recent years. Email,
+								instant messaging </p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-around-world communities spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Communities</h2>
+			<div class="loading-container" [hidden]="!loadingCommunities">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingCommunities" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="communities === undefined || communities.length === 0">
+					There are no new active communities to view right now. Browse from within your signed-up communities
+					<a class="clickable">here</a>.
+				</div>
+				<div *ngFor="let community of communities; let i = index;">
+					<app-community-card *ngIf="i < 5" [community]="community" (refresh)="onCommunityRefresh($event)"></app-community-card>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="one-0x mb-5 padding-bottom-50">
+		<div class="container">
+			<div class="gradient-banner">
+				<div class="hero-banner-bg">
+					<div class="black-gradient-overlay"></div>
+					<div class="d-table row">
+						<div class="d-table-cell col-xs-12" style="display: flex;">
+							<div class="content white-text align-middle">
+								<div class="logo-image">
+									<img style="width: auto !important;" src="/assets/images/one0x-footer-logo.png" alt="one0x-footer-logo">
+								</div>
+								<h3>Tracking all your learning and digitizing it into certificates on the blockchain, making it instantly verifiable
+									by any employer</h3>
+								<div class="action-btn">
+									<a href="https://one0x.com/">Explore Compliant</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
 </div>

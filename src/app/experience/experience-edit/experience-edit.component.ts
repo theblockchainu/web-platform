@@ -2,7 +2,7 @@ import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, OnDestroy, Input, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
-import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/publishReplay';
@@ -271,13 +271,17 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			rules: this._fb.array([
 				this._fb.group({
 					value: ['', Validators.required],
-					gyan: ['', Validators.required]
+					gyan: ['', [Validators.required, Validators.max(100), Validators.min(0)]]
 				})
 			], Validators.minLength(1)),
 			nARules: this._fb.array([
 				this._fb.group({
-					value: ['', Validators.required],
-					gyan: ['', Validators.required]
+					value: ['engagement', Validators.required],
+					gyan: ['', [Validators.required, Validators.max(100), Validators.min(0), this.checkTotal(1)]]
+				}),
+				this._fb.group({
+					value: ['commitment', Validators.required],
+					gyan: ['', [Validators.required, Validators.max(100), Validators.min(0), this.checkTotal(0)]]
 				})
 			], Validators.minLength(1))
 		});
@@ -337,19 +341,23 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				result.assessment_models[0].assessment_rules.forEach(rule => {
 					rulesArray.push(this._fb.group({
 						value: rule.value,
-						gyan: rule.gyan
+						gyan: [rule.gyan, [Validators.max(100), Validators.min(0)]]
 					}));
 				});
 			}
+			const nARulesArray = <FormArray>this.assessmentForm.controls['nARules'];
 			if (result.assessment_models[0].assessment_na_rules && result.assessment_models[0].assessment_na_rules.length > 0) {
-				const rulesArray = <FormArray>this.assessmentForm.controls['nARules'];
-				rulesArray.removeAt(0);
+				nARulesArray.removeAt(0);
+				nARulesArray.removeAt(0);
 				result.assessment_models[0].assessment_na_rules.forEach(rule => {
-					rulesArray.push(this._fb.group({
-						value: rule.value,
-						gyan: rule.gyan
+					nARulesArray.push(this._fb.group({
+						value: [rule.value],
+						gyan: [rule.gyan, [Validators.max(100), Validators.min(0), this.checkTotal(
+							(nARulesArray.length === 1) ? 0 : 1
+						)]]
 					}));
 				});
+
 			}
 		}
 	}
@@ -1444,7 +1452,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		console.log(rulesArray);
 		rulesArray.push(this._fb.group({
 			value: '',
-			gyan: ''
+			gyan: ['', [Validators.required, Validators.max(100), Validators.min(0)]]
 		}));
 	}
 
@@ -1502,5 +1510,17 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		});
 	}
 
+	private checkTotal(indexOfOtherControl: number): ValidatorFn {
+		return (control: AbstractControl): { [key: string]: any } | null => {
+
+			if (this.assessmentForm && this.assessmentForm.controls['nARules'] && this.assessmentForm.controls['nARules']['controls'][indexOfOtherControl]) {
+				const formArray = <FormArray>this.assessmentForm.controls['nARules'];
+				const otherNArule = formArray.controls[indexOfOtherControl].value;
+				return ((control.value + otherNArule.gyan) > 100) ? { 'error': 'invalid total gyan' } : null;
+			} else {
+				return null;
+			}
+		};
+	}
 }
 

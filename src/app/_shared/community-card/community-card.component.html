@@ -4,32 +4,24 @@
 			<mat-icon *ngIf="!(community.bookmarks && community.bookmarks[0] && community.bookmarks[0].peer && community.bookmarks[0].peer[0] && community.bookmarks[0].peer[0].id===userId)">
 				bookmark</mat-icon>
 			<mat-icon *ngIf="community.bookmarks && community.bookmarks[0] && community.bookmarks[0].peer && community.bookmarks[0].peer[0] && community.bookmarks[0].peer[0].id===userId"
-			          color="primary">bookmark</mat-icon>
+			 color="primary">bookmark</mat-icon>
 		</button>
 		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('community',community.id,community.title, community.description, envVariable.apiUrl + community.imageUrls[0])">
 			<mat-icon>share</mat-icon>
 		</button>
 	</span>
 	<a [routerLink]="'/community/'+community.id">
-		<div class="">
-			<div class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + community.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
-				<div class="community-title">
-					<div class="mat-headline" style="color: #ffffff; margin-bottom: 0px;">{{community.title | ucwords}}</div>
-				</div>
-			</div>
-			<div class="recommendation-thumb" *ngIf="!community.imageUrls || community.imageUrls.length<=0" [ngStyle]="{'background': 'url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
-				<div class="community-title">
-					<div class="mat-display-1">{{community.title | ucwords}}</div>
-				</div>
+		<div class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + community.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
+		</div>
+		<div style="    margin-bottom: -18px;">
+			<h3>{{community.title | ucwords}}</h3>
+		</div>
+		<div class="recommendation-thumb" *ngIf="!community.imageUrls || community.imageUrls.length<=0" [ngStyle]="{'background': 'url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
+			<div>
+				<h3>{{community.title | ucwords}}</h3>
 			</div>
 		</div>
-		<div *ngIf="community.participants !== undefined && community.participants.length > 0" style="margin-top: 3px;">
-			<div *ngFor="let participant of community.participants; let i = index" style="display: inline-block; vertical-align: middle;" class="communityParticipants">
-				<app-profile-popup *ngIf="i<4" [peer]="participant"></app-profile-popup>
-			</div>
-			<span class="mat-body-2" style="vertical-align: middle;"> + {{community.allParticipants.length - 4}} more</span>
-		</div>
-		<div *ngIf="community.topics !== undefined && community.topics.length > 0" style="margin-top: 3px;">
+		<div *ngIf="community.topics !== undefined && community.topics.length > 0">
 			<span *ngIf="community.topics.length<=1">
 				{{community.topics}}
 			</span>
@@ -40,10 +32,17 @@
 				</b>
 			</span>
 		</div>
-		<div *ngIf="community.gyan !== undefined" style="margin-top: 3px;">
+		<div *ngIf="community.participants !== undefined && community.participants.length > 0" style="margin-top: 3px;">
+			<div *ngFor="let participant of community.participants; let i = index" style="display: inline-block; vertical-align: middle;"
+			 class="communityParticipants">
+				<app-profile-popup *ngIf="i<4" [peer]="participant"></app-profile-popup>
+			</div>
+			<span class="mat-body-2" style="vertical-align: middle;"> + {{community.allParticipants.length}} more</span>
+		</div>
+		<!-- <div *ngIf="community.gyan !== undefined" style="margin-top: 3px;">
 			<span class="mat-h5 mat-border-button gyanBubble" style="margin-left: 0 !important;" matTooltip="Pending payout {{community.gyan | convertCurrency : 'GYAN' | async}} ({{community.gyan}} GYAN) in 7 days">
 				<div style="font-size: 12px;">{{community.gyan | convertCurrency : 'GYAN' | async}}</div>
 			</span>
-		</div>
+		</div> -->
 	</a>
 </div>

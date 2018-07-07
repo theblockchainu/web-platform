@@ -4,25 +4,26 @@
 			<mat-icon *ngIf="!(experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId)">
 				bookmark</mat-icon>
 			<mat-icon *ngIf="experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId"
-			          color="primary">bookmark</mat-icon>
+			 color="primary">bookmark</mat-icon>
 		</button>
-		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.id,experience.title, experience.description, envVariable.apiUrl + experience.imageUrls[0])" matTooltip="Share">
+		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.id,experience.title, experience.description, envVariable.apiUrl + experience.imageUrls[0])"
+		 matTooltip="Share">
 			<mat-icon>share</mat-icon>
 		</button>
 	</span>
 	<a [routerLink]="'/experience/'+experience.id">
 		<div class="">
-			<div class="recommendation-thumb" (mouseenter)="onMouseEnter(experience)" (mouseleave)="onMouseLeave(experience)" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + experience.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
+			<div class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + experience.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
 				<div class="recommendation-price" [ngClass]="{'hidden': experience.cardInFocus}">
 					<span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span>
 				</div>
-				<div class="recommendation-map" [ngClass]="{'hidden': !experience.cardInFocus}">
+				<!-- <div class="recommendation-map" [ngClass]="{'hidden': !experience.cardInFocus}">
 					<agm-map [latitude]="experience.lat" [longitude]="experience.lng" [mapDraggable]="false" [scrollwheel]="false"
 					         [usePanning]="true" [zoomControl]="false" [zoom]="14" [streetViewControl]="false">
 						<agm-circle [latitude]="experience.lat" [longitude]="experience.lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'"
 						            [strokeOpacity]="0.9"></agm-circle>
 					</agm-map>
-				</div>
+				</div> -->
 				<div class="recommendation-city">
 					<mat-icon style="top: 2px; position: relative; color: white; font-size: 15px;">
 						place
@@ -34,13 +35,13 @@
 				<div class="recommendation-price" [ngClass]="{'hidden': experience.cardInFocus}">
 					<span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span>
 				</div>
-				<div class="recommendation-map" [ngClass]="{'hidden': !experience.cardInFocus}">
+				<!-- <div class="recommendation-map" [ngClass]="{'hidden': !experience.cardInFocus}">
 					<agm-map [latitude]="experience.lat" [longitude]="experience.lng" [mapDraggable]="false" [scrollwheel]="false"
 					         [usePanning]="true" [zoomControl]="false" [zoom]="14" [streetViewControl]="false">
 						<agm-circle [latitude]="experience.lat" [longitude]="experience.lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'"
 						            [strokeOpacity]="0.9"></agm-circle>
 					</agm-map>
-				</div>
+				</div> -->
 				<div class="recommendation-city">
 					<mat-icon style="top: 2px; position: relative; color: white; font-size: 15px;">
 						place
@@ -54,7 +55,8 @@
 				<i class="fab fa-ethereum lightText"></i> {{experience.academicGyan + experience.nonAcademicGyan}}
 			</span>
 			<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
-			<span matTooltip="Burn {{(experience.academicGyan + experience.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async}} KARMA to participate" style="font-weight: 700; vertical-align: middle;">
+			<span matTooltip="Burn {{(experience.academicGyan + experience.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async}} KARMA to participate"
+			 style="font-weight: 700; vertical-align: middle;">
 				<i class="fas fa-fire lightText" matTooltip="KARMA"></i> {{(experience.academicGyan + experience.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async | shortNumber}}
 			</span>
 			<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>

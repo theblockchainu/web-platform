@@ -62,13 +62,17 @@ export class CollectionService {
 	public getOwnedCollectionCount(userId, options: string, cb) {
 		if (userId) {
 			this.httpClient
-				.get(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections/count' + 'filter=' + options, this.requestHeaderService.options)
+				.get(environment.apiUrl + '/api/peers/' + userId + '/ownedCollections/count?filter=' + options, this.requestHeaderService.options)
 				.subscribe(res => {
 					cb(null, res);
 				}, err => {
 					cb(err);
 				});
 		}
+	}
+
+	public getTotalCollectionCount(property: string, value: string) {
+		return this.httpClient.get(environment.apiUrl + '/api/collections/count?where[' + property + '][like]=' + value, this.requestHeaderService.options);
 	}
 
 	public getParticipatingCollections(userId, options: any, cb) {
