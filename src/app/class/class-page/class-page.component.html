@@ -13,7 +13,7 @@
 				<span>This class is pending approval from peerbuds team</span>
 			</div>
 		</div>
-		<div class="row pending-actions center" *ngIf="(class.status === 'draft' || class.status === '' ) && userType==='teacher' ">
+		<div class="row pending-actions center" *ngIf="(class.status === 'draft' || class.status === '' ) && isPreview ">
 			<div class="col-md-10 col-md-offset-1">
 				<span>This is a preview. Submit your class to get it approved</span>
 			</div>
@@ -75,6 +75,12 @@
 									< Back to class page </a>
 										<p class="mat-display-1" style="margin-bottom: 20px !important;">{{class.title | titlecase}}
 											<span *ngIf="calendarId">(Cohort View)</span>
+											<span *ngIf="!checkingEthereum && isOnEthereum" matTooltip="one0x Compliant">&emsp;
+												<i class="fa fa-globe lightText" style="color: #ff6d71; font-size: 14px;"></i>
+											</span>
+											<span *ngIf="!checkingEthereum && !isOnEthereum" matTooltip="Add to one0x Blockchain" (click)="addToEthereum()" class="clickable">&emsp;
+												<i class="fa fa-plus lightText" style="font-size: 14px;"></i>
+											</span>
 										</p>
 										<div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
 											<span *ngIf="currentCalendar">
@@ -311,7 +317,7 @@
 								<h3 *ngIf="comments !== undefined">Discussion ({{comments.length}})</h3>
 								<h3 *ngIf="comments === undefined">Discussion (0)</h3>
 								<form [formGroup]="chatForm" (ngSubmit)="postComment()">
-									<mat-form-field class="full-width margin-top-10">
+									<mat-form-field class="full-width margin-top-10 margin-bottom-10">
 										<input matInput type="text" #description1 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this class">
 										<mat-hint align="end">{{description1.value.length}} / 2000</mat-hint>
 									</mat-form-field>
@@ -534,7 +540,7 @@
 								<div class="row margin-top-20" *ngIf="userType==='participant' && !hasReviewed(reviews)">
 									<div class="col-md-12">
 										<form [formGroup]="reviewForm" (ngSubmit)="postReview()">
-											<mat-form-field class="full-width">
+											<mat-form-field class="full-width margin-bottom-10">
 												<input matInput #description5 maxlength="2000" formControlName="description" placeholder="Describe your experience with this class">
 												<mat-hint align="end">{{description5.value.length}} / 2000</mat-hint>
 											</mat-form-field>
@@ -784,7 +790,7 @@
 								</div>
 							</div>
 						</div>
-						<div *ngIf="userType==='teacher' && class.isApproved">
+						<div *ngIf="userType==='teacher' && class.isApproved && certificateHTML !== undefined">
 							<hr class="margin-top-30 margin-bottom-30">
 							<div>
 								<h3 style="display: inline-block;">Certificate</h3>
@@ -803,7 +809,7 @@
 							</div>
 							<br>
 						</div>
-						<div *ngIf="userType==='teacher' && class.isApproved">
+						<div *ngIf="userType==='teacher' && class.isApproved && assessmentRules !== undefined">
 							<hr class="margin-top-30 margin-bottom-30">
 							<div>
 								<h3 style="display: inline-block;">Assessment Rules</h3>

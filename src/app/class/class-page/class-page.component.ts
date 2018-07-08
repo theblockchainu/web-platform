@@ -159,6 +159,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public clickedCohortEndDate;
 	public eventsForTheDay: any;
 	public toOpenDialogName;
+	public checkingEthereum = true;
+	public isOnEthereum = false;
 	objectKeys = Object.keys;
 
 	public view = 'month';
@@ -198,6 +200,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public carouselBanner: any;
 	public startedView;
 	public inviteLink = '';
+	public isPreview = false;
 	public assessmentRules: Array<any>;
 
 	constructor(public router: Router,
@@ -250,6 +253,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.classId = params['collectionId'];
 			this.calendarId = params['calendarId'];
 			this.toOpenDialogName = params['dialogName'];
+		});
+		this.activatedRoute.queryParams.subscribe(params => {
+			if (params['preview']) {
+				this.isPreview = params['preview'];
+				console.log('This is a preview');
+			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
 		console.log('userId is ' + this.userId);
@@ -354,7 +363,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	private initializeUserType() {
 		if (this.class) {
 			for (const owner of this.class.owners) {
-				if (owner.id === this.userId) {
+				if (owner.id === this.userId && (!this.isPreview)) {
 					this.userType = 'teacher';
 					break;
 				}
@@ -487,6 +496,13 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		};
 
 		if (this.classId) {
+			this._collectionService.getCollectionEthereumInfo(this.classId, {})
+				.subscribe(res => {
+					this.checkingEthereum = false;
+					if (res && res[6] && res[6] !== '0') {
+						this.isOnEthereum = true;
+					}
+				});
 			this._collectionService.getCollectionDetail(this.classId, query)
 				.subscribe(res => {
 					console.log(res);
@@ -1697,23 +1713,36 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			// console.log(result);
 		});
 	}
+	
+	public addToEthereum() {
+		this._collectionService.addToEthereum(this.classId)
+			.subscribe(res => {
+				this.initializeClass();
+			}, err => {
+				this.snackBar.open('Could not add to one0x Blockchain. Try again later.', 'Ok', { duration: 5000 });
+			});
+	}
 
 	private sortAssessmentRules() {
-		const assessmentRulesUnsorted = <Array<any>>this.class.assessment_models[0].assessment_rules;
-		this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
-			if (a.value > b.value) {
-				return 1;
-			} else if (a.value === b.value) {
-				return 0;
-			} else {
-				return -1;
-			}
-		});
+		if (this.class.assessment_models && this.class.assessment_models.length > 0) {
+			const assessmentRulesUnsorted = <Array<any>>this.class.assessment_models[0].assessment_rules;
+			this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
+				if (a.value > b.value) {
+					return 1;
+				} else if (a.value === b.value) {
+					return 0;
+				} else {
+					return -1;
+				}
+			});
+		}
 	}
 
 	private getCertificatetemplate() {
 		this.certificateService.getCertificateTemplate(this.classId).subscribe((res: any) => {
-			this.certificateHTML = res.certificateHTML;
+			if (res !== undefined && res !== null) {
+				this.certificateHTML = res.certificateHTML;
+			}
 			this.loadingCertificate = false;
 		});
 	}

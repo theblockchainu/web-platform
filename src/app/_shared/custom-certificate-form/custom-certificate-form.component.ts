@@ -1,13 +1,11 @@
 import { Component, OnInit, EventEmitter, Output, Input, Renderer2, ViewChild, ElementRef } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { MatSnackBar } from '@angular/material';
 import { environment } from '../../../environments/environment';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
-import { FileUpload } from 'primeng/fileupload';
 import * as _ from 'lodash';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Observable } from 'rxjs/observable';
 import { timer } from 'rxjs/observable/timer';
 @Component({
 	selector: 'app-custom-certificate-form',

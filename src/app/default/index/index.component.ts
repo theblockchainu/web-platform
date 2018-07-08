@@ -146,14 +146,10 @@ export class IndexComponent implements OnInit {
 	}
 
 	private setTags() {
-		this.titleService.setTitle('Peerbuds - Own and Control Your Knowledge Story');
+		this.titleService.setTitle('Peerbuds - Immersive & Incentivized Education');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds - Own and Control Your Knowledge Story'
-		});
-		this.metaService.updateTag({
-			property: 'og:description',
-			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
+			content: 'Peerbuds - Immersive & Incentivized Education'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
@@ -252,7 +248,26 @@ export class IndexComponent implements OnInit {
 			(response) => {
 				for (const responseObj of response) {
 					responseObj.collections.forEach(collection => {
+						let experienceLocation = 'Unknown location';
+						let lat = 37.5293864;
+						let lng = -122.008471;
 						if (collection.status === 'active') {
+							if (collection.contents) {
+								collection.contents.forEach(content => {
+									if (content.locations && content.locations.length > 0
+										&& content.locations[0].city !== undefined
+										&& content.locations[0].city.length > 0
+										&& content.locations[0].map_lat !== undefined
+										&& content.locations[0].map_lat.length > 0) {
+										experienceLocation = content.locations[0].city;
+										lat = parseFloat(content.locations[0].map_lat);
+										lng = parseFloat(content.locations[0].map_lng);
+									}
+								});
+								collection.location = experienceLocation;
+								collection.lat = lat;
+								collection.lng = lng;
+							}
 							if (collection.owners && collection.owners[0].reviewsAboutYou) {
 								collection.rating = this._collectionService
 									.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
@@ -290,7 +305,6 @@ export class IndexComponent implements OnInit {
 		});
 
 	}
-
 
 	fetchCommunities() {
 		const query = {

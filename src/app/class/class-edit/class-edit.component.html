@@ -235,14 +235,14 @@
 								<div class="row">
 									<div class="col-sm-12 margin-bottom-30">
 										<div class="form-group">
-											<h2 class="title">Cover</h2>
+											<h2 class="title">Title</h2>
 											<p class="subtitle">
 												Make it short and sweet
 											</p>
 											<br/>
 											<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
 												<input matInput #title formControlName="title" maxlength="100" placeholder="Enter Name">
-												<mat-hint align="start">{{100 - title.value.length}} more characters needed</mat-hint>
+												<mat-hint align="start">{{100 - title.value.length}} more characters allowed</mat-hint>
 												<mat-hint align="end">{{title.value.length}} / 100</mat-hint>
 											</mat-form-field>
 										</div>
@@ -257,7 +257,7 @@
 											<br/>
 											<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
 												<input matInput #headline formControlName="headline" maxlength="100" placeholder="Write headline">
-												<mat-hint align="start">{{100 - headline.value.length}} more characters needed</mat-hint>
+												<mat-hint align="start">{{100 - headline.value.length}} more characters allowed</mat-hint>
 												<mat-hint align="end">{{headline.value.length}} / 100</mat-hint>
 											</mat-form-field>
 										</div>
@@ -478,59 +478,63 @@
 				<div class="onboarding step-11" [hidden]="step!=11">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-							<form [formGroup]="class" (ngSubmit)="submitClassGyan(class)">
+							<form [formGroup]="class" (ngSubmit)="submitClassGyan()">
 								<h2 class="title">Set a price and gyan for this class</h2>
 								<p class="subtitle">
 									The price of your class is entirely up to you. Gyan is the unit measure of knowledge. You decide the amount of Gyan you will
 									share with your students.
 								</p>
 								<h3 class="title" style="margin-top: 40px !important;">Price</h3>
-								<div class="row">
-									<div class="col-md-3">
-										<mat-checkbox [(ngModel)]="freeClass" (ngModelChange)="onFreeChange($event)" [ngModelOptions]="{standalone: true}">Free</mat-checkbox>
+								<div style="border: 1px solid #ddd; padding: 25px;">
+									<div class="row">
+										<div class="col-md-3">
+											<mat-checkbox [(ngModel)]="freeClass" (ngModelChange)="onFreeChange($event)" [ngModelOptions]="{standalone: true}">Free</mat-checkbox>
+										</div>
+									</div>
+									<br/>
+									<div class="lightText mat-caption" *ngIf="!freeClass">OR</div>
+									<br/>
+									<div class="row margin-left-0" *ngIf="!freeClass">
+										<div class="col-md-3 col-xs-2 padding-left-0">
+											<mat-form-field [floatLabel]="'never'">
+												<span matPrefix>
+													{{0 | currency: class.controls['currency'].value : 'symbol' | slice:0:1}} &nbsp;
+												</span>
+												<input type="number" matInput #price formControlName="price" placeholder="0" min="1" required>
+											</mat-form-field>
+										</div>
+										<div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-4">
+											<mat-form-field [floatLabel]="'never'">
+												<mat-select formControlName="currency" class="padding-top-0" placeholder="USD">
+													<mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
+												</mat-select>
+											</mat-form-field>
+										</div>
 									</div>
 								</div>
-								<br/>
-								<div class="lightText mat-caption" *ngIf="!freeClass">OR</div>
-								<br/>
-								<div class="row margin-left-0" *ngIf="!freeClass">
-									<div class="col-md-3 col-xs-2 padding-left-0">
-										<mat-form-field [floatLabel]="'never'">
-											<span matPrefix>
-												{{0 | currency: class.controls['currency'].value : 'symbol' | slice:0:1}} &nbsp;
-											</span>
-											<input type="number" matInput #price formControlName="price" placeholder="0" min="1" required>
-										</mat-form-field>
-									</div>
-									<div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-4">
-										<mat-form-field [floatLabel]="'never'">
-											<mat-select formControlName="currency" class="padding-top-0" placeholder="USD">
-												<mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
-											</mat-select>
-										</mat-form-field>
-									</div>
-								</div>
-								<h3 class="title" style="margin-top: 40px !important;">Gyan</h3>
-								<div class="row margin-left-0 margin-top-20">
-									<div class="col-md-3 col-xs-2 padding-left-0">
-										<mat-form-field>
-											<span mat-label>
-												Gyan for academic performance
-												<mat-icon matTooltip="Enter the amount of maximum Gyan you think students could earn if they got the best grades." style="font-size: 12px; top: 2px;">info_outline</mat-icon>
-											</span>
-											<input type="number" matInput formControlName="academicGyan" min="1" required>
-											<mat-error *ngIf="maxGyanExceding">Your gyan value cannot exceed {{gyanBalance}} or you have to create class for {{totalGyan}} Gyan</mat-error>
-										</mat-form-field>
-									</div>
-									<div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-4">
-										<mat-form-field>
-											<span mat-label>
-												Gyan for non academic performance
-												<mat-icon style="font-size: 12px; top: 2px;" matTooltip="Enter additional Gyan students could earn based on non academic performance like attendance or community engagement. This is optional.">info_outline</mat-icon>
-											</span>
-											<input type="number" matInput formControlName="nonAcademicGyan" min="0" required>
-											<mat-error *ngIf="maxGyanExceding">Your gyan value cannot exceed {{gyanBalance}} or you have to create class for {{totalGyan}} </mat-error>
-										</mat-form-field>
+								<h3 class="title" style="margin-top: 40px !important;">How many Gyan (credits) is this class worth?</h3>
+								<div style="border: 1px solid #ddd; padding: 25px;">
+									<div class="row margin-left-0 margin-top-20">
+										<div class="col-md-3 col-xs-2 padding-left-0">
+											<mat-form-field>
+												<span mat-label>
+													Gyan for academic performance
+													<mat-icon matTooltip="Enter the amount of maximum Gyan you think students could earn if they got the best grades." style="font-size: 12px; top: 2px;">info_outline</mat-icon>
+												</span>
+												<input type="number" matInput formControlName="academicGyan" min="1" required>
+												<mat-error *ngIf="maxGyanExceding">Your gyan value cannot exceed {{gyanBalance}} or you have to create class for {{totalGyan}} Gyan</mat-error>
+											</mat-form-field>
+										</div>
+										<div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-4">
+											<mat-form-field>
+												<span mat-label>
+													Gyan for non academic performance
+													<mat-icon style="font-size: 12px; top: 2px;" matTooltip="Enter additional Gyan students could earn based on non academic performance like attendance or community engagement. This is optional.">info_outline</mat-icon>
+												</span>
+												<input type="number" matInput formControlName="nonAcademicGyan" min="0" required>
+												<mat-error *ngIf="maxGyanExceding">Your gyan value cannot exceed {{gyanBalance}} or you have to create class for {{totalGyan}} </mat-error>
+											</mat-form-field>
+										</div>
 									</div>
 								</div>
 								<h3 class="title" style="margin-top: 40px !important;">Cancellation Policy</h3>
@@ -725,7 +729,7 @@
 								Create a default timeline for your class and add activities to it. Later on, you can create as many cohorts with specific
 								start dates.
 							</p>
-							<form [formGroup]="timeline" (ngSubmit)="submitClassTimeline(class, timeline, 14)" novalidate>
+							<form [formGroup]="timeline" (ngSubmit)="submitClassTimeline()" novalidate>
 								<!--(ngSubmit)="submitTimeline(timeline)" -->
 								<div formGroupName="calendar" *ngIf="(!timeline.controls.calendar.value.startDate && !timeline.controls.calendar.value.endDate) || datesEditable">
 									<div class="row" style="margin: 30px 0px 15px -15px;">
@@ -929,14 +933,17 @@
 							<!-- <form [formGroup]="paymentInfo "> -->
 							<div style="margin-top:10px; " *ngIf="!payoutLoading">
 								<!--<button mat-raised-button>PayTM</button> &emsp;-->
-								<button mat-raised-button type="button" (click)="back()" color="accent">
-									Back
-								</button>
-								<button mat-raised-button class="mat-border-button">
+								<button mat-raised-button class="mat-border-button pull-right">
 									<a [href]="connectPaymentUrl">
 										<img src="../../../assets/images/stripe.png" style="width: 50px;" />
 									</a>
 								</button> &emsp;
+								<hr>
+								<div class="margin-top-60">
+									<button mat-raised-button type="button" (click)="back()" color="accent">
+										Back
+									</button>
+								</div>
 								<!--<button mat-raised-button>Paypal</button> &emsp;-->
 							</div>
 						</div>

@@ -45,7 +45,7 @@ export class ExperienceCardComponent implements OnInit {
 	}
 	
 	public onMouseEnter(experience) {
-		experience.cardInFocus = true;
+		experience.cardInFocus = false;
 	}
 	
 	public onMouseLeave(experience) {

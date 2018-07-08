@@ -39,7 +39,7 @@ export class ReviewPayComponent implements OnInit {
     public isCardExist = false;
     public listAllCards = [];
     public cardDetails = {};
-    public defaultImageUrl = 'assets/images/no-image.jpg';
+    public defaultImageUrl = 'assets/images/collection-placeholder.jpg';
     public guestCount = 1;
     public hourMapping:
         { [k: string]: string } = { '=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours' };
@@ -179,10 +179,6 @@ export class ReviewPayComponent implements OnInit {
         this.metaService.updateTag({
             property: 'og:title',
             content: 'Review & Pay'
-        });
-        this.metaService.updateTag({
-            property: 'og:description',
-            content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
         });
         this.metaService.updateTag({
             property: 'og:site_name',

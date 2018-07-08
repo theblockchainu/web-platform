@@ -37,7 +37,7 @@ export class BookSessionComponent implements OnInit {
 	public isCardExist = false;
 	public listAllCards = [];
 	public cardDetails: any;
-	public defaultImageUrl = 'assets/images/no-image.jpg';
+	public defaultImageUrl = 'assets/images/collection-placeholder.jpg';
 	public guestCount = 1;
 	public hourMapping:
 		{ [k: string]: string } = { '=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours' };

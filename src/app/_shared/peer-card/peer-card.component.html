@@ -6,9 +6,9 @@
 			<img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="{{peer.profiles[0].first_name + ' ' + peer.profiles[0].last_name}}"
 			     (error)="_collectionService.userImgErrorHandler($event)">
 		</div>
-		<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}
+		<div style="margin-top: 3px; text-transform: uppercase;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}
 		</div>
-		<div style="margin-top: 3px;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe
+		<div style="margin-top: 3px; text-transform: uppercase;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John Doe
 		</div>
 		<div *ngIf="peer.ethAddress">
 			<i class="fab fa-ethereum"></i> {{peer.id | gyanBalance : 'fixed' | async}} Gyan
@@ -26,15 +26,15 @@
 				</b>
 			</span>
 		</div>
-		<div class="col-sm-12 padding-left-0" style="margin-top: -2px; font-size: 13px;">
+		<div class="col-sm-12 padding-left-0" style="margin-top: 3px; font-size: 9px;">
 			<p-rating class="padding-left-0" style="float: left;" [ngModel]="peer.rating" readonly="true" stars="5" [cancel]="false">
 			</p-rating>
-			<span class="padding-left-10" *ngIf="peer.reviewsAboutYou && peer.reviewsAboutYou.length>0" style="text-align: left">
+			<!--<span class="padding-left-10" *ngIf="peer.reviewsAboutYou && peer.reviewsAboutYou.length>0" style="text-align: left">
 				<label>{{peer.reviewsAboutYou.length}} reviews</label>
 			</span>
 			<span class="padding-left-10" *ngIf="!peer.reviewsAboutYou || peer.reviewsAboutYou.length==0" style="text-align: left">
 				<label>0 reviews</label>
-			</span>
+			</span>-->
 		</div>
 	</a>
 </div>

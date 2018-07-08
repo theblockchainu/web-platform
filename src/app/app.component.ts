@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
 		this.router.events.subscribe(event => this.modifyHeader(event));
 		this.router.events.subscribe(event => this.modifyFooter(event));
 		this.router.events.subscribe(event => this.triggerAnalytics(event));
-		this.setTitle('Peerbuds - Own & Control Your Knowledge Story');
+		this.setTitle('Peerbuds - Immersive & Incentivized Education');
 	}
 
 	public triggerAnalytics(event) {

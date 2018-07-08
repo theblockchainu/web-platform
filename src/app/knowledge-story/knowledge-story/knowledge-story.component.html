@@ -109,9 +109,6 @@
 							</div>
 							<hr *ngIf="ownerView && knowledgeStory.requests && knowledgeStory.requests.length > 0">
 						</div>
-						<div class="col-xs-12" *ngIf="globalStory || knowledgeStory.status === 'approved'">
-							<h3>Real time updates</h3>
-						</div>
 						<div class="col-xs-12" *ngIf="knowledgeStory && knowledgeStory.status === 'pending'">
 							<h3 class="mat-error">Pending approval form {{knowledgeStory.protagonist[0].profiles[0].first_name | ucwords}}</h3>
 						</div>
@@ -122,15 +119,39 @@
 							This knowledge story can not be viewed.
 						</div>
 						<div class="col-xs-12" *ngIf="globalStory || knowledgeStory.status === 'approved'">
+							<div class="loading-container" [hidden]="!loadingCertificates" style="margin-top: 3%;">
+								<ngx-loading [show]="true"></ngx-loading>
+							</div>
+							<div class="row" *ngIf="!loadingCertificates">
+								<div class="col-xs-12" *ngIf="globalStory || knowledgeStory.status === 'approved'">
+									<h3>Certificates</h3>
+								</div>
+								<div class="col-xs-6 margin-top-10" *ngFor="let certificate of certificates">
+									<mat-card style="max-height: 450px; overflow-y: hidden;">
+										<mat-card-content>
+											<div [innerHTML]="parseCertificate(certificate.stringifiedJSON).displayHtml | safe : 'html'"></div>
+											<div class="certificateCardFooter">
+												<button mat-button mat-raised-button [color]="primary" (click)="openCertificate(certificate.id)">Verify with <img style="width: 75px; margin-left: 10px;" src="assets/images/one0x.png" alt="logo"></button>
+											</div>
+										</mat-card-content>
+									</mat-card>
+								</div>
+							</div>
 							<div class="loading-container" [hidden]="!loadingBlockTransactions" style="margin-top: 3%;">
 								<ngx-loading [show]="true"></ngx-loading>
 							</div>
 							<div class="row" *ngIf="!loadingBlockTransactions">
+								<div class="col-xs-12">
+									<hr class="margin-top-50">
+								</div>
+								<div class="col-xs-12" *ngIf="globalStory || knowledgeStory.status === 'approved'">
+									<h3>Real-time updates</h3>
+								</div>
 								<div class="col-xs-12 margin-top-10" *ngFor="let transaction of blockTransactions">
 									{{parseTransactionLog(transaction.result).events}}
 									<br>
 									<span class="mat-h5 lightText">
-										{{parseTransactionLog(transaction.result).hash}}
+										<a href="https://ropsten.etherscan.io/address/{{parseTransactionLog(transaction.result).hash}}" target="_blank" class="lightText">{{parseTransactionLog(transaction.result).hash}}</a>
 									</span>
 									<br>
 									<span class="mat-h5 lightText">

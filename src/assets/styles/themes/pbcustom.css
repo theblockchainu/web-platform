@@ -1493,6 +1493,10 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	height: 100%;
 }
 
+.locationInfoField .mat-form-field-underline {
+	display: none;
+}
+
 .otherStream img{
 	position: relative;
 	left: 35%;

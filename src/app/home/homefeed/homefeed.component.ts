@@ -79,15 +79,12 @@ export class HomefeedComponent implements OnInit {
 	}
 	
 	private setTags() {
-		this.titleService.setTitle('Peerbuds - Own & Control Your Knowledge Story');
+		this.titleService.setTitle('Peerbuds - Immersive & Incentivized Education');
 		this.metaService.updateTag({
 			property: 'og:title',
 			content: 'Explore Peerbuds'
 		});
-		this.metaService.updateTag({
-			property: 'og:description',
-			content: 'Peerbuds is an open decentralized protocol that tracks everything you have ever learned in units called Gyan and rewards it with tokens called Karma.'
-		});
+		
 		this.metaService.updateTag({
 			property: 'og:site_name',
 			content: 'peerbuds.com'
