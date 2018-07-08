@@ -27,11 +27,10 @@
 		<div class="dark-gray-overlay"></div>
 		<div class="container">
 			<div class="content">
-				<h1>Find unique local &amp; online
-					<br>learning experiences all over the world.</h1>
-				<mat-form-field [floatLabel]="'never'" class="search-form pb-block">
-					<input #searchInputBar name="search" matInput [formControl]="myControl" [matAutocomplete]="auto">
-					<!-- <mat-label>Try "Learning Experience Locally or Online"</mat-label> -->
+				<h1>Find unique local &amp; online learning experiences
+					<br>all over the world.</h1>
+				<mat-form-field [floatPlaceholder]="'never'" class="search-form pb-block mat-elevation-z20">
+					<input #searchInputBar name="search" placeholder='Try "Experiences or Classes"' matInput [formControl]="myControl" [matAutocomplete]="auto">
 					<mat-autocomplete #auto="matAutocomplete">
 						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)">
 							<span>

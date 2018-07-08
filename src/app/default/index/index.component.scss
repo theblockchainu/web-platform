@@ -1,3 +1,21 @@
+
+@font-face {
+    font-family: 'CircularRegular';
+    src: url('/assets/fonts/circular/CircularStd-Book.otf');
+}
+@font-face {
+    font-family: 'CircularMedium';
+    src: url('/assets/fonts/circular/CircularStd-Medium.otf');
+}
+@font-face {
+    font-family: 'CircularSemiBold';
+    src:  url('/assets/fonts/circular/CircularStd-Bold.otf');
+}
+@font-face {
+    font-family: 'CircularBold';
+    src:  url('/assets/fonts/circular/CircularStd-Black.otf');
+}
+
 .index{
     font-family: 'CircularRegular', sans-serif;
     font-size: 13px;
@@ -158,11 +176,12 @@ header .right-links a.nav-link:hover{
     background-size: cover;
     height: 100vh;
     position: relative;
+    min-height: 500px;
 }
 .home-banner .content{
     position: relative;
     width: 100%;
-    max-width: 895px;
+    max-width: 1030px;
     margin: 0 auto;
     padding-top: 250px;
 }
@@ -171,12 +190,14 @@ header .right-links a.nav-link:hover{
     color: #fff;
     font-family: 'CircularSemiBold', sans-serif;
     margin-bottom: 30px;    
+    line-height: 1.2;
 }
 
 .home-banner .content .search-form{
     background: #FFFFFF;
     border-radius: 4px;   
     margin: 0px; 
+    max-height: 70px;
 }
 .home-banner .content .search-form input{
     padding: 10px 25px 10px 65px;
