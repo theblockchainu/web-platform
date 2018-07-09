@@ -1879,6 +1879,14 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 .certificate .mat-drawer-content{
 	overflow: hidden;
 }
+
+.home-banner .mat-form-field-label{
+    left: 6% !important;
+    top: 40% !important;
+    font-size: 18px !important;
+}
+
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	.circle-thumb {

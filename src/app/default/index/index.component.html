@@ -27,10 +27,10 @@
 		<div class="dark-gray-overlay"></div>
 		<div class="container">
 			<div class="content">
-				<div class="mat-display-1" style="color: #fff; margin-bottom: 35px;">Find unique local &amp; online
-					<br>learning experiences all over the world.</div>
-				<mat-form-field [floatLabel]="'never'" class="search-form pb-block">
-					<input #searchInputBar name="search" matInput [formControl]="myControl" [matAutocomplete]="auto">
+				<h1>Find unique local &amp; online learning experiences
+					<br>all over the world.</h1>
+				<mat-form-field [floatPlaceholder]="'never'" class="search-form pb-block mat-elevation-z20">
+					<input #searchInputBar name="search" placeholder='Try "Experiences or Classes"' matInput [formControl]="myControl" [matAutocomplete]="auto">
 					<mat-autocomplete #auto="matAutocomplete">
 						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)">
 							<span>
@@ -170,14 +170,15 @@
 								<span>Coming soon</span>
 							</p>
 							<h3 class="title">Hackathon Experiences</h3>
-							<p>Bootcamps and hackathons are more practical in-person experiences where you immerse yourself in finding practical solutions to problems</p>
+							<p>Bootcamps and hackathons are more practical in-person experiences where you immerse yourself in finding practical
+								solutions to problems</p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-	
+
 	<section class="unique-experience spacing">
 		<div class="container">
 			<h2 class="section-title  pb-0">Experiences in the spotlight</h2>
@@ -219,7 +220,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<section class="one-0x mb-5 padding-bottom-30 padding-top-40">
 		<div class="container">
 			<div class="gradient-banner">
@@ -232,7 +233,7 @@
 									<img style="width: auto !important;" src="/assets/images/one0x-footer-logo.png" alt="one0x-footer-logo">
 								</div>
 								<h3>Tracking all your learning and digitizing it into certificates on the blockchain, making it instantly verifiable
-								    by any employer</h3>
+									by any employer</h3>
 								<div class="action-btn">
 									<a href="https://one0x.com/">Explore Compliance</a>
 								</div>
@@ -319,7 +320,8 @@
 								<span>Coming soon</span>
 							</p>
 							<h3 class="title">UI/UX Classes</h3>
-							<p>Engage in interactive online sessions with experts to learn about digital design fundamentals in user interface and user experience</p>
+							<p>Engage in interactive online sessions with experts to learn about digital design fundamentals in user interface and
+								user experience</p>
 						</div>
 					</div>
 				</div>
@@ -336,7 +338,8 @@
 								<span>Coming soon</span>
 							</p>
 							<h3 class="title">AI Classes</h3>
-							<p>From beginner classes for AI enthusiasts to advanced programs for senior developers, from software engineers to company executives, everything you need to learn about AI</p>
+							<p>From beginner classes for AI enthusiasts to advanced programs for senior developers, from software engineers to company
+								executives, everything you need to learn about AI</p>
 						</div>
 					</div>
 				</div>

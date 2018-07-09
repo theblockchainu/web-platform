@@ -1,18 +1,19 @@
+
 @font-face {
-	font-family: CircularRegular;
-	src: url(../../../assets/fonts/CircularStd-Book.otf);
+    font-family: 'CircularRegular';
+    src: url('/assets/fonts/circular/CircularStd-Book.otf');
 }
 @font-face {
-	font-family: CircularMedium;
-	src: url(../../../assets/fonts/CircularStd-Medium.otf);
+    font-family: 'CircularMedium';
+    src: url('/assets/fonts/circular/CircularStd-Medium.otf');
 }
 @font-face {
-	font-family: CircularSemiBold;
-	src:  url(../../../assets/fonts/CircularStd-Bold.otf);
+    font-family: 'CircularSemiBold';
+    src:  url('/assets/fonts/circular/CircularStd-Bold.otf');
 }
 @font-face {
-	font-family: CircularBold;
-	src:  url(../../../assets/fonts/CircularStd-Black.otf);
+    font-family: 'CircularBold';
+    src:  url('/assets/fonts/circular/CircularStd-Black.otf');
 }
 
 .index{
@@ -707,12 +708,7 @@ a.explore-tile .tile-content h3{
 		margin: 15px;
 		width: 300px;
 	}
-	.experience-around-world .section-title,
-	.unique-experience .section-title,
-	.experience-spotlight .section-title,
-	.peers-teaching .section-title{
-		//text-align: center;
-	}
+
 	.experience-around-world .custom-card .card-image{
 		height: 350px;
 	}
