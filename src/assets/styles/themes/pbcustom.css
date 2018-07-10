@@ -1890,6 +1890,9 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	color: #33bd9e;
 }
 
+.checkbox_label{
+	padding-left: 2%;
+}
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
