@@ -1515,5 +1515,13 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		return false;
 	}
 
+
+	public termsAndCondition() {
+		this.dialogsService.termsAndConditionsDialog().subscribe();
+	}
+
+	public standards() {
+		this.dialogsService.collectionStandardsDialog().subscribe();
+	}
 }
 

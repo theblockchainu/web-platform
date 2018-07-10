@@ -64,6 +64,8 @@ import { AddCommunityDialogComponent } from './add-community-dialog/add-communit
 import { CreateAccreditationDialogComponent } from './create-accreditation-dialog/create-accreditation-dialog.component';
 import { SelectFieldDialogComponent } from './select-field-dialog/select-field-dialog.component';
 import { CertificateVerificationComponent } from './certificate-verification/certificate-verification.component';
+import { CollectionStandardsDialogComponent } from './collection-standards-dialog/collection-standards-dialog.component';
+import { TermsAndConditionsDialogComponent } from './terms-and-conditions-dialog/terms-and-conditions-dialog.component';
 
 @NgModule({
 	imports: [
@@ -107,7 +109,9 @@ import { CertificateVerificationComponent } from './certificate-verification/cer
 		AddCommunityDialogComponent,
 		CreateAccreditationDialogComponent,
 		SelectFieldDialogComponent,
-		CertificateVerificationComponent
+		CertificateVerificationComponent,
+		CollectionStandardsDialogComponent,
+		TermsAndConditionsDialogComponent
 	],
 	providers: [
 		DialogsService,
@@ -129,7 +133,7 @@ import { CertificateVerificationComponent } from './certificate-verification/cer
 		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent, RequestCommunityDialogComponent,
 		ScholarshipDialogComponent, GenerateKnowledgeStoryComponent, RequestKnowledgeStoryComponent, ConfirmPasswordDialogComponent,
 		AddViewerDialogComponent, GyanPromptComponent, AddCommunityDialogComponent, CreateAccreditationDialogComponent, SelectFieldDialogComponent,
-		CertificateVerificationComponent
+		CertificateVerificationComponent, TermsAndConditionsDialogComponent, CollectionStandardsDialogComponent
 	],
 })
 export class DialogsModule { }
