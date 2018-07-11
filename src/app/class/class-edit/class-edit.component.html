@@ -590,7 +590,7 @@
 								</div>
 								<h3 class="title" style="margin-top: 40px !important;">Assessment Style </h3>
 								<div class="row">
-									<mat-radio-group [(ngModel)]="defaultAssesment">
+									<mat-radio-group [(ngModel)]="defaultAssesment" [ngModelOptions]="{standalone: true}">
 										<div class="col-xs-12 col-md-4 padding-top-20" *ngFor="let assessment of availableDefaultAssessments">
 											<mat-card>
 												<mat-radio-button [value]="assessment.values" (change)="assessmentChange($event)">{{assessment.system}}</mat-radio-button>
