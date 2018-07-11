@@ -40,4 +40,8 @@ export class ClassIntroComponent implements OnInit {
 		});
 	}
 	
+	public openLogin() {
+		this.dialogsService.openLogin().subscribe();
+	}
+	
 }
