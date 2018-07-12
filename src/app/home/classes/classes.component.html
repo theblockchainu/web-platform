@@ -45,10 +45,18 @@
 					</div>
 					<div class="mat-display-1" style="margin-bottom: 5px !important; margin-top: 34px;">
 						Explore Peerbuds
+						<div class="pull-right">
+							<button (click)="toggleArchive()" mat-button>
+								<span *ngIf="!showArchived">Show Archived</span>
+								<span *ngIf="showArchived">Show Active</span>
+							</button>
+						</div>
 					</div>
 					<app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
 					<div class="mat-display-1" style="margin-bottom: 25px !important;">
-						Classes
+						<span *ngIf="showArchived">
+							Archived
+						</span> Classes
 						<span class="mat-display-1" *ngIf="selectedTopics && selectedTopics.length !== 0">
 							in
 							<span *ngFor="let topicObj of selectedTopics;let i=index">
