@@ -474,99 +474,13 @@
 						</div>
 					</div>
 				</div>
-				<!-- step 11 - Price -->
+				<!-- step 11 - Certificate -->
 				<div class="onboarding step-11" [hidden]="step!=11">
-					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-							<form [formGroup]="class" (ngSubmit)="submitClassGyan()">
-								<h2 class="title">Set a price and gyan for this class</h2>
-								<p class="subtitle">
-									The price of your class is entirely up to you. Gyan is the unit measure of knowledge. You decide the amount of Gyan you will
-									share with your students.
-								</p>
-								<h3 class="title" style="margin-top: 40px !important;">Price</h3>
-								<div style="border: 1px solid #ddd; padding: 25px;">
-									<div class="row">
-										<div class="col-md-3">
-											<mat-checkbox [(ngModel)]="freeClass" (ngModelChange)="onFreeChange($event)" [ngModelOptions]="{standalone: true}">Free</mat-checkbox>
-										</div>
-									</div>
-									<br/>
-									<div class="lightText mat-caption" *ngIf="!freeClass">OR</div>
-									<br/>
-									<div class="row margin-left-0" *ngIf="!freeClass">
-										<div class="col-md-3 col-xs-2 padding-left-0">
-											<mat-form-field [floatLabel]="'never'">
-												<span matPrefix>
-													{{0 | currency: class.controls['currency'].value : 'symbol' | slice:0:1}} &nbsp;
-												</span>
-												<input type="number" matInput #price formControlName="price" placeholder="0" min="1" required>
-											</mat-form-field>
-										</div>
-										<div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-4">
-											<mat-form-field [floatLabel]="'never'">
-												<mat-select formControlName="currency" class="padding-top-0" placeholder="USD">
-													<mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
-												</mat-select>
-											</mat-form-field>
-										</div>
-									</div>
-								</div>
-								<h3 class="title" style="margin-top: 40px !important;">How many Gyan (credits) is this class worth?</h3>
-								<div style="border: 1px solid #ddd; padding: 25px;">
-									<div class="row margin-left-0 margin-top-20">
-										<div class="col-md-3 col-xs-2 padding-left-0">
-											<mat-form-field>
-												<span mat-label>
-													Gyan for academic performance
-													<mat-icon matTooltip="Enter the amount of maximum Gyan you think students could earn if they got the best grades." style="font-size: 12px; top: 2px;">info_outline</mat-icon>
-												</span>
-												<input type="number" matInput formControlName="academicGyan" min="1" required>
-												<mat-error *ngIf="maxGyanExceding">Your gyan value cannot exceed {{gyanBalance}} or you have to create class for {{totalGyan}} Gyan</mat-error>
-											</mat-form-field>
-										</div>
-										<div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-4">
-											<mat-form-field>
-												<span mat-label>
-													Gyan for non academic performance
-													<mat-icon style="font-size: 12px; top: 2px;" matTooltip="Enter additional Gyan students could earn based on non academic performance like attendance or community engagement. This is optional.">info_outline</mat-icon>
-												</span>
-												<input type="number" matInput formControlName="nonAcademicGyan" min="0" required>
-												<mat-error *ngIf="maxGyanExceding">Your gyan value cannot exceed {{gyanBalance}} or you have to create class for {{totalGyan}} </mat-error>
-											</mat-form-field>
-										</div>
-									</div>
-								</div>
-								<h3 class="title" style="margin-top: 40px !important;">Cancellation Policy</h3>
-								<div class="row margin-left-0">
-									<div class="col-sm-12 padding-left-0">
-										Students will get a full refund if they cancel within &nbsp;
-										<mat-form-field [floatLabel]="'never'">
-											<mat-select formControlName="cancellationPolicy" placeholder="3 Days">
-												<mat-option *ngFor="let cp of cancellationPolicies" [value]="cp">{{cp}}</mat-option>
-											</mat-select>
-										</mat-form-field>
-										&nbsp; of signing up.
-									</div>
-								</div>
-								<div style="margin-top:100px;">
-									<button mat-raised-button type="button" (click)="back()" color="accent">
-										Back
-									</button>
-									<span class="pull-right" matTooltip="Enter a price you wish to charge for this class, its gyan value and its cancellation policy"
-									 [matTooltipDisabled]="class.controls['price'].value && class.controls['currency'].value  && class.controls['cancellationPolicy'].value && class.controls['academicGyan'].value && class.controls['nonAcademicGyan'].value">
-										<button mat-raised-button color="accent" type="Submit" [disabled]="!(freeClass || (class.controls['price'].value && class.controls['currency'].value)) || !class.controls['cancellationPolicy'].value || !class.controls['academicGyan'].value || !class.controls['nonAcademicGyan'].value || busySavingData">
-											<span *ngIf="!busySavingData">Next</span>
-											<span>
-												<ngx-loading [show]="busySavingData"></ngx-loading>
-											</span>
-										</button>
-									</span>
-								</div>
-							</form>
-						</div>
-					</div>
+					<app-custom-certificate-form #certificateComponent *ngIf="certificateLoaded" [data]="certificateForm.controls['formData'].value"
+					 (back)="back()" (next)="submitCertificate($event)"></app-custom-certificate-form>
 				</div>
+
+
 
 				<!-- step 12 - Assessment -->
 				<div class="onboarding step-12" [hidden]="step!=12">
@@ -719,10 +633,98 @@
 					</form>
 				</div>
 
-				<!-- step 13 - Certificate -->
+				<!-- step 13 - Price -->
 				<div class="onboarding step-13" [hidden]="step!=13">
-					<app-custom-certificate-form #certificateComponent *ngIf="certificateLoaded" [data]="certificateForm.controls['formData'].value"
-					 (back)="back()" (next)="submitCertificate($event)"></app-custom-certificate-form>
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<form [formGroup]="class" (ngSubmit)="submitClassGyan()">
+								<h2 class="title">Set a price and gyan for this class</h2>
+								<p class="subtitle">
+									The price of your class is entirely up to you. Gyan is the unit measure of knowledge. You decide the amount of Gyan you will
+									share with your students.
+								</p>
+								<h3 class="title" style="margin-top: 40px !important;">Price</h3>
+								<div style="border: 1px solid #ddd; padding: 25px;">
+									<div class="row">
+										<div class="col-md-3">
+											<mat-checkbox [(ngModel)]="freeClass" (ngModelChange)="onFreeChange($event)" [ngModelOptions]="{standalone: true}">Free</mat-checkbox>
+										</div>
+									</div>
+									<br/>
+									<div class="lightText mat-caption" *ngIf="!freeClass">OR</div>
+									<br/>
+									<div class="row margin-left-0" *ngIf="!freeClass">
+										<div class="col-md-3 col-xs-2 padding-left-0">
+											<mat-form-field [floatLabel]="'never'">
+												<span matPrefix>
+													{{0 | currency: class.controls['currency'].value : 'symbol' | slice:0:1}} &nbsp;
+												</span>
+												<input type="number" matInput #price formControlName="price" placeholder="0" min="1" required>
+											</mat-form-field>
+										</div>
+										<div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-4">
+											<mat-form-field [floatLabel]="'never'">
+												<mat-select formControlName="currency" class="padding-top-0" placeholder="USD">
+													<mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
+												</mat-select>
+											</mat-form-field>
+										</div>
+									</div>
+								</div>
+								<h3 class="title" style="margin-top: 40px !important;">How many Gyan (credits) is this class worth?</h3>
+								<div style="border: 1px solid #ddd; padding: 25px;">
+									<div class="row margin-left-0 margin-top-20">
+										<div class="col-md-3 col-xs-2 padding-left-0">
+											<mat-form-field>
+												<span mat-label>
+													Gyan for academic performance
+													<mat-icon matTooltip="Enter the amount of maximum Gyan you think students could earn if they got the best grades." style="font-size: 12px; top: 2px;">info_outline</mat-icon>
+												</span>
+												<input type="number" matInput formControlName="academicGyan" min="1" required>
+												<mat-error *ngIf="maxGyanExceding">Your gyan value cannot exceed {{gyanBalance}} or you have to create class for {{totalGyan}} Gyan</mat-error>
+											</mat-form-field>
+										</div>
+										<div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-4">
+											<mat-form-field>
+												<span mat-label>
+													Gyan for non academic performance
+													<mat-icon style="font-size: 12px; top: 2px;" matTooltip="Enter additional Gyan students could earn based on non academic performance like attendance or community engagement. This is optional.">info_outline</mat-icon>
+												</span>
+												<input type="number" matInput formControlName="nonAcademicGyan" min="0" required>
+												<mat-error *ngIf="maxGyanExceding">Your gyan value cannot exceed {{gyanBalance}} or you have to create class for {{totalGyan}} </mat-error>
+											</mat-form-field>
+										</div>
+									</div>
+								</div>
+								<h3 class="title" style="margin-top: 40px !important;">Cancellation Policy</h3>
+								<div class="row margin-left-0">
+									<div class="col-sm-12 padding-left-0">
+										Students will get a full refund if they cancel within &nbsp;
+										<mat-form-field [floatLabel]="'never'">
+											<mat-select formControlName="cancellationPolicy" placeholder="3 Days">
+												<mat-option *ngFor="let cp of cancellationPolicies" [value]="cp">{{cp}}</mat-option>
+											</mat-select>
+										</mat-form-field>
+										&nbsp; of signing up.
+									</div>
+								</div>
+								<div style="margin-top:100px;">
+									<button mat-raised-button type="button" (click)="back()" color="accent">
+										Back
+									</button>
+									<span class="pull-right" matTooltip="Enter a price you wish to charge for this class, its gyan value and its cancellation policy"
+									 [matTooltipDisabled]="class.controls['price'].value && class.controls['currency'].value  && class.controls['cancellationPolicy'].value && class.controls['academicGyan'].value && class.controls['nonAcademicGyan'].value">
+										<button mat-raised-button color="accent" type="Submit" [disabled]="!(freeClass || (class.controls['price'].value && class.controls['currency'].value)) || !class.controls['cancellationPolicy'].value || !class.controls['academicGyan'].value || !class.controls['nonAcademicGyan'].value || busySavingData">
+											<span *ngIf="!busySavingData">Next</span>
+											<span>
+												<ngx-loading [show]="busySavingData"></ngx-loading>
+											</span>
+										</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
 				</div>
 
 				<!--Step 14 - Disclaimer-->

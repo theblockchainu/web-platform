@@ -101,7 +101,7 @@ export class LeftSidebarService {
             sidebarMenuItems[1].submenu[4].complete = false;
         }
         if (collection.price !== undefined && collection.currency && collection.cancellationPolicy && collection.academicGyan !== undefined && collection.nonAcademicGyan !== undefined) {
-            sidebarMenuItems[1].submenu[5].complete = true;
+            sidebarMenuItems[1].submenu[7].complete = true;
             completedSections++;
         }
         if (collection.assessment_models && collection.assessment_models[0] && collection.assessment_models[0].assessment_rules && collection.assessment_models[0].assessment_na_rules) {
@@ -114,9 +114,9 @@ export class LeftSidebarService {
             }, this);
             completedSections++;
         }
-        
+
         sidebarMenuItems[3].locked = completedSections !== 11;
-        
+
         if (collection.owners !== undefined && collection.owners[0].phoneVerified) {
             sidebarMenuItems[4].submenu[0].complete = true;
         }

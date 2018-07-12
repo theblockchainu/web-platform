@@ -78,7 +78,7 @@
                 "complete": false
             },
             {
-                "title": "Price & Gyan",
+                "title": "Certification",
                 "step": 11,
                 "active": false,
                 "visible": true,
@@ -94,7 +94,7 @@
                 "complete": false
             },
             {
-                "title": "Certification",
+                "title": "Price & Gyan",
                 "step": 13,
                 "active": false,
                 "visible": true,
