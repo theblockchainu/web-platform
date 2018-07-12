@@ -149,11 +149,12 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public maxGyanExceding: boolean;
 	totalGyan = 0;
 	totalDuration = 0;
-	timelineStep = 15;
+	timelineStep = 16;
 	exitAfterSave = false;
 	@ViewChild('certificateComponent') certificateComponent: CustomCertificateFormComponent;
 	defaultAssesment: any;
 	availableDefaultAssessments: Array<AssessmentTypeData>;
+	availableSubtypes: Array<SubTypeInterface>;
 
 	// TypeScript public modifiers
 	constructor(
@@ -235,7 +236,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			canceledBy: '',
 			status: 'draft',
 			academicGyan: '',
-			nonAcademicGyan: ''
+			nonAcademicGyan: '',
+			subCategory: ''
 		});
 
 		this.timeline = this._fb.group({
@@ -568,6 +570,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			]
 		};
 
+		this.availableSubtypes = [{ name: 'workshop', pic_url: '/assets/images/class_icon2.jpg', description: '' },
+		{ name: 'hackathon', pic_url: '/assets/images/classes-anywhere.jpg', description: '' },
+		{ name: 'meetup', pic_url: '/assets/images/coding-card.jpg', description: '' },
+		{ name: 'bootcamp', pic_url: '/assets/images/blockchain-dev-card.jpg', description: '' }];
+
 		this.placeholderStringTopic = 'Start typing to to see a list of suggested topics...';
 
 		this.key = 'access_token';
@@ -772,6 +779,9 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.experience.controls['academicGyan'].patchValue(res.academicGyan);
 
 		this.experience.controls['nonAcademicGyan'].patchValue(res.nonAcademicGyan);
+
+		this.experience.controls['subCategory'].patchValue(res.subCategory);
+
 
 		this.isPhoneVerified = res.owners[0].phoneVerified;
 
@@ -1578,4 +1588,10 @@ interface AssessmentTypeData {
 			gyan: number
 		}>;
 	};
+}
+
+interface SubTypeInterface {
+	name: string;
+	pic_url: string;
+	description: string;
 }

@@ -144,12 +144,13 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	totalDuration = 0;
 	certificateLoaded: boolean;
 	public certificateForm: FormGroup;
-	timelineStep = 15;
+	timelineStep = 16;
 	@ViewChild('certificateComponent') certificateComponent: CustomCertificateFormComponent;
 	exitAfterSave = false;
 	public originalInterests = [];
 	defaultAssesment: any;
 	availableDefaultAssessments: Array<AssessmentTypeData>;
+	availableSubtypes: Array<SubTypeInterface>;
 
 	// TypeScript public modifiers
 	constructor(
@@ -231,7 +232,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			canceledBy: '',
 			status: 'draft',
 			academicGyan: '',
-			nonAcademicGyan: ''
+			nonAcademicGyan: '',
+			subCategory: ''
 		});
 
 		this.timeline = this._fb.group({
@@ -554,6 +556,9 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			]
 		};
 
+		this.availableSubtypes = [
+			{ name: 'workshop', pic_url: '/assets/images/class_icon2.jpg', description: '' }
+		];
 		this.placeholderStringTopic = 'Start typing to to see a list of suggested topics...';
 
 		this.key = 'access_token';
@@ -755,6 +760,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.class.controls['academicGyan'].patchValue(res.academicGyan);
 
 		this.class.controls['nonAcademicGyan'].patchValue(res.nonAcademicGyan);
+
+		this.class.controls['subCategory'].patchValue(res.subCategory);
 
 
 		this.isPhoneVerified = res.owners[0].phoneVerified;
@@ -1571,4 +1578,9 @@ interface AssessmentTypeData {
 			gyan: number
 		}>;
 	};
+}
+interface SubTypeInterface {
+	name: string;
+	pic_url: string;
+	description: string;
 }

@@ -63,16 +63,20 @@ export class LeftSidebarService {
             //     }
             // });
         }
-        if (collection.topics !== undefined && collection.topics.length > 0) {
+        if (collection.subCategory && collection.subCategory.length > 0) {
             sidebarMenuItems[0].submenu[0].complete = true;
             completedSections++;
         }
-        if (collection.language !== undefined && collection.language.length > 0) {
+        if (collection.topics !== undefined && collection.topics.length > 0) {
             sidebarMenuItems[0].submenu[1].complete = true;
             completedSections++;
         }
-        if (collection.aboutHost !== undefined && collection.aboutHost.length > 0) {
+        if (collection.language !== undefined && collection.language.length > 0) {
             sidebarMenuItems[0].submenu[2].complete = true;
+            completedSections++;
+        }
+        if (collection.aboutHost !== undefined && collection.aboutHost.length > 0) {
+            sidebarMenuItems[0].submenu[3].complete = true;
             completedSections++;
         }
         if (collection.title !== undefined && collection.headline !== undefined &&
@@ -128,18 +132,18 @@ export class LeftSidebarService {
         let completedSections = 0;
         if (dataToUpdate.profileObject) {
             if (dataToUpdate.profileObject.headline && dataToUpdate.profileObject.description) {
-                sidebarMenuItems[0].submenu[0].complete = true;
+                sidebarMenuItems[0].submenu[1].complete = true;
                 completedSections++;
             }
 
             if (dataToUpdate.profileObject.picture_url) {
-                sidebarMenuItems[0].submenu[1].complete = true;
+                sidebarMenuItems[0].submenu[2].complete = true;
                 completedSections++;
             }
 
             if (dataToUpdate.profileObject.location_lat && dataToUpdate.profileObject.other_languages
                 && dataToUpdate.profileObject.other_languages.length > 0) {
-                sidebarMenuItems[0].submenu[2].complete = true;
+                sidebarMenuItems[0].submenu[3].complete = true;
                 completedSections++;
             }
 
@@ -147,7 +151,7 @@ export class LeftSidebarService {
         }
 
         if (dataToUpdate.educationObject && dataToUpdate.educationObject.length > 0) {
-            sidebarMenuItems[0].submenu[3].complete = true;
+            sidebarMenuItems[0].submenu[4].complete = true;
         }
 
         if (dataToUpdate.topicsObject) {

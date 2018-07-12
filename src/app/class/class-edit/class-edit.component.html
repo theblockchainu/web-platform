@@ -65,8 +65,52 @@
 						</div>
 					</div>
 				</div>
-				<!-- step 1 starts here -->
+				<!-- step 1 Subtype -->
 				<div class="onboarding step-2" [hidden]="step!=2">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">What type of class is this?</h2>
+							<p class="subtitle">Select topics that this class covers</p>
+							<br/>
+							<form [formGroup]="class" (ngSubmit)="submitClass()">
+								<div class="row">
+									<mat-radio-group formControlName="subCategory">
+										<div class="col-md-6 col-xs-12 padding-bottom-30" *ngFor="let subType of availableSubtypes">
+											<button type="button" mat-raised-button class="pb-block" [ngStyle]="{
+														background: 'url(\''+subType.pic_url+'\')'
+													}" style="height: 250px; text-align: left; background-size: cover; color: #fff;">
+												<div style="position: absolute; bottom: 0; padding: 10px 15px; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
+													<mat-radio-button class="pb-block" [value]="subType.name">
+														<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">{{subType.name|titlecase}}</span>
+														<br/>
+														<span class="mat-caption lightText">{{subType.description}}</span>
+													</mat-radio-button>
+												</div>
+											</button>
+										</div>
+									</mat-radio-group>
+								</div>
+								<div class="row">
+									<div class="col-xs-12">
+										<button mat-raised-button type="button" (click)="back()" color="accent">
+											Back
+										</button>
+										<span class="pull-right" matTooltip="Select a Type to continue" [matTooltipDisabled]="class.value.subCategory!==undefined">
+											<button mat-raised-button color="accent" type="Submit" [disabled]="class.value.subCategory===undefined || busySavingData">
+												<span *ngIf="!busySavingData">Next</span>
+												<span>
+													<ngx-loading [show]="busySavingData"></ngx-loading>
+												</span>
+											</button>
+										</span>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- step 1 starts here -->
+				<div class="onboarding step-3" [hidden]="step!=3">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">What topics does this Class cover?</h2>
@@ -140,7 +184,7 @@
 					</div>
 				</div>
 
-				<div class="onboarding step-3" [hidden]="step!=3">
+				<div class="onboarding step-4" [hidden]="step!=4">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Which language will you host in?</h2>
@@ -175,7 +219,7 @@
 					</div>
 				</div>
 				<!-- step 4 ends here  -->
-				<div class="onboarding step-4" [hidden]="step!=4">
+				<div class="onboarding step-5" [hidden]="step!=5">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Introduce yourself as a Host</h2>
@@ -208,7 +252,7 @@
 					</div>
 				</div>
 				<!--Disclaimer-->
-				<div class="onboarding step-5" [hidden]="step!=5">
+				<div class="onboarding step-6" [hidden]="step!=6">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8" style="background: #eeeeeedd; padding: 20px;">
 							<h2 class="title">Create the page learners will see</h2>
@@ -228,7 +272,7 @@
 					</div>
 				</div>
 				<!-- Step 6 - Title -->
-				<div class="onboarding step-6" [hidden]="step!=6">
+				<div class="onboarding step-7" [hidden]="step!=7">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<form [formGroup]="class" (ngSubmit)="submitClass()">
@@ -307,7 +351,7 @@
 					</div>
 				</div>
 				<!-- step 7 - Description  -->
-				<div class="onboarding step-7" [hidden]="step!=7">
+				<div class="onboarding step-8" [hidden]="step!=8">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<form [formGroup]="class" (ngSubmit)="submitClass()">
@@ -339,7 +383,7 @@
 					</div>
 				</div>
 				<!-- step 8 Difficulty Level-->
-				<div class="onboarding step-8" [hidden]="step!=8">
+				<div class="onboarding step-9" [hidden]="step!=9">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<form [formGroup]="class" (ngSubmit)="submitClass()">
@@ -379,7 +423,7 @@
 					</div>
 				</div>
 				<!-- Step 9 - Max Spots -->
-				<div class="onboarding step-9" [hidden]="step!=9">
+				<div class="onboarding step-10" [hidden]="step!=10">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">How many seats are available in each cohort? </h2>
@@ -418,7 +462,7 @@
 					</div>
 				</div>
 				<!-- step 10 Photos -->
-				<div class="onboarding step-10" [hidden]="step!=10">
+				<div class="onboarding step-11" [hidden]="step!=11">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Showcase your class</h2>
@@ -475,15 +519,12 @@
 					</div>
 				</div>
 				<!-- step 11 - Certificate -->
-				<div class="onboarding step-11" [hidden]="step!=11">
+				<div class="onboarding step-12" [hidden]="step!=12">
 					<app-custom-certificate-form #certificateComponent *ngIf="certificateLoaded" [data]="certificateForm.controls['formData'].value"
 					 (back)="back()" (next)="submitCertificate($event)"></app-custom-certificate-form>
 				</div>
-
-
-
 				<!-- step 12 - Assessment -->
-				<div class="onboarding step-12" [hidden]="step!=12">
+				<div class="onboarding step-13" [hidden]="step!=13">
 					<form [formGroup]="assessmentForm" (ngSubmit)="submitAssessment()">
 						<div class="row">
 							<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
@@ -634,7 +675,7 @@
 				</div>
 
 				<!-- step 13 - Price -->
-				<div class="onboarding step-13" [hidden]="step!=13">
+				<div class="onboarding step-14" [hidden]="step!=14">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<form [formGroup]="class" (ngSubmit)="submitClassGyan()">
@@ -728,7 +769,7 @@
 				</div>
 
 				<!--Step 14 - Disclaimer-->
-				<div class="onboarding step-14" [hidden]="step!=14">
+				<div class="onboarding step-15" [hidden]="step!=15">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Add content to your Class</h2>
@@ -746,7 +787,7 @@
 					</div>
 				</div>
 				<!--Step 15 - Itinerary-->
-				<div class="onboarding step-15" [hidden]="step!=15">
+				<div class="onboarding step-16" [hidden]="step!=16">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Set your default timeline
@@ -814,7 +855,7 @@
 					</div>
 				</div>
 				<!--Step 16 - Submit for review-->
-				<div class="onboarding step-16" [hidden]="step!=16">
+				<div class="onboarding step-17" [hidden]="step!=17">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Review and submit</h2>
@@ -849,7 +890,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="onboarding step-17" [hidden]="step!=17">
+				<div class="onboarding step-18" [hidden]="step!=18">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Do you want to provide your phone number to learners?</h2>
@@ -896,7 +937,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="onboarding step-18" [hidden]="step!=18">
+				<div class="onboarding step-19" [hidden]="step!=19">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Connect Payment Option</h2>
