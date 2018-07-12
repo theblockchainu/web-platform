@@ -49,7 +49,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 	public filteredTimezones: Observable<any[]>;
 	public disableEndDate = false;
 	public disableEndYearBool = false;
-	
+
 	// Geo Location
 	public userSettings: any = {
 		geoLocation: [37.76999, -122.44696],
@@ -58,7 +58,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 		showSearchButton: false,
 	};
 	public componentData6: any = '';
-	
+
 	constructor(
 		public activatedRoute: ActivatedRoute,
 		public consoleProfileComponent: ConsoleProfileComponent,
@@ -83,10 +83,10 @@ export class ConsoleProfileEditComponent implements OnInit {
 		this.language = this.languagesAsync.asObservable();
 		this.currenciesAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
 		this.timezoneAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
-		
+
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.loadingProfile = true;
 		this.profileForm = this._fb.group(
@@ -116,7 +116,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 				work: this._fb.array([
 					this.initializeWorkForm()
 				]),
-				email: ''
+				email: { value: '', disabled: true }
 			}
 		);
 		this.getLanguages();
@@ -135,7 +135,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 			console.log(profiles);
 			this.setFormValues(profiles);
 		});
-		
+
 		this._profileService.getProfile(this.userId).subscribe((profiles) => {
 			this.profile = profiles[0];
 			if (this.profile.work !== undefined && this.profile.work.length === 0) {
@@ -152,15 +152,15 @@ export class ConsoleProfileEditComponent implements OnInit {
 			this.years = this.getYearsArray();
 		});
 	}
-	
+
 	toggleEndDate() {
 		this.disableEndDate = !this.disableEndDate;
 	}
-	
+
 	disableEndYear() {
 		this.disableEndYearBool = !this.disableEndYearBool;
 	}
-	
+
 	autoCompleteCallback(callbackData: any): any {
 		if (callbackData.response) {
 			const data = callbackData.data;
@@ -169,7 +169,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 			this.profileForm.controls['location_lng'].patchValue(Number(data.geometry.location.lng));
 		}
 	}
-	
+
 	getLanguages() {
 		this._languageService.getLanguages().subscribe(data => {
 			this.languages = data;
@@ -177,19 +177,19 @@ export class ConsoleProfileEditComponent implements OnInit {
 			this.profileForm.controls['preferred_language'].valueChanges
 				.startWith(null)
 				.subscribe(val => {
-						if (val) {
-							this.filteredOptions = _.filter(this.languages, (item) => {
-								return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
-							});
-						} else {
-							this.languages.slice();
-						}
-						// console.log(this.filteredOptions);
+					if (val) {
+						this.filteredOptions = _.filter(this.languages, (item) => {
+							return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
+						});
+					} else {
+						this.languages.slice();
 					}
+					// console.log(this.filteredOptions);
+				}
 				);
 		}, error => console.log('Could not load languages.'));
 	}
-	
+
 	getCurrencies() {
 		this._currencyService.getCurrencies().subscribe(currencies => {
 			this.currencies = currencies;
@@ -197,19 +197,19 @@ export class ConsoleProfileEditComponent implements OnInit {
 			this.profileForm.controls['currency'].valueChanges
 				.startWith(null)
 				.subscribe(val => {
-						if (val) {
-							this.filteredCurrencies = _.filter(this.currencies, (item) => {
-								return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
-							});
-						} else {
-							this.currencies.slice();
-						}
+					if (val) {
+						this.filteredCurrencies = _.filter(this.currencies, (item) => {
+							return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
+						});
+					} else {
+						this.currencies.slice();
 					}
+				}
 				);
 		}, error => console.log('Could not load currencies'));
-		
+
 	}
-	
+
 	getTimezones() {
 		const filter = `{  "order": "offset ASC" }`;
 		this._timezoneService.getTimezones(filter).subscribe(timezones => {
@@ -218,18 +218,18 @@ export class ConsoleProfileEditComponent implements OnInit {
 			this.profileForm.controls['timezone'].valueChanges
 				.startWith(null)
 				.subscribe(val => {
-						if (val) {
-							this.filteredTimezones = _.filter(this.timezones, (item) => {
-								return item.text.toLowerCase().indexOf(val.toLowerCase()) > -1;
-							});
-						} else {
-							this.timezones.slice();
-						}
+					if (val) {
+						this.filteredTimezones = _.filter(this.timezones, (item) => {
+							return item.text.toLowerCase().indexOf(val.toLowerCase()) > -1;
+						});
+					} else {
+						this.timezones.slice();
 					}
+				}
 				);
 		}, error => console.log('Could not load timezones'));
 	}
-	
+
 	private setFormValues(profiles: Array<any>) {
 		if (profiles.length > 0) {
 			this.profileForm.patchValue(profiles[0]);
@@ -251,7 +251,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 				));
 			}
 			this.userSettings = Object.assign({}, this.userSettings);
-			
+
 			if (profiles[0].emergency_contacts && profiles[0].emergency_contacts.length > 0) {
 				this.profileForm.setControl('emergency_contacts', this._fb.array([]));
 				const ec_Array = <FormArray>this.profileForm.controls['emergency_contacts'];
@@ -313,7 +313,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 			}
 		}
 	}
-	
+
 	private initializeWorkForm(): FormGroup {
 		return this._fb.group({
 			position: ['', Validators.requiredTrue],
@@ -323,7 +323,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 			presentlyWorking: false
 		});
 	}
-	
+
 	private initializeEducationForm(): FormGroup {
 		return this._fb.group({
 			degree: '',
@@ -333,7 +333,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 			presentlyPursuing: false
 		});
 	}
-	
+
 	private initializePhone(code, number, isPrimary): FormGroup {
 		return this._fb.group({
 			country_code: [code, Validators.required],
@@ -341,16 +341,16 @@ export class ConsoleProfileEditComponent implements OnInit {
 			isPrimary: isPrimary
 		});
 	}
-	
+
 	private initializeEmergencyContact(): FormGroup {
 		return this._fb.group({
 			country_code: ['', Validators.required],
 			subscriber_number: ['', Validators.required]
 		});
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Get array of days
 	 * @returns {Array}
@@ -362,7 +362,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 		}
 		return days;
 	}
-	
+
 	/**
 	 * Get array of days
 	 * @returns {Array}
@@ -374,7 +374,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 		}
 		return years;
 	}
-	
+
 	/**
 	 * saveProfile
 	 */
@@ -406,28 +406,28 @@ export class ConsoleProfileEditComponent implements OnInit {
 			.flatMap((response) => {
 				return this._profileService.updateWork(this.userId, this.profile.id, work);
 			}).flatMap((response) => {
-			return this._profileService.updateEducation(this.userId, this.profile.id, education);
-		}).flatMap((response) => {
-			return this._profileService.updatePeer(this.userId, { 'email': email });
-		}).flatMap((response) => {
-			return this._profileService.updatePeer(this.userId, { 'phone': profileData.phone_numbers });
-		}).subscribe((response) => {
-			this.busyUpdate = false;
-			this.snackBar.open('Profile Updated', 'Close', {
-				duration: 5000
-			});
-		}, (err) => {
-			console.log('Error updating Peer: ');
-			console.log(err);
-			this.snackBar.open('Profile Update Failed', 'Retry', {
-				duration: 5000
-			}).onAction().subscribe((response) => {
+				return this._profileService.updateEducation(this.userId, this.profile.id, education);
+			}).flatMap((response) => {
+				return this._profileService.updatePeer(this.userId, { 'email': email });
+			}).flatMap((response) => {
+				return this._profileService.updatePeer(this.userId, { 'phone': profileData.phone_numbers });
+			}).subscribe((response) => {
 				this.busyUpdate = false;
-				this.saveProfile();
+				this.snackBar.open('Profile Updated', 'Close', {
+					duration: 5000
+				});
+			}, (err) => {
+				console.log('Error updating Peer: ');
+				console.log(err);
+				this.snackBar.open('Profile Update Failed', 'Retry', {
+					duration: 5000
+				}).onAction().subscribe((response) => {
+					this.busyUpdate = false;
+					this.saveProfile();
+				});
 			});
-		});
 	}
-	
+
 	// public sanitize(profileData) {
 	//   const fields = ['first_name', 'last_name', 'headline'];
 	//   let tempData = profileData;
@@ -436,7 +436,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 	//   });
 	//   return tempData;
 	// }
-	
+
 	/**
 	 * deletework
 	 index:number   */
@@ -453,7 +453,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 		workEntry.controls.endDate.patchValue(null);
 		workEntry.controls.presentlyWorking.patchValue(false);
 	}
-	
+
 	/**
 	 * addwork
 	 */
@@ -463,7 +463,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 			this.initializeWorkForm()
 		);
 	}
-	
+
 	/**
 	 * deleteeducation(index)  */
 	public deleteEducation(index: number) {
@@ -479,7 +479,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 		educationEntry.controls.endYear.patchValue('');
 		educationEntry.controls.presentlyPursuing.patchValue(false);
 	}
-	
+
 	/**
 	 * name
 	 */
@@ -489,7 +489,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 			this.initializeEducationForm()
 		);
 	}
-	
+
 	/**
 	 * addPhoneControl
 	 */
@@ -497,7 +497,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 		const phones = <FormArray>this.profileForm.controls['phone_numbers'];
 		phones.push(this.initializePhone('', '', false));
 	}
-	
+
 	/**
 	 * clearEntry
 	 index:number   */
@@ -511,7 +511,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 		phoneNumber.controls.country_code.patchValue('');
 		phoneNumber.controls.subscriber_number.patchValue('');
 	}
-	
+
 	/**
 	 * deleteLanguage
 	 index:number   */
@@ -519,7 +519,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 		const other_languages = <FormArray>this.profileForm.controls['other_languages'];
 		other_languages.removeAt(index);
 	}
-	
+
 	/**
 	 * addlanguage
 	 */
@@ -527,14 +527,14 @@ export class ConsoleProfileEditComponent implements OnInit {
 		const other_languages = <FormArray>this.profileForm.controls['other_languages'];
 		other_languages.push(this._fb.control(['']));
 	}
-	
+
 	/**
 	 * deleteEmergencyContact
 	 */
 	public deleteEmergencyContact(index: number) {
 		const emergency_contact = <FormArray>this.profileForm.controls['emergency_contact'];
 		if (index > 0) {
-			
+
 			emergency_contact.removeAt(index);
 			return;
 		}
@@ -542,7 +542,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 		phoneNumber.controls.country_code.patchValue('');
 		phoneNumber.controls.subscriber_number.patchValue('');
 	}
-	
+
 	/**
 	 * addEmergencyContact
 	 */
@@ -550,7 +550,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 		const emergency_contact = <FormArray>this.profileForm.controls['emergency_contact'];
 		emergency_contact.push(this.initializeEmergencyContact());
 	}
-	
+
 	// Other Language
 	public selected(event) {
 		const temp_array = [];
@@ -568,7 +568,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public removed(event) {
 		const other_languages = <FormArray>this.profileForm.controls['other_languages'];
 		let temp_array = [];
@@ -579,5 +579,5 @@ export class ConsoleProfileEditComponent implements OnInit {
 			temp_array
 		));
 	}
-	
+
 }

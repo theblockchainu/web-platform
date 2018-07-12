@@ -62,6 +62,7 @@ export class ClassesComponent implements OnInit {
 	public languageList: Array<any>;
 	public levelList: Array<any>;
 	public ratingList: Array<number>;
+	public showArchived: boolean;
 
 	constructor(
 		public _collectionService: CollectionService,
@@ -91,7 +92,7 @@ export class ClassesComponent implements OnInit {
 			property: 'og:title',
 			content: 'Explore Classes'
 		});
-		
+
 		this.metaService.updateTag({
 			property: 'og:site_name',
 			content: 'peerbuds.com'
@@ -206,7 +207,7 @@ export class ClassesComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	fetchClasses(): void {
 		let query;
 		this.selectedTopics = [];
@@ -253,6 +254,8 @@ export class ClassesComponent implements OnInit {
 								}
 								if (hasActiveCalendar) {
 									classes.push(collection);
+								} else if (!hasActiveCalendar && this.showArchived) {
+									classes.push(collection);
 								}
 							}
 						});
@@ -260,7 +263,7 @@ export class ClassesComponent implements OnInit {
 					this.classes = _.uniqBy(classes, 'id');
 					this.classes = _.orderBy(this.classes, ['createdAt'], ['desc']);
 					this.classesBackup = _.cloneDeep(this.classes);
-					
+
 					if (!this.initialized) {
 						console.log(this.classes);
 						this.setFilterData();
@@ -289,7 +292,7 @@ export class ClassesComponent implements OnInit {
 			if (maxDuration < _class.totalHours) {
 				maxDuration = _class.totalHours;
 			}
-			
+
 			_class.language.forEach(language => {
 				if (!this.languageList.includes(language)) {
 					this.languageList.push(language);
@@ -388,10 +391,17 @@ export class ClassesComponent implements OnInit {
 		this.availableTopics = _.cloneDeep(this.topicsBackup);
 		this.fetchClasses();
 	}
-	
+
 	public onClassRefresh(event) {
 		if (event) {
 			this.fetchClasses();
 		}
+	}
+
+	public toggleArchive() {
+		console.log('show archive');
+		console.log(this.showArchived);
+		this.showArchived = !this.showArchived;
+		this.fetchData();
 	}
 }

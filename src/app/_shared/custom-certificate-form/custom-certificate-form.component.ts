@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input, Renderer2, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { MatSnackBar } from '@angular/material';
 import { environment } from '../../../environments/environment';
@@ -24,7 +24,10 @@ export class CustomCertificateFormComponent implements OnInit {
 	public expandedPanelIndex: number;
 	public availableVariables: Array<VariableObject>;
 	public qrcode = '/assets/images/peerbuds-qr.png';
-	@Input() formData: any;
+	public expiryDate: FormControl;
+	public today: Date;
+	public formData: any;
+	@Input() data: any;
 
 	@Output() back = new EventEmitter<any>();
 	@Output() next = new EventEmitter<any>();
@@ -44,6 +47,9 @@ export class CustomCertificateFormComponent implements OnInit {
 	}
 
 	ngOnInit() {
+
+		this.today = new Date();
+		this.expiryDate = this._fb.control('');
 		this.customCertificateForm = this._fb.group({
 			groupArray: this._fb.array([])
 		});
@@ -176,7 +182,9 @@ export class CustomCertificateFormComponent implements OnInit {
 			}
 		];
 
-		if (this.formData) {
+		if (this.data) {
+			this.formData = this.data.formData;
+			this.expiryDate.patchValue(this.data.expiryDate);
 			console.log(this.formData);
 			this.formData.groupArray.forEach(group => {
 				const control = <FormGroup>this.fieldsArray.find((fg: FormGroup) => {
@@ -294,7 +302,8 @@ export class CustomCertificateFormComponent implements OnInit {
 			// console.log(nativeElement.outerHTML);
 			this.next.emit({
 				formData: this.customCertificateForm.value,
-				htmlData: nativeElement.outerHTML
+				htmlData: nativeElement.outerHTML,
+				expiryDate: this.expiryDate.value
 			});
 			this.busySavingData = false;
 			this.qrcode = '/assets/images/peerbuds-qr.png';
