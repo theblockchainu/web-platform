@@ -400,6 +400,8 @@ export class ClassesComponent implements OnInit {
 
 	public toggleArchive() {
 		console.log('show archive');
+		this.classes = [];
+		this.loading = true;
 		console.log(this.showArchived);
 		this.showArchived = !this.showArchived;
 		this.fetchData();

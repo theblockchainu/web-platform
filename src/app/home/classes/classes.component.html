@@ -45,27 +45,29 @@
 					</div>
 					<div class="mat-display-1" style="margin-bottom: 5px !important; margin-top: 34px;">
 						Explore Peerbuds
-						<div class="pull-right">
-							<button (click)="toggleArchive()" mat-button>
-								<span *ngIf="!showArchived">Show Archived</span>
-								<span *ngIf="showArchived">Show Active</span>
-							</button>
-						</div>
 					</div>
 					<app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
-					<div class="mat-display-1" style="margin-bottom: 25px !important;">
-						<span *ngIf="showArchived">
-							Archived
-						</span> Classes
-						<span class="mat-display-1" *ngIf="selectedTopics && selectedTopics.length !== 0">
-							in
-							<span *ngFor="let topicObj of selectedTopics;let i=index">
-								{{topicObj.name}}
+					<div class="row">
+						<div class="col-xs-9 mat-display-1" style="margin-bottom: 25px !important;">
+							<span *ngIf="showArchived">
+								Archived
+							</span> Classes
+							<span class="mat-display-1" *ngIf="selectedTopics && selectedTopics.length !== 0">
+								in
+								<span *ngFor="let topicObj of selectedTopics;let i=index">
+									{{topicObj.name}}
+								</span>
+								<mat-icon class="clickable" style="font-size: 12px; font-weight: 200;" (click)="resetTopics()">
+									close
+								</mat-icon>
 							</span>
-							<mat-icon class="clickable" style="font-size: 12px; font-weight: 200;" (click)="resetTopics()">
-								close
-							</mat-icon>
-						</span>
+						</div>
+						<div class="col-xs-3">
+							<a class="clickable pull-right" (click)="toggleArchive()">
+								<span *ngIf="!showArchived">Show archived</span>
+								<span *ngIf="showArchived">Show active</span>
+							</a>
+						</div>
 					</div>
 					<div class="loading-container" [hidden]="!loading">
 						<ngx-loading [show]="true"></ngx-loading>
