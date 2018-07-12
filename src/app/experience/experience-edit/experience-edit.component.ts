@@ -1054,9 +1054,17 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.busySavingData = false;
 			console.log('No date selected or no content added to itinerary! - ' + JSON.stringify(itinerary));
 			if (!itinerary || itinerary.length === 0) {
-				this.snackBar.open('You need to add at least 1 activity to your experience to proceed.', 'Close', {
-					duration: 5000
-				});
+				if (this.saveandexit) {
+					this.snackBar.open('You need to add at least 1 activity to your experience to proceed.', 'Exit Anyways', {
+						duration: 5000
+					}).onAction().subscribe(res => {
+						this.exit();
+					});
+				} else {
+					this.snackBar.open('You need to add at least 1 activity to your experience to proceed.', 'Close', {
+						duration: 5000
+					});
+				}
 			} else {
 				this.snackBar.open('No dates have been selected for your experience.', 'Close', {
 					duration: 5000
