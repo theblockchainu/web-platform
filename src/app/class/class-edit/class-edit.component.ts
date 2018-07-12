@@ -954,8 +954,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			});
 			return false;
 		}
-		console.log(startMoment.diff(moment()));
-		if (startMoment.diff(moment()) < 0) {
+		console.log(startMoment.diff(moment(), 'days'));
+		if (startMoment.diff(moment(), 'days') < 0) {
 			this.snackBar.open('Start date cannot be in the past!', 'Close', {
 				duration: 5000
 			});
