@@ -264,18 +264,13 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.assessmentForm = this._fb.group({
 			type: ['', Validators.required],
 			style: ['', Validators.required],
-			rules: this._fb.array([
-				this._fb.group({
-					value: ['', Validators.required],
-					gyan: ['', Validators.required]
-				})
-			], Validators.minLength(1)),
+			rules: this._fb.array([]),
 			nARules: this._fb.array([
 				this._fb.group({
 					value: ['', Validators.required],
 					gyan: ['', Validators.required]
 				})
-			], Validators.minLength(1))
+			])
 		});
 
 		this.certificateForm = this._fb.group({
@@ -1533,27 +1528,36 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	public assessmentChange(event: any) {
-		console.log(event);
 		const value = <AssessmentTypeData['values']>event.value;
-		this.assessmentForm.controls['style'].patchValue(value.style);
-		console.log(value.rules);
+		console.log(value);
 		this.assessmentForm.controls['rules'] = this._fb.array([], Validators.minLength(1));
 		const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
-		value.rules.forEach(val => {
+		if (value.style === 'custom') {
+			this.assessmentForm.controls['style'].patchValue('');
 			rulesArray.push(
 				this._fb.group({
-					value: val.value,
-					gyan: val.gyan
+					value: ['', Validators.required],
+					gyan: ['', [Validators.required, Validators.max(100), Validators.min(1)]]
 				})
 			);
-		});
+		} else {
+			this.assessmentForm.controls['style'].patchValue(value.style);
+			value.rules.forEach(val => {
+				rulesArray.push(
+					this._fb.group({
+						value: [val.value, Validators.required],
+						gyan: [val.gyan, [Validators.required, Validators.max(100), Validators.min(1)]]
+					})
+				);
+			});
+		}
 	}
 }
 interface AssessmentTypeData {
 	system: string;
 	values: {
 		style: string;
-		rules: Array<{
+		rules?: Array<{
 			value: string,
 			gyan: number
 		}>;

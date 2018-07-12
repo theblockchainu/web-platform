@@ -194,7 +194,7 @@ interface AssessmentTypeData {
   system: string;
   values: {
     style: string;
-    rules: Array<{
+    rules?: Array<{
       value: string,
       gyan: number
     }>;
