@@ -1522,6 +1522,14 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			}
 		};
 	}
+
+	public termsAndCondition() {
+		this.dialogsService.termsAndConditionsDialog().subscribe();
+	}
+
+	public standards() {
+		this.dialogsService.collectionStandardsDialog().subscribe();
+	}
 	
 	public importProfileBio() {
 		this.experience.controls.aboutHost.patchValue(this.experienceData.owners[0].profiles[0].description);

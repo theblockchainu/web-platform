@@ -53,6 +53,8 @@ import { ViewParticipantsComponent } from './view-participants/view-participants
 import { CreateAccreditationDialogComponent } from './create-accreditation-dialog/create-accreditation-dialog.component';
 import { SelectFieldDialogComponent } from './select-field-dialog/select-field-dialog.component';
 import { CertificateVerificationComponent } from './certificate-verification/certificate-verification.component';
+import { CollectionStandardsDialogComponent } from './collection-standards-dialog/collection-standards-dialog.component';
+import { TermsAndConditionsDialogComponent } from './terms-and-conditions-dialog/terms-and-conditions-dialog.component';
 
 @Injectable()
 export class DialogsService {
@@ -604,6 +606,24 @@ export class DialogsService {
             width: '55vw',
             height: '56vh',
             data: data ? data : {}
+        }).afterClosed();
+    }
+
+    public collectionStandardsDialog(type?: string) {
+        return this.dialog.open(CollectionStandardsDialogComponent, {
+            panelClass: 'responsive-dialog',
+            width: '55vw',
+            height: '56vh',
+            data: type ? type : null
+        }).afterClosed();
+    }
+
+    public termsAndConditionsDialog(type?: string) {
+        return this.dialog.open(TermsAndConditionsDialogComponent, {
+            panelClass: 'responsive-dialog',
+            width: '55vw',
+            height: '56vh',
+            data: type ? type : null
         }).afterClosed();
     }
 }

@@ -1519,5 +1519,13 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.class.controls.aboutHost.patchValue(this.classData.owners[0].profiles[0].description);
 	}
 
+
+	public termsAndCondition() {
+		this.dialogsService.termsAndConditionsDialog().subscribe();
+	}
+
+	public standards() {
+		this.dialogsService.collectionStandardsDialog().subscribe();
+	}
 }
 
