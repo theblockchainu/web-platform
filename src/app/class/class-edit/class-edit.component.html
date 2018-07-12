@@ -706,7 +706,7 @@
 
 				<!-- step 13 - Certificate -->
 				<div class="onboarding step-13" [hidden]="step!=13">
-					<app-custom-certificate-form #certificateComponent *ngIf="certificateLoaded" [formData]="certificateForm.controls['formData'].value"
+					<app-custom-certificate-form #certificateComponent *ngIf="certificateLoaded" [data]="certificateForm.controls['formData'].value"
 					 (back)="back()" (next)="submitCertificate($event)"></app-custom-certificate-form>
 				</div>
 

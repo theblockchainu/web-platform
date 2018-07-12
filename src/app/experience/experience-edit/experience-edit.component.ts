@@ -292,7 +292,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 		this.certificateForm = this._fb.group({
 			certificateHTML: [''],
-			expiryDate: [null],
+			expiryDate: [''],
 			formData: [null]
 		});
 
@@ -909,6 +909,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.busySavingData = true;
 		this.certificateForm.controls['certificateHTML'].patchValue(certificate.htmlData);
 		this.certificateForm.controls['formData'].patchValue(JSON.stringify(certificate.formData));
+		this.certificateForm.controls['expiryDate'].patchValue(certificate.expiryDate);
 		this._collectionService.submitCertificate(this.experienceId, this.certificateForm.value).subscribe(res => {
 			if (this.exitAfterSave) {
 				this.exit();

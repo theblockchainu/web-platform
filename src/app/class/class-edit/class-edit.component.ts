@@ -280,7 +280,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		this.certificateForm = this._fb.group({
 			certificateHTML: [''],
-			expiryDate: [null],
+			expiryDate: [''],
 			formData: [null]
 		});
 
@@ -887,6 +887,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.busySavingData = true;
 		this.certificateForm.controls['certificateHTML'].patchValue(certificate.htmlData);
 		this.certificateForm.controls['formData'].patchValue(JSON.stringify(certificate.formData));
+		this.certificateForm.controls['expiryDate'].patchValue(certificate.expiryDate);
 		this._collectionService.submitCertificate(this.classId, this.certificateForm.value).subscribe(res => {
 			this.busySavingData = false;
 
