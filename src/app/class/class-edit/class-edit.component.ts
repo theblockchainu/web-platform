@@ -184,7 +184,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.activatedRoute.params.subscribe(params => {
 			this.classId = params['collectionId'];
 			this.step = Number(params['step']);
-			this.showBackground = this.step && this.step.toString() === '5';
+			this.showBackground = this.step && (this.step.toString() === '6' || this.step.toString() === '2');
 			this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code' +
 				'&client_id=' + environment.stripeClientId + '&scope=read_write&redirect_uri=' + environment.clientUrl
 				+ '/console/account/payoutmethods&state=' + environment.clientUrl + '/class/' + this.classId
@@ -233,7 +233,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			status: 'draft',
 			academicGyan: '',
 			nonAcademicGyan: '',
-			subCategory: ''
+			subCategory: 'class'
 		});
 
 		this.timeline = this._fb.group({
@@ -1140,7 +1140,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public goto(toggleStep) {
 		this.step = toggleStep;
 		this.router.navigate(['class', this.classId, 'edit', +toggleStep]);
-		this.showBackground = !!(this.step && this.step.toString() === '5');
+		this.showBackground = this.step && (this.step.toString() === '6' || this.step.toString() === '2');
 	}
 
 

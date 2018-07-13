@@ -188,7 +188,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.activatedRoute.params.subscribe(params => {
 			this.experienceId = params['collectionId'];
 			this.step = Number(params['step']);
-			this.showBackground = this.step && this.step.toString() === '5';
+			this.showBackground = this.step && this.step.toString() === '6';
 			this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code' +
 				'&client_id=' + environment.stripeClientId + '&scope=read_write&redirect_uri=' + environment.clientUrl
 				+ '/console/account/payoutmethods&state=' + environment.clientUrl + '/experience/' + this.experienceId
@@ -1157,7 +1157,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public goto(toggleStep) {
 		this.step = toggleStep;
 		this.router.navigate(['experience', this.experienceId, 'edit', +toggleStep]);
-		this.showBackground = !!(this.step && this.step.toString() === '5');
+		this.showBackground = this.step && this.step.toString() === '6';
 	}
 
 
