@@ -655,7 +655,6 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 						this.sidebarMenuItems[4].submenu[0].visible = true;
 						this.sidebarMenuItems[4].submenu[1].visible = true;
 					}
-
 				},
 					err => console.log('error'),
 					() => console.log('Completed!'));
@@ -667,6 +666,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	initializeCertificate() {
 		this.certificateService.getCertificateTemplate(this.experienceId).subscribe((res: any) => {
+			this.sidebarMenuItems = this._leftSideBarService.updateSideMenuCertificate(res, this.sidebarMenuItems);
 			if (res && res.formData) {
 				this.certificateForm.controls['formData'].patchValue(JSON.parse(res.formData));
 			}
@@ -916,6 +916,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.certificateForm.controls['formData'].patchValue(JSON.stringify(certificate.formData));
 		this.certificateForm.controls['expiryDate'].patchValue(certificate.expiryDate);
 		this._collectionService.submitCertificate(this.experienceId, this.certificateForm.value).subscribe(res => {
+			this.sidebarMenuItems = this._leftSideBarService.updateSideMenuCertificate(res, this.sidebarMenuItems);
 			if (this.exitAfterSave) {
 				this.exit();
 			} else {
@@ -1064,7 +1065,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.busySavingData = false;
 			console.log('No date selected or no content added to itinerary! - ' + JSON.stringify(itinerary));
 			if (!itinerary || itinerary.length === 0) {
-				if (this.saveandexit) {
+				if (this.exitAfterSave) {
 					this.snackBar.open('You need to add at least 1 activity to your experience to proceed.', 'Exit Anyways', {
 						duration: 5000
 					}).onAction().subscribe(res => {
@@ -1183,7 +1184,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	}
 
-	saveandexit(certificateComponent?: any) {
+	saveandexit() {
 		this.exitAfterSave = true;
 		switch (this.step) {
 			case 2:

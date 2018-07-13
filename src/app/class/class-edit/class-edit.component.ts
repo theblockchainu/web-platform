@@ -296,6 +296,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	initializeCertificate() {
 		this.certificateService.getCertificateTemplate(this.classId).subscribe((res: any) => {
+			this.sidebarMenuItems = this._leftSideBarService.updateSideMenuCertificate(res, this.sidebarMenuItems);
 			if (res.formData) {
 				this.certificateForm.controls['formData'].patchValue(JSON.parse(res.formData));
 			}
@@ -892,7 +893,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.certificateForm.controls['expiryDate'].patchValue(certificate.expiryDate);
 		this._collectionService.submitCertificate(this.classId, this.certificateForm.value).subscribe(res => {
 			this.busySavingData = false;
-
+			this.sidebarMenuItems = this._leftSideBarService.updateSideMenuCertificate(res, this.sidebarMenuItems);
 			if (this.exitAfterSave) {
 				this.exit();
 			} else {
@@ -1046,7 +1047,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.busySavingData = false;
 			console.log('No date selected or no content added to itinerary! - ' + JSON.stringify(itinerary));
 			if (!itinerary || itinerary.length === 0) {
-				if (this.saveandexit) {
+				if (this.exitAfterSave) {
 					this.snackBar.open('You need to add at least 1 activity to your class to proceed.', 'Exit Anyways', {
 						duration: 5000
 					}).onAction().subscribe(res => {
@@ -1165,7 +1166,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	}
 
-	saveandexit(certificateComponent?: any) {
+	saveandexit() {
 		this.exitAfterSave = true;
 		switch (this.step) {
 			case 2:
