@@ -4,6 +4,27 @@
 .notVerified .mat-icon{
     color:#ff6d71;
 }
+
+.notVerified .bullet{
+    color:#ff6d71;
+}
+
 .verified .mat-icon{
     color:#33bd9e;
+}
+
+.verified .bullet{
+    color:#33bd9e;
+}
+
+.bottombar{
+    background: black;
+    height: 10vh;
+}
+
+.logoImage{
+    position: relative;
+    left: 80%;
+    top: 30%;
+    width: 15%;
 }

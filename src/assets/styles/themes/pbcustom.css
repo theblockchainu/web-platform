@@ -1898,6 +1898,10 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	position: inherit !important; 
 }
 
+.noScrollY .mat-dialog-container{
+	overflow-y: hidden;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	.circle-thumb {

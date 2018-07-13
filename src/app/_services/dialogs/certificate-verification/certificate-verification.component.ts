@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ProfileService } from '../../profile/profile.service';
-
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-certificate-verification',
   templateUrl: './certificate-verification.component.html',
@@ -26,6 +26,7 @@ export class CertificateVerificationComponent implements OnInit {
   public expandedPanel: number;
   public certificateValid: boolean;
   public certificateProcessed: boolean;
+  public envVariable: any;
 
   constructor(
     private certificateService: CertificateService,
@@ -36,6 +37,7 @@ export class CertificateVerificationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.envVariable = environment;
     this.loading = true;
     this.initializeVerificationSteps();
     this.getCollection()
@@ -44,6 +46,8 @@ export class CertificateVerificationComponent implements OnInit {
         this.collection = res;
         this.initializeVerification();
       });
+    console.log(this.data);
+
   }
 
   getCollection() {
@@ -72,7 +76,6 @@ export class CertificateVerificationComponent implements OnInit {
         if (!res) {
           this.certificateValid = false;
         }
-        console.log(res);
         this.verificationSteps[1].verified = res;
         this.verificationSteps[1].processed = true;
         return this.statusCheck();
@@ -92,9 +95,7 @@ export class CertificateVerificationComponent implements OnInit {
         }
         this.verificationSteps[3].verified = res;
         this.verificationSteps[3].processed = true;
-        this.certificateValid = true;
         this.certificateProcessed = true;
-        console.log(this.verificationSteps);
       });
   }
 
@@ -228,7 +229,6 @@ export class CertificateVerificationComponent implements OnInit {
         }
         return this.checkParticipantReceipt();
       }).map(res => {
-        console.log(res);
         this.verificationSteps[1].steps[2].processed = true;
         if (res) {
           this.verificationSteps[1].steps[2].verified = true;
@@ -245,7 +245,6 @@ export class CertificateVerificationComponent implements OnInit {
       .flatMap(res => {
         console.log('checkidropped');
         this.verificationSteps[2].steps[0].processed = true;
-        console.log(res);
         if (res) {
           this.verificationSteps[2].steps[0].verified = true;
         } else {
@@ -255,7 +254,6 @@ export class CertificateVerificationComponent implements OnInit {
       }).flatMap(res => {
         console.log('checkIssuerAddress');
         this.verificationSteps[2].steps[1].processed = true;
-        console.log(res);
         if (res) {
           this.verificationSteps[2].steps[1].verified = true;
         } else {
@@ -265,7 +263,6 @@ export class CertificateVerificationComponent implements OnInit {
       }).map(res => {
         console.log('checkExpiry');
         this.verificationSteps[2].steps[2].processed = true;
-        console.log(res);
         if (res) {
           this.verificationSteps[2].steps[2].verified = true;
         } else {

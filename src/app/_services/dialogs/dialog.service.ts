@@ -602,9 +602,9 @@ export class DialogsService {
 
     public verifyCertificateDialog(data?: any) {
         return this.dialog.open(CertificateVerificationComponent, {
-            panelClass: 'responsive-dialog',
-            width: '55vw',
-            height: '56vh',
+            panelClass: ['responsive-dialog', 'noScrollY'],
+            width: '45vw',
+            maxHeight: '90vh',
             data: data ? data : {}
         }).afterClosed();
     }
