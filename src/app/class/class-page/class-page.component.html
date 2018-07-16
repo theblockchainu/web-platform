@@ -13,9 +13,13 @@
 				<span>This class is pending approval from peerbuds team</span>
 			</div>
 		</div>
-		<div class="row pending-actions center" *ngIf="(class.status === 'draft' || class.status === '' ) && isPreview ">
+		<div class="row pending-actions center" *ngIf="(class.status === 'draft' || class.status === '' ) && previewAs ">
 			<div class="col-md-10 col-md-offset-1">
-				<span>This is a preview. Submit your class to get it approved</span>
+				<span>You are previewing as
+					<b>{{previewAs | titlecase}}</b>
+					. Submit your Class to get it approved.
+					<a class="clickable" (click)="_collectionService.openEditCollection(class)">Continue editing?</a>
+				</span>
 			</div>
 		</div>
 		<div class="row pending-actions center" *ngIf="(calendarId !== undefined && class.status === 'active' && !hasCohortEnded() )">
@@ -75,10 +79,11 @@
 									< Back to class page </a>
 										<p class="mat-display-1" style="margin-bottom: 20px !important;">{{class.title | titlecase}}
 											<span *ngIf="calendarId">(Cohort View)</span>
-											<span *ngIf="!checkingEthereum && isOnEthereum" matTooltip="one0x Compliant">&emsp;
+											<span *ngIf="!checkingEthereum && isOnEthereum  && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant">&emsp;
 												<i class="fa fa-globe lightText" style="color: #ff6d71; font-size: 14px;"></i>
 											</span>
-											<span *ngIf="!checkingEthereum && !isOnEthereum" matTooltip="Add to one0x Blockchain" (click)="addToEthereum()" class="clickable">&emsp;
+											<span *ngIf="!checkingEthereum && !isOnEthereum  && userType === 'teacher' && !previewAs" matTooltip="Add to one0x Blockchain"
+											 (click)="addToEthereum()" class="clickable">&emsp;
 												<i class="fa fa-plus lightText" style="font-size: 14px;"></i>
 											</span>
 										</p>

@@ -20,7 +20,7 @@
 					<button mat-button (click)="exit()">Exit</button>
 				</div>
 				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=14 && step !=16">
-					<button mat-button [routerLink]="'/experience/'+experienceId" [queryParams]="{preview: 'true'}">
+					<button mat-button [routerLink]="'/experience/'+experienceId" [queryParams]="{previewAs: 'public'}">
 						Preview
 					</button>
 				</div>
