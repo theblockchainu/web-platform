@@ -172,7 +172,7 @@ export class AssessmentService {
             },
             {
               value: 'Fail',
-              gyan: 0
+              gyan: 1
             }
           ]
         }

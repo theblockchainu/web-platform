@@ -664,7 +664,7 @@
 										Back
 									</button>
 									<span class="pull-right">
-										<button mat-raised-button color="accent" type="Submit" [disabled]="busySavingData">
+										<button mat-raised-button color="accent" type="Submit" [disabled]="busySavingData || !assessmentForm.valid">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
 												<ngx-loading [show]="busySavingData"></ngx-loading>

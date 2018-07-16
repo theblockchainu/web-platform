@@ -342,7 +342,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				result.assessment_models[0].assessment_rules.forEach(rule => {
 					rulesArray.push(this._fb.group({
 						value: rule.value,
-						gyan: [rule.gyan, [Validators.max(100), Validators.min(0)]]
+						gyan: [rule.gyan, [Validators.max(100), Validators.min(1)]]
 					}));
 				});
 			}
@@ -353,7 +353,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				result.assessment_models[0].assessment_na_rules.forEach(rule => {
 					nARulesArray.push(this._fb.group({
 						value: [rule.value],
-						gyan: [rule.gyan, [Validators.max(100), Validators.min(0), this.checkTotal(
+						gyan: [rule.gyan, [Validators.max(100), Validators.min(1), this.checkTotal(
 							(nARulesArray.length === 1) ? 0 : 1
 						)]]
 					}));
@@ -1474,7 +1474,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		console.log(rulesArray);
 		rulesArray.push(this._fb.group({
 			value: '',
-			gyan: ['', [Validators.required, Validators.max(100), Validators.min(0)]]
+			gyan: ['', [Validators.required, Validators.max(100), Validators.min(1)]]
 		}));
 	}
 

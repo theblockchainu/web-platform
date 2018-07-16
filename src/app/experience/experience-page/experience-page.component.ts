@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, OnDestroy, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar } from '@angular/material';
@@ -205,6 +205,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	certificateHTML: string;
 	loadingCertificate: boolean;
 	public assessmentRules: Array<any>;
+
+	@ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
 
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -1814,6 +1816,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.certificateService.getCertificateTemplate(this.experienceId).subscribe((res: any) => {
 			if (res !== null && res !== undefined) {
 				this.certificateHTML = res.certificateHTML;
+				this.certificateDomHTML.changes.subscribe(elem => {
+					const image = elem['first'].nativeElement.children[0].children[0].children[1].children[0];
+					image.src = '/assets/images/peerbuds-qr.png';
+				});
 			}
 			this.loadingCertificate = false;
 		});
