@@ -13,9 +13,11 @@
 				<span>This experience is pending approval from peerbuds team</span>
 			</div>
 		</div>
-		<div class="row pending-actions center" *ngIf="(experience.status === 'draft' || experience.status === '' ) && isPreview ">
+		<div class="row pending-actions center" *ngIf="(experience.status === 'draft' || experience.status === '' ) && previewAs ">
 			<div class="col-md-10 col-md-offset-1">
-				<span>This is a preview. Submit your experience to get it approved.
+				<span>You are previewing as
+					<b>{{previewAs | titlecase}}</b>
+					. Submit your experience to get it approved.
 					<a href="javascript:void(0);" (click)="_collectionService.openEditCollection(experience)">Continue editing?</a>
 				</span>
 			</div>
@@ -78,10 +80,11 @@
 									< Back to experience page </a>
 										<p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title | titlecase}}
 											<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
-											<span *ngIf="!checkingEthereum && isOnEthereum" matTooltip="one0x Compliant">&emsp;
+											<span *ngIf="!checkingEthereum && isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant">&emsp;
 												<i class="fa fa-globe lightText" style="color: #ff6d71; font-size: 14px;"></i>
 											</span>
-											<span *ngIf="!checkingEthereum && !isOnEthereum" matTooltip="Add to one0x Blockchain" (click)="addToEthereum()" class="clickable">&emsp;
+											<span *ngIf="!checkingEthereum && !isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="Add to one0x Blockchain"
+											 (click)="addToEthereum()" class="clickable">&emsp;
 												<i class="fa fa-plus lightText" style="font-size: 14px;"></i>
 											</span>
 										</p>
@@ -845,7 +848,7 @@
 									<div class="col-xs-12">
 										<ngx-loading [show]="loadingCertificate"></ngx-loading>
 										<mat-card>
-											<div [innerHTML]="certificateHTML | safe: 'html'"></div>
+											<div #certificateDomHTML [innerHTML]="certificateHTML | safe: 'html'"></div>
 										</mat-card>
 									</div>
 								</div>

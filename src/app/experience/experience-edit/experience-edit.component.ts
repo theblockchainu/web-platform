@@ -149,11 +149,12 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public maxGyanExceding: boolean;
 	totalGyan = 0;
 	totalDuration = 0;
-	timelineStep = 15;
+	timelineStep = 16;
 	exitAfterSave = false;
 	@ViewChild('certificateComponent') certificateComponent: CustomCertificateFormComponent;
 	defaultAssesment: any;
 	availableDefaultAssessments: Array<AssessmentTypeData>;
+	availableSubtypes: Array<SubTypeInterface>;
 
 	// TypeScript public modifiers
 	constructor(
@@ -187,7 +188,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.activatedRoute.params.subscribe(params => {
 			this.experienceId = params['collectionId'];
 			this.step = Number(params['step']);
-			this.showBackground = this.step && this.step.toString() === '5';
+			this.showBackground = this.step && this.step.toString() === '6';
 			this.connectPaymentUrl = 'https://connect.stripe.com/express/oauth/authorize?response_type=code' +
 				'&client_id=' + environment.stripeClientId + '&scope=read_write&redirect_uri=' + environment.clientUrl
 				+ '/console/account/payoutmethods&state=' + environment.clientUrl + '/experience/' + this.experienceId
@@ -235,7 +236,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			canceledBy: '',
 			status: 'draft',
 			academicGyan: '',
-			nonAcademicGyan: ''
+			nonAcademicGyan: '',
+			subCategory: ''
 		});
 
 		this.timeline = this._fb.group({
@@ -272,22 +274,17 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.assessmentForm = this._fb.group({
 			type: ['', Validators.required],
 			style: ['', Validators.required],
-			rules: this._fb.array([
-				this._fb.group({
-					value: ['', Validators.required],
-					gyan: ['', [Validators.required, Validators.max(100), Validators.min(0)]]
-				})
-			], Validators.minLength(1)),
+			rules: this._fb.array([]),
 			nARules: this._fb.array([
 				this._fb.group({
 					value: ['engagement', Validators.required],
-					gyan: ['', [Validators.required, Validators.max(100), Validators.min(0), this.checkTotal(1)]]
+					gyan: ['', [Validators.required, Validators.max(100), Validators.min(1), this.checkTotal(1)]]
 				}),
 				this._fb.group({
 					value: ['commitment', Validators.required],
-					gyan: ['', [Validators.required, Validators.max(100), Validators.min(0), this.checkTotal(0)]]
+					gyan: ['', [Validators.required, Validators.max(100), Validators.min(1), this.checkTotal(0)]]
 				})
-			], Validators.minLength(1))
+			])
 		});
 
 		this.certificateForm = this._fb.group({
@@ -345,7 +342,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				result.assessment_models[0].assessment_rules.forEach(rule => {
 					rulesArray.push(this._fb.group({
 						value: rule.value,
-						gyan: [rule.gyan, [Validators.max(100), Validators.min(0)]]
+						gyan: [rule.gyan, [Validators.max(100), Validators.min(1)]]
 					}));
 				});
 			}
@@ -356,7 +353,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				result.assessment_models[0].assessment_na_rules.forEach(rule => {
 					nARulesArray.push(this._fb.group({
 						value: [rule.value],
-						gyan: [rule.gyan, [Validators.max(100), Validators.min(0), this.checkTotal(
+						gyan: [rule.gyan, [Validators.max(100), Validators.min(1), this.checkTotal(
 							(nARulesArray.length === 1) ? 0 : 1
 						)]]
 					}));
@@ -573,6 +570,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			]
 		};
 
+		this.availableSubtypes = [{ name: 'workshop', pic_url: '/assets/images/class_icon2.jpg', description: '' },
+		{ name: 'hackathon', pic_url: '/assets/images/classes-anywhere.jpg', description: '' },
+		{ name: 'meetup', pic_url: '/assets/images/coding-card.jpg', description: '' },
+		{ name: 'bootcamp', pic_url: '/assets/images/blockchain-dev-card.jpg', description: '' }];
+
 		this.placeholderStringTopic = 'Start typing to to see a list of suggested topics...';
 
 		this.key = 'access_token';
@@ -653,7 +655,6 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 						this.sidebarMenuItems[4].submenu[0].visible = true;
 						this.sidebarMenuItems[4].submenu[1].visible = true;
 					}
-
 				},
 					err => console.log('error'),
 					() => console.log('Completed!'));
@@ -665,6 +666,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	initializeCertificate() {
 		this.certificateService.getCertificateTemplate(this.experienceId).subscribe((res: any) => {
+			this.sidebarMenuItems = this._leftSideBarService.updateSideMenuCertificate(res, this.sidebarMenuItems);
 			if (res && res.formData) {
 				this.certificateForm.controls['formData'].patchValue(JSON.parse(res.formData));
 			}
@@ -777,6 +779,9 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.experience.controls['academicGyan'].patchValue(res.academicGyan);
 
 		this.experience.controls['nonAcademicGyan'].patchValue(res.nonAcademicGyan);
+
+		this.experience.controls['subCategory'].patchValue(res.subCategory);
+
 
 		this.isPhoneVerified = res.owners[0].phoneVerified;
 
@@ -911,6 +916,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.certificateForm.controls['formData'].patchValue(JSON.stringify(certificate.formData));
 		this.certificateForm.controls['expiryDate'].patchValue(certificate.expiryDate);
 		this._collectionService.submitCertificate(this.experienceId, this.certificateForm.value).subscribe(res => {
+			this.sidebarMenuItems = this._leftSideBarService.updateSideMenuCertificate(res, this.sidebarMenuItems);
 			if (this.exitAfterSave) {
 				this.exit();
 			} else {
@@ -974,8 +980,9 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			});
 			return false;
 		}
-		console.log(startMoment.diff(moment()));
-		if (startMoment.diff(moment()) < 0) {
+		console.log(startMoment.diff(moment(), 'days'));
+		if (startMoment.diff(moment(), 'days') < 0) {
+			this.busySavingData = false;
 			this.snackBar.open('Start date cannot be in the past!', 'Close', {
 				duration: 5000
 			});
@@ -1058,9 +1065,17 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.busySavingData = false;
 			console.log('No date selected or no content added to itinerary! - ' + JSON.stringify(itinerary));
 			if (!itinerary || itinerary.length === 0) {
-				this.snackBar.open('You need to add at least 1 activity to your experience to proceed.', 'Close', {
-					duration: 5000
-				});
+				if (this.exitAfterSave) {
+					this.snackBar.open('You need to add at least 1 activity to your experience to proceed.', 'Exit Anyways', {
+						duration: 5000
+					}).onAction().subscribe(res => {
+						this.exit();
+					});
+				} else {
+					this.snackBar.open('You need to add at least 1 activity to your experience to proceed.', 'Close', {
+						duration: 5000
+					});
+				}
 			} else {
 				this.snackBar.open('No dates have been selected for your experience.', 'Close', {
 					duration: 5000
@@ -1143,7 +1158,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public goto(toggleStep) {
 		this.step = toggleStep;
 		this.router.navigate(['experience', this.experienceId, 'edit', +toggleStep]);
-		this.showBackground = !!(this.step && this.step.toString() === '5');
+		this.showBackground = this.step && this.step.toString() === '6';
 	}
 
 
@@ -1169,7 +1184,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	}
 
-	saveandexit(certificateComponent?: any) {
+	saveandexit() {
 		this.exitAfterSave = true;
 		switch (this.step) {
 			case 2:
@@ -1459,7 +1474,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		console.log(rulesArray);
 		rulesArray.push(this._fb.group({
 			value: '',
-			gyan: ['', [Validators.required, Validators.max(100), Validators.min(0)]]
+			gyan: ['', [Validators.required, Validators.max(100), Validators.min(1)]]
 		}));
 	}
 
@@ -1543,20 +1558,29 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	}
 
 	public assessmentChange(event: any) {
-		console.log(event);
 		const value = <AssessmentTypeData['values']>event.value;
-		this.assessmentForm.controls['style'].patchValue(value.style);
-		console.log(value.rules);
+		console.log(value);
 		this.assessmentForm.controls['rules'] = this._fb.array([], Validators.minLength(1));
 		const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
-		value.rules.forEach(val => {
+		if (value.style === 'custom') {
+			this.assessmentForm.controls['style'].patchValue('');
 			rulesArray.push(
 				this._fb.group({
-					value: val.value,
-					gyan: val.gyan
+					value: ['', Validators.required],
+					gyan: ['', [Validators.required, Validators.max(100), Validators.min(1)]]
 				})
 			);
-		});
+		} else {
+			this.assessmentForm.controls['style'].patchValue(value.style);
+			value.rules.forEach(val => {
+				rulesArray.push(
+					this._fb.group({
+						value: [val.value, Validators.required],
+						gyan: [val.gyan, [Validators.required, Validators.max(100), Validators.min(1)]]
+					})
+				);
+			});
+		}
 	}
 }
 
@@ -1564,9 +1588,15 @@ interface AssessmentTypeData {
 	system: string;
 	values: {
 		style: string;
-		rules: Array<{
+		rules?: Array<{
 			value: string,
 			gyan: number
 		}>;
 	};
+}
+
+interface SubTypeInterface {
+	name: string;
+	pic_url: string;
+	description: string;
 }

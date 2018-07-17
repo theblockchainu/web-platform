@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
 	public activePath = 'home';
 	showHeader = true;
 	showFooter = true;
-	showProgressbar = true;
+	// showProgressbar = true;
 	// Sets initial value to true to show loading spinner on first load
 	public loading: Observable<boolean>;
 
@@ -79,9 +79,7 @@ export class AppComponent implements OnInit {
 			|| /^\/error/.test(location.url));
 		if (this.router.url === '/') {
 			this.showHeader = false;
-			this.showProgressbar = false;
 		}
-
 	}
 
 	public setTitle(newTitle: string) {

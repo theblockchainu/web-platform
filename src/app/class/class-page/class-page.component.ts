@@ -162,6 +162,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public checkingEthereum = true;
 	public isOnEthereum = false;
 	objectKeys = Object.keys;
+	public previewAs: string;
 
 	public view = 'month';
 
@@ -200,7 +201,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public carouselBanner: any;
 	public startedView;
 	public inviteLink = '';
-	public isPreview = false;
 	public assessmentRules: Array<any>;
 
 	constructor(public router: Router,
@@ -255,9 +255,9 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.toOpenDialogName = params['dialogName'];
 		});
 		this.activatedRoute.queryParams.subscribe(params => {
-			if (params['preview']) {
-				this.isPreview = params['preview'];
-				console.log('This is a preview');
+			if (params['previewAs']) {
+				this.previewAs = params['previewAs'];
+				console.log('Previewing as ' + this.previewAs);
 			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
@@ -362,24 +362,28 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 
 	private initializeUserType() {
 		if (this.class) {
-			for (const owner of this.class.owners) {
-				if (owner.id === this.userId && (!this.isPreview)) {
-					this.userType = 'teacher';
-					break;
-				}
-			}
-			if (!this.userType && this.currentCalendar) {
-				for (const participant of this.class.participants) {
-					if (participant.id === this.userId) {
-						this.userType = 'participant';
+			if (this.previewAs) {
+				this.userType = this.previewAs;
+			} else {
+				for (const owner of this.class.owners) {
+					if (owner.id === this.userId) {
+						this.userType = 'teacher';
 						break;
 					}
 				}
-			}
-			if (!this.userType) {
-				this.userType = 'public';
-				if (this.calendarId) {
-					this.router.navigate(['class', this.classId]);
+				if (!this.userType && this.currentCalendar) {
+					for (const participant of this.class.participants) {
+						if (participant.id === this.userId) {
+							this.userType = 'participant';
+							break;
+						}
+					}
+				}
+				if (!this.userType) {
+					this.userType = 'public';
+					if (this.calendarId) {
+						this.router.navigate(['class', this.classId]);
+					}
 				}
 			}
 			if (this.userType === 'public' || this.userType === 'teacher') {
@@ -1713,7 +1717,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			// console.log(result);
 		});
 	}
-	
+
 	public addToEthereum() {
 		this._collectionService.addToEthereum(this.classId)
 			.subscribe(res => {

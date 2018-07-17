@@ -172,7 +172,7 @@ export class AssessmentService {
             },
             {
               value: 'Fail',
-              gyan: 0
+              gyan: 1
             }
           ]
         }
@@ -194,7 +194,7 @@ interface AssessmentTypeData {
   system: string;
   values: {
     style: string;
-    rules: Array<{
+    rules?: Array<{
       value: string,
       gyan: number
     }>;

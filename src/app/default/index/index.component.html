@@ -531,7 +531,7 @@
 					<a class="clickable">here</a>.
 				</div>
 				<div *ngFor="let community of communities; let i = index;">
-					<app-community-card *ngIf="i < 5" [community]="community" (refresh)="onCommunityRefresh($event)"></app-community-card>
+					<app-community-card *ngIf="i < 5" [cardsPerRow]="3" [community]="community" (refresh)="onCommunityRefresh($event)"></app-community-card>
 				</div>
 			</div>
 		</div>

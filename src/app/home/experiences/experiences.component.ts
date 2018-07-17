@@ -437,6 +437,8 @@ export class ExperiencesComponent implements OnInit {
 	}
 
 	public toggleArchive() {
+		this.experiences = [];
+		this.loading = true;
 		console.log('show archive');
 		console.log(this.showArchived);
 		this.showArchived = !this.showArchived;

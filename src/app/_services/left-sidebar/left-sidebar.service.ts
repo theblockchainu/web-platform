@@ -63,16 +63,20 @@ export class LeftSidebarService {
             //     }
             // });
         }
-        if (collection.topics !== undefined && collection.topics.length > 0) {
+        if (collection.subCategory && collection.subCategory.length > 0) {
             sidebarMenuItems[0].submenu[0].complete = true;
             completedSections++;
         }
-        if (collection.language !== undefined && collection.language.length > 0) {
+        if (collection.topics !== undefined && collection.topics.length > 0) {
             sidebarMenuItems[0].submenu[1].complete = true;
             completedSections++;
         }
-        if (collection.aboutHost !== undefined && collection.aboutHost.length > 0) {
+        if (collection.language !== undefined && collection.language.length > 0) {
             sidebarMenuItems[0].submenu[2].complete = true;
+            completedSections++;
+        }
+        if (collection.aboutHost !== undefined && collection.aboutHost.length > 0) {
+            sidebarMenuItems[0].submenu[3].complete = true;
             completedSections++;
         }
         if (collection.title !== undefined && collection.headline !== undefined &&
@@ -101,7 +105,7 @@ export class LeftSidebarService {
             sidebarMenuItems[1].submenu[4].complete = false;
         }
         if (collection.price !== undefined && collection.currency && collection.cancellationPolicy && collection.academicGyan !== undefined && collection.nonAcademicGyan !== undefined) {
-            sidebarMenuItems[1].submenu[5].complete = true;
+            sidebarMenuItems[1].submenu[7].complete = true;
             completedSections++;
         }
         if (collection.assessment_models && collection.assessment_models[0] && collection.assessment_models[0].assessment_rules && collection.assessment_models[0].assessment_na_rules) {
@@ -114,9 +118,9 @@ export class LeftSidebarService {
             }, this);
             completedSections++;
         }
-        
+
         sidebarMenuItems[3].locked = completedSections !== 11;
-        
+
         if (collection.owners !== undefined && collection.owners[0].phoneVerified) {
             sidebarMenuItems[4].submenu[0].complete = true;
         }
@@ -124,22 +128,29 @@ export class LeftSidebarService {
     }
 
 
+    public updateSideMenuCertificate(certificate: any, sidebarMenuItems) {
+        if (certificate.formData && certificate.formData.length > 0 && certificate.expiryDate && certificate.expiryDate.length > 0) {
+            sidebarMenuItems[1].submenu[5].complete = true;
+        }
+        return sidebarMenuItems;
+    }
+
     public updateSessionMenu(sidebarMenuItems, dataToUpdate: SessionConfigObject) {
         let completedSections = 0;
         if (dataToUpdate.profileObject) {
             if (dataToUpdate.profileObject.headline && dataToUpdate.profileObject.description) {
-                sidebarMenuItems[0].submenu[0].complete = true;
+                sidebarMenuItems[0].submenu[1].complete = true;
                 completedSections++;
             }
 
             if (dataToUpdate.profileObject.picture_url) {
-                sidebarMenuItems[0].submenu[1].complete = true;
+                sidebarMenuItems[0].submenu[2].complete = true;
                 completedSections++;
             }
 
             if (dataToUpdate.profileObject.location_lat && dataToUpdate.profileObject.other_languages
                 && dataToUpdate.profileObject.other_languages.length > 0) {
-                sidebarMenuItems[0].submenu[2].complete = true;
+                sidebarMenuItems[0].submenu[3].complete = true;
                 completedSections++;
             }
 
@@ -147,7 +158,7 @@ export class LeftSidebarService {
         }
 
         if (dataToUpdate.educationObject && dataToUpdate.educationObject.length > 0) {
-            sidebarMenuItems[0].submenu[3].complete = true;
+            sidebarMenuItems[0].submenu[4].complete = true;
         }
 
         if (dataToUpdate.topicsObject) {

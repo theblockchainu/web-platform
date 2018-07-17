@@ -98,7 +98,6 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	public newUserRating: number;
 	public busyQuestion: boolean;
 	public busyAnswer: boolean;
-	public initialLoad: boolean;
 	public noOfQuestions: number;
 	private initialized: boolean;
 	public hasBookmarked: boolean;
@@ -159,7 +158,6 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 
 	private initializeVariables() {
 		this.loadingCommunity = true;
-		this.initialLoad = false;
 		this.loadingQuestions = true;
 		this.loadingParticipants = true;
 		this.accountApproved = 'false';
@@ -167,7 +165,6 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 		this.newUserRating = 0;
 		this.busyQuestion = false;
 		this.busyAnswer = false;
-		this.initialLoad = true;
 		this.noOfQuestions = 3;
 		this.initialized = false;
 		this.hasBookmarked = false;
