@@ -370,6 +370,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				for (const owner of this.experience.owners) {
 					if (owner.id === this.userId) {
 						this.userType = 'teacher';
+						this.getCertificatetemplate();
+						this.sortAssessmentRules();
 						break;
 					}
 				}
@@ -602,8 +604,6 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						this.getDiscussions();
 						this.getBookmarks();
 						this.setUpCarousel();
-						this.getCertificatetemplate();
-						this.sortAssessmentRules();
 						if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
 							this.itenaryArray.forEach(itinerary => {
 								itinerary.contents.forEach(content => {
