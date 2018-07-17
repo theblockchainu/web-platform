@@ -63,6 +63,7 @@ export class ExperiencesComponent implements OnInit {
 	public locationList: Array<any>;
 	public levelList: Array<any>;
 	public ratingList: Array<number>;
+	public showArchived: boolean;
 
 	constructor(
 		public _collectionService: CollectionService,
@@ -287,11 +288,13 @@ export class ExperiencesComponent implements OnInit {
 								}
 								if (hasActiveCalendar) {
 									experiences.push(collection);
+								} else if (!hasActiveCalendar && this.showArchived) {
+									experiences.push(collection);
 								}
 							}
 						});
 					}
-					
+
 					this.experiences = _.uniqBy(experiences, 'id');
 					this.experiences = _.orderBy(this.experiences, ['createdAt'], ['desc']);
 					this.experiencesBackup = _.cloneDeep(this.experiences);
@@ -344,10 +347,8 @@ export class ExperiencesComponent implements OnInit {
 
 		this.availableDurationRange = [minDuration, maxDuration];
 		this.selectedDurationRange = _.clone(this.availableDurationRange);
-
 		this.availableRange = [minPrice, maxPrice];
 		this.selectedRange = _.clone(this.availableRange);
-
 	}
 
 	public openTopicsDialog(): void {
@@ -428,10 +429,17 @@ export class ExperiencesComponent implements OnInit {
 		this.availableTopics = _.cloneDeep(this.topicsBackup);
 		this.fetchExperiences();
 	}
-	
+
 	public onExperienceRefresh(event) {
 		if (event) {
 			this.fetchExperiences();
 		}
+	}
+
+	public toggleArchive() {
+		console.log('show archive');
+		console.log(this.showArchived);
+		this.showArchived = !this.showArchived;
+		this.fetchData();
 	}
 }

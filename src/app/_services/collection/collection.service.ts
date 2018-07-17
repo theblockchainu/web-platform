@@ -576,10 +576,15 @@ export class CollectionService {
 	/**
 	 * getParticipants
 	 */
-	public getParticipants(collectionId, query) {
-		const filter = JSON.stringify(query);
-		return this.httpClient
-			.get(environment.apiUrl + '/api/collections/' + collectionId + '/participants?filter=' + filter, this.requestHeaderService.options);
+	public getParticipants(collectionId, query?) {
+		if (query) {
+			const filter = JSON.stringify(query);
+			return this.httpClient
+				.get(environment.apiUrl + '/api/collections/' + collectionId + '/participants?filter=' + filter, this.requestHeaderService.options);
+		} else {
+			return this.httpClient
+				.get(environment.apiUrl + '/api/collections/' + collectionId + '/participants', this.requestHeaderService.options);
+		}
 	}
 
 	/**

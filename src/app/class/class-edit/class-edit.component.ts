@@ -28,6 +28,7 @@ import { ProfileService } from '../../_services/profile/profile.service';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { CustomCertificateFormComponent } from '../../_shared/custom-certificate-form/custom-certificate-form.component';
 import { merge } from 'rxjs/observable/merge';
+import { AssessmentService } from '../../_services/assessment/assessment.service';
 
 @Component({
 	selector: 'app-class-edit',
@@ -147,6 +148,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('certificateComponent') certificateComponent: CustomCertificateFormComponent;
 	exitAfterSave = false;
 	public originalInterests = [];
+	defaultAssesment: any;
+	availableDefaultAssessments: Array<AssessmentTypeData>;
 
 	// TypeScript public modifiers
 	constructor(
@@ -172,7 +175,9 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		private titleService: Title,
 		private metaService: Meta,
 		private profileService: ProfileService,
-		private certificateService: CertificateService
+		private certificateService: CertificateService,
+		private assesmentService: AssessmentService
+
 	) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
@@ -275,7 +280,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		this.certificateForm = this._fb.group({
 			certificateHTML: [''],
-			expiryDate: [null],
+			expiryDate: [''],
 			formData: [null]
 		});
 
@@ -557,6 +562,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.placeholderStringTopic = 'Start typing to to see a list of suggested topics...';
 
 		this.key = 'access_token';
+
+		this.availableDefaultAssessments = this.assesmentService.getAvailableAssessments();
 
 		this.countryPickerService.getCountries()
 			.subscribe((countries) => this.countries = countries);
@@ -880,6 +887,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.busySavingData = true;
 		this.certificateForm.controls['certificateHTML'].patchValue(certificate.htmlData);
 		this.certificateForm.controls['formData'].patchValue(JSON.stringify(certificate.formData));
+		this.certificateForm.controls['expiryDate'].patchValue(certificate.expiryDate);
 		this._collectionService.submitCertificate(this.classId, this.certificateForm.value).subscribe(res => {
 			this.busySavingData = false;
 
@@ -1527,5 +1535,31 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public standards() {
 		this.dialogsService.collectionStandardsDialog().subscribe();
 	}
-}
 
+	public assessmentChange(event: any) {
+		console.log(event);
+		const value = <AssessmentTypeData['values']>event.value;
+		this.assessmentForm.controls['style'].patchValue(value.style);
+		console.log(value.rules);
+		this.assessmentForm.controls['rules'] = this._fb.array([], Validators.minLength(1));
+		const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
+		value.rules.forEach(val => {
+			rulesArray.push(
+				this._fb.group({
+					value: val.value,
+					gyan: val.gyan
+				})
+			);
+		});
+	}
+}
+interface AssessmentTypeData {
+	system: string;
+	values: {
+		style: string;
+		rules: Array<{
+			value: string,
+			gyan: number
+		}>;
+	};
+}

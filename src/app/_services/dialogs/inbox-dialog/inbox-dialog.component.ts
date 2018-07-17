@@ -1,20 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import {ProfileService} from '../../profile/profile.service';
-import {environment} from '../../../../environments/environment';
-import {InboxService} from '../../inbox/inbox.service';
-import {CookieUtilsService} from '../../cookieUtils/cookie-utils.service';
-import {SocketService} from '../../socket/socket.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ProfileService } from '../../profile/profile.service';
+import { environment } from '../../../../environments/environment';
+import { InboxService } from '../../inbox/inbox.service';
+import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
+import { SocketService } from '../../socket/socket.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
-import {MatDialogRef} from "@angular/material";
+import { MatDialogRef } from '@angular/material';
 
 @Component({
-  selector: 'app-inbox-dialog',
-  templateUrl: './inbox-dialog.component.html',
-  styleUrls: ['./inbox-dialog.component.scss']
+	selector: 'app-inbox-dialog',
+	templateUrl: './inbox-dialog.component.html',
+	styleUrls: ['./inbox-dialog.component.scss']
 })
 export class InboxDialogComponent implements OnInit {
-	
+
 	public loadingMessages = false;
 	public joinedRooms = [];
 	public tempJoinedRooms = [];
@@ -24,7 +24,7 @@ export class InboxDialogComponent implements OnInit {
 	public selected = '';
 	public message = '';
 	public envVariable;
-	
+
 	constructor(
 		public activatedRoute: ActivatedRoute,
 		public _inboxService: InboxService,
@@ -37,7 +37,7 @@ export class InboxDialogComponent implements OnInit {
 		this.envVariable = environment;
 		this.userId = this._cookieUtilsService.getValue(this.key);
 	}
-	
+
 	ngOnInit() {
 		this.loadingMessages = true;
 		this._inboxService.getRoomData(5)
@@ -50,7 +50,7 @@ export class InboxDialogComponent implements OnInit {
 				}
 			});
 	}
-	
+
 	public initializeInbox(response) {
 		this.sortFilterJoinedRooms(response);
 		this.tempJoinedRooms = this.joinedRooms;
@@ -64,7 +64,7 @@ export class InboxDialogComponent implements OnInit {
 		});
 		this.loadingMessages = false;
 	}
-	
+
 	public sortFilterJoinedRooms(response) {
 		// this.joinedRooms = response.filter(room => (room.collection && room.collection.length > 0));
 		this.joinedRooms = response;
@@ -76,17 +76,17 @@ export class InboxDialogComponent implements OnInit {
 		});
 		this.tempJoinedRooms = this.joinedRooms;
 	}
-	
+
 	public openInbox(room) {
 		this.router.navigate(['console', 'inbox', room.id]);
 		this.dialogRef.close();
-		
+
 	}
-	
+
 	public imgErrorHandler(event) {
 		event.target.src = '/assets/images/placeholder-image.jpg';
 	}
-	
+
 	public goToInbox() {
 		this.router.navigate(['console', 'inbox']);
 		this.dialogRef.close();
