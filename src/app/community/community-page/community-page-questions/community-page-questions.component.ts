@@ -1,15 +1,15 @@
-import {AfterViewChecked, Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {CommunityPageComponent} from '../community-page.component';
-import {CookieUtilsService} from '../../../_services/cookieUtils/cookie-utils.service';
-import {QuestionService} from '../../../_services/question/question.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CommunityService} from '../../../_services/community/community.service';
-import {ProfileService} from '../../../_services/profile/profile.service';
-import {CommentService} from '../../../_services/comment/comment.service';
-import {MatSnackBar} from '@angular/material';
-import {CollectionService} from "../../../_services/collection/collection.service";
-import {AuthenticationService} from "../../../_services/authentication/authentication.service";
+import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CommunityPageComponent } from '../community-page.component';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+import { QuestionService } from '../../../_services/question/question.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommunityService } from '../../../_services/community/community.service';
+import { ProfileService } from '../../../_services/profile/profile.service';
+import { CommentService } from '../../../_services/comment/comment.service';
+import { MatSnackBar } from '@angular/material';
+import { CollectionService } from '../../../_services/collection/collection.service';
+import { AuthenticationService } from '../../../_services/authentication/authentication.service';
 
 @Component({
     selector: 'app-community-page-questions',
@@ -44,16 +44,16 @@ export class CommunityPageQuestionsComponent implements OnInit {
     public questionKarmaBurn: number;
 
     constructor(activatedRoute: ActivatedRoute,
-                public communityPageComponent: CommunityPageComponent,
-                public _cookieUtilsService: CookieUtilsService,
-                public _questionsService: QuestionService,
-                public _communityService: CommunityService,
-                public _collectionService: CollectionService,
-                private _authService: AuthenticationService,
-                public _commentService: CommentService,
-                public _fb: FormBuilder,
-                public snackBar: MatSnackBar,
-                public _profileService: ProfileService) {
+        public communityPageComponent: CommunityPageComponent,
+        public _cookieUtilsService: CookieUtilsService,
+        public _questionsService: QuestionService,
+        public _communityService: CommunityService,
+        public _collectionService: CollectionService,
+        private _authService: AuthenticationService,
+        public _commentService: CommentService,
+        public _fb: FormBuilder,
+        public snackBar: MatSnackBar,
+        public _profileService: ProfileService) {
 
         activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
             console.log('activated route is: ' + JSON.stringify(urlSegment));
@@ -92,40 +92,40 @@ export class CommunityPageQuestionsComponent implements OnInit {
                 }
             }
         });
-		this.questionForm.controls.gyan.valueChanges.subscribe(value => {
-			if (value) {
-				this._collectionService.getKarmaToBurn(value).subscribe(res => {
-					this.questionKarmaBurn = res['karma'];
-				});
-			}
-		});
+        this.questionForm.controls.gyan.valueChanges.subscribe(value => {
+            if (value) {
+                this._collectionService.getKarmaToBurn(value).subscribe(res => {
+                    this.questionKarmaBurn = res['karma'];
+                });
+            }
+        });
     }
-    
+
     public getGyanBalance() {
-		this._profileService.getGyanBalance(this.userId, 'fixed').subscribe(res => {
-			this.gyanBalance = parseInt(res, 10);
-			
-			if (this.gyanBalance === 0) {
-				this.questionForm.controls['gyan'].disable();
-			}
-		});
-	}
+        this._profileService.getGyanBalance(this.userId, 'fixed').subscribe(res => {
+            this.gyanBalance = parseInt(res, 10);
+
+            if (this.gyanBalance === 0) {
+                this.questionForm.controls['gyan'].disable();
+            }
+        });
+    }
 
     public getQuestions() {
         this.loadingQuestions = true;
         const query = {
             'include': [
                 'views',
-                {'peer': 'profiles'},
-                {'answers': [{'peer': 'profiles'}, {'upvotes': {'peer': 'profiles'}}, {'comments': [{'peer': 'profiles'}, {'replies': {'peer': 'profiles'}}, {'upvotes': 'peer'}]}, {'views': 'peer'}, {'flags': 'peer'}]},
-                {'comments': [{'peer': 'profiles'}, {'replies': {'peer': 'profiles'}}, {'upvotes': 'peer'}]},
-                {'upvotes': {'peer': 'profiles'}},
-                {'views': 'peer'},
-                {'flags': 'peer'},
-                {'followers': 'profiles'}
+                { 'peer': 'profiles' },
+                { 'answers': [{ 'peer': 'profiles' }, { 'upvotes': { 'peer': 'profiles' } }, { 'comments': [{ 'peer': 'profiles' }, { 'replies': { 'peer': 'profiles' } }, { 'upvotes': 'peer' }] }, { 'views': 'peer' }, { 'flags': 'peer' }] },
+                { 'comments': [{ 'peer': 'profiles' }, { 'replies': { 'peer': 'profiles' } }, { 'upvotes': 'peer' }] },
+                { 'upvotes': { 'peer': 'profiles' } },
+                { 'views': 'peer' },
+                { 'flags': 'peer' },
+                { 'followers': 'profiles' }
             ],
-            'order' : 'createdAt desc',
-			'limit': 10
+            'order': 'createdAt desc',
+            'limit': 10
         };
 
         if (this.communityId) {
@@ -145,8 +145,8 @@ export class CommunityPageQuestionsComponent implements OnInit {
     private initializeForms() {
         this.questionForm = this._fb.group({
             text: ['', Validators.required],
-			gyan: ['1', [Validators.required, Validators.min(1)]],
-			scholarshipId: ['NA']
+            gyan: ['1', [Validators.required, Validators.min(1)]],
+            scholarshipId: ['NA']
         });
         this.answerForm = this._fb.group({
             text: ['', [Validators.required, Validators.minLength(50)]]
@@ -160,7 +160,7 @@ export class CommunityPageQuestionsComponent implements OnInit {
     }
 
     private getLoggedInUser() {
-        this._profileService.getPeerData(this.userId, {'include': ['profiles', 'reviewsAboutYou', 'ownedCollections', 'scholarships_joined']}).subscribe(res => {
+        this._profileService.getPeerData(this.userId, { 'include': ['profiles', 'reviewsAboutYou', 'ownedCollections', 'scholarships_joined'] }).subscribe(res => {
             this.loggedInUser = res;
             this.loadingUser = false;
             console.log(this.loggedInUser);
@@ -172,29 +172,29 @@ export class CommunityPageQuestionsComponent implements OnInit {
      * post question
      */
     public postQuestion() {
-    	if (this.questionForm.valid && (this.questionForm.controls['gyan'].value <= this.gyanBalance || this.questionForm.controls['gyan'].disabled)) {
-    		// If user has a scholarship, make sure the scholarship is used for karma burn.
-    		if (this.loggedInUser.scholarships_joined && this.loggedInUser.scholarships_joined.length > 0) {
-    			this.questionForm.controls['scholarshipId'].patchValue(this.loggedInUser.scholarships_joined[0].id);
-			}
-			// If gyan balance is 0, make the gyan amount 1.
-			if (this.gyanBalance === 0) {
-				this.questionForm.controls['gyan'].patchValue(1);
-				this.questionForm.value['gyan'] = 1;
-			}
-			this.busyQuestion = true;
-			this._communityService.postQuestion(this.communityId, this.questionForm.value).subscribe(result => {
-					this._authService.isLoginSubject.next(true);
-					this.questionForm.reset();
-					this.busyQuestion = false;
-					this.getQuestions();
-				},
-				err => {
-					console.log(err);
-				});
-		} else {
-    		this.snackBar.open('Check if you have enough gyan balance in your account for this question.', 'Ok', {duration: 5000});
-		}
+        if (this.questionForm.valid && (this.questionForm.controls['gyan'].value <= this.gyanBalance || this.questionForm.controls['gyan'].disabled)) {
+            // If user has a scholarship, make sure the scholarship is used for karma burn.
+            if (this.loggedInUser.scholarships_joined && this.loggedInUser.scholarships_joined.length > 0) {
+                this.questionForm.controls['scholarshipId'].patchValue(this.loggedInUser.scholarships_joined[0].id);
+            }
+            // If gyan balance is 0, make the gyan amount 1.
+            if (this.gyanBalance === 0) {
+                this.questionForm.controls['gyan'].patchValue(1);
+                this.questionForm.value['gyan'] = 1;
+            }
+            this.busyQuestion = true;
+            this._communityService.postQuestion(this.communityId, this.questionForm.value).subscribe(result => {
+                this._authService.isLoginSubject.next(true);
+                this.questionForm.reset();
+                this.busyQuestion = false;
+                this.getQuestions();
+            },
+                err => {
+                    console.log(err);
+                });
+        } else {
+            this.snackBar.open('Check if you have enough gyan balance in your account for this question.', 'Ok', { duration: 5000 });
+        }
     }
 
     /**
@@ -214,10 +214,10 @@ export class CommunityPageQuestionsComponent implements OnInit {
         this._questionsService.addQuestionUpvote(question.id, {}).subscribe(
             response => {
                 if (question.upvotes !== undefined) {
-                    question.upvotes.push(response );
+                    question.upvotes.push(response);
                 } else {
                     question.upvotes = [];
-                    question.upvotes.push(response );
+                    question.upvotes.push(response);
                 }
             }, err => {
                 console.log(err);
@@ -264,25 +264,25 @@ export class CommunityPageQuestionsComponent implements OnInit {
             }
         );
     }
-	
+
 	/**
 	 * accept answer
 	 */
-	public acceptAnswer(question: any, answer: any) {
-		if (!answer.accept) {
-			this.busyAnswer = true;
-			this._questionsService.acceptAnswerToQuestion(question.id, answer.id, this.loggedInUser.ethAddress).subscribe(
-				response => {
-					this._authService.isLoginSubject.next(true);
-					this.busyAnswer = false;
-					this.getQuestions();
-				}, err => {
-					this.busyAnswer = false;
-					console.log(err);
-				}
-			);
-		}
-	}
+    public acceptAnswer(question: any, answer: any) {
+        if (!answer.accept) {
+            this.busyAnswer = true;
+            this._questionsService.acceptAnswerToQuestion(question.id, answer.id, this.loggedInUser.ethAddress).subscribe(
+                response => {
+                    this._authService.isLoginSubject.next(true);
+                    this.busyAnswer = false;
+                    this.getQuestions();
+                }, err => {
+                    this.busyAnswer = false;
+                    console.log(err);
+                }
+            );
+        }
+    }
 
     /**
      * post comment to answer
@@ -339,10 +339,10 @@ export class CommunityPageQuestionsComponent implements OnInit {
         this._questionsService.addAnswerUpvote(answer.id, {}).subscribe(
             response => {
                 if (answer.upvotes !== undefined) {
-                    answer.upvotes.push(response );
+                    answer.upvotes.push(response);
                 } else {
                     answer.upvotes = [];
-                    answer.upvotes.push(response );
+                    answer.upvotes.push(response);
                 }
             }, err => {
                 console.log(err);
@@ -390,10 +390,10 @@ export class CommunityPageQuestionsComponent implements OnInit {
         this._commentService.addCommentUpvote(comment.id, {}).subscribe(
             response => {
                 if (comment.upvotes !== undefined) {
-                    comment.upvotes.push(response );
+                    comment.upvotes.push(response);
                 } else {
                     comment.upvotes = [];
-                    comment.upvotes.push(response );
+                    comment.upvotes.push(response);
                 }
             }, err => {
                 console.log(err);
@@ -405,10 +405,10 @@ export class CommunityPageQuestionsComponent implements OnInit {
         this._commentService.addReplyUpvote(reply.id, {}).subscribe(
             response => {
                 if (reply.upvotes !== undefined) {
-                    reply.upvotes.push(response );
+                    reply.upvotes.push(response);
                 } else {
                     reply.upvotes = [];
-                    reply.upvotes.push(response );
+                    reply.upvotes.push(response);
                 }
             }, err => {
                 console.log(err);

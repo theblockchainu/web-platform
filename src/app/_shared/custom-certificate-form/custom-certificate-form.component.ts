@@ -186,17 +186,22 @@ export class CustomCertificateFormComponent implements OnInit {
 			this.formData = this.data.formData;
 			this.expiryDate.patchValue(this.data.expiryDate);
 			console.log(this.formData);
-			this.formData.groupArray.forEach(group => {
-				const control = <FormGroup>this.fieldsArray.find((fg: FormGroup) => {
-					console.log(fg);
-					if (fg.controls['name'].value === group.name) {
-						return true;
+			if (this.data.formData) {
+				const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
+				this.formData.groupArray.forEach(group => {
+					const control = <FormGroup>this.fieldsArray.find((fg: FormGroup) => {
+						if (fg.controls['name'].value === group.name) {
+							return true;
+						}
+					});
+					if (control) {
+						const newControl = _.cloneDeep(control);
+						newControl.patchValue(group);
+						groupArray.push(newControl);
 					}
 				});
-				control.patchValue(group);
-				const groupArray = <FormArray>this.customCertificateForm.controls['groupArray'];
-				groupArray.push(control);
-			});
+			}
+
 		}
 	}
 

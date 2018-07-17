@@ -81,7 +81,7 @@
 							</div>
 							<!--DISCUSSION THREAD-->
 							<div class="row Discussion" *ngIf="userType==='owner' || userType==='participant'">
-								<div class="loading-container" [hidden]="!loadingComments && !initialLoad">
+								<div class="loading-container" [hidden]="!loadingComments">
 									<ngx-loading [show]="true"></ngx-loading>
 								</div>
 								<div class="col-md-12">

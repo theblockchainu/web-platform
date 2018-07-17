@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, OnDestroy, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar } from '@angular/material';
@@ -200,11 +200,13 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public carouselBanner: any;
 	public startedView;
 	public inviteLink = '';
-	public isPreview = false;
+	public previewAs: string;
 
 	certificateHTML: string;
 	loadingCertificate: boolean;
 	public assessmentRules: Array<any>;
+
+	@ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
 
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -256,9 +258,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this.toOpenDialogName = params['dialogName'];
 		});
 		this.activatedRoute.queryParams.subscribe(params => {
-			if (params['preview']) {
-				this.isPreview = params['preview'];
-				console.log('This is a preview');
+			if (params['previewAs']) {
+				this.previewAs = params['previewAs'];
+				console.log('Previewing as ' + this.previewAs);
 			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
@@ -362,24 +364,30 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 
 	private initializeUserType() {
 		if (this.experience) {
-			for (const owner of this.experience.owners) {
-				if (owner.id === this.userId && (!this.isPreview)) {
-					this.userType = 'teacher';
-					break;
-				}
-			}
-			if (!this.userType && this.currentCalendar) {
-				for (const participant of this.experience.participants) {
-					if (participant.id === this.userId) {
-						this.userType = 'participant';
+			if (this.previewAs) {
+				this.userType = this.previewAs;
+			} else {
+				for (const owner of this.experience.owners) {
+					if (owner.id === this.userId) {
+						this.userType = 'teacher';
+						this.getCertificatetemplate();
+						this.sortAssessmentRules();
 						break;
 					}
 				}
-			}
-			if (!this.userType) {
-				this.userType = 'public';
-				if (this.calendarId) {
-					this.router.navigate(['experience', this.experienceId]);
+				if (!this.userType && this.currentCalendar) {
+					for (const participant of this.experience.participants) {
+						if (participant.id === this.userId) {
+							this.userType = 'participant';
+							break;
+						}
+					}
+				}
+				if (!this.userType) {
+					this.userType = 'public';
+					if (this.calendarId) {
+						this.router.navigate(['experience', this.experienceId]);
+					}
 				}
 			}
 			if (this.userType === 'public' || this.userType === 'teacher') {
@@ -596,8 +604,6 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						this.getDiscussions();
 						this.getBookmarks();
 						this.setUpCarousel();
-						this.getCertificatetemplate();
-						this.sortAssessmentRules();
 						if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
 							this.itenaryArray.forEach(itinerary => {
 								itinerary.contents.forEach(content => {
@@ -1810,6 +1816,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.certificateService.getCertificateTemplate(this.experienceId).subscribe((res: any) => {
 			if (res !== null && res !== undefined) {
 				this.certificateHTML = res.certificateHTML;
+				this.certificateDomHTML.changes.subscribe(elem => {
+					const image = elem['first'].nativeElement.children[0].children[0].children[1].children[0];
+					image.src = '/assets/images/peerbuds-qr.png';
+				});
 			}
 			this.loadingCertificate = false;
 		});
