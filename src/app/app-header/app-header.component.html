@@ -2,7 +2,7 @@
 	<mat-toolbar class="layout-row mat-elevation-header" layout="row" color="white">
 		<mat-toolbar-row>
 			<span>
-				<a href="javascript:void(0);" class="brand" aria-label="Peerbuds Homepage" (click)="goToHome()">
+				<a class="brand clickable" aria-label="Peerbuds Homepage" [routerLink]="['home','homefeed']">
 					<img src="/assets/images/pb_logo.png" alt="logo">
 				</a>
 			</span>
@@ -122,12 +122,13 @@
 					Log in
 				</button>
 				<button mat-button class="headerButtons mat-border-button" color="accent" style="border: 2px solid #FF6D71 !important;color: #ff6d71 !important;"
-				        [routerLink]="['/sign-up']" *ngIf="!(isLoggedIn | async)">
+				 [routerLink]="['/sign-up']" *ngIf="!(isLoggedIn | async)">
 					Sign up
 				</button>
 			</span>
 		</mat-toolbar-row>
-		<mat-toolbar-row [ngClass]="{'show-small': true, 'searchBar' : true, 'searchBarHeight': isSearchBarVisible}" *ngIf="(isLoggedIn | async) && isEmailVerified" style="border-top: 1px solid #ddd;">
+		<mat-toolbar-row [ngClass]="{'show-small': true, 'searchBar' : true, 'searchBarHeight': isSearchBarVisible}" *ngIf="(isLoggedIn | async) && isEmailVerified"
+		 style="border-top: 1px solid #ddd;">
 			<div class="search-form">
 				<mat-form-field style="color:#333333 !important" class="pb-block" *ngIf="(isLoggedIn | async)" [floatLabel]="'never'">
 					<input #searchInputBar name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="myControl"

@@ -331,7 +331,7 @@ export class ReviewPayComponent implements OnInit {
                         min_gyan: scholarship.min_gyan,
                         max_karma: scholarship.max_karma,
                         ethAddress: scholarship.ethAddress,
-                        selected: false
+                        selected: true
                     }));
                 } else {
                     scholarship.allowed_collections.forEach(collection => {
@@ -343,16 +343,17 @@ export class ReviewPayComponent implements OnInit {
                                 min_gyan: scholarship.min_gyan,
                                 max_karma: scholarship.max_karma,
                                 ethAddress: scholarship.ethAddress,
-                                selected: false
+                                selected: true
                             }));
                             // this.availableScholarships.push(scholarship);
                         }
                     });
                 }
             });
-            this.scholarshipForm.valueChanges.subscribe(changes => {
-                this.calculateScholarship();
-            });
+            this.calculateScholarship();
+            // this.scholarshipForm.valueChanges.subscribe(changes => {
+            //     this.calculateScholarship();
+            // });
         });
 
 
