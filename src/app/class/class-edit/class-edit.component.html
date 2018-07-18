@@ -779,8 +779,8 @@
 									<div class="row" style="margin: 30px 0px 15px -15px;">
 										<div class="col-xs-6">
 											<mat-form-field [floatLabel]="'auto'" class="dateStyles">
-												<input matInput [matDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate" (click)="startDatePicker.open()"
-												 disabled>
+												<input matInput [matDatepicker]="startDatePicker" [min]="currentDate" placeholder="Start date" formControlName="startDate"
+												 (click)="startDatePicker.open()" disabled>
 												<mat-datepicker-toggle matSuffix [for]="startDatePicker" class="svgStyle {{activeClass}}"></mat-datepicker-toggle>
 												<mat-datepicker touchUi="true" #startDatePicker disabled="false"></mat-datepicker>
 											</mat-form-field>

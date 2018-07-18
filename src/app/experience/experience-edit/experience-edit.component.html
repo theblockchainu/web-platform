@@ -806,7 +806,8 @@
 									<div class="row" style="margin: 30px 0px 15px -15px;">
 										<div class="col-xs-6">
 											<mat-form-field [floatLabel]="'auto'" class="dateStyles">
-												<input matInput [matDatepicker]="startDatePicker" (click)="startDatePicker.open()" placeholder="Start date" formControlName="startDate">
+												<input matInput [matDatepicker]="startDatePicker" [min]="currentDate" (click)="startDatePicker.open()" placeholder="Start date"
+												 formControlName="startDate">
 												<mat-datepicker-toggle matSuffix [for]="startDatePicker" class="svgStyle {{activeExperience}}"></mat-datepicker-toggle>
 												<mat-datepicker touchUi="true" #startDatePicker disabled="false"></mat-datepicker>
 											</mat-form-field>
