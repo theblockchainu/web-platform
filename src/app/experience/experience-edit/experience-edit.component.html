@@ -82,9 +82,7 @@
 								<div class="row">
 									<mat-radio-group formControlName="subCategory">
 										<div class="col-md-6 col-xs-12 padding-bottom-30" *ngFor="let subType of availableSubtypes">
-											<button type="button" mat-raised-button class="pb-block" [ngStyle]="{
-												background: 'url(\''+subType.pic_url+'\')'
-											}" style="height: 250px; text-align: left; background-size: cover; color: #fff;">
+											<button type="button" mat-raised-button class="pb-block" [ngStyle]="{background: 'url(\''+subType.pic_url+'\')'}" style="height: 250px; text-align: left; background-size: cover; color: #fff;">
 												<div style="position: absolute; bottom: 0; padding: 10px 15px; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
 													<mat-radio-button class="pb-block" [value]="subType.name">
 														<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">{{subType.name|titlecase}}</span>

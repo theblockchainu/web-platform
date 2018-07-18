@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {Meta, Title} from '@angular/platform-browser';
 import {Router} from '@angular/router';
+import {DialogsService} from '../../_services/dialogs/dialog.service';
 
 @Component({
 	selector: 'app-class-intro',
@@ -13,7 +14,8 @@ export class ClassIntroComponent implements OnInit {
 	constructor(
 		private titleService: Title,
 		private metaService: Meta,
-		private router: Router
+		private router: Router,
+		private dialogsService: DialogsService
 	) { }
 	
 	ngOnInit() {
