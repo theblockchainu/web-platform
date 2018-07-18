@@ -165,6 +165,8 @@ export class AppHeaderComponent implements OnInit {
 				this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {
 					duration: 5000
 				});
+			} else {
+				this.router.navigate(['home', 'homefeed']);
 			}
 		} else {
 			this.router.navigate(['/']);
