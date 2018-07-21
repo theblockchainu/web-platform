@@ -481,14 +481,14 @@
 									<div class="row margin-left-0" style="margin-top:40px">
 										<div class="col-md-8">
 											<div class="stepHeader">Upload Video</div>
-											<p-fileUpload *ngIf="!uploadingVideo" #fubauto name="video" accept="video/*" customUpload="true" (uploadHandler)="uploadVideo($event)"
-											 maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'video')" multiple="multiple">
+											<p-fileUpload auto="auto" *ngIf="!uploadingVideo" #fubauto name="video" accept="video/*" customUpload="true" (uploadHandler)="uploadVideo($event)"
+											 maxFileSize="10000000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'video')" multiple="multiple">
 												<ng-template pTemplate="toolbar">
 													<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>
 												</ng-template>
 											</p-fileUpload>
 											<h5>Max File Size
-												<b>10MB</b>
+												<b>1000MB</b>
 											</h5>
 											<div *ngIf="urlForVideo.length" class="profileVideo delete">
 												<div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0 videoContainer">
@@ -810,7 +810,8 @@
 									<div class="row" style="margin: 30px 0px 15px -15px;">
 										<div class="col-xs-6">
 											<mat-form-field [floatLabel]="'auto'" class="dateStyles">
-												<input matInput [matDatepicker]="startDatePicker" (click)="startDatePicker.open()" placeholder="Start date" formControlName="startDate">
+												<input matInput [matDatepicker]="startDatePicker" [min]="currentDate" (click)="startDatePicker.open()" placeholder="Start date"
+												 formControlName="startDate">
 												<mat-datepicker-toggle matSuffix [for]="startDatePicker" class="svgStyle {{activeExperience}}"></mat-datepicker-toggle>
 												<mat-datepicker touchUi="true" #startDatePicker disabled="false"></mat-datepicker>
 											</mat-form-field>
