@@ -1534,6 +1534,10 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 		return false;
 	}
+	
+	public importProfileBio() {
+		this.class.controls.aboutHost.patchValue(this.classData.owners[0].profiles[0].description);
+	}
 
 
 	public termsAndCondition() {
