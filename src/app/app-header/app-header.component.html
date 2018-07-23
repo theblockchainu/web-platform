@@ -14,6 +14,11 @@
 					<input #searchInputBar name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="myControl"
 					 [matAutocomplete]="auto" placeholder="Try 'Mumbai' ">
 					<mat-autocomplete #auto="matAutocomplete">
+						<mat-option *ngIf="searching" class="center">
+							<span>
+								<ngx-loading [show]="true"></ngx-loading>
+							</span>
+						</mat-option>
 						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)">
 							<span>
 								<img src="{{_searchService.getSearchOptionImage(option)}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"

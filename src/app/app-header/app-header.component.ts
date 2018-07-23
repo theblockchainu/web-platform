@@ -52,6 +52,8 @@ export class AppHeaderComponent implements OnInit {
 	public isSessionApproved: boolean;
 	public sessionId: string;
 	public isSearchBarVisible: boolean;
+	public searching: boolean;
+
 	constructor(public authService: AuthenticationService,
 		private http: HttpClient,
 		private _cookieService: CookieUtilsService,
@@ -79,11 +81,14 @@ export class AppHeaderComponent implements OnInit {
 			this.initializeHeader();
 		});
 		this.myControl.valueChanges.subscribe((value) => {
+			this.searching = true;
 			this._searchService.getAllSearchResults(this.userId, value, (err, result) => {
 				if (!err) {
-					this.options = result;
+					// this.options = result;
+					// this.searching = false;
 				} else {
 					console.log(err);
+					this.searching = false;
 				}
 			});
 		});

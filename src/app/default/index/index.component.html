@@ -32,6 +32,11 @@
 				<mat-form-field [floatPlaceholder]="'never'" class="search-form pb-block mat-elevation-z20">
 					<input #searchInputBar name="search" placeholder='Try "Blockchain or Hyperledger"' matInput [formControl]="myControl" [matAutocomplete]="auto">
 					<mat-autocomplete #auto="matAutocomplete">
+						<mat-option *ngIf="searching" class="center">
+							<span>
+								<ngx-loading [show]="true"></ngx-loading>
+							</span>
+						</mat-option>
 						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)">
 							<span>
 								<img src="{{_searchService.getSearchOptionImage(option)}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
