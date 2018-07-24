@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
@@ -33,6 +33,24 @@ export class MediaUploaderService {
 		formData.append(type, file, file.name);
 		return this.http.post(environment.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData, this.requestHeaderService.mediaOptions)
 			.map((response: any) => response);
+	}
+
+	public getUploadURL(file: File) {
+		return this.http.post(environment.apiUrl + '/api/media/getUploadUrl', {
+			name: file.name,
+			ext: file.type.split('/')[1]
+		}, this.requestHeaderService.mediaOptions);
+	}
+
+	public uploadFile(uploadUrl: string, file: File) {
+		const req = new HttpRequest('PUT', uploadUrl, file, {
+			reportProgress: true
+		});
+		return this.http.request(req);
+	}
+
+	public uploadMedia(data: any) {
+		return this.http.post(environment.apiUrl + '/api/media', data, this.requestHeaderService.options);
 	}
 
 	delete(file) {

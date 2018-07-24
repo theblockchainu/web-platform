@@ -1,6 +1,6 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, OnDestroy, Input, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import 'rxjs/add/operator/map';
@@ -155,7 +155,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	defaultAssesment: any;
 	availableDefaultAssessments: Array<AssessmentTypeData>;
 	availableSubtypes: Array<SubTypeInterface>;
-
+	uploadProgress: number;
 	// TypeScript public modifiers
 	constructor(
 		public router: Router,
@@ -839,8 +839,41 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	uploadVideo(event) {
 		this.uploadingVideo = true;
 		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response) => {
-				this.addVideoUrl(response.url);
+			let container;
+			let name;
+			let downloadUrl;
+			this.mediaUploader.getUploadURL(file).flatMap(
+				(res: any) => {
+					console.log(res);
+					container = res.container;
+					name = res.fileName;
+					downloadUrl = res.url;
+					return this.mediaUploader.uploadFile(res.uploadUrl, file);
+				}
+			).subscribe((response) => {
+				if (response.type === HttpEventType.UploadProgress) {
+					// This is an upload progress event. Compute and show the % done:
+					const percentDone = Math.round(100 * response.loaded / response.total);
+					this.uploadProgress = percentDone;
+					console.log(`File is ${percentDone}% uploaded.`);
+				} else if (response instanceof HttpResponse) {
+					console.log(response);
+					console.log('File is completely uploaded!');
+					const mediaBody = {
+						originalFilename: file.name,
+						size: file.size,
+						name: name,
+						type: file.type,
+						container: container,
+						url: downloadUrl
+					};
+					this.mediaUploader.uploadMedia(mediaBody).subscribe((res: any) => {
+						this.addVideoUrl(res.url);
+						this.uploadingVideo = false;
+					});
+				}
+			}, err => {
+				console.log(err);
 				this.uploadingVideo = false;
 			});
 		}
@@ -1552,7 +1585,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public standards() {
 		this.dialogsService.collectionStandardsDialog().subscribe();
 	}
-	
+
 	public importProfileBio() {
 		this.experience.controls.aboutHost.patchValue(this.experienceData.owners[0].profiles[0].description);
 	}
