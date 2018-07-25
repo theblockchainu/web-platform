@@ -81,18 +81,9 @@
 						</mat-form-field>
 						<div class="form-group">
 							<label class="display-block title">Add supporting material</label>
-							<div class="loading-container" [hidden]="!uploadingAttachments">
-								<ngx-loading [show]="true"></ngx-loading>
-							</div>
-							<p-fileUpload *ngIf="!uploadingAttachments" #fubauto name="file" customUpload="true" (uploadHandler)="uploadAttachments($event)"
-							 maxFileSize="10000000" chooseLabel="Browse" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*"
-							 multiple="multiple">
-								<ng-template pTemplate="toolbar">
-									<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 attachments</div>
-								</ng-template>
-							</p-fileUpload>
+							<app-upload-file (uploaded)="addAttachmentUrl($event)"></app-upload-file>
 							<h5>Max File Size
-								<b>10MB</b>
+								<b>1000MB</b>
 							</h5>
 							<div *ngIf="attachmentUrls.length" class="pic delete">
 								<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">

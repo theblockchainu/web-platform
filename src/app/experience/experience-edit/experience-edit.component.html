@@ -9,7 +9,7 @@
 				<button *ngIf="mobileQuery.matches" class="side-nav-toggle-button pull-left" mat-icon-button (click)="snav.toggle()">
 					<mat-icon>menu</mat-icon>
 				</button>
-				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=14 && step !=16 && experience.controls['status'].value !== 'active'">
+				<div class="pull-right" *ngIf="step!=1 && step !=6 && step !=15 && step !=17 && experience.controls['status'].value !== 'active'">
 					<button mat-button (click)="saveandexit()">
 						<span *ngIf="!busySave">Save &amp; Exit</span>
 						<span *ngIf="busySave"> </span>
@@ -481,12 +481,7 @@
 									<div class="row margin-left-0" style="margin-top:40px">
 										<div class="col-md-8">
 											<div class="stepHeader">Upload Video</div>
-											<p-fileUpload auto="auto" *ngIf="!uploadingVideo" #fubauto name="video" accept="video/*" customUpload="true" (uploadHandler)="uploadVideo($event)"
-											 maxFileSize="10000000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'video')" multiple="multiple">
-												<ng-template pTemplate="toolbar">
-													<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>
-												</ng-template>
-											</p-fileUpload>
+											<app-upload-file (uploaded)="addVideoUrl($event)"></app-upload-file>
 											<h5>Max File Size
 												<b>1000MB</b>
 											</h5>
@@ -498,9 +493,9 @@
 													<mat-icon (click)="deleteFromContainer(file, 'video')" class="delete-video">close</mat-icon>
 												</div>
 											</div>
-											<div class="loading-container" [hidden]="!uploadingVideo">
+											<!-- <div class="loading-container" [hidden]="!uploadingVideo">
 												<ngx-loading [show]="true"></ngx-loading>
-											</div>
+											</div> -->
 										</div>
 									</div>
 									<div class="row">

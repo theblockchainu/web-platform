@@ -36,17 +36,9 @@
                         <div class="form-group">
                             <label>Upload Video:</label>
                             <div class="upload-image-section imageHolder">
-                                <div class="loading-container" [hidden]="!uploadingVideo">
-                                    <ngx-loading [show]="true"></ngx-loading>
-                                </div>
-                                <p-fileUpload *ngIf="!uploadingVideo" #fubauto accept="video/*" name="video" customUpload="true" (uploadHandler)="imageUploadNew($event)"
-                                    maxFileSize="10000000" chooseLabel="Browse">
-                                    <ng-template pTemplate="toolbar">
-                                        <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 video</div>
-                                    </ng-template>
-                                </p-fileUpload>
+                                <app-upload-file (uploaded)="addVideoUrl($event)"></app-upload-file>
                                 <h5>Max File Size
-                                    <b>10MB</b>
+                                    <b>1000MB</b>
                                 </h5>
                                 <!-- <ng-template pTemplate="content"> -->
                                 <!-- <mat-grid-list cols="2" rowHeight="100px" gutterSize="10px" *ngIf="urlForVideo">

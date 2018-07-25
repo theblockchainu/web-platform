@@ -816,16 +816,6 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(tempClassData, this.sidebarMenuItems);
 	}
 
-	uploadVideo(event) {
-		this.uploadingVideo = true;
-		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response) => {
-				this.addVideoUrl(response.url);
-				this.uploadingVideo = false;
-			});
-		}
-	}
-
 	uploadImage(event) {
 		this.uploadingImage = true;
 		for (const file of event.files) {

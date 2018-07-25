@@ -97,6 +97,7 @@ import { AccreditationService } from '../_services/accreditation/accreditation.s
 import { CustomCertificateFormComponent } from './custom-certificate-form/custom-certificate-form.component';
 import { CertificateService } from '../_services/certificate/certificate.service';
 import { SafePipe } from './safe-pipe/safe.pipe';
+import { UploadFileComponent } from './upload-file/upload-file.component';
 
 @NgModule({
     imports: [
@@ -139,7 +140,8 @@ import { SafePipe } from './safe-pipe/safe.pipe';
         MatSelectModule,
         MatButtonToggleModule,
         MatCardModule,
-        MatDatepickerModule
+        MatDatepickerModule,
+        MatProgressBarModule
     ],
     declarations: [
         ExtractTimePipe,
@@ -158,7 +160,8 @@ import { SafePipe } from './safe-pipe/safe.pipe';
         PeerCardComponent,
         ClassCardComponent,
         CustomCertificateFormComponent,
-        SafePipe
+        SafePipe,
+        UploadFileComponent
     ],
     providers: [
         CollectionService,
@@ -268,7 +271,8 @@ import { SafePipe } from './safe-pipe/safe.pipe';
         OwlNativeDateTimeModule,
         AmazingTimePickerModule,
         CustomCertificateFormComponent,
-        SafePipe
+        SafePipe,
+        UploadFileComponent
     ]
 })
 export class SharedModule {
