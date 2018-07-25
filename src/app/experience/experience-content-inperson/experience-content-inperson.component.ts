@@ -203,20 +203,12 @@ export class ExperienceContentInpersonComponent implements OnInit {
         this.image.patchValue(value);
     }
 
-    uploadAttachments(event) {
-        this.uploadingAttachments = true;
-        for (const file of event.files) {
-            this.mediaUploader.upload(file).subscribe((response) => {
-                this.addAttachmentUrl(response);
-                this.uploadingAttachments = false;
-            });
-        }
-    }
-
-    public addAttachmentUrl(response: any) {
+    public addAttachmentUrl(url: string) {
         // console.log('Adding image url: ' + value);
-        this.attachments.push(new FormControl(response.url));
-        this.attachmentUrls.push(response);
+        this.attachments.push(new FormControl(url));
+        this.contentService.getMediaObject(url).subscribe((res) => {
+            this.attachmentUrls.push(res[0]);
+        });
     }
 
     imgErrorHandler(event) {

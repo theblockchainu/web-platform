@@ -40,13 +40,11 @@
 						<div class="form-group margin-top-40">
 							<label>Upload a photo/video that best describes this content</label>
 							<div class="upload-image-section imageHolder">
-								<div class="loading-container" [hidden]="!uploadingVideo">
-									<ngx-loading [show]="true"></ngx-loading>
-								</div>
-								<p-fileUpload *ngIf="!uploadingVideo" #fubauto name="image" customUpload="true" (uploadHandler)="imageUploadNew($event)"
-								 maxFileSize="10000000" chooseLabel="Browse" accept="image/*,video/*"></p-fileUpload>
+
+								<app-upload-file (uploaded)="imageUploadNew($event)"></app-upload-file>
+
 								<h5>Max File Size
-									<b>10MB</b>
+									<b>1000MB</b>
 								</h5>
 								<div *ngIf="mediaObject && mediaObject.hasOwnProperty('type') && mediaObject.hasOwnProperty('url')" class="col-md-6 padding-left-0 pic delete imageContainerVideo">
 									<img *ngIf="mediaObject.type.includes('image')" src="{{envVariable.apiUrl + mediaObject.url}}" width="150" style="border: 0.5px solid #ccc; position: relative; top: -20px;">
@@ -60,7 +58,8 @@
 						</div>
 
 						<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
-							<textarea matInput #description maxlength="2000" rows="1" matTextareaAutosize formControlName="description" placeholder="What will we do?" [required]="true"></textarea>
+							<textarea matInput #description maxlength="2000" rows="1" matTextareaAutosize formControlName="description" placeholder="What will we do?"
+							 [required]="true"></textarea>
 							<mat-hint align="end">{{description.value.length}} / 2000</mat-hint>
 						</mat-form-field>
 
@@ -72,19 +71,11 @@
 
 						<div class="form-group">
 							<label class="display-block">Add supporting material</label>
-							<div class="loading-container" [hidden]="!uploadingAttachments">
-								<ngx-loading [show]="true"></ngx-loading>
-							</div>
-							<p-fileUpload *ngIf="!uploadingAttachments" name="attachments" accept="application/pdf,application/msword,
-                        application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*" customUpload="true"
-							 (uploadHandler)="uploadNew($event)" maxFileSize="10000000" (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)">
-								<ng-template pTemplate="toolbar">
-									<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image/video</div>
-								</ng-template>
 
-							</p-fileUpload>
+							<app-upload-file (uploaded)="addAttachmentUrl($event)"></app-upload-file>
+
 							<h5>Max File Size
-								<b>10MB</b>
+								<b>1000MB</b>
 							</h5>
 							<div *ngIf="attachmentUrls.length" class="pic delete">
 								<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">

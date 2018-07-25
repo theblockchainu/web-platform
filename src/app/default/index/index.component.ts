@@ -57,6 +57,7 @@ export class IndexComponent implements OnInit {
 	public cardInFocus = false;
 	public myControl = new FormControl('');
 	public options: any[];
+	public searching: boolean;
 
 	constructor(
 		private authenticationService: AuthenticationService,
@@ -108,11 +109,16 @@ export class IndexComponent implements OnInit {
 	initialiseSearchService() {
 		this.myControl.valueChanges.subscribe((value) => {
 			console.log(value);
+			this.searching = true;
 			this._searchService.getAllSearchResults(null, value, (err, result) => {
 				if (!err) {
 					this.options = result;
+					this.searching = false;
+
 				} else {
 					console.log(err);
+					this.searching = false;
+
 				}
 			});
 		});

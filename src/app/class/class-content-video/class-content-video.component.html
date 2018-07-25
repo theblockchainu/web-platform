@@ -6,7 +6,7 @@
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<button disableRipple mat-button *ngIf="isEdit" style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;"
-			        (click)="dialogRef.close()">
+			 (click)="dialogRef.close()">
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<div>
@@ -27,47 +27,41 @@
 						<mat-form-field class="pb-block margin-top-20 margin-bot-20">
 							<input matInput #title formControlName="title" placeholder="Video Title">
 						</mat-form-field>
-						
+
 						<div class="form-group">
 							<label>Upload Video:</label>
 							<div class="upload-image-section imageHolder">
-								<div class="loading-container" [hidden]="!uploadingVideo">
-									<ngx-loading [show]="true"></ngx-loading>
-								</div>
-								<p-fileUpload *ngIf="!uploadingVideo" #fubauto accept="video/*" name="video" customUpload="true" (uploadHandler)="imageUploadNew($event)"
-								              maxFileSize="10000000" chooseLabel="Browse">
-									<ng-template pTemplate="toolbar">
-										<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 video</div>
-									</ng-template>
-								</p-fileUpload>
+
+								<app-upload-file (uploaded)="imageUploadNew($event)"></app-upload-file>
+
 								<h5>Max File Size
-									<b>10MB</b>
+									<b>1000MB</b>
 								</h5>
 								<div class="col-md-4 embed-responsive embed-responsive-16by9 padding-left-0 pic delete imageContainer" *ngIf="urlForVideo">
-									<vg-player (onPlayerReady)="onPlayerReady($event)" >
+									<vg-player (onPlayerReady)="onPlayerReady($event)">
 										<vg-overlay-play></vg-overlay-play>
 										<vg-buffering></vg-buffering>
-										
+
 										<vg-scrub-bar>
 											<vg-scrub-bar-current-time></vg-scrub-bar-current-time>
 											<vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
 										</vg-scrub-bar>
-										
+
 										<vg-controls>
 											<vg-play-pause></vg-play-pause>
 											<vg-playback-button></vg-playback-button>
-											
+
 											<vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
-											
+
 											<vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
 											<vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
-											
+
 											<vg-mute></vg-mute>
 											<vg-volume></vg-volume>
-											
+
 											<vg-fullscreen></vg-fullscreen>
 										</vg-controls>
-										
+
 										<video [vgMedia]="media" #media id="singleVideo" width="100%" preload="metadata" style="max-height: 300px;" crossorigin>
 											<source src="{{envVariable.apiUrl + urlForVideo}}" type="video/mp4">
 										</video>
@@ -77,32 +71,26 @@
 							</div>
 						</div>
 						<div class="clearfix"></div>
-						
+
 						<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
-							<textarea matInput #description maxlength="2000" rows="1" matTextareaAutosize formControlName="description" placeholder="What will we do?" [required]="true"></textarea>
+							<textarea matInput #description maxlength="2000" rows="1" matTextareaAutosize formControlName="description" placeholder="What will we do?"
+							 [required]="true"></textarea>
 							<mat-hint align="end">{{description.value.length}} / 2000</mat-hint>
 						</mat-form-field>
-						
+
 						<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
-                            <textarea matInput #prerequisites maxlength="1000" rows="1" matTextareaAutosize formControlName="prerequisites" placeholder="What do learners need to know?"
-                                      [required]="true"></textarea>
+							<textarea matInput #prerequisites maxlength="1000" rows="1" matTextareaAutosize formControlName="prerequisites" placeholder="What do learners need to know?"
+							 [required]="true"></textarea>
 							<mat-hint align="end">{{prerequisites.value.length}} / 1000</mat-hint>
 						</mat-form-field>
-						
+
 						<div class="form-group">
 							<label class="display-block">Add supporting material</label>
-							<div class="loading-container" [hidden]="!uploadingAttachments">
-								<ngx-loading [show]="true"></ngx-loading>
-							</div>
-							<p-fileUpload *ngIf="!uploadingAttachments" name="attachments" customUpload="true" accept="application/pdf,application/msword,
-                        application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*" (uploadHandler)="uploadNew($event)"
-							              multiple="multiple" maxFileSize="10000000" (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)">
-								<ng-template pTemplate="toolbar">
-									<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 attachments</div>
-								</ng-template>
-							</p-fileUpload>
+					
+							<app-upload-file (uploaded)="addAttachmentUrl($event)"></app-upload-file>
+
 							<h5>Max File Size
-								<b>10MB</b>
+								<b>1000MB</b>
 							</h5>
 							<div *ngIf="attachmentUrls.length" class="pic delete">
 								<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
