@@ -641,7 +641,7 @@
 							<button mat-raised-button color="accent" (click)="cancel()">
 								Back
 							</button>
-							<button class="pull-right" mat-raised-button [disabled]="busySavingData" color="accent" (click)="submitCertificate()">
+							<button class="pull-right" mat-raised-button [disabled]="busySavingData || !expiryDate.valid" color="accent" (click)="submitCertificate()">
 								<span *ngIf="!busySavingData">Next</span>
 								<span>
 									<ngx-loading [show]="busySavingData"></ngx-loading>
