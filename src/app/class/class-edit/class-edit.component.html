@@ -9,7 +9,7 @@
 				<button *ngIf="mobileQuery.matches" class="side-nav-toggle-button pull-left" mat-icon-button (click)="snav.toggle()">
 					<mat-icon>menu</mat-icon>
 				</button>
-				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=14 && step !=16 && class.controls['status'].value !== 'active'">
+				<div class="pull-right" *ngIf="step!=1 && step !=6 && step !=15 && step !=17 && class.controls['status'].value !== 'active'">
 					<button mat-button (click)="saveandexit()">
 						<span *ngIf="!busySave">Save &amp; Exit</span>
 						<span *ngIf="busySave"> </span>

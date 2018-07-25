@@ -39,7 +39,7 @@ export class UploadFileComponent implements OnInit {
           // This is an upload progress event. Compute and show the % done:
           const percentDone = Math.round(100 * response.loaded / response.total);
           this.uploadProgress = percentDone;
-          console.log(`File is ${percentDone}% uploaded.`);
+          // console.log(`File is ${percentDone}% uploaded.`);
         } else if (response instanceof HttpResponse) {
           console.log(response);
           console.log('File is completely uploaded!');
