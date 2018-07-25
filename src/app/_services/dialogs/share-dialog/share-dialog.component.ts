@@ -37,8 +37,8 @@ export class ShareDialogComponent implements OnInit {
 			this.tweetUrl = 'https://twitter.com/intent/tweet?text=Take a look at my certificate for ' + this.data.title + '&url=' + this.generatedUrl;
 			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Take a look at my certificate for ' + this.data.title + '&source=Peerbuds';
 		} else {
-			this.tweetUrl = 'https://twitter.com/intent/tweet?text=Join me for the ' + this.data.type + ', ' + this.data.title + '&url=' + this.generatedUrl;
-			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Join me for the ' + this.data.type + ', ' + this.data.title + '&summary=' + this.data.description + '&source=Peerbuds';
+			this.tweetUrl = 'https://twitter.com/intent/tweet?text=Join me for ' + this.data.title + '&url=' + this.generatedUrl;
+			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Join me for ' + this.data.title + '&summary=' + this.data.headline + '&source=Peerbuds';
 		}
 	}
 
@@ -68,10 +68,10 @@ export class ShareDialogComponent implements OnInit {
 			action_properties: JSON.stringify({
 				object: {
 					'og:url': this.generatedUrl, // your url to share
-					'og:title': (this.data.type === 'story') ? 'Knowledge story of ' + this.data.title : 'Join me for the ' + this.data.type + ', ' + this.data.title,
+					'og:title': (this.data.type === 'story') ? 'Knowledge story of ' + this.data.title : 'Join me for ' + this.data.title,
 					'og:site_name': 'Peerbuds',
 					'og:image': this.data.image,
-					'og:description': (this.data.type === 'story') ? 'View my knowledge story at ' + this.generatedUrl : this.data.description,
+					'og:description': (this.data.type === 'story') ? 'View my knowledge story at ' + this.generatedUrl : this.data.headline,
 				}
 			})
 		}, function (response) {
