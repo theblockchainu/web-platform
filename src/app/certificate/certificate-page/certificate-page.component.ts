@@ -101,7 +101,7 @@ export class CertificatePageComponent implements OnInit {
 	}
 	
 	share() {
-		this.dialogsService.shareCollection('certificate', this.certificateId, this.certificate.collection.title, 'Certificate for ' + this.certificate.collection.title, environment.apiUrl + this.certificate.collection.imageUrls[0]).subscribe(res => {
+		this.dialogsService.shareCollection('certificate', this.certificateId, this.certificate.collection.title, 'Certificate for ' + this.certificate.collection.title, '', environment.apiUrl + this.certificate.collection.imageUrls[0]).subscribe(res => {
 			console.log(res);
 		});
 	}

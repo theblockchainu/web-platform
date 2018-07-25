@@ -46,19 +46,19 @@ import { LandingPageModule } from './landing-page/landing-page.module';
 import { SharedModule } from './_shared/_shared.module';
 
 
-// Raven
-// 	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
-// 	.install();
+Raven
+	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
+	.install();
 
-// Raven.setExtraContext({
-// 	environment: (environment.production) ? 'production' : 'development'
-// });
+Raven.setExtraContext({
+	environment: (environment.production) ? 'production' : 'development'
+});
 
-// export class RavenErrorHandler implements ErrorHandler {
-// 	handleError(err: any): void {
-// 		Raven.captureException(err);
-// 	}
-// }
+export class RavenErrorHandler implements ErrorHandler {
+	handleError(err: any): void {
+		Raven.captureException(err);
+	}
+}
 
 
 @NgModule({
@@ -121,10 +121,10 @@ import { SharedModule } from './_shared/_shared.module';
 	providers: [
 		CookieService,
 		UcWordsPipe,
-		// {
-		// 	provide: ErrorHandler,
-		// 	useClass: RavenErrorHandler
-		// },
+		{
+			provide: ErrorHandler,
+			useClass: RavenErrorHandler
+		},
 		Title,
 		Meta
 	],

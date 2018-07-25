@@ -212,7 +212,7 @@ export class KnowledgeStoryComponent implements OnInit {
 
 	shareDialog() {
 		const name = (this.knowledgeStory) ? this.knowledgeStory.protagonist[0].profiles[0].first_name + ' ' + this.knowledgeStory.protagonist[0].profiles[0].last_name : 'Knowledge Story';
-		this.dialogsService.shareCollection('story', this.knowledgeStoryId, name, 'Verified on one0x Blockchain', this.envVariable.apiUrl + this.knowledgeStory.protagonist[0].profiles[0].picture_url).subscribe();
+		this.dialogsService.shareCollection('story', this.knowledgeStoryId, name, 'Verified on one0x Blockchain', '', this.envVariable.apiUrl + this.knowledgeStory.protagonist[0].profiles[0].picture_url).subscribe();
 	}
 
 	deleteStory() {
