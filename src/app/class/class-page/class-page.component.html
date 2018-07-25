@@ -198,10 +198,10 @@
 																John Doe
 															</span>
 														</div>
-														<div class="col-md-12 mat-h5" *ngIf="class.owners[0].headline">
+														<div class="col-md-12 mat-h5" *ngIf="class.owners[0].profiles[0].headline">
 															{{class.owners[0].profiles[0].headline}}
 														</div>
-														<div class="col-md-12 mat-h5" *ngIf="!class.owners[0].headline">
+														<div class="col-md-12 mat-h5" *ngIf="!class.owners[0].profiles[0].headline">
 															New user
 														</div>
 													</div>
@@ -697,10 +697,10 @@
 													John Doe
 												</span>
 											</div>
-											<div class="mat-h5" *ngIf="class.owners[0].headline">
+											<div class="mat-h5" *ngIf="class.owners[0].profiles[0].headline">
 												{{class.owners[0].profiles[0].headline}}
 											</div>
-											<div class="mat-h5" *ngIf="!class.owners[0].headline">
+											<div class="mat-h5" *ngIf="!class.owners[0].profiles[0].headline">
 												New user
 											</div>
 										</div>
@@ -941,17 +941,17 @@
 												<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
 											</div>
 											<div class="col-md-12">
-												<span matTooltip="GYAN you can earn from this class" style="font-weight: 700; vertical-align: middle;">
-													<i class="fab fa-ethereum lightText"></i> {{class.academicGyan + class.nonAcademicGyan}}
+												<span matTooltip="Earn up to {{class.academicGyan + class.nonAcademicGyan}} Gyan from this class" style="font-weight: 700; vertical-align: middle;">
+													Earn <i class="fab fa-ethereum lightText"></i> {{class.academicGyan + class.nonAcademicGyan}}
 												</span>
-												<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
+												<!--<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
 												<span matTooltip="KARMA required to be burned for participation" style="font-weight: 700; vertical-align: middle;">
 													<i class="fas fa-fire lightText"></i> {{(class.academicGyan + class.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async | shortNumber}}
 												</span>
 												<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
 												<span class="mat-border-button gyanBubbleCard" style="margin-left: 0px !important;" matTooltip="Pending payout {{getPredictedGyanEarn(class) | convertCurrency : 'GYAN' | async}} ({{getPredictedGyanEarn(class)}} GYAN) in 7 days">
 													<div style="font-size: 11px;">{{getPredictedGyanEarn(class) | convertCurrency : 'GYAN' | async}}</div>
-												</span>
+												</span>-->
 											</div>
 										</div>
 									</div>
@@ -1035,17 +1035,17 @@
 					<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
 				</div>
 				<div class="col-md-12">
-					<span matTooltip="GYAN you can earn from this class" style="font-weight: 700; vertical-align: middle;">
-						<i class="fab fa-ethereum"></i> {{class.academicGyan + class.nonAcademicGyan}}
+					<span matTooltip="Earn up to {{class.academicGyan + class.nonAcademicGyan}} Gyan from this class" style="font-weight: 700; vertical-align: middle;">
+						Earn <i class="fab fa-ethereum"></i> {{class.academicGyan + class.nonAcademicGyan}}
 					</span>
-					<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
+					<!--<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
 					<span matTooltip="KARMA required to be burned for participation" style="font-weight: 700; vertical-align: middle;">
 						<i class="fas fa-fire"></i> {{(class.academicGyan + class.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async | shortNumber}}
 					</span>
 					<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
 					<span class="mat-border-button gyanBubbleCard" style="margin-left: 0px !important;" matTooltip="Pending payout {{getPredictedGyanEarn(class) | convertCurrency : 'GYAN' | async}} ({{getPredictedGyanEarn(class)}} GYAN) in 7 days">
 						<div style="font-size: 11px;">{{getPredictedGyanEarn(class) | convertCurrency : 'GYAN' | async}}</div>
-					</span>
+					</span>-->
 				</div>
 			</div>
 		</div>

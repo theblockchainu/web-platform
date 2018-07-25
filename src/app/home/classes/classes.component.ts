@@ -246,7 +246,7 @@ export class ClassesComponent implements OnInit {
 								let hasActiveCalendar = false;
 								if (collection.calendars) {
 									collection.calendars.forEach(calendar => {
-										if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+										if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
 											hasActiveCalendar = true;
 											return;
 										}

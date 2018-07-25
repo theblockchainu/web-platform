@@ -36,7 +36,7 @@ export class SelectDateDialogComponent implements OnInit {
 			});
 			itinerary['participantCount'] = thisParticipantCount;
 			console.log(moment(itinerary.calendar.startDate).diff(today, 'days'));
-			if ((moment(itinerary.calendar.startDate).diff(today, 'days') >= -1 && itinerary.calendar.status !== 'cancelled') || this.userType === 'teacher') {
+			if ((moment(itinerary.calendar.endDate).diff(today, 'days') >= -1 && itinerary.calendar.status !== 'cancelled') || this.userType === 'teacher') {
 				this.filteredItineraries.push(itinerary);
 			}
 		});
