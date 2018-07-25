@@ -1005,7 +1005,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				result.owners = this.classData.owners;
 				this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
 
-				if (step && step === this.timelineStep {
+				if (step && step === this.timelineStep) {
 					this.submitTimeline(collectionId, timeline);
 				} else {
 					if (this.exitAfterSave) {
