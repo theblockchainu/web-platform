@@ -2,7 +2,7 @@ import 'rxjs/add/operator/switchMap';
 import { Component, OnInit, Input, OnDestroy, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
-import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/publishReplay';
@@ -269,8 +269,12 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			rules: this._fb.array([]),
 			nARules: this._fb.array([
 				this._fb.group({
-					value: ['', Validators.required],
-					gyan: ['', Validators.required]
+					value: ['engagement', Validators.required],
+					gyan: ['', [Validators.required, Validators.max(100), Validators.min(1), this.checkTotal(1)]]
+				}),
+				this._fb.group({
+					value: ['commitment', Validators.required],
+					gyan: ['', [Validators.required, Validators.max(100), Validators.min(1), this.checkTotal(0)]]
 				})
 			])
 		});
@@ -336,6 +340,19 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
+	private checkTotal(indexOfOtherControl: number): ValidatorFn {
+		return (control: AbstractControl): { [key: string]: any } | null => {
+
+			if (this.assessmentForm && this.assessmentForm.controls['nARules'] && this.assessmentForm.controls['nARules']['controls'][indexOfOtherControl]) {
+				const formArray = <FormArray>this.assessmentForm.controls['nARules'];
+				const otherNArule = formArray.controls[indexOfOtherControl].value;
+				return ((control.value + otherNArule.gyan) > 100) ? { 'error': 'invalid total gyan' } : null;
+			} else {
+				return null;
+			}
+		};
+	}
+
 	private initializeAssessment(result) {
 		if (result.assessment_models[0]) {
 			this.assessmentForm.controls['type'].patchValue(result.assessment_models[0].type);
@@ -350,13 +367,16 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 					}));
 				});
 			}
+			const nARulesArray = <FormArray>this.assessmentForm.controls['nARules'];
 			if (result.assessment_models[0].assessment_na_rules && result.assessment_models[0].assessment_na_rules.length > 0) {
-				const rulesArray = <FormArray>this.assessmentForm.controls['nARules'];
-				rulesArray.removeAt(0);
+				nARulesArray.removeAt(0);
+				nARulesArray.removeAt(0);
 				result.assessment_models[0].assessment_na_rules.forEach(rule => {
-					rulesArray.push(this._fb.group({
-						value: rule.value,
-						gyan: rule.gyan
+					nARulesArray.push(this._fb.group({
+						value: [rule.value],
+						gyan: [rule.gyan, [Validators.max(100), Validators.min(1), this.checkTotal(
+							(nARulesArray.length === 1) ? 0 : 1
+						)]]
 					}));
 				});
 			}
@@ -985,7 +1005,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				result.owners = this.classData.owners;
 				this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
 
-				if (step && step === 14) {
+				if (step && step === this.timelineStep) {
 					this.submitTimeline(collectionId, timeline);
 				} else {
 					if (this.exitAfterSave) {
@@ -1447,7 +1467,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		console.log(rulesArray);
 		rulesArray.push(this._fb.group({
 			value: '',
-			gyan: ''
+			gyan: ['', [Validators.required, Validators.max(100), Validators.min(1)]]
 		}));
 	}
 
@@ -1524,7 +1544,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 		return false;
 	}
-	
+
 	public importProfileBio() {
 		this.class.controls.aboutHost.patchValue(this.classData.owners[0].profiles[0].description);
 	}
