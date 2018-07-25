@@ -40,13 +40,9 @@
 						<div class="form-group margin-top-40">
 							<label>Upload a photo/video that best describes this content</label>
 							<div class="upload-image-section imageHolder">
-								<div class="loading-container" [hidden]="!uploadingVideo">
-									<ngx-loading [show]="true"></ngx-loading>
-								</div>
-								<p-fileUpload *ngIf="!uploadingVideo" #fubauto name="image" customUpload="true" (uploadHandler)="imageUploadNew($event)"
-								 maxFileSize="10000000" chooseLabel="Browse" accept="image/*,video/*"></p-fileUpload>
+								<app-upload-file (uploaded)="imageUploadNew($event)"></app-upload-file>
 								<h5>Max File Size
-									<b>10MB</b>
+									<b>1000MB</b>
 								</h5>
 								<!-- <mat-grid-list cols="2" rowHeight="100px" gutterSize="10px" *ngIf="mediaObject && mediaObject.hasOwnProperty('type') && mediaObject.hasOwnProperty('url')">
 									<mat-grid-tile>
@@ -87,19 +83,11 @@
 									<span style="color:#337ab7; white-space:nowrap;"> Uploading... <span style="color:white; white-space:nowrap;">{{filesUploaded}} / {{filesToUpload}}</span>                            </span>
 								</progressbar>
 							</div> -->
-							<div class="loading-container" [hidden]="!uploadingAttachments">
-								<ngx-loading [show]="true"></ngx-loading>
-							</div>
-							<p-fileUpload *ngIf="!uploadingAttachments" name="attachments" accept="application/pdf,application/msword,
-                        application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*" customUpload="true"
-							 (uploadHandler)="uploadNew($event)" maxFileSize="10000000" (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)">
-								<ng-template pTemplate="toolbar">
-									<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image/video</div>
-								</ng-template>
 
-							</p-fileUpload>
+							<app-upload-file (uploaded)="addAttachmentUrl($event)"></app-upload-file>
+
 							<h5>Max File Size
-								<b>10MB</b>
+								<b>1000MB</b>
 							</h5>
 							<!-- <ng-template pTemplate="content"> -->
 							<!-- <mat-grid-list cols="1" gutterSize="10px" rowHeight="50px" *ngIf="attachmentUrls.length">

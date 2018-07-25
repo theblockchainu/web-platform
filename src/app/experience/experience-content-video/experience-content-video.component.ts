@@ -63,17 +63,11 @@ export class ExperienceContentVideoComponent implements OnInit {
         this.resultData['data'] = this.lastIndex;
     }
 
-    imageUploadNew(event) {
-        this.uploadingVideo = true;
-        for (const file of event.files) {
-            this.mediaUploader.upload(file).subscribe((response) => {
-                this.urlForVideo = response.url;
-                const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-                const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-                contentForm.controls['imageUrl'].patchValue(response.url);
-                this.uploadingVideo = false;
-            });
-        }
+    addVideoUrl(url) {
+        this.urlForVideo = url;
+        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+        const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+        contentForm.controls['imageUrl'].patchValue(url);
     }
 
     deleteFromContainer(fileUrl, fileType) {

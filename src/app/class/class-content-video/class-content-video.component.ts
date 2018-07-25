@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import * as _ from 'lodash';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import { ContentService } from '../../_services/content/content.service';
-import {VgAPI} from 'videogular2/core';
+import { VgAPI } from 'videogular2/core';
 
 @Component({
     selector: 'app-class-content-video',
@@ -32,7 +32,7 @@ export class ClassContentVideoComponent implements OnInit {
     private uploadingAttachments;
     public attachments: any;
     public attachmentUrls = [];
-	api: VgAPI;
+    api: VgAPI;
 
     constructor(
         private _fb: FormBuilder,
@@ -65,17 +65,11 @@ export class ClassContentVideoComponent implements OnInit {
         this.resultData['data'] = this.lastIndex;
     }
 
-    public imageUploadNew(event) {
-        this.uploadingVideo = true;
-        for (const file of event.files) {
-            this.mediaUploader.upload(file).subscribe((response) => {
-                this.urlForVideo = response.url;
-                const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-                const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-                contentForm.controls['imageUrl'].patchValue(response.url);
-                this.uploadingVideo = false;
-            });
-        }
+    public imageUploadNew(url) {
+        this.urlForVideo = url;
+        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+        const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+        contentForm.controls['imageUrl'].patchValue(url);
     }
 
     deleteFromContainer(fileUrl, fileType) {
@@ -119,25 +113,12 @@ export class ClassContentVideoComponent implements OnInit {
             .subscribe();
     }
 
-
-    uploadNew(event) {
-        console.log(event.files);
-        this.filesToUpload = event.files.length;
-        this.filesUploaded = 0;
-        this.uploadingAttachments = true;
-        for (const file of event.files) {
-            this.mediaUploader.upload(file).subscribe((response) => {
-                this.addAttachmentUrl(response);
-                this.filesUploaded++;
-                this.uploadingAttachments = false;
-            });
-        }
-    }
-
-    addAttachmentUrl(response: any) {
-        console.log('Adding image url: ' + response.url);
-        this.attachments.push(new FormControl(response.url));
-        this.attachmentUrls.push(response);
+    addAttachmentUrl(url: string) {
+        console.log('Adding image url: ' + url);
+        this.attachments.push(new FormControl(url));
+        this.contentService.getMediaObject(url).subscribe((res) => {
+            this.attachmentUrls.push(res[0]);
+        });
     }
 
     resetNewUrls(event) {
@@ -215,14 +196,14 @@ export class ClassContentVideoComponent implements OnInit {
             return 'Edit';
         }
     }
-	
-	public onPlayerReady(api: VgAPI) {
-		this.api = api;
-		this.api.getDefaultMedia().subscriptions.canPlay.subscribe(() => {
-			const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-			const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-			contentForm.controls['videoLength'].patchValue(this.api.duration);
-		});
-	}
+
+    public onPlayerReady(api: VgAPI) {
+        this.api = api;
+        this.api.getDefaultMedia().subscriptions.canPlay.subscribe(() => {
+            const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+            const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+            contentForm.controls['videoLength'].patchValue(this.api.duration);
+        });
+    }
 
 }

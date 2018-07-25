@@ -14,7 +14,7 @@ import { environment } from '../../../environments/environment';
 })
 
 export class ClassContentProjectComponent implements OnInit {
-	
+
 	public lastIndex: number;
 	public envVariable;
 	public filesToUpload: number;
@@ -33,7 +33,7 @@ export class ClassContentProjectComponent implements OnInit {
 	private uploadingAttachments;
 	public attachments: any;
 	public attachmentUrls = [];
-	
+
 	constructor(
 		private _fb: FormBuilder,
 		private http: HttpClient,
@@ -63,31 +63,21 @@ export class ClassContentProjectComponent implements OnInit {
 		});
 		console.log(this.attachmentUrls);
 	}
-	
+
 	ngOnInit(): void {
 		const content = <FormArray>this.itenaryForm.controls.contents;
 		this.lastIndex = this.lastIndex !== -1 ? this.lastIndex : content.controls.length - 1;
 		this.resultData['data'] = this.lastIndex;
 	}
-	
-	uploadNew(event) {
-		console.log(event.files);
-		this.uploadingAttachments = true;
-		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response) => {
-				this.addAttachmentUrl(response);
-				this.filesUploaded++;
-				this.uploadingAttachments = false;
-			});
-		}
+
+	addAttachmentUrl(url: any) {
+		console.log('Adding image url: ' + url);
+		this.attachments.push(new FormControl(url));
+		this.contentService.getMediaObject(url).subscribe((res) => {
+			this.attachmentUrls.push(res[0]);
+		});
 	}
-	
-	addAttachmentUrl(response: any) {
-		console.log('Adding image url: ' + response.url);
-		this.attachments.push(new FormControl(response.url));
-		this.attachmentUrls.push(response);
-	}
-	
+
 	deleteFromContainer(fileUrl, fileType) {
 		const fileurl = fileUrl;
 		fileUrl = _.replace(fileUrl, 'download', 'files');
@@ -121,29 +111,27 @@ export class ClassContentProjectComponent implements OnInit {
 					}
 				}
 			}).subscribe();
-		
+
 	}
-	
+
 	deleteFromContent(contentForm, body) {
 		this.http.patch(environment.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.requestHeaderService.options)
 			.map((response) => { })
 			.subscribe();
 	}
-	
-	imageUploadNew(event) {
-		this.uploadingVideo = true;
-		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response) => {
-				this.urlForVideo = response.url;
-				const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-				const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-				contentForm.controls['imageUrl'].patchValue(response.url);
-				this.mediaObject = response;
-				this.uploadingVideo = false;
-			});
-		}
+
+	imageUploadNew(url) {
+
+		this.urlForVideo = url;
+		const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+		const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+		contentForm.controls['imageUrl'].patchValue(url);
+		this.contentService.getMediaObject(url).subscribe((res) => {
+			this.mediaObject = res;
+		});
+
 	}
-	
+
 	resetNewUrls(event) {
 		const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
 		const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
@@ -151,18 +139,18 @@ export class ClassContentProjectComponent implements OnInit {
 		supplementUrls.reset();
 		this.resetProgressBar();
 	}
-	
+
 	resetProgressBar() {
 		delete this.filesToUpload;
 		delete this.filesUploaded;
 	}
-	
+
 	itemEditRemoved(event) {
 		delete this.filesToUpload;
 		this.filesUploaded = 0;
 		// this.deleteFromContainer(event);
 	}
-	
+
 	/**
 	 * Get data to return on closing this dialog.
 	 * @returns {any}
@@ -171,7 +159,7 @@ export class ClassContentProjectComponent implements OnInit {
 		this.resultData['status'] = 'save';
 		return JSON.stringify(this.resultData);
 	}
-	
+
 	/**
 	 * Get data to return on discarding this dialog
 	 * @returns {any}
@@ -180,7 +168,7 @@ export class ClassContentProjectComponent implements OnInit {
 		this.resultData['status'] = 'discard';
 		return JSON.stringify(this.resultData);
 	}
-	
+
 	/**
 	 * Get data to return on editing this dialog.
 	 * @returns {any}
@@ -189,7 +177,7 @@ export class ClassContentProjectComponent implements OnInit {
 		this.resultData['status'] = 'edit';
 		return JSON.stringify(this.resultData);
 	}
-	
+
 	/**
 	 * Get data to return on discarding this dialog
 	 * @returns {any}
@@ -198,7 +186,7 @@ export class ClassContentProjectComponent implements OnInit {
 		this.resultData['status'] = 'delete';
 		return JSON.stringify(this.resultData);
 	}
-	
+
 	/**
 	 * Get data to return on discarding this dialog
 	 * @returns {any}
@@ -207,7 +195,7 @@ export class ClassContentProjectComponent implements OnInit {
 		this.resultData['status'] = 'close';
 		return JSON.stringify(this.resultData);
 	}
-	
+
 	/**
 	 * Get title text based on edit mode or add mode
 	 * @returns {any}
@@ -219,5 +207,5 @@ export class ClassContentProjectComponent implements OnInit {
 			return 'Edit';
 		}
 	}
-	
+
 }

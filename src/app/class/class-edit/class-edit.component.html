@@ -459,15 +459,9 @@
 								<form [formGroup]="class" (ngSubmit)="submitClass()" novalidate>
 									<div class="row margin-left-0" style="margin-top:40px">
 										<div class="col-md-8">
-											<div class="stepHeader">Upload Video</div>
-											<p-fileUpload *ngIf="!uploadingVideo" #fubauto name="video" accept="video/*" customUpload="true" (uploadHandler)="uploadVideo($event)"
-											 maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'video')" multiple="multiple">
-												<ng-template pTemplate="toolbar">
-													<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>
-												</ng-template>
-											</p-fileUpload>
+											<app-upload-file (uploaded)="addVideoUrl($event)"></app-upload-file>
 											<h5>Max File Size
-												<b>10MB</b>
+												<b>1000MB</b>
 											</h5>
 											<div *ngIf="urlForVideo.length" class="profileVideo delete">
 												<div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0 videoContainer">
