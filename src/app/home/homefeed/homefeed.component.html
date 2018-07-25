@@ -140,7 +140,7 @@
 							<a class="clickable">here</a>.
 						</div>
 						<div *ngFor="let community of communities; let i = index;">
-							<app-community-card *ngIf="i < 5" [community]="community" (refresh)="onCommunityRefresh($event)"></app-community-card>
+							<app-community-card *ngIf="i < 5" [community]="community" [cardsPerRow]="3" (refresh)="onCommunityRefresh($event)"></app-community-card>
 						</div>
 					</div>
 				</div>
@@ -164,8 +164,8 @@
 						<ngx-loading [show]="true"></ngx-loading>
 					</div>
 					<div *ngIf="!loadingPeers" class="row feed-horizontal margin-bottom-50" style="padding: 0px 7px;">
-						<div *ngFor="let peer of peers;">
-							<app-peer-card [peer]="peer"></app-peer-card>
+						<div *ngFor="let peer of peers; let i = index;">
+							<app-peer-card [peer]="peer" *ngIf="i < 6"></app-peer-card>
 						</div>
 					</div>
 				</div>

@@ -735,7 +735,7 @@
 				</div>
 				<div class="row feed-horizontal margin-top-20" style="padding: 0px 7px;">
 					<div *ngFor="let community of pariticipatingCommunities; let i =index">
-						<app-community-card [community]="community" *ngIf="i < 5"></app-community-card>
+						<app-community-card [community]="community" [cardsPerRow]="3" *ngIf="i < 5"></app-community-card>
 					</div>
 					<div *ngIf="!pariticipatingCommunities">
 						<a class="col-md-3 default" [routerLink]="['/','home', 'communities']" *ngIf="cookieUserId === urluserId">Join a community</a>
