@@ -22,7 +22,7 @@
                   <div class="loading-container" [hidden]="!uploadingImage">
                     <ngx-loading [show]="true"></ngx-loading>
                   </div>
-                  <p-fileUpload name="image" *ngIf="!uploadingImage" #idproof customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
+                  <p-fileUpload auto="auto" name="image" *ngIf="!uploadingImage" #idproof customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
                     chooseLabel="Upload ID" accept="application/pdf,application/msword,
                     application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*">
                     <ng-template pTemplate="toolbar">

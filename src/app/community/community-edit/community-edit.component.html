@@ -315,7 +315,7 @@
                   <div class="row margin-left-0" style="margin-top:40px">
                     <div class="col-md-8">
                       <div class="stepHeader">Upload Video</div>
-                      <p-fileUpload *ngIf="!uploadingVideo" #fubauto name="video" accept="video/*" customUpload="true" (uploadHandler)="uploadVideo($event)"
+                      <p-fileUpload auto="auto" *ngIf="!uploadingVideo" #fubauto name="video" accept="video/*" customUpload="true" (uploadHandler)="uploadVideo($event)"
                         maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'video')" multiple="multiple">
                         <ng-template pTemplate="toolbar">
                           <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>
@@ -341,7 +341,7 @@
                   <div class="row margin-left-0">
                     <div class="col-md-8">
                       <div class="stepHeader margin-top-20">Upload Images</div>
-                      <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
+                      <p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
                         maxFileSize="10000000" chooseLabel="Browse" multiple="multiple" (onRemove)="deleteFromContainerArr($event, 'image')">
                         <ng-template pTemplate="toolbar">
                           <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 5 images</div>
