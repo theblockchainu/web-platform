@@ -555,7 +555,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 								endDate = this._collectionService.calculateDate(this.class.calendars[0].startDate, key);
 							}
 							this.itenariesObj[key].sort(function (a, b) {
-								return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
+								return moment(a.schedules[0].startTime).diff(moment(b.schedules[0].startTime));
 							});
 							this.itenariesObj[key].forEach(content => {
 								if (content.schedules[0].startTime !== undefined) {
