@@ -207,8 +207,14 @@ export class ReviewPayComponent implements OnInit {
                         this.message = 'Payment successful. Redirecting...';
                         this.savingData = false;
                         this.joinCollection();
-                    }
-                });
+                    } else {
+                    	this.message = 'Payment unsuccessful. Please try again using another card or wait a few minutes.';
+                    	this.savingData = false;
+					}
+                }, (err: any) => {
+					this.message = 'Payment unsuccessful. Reason: ' + err.error.message;
+					this.savingData = false;
+				});
             } else {
                 const form = document.querySelector('form');
                 const extraDetails = {
@@ -222,10 +228,19 @@ export class ReviewPayComponent implements OnInit {
                             if (res) {
                                 // console.log(JSON.stringify(res ));
                                 this.createChargeData.source = res.id;
-                                this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe();
-                                this.message = 'Payment successful. Redirecting...';
-                                this.savingData = false;
-                                this.joinCollection();
+                                this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe( (resp: any) => {
+                                	if (resp) {
+										this.message = 'Payment successful. Redirecting...';
+										this.savingData = false;
+										this.joinCollection();
+									} else {
+										this.message = 'Error occurred. Please try again.';
+										this.savingData = false;
+									}
+								}, (err: any) => {
+									this.message = 'Payment unsuccessful. Reason: ' + err.error.message;
+									this.savingData = false;
+								});
                             } else {
                                 this.message = 'Error occurred. Please try again.';
                                 this.savingData = false;

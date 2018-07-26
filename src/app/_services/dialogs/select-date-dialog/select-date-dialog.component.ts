@@ -16,6 +16,7 @@ export class SelectDateDialogComponent implements OnInit {
 	public mode;
 	public userType;
 	public collectionType;
+	public accountApproved = 'false';
 	public filteredItineraries = [];
 	public deletedCalendar = [];
 	
@@ -26,6 +27,7 @@ export class SelectDateDialogComponent implements OnInit {
 		this.collectionType = data.collectionType;
 		this.participants = data.participants;
 		this.userType = data.userType;
+		this.accountApproved = data.accountApproved;
 		const today = moment();
 		this.itineraries.forEach(itinerary => {
 			let thisParticipantCount = 0;

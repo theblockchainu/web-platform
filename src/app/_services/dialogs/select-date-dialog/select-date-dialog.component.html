@@ -51,8 +51,12 @@
 							<br>
 							<br>
 							<div class="col-md-12">
-								<button *ngIf="mode === 'chooseDate'" mat-button (click)="selectCohort(itenaryObj.calendar.id)" class="pb-block mat-border-button" [disabled]="this.data.maxSeats - itenaryObj.participantCount <= 0">
+								<button *ngIf="mode === 'chooseDate' && userId !== undefined && userId.length > 5" mat-button (click)="selectCohort(itenaryObj.calendar.id)" class="pb-block mat-border-button" [disabled]="(this.data.maxSeats - itenaryObj.participantCount <= 0 || accountApproved === 'false')" matTooltip="Please wait for your account to be approved before signing up." [matTooltipDisabled]="accountApproved === 'true'">
 									<div>Select this cohort</div>
+									<div class="mat-h5 lightText">{{this.data.maxSeats - itenaryObj.participantCount}} seats remaining</div>
+								</button>
+								<button *ngIf="mode === 'chooseDate' && (userId === undefined || userId.length <= 5)" mat-button (click)="selectCohort(itenaryObj.calendar.id)" class="pb-block mat-border-button" matTooltip="Sign up to join for this cohort.">
+									<div>Sign up</div>
 									<div class="mat-h5 lightText">{{this.data.maxSeats - itenaryObj.participantCount}} seats remaining</div>
 								</button>
 								<span matTooltip="This cohort has a participant, so it cannot be deleted." [matTooltipDisabled]="itenaryObj.participantCount <= 0">
