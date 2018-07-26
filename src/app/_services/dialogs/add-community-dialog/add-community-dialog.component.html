@@ -59,7 +59,7 @@
             <div class="row">
               <div class="col-xs-12 col-md-6">
                 <div class="stepHeader margin-top-20">Upload an image for your cover</div>
-                <p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
+                <p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
                   maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
                   <ng-template pTemplate="toolbar">
                     <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
@@ -80,7 +80,7 @@
               </div>
               <div class="col-xs-12 col-md-6">
                 <div class="stepHeader margin-top-20">Upload a video for your Community</div>
-                <p-fileUpload *ngIf="!uploadingVideo" #fubauto name="video" accept="video/*" customUpload="true" (uploadHandler)="uploadVideo($event)"
+                <p-fileUpload auto="auto" *ngIf="!uploadingVideo" #fubauto name="video" accept="video/*" customUpload="true" (uploadHandler)="uploadVideo($event)"
                   maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'video')" multiple="multiple">
                   <ng-template pTemplate="toolbar">
                     <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 2 videos</div>

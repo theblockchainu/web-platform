@@ -9,19 +9,20 @@
 				<button *ngIf="mobileQuery.matches" class="side-nav-toggle-button pull-left" mat-icon-button (click)="snav.toggle()">
 					<mat-icon>menu</mat-icon>
 				</button>
-				<div class="pull-right" *ngIf="step!=1 && step !=6 && step !=15 && step !=17 && class.controls['status'].value !== 'active'">
-					<button mat-button (click)="saveandexit()">
+				<div class="pull-right" *ngIf="step!=1 && step!=2 && step !=6 && step !=15 && step !=17">
+					<button mat-button *ngIf="class.controls['status'].value !== 'active'" (click)="saveandexit()">
 						<span *ngIf="!busySave">Save &amp; Exit</span>
-						<span *ngIf="busySave"> </span>
 						<ngx-loading [show]="busySave"></ngx-loading>
 					</button>
-				</div>
-				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=13 && class.controls['status'].value === 'active'">
-					<button mat-button (click)="exit()">Exit</button>
-				</div>
-				<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=13">
+					<button mat-button *ngIf="class.controls['status'].value === 'active'" (click)="exit()">
+						<span>
+							Exit
+						</span>
+					</button>
 					<button mat-button [routerLink]="'/class/'+classId" [queryParams]="{mode: 'preview'}">
-						Preview
+						<span>
+							Preview
+						</span>
 					</button>
 				</div>
 				<div class="pull-left">
@@ -296,7 +297,7 @@
 								<div class="row">
 									<div class="col-md-8">
 										<div class="stepHeader margin-top-20">Upload an image for your cover</div>
-										<p-fileUpload *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
+										<p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
 										 maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
 											<ng-template pTemplate="toolbar">
 												<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>

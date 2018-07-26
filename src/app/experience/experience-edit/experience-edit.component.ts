@@ -1177,20 +1177,19 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	saveandexit() {
 		this.exitAfterSave = true;
 		switch (this.step) {
-			case 2:
+			case 3:
 				this.submitInterests();
 				break;
-			case 11:
+			case 14:
 				this.submitExperienceGyan();
 				break;
-			case 12:
+			case 13:
 				this.submitAssessment();
 				break;
-			case 13:
-				console.log('submitting certificate');
+			case 12:
 				this.certificateComponent.submitCertificate();
 				break;
-			case 15:
+			case 16:
 				this.submitExperienceTimeline();
 				break;
 			case 17:

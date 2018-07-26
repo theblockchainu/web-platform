@@ -115,12 +115,10 @@ export class LeftSidebarService {
         if (collection.contents !== undefined && collection.contents.length > 0) {
             sidebarMenuItems[2].submenu.forEach(item => {
                 item.complete = true;
-            }, this);
+            });
             completedSections++;
         }
-
         sidebarMenuItems[3].locked = completedSections !== 11;
-
         if (collection.owners !== undefined && collection.owners[0].phoneVerified) {
             sidebarMenuItems[4].submenu[0].complete = true;
         }

@@ -77,6 +77,7 @@ export class ExperienceContentInpersonComponent implements OnInit {
                     this.previousLocations.push(itenaryContent.location);
                 }
             });
+            this.previousLocations = _.uniqBy(this.previousLocations, 'location_name');
         });
         this.usePreviousLocation.valueChanges.subscribe(res => {
             if (this.usePreviousLocation.value) {

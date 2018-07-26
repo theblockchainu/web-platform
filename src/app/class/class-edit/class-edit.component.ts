@@ -427,7 +427,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		calendarForm.valueChanges.subscribe(res => {
 			const contentGroupForm = <FormGroup>this.timeline.controls['contentGroup'];
 			const itenaryArray = <FormArray>contentGroupForm.controls['itenary'];
-			if (this.step.toString() === '13' && this.timeline) {
+			if (this.step.toString() === this.timelineStep + '' && this.timeline) {
 				if (itenaryArray.length > 0) {
 					itenariesArray.controls.forEach((itenary: FormGroup) => {
 						if (itenary.controls['startDay']) {
@@ -535,11 +535,11 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (this.sidebarMenuItems) {
 			this.sidebarMenuItems[2]['submenu'] = [];
 			let i = 1;
-			this.itenariesForMenu.forEach(function (item) {
+			this.itenariesForMenu.forEach((item) => {
 				const index = i;
 				this.sidebarMenuItems[2]['submenu'].push({
 					'title': 'Day ' + index,
-					'step': 13 + '_' + index,
+					'step': this.timelineStep + '_' + index,
 					'active': false,
 					'visible': true,
 					'locked': false,
@@ -704,11 +704,11 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public daysCollection(event) {
 		this.days = event;
 		this.sidebarMenuItems[2]['submenu'] = [];
-		this.days.controls.forEach(function (item, index) {
+		this.days.controls.forEach((item, index) => {
 			const index2 = +index + 1;
 			this.sidebarMenuItems[2]['submenu'].push({
 				'title': 'Day ' + index2,
-				'step': 13 + '_' + index2,
+				'step': this.timelineStep + '_' + index2,
 				'active': false,
 				'visible': true,
 				'locked': false,
@@ -1179,20 +1179,20 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	saveandexit() {
 		this.exitAfterSave = true;
 		switch (this.step) {
-			case 2:
+			case 3:
 				this.submitInterests();
 				break;
-			case 11:
+			case 14:
 				this.submitClassGyan();
 				break;
-			case 12:
+			case 13:
 				this.submitAssessment();
 				break;
-			case 13:
+			case 12:
 				console.log('submitting certificate');
 				this.certificateComponent.submitCertificate();
 				break;
-			case 15:
+			case 13:
 				this.submitClassTimeline();
 				break;
 			case 17:

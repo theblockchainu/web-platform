@@ -70,7 +70,7 @@
                             <div class="loading-container" [hidden]="!uploadingAttachments">
                                 <ngx-loading [show]="true"></ngx-loading>
                             </div>
-                            <p-fileUpload *ngIf="!uploadingAttachments" name="attachments" customUpload="true" accept="application/pdf,application/msword,
+                            <p-fileUpload auto="auto" *ngIf="!uploadingAttachments" name="attachments" customUpload="true" accept="application/pdf,application/msword,
                         application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*" (uploadHandler)="uploadNew($event)"
                                 multiple="multiple" maxFileSize="10000000" (onClear)="resetNewUrls($event)" (onRemove)="itemEditRemoved($event)">
                                 <ng-template pTemplate="toolbar">

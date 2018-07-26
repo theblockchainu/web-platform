@@ -49,7 +49,7 @@ export class CustomCertificateFormComponent implements OnInit {
 	ngOnInit() {
 
 		this.today = new Date();
-		this.expiryDate = this._fb.control('');
+		this.expiryDate = this._fb.control('', [Validators.required, Validators.nullValidator]);
 		this.customCertificateForm = this._fb.group({
 			groupArray: this._fb.array([])
 		});
