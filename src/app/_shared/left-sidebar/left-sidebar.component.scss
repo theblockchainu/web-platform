@@ -111,7 +111,7 @@ html { height: 100%;}
 }
 
 .sidebar-brand a {
-    font-weight: 300;
+    font-weight: 500;
     font-size: 20px;
 }
 
@@ -163,12 +163,33 @@ html { height: 100%;}
 }
 
 .sidebar-brand a.active {
-    font-weight: 500;
     font-size: 22px;
-    color: #ffffff;
+    border-bottom: 3px solid #33bd9e;
+    -webkit-transition: border 300ms !important;
+    -moz-transition: border 300ms !important;
+    transition: border 300ms !important;
 }
 
 .childItem .active {
-  font-weight: 500;
-  color: #ffffff !important;
+  text-decoration: none;
+  border-bottom: 3px solid #33bd9e;
+}
+
+.menuSectionTitle{
+    margin: 0px !important;
+    word-wrap: break-word !important;
+    font-size: 12px !important;
+    line-height: 16px !important;
+    letter-spacing: normal !important;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+    color: #484848 !important;
+    font-weight: 800 !important;
+}
+
+.menuSectionChild{
+    font-size: 16px !important;
+    font-weight: 400 ;
+    -webkit-transition: border 300ms !important;
+    -moz-transition: border 300ms !important;
+    transition: border 300ms !important;
 }

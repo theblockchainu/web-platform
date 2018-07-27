@@ -46,7 +46,7 @@
     "step": 6,
     "submenu": [
       {
-        "title": "Cover",
+        "title": "Title",
         "step": 7,
         "active": false,
         "visible": true,
@@ -78,7 +78,7 @@
         "complete": false
       },
       {
-        "title": "Gallery",
+        "title": "Photos",
         "step": 11,
         "active": false,
         "visible": true,

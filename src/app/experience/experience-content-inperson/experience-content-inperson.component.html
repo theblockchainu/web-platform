@@ -124,9 +124,9 @@
 			</div>
 			<mat-dialog-actions>
 				<span *ngIf="!isEdit" matTooltip="Please enter all details" [matTooltipDisabled]="title.value.length!==0 || description.value.length !== 0 || prerequisites.value.length !== 0 || startTime.value.length !== 0 || endTime.value.length !== 0 || location.value.length !== 0">
-					<button mat-raised-button [mat-dialog-close]="getSaveDialogData()" color="accent" [disabled]="title.value.length === 0 || description.value.length === 0 || prerequisites.value.length === 0 || startTime.value.length === 0 || endTime.value.length === 0 || location.value.length === 0">Save</button> &emsp;
+					<button mat-raised-button [mat-dialog-close]="getSaveDialogData()" color="primary" [disabled]="title.value.length === 0 || description.value.length === 0 || prerequisites.value.length === 0 || startTime.value.length === 0 || endTime.value.length === 0 || location.value.length === 0">Save</button> &emsp;
 				</span>
-				<button mat-raised-button [mat-dialog-close]="getEditDialogData()" color="accent" *ngIf="isEdit">Update</button> &emsp;
+				<button mat-raised-button [mat-dialog-close]="getEditDialogData()" color="primary" *ngIf="isEdit">Update</button> &emsp;
 				<button mat-button [mat-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>
 				<button mat-button [mat-dialog-close]="getDeleteDialogData()" *ngIf="isEdit">Delete</button>
 			</mat-dialog-actions>

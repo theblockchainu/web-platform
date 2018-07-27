@@ -46,7 +46,7 @@
         "step": 6,
         "submenu": [
             {
-                "title": "Title & Headline",
+                "title": "Title",
                 "step": 7,
                 "active": false,
                 "visible": true,

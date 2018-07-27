@@ -162,24 +162,62 @@ mat-input-container.mat-block {
 }
 
 mat-sidenav {
-	width: 300px;
-	background: -webkit-linear-gradient(top, #FF6071, #FF6D71); /* FFA6AA For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(bottom, #FF6071, #FF6D71); /* For Opera 11.1 to 12.0 */
-	background: -moz-linear-gradient(bottom, #FF6071, #FF6D71); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(to bottom, #FF6071, #FF6D71); /* Standard syntax (must be last) */
-	padding: 20px 30px;
+	width: 250px;
+	padding: 70px 30px;
 	color: #fff;
 }
 
 mat-sidenav a {
-	color: #eaeaea;
+	color: rgba(0,0,0,0.75);
 	cursor: pointer;
 }
 
 mat-sidenav a:hover {
 	text-decoration: none;
-	color: #eaeaea;
+	color: rgba(0,0,0,0.75);
 }
+
+.mat-drawer::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+}
+
+.mat-drawer::-webkit-scrollbar
+{
+  width: 4px;
+}
+
+.mat-drawer::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #383838;
+}
+
+
+
+
+
+.navbar-page-content::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+}
+
+.navbar-page-content::-webkit-scrollbar
+{
+  width: 8px;
+}
+
+.navbar-page-content::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #383838;
+}
+
+
 
 .mat-nav-list .mat-list-item {
 	color: #eeeeee;
@@ -191,7 +229,7 @@ mat-sidenav a:hover {
 
 .mat-nav-list a {
 	font-weight: 300;
-	color: #eeeeee !important;
+	color: rgba(0,0,0,0.75) !important;
 }
 
 mat-subheader {
@@ -225,6 +263,43 @@ mat-subheader {
 	border: 0.5px solid #ccc !important;
 }
 
+.mat-border-button.mat-primary {
+    margin: 0px !important;
+    position: relative !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    -webkit-transition-property: background, border-color, color !important;
+    -moz-transition-property: background, border-color, color !important;
+    transition-property: background, border-color, color !important;
+    -webkit-transition-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+    -webkit-transition-timing-function: ease-out !important;
+    transition-timing-function: ease-out !important;
+    width: auto !important;
+    border-radius: 4px !important;
+    font-size: 16px !important;
+    line-height: 22px !important;
+    letter-spacing: normal !important;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+    text-transform: undefined !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+    font-weight: 800 !important;
+    border-width: 2px !important;
+    border-style: solid !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    min-width: 77.66563145999496px !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    border-color: #33bd9e !important;
+    color: #33bd9e !important;
+}
+
+.mat-button.mat-primary[disabled]{
+	border-color: rgba(0, 0, 0, 0.26) !important;
+    color: rgba(0, 0, 0, 0.26) !important;
+}
 .mat-border-button.mat-button.mat-warn {
 	border: 0.5px solid #ff393e !important;
 }
@@ -1800,8 +1875,9 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	padding: 25px 50px 25px 100px;
 	max-height: 100vh;
 	min-height: 100vh;
-	overflow-y: scroll
+	overflow-y: auto;
 }
+
 
 .stripe-image{
     width: max-content;

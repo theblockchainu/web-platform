@@ -638,10 +638,11 @@
 					</div>
 					<div class="row padding-top-20">
 						<div class="col-xs-12">
-							<button mat-raised-button color="accent" (click)="cancel()">
+							<button mat-button class="mat-border-button" color="primary" (click)="cancel()">
 								Back
 							</button>
-							<button class="pull-right" mat-raised-button [disabled]="busySavingData || !expiryDate.valid" color="accent" (click)="submitCertificate()">
+							<button class="mat-border-button" class="pull-right mat-border-button" mat-button [disabled]="busySavingData || !expiryDate.valid" color="primary"
+							 (click)="submitCertificate()">
 								<span *ngIf="!busySavingData">Next</span>
 								<span>
 									<ngx-loading [show]="busySavingData"></ngx-loading>
