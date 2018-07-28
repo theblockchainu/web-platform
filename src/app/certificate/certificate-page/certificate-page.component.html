@@ -23,10 +23,10 @@
 										John Doe
 									</span>
 								</div>
-								<div class="col-md-12 mat-h5" *ngIf="issuer.headline">
+								<div class="col-md-12 mat-h5" *ngIf="issuer.profiles[0].headline">
 									{{issuer.profiles[0].headline}}
 								</div>
-								<div class="col-md-12 mat-h5" *ngIf="!issuer.headline">
+								<div class="col-md-12 mat-h5" *ngIf="!issuer.profiles[0].headline">
 									New user
 								</div>
 							</div>
@@ -50,10 +50,10 @@
 										John Doe
 									</span>
 								</div>
-								<div class="col-md-12 mat-h5" *ngIf="recipient.headline">
+								<div class="col-md-12 mat-h5" *ngIf="recipient.profiles[0].headline">
 									{{recipient.profiles[0].headline}}
 								</div>
-								<div class="col-md-12 mat-h5" *ngIf="!recipient.headline">
+								<div class="col-md-12 mat-h5" *ngIf="!recipient.profiles[0].headline">
 									New user
 								</div>
 							</div>
@@ -93,10 +93,10 @@
 										John Doe
 									</span>
 								</div>
-								<div class="col-md-12 mat-h5" *ngIf="accreditation.createdBy[0].headline">
+								<div class="col-md-12 mat-h5" *ngIf="accreditation.createdBy[0].profiles[0].headline">
 									{{accreditation.createdBy[0].profiles[0].headline}}
 								</div>
-								<div class="col-md-12 mat-h5" *ngIf="!accreditation.createdBy[0].headline">
+								<div class="col-md-12 mat-h5" *ngIf="!accreditation.createdBy[0].profiles[0].headline">
 									New user
 								</div>
 							</div>

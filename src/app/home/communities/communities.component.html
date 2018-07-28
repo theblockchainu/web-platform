@@ -35,7 +35,7 @@
 		                    <a class="clickable">here</a>.
 		                </div>
 		                <div *ngFor="let community of communities;">
-		                    <app-community-card [community]="community" (refresh)="onCommunityRefresh($event)"></app-community-card>
+		                    <app-community-card [community]="community" [cardsPerRow]="3" (refresh)="onCommunityRefresh($event)"></app-community-card>
 		                </div>
 		            </div>
 			        <div class="row more-actions center">

@@ -6,7 +6,7 @@
 			<mat-icon *ngIf="community.bookmarks && community.bookmarks[0] && community.bookmarks[0].peer && community.bookmarks[0].peer[0] && community.bookmarks[0].peer[0].id===userId"
 			 color="primary">bookmark</mat-icon>
 		</button>
-		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('community',community.id,community.title, community.description, envVariable.apiUrl + community.imageUrls[0])">
+		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('community',community.id,community.title, community.description, community.headline, envVariable.apiUrl + community.imageUrls[0])">
 			<mat-icon>share</mat-icon>
 		</button>
 	</span>
