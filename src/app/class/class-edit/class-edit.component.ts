@@ -402,7 +402,6 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	private initializeTimeLine(res) {
-
 		const sortedCalendar = this.sort(res.calendars, 'startDate', 'endDate');
 		if (sortedCalendar[0] !== undefined && sortedCalendar[0].startDate) {
 			const calendar = sortedCalendar[0];
@@ -415,6 +414,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.activeClass = 'disabledMAT';
 			}
 			this.timeline.controls.calendar.patchValue(calendar);
+			console.log(this.timeline.controls.calendar.value);
 			this.initializeContentForm(res);
 		}
 		this.initializeCalendarCheck(res);
@@ -737,6 +737,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 		// aboutHost TBD
 		this.class.controls.aboutHost.patchValue(res.aboutHost);
+		console.log(this.class.controls.aboutHost.value);
+
 
 		// Title
 		this.class.controls.title.patchValue(res.title);
@@ -746,12 +748,14 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		// Description
 		this.class.controls.description.patchValue(res.description);
+		console.log(this.class.controls.description.value);
 
 		// Difficulty Level
 		this.class.controls.difficultyLevel.patchValue(res.difficultyLevel);
 
 		// Notes
 		this.class.controls.notes.patchValue(res.notes);
+		console.log(this.class.controls.notes.value);
 
 		// Seats
 		this.class.controls.maxSpots.patchValue(res.maxSpots);
