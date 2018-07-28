@@ -658,9 +658,9 @@
 										</div>
 									</div>
 									<br/>
-									<div class="lightText mat-caption" *ngIf="!freeClass">OR</div>
+									<div class="lightText mat-caption" *ngIf="!freeExperience">OR</div>
 									<br/>
-									<div class="row margin-left-0" *ngIf="!freeClass">
+									<div class="row margin-left-0" *ngIf="!freeExperience">
 										<div class="col-md-3 col-xs-2 padding-top-10">
 											{{0 | currency: experience.controls['currency'].value : 'symbol' | slice:0:1}} &nbsp;
 											<p-spinner size="7" formControlName="price"></p-spinner>
@@ -692,7 +692,7 @@
 									</button>
 									<span class="pull-right" matTooltip="Enter a price you wish to charge for this class, its gyan value and its cancellation policy"
 									 [matTooltipDisabled]="experience.controls['price'].value && experience.controls['currency'].value  && experience.controls['cancellationPolicy'].value ">
-										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="!(freeClass || (experience.controls['price'].value && experience.controls['currency'].value)) || !experience.controls['cancellationPolicy'].value || busySavingData">
+										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="!(freeExperience || (experience.controls['price'].value && experience.controls['currency'].value)) || !experience.controls['cancellationPolicy'].value || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
 												<ngx-loading [show]="busySavingData"></ngx-loading>
