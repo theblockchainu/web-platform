@@ -691,8 +691,8 @@
 										Back
 									</button>
 									<span class="pull-right" matTooltip="Enter a price you wish to charge for this class, its gyan value and its cancellation policy"
-									 [matTooltipDisabled]="experience.controls['price'].value && experience.controls['currency'].value  && experience.controls['cancellationPolicy'].value && experience.controls['academicGyan'].value && experience.controls['nonAcademicGyan'].value">
-										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="!(freeClass || (experience.controls['price'].value && experience.controls['currency'].value)) || !experience.controls['cancellationPolicy'].value || !experience.controls['academicGyan'].value || !experience.controls['nonAcademicGyan'].value || busySavingData">
+									 [matTooltipDisabled]="experience.controls['price'].value && experience.controls['currency'].value  && experience.controls['cancellationPolicy'].value ">
+										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="!(freeClass || (experience.controls['price'].value && experience.controls['currency'].value)) || !experience.controls['cancellationPolicy'].value || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
 												<ngx-loading [show]="busySavingData"></ngx-loading>

@@ -734,8 +734,8 @@
 										Back
 									</button>
 									<span class="pull-right" matTooltip="Enter a price you wish to charge for this class, its gyan value and its cancellation policy"
-									 [matTooltipDisabled]="class.controls['price'].value && class.controls['currency'].value  && class.controls['cancellationPolicy'].value && class.controls['academicGyan'].value && class.controls['nonAcademicGyan'].value">
-										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="!(freeClass || (class.controls['price'].value && class.controls['currency'].value)) || !class.controls['cancellationPolicy'].value || !class.controls['academicGyan'].value || !class.controls['nonAcademicGyan'].value || busySavingData">
+									 [matTooltipDisabled]="class.controls['price'].value && class.controls['currency'].value  && class.controls['cancellationPolicy'].value">
+										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="!(freeClass || (class.controls['price'].value && class.controls['currency'].value)) || !class.controls['cancellationPolicy'].value || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
 												<ngx-loading [show]="busySavingData"></ngx-loading>
