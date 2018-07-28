@@ -38,7 +38,8 @@ import {
 import {
     FileUploadModule, ScheduleModule, DialogModule,
     CheckboxModule, LightboxModule, RatingModule,
-    AccordionModule, SliderModule, ColorPickerModule
+    AccordionModule, SliderModule, ColorPickerModule,
+    SpinnerModule
 } from 'primeng/primeng';
 import { NgPipesModule, UcWordsPipe } from 'ngx-pipes';
 import { CalendarModule } from 'angular-calendar';
@@ -272,7 +273,8 @@ import { UploadFileComponent } from './upload-file/upload-file.component';
         AmazingTimePickerModule,
         CustomCertificateFormComponent,
         SafePipe,
-        UploadFileComponent
+        UploadFileComponent,
+        SpinnerModule
     ]
 })
 export class SharedModule {

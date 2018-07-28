@@ -49,8 +49,8 @@ export class AssessmentService {
               gyan: 60
             }
           ]
-        }
-
+        },
+        description: 'A,B,C,D...'
       },
       {
         system: 'Weighted Grades',
@@ -110,8 +110,8 @@ export class AssessmentService {
               gyan: 60
             }
           ]
-        }
-
+        },
+        description: 'A+,A,A-,B+,B,B-...'
       },
       {
         system: 'Percentage',
@@ -159,7 +159,8 @@ export class AssessmentService {
               gyan: 10
             }
           ]
-        }
+        },
+        description: '100,90,80,70...'
       },
       {
         system: 'Binary',
@@ -175,7 +176,8 @@ export class AssessmentService {
               gyan: 1
             }
           ]
-        }
+        },
+        description: 'Pass/Fail'
       }
     ];
 
@@ -199,4 +201,5 @@ interface AssessmentTypeData {
       gyan: number
     }>;
   };
+  description: string;
 }

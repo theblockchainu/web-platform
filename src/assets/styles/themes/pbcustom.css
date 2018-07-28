@@ -1872,7 +1872,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 
 .navbar-page-content{
 	background: #fff;
-	padding: 25px 50px 25px 100px;
+	padding: 80px 50px 25px 100px;
 	max-height: 100vh;
 	min-height: 100vh;
 	overflow-y: auto;
