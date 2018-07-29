@@ -19,6 +19,7 @@ export class SelectDateDialogComponent implements OnInit {
 	public accountApproved = 'false';
 	public filteredItineraries = [];
 	public deletedCalendar = [];
+	public userId;
 	
 	constructor(public dialogRef: MatDialogRef<SelectDateDialogComponent>,
 				@Inject(MAT_DIALOG_DATA) public data: any) {
@@ -28,6 +29,7 @@ export class SelectDateDialogComponent implements OnInit {
 		this.participants = data.participants;
 		this.userType = data.userType;
 		this.accountApproved = data.accountApproved;
+		this.userId = data.userId;
 		const today = moment();
 		this.itineraries.forEach(itinerary => {
 			let thisParticipantCount = 0;

@@ -9,8 +9,10 @@ import { environment } from '../../environments/environment';
 import { ScholarshipService } from '../_services/scholarship/scholarship.service';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
+import { sha512 } from 'js-sha512';
 
 declare var Stripe: any;
+declare var bolt: any;
 
 @Component({
     selector: 'app-review-pay',
@@ -34,6 +36,7 @@ export class ReviewPayComponent implements OnInit {
     public savingData = false;
     public loader = 'assets/images/ajax-loader.gif';
     public custId;
+    public student;
     public createSourceData = { token: '', email: '' };
     public createChargeData = { amount: 0, currency: 'usd', source: '', description: '', customer: '' };
     public isCardExist = false;
@@ -53,6 +56,8 @@ export class ReviewPayComponent implements OnInit {
     public selectedScholarship = 'NA';
     paybleKarma: number;
     public assessmentRules: Array<any>;
+    public loadingCountry = true;
+    public userCountry = 'USA';
 
     constructor(
         private _cookieUtilsService: CookieUtilsService,
@@ -76,6 +81,7 @@ export class ReviewPayComponent implements OnInit {
 
     ngOnInit() {
         this.setTags();
+        this.getUserCountry();
         this.stripe = Stripe(environment.stripePublishableKey);
         const elements = this.stripe.elements();
         this.card = elements.create('card', {
@@ -136,6 +142,7 @@ export class ReviewPayComponent implements OnInit {
         });
         this.profileService.getPeer(this.userId).subscribe(peer => {
             if (peer) {
+            	this.student = peer;
                 this.createSourceData.email = peer.email;
                 this.createChargeData.customer = peer.stripeCustId;
                 this.custId = peer.stripeCustId;
@@ -162,17 +169,31 @@ export class ReviewPayComponent implements OnInit {
     }
 
     private sortAssessmentRules() {
-        const assessmentRulesUnsorted = <Array<any>>this.collection.assessment_models[0].assessment_rules;
-        this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
-            if (a.value > b.value) {
-                return 1;
-            } else if (a.value === b.value) {
-                return 0;
-            } else {
-                return -1;
-            }
-        });
+    	if (this.collection.assessment_models && this.collection.assessment_models.length > 0) {
+			const assessmentRulesUnsorted = <Array<any>>this.collection.assessment_models[0].assessment_rules;
+			this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
+				if (a.value > b.value) {
+					return 1;
+				} else if (a.value === b.value) {
+					return 0;
+				} else {
+					return -1;
+				}
+			});
+		}
     }
+    
+    private getUserCountry() {
+    	this.loadingCountry = true;
+    	this.paymentService.getUserCountry().subscribe(res => {
+    		this.userCountry = res.countryCode;
+    		console.log(this.userCountry);
+    		this.loadingCountry = false;
+		}, err => {
+    		console.log(err);
+    		this.loadingCountry = false;
+		});
+	}
 
     private setTags() {
         this.titleService.setTitle('Review & Pay');
@@ -393,4 +414,34 @@ export class ReviewPayComponent implements OnInit {
     public getGyanForRule(gyanPercent, totalGyan) {
         return Math.floor((gyanPercent / 100) * totalGyan);
     }
+    
+    public initiatePayuPayment() {
+		const hashSequence = 'wru4V51W|b2f35875-220c-4dd5-b39b-9955af0b875d|' + this.collection.price + '|' + this.collection.type + '-' + this.collection.id + '|' + this.student.profiles[0].first_name + '|' + this.student.email + '|||||||||||YlbRhVlw58';
+		const hash = sha512(hashSequence);
+		const RequestData = {
+			key: 'wru4V51W',
+			txnid: 'b2f35875-220c-4dd5-b39b-9955af0b875d',
+			hash: hash,
+			amount: this.collection.price,
+			firstname: this.student.profiles[0].first_name,
+			email: this.student.email,
+			phone: this.student.profiles[0].phone_numbers[0].subscriber_number,
+			productinfo: this.collection.type + '-' + this.collection.id,
+			surl : environment.clientUrl + '/review-pay/collection/' + this.collectionId + '/' + this.collectionCalendarId + '?result=success',
+			furl: environment.clientUrl + '/review-pay/collection/' + this.collectionId + '/' + this.collectionCalendarId + '?result=fail',
+			mode: 'dropout'
+		};
+		
+		bolt.launch(RequestData, {
+			function(Bolt) {
+				console.log('Reached here. Payment success');
+				console.log(Bolt);
+			},
+			function(error) {
+				console.log('Payment error');
+				console.log(error);
+			}
+		});
+		
+	}
 }

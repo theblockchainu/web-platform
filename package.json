@@ -74,7 +74,8 @@
     "twilio-video": "^1.8.0",
     "typescript": "2.6.2",
     "videogular2": "^6.0.6",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "js-sha512": "latest"
   },
   "devDependencies": {}
 }

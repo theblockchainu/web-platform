@@ -180,5 +180,9 @@ export class PaymentService {
 	public retrieveLocalPayoutAccounts() {
 		return this.http.get(environment.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue('userId') + '/payoutaccs', this._requestHeaderService.options).map(result => result);
 	}
+	
+	public getUserCountry() {
+		return this.http.get('http://ip-api.com/json').map(result => result);
+	}
 
 }
