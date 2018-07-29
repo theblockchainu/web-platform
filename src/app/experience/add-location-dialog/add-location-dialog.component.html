@@ -63,9 +63,9 @@
       </div>
       <mat-dialog-actions>
         <span *ngIf="!isEdit" matTooltip="Please fill up all details" [matTooltipDisabled]="!busyCountry || country.value.length !== 0 || street_address.value.length !== 0 || city.value.length !== 0 || state.value.length !== 0 || zip.value.length !== 0">
-          <button mat-raised-button [mat-dialog-close]="getSaveDialogData()" color="accent" [disabled]="busyCountry || country.value.length === 0 || street_address.value.length === 0 || city.value.length === 0 || state.value.length === 0 || zip.value.length === 0">Save</button> &emsp;
+          <button mat-raised-button [mat-dialog-close]="getSaveDialogData()" color="primary" [disabled]="busyCountry || country.value.length === 0 || street_address.value.length === 0 || city.value.length === 0 || state.value.length === 0 || zip.value.length === 0">Save</button> &emsp;
         </span>
-        <button mat-raised-button [mat-dialog-close]="getEditDialogData()" color="accent" *ngIf="isEdit" [disabled]="busyCountry || country.value.length === 0 || street_address.value.length === 0 || city.value.length === 0 || state.value.length === 0 || zip.value.length === 0">Update</button> &emsp;
+        <button mat-raised-button [mat-dialog-close]="getEditDialogData()" color="primary" *ngIf="isEdit" [disabled]="busyCountry || country.value.length === 0 || street_address.value.length === 0 || city.value.length === 0 || state.value.length === 0 || zip.value.length === 0">Update</button> &emsp;
         <button mat-button [mat-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>
       </mat-dialog-actions>
     </form>

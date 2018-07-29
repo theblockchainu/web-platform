@@ -1,49 +1,60 @@
 <div style="background: #fff; padding: 0px; min-height: 100vh;" [class.main-content]="!mobileQuery.matches" [class.mobile-main-content]="mobileQuery.matches">
-	<mat-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: scroll; background: #ffffff;">
+	<mat-toolbar color="white">
+		<span>
+			<a class="brand clickable" aria-label="Peerbuds Homepage" [routerLink]="['/home','homefeed']">
+				<img src="/assets/images/peerbuds-logo-color.png" alt="logo">
+			</a>
+		</span>
+		<div style="position: absolute;left: 17vw;width: 82vw !important">
+			<button *ngIf="mobileQuery.matches" class="side-nav-toggle-button" mat-icon-button (click)="snav.toggle()">
+				<mat-icon>menu</mat-icon>
+			</button>
+			<div class="pull-right" *ngIf="step!=1 && step !=6 && step !=15 && step !=17">
+				<button mat-button *ngIf="experience.controls['status'].value !== 'active'" (click)="saveandexit()">
+					<span *ngIf="!busySave">Save &amp; Exit</span>
+					<ngx-loading [show]="busySave"></ngx-loading>
+				</button>
+				<button mat-button *ngIf="experience.controls['status'].value === 'active'" (click)="exit()">
+					<span>
+						Exit
+					</span>
+				</button>
+				<button mat-button [routerLink]="'/class/'+experienceId" [queryParams]="{mode: 'preview'}">
+					<span>
+						Preview
+					</span>
+				</button>
+			</div>
+			<div class="pull-left">
+				<mat-chip-list>
+					<mat-chip style="margin-bottom: 15px;">
+						{{experience.controls['status'].value | titlecase}}
+					</mat-chip>
+					<mat-chip style="margin-bottom: 15px;">
+						<i class="fab fa-ethereum"></i>&nbsp; {{totalGyan}} Gyan
+					</mat-chip>
+					<mat-chip style="margin-bottom: 15px;">
+						<i class="fa fa-fire"></i>&nbsp; {{totalGyan | convertCrypto: 'GYAN' : 'KARMA' | async}} Karma
+					</mat-chip>
+					<!--<mat-chip style="margin-bottom: 15px;">
+								<i class="fab fa-ethereum"></i>&nbsp; {{userId | gyanBalance : 'fixed' | async}}
+							</mat-chip>-->
+				</mat-chip-list>
+			</div>
+		</div>
+
+		<!-- <span class="pull-right">
+					<img *ngIf="!profile.picture_url" src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb">
+					<img *ngIf="profile.picture_url" src="{{envVariable.apiUrl + profile.picture_url + '/100'}}" alt="A" class="circle-thumb">
+				</span> -->
+	</mat-toolbar>
+	<mat-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: hidden; background: #ffffff;">
 		<mat-sidenav #snav [mode]="mobileQuery.matches === true ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" [opened]="!mobileQuery.matches">
 			<app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
 		</mat-sidenav>
 		<!-- Page Content -->
 		<mat-sidenav-content>
-			<div class="navbar-page-content" [ngClass]="{'showBackground': showBackground}">
-				<button *ngIf="mobileQuery.matches" class="side-nav-toggle-button pull-left" mat-icon-button (click)="snav.toggle()">
-					<mat-icon>menu</mat-icon>
-				</button>
-				<div class="pull-right" *ngIf="step!=1 && step !=6 && step !=15 && step !=17 ">
-					<button mat-button *ngIf="experience.controls['status'].value !== 'active'" (click)="saveandexit()">
-						<span *ngIf="!busySave">Save &amp; Exit</span>
-						<ngx-loading [show]="busySave"></ngx-loading>
-					</button>
-					<button mat-button *ngIf="experience.controls['status'].value === 'active'" (click)="exit()">
-						<span>
-							Exit
-						</span>
-					</button>
-					<button mat-button [routerLink]="'/experience/'+experienceId" [queryParams]="{previewAs: 'public'}">
-						<span>
-							Preview
-						</span>
-					</button>
-				</div>
-				<div class="pull-left">
-					<mat-chip-list>
-						<mat-chip style="margin-bottom: 15px;">
-							{{experience.controls['status'].value | titlecase}}
-						</mat-chip>
-						<mat-chip style="margin-bottom: 15px;">
-							<i class="fab fa-ethereum"></i>&nbsp; {{totalGyan}} Gyan
-						</mat-chip>
-						<mat-chip style="margin-bottom: 15px;">
-							<i class="fa fa-fire"></i>&nbsp; {{totalGyan | convertCrypto: 'GYAN' : 'KARMA' | async}} Karma
-						</mat-chip>
-						<!--<mat-chip style="margin-bottom: 15px;">
-							<i class="fab fa-ethereum"></i>&nbsp; {{userId | gyanBalance : 'fixed' | async}}
-						</mat-chip>-->
-					</mat-chip-list>
-				</div>
-				<br/>
-				<br/>
-				<br/>
+			<div class="navbar-page-content">
 				<!--Disclaimer-->
 				<div class="onboarding step-1" [hidden]="step!=1">
 					<div class="row">
@@ -65,7 +76,7 @@
 								</li>
 							</ul>
 							<div class="margin-top-20">
-								<button mat-raised-button (click)="next()" color="accent" class="pull-right">
+								<button mat-raised-button (click)="next()" color="primary" class="pull-right">
 									Next
 								</button>
 							</div>
@@ -77,31 +88,27 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">What type of experience is this?</h2>
-							<p class="subtitle">Select topics that this experience covers</p>
+							<p class="subtitle">Select what kind of experience is this</p>
 							<br/>
 							<form [formGroup]="experience" (ngSubmit)="submitExperience()">
-								<div class="row">
-									<mat-radio-group formControlName="subCategory">
-										<div class="col-md-6 col-xs-12 padding-bottom-30" *ngFor="let subType of availableSubtypes">
-											<button type="button" mat-raised-button class="pb-block" [ngStyle]="{background: 'url(\''+subType.pic_url+'\')'}" style="height: 250px; text-align: left; background-size: cover; color: #fff;">
-												<div style="position: absolute; bottom: 0; padding: 10px 15px; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
-													<mat-radio-button class="pb-block" [value]="subType.name">
-														<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">{{subType.name|titlecase}}</span>
-														<br/>
-														<span class="mat-caption lightText">{{subType.description}}</span>
-													</mat-radio-button>
-												</div>
-											</button>
-										</div>
-									</mat-radio-group>
+								<div class="row padding-bottom-50">
+									<div class="col-xs-4">
+										<mat-form-field>
+											<mat-select placeholder="Select Type" formControlName="subCategory">
+												<mat-option *ngFor="let subType of availableSubtypes" [value]="subType.name">
+													{{subType.name|titlecase}}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
 								</div>
 								<div class="row">
 									<div class="col-xs-12">
-										<button mat-raised-button type="button" (click)="back()" color="accent">
+										<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 											Back
 										</button>
 										<span class="pull-right" matTooltip="Select a Type to continue" [matTooltipDisabled]="experience.value.subCategory!==undefined">
-											<button mat-raised-button color="accent" type="Submit" [disabled]="experience.value.subCategory===undefined || busySavingData">
+											<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="experience.value.subCategory===undefined || busySavingData">
 												<span *ngIf="!busySavingData">Next</span>
 												<span>
 													<ngx-loading [show]="busySavingData"></ngx-loading>
@@ -139,7 +146,7 @@
 
 								<!--<div class="flex flexContainer margin-top-30">
 								  <button mat-button class="padding-left-0" type="button" color="grey" [disabled]="interests.length >= maxTopics" (click)="addNewTopic()">
-									  <mat-icon class="iconVC" color="accent">
+									  <mat-icon class="iconVC" color="primary" class="mat-border-button">
 										add
 									  </mat-icon><span class="addIconText">Add New Topic</span></button>
 								  <span class="flex"></span>
@@ -160,7 +167,7 @@
 								  &lt;!&ndash; <div class="col-sm-3" *ngFor="let topic of suggestedTopics">
 									<div class="lookingFor interest">
 									  <label class="check">
-										<mat-icon *ngIf="topic.checked" color="accent">
+										<mat-icon *ngIf="topic.checked" color="primary" class="mat-border-button">
 										  check_circle
 										</mat-icon>
 									  </label>
@@ -172,11 +179,11 @@
 								  </div> &ndash;&gt;
 								</div>-->
 								<div style="margin-top:60px;">
-									<button mat-raised-button type="button" (click)="back()" color="accent">
+									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
 									<span class="pull-right" matTooltip="Add at least one interest to continue" [matTooltipDisabled]="interests.length !== 0">
-										<button mat-raised-button color="accent" [disabled]="interests.length == 0 || busySavingData">
+										<button mat-button color="primary" class="mat-border-button" [disabled]="interests.length == 0 || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
 												<ngx-loading [show]="busySavingData"></ngx-loading>
@@ -207,11 +214,11 @@
 									</mat-form-field>
 								</div>
 								<div style="margin-top:100px;">
-									<button mat-raised-button type="button" (click)="back()" color="accent">
+									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
 									<span class="pull-right" matTooltip="Select a language to continue" [matTooltipDisabled]="selectedLanguages!==undefined">
-										<button mat-raised-button color="accent" type="Submit" [disabled]="selectedLanguages===undefined || busySavingData">
+										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="selectedLanguages===undefined || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
 												<ngx-loading [show]="busySavingData"></ngx-loading>
@@ -243,11 +250,11 @@
 									<a href="javascript:void(0)" (click)="importProfileBio()">Import bio from my profile</a>
 								</div>
 								<div style="margin-top:80px;">
-									<button mat-raised-button type="button" (click)="back()" color="accent">
+									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
 									<span class="pull-right" matTooltip="A brief description about yourself is mandatory to continue" [matTooltipDisabled]="aboutHost.value.length !== 0">
-										<button mat-raised-button color="accent" type="Submit" [disabled]="aboutHost.value.length == 0 || busySavingData">
+										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="aboutHost.value.length == 0 || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
 												<ngx-loading [show]="busySavingData"></ngx-loading>
@@ -262,17 +269,17 @@
 				<!--Disclaimer-->
 				<div class="onboarding step-6" [hidden]="step!=6">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8" style="background: #eeeeeedd; padding: 20px;">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Create the page learners will see</h2>
 							<p class="subtitle" style="color: #333333;">Write in a clear, straightforward and friendly way. We'll prompt you on when to show off your personality and be more
 								descriptive.
 							</p>
 							<br/>
 							<div style="margin-top:60px;">
-								<button mat-raised-button type="button" (click)="back()" color="accent">
+								<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 									Back
 								</button>
-								<button mat-raised-button (click)="next()" color="accent" class="pull-right">
+								<button mat-raised-button (click)="next()" color="primary" class="pull-right mat-border-button">
 									Next
 								</button>
 							</div>
@@ -315,43 +322,17 @@
 										</div>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-md-8">
-										<div class="stepHeader margin-top-20">Upload an image for your cover</div>
-										<p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
-										 maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
-											<ng-template pTemplate="toolbar">
-												<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
-											</ng-template>
-										</p-fileUpload>
-										<h5>Max File Size
-											<b>10MB</b>
-										</h5>
-										<div *ngIf="urlForImages.length" class="pic delete">
-											<div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
-												<img src="{{envVariable.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
-												<mat-icon (click)="deleteFromContainer(file, 'image')" class="delete-button">close</mat-icon>
-											</div>
-										</div>
-										<div class="loading-container" [hidden]="!uploadingImage">
-											<ngx-loading [show]="true"></ngx-loading>
-										</div>
-									</div>
-								</div>
-
 								<div style="margin-top:60px;">
-									<button mat-raised-button type="button" (click)="back()" color="accent">
+									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
 									<span class="pull-right" matTooltip="Please type in a headline to continue." [matTooltipDisabled]="title.value.length !== 0 || headline.value.length !== 0">
-										<span matTooltip="An image is mandatory to continue" [matTooltipDisabled]="urlForImages.length !== 0">
-											<button mat-raised-button color="accent" type="Submit" [disabled]="urlForImages.length === 0 || title.value.length === 0 || headline.value.length === 0 || busySavingData">
-												<span *ngIf="!busySavingData">Next</span>
-												<span>
-													<ngx-loading [show]="busySavingData"></ngx-loading>
-												</span>
-											</button>
-										</span>
+										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="title.value.length === 0 || headline.value.length === 0 || busySavingData">
+											<span *ngIf="!busySavingData">Next</span>
+											<span>
+												<ngx-loading [show]="busySavingData"></ngx-loading>
+											</span>
+										</button>
 									</span>
 								</div>
 							</form>
@@ -374,11 +355,11 @@
 									</div>
 								</div>
 								<div style="margin-top:60px;">
-									<button mat-raised-button type="button" (click)="back()" color="accent">
+									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
 									<span class="pull-right" matTooltip="Describe your experience in detail to continue" [matTooltipDisabled]="description.value.length !== 0">
-										<button mat-raised-button color="accent" type="Submit" [disabled]="description.value.length == 0 || busySavingData">
+										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="description.value.length == 0 || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
 												<ngx-loading [show]="busySavingData"></ngx-loading>
@@ -414,11 +395,11 @@
 									</mat-form-field>
 								</div>
 								<div style="margin-top:60px;">
-									<button mat-raised-button type="button" (click)="back()" color="accent">
+									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
 									<span class="pull-right" matTooltip="Please fill all the details" [matTooltipDisabled]="experience.controls['difficultyLevel'].value && experience.controls['notes'].value">
-										<button mat-raised-button color="accent" type="Submit" [disabled]="(!experience.controls['difficultyLevel'].value && notes.value.length == 0) || busySavingData">
+										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="(!experience.controls['difficultyLevel'].value && notes.value.length == 0) || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
 												<ngx-loading [show]="busySavingData"></ngx-loading>
@@ -450,12 +431,12 @@
 								<div class="row">
 									<div class="col-md-12">
 										<div style="padding-top:60px;">
-											<button mat-raised-button type="button" (click)="back()" color="accent">
+											<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 												Back
 											</button>
 											<span class="pull-right" matTooltip="Enter the maximum number of participants you can teach in each Cohort of this experience"
 											 [matTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
-												<button mat-raised-button color="accent" type="Submit" [disabled]="maxSpots.value.length == 0 || maxSpots.value < 0 || busySavingData">
+												<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="maxSpots.value.length == 0 || maxSpots.value < 0 || busySavingData">
 													<span *ngIf="!busySavingData">Next</span>
 													<span>
 														<ngx-loading [show]="busySavingData"></ngx-loading>
@@ -477,47 +458,70 @@
 							<p class="subtitle">
 								Give the world a taste of your experience by showcasing captivating videos and/or photos
 							</p>
-							<div class="row" style="margin-top:25px;">
-								<form [formGroup]="experience" (ngSubmit)="submitExperience()" novalidate>
-									<div class="row margin-left-0" style="margin-top:40px">
-										<div class="col-md-8">
-											<div class="stepHeader">Upload Video</div>
-											<app-upload-file (uploaded)="addVideoUrl($event)"></app-upload-file>
-											<h5>Max File Size
-												<b>1000MB</b>
-											</h5>
-											<div *ngIf="urlForVideo.length" class="profileVideo delete">
-												<div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0 videoContainer">
-													<video controls width="150" class="uploaded_picture" style="border: 0.5px solid #ccc;" preload="metadata">
-														<source src="{{envVariable.apiUrl + file}}"> Your browser does not support the video tag.
-													</video>
-													<mat-icon (click)="deleteFromContainer(file, 'video')" class="delete-video">close</mat-icon>
-												</div>
+							<form [formGroup]="experience" (ngSubmit)="submitExperience()" novalidate>
+								<div class="row padding-top-20">
+									<div class="col-md-8">
+										<div class="stepHeader margin-top-20">Upload an image for your cover</div>
+										<p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
+										 maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
+											<ng-template pTemplate="toolbar">
+												<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
+											</ng-template>
+										</p-fileUpload>
+										<h5>Max File Size
+											<b>10MB</b>
+										</h5>
+										<div *ngIf="urlForImages.length" class="pic delete">
+											<div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
+												<img src="{{envVariable.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
+												<mat-icon (click)="deleteFromContainer(file, 'image')" class="delete-button">close</mat-icon>
 											</div>
-											<!-- <div class="loading-container" [hidden]="!uploadingVideo">
-												<ngx-loading [show]="true"></ngx-loading>
-											</div> -->
+										</div>
+										<div class="loading-container" [hidden]="!uploadingImage">
+											<ngx-loading [show]="true"></ngx-loading>
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<div class="margin-top-60">
-												<button mat-raised-button type="button" (click)="back()" color="accent">
-													Back
-												</button>
-												<span class="pull-right">
-													<button mat-raised-button color="accent" [disabled]="busySavingData" type="Submit">
+								</div>
+								<div class="row">
+									<div class="col-md-8">
+										<div class="stepHeader">Upload Video</div>
+										<app-upload-file (uploaded)="addVideoUrl($event)"></app-upload-file>
+										<h5>Max File Size
+											<b>1000MB</b>
+										</h5>
+										<div *ngIf="urlForVideo.length" class="profileVideo delete">
+											<div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0 videoContainer">
+												<video controls width="150" class="uploaded_picture" style="border: 0.5px solid #ccc;" preload="metadata">
+													<source src="{{envVariable.apiUrl + file}}"> Your browser does not support the video tag.
+												</video>
+												<mat-icon (click)="deleteFromContainer(file, 'video')" class="delete-video">close</mat-icon>
+											</div>
+										</div>
+										<!-- <div class="loading-container" [hidden]="!uploadingVideo">
+												<ngx-loading [show]="true"></ngx-loading>
+											</div> -->
+									</div>
+								</div>
+								<div class="row padding-top-20">
+									<div class="col-md-12">
+										<div class="margin-top-60">
+											<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
+												Back
+											</button>
+											<span class="pull-right">
+												<span matTooltip="An image is mandatory to continue" [matTooltipDisabled]="urlForImages.length !== 0">
+													<button mat-button color="primary" class="mat-border-button" [disabled]="urlForImages.length === 0 ||  busySavingData" type="Submit">
 														<span *ngIf="!busySavingData">Next</span>
 														<span>
 															<ngx-loading [show]="busySavingData"></ngx-loading>
 														</span>
 													</button>
 												</span>
-											</div>
+											</span>
 										</div>
 									</div>
-								</form>
-							</div>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -538,44 +542,27 @@
 									Choose where you will grade your students or will they grade each other or will an external party grade them?
 									<br/>Also, let students know about your grading pattern and the value of each grade.
 								</p>
-								<h3 class="title" style="margin-top: 40px !important;">Assessment Type </h3>
-								<div class="row">
-									<div class="col-xs-12">
-										<mat-form-field [floatLabel]="'auto'">
-											<mat-select formControlName="type" placeholder="Who will assess your students?">
-												<mat-option *ngFor="let c of availableAssessmentTypes" [value]="c">{{c}}</mat-option>
-											</mat-select>
-										</mat-form-field>
-									</div>
-								</div>
-								<h3 class="title" style="margin-top: 40px !important;">Assessment Style </h3>
-								<div class="row padding-top-20">
-									<div class="col-xs-12">
-										<mat-form-field [floatLabel]="'auto'">
-											<mat-select formControlName="style" placeholder="Grades or percentage?">
-												<mat-option *ngFor="let c of availableAssessmentStyles" [value]="c">{{c}}</mat-option>
-											</mat-select>
-										</mat-form-field>
-									</div>
-								</div>
 								<h3 class="margin-top-40">Assessment rules for academic performance</h3>
 								<div class="row padding-top-10" *ngIf="!assessmentForm.value.style || (assessmentForm.value.style && assessmentForm.value.style.length>0)">
 									<mat-radio-group [(ngModel)]="defaultAssesment" [ngModelOptions]="{standalone: true}">
 										<span *ngFor="let assessment of availableDefaultAssessments">
-											<div class="col-xs-12 col-md-4 padding-top-20" *ngIf="!assessmentForm.value.style || assessmentForm.value.style.length<1 || assessment.values.style===assessmentForm.value.style">
-												<mat-card>
-													<mat-radio-button [value]="assessment.values" (change)="assessmentChange($event)">{{assessment.system}}</mat-radio-button>
-												</mat-card>
-											</div>
-										</span>
-										<span>
 											<div class="col-xs-12 col-md-4 padding-top-20">
 												<mat-card>
-													<mat-radio-button [value]="{'style':'custom'}" (change)="assessmentChange($event)">Custom</mat-radio-button>
+													<mat-radio-button [value]="assessment.values" (change)="assessmentChange($event)">{{assessment.system}}
+														<br>
+														<span class="lightText">
+															{{assessment.description}}
+														</span>
+													</mat-radio-button>
 												</mat-card>
 											</div>
 										</span>
 									</mat-radio-group>
+								</div>
+								<div class="row padding-top-10">
+									<div class="col-xs-12 subtitle">
+										You can select one of the sample grading systems from above or you can create a custom system by adding new rule.
+									</div>
 								</div>
 								<span *ngIf="assessmentForm.controls['rules']['controls'].length>0">
 									<div class="row padding-top-40">
@@ -599,7 +586,7 @@
 														%
 													</span>
 													<input type="number" min="0" max="100" matInput formControlName="gyan" min="1" required>
-													<mat-error>Please enter a value between 0 and 100</mat-error>
+													<mat-error>Please enter a value between 1 and 100</mat-error>
 												</mat-form-field>
 											</div>
 											<div class="col-xs-4">
@@ -616,55 +603,31 @@
 										</div>
 									</div>
 								</span>
-								<h3 class="margin-top-30">Assessment rules for non academic performance</h3>
-								<div class="row">
-									<div class="col-xs-4">
-										Engagement
-									</div>
-									<div class="col-xs-4">
-										Covers how much non academic Gyan?
-									</div>
-								</div>
+								<h3 class="margin-top-40">Assessment rules for non academic performance</h3>
 								<div formArrayName="nARules">
 									<div *ngFor="let ruleForm of assessmentForm.controls['nARules']['controls']; let i = index" [formGroupName]="i" class="row">
-										<div class="col-xs-4">
-											<!-- <mat-form-field [floatLabel]="'never'" class="pb-block">
-												<mat-select formControlName="value">
-													<mat-option *ngFor="let c of nAAssessmentParams" [value]="c">{{c | titlecase}}</mat-option>
-												</mat-select>
-											</mat-form-field> -->
-											<span style="line-height: 4">
-												{{ruleForm.value.value | titlecase}}
-											</span>
+										<div class="col-xs-12" *ngIf="i<1">
+											<div class="row">
+												<div class="col-xs-3">
+													Engagement {{assessmentForm.value.nARules[0].gyan}}%
+												</div>
+												<div class="col-xs-6">
+													<mat-slider class="pb-block" max="99" min="1" thumbLabel="true" formControlName="gyan">
+													</mat-slider>
+												</div>
+												<div class="col-xs-3">
+													Commitment {{assessmentForm.value.nARules[1].gyan}}%
+												</div>
+											</div>
 										</div>
-										<div class="col-xs-4">
-											<mat-form-field class="pb-block">
-												<span matSuffix>
-													%
-												</span>
-												<input type="number" matInput formControlName="gyan">
-												<mat-error>Total Gyan distribution cannot be greater than 100% or less than 1%</mat-error>
-											</mat-form-field>
-										</div>
-										<!-- <div class="col-xs-4">
-											<mat-icon class="clickable" (click)="deleteNAAssessmentRule(i)" matTooltip="Delete this rule?" style="color: #aaaaaa;">delete</mat-icon>
-										</div> -->
 									</div>
 								</div>
-								<!-- <div class="row">
-									<div class="col-md-3 clickable">
-										<a (click)="addNAAssessmentRule()">
-											<mat-icon style="top: 5px;">add_circle_outline</mat-icon>
-											Add a rule
-										</a>
-									</div>
-								</div> -->
 								<div class="row" style="margin-top:100px;">
-									<button mat-raised-button type="button" (click)="back()" color="accent">
+									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
 									<span class="pull-right">
-										<button mat-raised-button color="accent" type="Submit" [disabled]="busySavingData || !assessmentForm.valid">
+										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
 												<ngx-loading [show]="busySavingData"></ngx-loading>
@@ -673,7 +636,6 @@
 									</span>
 								</div>
 							</div>
-
 						</div>
 					</form>
 				</div>
@@ -683,11 +645,10 @@
 				<div class="onboarding step-14" [hidden]="step!=14">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-							<form [formGroup]="experience" (ngSubmit)="submitExperienceGyan()">
-								<h2 class="title">Set a price and gyan for this experience</h2>
+							<form [formGroup]="experience" (ngSubmit)="submitExperience()">
+								<h2 class="title">Set a price for this class</h2>
 								<p class="subtitle">
-									The price of your experience is entirely up to you. Gyan is the unit measure of knowledge. You decide the amount of Gyan
-									you will share with your students.
+									The price of your class is entirely up to you.
 								</p>
 								<h3 class="title" style="margin-top: 40px !important;">Price</h3>
 								<div style="border: 1px solid #ddd; padding: 25px;">
@@ -700,44 +661,15 @@
 									<div class="lightText mat-caption" *ngIf="!freeExperience">OR</div>
 									<br/>
 									<div class="row margin-left-0" *ngIf="!freeExperience">
-										<div class="col-md-3 col-xs-2 padding-left-0">
-											<mat-form-field [floatLabel]="'never'">
-												<span matPrefix>
-													{{0 | currency: experience.controls['currency'].value : 'symbol' | slice:0:1}} &nbsp;
-												</span>
-												<input type="number" matInput #price formControlName="price" placeholder="0" min="1" required>
-											</mat-form-field>
+										<div class="col-md-3 col-xs-2 padding-top-10">
+											{{0 | currency: experience.controls['currency'].value : 'symbol' | slice:0:1}} &nbsp;
+											<p-spinner size="7" formControlName="price"></p-spinner>
 										</div>
-										<div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-4">
+										<div class="col-md-2 col-xs-2">
 											<mat-form-field [floatLabel]="'never'">
-												<mat-select formControlName="currency" class="padding-top-0" placeholder="USD">
+												<mat-select formControlName="currency" placeholder="USD">
 													<mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
 												</mat-select>
-											</mat-form-field>
-										</div>
-									</div>
-								</div>
-								<h3 class="title" style="margin-top: 40px !important;">How many Gyan (credits) is this experience worth?</h3>
-								<div style="border: 1px solid #ddd; padding: 25px;">
-									<div class="row margin-left-0 margin-top-20">
-										<div class="col-md-3 col-xs-2 padding-left-0">
-											<mat-form-field>
-												<span mat-label>
-													For academic performance*
-													<mat-icon matTooltip="Enter the amount of maximum Gyan you think students could earn if they got the best grades." style="font-size: 12px; top: 2px;">info_outline</mat-icon>
-												</span>
-												<input type="number" matInput formControlName="academicGyan" min="1" required>
-												<mat-error *ngIf="maxGyanExceding">Your gyan value cannot exceed {{gyanBalance}} or you have to create experience for {{totalGyan}} </mat-error>
-											</mat-form-field>
-										</div>
-										<div class="col-md-2 col-md-offset-2 col-xs-2 col-xs-offset-4">
-											<mat-form-field>
-												<span mat-label>
-													For non-academic performance
-													<mat-icon style="font-size: 12px; top: 2px;" matTooltip="Enter additional Gyan students could earn based on non academic performance like attendance or community engagement. This is optional.">info_outline</mat-icon>
-												</span>
-												<input type="number" matInput formControlName="nonAcademicGyan" min="0" required>
-												<mat-error *ngIf="maxGyanExceding">Your gyan value cannot exceed {{gyanBalance}} or you have to create experience for {{totalGyan}} </mat-error>
 											</mat-form-field>
 										</div>
 									</div>
@@ -755,12 +687,12 @@
 									</div>
 								</div>
 								<div style="margin-top:100px;">
-									<button mat-raised-button type="button" (click)="back()" color="accent">
+									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
-									<span class="pull-right" matTooltip="Enter a price you wish to charge for this experience, its gyan value and its cancellation policy"
-									 [matTooltipDisabled]="experience.controls['price'].value && experience.controls['currency'].value  && experience.controls['cancellationPolicy'].value && experience.controls['academicGyan'].value && experience.controls['nonAcademicGyan'].value">
-										<button mat-raised-button color="accent" type="Submit" [disabled]="!(freeExperience || (experience.controls['price'].value && experience.controls['currency'].value)) || !experience.controls['cancellationPolicy'].value || !experience.controls['academicGyan'].value || !experience.controls['nonAcademicGyan'].value || busySavingData">
+									<span class="pull-right" matTooltip="Enter a price you wish to charge for this class, its gyan value and its cancellation policy"
+									 [matTooltipDisabled]="experience.controls['price'].value && experience.controls['currency'].value  && experience.controls['cancellationPolicy'].value ">
+										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="!(freeExperience || (experience.controls['price'].value && experience.controls['currency'].value)) || !experience.controls['cancellationPolicy'].value || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
 												<ngx-loading [show]="busySavingData"></ngx-loading>
@@ -781,10 +713,10 @@
 								<p class="subtitle">Create a detailed timeline of your experience and add content for every event in your itinerary. Learners will see
 									this before they sign up for your experience.</p>
 								<div style="margin-top:60px;">
-									<button mat-raised-button type="button" (click)="back()" color="accent">
+									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
-									<button class="pull-right" mat-raised-button color="accent" (click)="next()">Next</button>
+									<button class="pull-right" mat-raised-button color="primary" (click)="next()">Next</button>
 								</div>
 							</form>
 						</div>
@@ -841,11 +773,11 @@
 								</div>
 								<div class="row">
 									<div style="margin-top:100px;">
-										<button mat-raised-button type="button" (click)="back()" color="accent">
+										<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 											Back
 										</button>
 										<span class="pull-right" matTooltip="A minimum of 1 day experience is mandatory to continue" [matTooltipDisabled]="(timeline.controls['calendar'].value.startDate || timeline.controls['calendar'].value.endDate)">
-											<button mat-raised-button color="accent" type="Submit" [disabled]="(!timeline.controls['calendar'].value.startDate && !timeline.controls['calendar'].value.endDate) || busySavingData">
+											<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="(!timeline.controls['calendar'].value.startDate && !timeline.controls['calendar'].value.endDate) || busySavingData">
 												<span *ngIf="!busySavingData">Next</span>
 												<span>
 													<ngx-loading [show]="busySavingData"></ngx-loading>
@@ -876,12 +808,12 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12 margin-top-60">
-										<button mat-raised-button type="button" (click)="back()" color="accent">
+										<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 											Back
 										</button>
 										<span class="pull-right" matTooltip="You need to agree to Peerbuds community terms to submit this experience for approval"
 										 [matTooltipDisabled]="selectedValues[0] && selectedValues[1]">
-											<button mat-raised-button color="accent" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
+											<button mat-raised-button color="primary" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
 												Submit for Review</button>
 										</span>
 									</div>
@@ -925,16 +857,16 @@
 											<mat-form-field [floatLabel]="'always'" class="pb-block inputOTP" style="margin: 20px 0px;">
 												<input type="text" matInput #inputOTP formControlName="inputOTP" placeholder="Verification code">
 											</mat-form-field>
-											<button mat-raised-button color="accent" (click)="submitOTP()">Confirm Code</button>
+											<button mat-button color="accent" (click)="submitOTP()">Confirm Code</button>
 										</div>
 										<mat-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</mat-radio-button>
 									</mat-radio-group>
 								</div>
-								<button mat-raised-button type="button" (click)="back()" color="accent">
+								<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 									Back
 								</button>
 								<span class="pull-right" matTooltip="Please verify your phone number to continue" [matTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
-									<button mat-raised-button (click)="next()" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
+									<button mat-button (click)="next()" color="primary" class="mat-border-button" [disabled]="selectedOption ===-1 && !isPhoneVerified">
 										Next
 									</button>
 								</span>
@@ -1007,19 +939,19 @@
 							</div>
 							<!-- <form [formGroup]="paymentInfo "> -->
 							<div style="margin-top:10px; " *ngIf="!payoutLoading">
-								<!--<button mat-raised-button>PayTM</button> &emsp;-->
-								<button mat-raised-button class="mat-border-button">
+								<!--<button mat-button>PayTM</button> &emsp;-->
+								<button mat-button class="mat-border-button">
 									<a [href]="connectPaymentUrl">
 										<img src="../../../assets/images/stripe.png" style="width: 50px;" />
 									</a>
 								</button> &emsp;
 								<hr>
 								<div class="margin-top-60">
-									<button mat-raised-button type="button" (click)="back()" color="accent">
+									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
 								</div>
-								<!--<button mat-raised-button>Paypal</button> &emsp;-->
+								<!--<button mat-button>Paypal</button> &emsp;-->
 							</div>
 						</div>
 					</div>

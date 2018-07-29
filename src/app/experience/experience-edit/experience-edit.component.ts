@@ -236,7 +236,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			canceledBy: '',
 			status: 'draft',
 			academicGyan: '',
-			nonAcademicGyan: '',
+			nonAcademicGyan: 1,
 			subCategory: ''
 		});
 
@@ -272,17 +272,17 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		});
 
 		this.assessmentForm = this._fb.group({
-			type: ['', Validators.required],
-			style: ['', Validators.required],
+			type: ['Teacher', Validators.required],
+			style: ['Grades', Validators.required],
 			rules: this._fb.array([]),
 			nARules: this._fb.array([
 				this._fb.group({
 					value: ['engagement', Validators.required],
-					gyan: ['', [Validators.required, Validators.max(100), Validators.min(1), this.checkTotal(1)]]
+					gyan: ['', [Validators.required, Validators.max(100), Validators.min(1), this.changeControl(1)]]
 				}),
 				this._fb.group({
 					value: ['commitment', Validators.required],
-					gyan: ['', [Validators.required, Validators.max(100), Validators.min(1), this.checkTotal(0)]]
+					gyan: ['', [Validators.required, Validators.max(100), Validators.min(1)]]
 				})
 			])
 		});
@@ -351,14 +351,18 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				nARulesArray.removeAt(0);
 				nARulesArray.removeAt(0);
 				result.assessment_models[0].assessment_na_rules.forEach(rule => {
-					nARulesArray.push(this._fb.group({
-						value: [rule.value],
-						gyan: [rule.gyan, [Validators.max(100), Validators.min(1), this.checkTotal(
-							(nARulesArray.length === 1) ? 0 : 1
-						)]]
-					}));
+					if (nARulesArray.length === 0) {
+						nARulesArray.push(this._fb.group({
+							value: [rule.value],
+							gyan: [rule.gyan, [Validators.max(100), Validators.min(1), this.changeControl(1)]]
+						}));
+					} else {
+						nARulesArray.push(this._fb.group({
+							value: [rule.value],
+							gyan: [rule.gyan, [Validators.max(100), Validators.min(1)]]
+						}));
+					}
 				});
-
 			}
 		}
 	}
@@ -606,12 +610,12 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.experienceVideoPending = true;
 		this.experienceImage1Pending = true;
 
-		this.experience.controls['academicGyan'].valueChanges.subscribe(res => {
-			this.validateGyan();
-		});
-		this.experience.controls['nonAcademicGyan'].valueChanges.subscribe(res => {
-			this.validateGyan();
-		});
+		// this.experience.controls['academicGyan'].valueChanges.subscribe(res => {
+		// 	this.validateGyan();
+		// });
+		// this.experience.controls['nonAcademicGyan'].valueChanges.subscribe(res => {
+		// 	this.validateGyan();
+		// });
 		this.timeline.valueChanges.subscribe(res => {
 			this.totalHours();
 		});
@@ -958,6 +962,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			});
 		});
 		this.totalDuration = totalLength;
+		this.totalGyan = totalLength;
+		this.experience.controls['academicGyan'].patchValue(totalLength);
 	}
 
 	private calendarIsValid(step) {
@@ -1181,7 +1187,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				this.submitInterests();
 				break;
 			case 14:
-				this.submitExperienceGyan();
+				this.submitExperience();
 				break;
 			case 13:
 				this.submitAssessment();
@@ -1521,13 +1527,13 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		});
 	}
 
-	private checkTotal(indexOfOtherControl: number): ValidatorFn {
+	private changeControl(indexOfOtherControl: number): ValidatorFn {
 		return (control: AbstractControl): { [key: string]: any } | null => {
-
-			if (this.assessmentForm && this.assessmentForm.controls['nARules'] && this.assessmentForm.controls['nARules']['controls'][indexOfOtherControl]) {
+			if (indexOfOtherControl === 1 && this.assessmentForm && this.assessmentForm.controls['nARules'] && this.assessmentForm.controls['nARules']['controls'][indexOfOtherControl]) {
 				const formArray = <FormArray>this.assessmentForm.controls['nARules'];
-				const otherNArule = formArray.controls[indexOfOtherControl].value;
-				return ((control.value + otherNArule.gyan) > 100) ? { 'error': 'invalid total gyan' } : null;
+				const otherNArule = <FormGroup>formArray.controls[indexOfOtherControl];
+				otherNArule.controls['gyan'].patchValue(100 - Number(control.value));
+				return null;
 			} else {
 				return null;
 			}
@@ -1582,6 +1588,7 @@ interface AssessmentTypeData {
 			gyan: number
 		}>;
 	};
+	description: string;
 }
 
 interface SubTypeInterface {

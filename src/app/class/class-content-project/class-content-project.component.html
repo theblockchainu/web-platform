@@ -98,9 +98,9 @@
 			</div>
 			<mat-dialog-actions>
 				<span matTooltip="All mandatory fields need to be completed before saving" [matTooltipDisabled]=" title.value.length!==0  && description.value.length !== 0 && prerequisites.value.length !== 0">
-					<button mat-raised-button [mat-dialog-close]="getSaveDialogData()" color="accent" *ngIf="!isEdit" [disabled]="title.value.length === 0 || description.value.length === 0 || prerequisites.value.length === 0 || deadline.value.length === 0">Save</button> &emsp;
+					<button mat-raised-button [mat-dialog-close]="getSaveDialogData()" color="primary" *ngIf="!isEdit" [disabled]="title.value.length === 0 || description.value.length === 0 || prerequisites.value.length === 0 || deadline.value.length === 0">Save</button> &emsp;
 				</span>
-				<button mat-raised-button [mat-dialog-close]="getEditDialogData()" color="accent" *ngIf="isEdit">Update</button> &emsp;
+				<button mat-raised-button [mat-dialog-close]="getEditDialogData()" color="primary" *ngIf="isEdit">Update</button> &emsp;
 				<button mat-button [mat-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>
 				<button mat-button [mat-dialog-close]="getDeleteDialogData()" *ngIf="isEdit">Delete</button>
 			</mat-dialog-actions>

@@ -184,6 +184,10 @@ export class CustomCertificateFormComponent implements OnInit {
 
 		if (this.data) {
 			this.formData = this.data.formData;
+			console.log('customData');
+
+			console.log(this.data);
+
 			this.expiryDate.patchValue(this.data.expiryDate);
 			console.log(this.formData);
 			if (this.data.formData) {

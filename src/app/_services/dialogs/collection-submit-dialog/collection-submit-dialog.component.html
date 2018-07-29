@@ -8,11 +8,11 @@
       and ready to go live on Peerbuds.
       <br/>
       <br/>
-	    <span *ngIf="data.type === 'class'">You can set repeat {{data.type}}es once your {{data.type}} is approved.</span>
-	    <span *ngIf="data.type !== 'class'">You can set repeat {{data.type}}s once your {{data.type}} is approved.</span>
+      <span *ngIf="data.type === 'class'">You can set repeat {{data.type}}es once your {{data.type}} is approved.</span>
+      <span *ngIf="data.type !== 'class'">You can set repeat {{data.type}}s once your {{data.type}} is approved.</span>
     </div>
   </div>
   <mat-dialog-actions class="col-md-offset-5 col-md-4">
-    <button mat-raised-button (click)="closeDialog()" color="accent">Dismiss</button>
+    <button mat-raised-button (click)="closeDialog()" color="primary">Dismiss</button>
   </mat-dialog-actions>
 </div>
