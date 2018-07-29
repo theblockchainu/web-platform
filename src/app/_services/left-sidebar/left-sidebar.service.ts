@@ -35,14 +35,10 @@ export class LeftSidebarService {
         let completedSections = 0;
         if (collection.status === 'draft') {
             sidebarMenuItems[4].visible = false;
-            sidebarMenuItems[4].submenu[0].visible = false;
-            sidebarMenuItems[4].submenu[1].visible = false;
             sidebarMenuItems[3].visible = true;
         } else if (collection.status === 'submitted') {
             sidebarMenuItems[4].visible = false;
-            sidebarMenuItems[4].submenu[0].visible = false;
-            sidebarMenuItems[4].submenu[1].visible = false;
-            sidebarMenuItems[3].visible = false;
+            sidebarMenuItems[3].visible = true;
             // sidebarMenuItems.forEach(mainItem => {
             //     if (mainItem.submenu !== undefined && mainItem.title !== 'Finishing Touches') {
             //         mainItem.submenu.forEach(item => {

@@ -8,7 +8,7 @@
 }
 .subtitle {
   font-size: 16px;
-  color: #aaaaaa;
+  color: #646363;
   // margin: 5px;
 }
 .guideline-points{
@@ -397,4 +397,8 @@ agm-map {
 	border: 1px solid #dddddd;
 	padding: 10px 30px;
 	margin-top: 15px;
+}
+
+.mat-toolbar{
+	border-bottom: 1px solid #e4e4e4;
 }

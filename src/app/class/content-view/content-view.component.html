@@ -1,25 +1,21 @@
 <div [formGroup]="itenaryForm" class="margin-bottom-30">
-	<div class="row">
+	<div class="row padding-top-10 padding-bottom-10">
 		<div class="col-md-12">
-			<div style="text-align: center; margin-top: 0px; margin-bottom: 10px;">
-				<hr>
-				<div class="date-select">
-					<mat-icon>wb_sunny</mat-icon>
-					<input *ngIf="!envVariable.production" matInput #dateInput [matDatepicker]="startDatePicker" formControlName="date" [hidden]="true"
-					       [min]="collectionStartDate" [max]="collectionEndDate">
-					<input *ngIf="envVariable.production" matInput #dateInput [matDatepicker]="startDatePicker" formControlName="date" [hidden]="true"
-					       [min]="collectionStartDate" [max]="collectionEndDate" [matDatepickerFilter]="datePickerFilter">
-					<a *ngIf="!itenaryForm.value.date" style="cursor: pointer; float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;"
-					   (click)="startDatePicker.open()">({{showItineraryDate(itenaryForm.value.date)}})</a>
-					<a *ngIf="itenaryForm.value.date" style="float: right; margin: -2px 0 0 10px;font-size:16px;border-bottom:1px dotted gray;">({{itenaryForm.value.date| date}})</a>
-					<mat-datepicker #startDatePicker [startAt]="collectionStartDate" touchUi="true"></mat-datepicker>
-					<a style="cursor: pointer; float: right; margin: -2px 0 0 10px;font-size:16px;">
-						Class Day {{itenaryId + 1}}
-					</a>
-				</div>
-				<div style="margin-top: -28px; width: fit-content; background-color: #fff; float: right; padding: 0px 10px;">
-					<mat-icon style="font-size: 16px; cursor: pointer" (click)="deleteDay(itenaryId)">close</mat-icon>
-				</div>
+			<div class="date-select">
+				<!-- <mat-icon>wb_sunny</mat-icon> -->
+				<a class="mat-title">
+					Day {{itenaryId + 1}}
+				</a>
+				<input *ngIf="!envVariable.production" matInput #dateInput [matDatepicker]="startDatePicker" formControlName="date" [hidden]="true"
+				 [min]="collectionStartDate" [max]="collectionEndDate">
+				<input *ngIf="envVariable.production" matInput #dateInput [matDatepicker]="startDatePicker" formControlName="date" [hidden]="true"
+				 [min]="collectionStartDate" [max]="collectionEndDate" [matDatepickerFilter]="datePickerFilter">
+				<a *ngIf="!itenaryForm.value.date" style="cursor: pointer;border-bottom:1px dotted gray;" (click)="startDatePicker.open()">({{showItineraryDate(itenaryForm.value.date)}})</a>
+				<a *ngIf="itenaryForm.value.date" style="border-bottom:1px dotted gray;">({{itenaryForm.value.date| date}})</a>
+				<mat-datepicker #startDatePicker [startAt]="collectionStartDate" touchUi="true"></mat-datepicker>
+				<button mat-icon-button>
+					<mat-icon (click)="deleteDay(itenaryId)">close</mat-icon>
+				</button>
 			</div>
 		</div>
 	</div>
@@ -44,9 +40,9 @@
 						<div class="col-md-3" style="padding-left: 0px; margin-right: 10px;" (click)="findAndOpenDialog(i)">
 							<img *ngIf="!Content.value.imageUrl" src="/assets/images/placeholder-image.jpg" style="width: 140px;">
 							<img *ngIf="Content.value.imageUrl  && Content.value.type !== 'video'" src="{{envVariable.apiUrl + Content.value.imageUrl}}/500"
-							     (error)="imgErrorHandler($event)" style="width: 140px;">
+							 (error)="imgErrorHandler($event)" style="width: 140px;">
 							<video *ngIf="Content.value.imageUrl && Content.value.type === 'video'" width="100%" class="center-block itenary-media" preload="metadata"
-							       poster="../../../assets/images/placeholder-image.jpg" controls>
+							 poster="../../../assets/images/placeholder-image.jpg" controls>
 								<source src="{{envVariable.apiUrl + Content.value.imageUrl}}" type="video/mp4">
 							</video>
 							<!-- <video *ngIf="Content.value.imageUrl && Content.value.type === 'video'" id="video" src="{{envVariable.apiUrl + Content.value.imageUrl}}" type="video/mp4" controls></video> -->
@@ -66,7 +62,7 @@
 						<div class="col-md-2">
 							<mat-icon class="pull-right" *ngIf="itenaryForm.controls['contents'].controls.length > 0" (click)="removeContent(i)" style="font-size: 16px; color: #777777;">close</mat-icon>
 							<mat-icon class="pull-right" *ngIf="itenaryForm.controls['contents'].controls.length > 0" (click)="findAndOpenDialog(i)"
-							          style="font-size: 16px; color: #777777;">mode_edit</mat-icon>
+							 style="font-size: 16px; color: #777777;">mode_edit</mat-icon>
 						</div>
 					</mat-list-item>
 				</mat-list>
@@ -85,7 +81,7 @@
 				<br>
 				<div class="row">
 					<div class="col-md-3 col-xs-6">
-						<button mat-button type="button" (click)="addContent('online'); findAndOpenDialog(-1);" >
+						<button mat-button type="button" (click)="addContent('online'); findAndOpenDialog(-1);">
 							<mat-icon color="primary" style="font-size: 20px">add_circle</mat-icon>
 							Live Activity
 						</button>&emsp;

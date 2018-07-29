@@ -566,9 +566,13 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 								startDate = this._collectionService.calculateDate(this.experience.calendars[0].startDate, key);
 								endDate = this._collectionService.calculateDate(this.experience.calendars[0].startDate, key);
 							}
+							console.log('Sorting----------------');
+
 							this.itenariesObj[key].sort(function (a, b) {
-								return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
+								return moment(a.schedules[0].startTime).diff(moment(b.schedules[0].startTime));
 							});
+							console.log('Sorted----------------');
+
 							this.itenariesObj[key].forEach(content => {
 								if (content.schedules[0].startTime !== undefined) {
 									content.schedules[0].startTime = startDate.format().toString().split('T')[0] +
