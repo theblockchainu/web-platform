@@ -3,8 +3,8 @@
 		<div class="col-md-12">
 			<div class="date-select">
 				<!-- <mat-icon>wb_sunny</mat-icon> -->
-				<a class="mat-title">
-					Day {{itenaryId + 1}}
+				<a class="mat-subheading-2">
+					DAY {{itenaryId + 1}}
 				</a>
 				<input *ngIf="!envVariable.production" matInput #dateInput [matDatepicker]="startDatePicker" formControlName="date" [hidden]="true"
 				 [min]="collectionStartDate" [max]="collectionEndDate">
@@ -68,7 +68,7 @@
 				</mat-list>
 			</div>
 		</div>
-		<div class="row" style="margin-bottom: 80px; margin-top: 10px;font-size:16px;">
+		<div class="row" style="margin-bottom: 30px; margin-top: 10px;font-size:16px;">
 			<div class="col-md-12 margin-top-30">
 				<span class="activity-title">
 					What type of activity would you like to schedule on this day?

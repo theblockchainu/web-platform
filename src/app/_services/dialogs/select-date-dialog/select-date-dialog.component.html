@@ -71,33 +71,42 @@
 			<div class="accordianContent">
 				<div class="row">
 					<div class="col-md-12" *ngFor="let itenary of itenaryObj.itenary">
-						<div class="col-md-12" style="margin: 10px 0px 3px 0px;">
+						<div class="col-md-12 mat-body-2" style="margin: 10px 0px 3px 0px;">
 							{{itenary.startDate | date:'EE, MMM d'}}
 						</div>
 						<div class="col-md-12" *ngFor="let content of itenary.contents">
 							<div *ngIf="content.type === 'online' || content.type === 'in-person'" style="margin: 3px 0px 10px 0px;">
-								<b>[{{content.type | ucwords}} activity]
-								   <br/>
+								<div class="mat-caption lightText">
+									{{content.type | ucwords}} activity
+								</div>
+								<div>
 								   {{ content.title | titlecase}}
-								</b>
-								<br/>
-								{{content.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.schedules[content.schedules.length-1].endTime | extractTime:'h:mm a'}}
+								</div>
+								<div class="mat-caption">
+									{{content.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.schedules[content.schedules.length-1].endTime | extractTime:'h:mm a'}}
+								</div>
 							</div>
 							<div *ngIf="content.type === 'project'" style="margin: 3px 0px 10px 0px;">
-								<b>[{{content.type | ucwords}}]
-								   <br>
+								<div class="mat-caption lightText">
+									{{content.type | ucwords}} activity
+								</div>
+								<div>
 								   {{ content.title | titlecase}}
-								</b>
-								<br>
-								Entries open until {{calculateDate(itenary.startDate, content.schedules[content.schedules.length-1].endDay) | extractTime:'Do MMM'}}
+								</div>
+								<div class="mat-caption">
+									Entries open until {{calculateDate(itenary.startDate, content.schedules[content.schedules.length-1].endDay) | extractTime:'Do MMM'}}
+								</div>
 							</div>
 							<div *ngIf="content.type === 'video'" style="margin: 3px 0px 10px 0px;">
-								<b>[{{content.type | ucwords}} activity]
-								   <br>
+								<div class="mat-caption lightText">
+									{{content.type | ucwords}} activity
+								</div>
+							    <div>
 								   {{ content.title | titlecase}}
-								</b>
-								<br>
-								Available all day
+							    </div>
+								<div class="mat-caption">
+									Available all day
+								</div>
 							</div>
 						</div>
 					</div>

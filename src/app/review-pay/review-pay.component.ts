@@ -186,7 +186,7 @@ export class ReviewPayComponent implements OnInit {
     private getUserCountry() {
     	this.loadingCountry = true;
     	this.paymentService.getUserCountry().subscribe(res => {
-    		this.userCountry = res.countryCode;
+    		this.userCountry = res['countryCode'];
     		console.log(this.userCountry);
     		this.loadingCountry = false;
 		}, err => {
@@ -428,16 +428,15 @@ export class ReviewPayComponent implements OnInit {
 			phone: this.student.profiles[0].phone_numbers[0].subscriber_number,
 			productinfo: this.collection.type + '-' + this.collection.id,
 			surl : environment.clientUrl + '/review-pay/collection/' + this.collectionId + '/' + this.collectionCalendarId + '?result=success',
-			furl: environment.clientUrl + '/review-pay/collection/' + this.collectionId + '/' + this.collectionCalendarId + '?result=fail',
-			mode: 'dropout'
+			furl: environment.clientUrl + '/review-pay/collection/' + this.collectionId + '/' + this.collectionCalendarId + '?result=fail'
 		};
 		
 		bolt.launch(RequestData, {
-			function(Bolt) {
+			responseHandler: function(Bolt) {
 				console.log('Reached here. Payment success');
 				console.log(Bolt);
 			},
-			function(error) {
+			catchHandler: function(error) {
 				console.log('Payment error');
 				console.log(error);
 			}
