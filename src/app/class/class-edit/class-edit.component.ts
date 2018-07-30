@@ -583,7 +583,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		};
 
 		this.availableSubtypes = [
-			{ name: 'workshop', pic_url: '/assets/images/class_icon2.jpg', description: '' }
+			{ name: 'instructor led', pic_url: '/assets/images/class_icon2.jpg', description: '' },
+			{ name: 'self paced', pic_url: '/assets/images/class_icon2.jpg', description: '' }
 		];
 		this.placeholderStringTopic = 'Start typing to to see a list of suggested topics...';
 
@@ -615,25 +616,10 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.profileImagePending = true;
 		this.classVideoPending = true;
 		this.classImage1Pending = true;
-
-		// this.class.controls['academicGyan'].valueChanges.subscribe(res => {
-		// 	this.validateGyan();
-		// });
-		// this.class.controls['nonAcademicGyan'].valueChanges.subscribe(res => {
-		// 	this.validateGyan();
-		// });
+		
 		this.timeline.valueChanges.subscribe(res => {
 			this.totalHours();
 		});
-	}
-
-	validateGyan() {
-		this.totalGyan = this.class.controls['academicGyan'].value + this.class.controls['nonAcademicGyan'].value;
-		if (this.totalGyan > this.gyanBalance) {
-			this.maxGyanExceding = true;
-		} else {
-			this.maxGyanExceding = false;
-		}
 	}
 
 	filter(val: string): string[] {
@@ -869,42 +855,6 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 	}
 
-	public submitClassTimeline() {
-		this.busySavingData = true;
-
-		if (this.calendarIsValid(this.step)) {
-			if ((this.totalGyan > this.gyanBalance) && (this.totalDuration !== this.totalGyan)) {
-				this.snackBar.open('You do not have enough Gyan balance or learning hours to justify a knowledge value of ' + this.totalGyan + ' Gyan. Knowledge value for this class will be adjusted to ' + this.totalDuration + ' Gyan.',
-					'Ok').onAction().subscribe(result => {
-						this.class.controls['academicGyan'].patchValue(this.totalDuration >= 2 ? this.totalDuration - 1 : 1);
-						this.class.controls['nonAcademicGyan'].patchValue(1);
-						this.totalGyan = this.class.controls['academicGyan'].value + this.class.controls['nonAcademicGyan'].value;
-						this.checkStatusAndSubmit(this.class, this.timeline, this.step);
-					});
-			} else {
-				this.checkStatusAndSubmit(this.class, this.timeline, this.step);
-			}
-		}
-	}
-
-	public submitClassGyan() {
-		this.busySavingData = true;
-		this.totalGyan = this.class.controls['academicGyan'].value + this.class.controls['nonAcademicGyan'].value;
-		console.log(this.totalGyan);
-		console.log(this.gyanBalance);
-		if (this.totalGyan > this.gyanBalance) {
-			this.dialogsService.showGyanNotif(this.gyanBalance, this.totalGyan).subscribe(res => {
-				if (res) {
-					this.checkStatusAndSubmit(this.class, this.timeline, this.step);
-				} else {
-					this.busySavingData = false;
-				}
-			});
-		} else {
-			this.checkStatusAndSubmit(this.class, this.timeline, this.step);
-		}
-	}
-
 	public submitCertificate(certificate: any) {
 		this.busySavingData = true;
 		this.certificateForm.controls['certificateHTML'].patchValue(certificate.htmlData);
@@ -1048,11 +998,22 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		current.add(day, 'days');
 		return current.toDate();
 	}
+	
+	public submitClassTimeline() {
+		this.busySavingData = true;
+		
+		if (this.calendarIsValid(this.step)) {
+				this.class.controls['academicGyan'].patchValue(this.totalDuration >= 2 ? this.totalDuration - 1 : 1);
+				this.class.controls['nonAcademicGyan'].patchValue(1);
+				this.totalGyan = this.class.controls['academicGyan'].value + this.class.controls['nonAcademicGyan'].value;
+				this.checkStatusAndSubmit(this.class, this.timeline, this.step);
+		}
+	}
 
 	public submitTimeline(collectionId, data: FormGroup) {
 		const body = data.value.calendar;
 		const itinerary = data.controls.contentGroup.value.itenary;
-		if (body.startDate && body.endDate && itinerary && itinerary.length > 0) {
+		if (body.startDate && body.endDate && itinerary && itinerary.length > 0 && this.totalDuration > 0) {
 			this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body, this.requestHeaderService.options)
 				.subscribe((response) => {
 					if (this.exitAfterSave) {
@@ -1067,7 +1028,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else {
 			this.busySavingData = false;
 			console.log('No date selected or no content added to itinerary! - ' + JSON.stringify(itinerary));
-			if (!itinerary || itinerary.length === 0) {
+			if (!itinerary || itinerary.length === 0 || this.totalDuration === 0) {
 				if (this.exitAfterSave) {
 					this.snackBar.open('You need to add at least 1 activity to your class to proceed.', 'Exit Anyways', {
 						duration: 5000
@@ -1193,20 +1154,16 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			case 3:
 				this.submitInterests();
 				break;
-			case 14:
-				this.submitClass();
-				break;
-			case 13:
-				this.submitAssessment();
-				break;
 			case 12:
 				console.log('submitting certificate');
 				this.certificateComponent.submitCertificate();
 				break;
 			case 13:
+				this.submitAssessment();
+				break;
+			case 16:
 				this.submitClassTimeline();
 				break;
-			case 17:
 			case 18:
 				this.exit();
 				break;

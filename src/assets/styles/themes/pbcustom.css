@@ -217,10 +217,17 @@ mat-sidenav a:hover {
   background-color: #383838;
 }
 
-
+.ui-spinner {
+	border: 1px solid #aaaaaa !important;
+	border-radius: 3px !important;
+}
 
 .mat-nav-list .mat-list-item {
 	color: #eeeeee;
+}
+
+.mat-list-text {
+	overflow: visible !important;
 }
 
 .mat-nav-list .mat-list-item:hover {
@@ -750,6 +757,10 @@ h3.calendarTitle  {
 	border-bottom: 0.5px solid #eeeeee !important;
 	border-top: 0px !important;
 
+}
+
+.ui-accordion-toggle-icon {
+	display: none !important;
 }
 
 .ui-accordion .ui-accordion-header:not(.ui-state-active):not(.ui-state-disabled):hover {
@@ -1410,7 +1421,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 }
 
 .ui-corner-all {
-	border-radius: 2px !important;
+	border-radius: 3px !important;
 }
 
 .noJustify .mat-tab-label{
@@ -1971,7 +1982,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 }
 
 .ui-button-icon-left{
-	position: inherit !important; 
+	position: inherit !important;
 }
 
 .noScrollY .mat-dialog-container{

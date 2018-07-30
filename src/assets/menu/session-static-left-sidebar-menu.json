@@ -5,7 +5,7 @@
         "step": 1,
         "submenu": [
             {
-                "title": "Headline & Description",
+                "title": "Headline & Bio",
                 "step": 2,
                 "active": false,
                 "visible": true,
@@ -21,7 +21,7 @@
                 "complete": false
             },
             {
-                "title": "Language & Location",
+                "title": "Language & Place",
                 "step": 4,
                 "active": false,
                 "visible": true,

@@ -26,8 +26,10 @@
 			<div class="col-md-10 col-md-offset-1">
 				<span>This cohort has ended. You can still add a review and participate in discussions</span>
 			</div>
-			<div class="col-md-10 col-md-offset-1" *ngIf="(class && class.assessment_models && class.assessment_models.length>0 && class.assessment_models[0].type && userType === class.assessment_models[0].type.toLowerCase())">
-				<span>This cohort has ended.
+		</div>
+		<div class="row pending-actions center" *ngIf="(class && class.assessment_models && class.assessment_models.length>0 && class.assessment_models[0].type && userType === class.assessment_models[0].type.toLowerCase())">
+			<div class="col-md-10 col-md-offset-1">
+				<span>
 					<a href="javascript:void(0);" (click)="openAssessmentDialog()">Assess your student's performance now.</a>
 				</span>
 			</div>
@@ -957,13 +959,12 @@
 										</div>
 									</div>
 									<div class="col-xs-4" style="padding-top: 9px;">
-										<span *ngIf="userId !== undefined && userId.length > 5" matTooltip="Please wait for your account to be approved before signing up for classes"
-										 [matTooltipDisabled]="accountApproved === 'true'">
-											<button mat-raised-button (click)="selectJoiningDates()" color="primary" [disabled]="accountApproved !== 'true'">See Dates</button>
+										<span>
+											<button mat-raised-button (click)="selectJoiningDates()" color="primary">See Dates</button>
 										</span>
-										<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this class">
+										<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this class">
 											<button mat-raised-button color="primary" [disabled]="true">See Dates</button>
-										</span>
+										</span>-->
 									</div>
 								</div>
 							</div>
@@ -1052,13 +1053,12 @@
 			</div>
 		</div>
 		<div class="col-xs-4" style="padding-top: 9px;">
-			<span *ngIf="userId !== undefined && userId.length > 5" matTooltip="Please wait for your account to be approved before signing up for classes"
-			 [matTooltipDisabled]="accountApproved === 'true'">
-				<button mat-raised-button (click)="selectJoiningDates()" color="primary" [disabled]="accountApproved !== 'true'">See Dates</button>
+			<span>
+				<button mat-raised-button (click)="selectJoiningDates()" color="primary">See Dates</button>
 			</span>
-			<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this class">
+			<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this class">
 				<button mat-raised-button color="primary" [disabled]="true">See Dates</button>
-			</span>
+			</span>-->
 		</div>
 	</div>
 </div>

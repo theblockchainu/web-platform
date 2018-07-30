@@ -5,7 +5,7 @@
 				<img src="/assets/images/peerbuds-logo-color.png" alt="logo">
 			</a>
 		</span>
-		<div style="position: absolute;left: 17vw;width: 82vw !important">
+		<div style="position: absolute;left: 24vw;width: 73vw !important">
 			<button *ngIf="mobileQuery.matches" class="side-nav-toggle-button" mat-icon-button (click)="snav.toggle()">
 				<mat-icon>menu</mat-icon>
 			</button>
@@ -29,24 +29,20 @@
 				</button>
 			</div>
 			<div class="pull-left">
-				<!-- <mat-chip-list>
-					<mat-chip style="margin-bottom: 15px;">
+				<mat-chip-list>
+					<mat-chip style="margin-top: 5px;">
 						{{experience.controls['status'].value | titlecase}}
 					</mat-chip>
-					<mat-chip style="margin-bottom: 15px;">
+					<mat-chip>
 						<i class="fab fa-ethereum"></i>&nbsp; {{totalGyan}} Gyan
 					</mat-chip>
-					<mat-chip style="margin-bottom: 15px;">
+					<mat-chip>
 						<i class="fa fa-fire"></i>&nbsp; {{totalGyan | convertCrypto: 'GYAN' : 'KARMA' | async}} Karma
 					</mat-chip>
-				</mat-chip-list> -->
+				</mat-chip-list>
 			</div>
 		</div>
 
-		<!-- <span class="pull-right">
-					<img *ngIf="!profile.picture_url" src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb">
-					<img *ngIf="profile.picture_url" src="{{envVariable.apiUrl + profile.picture_url + '/100'}}" alt="A" class="circle-thumb">
-				</span> -->
 	</mat-toolbar>
 	<mat-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: hidden; background: #ffffff;">
 		<mat-sidenav #snav [mode]="mobileQuery.matches === true ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" [opened]="!mobileQuery.matches">
@@ -76,7 +72,7 @@
 								</li>
 							</ul>
 							<div class="margin-top-20">
-								<button mat-raised-button (click)="next()" color="primary" class="pull-right">
+								<button mat-button (click)="next()" color="primary" class="pull-right mat-border-button">
 									Next
 								</button>
 							</div>
@@ -204,7 +200,7 @@
 								your experience description.</p>
 							<br/>
 							<form [formGroup]="experience" (ngSubmit)="submitExperience()">
-								<div class="row margin-top-60">
+								<div class="row margin-top-10">
 									<mat-form-field [floatLabel]="'always'" class="col-md-4">
 										<input type="text" name="other_languages" style="border-bottom: 0px;" placeholder="Select Language" matInput formControlName="selectedLanguage"
 										 [matAutocomplete]="auto">
@@ -234,7 +230,7 @@
 				<div class="onboarding step-5" [hidden]="step!=5">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
-							<h2 class="title">Introduce yourself as a Host</h2>
+							<h2 class="title">Introduce yourself as a teacher</h2>
 							<p class="subtitle">Describe yourself and tell guests how you came to be passionate about hosting this experience.</p>
 
 							<form [formGroup]="experience" (ngSubmit)="submitExperience()">
@@ -539,10 +535,9 @@
 							<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 								<h2 class="title">How will you grade your students?</h2>
 								<p class="subtitle">
-									Choose where you will grade your students or will they grade each other or will an external party grade them?
-									<br/>Also, let students know about your grading pattern and the value of each grade.
+									You can select one of the sample grading systems from above or you can create a custom system by adding new rule.
 								</p>
-								<h3 class="margin-top-40">Assessment rules for academic performance</h3>
+								<h3 class="margin-top-40">Select your grading pattern</h3>
 								<div class="row padding-top-10" *ngIf="!assessmentForm.value.style || (assessmentForm.value.style && assessmentForm.value.style.length>0)">
 									<mat-radio-group [(ngModel)]="defaultAssesment" [ngModelOptions]="{standalone: true}">
 										<span *ngFor="let assessment of availableDefaultAssessments">
@@ -561,16 +556,16 @@
 								</div>
 								<div class="row padding-top-30">
 									<div class="col-xs-12 subtitle">
-										You can select one of the sample grading systems from above or you can create a custom system by adding new rule.
+
 									</div>
 								</div>
 								<span *ngIf="assessmentForm.controls['rules']['controls'].length>0">
 									<div class="row padding-top-40">
 										<div class="col-xs-4">
-											Grade / Percent / Percentile
+											Grade
 										</div>
 										<div class="col-xs-4">
-											equals how much academic Gyan?
+											equals how much?
 										</div>
 									</div>
 									<div formArrayName="rules">
@@ -603,20 +598,23 @@
 										</div>
 									</div>
 								</span>
-								<h3 class="margin-top-40">Assessment rules for non academic performance</h3>
+								<h3 class="margin-top-40">Students are assessed for attending every activity and participating in class discussions</h3>
+								<p class="subtitle">
+									How important is class participation vs attendance?
+								</p>
 								<div formArrayName="nARules">
 									<div *ngFor="let ruleForm of assessmentForm.controls['nARules']['controls']; let i = index" [formGroupName]="i" class="row">
 										<div class="col-xs-12" *ngIf="i<1">
 											<div class="row">
 												<div class="col-xs-3">
-													Engagement {{assessmentForm.value.nARules[0].gyan}}%
+													Experience discussions {{assessmentForm.value.nARules[0].gyan}}%
 												</div>
-												<div class="col-xs-6">
+												<div class="col-xs-6" style="margin-top: -10px">
 													<mat-slider class="pb-block" max="99" min="1" thumbLabel="true" formControlName="gyan">
 													</mat-slider>
 												</div>
 												<div class="col-xs-3">
-													Commitment {{assessmentForm.value.nARules[1].gyan}}%
+													Experience attendance {{assessmentForm.value.nARules[1].gyan}}%
 												</div>
 											</div>
 										</div>
@@ -654,19 +652,19 @@
 								<div style="border: 1px solid #ddd; padding: 25px;">
 									<div class="row">
 										<div class="col-md-3">
-											<mat-checkbox [(ngModel)]="freeExperience" (ngModelChange)="onFreeChange($event)" [ngModelOptions]="{standalone: true}">Free</mat-checkbox>
+											<mat-checkbox [(ngModel)]="freeExperience" (ngModelChange)="onFreeChange($event)" [ngModelOptions]="{standalone: true}">Make it free</mat-checkbox>
 										</div>
 									</div>
 									<br/>
 									<div class="lightText mat-caption" *ngIf="!freeExperience">OR</div>
 									<br/>
 									<div class="row margin-left-0" *ngIf="!freeExperience">
-										<div class="col-md-3 col-xs-2 padding-top-10">
+										<div class="col-md-4 col-xs-3 padding-top-10">
 											{{0 | currency: experience.controls['currency'].value : 'symbol' | slice:0:1}} &nbsp;
-											<p-spinner size="7" formControlName="price"></p-spinner>
+											<p-spinner size="7" formControlName="price" style="font-size: 26px;"></p-spinner>
 										</div>
-										<div class="col-md-2 col-xs-2">
-											<mat-form-field [floatLabel]="'never'">
+										<div class="col-md-2 col-xs-3">
+											<mat-form-field [floatLabel]="'never'" style="width: 100%;">
 												<mat-select formControlName="currency" placeholder="USD">
 													<mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
 												</mat-select>
@@ -716,7 +714,7 @@
 									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
-									<button class="pull-right" mat-raised-button color="primary" (click)="next()">Next</button>
+									<button mat-button class="pull-right mat-border-button" color="primary" (click)="next()">Next</button>
 								</div>
 							</form>
 						</div>
@@ -813,7 +811,7 @@
 										</button>
 										<span class="pull-right" matTooltip="You need to agree to Peerbuds community terms to submit this experience for approval"
 										 [matTooltipDisabled]="selectedValues[0] && selectedValues[1]">
-											<button mat-raised-button color="primary" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
+											<button mat-button color="primary" class="mat-border-button" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
 												Submit for Review</button>
 										</span>
 									</div>

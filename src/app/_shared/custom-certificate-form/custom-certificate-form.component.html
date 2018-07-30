@@ -2,43 +2,50 @@
 	<div class="col-xs-11 col-md-7 ">
 		<div class="row editSection">
 			<div class="col-xs-12">
-				<h2 class="title">Lets create a certificate for this experience</h2>
+				<h2 class="title">Lets create a certificate now</h2>
 			</div>
-			<div class="col-xs-11" style="background: #cccccc6b">
-				<ul>
-					<li>
-						Click on add new field and select an option
-					</li>
-					<li>
-						Fill in the details
-					</li>
-					<li>
-						Click on the
-						<mat-icon class="paragraph-icon">text_format</mat-icon> to get the format options
-					</li>
-					<li>
-						Arrange the fields using
-						<mat-icon class="paragraph-icon">keyboard_arrow_up</mat-icon>
-						<mat-icon class="paragraph-icon">keyboard_arrow_down</mat-icon> buttons
-					</li>
-					<li>
-						Delete the field using the
-						<mat-icon class="paragraph-icon">delete_outline</mat-icon>
-					</li>
-					<li>
-						Use the variables field to add fields being dynamically pulled from the blockchain
-					</li>
-				</ul>
-			</div>
-			<div class="col-xs-12 padding-top-20">
+			<div class="col-xs-12">
 				<div class="row">
+					<div class="col-xs-12">
+						<div class="mat-border-button" style="padding: 20px;">
+							Do's
+							<ul>
+								<li>
+									Click on add new field and select an option
+								</li>
+								<li>
+									Fill in the details
+								</li>
+								<li>
+									Click on the
+									<mat-icon class="paragraph-icon" style="top: 4px;">text_format</mat-icon> button to get format options
+								</li>
+								<li>
+									Arrange fields using
+									<mat-icon class="paragraph-icon" style="top: 3px;">keyboard_arrow_up</mat-icon>
+									<mat-icon class="paragraph-icon" style="top: 3px;">keyboard_arrow_down</mat-icon> buttons
+								</li>
+								<li>
+									Delete the field using
+									<mat-icon class="paragraph-icon" style="top: 3px;">delete_outline</mat-icon> button
+								</li>
+								<li>
+									Use the variables field to add fields that will be populated with student details automatically
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12">
+				<div class="row margin-top-20">
 					<div class="col-xs-6 padding-top-20">
 						<span>
-							<b>Certificate Expiry Date</b>
+							<b>When will this certificate expire?</b>
 						</span>
 					</div>
 					<div class="col-xs-6">
-						<mat-form-field [floatLabel]="'auto'" class="dateStyles">
+						<mat-form-field [floatLabel]="'never'" class="dateStyles">
 							<input matInput [matDatepicker]="startDatePicker" (click)="startDatePicker.open()" [min]="today" placeholder="Date" [formControl]="expiryDate">
 							<mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
 							<mat-datepicker touchUi="true" startView="multi-year" [startAt]="today" #startDatePicker disabled="false"></mat-datepicker>

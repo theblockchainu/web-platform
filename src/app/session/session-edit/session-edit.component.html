@@ -5,17 +5,17 @@
 				<img src="/assets/images/peerbuds-logo-color.png" alt="logo">
 			</a>
 		</span>
-		<div style="position: absolute;left: 17vw;width: 82vw !important">
+		<div style="position: absolute;left: 24vw;width: 73vw !important">
 			<button *ngIf="mobileQuery.matches" class="side-nav-toggle-button" mat-icon-button (click)="snav.toggle()">
 				<mat-icon>menu</mat-icon>
 			</button>
-			<div class="pull-right" *ngIf="step!=1 && step !=5 && step !=12">
+			<div class="pull-right" *ngIf="step!=1 && step !=6 && step !=12">
 				<button mat-button *ngIf="session.controls['status'].value !== 'active'" (click)="saveandexit()">
 					<span *ngIf="!busySave">Save &amp; Exit</span>
 					<span *ngIf="busySave"> </span>
 					<ngx-loading [show]="busySave"></ngx-loading>
 				</button>
-				<button mat-button *ngIf="session.controls['status'].value !== 'active'" (click)="exit()">
+				<button mat-button *ngIf="session.controls['status'].value === 'active'" (click)="exit()">
 					<span>
 						Exit
 					</span>
@@ -27,7 +27,7 @@
 			</div>
 			<div class="pull-left">
 				<mat-chip-list>
-					<mat-chip>
+					<mat-chip style="margin-top: 5px;">
 						{{session.controls['status'].value | titlecase}}
 					</mat-chip>
 				</mat-chip-list>
