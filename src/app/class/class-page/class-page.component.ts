@@ -605,9 +605,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 							});
 						} else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
 							const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
-							snackBarRef.onAction().subscribe(() => {
-								this.router.navigate(['class', this.classId, 'calendar', this.calendarId]);
-							});
+							snackBarRef.onAction().subscribe();
 						}
 						this.recordStartView();
 					});
@@ -840,7 +838,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public cancelClass() {
 		this.dialogsService.openCancelCollection(this.class).subscribe((response) => {
 			if (response) {
-				this.router.navigate(['class', this.classId]);
+				this.initializePage();
 			}
 		});
 	}
@@ -851,7 +849,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public dropOutClass() {
 		this.dialogsService.openExitCollection(this.classId, this.userId).subscribe((response) => {
 			if (response) {
-				this.router.navigate(['class', this.classId]);
+				this.initializePage();
 			}
 		});
 	}
@@ -859,7 +857,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public cancelCohort() {
 		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res) => {
 			if (res) {
-				this.router.navigate(['class', this.classId, 'calendar', this.calendarId]);
+				this.initializePage();
 			}
 		}, err => {
 			console.log(err);
@@ -869,7 +867,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public deleteCohort() {
 		this.dialogsService.openDeleteCohort(this.calendarId).subscribe(res => {
 			if (res) {
-				this.router.navigate(['class', this.classId]);
+				this.initializePage();
 			}
 		});
 	}

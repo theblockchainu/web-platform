@@ -55,6 +55,7 @@ import { SelectFieldDialogComponent } from './select-field-dialog/select-field-d
 import { CertificateVerificationComponent } from './certificate-verification/certificate-verification.component';
 import { CollectionStandardsDialogComponent } from './collection-standards-dialog/collection-standards-dialog.component';
 import { TermsAndConditionsDialogComponent } from './terms-and-conditions-dialog/terms-and-conditions-dialog.component';
+import { CancelCohortDialogComponent } from './cancel-cohort-dialog/cancel-cohort-dialog.component';
 
 @Injectable()
 export class DialogsService {
@@ -416,7 +417,7 @@ export class DialogsService {
                     cohortId: cohortId,
                     title: title,
                     description: description,
-					headline: headline,
+                    headline: headline,
                     image: imageUrl
                 },
                 panelClass: 'responsive-dialog', width: '40vw'
@@ -626,5 +627,14 @@ export class DialogsService {
             height: '56vh',
             data: type ? type : null
         }).afterClosed();
+    }
+
+    public cancelCohortDialog(calendarId: string) {
+        const dialogRef = this.dialog.open(CancelCohortDialogComponent, {
+            data: calendarId,
+            panelClass: 'responsive-dialog', width: '30vw'
+        });
+
+        return dialogRef.afterClosed();
     }
 }

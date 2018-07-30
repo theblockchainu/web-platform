@@ -769,9 +769,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		}
 
 		// Currency, Amount, Cancellation Policy
-		this.experience.controls.price.patchValue(res.price);
 		if (res.price === 0) {
 			this.freeExperience = true;
+			this.experience.controls.price.patchValue(0);
+		} else {
+			this.experience.controls.price.patchValue(res.price);
 		}
 		if (res.currency) { this.experience.controls.currency.patchValue(res.currency); }
 		if (res.cancellationPolicy) { this.experience.controls.cancellationPolicy.setValue(res.cancellationPolicy); }
