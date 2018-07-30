@@ -6,20 +6,34 @@
 		</a>
 		<span class="example-spacer"></span>
 		<span class="options" style="position: relative; top: -15px;">
-			<button mat-button class="headerButtons hide-small" [routerLink]="['/sign-up']">
+			<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerTeachMenu">
 				Become a teacher
 			</button>
-			<button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']">
+			<!-- <button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']">
 				White Paper
-			</button>
-			<button mat-button class="headerButtons" (click)="openLogin()">
-				Log in
+			</button> -->
+			<button mat-button class="headerButtons" (click)="gotoCredit()">
+				Credit
 			</button>
 			<button mat-button class="headerButtons" [routerLink]="['/sign-up']">
 				Sign up
 			</button>
+			<button mat-button class="headerButtons" (click)="openLogin()">
+				Log in
+			</button>
 		</span>
 	</nav>
+	<mat-menu #headerTeachMenu [overlapTrigger]="false">
+		<button mat-menu-item (click)="createExperience()">
+			Create Experience
+		</button>
+		<button mat-menu-item (click)="createClass()">
+			Create Class
+		</button>
+		<button mat-menu-item (click)="createSession()">
+			Create Session
+		</button>
+	</mat-menu>
 </header>
 <!-- header end here -->
 <div class="index">

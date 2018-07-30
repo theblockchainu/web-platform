@@ -82,7 +82,7 @@ export class IndexComponent implements OnInit {
 		authenticationService.isLoggedIn().subscribe((res) => {
 			this.loggedIn = res;
 			if (this.loggedIn) {
-				this._router.navigate(['home']);
+				this._router.navigate(['home', 'homefeed']);
 			}
 		});
 		_activatedRoute.url.subscribe(res => {
@@ -480,5 +480,38 @@ export class IndexComponent implements OnInit {
 	public onSearchOptionClicked(option) {
 		this._searchService.onSearchOptionClicked(option);
 		this.myControl.reset();
+	}
+	public createExperience() {
+		this.dialogsService.openLogin().subscribe(result => {
+			if (result) {
+				this._router.navigateByUrl('/console/teaching/experiences');
+			}
+		});
+
+	}
+
+	public createClass() {
+		this.dialogsService.openLogin().subscribe(result => {
+			if (result) {
+				this._router.navigateByUrl('/console/teaching/classes');
+			}
+		});
+
+	}
+
+	public createSession() {
+		this.dialogsService.openLogin().subscribe(result => {
+			if (result) {
+				this._router.navigateByUrl('/console/teaching/sessions');
+			}
+		});
+	}
+
+	public gotoCredit() {
+		this.dialogsService.openLogin().subscribe(result => {
+			if (result) {
+				this._router.navigateByUrl('/home');
+			}
+		});
 	}
 }

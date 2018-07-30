@@ -1,7 +1,10 @@
 .mat-elevation-header .headerButtons {
-    color: #95959f;
-    font-size: 1rem;
-    min-width: 20px;
+	font-size: 1rem;
+  margin: -4px !important;
+  vertical-align: middle !important;
+	line-height: 1 !important;
+	height: -webkit-fill-available;
+	color: #4e4e4e;
 }
 
 .mat-elevation-header .headerButtons .mat-button-focus-overlay {
@@ -32,15 +35,9 @@ color: #95959f !important;
 }
 
 .header-progress-bar{
-	font-size: 1rem;
-	display: -ms-inline-grid;
-	display: inline-grid;
-	cursor: pointer;
-	margin-right: 25px;
-	top: -5px;
-	position: relative;
-	text-align: right;
-	color: #33bd9e;
+	font-size: 1.1rem;
+    display: -webkit-inline-box;
+    color: #33bd9e;
 }
 
 .profile-check{
@@ -63,13 +60,15 @@ color: #95959f !important;
 
 .headerNewActionButton {
 	color: #ff6d71;
-	font-size: 35px;
-	top: -5px;
 }
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	.header-progress-bar{
 		top: 2px;
-	}
+  }
+
+  .mat-elevation-header .headerButtons {
+   margin: -20px !important;
+  }
 }

@@ -1,19 +1,24 @@
-<div class="loading-container" style="width:60%" [hidden]="!loadingMessages">
-	<ngx-loading [show]="true"></ngx-loading>
+<div class="row margin-left-0 margin-right-0 padding-bottom-10 padding-top-10" style="border-bottom: 1px solid #eeeeee;">
+	<div class="col-md-12">
+		<span class="mat-body-2 clickable">
+			Inbox
+		</span>
+		<a class="clickable pull-right" (click)="goToInbox()">View all</a>
+	</div>
 </div>
-<div *ngIf="!loadingMessages" class="row margin-left-0 margin-right-0 padding-bottom-10 padding-top-10" style="border-bottom: 1px solid #eeeeee;">
-	<div class="col-md-12 mat-body-2 clickable" (click)="goToInbox()">Inbox ({{tempJoinedRooms.length}})</div>
-</div>
-<div class="row margin-left-0 margin-right-0" *ngIf="!loadingMessages">
+<div class="row notification-area margin-left-0 margin-right-0">
 	<div class="col-md-12 leftCol">
 		<!--List of Rooms shown as chats -->
+		<div class="loading-container" style="width:60%" [hidden]="!loadingMessages">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
 		<div *ngFor="let room of tempJoinedRooms;let i = index" (click)="openInbox(room)">
 			<div class="row chatListItemContainer clickable">
 				<div [ngClass]="{'col-xs-12' : true, 'padding-left-0': true}">
 					<div class="col-xs-2 padding-right-0" *ngIf="room.collection && room.collection.length > 0" style="margin-left: 10px">
 						<img src="{{ envVariable.apiUrl + room.collection[0].imageUrls + '/100'}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
 					</div>
-					<div class="col-xs-2 padding-right-0" *ngIf="room.type === 'peer'"  style="margin-left: 10px">
+					<div class="col-xs-2 padding-right-0" *ngIf="room.type === 'peer'" style="margin-left: 10px">
 						<img src="{{ envVariable.apiUrl + room.participatingPeerImage + '/100'}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
 					</div>
 					<div class="col-xs-7 padding-left-10 padding-right-0 mat-body-2">
@@ -27,6 +32,43 @@
 						<mat-chip-list class="pull-right" *ngIf="room.unread">
 							<mat-chip class="greenChip">{{room.unreadCount}}</mat-chip>
 						</mat-chip-list>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row margin-left-0 margin-right-0 padding-bottom-10 padding-top-10" style="border-bottom: 1px solid #eeeeee;border-top: 1px solid #eeeeee;">
+	<div class="col-md-12" (click)="goToInbox()">
+		<span class="mat-body-2 clickable">
+			Notifications
+		</span>
+		<a class="pull-right clickable" (click)="openViewAll()">
+			View all
+		</a>
+	</div>
+</div>
+<div class="row notification-area margin-left-0 margin-right-0">
+	<div class="col-md-12 leftCol">
+		<!--List of Rooms shown as chats -->
+		<div class="loading-container" style="width:60%" [hidden]="notificationsLoaded">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+		<div *ngFor="let notification of notifications;let i = index" (click)="onNotificationClick(notification)">
+			<div class="row chatListItemContainer clickable">
+				<div [ngClass]="{'col-xs-12' : true, 'padding-left-0': true}">
+					<div class="col-xs-2 padding-right-0" style="margin-left: 10px">
+						<img *ngIf="!notification.actor[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb notificationsImage">
+						<img *ngIf="notification.actor[0].profiles[0].picture_url" src="{{envVariable.apiUrl + notification.actor[0].profiles[0].picture_url + '/100'}}"
+						 alt="A" class="circle-thumb notificationsImage">
+					</div>
+					<div class="col-xs-7 padding-left-10 padding-right-0 mat-body-1">
+						<div innerHTML="{{getNotificationText(notification)}}"></div>
+						<h6 class="mat-caption" style="margin-top: 0px;">{{getNotificationTime(notification)}}</h6>
+					</div>
+					<div class="col-xs-2 padding-left-0 padding-right-0 lightText pull-right" style="text-align: right">
+						<mat-icon class="lightText" style="font-size: 10px; cursor: pointer;" (click)="hideNotification(notification)">close</mat-icon>
 					</div>
 				</div>
 			</div>

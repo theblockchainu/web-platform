@@ -75,7 +75,7 @@ export class LoginComponentDialog implements OnInit {
 		this.authenticationService.login(this.email, this.passWord, this.rememberMe)
 			.subscribe(
 				(data) => {
-					this.dialogRef.close();
+					this.dialogRef.close(true);
 				},
 				(error) => {
 					if (error.status === 401 || error._body === '"authentication error"') {
