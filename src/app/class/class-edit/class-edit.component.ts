@@ -270,11 +270,11 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			nARules: this._fb.array([
 				this._fb.group({
 					value: ['engagement', Validators.required],
-					gyan: ['', [Validators.required, Validators.max(100), Validators.min(1), this.changeControl(1)]]
+					gyan: [50, [Validators.required, Validators.max(100), Validators.min(1), this.changeControl(1)]]
 				}),
 				this._fb.group({
 					value: ['commitment', Validators.required],
-					gyan: ['', [Validators.required, Validators.max(100), Validators.min(1)]]
+					gyan: [50, [Validators.required, Validators.max(100), Validators.min(1)]]
 				})
 			])
 		});

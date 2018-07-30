@@ -50,7 +50,7 @@ export class AssessmentService {
             }
           ]
         },
-        description: 'A,B,C,D...'
+        description: 'A, B, C, D...'
       },
       {
         system: 'Weighted Grades',
@@ -111,7 +111,7 @@ export class AssessmentService {
             }
           ]
         },
-        description: 'A+,A,A-,B+,B,B-...'
+        description: 'A+, A, A-, B+, B, B-...'
       },
       {
         system: 'Percentage',
@@ -160,7 +160,7 @@ export class AssessmentService {
             }
           ]
         },
-        description: '100,90,80,70...'
+        description: '100, 90, 80, 70...'
       },
       {
         system: 'Binary',
