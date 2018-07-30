@@ -172,7 +172,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public projectMapping:
 		{ [k: string]: string } = { '=0': 'No projects', '=1': 'One project', 'other': '# projects' };
 	public inPersonSessionMapping:
-		{ [k: string]: string } = { '=0': 'No in-person sessions', '=1': 'One in-person session', 'other': '# in-person sessions' };
+		{ [k: string]: string } = { '=0': 'No in-person activity', '=1': 'One in-person activity', 'other': '# in-person activities' };
 	public cohortMapping:
 		{ [k: string]: string } = { '=0': 'No cohort', '=1': 'One cohort', 'other': '# cohorts' };
 	public dayMapping:
@@ -834,7 +834,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	 * changeDates
 	 */
 	public changeDates() {
-		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.experience.type, this.experience.maxSpots)
+		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.experience.type, this.experience.maxSpots, this.accountApproved, this.userId)
 			.subscribe(result => {
 				if (result) {
 					this.router.navigate(['experience', this.experienceId, 'calendar', result]);
@@ -1230,7 +1230,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 							let hasActiveCalendar = false;
 							if (collection.calendars) {
 								collection.calendars.forEach(calendar => {
-									if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+									if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
 										hasActiveCalendar = true;
 										return;
 									}
@@ -1257,13 +1257,13 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	 */
 	public selectJoiningDates() {
 
-		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.experience.type, this.experience.maxSpots)
+		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.experience.type, this.experience.maxSpots, this.accountApproved, this.userId)
 			.subscribe(result => {
 				if (result) {
 					if (this.userId) {
 						this.router.navigate(['review-pay', 'collection', this.experienceId, result]);
 					} else {
-						this.router.navigate(['login']);
+						this.router.navigate(['sign-up']);
 					}
 				}
 			});

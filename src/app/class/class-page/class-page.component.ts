@@ -171,9 +171,9 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public hourMapping:
 		{ [k: string]: string } = { '=0': 'Less than an hour of learning', '=1': 'One hour of learning', 'other': '# hours of learning' };
 	public projectMapping:
-		{ [k: string]: string } = { '=0': 'No projects', '=1': 'One project', 'other': '# projects' };
+		{ [k: string]: string } = { '=0': 'No project', '=1': 'One project', 'other': '# projects' };
 	public onlineSessionMapping:
-		{ [k: string]: string } = { '=0': 'No online sessions', '=1': 'One online session', 'other': '# online sessions' };
+		{ [k: string]: string } = { '=0': 'No live activity', '=1': 'One live activity', 'other': '# online activity' };
 	public cohortMapping:
 		{ [k: string]: string } = { '=0': 'No cohort', '=1': 'One cohort', 'other': '# cohorts' };
 	public dayMapping:
@@ -826,7 +826,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	 * changeDates
 	 */
 	public changeDates() {
-		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.class.type, this.class.maxSpots)
+		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.class.type, this.class.maxSpots, this.accountApproved, this.userId)
 			.subscribe(result => {
 				if (result) {
 					this.router.navigate(['class', this.classId, 'calendar', result]);
@@ -1139,7 +1139,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 							let hasActiveCalendar = false;
 							if (collection.calendars) {
 								collection.calendars.forEach(calendar => {
-									if (moment(calendar.startDate).diff(this.today, 'days') >= -1) {
+									if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
 										hasActiveCalendar = true;
 										return;
 									}
@@ -1166,13 +1166,13 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	 */
 	public selectJoiningDates() {
 
-		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.class.type, this.class.maxSpots)
+		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.class.type, this.class.maxSpots, this.accountApproved, this.userId)
 			.subscribe(result => {
 				if (result) {
 					if (this.userId) {
 						this.router.navigate(['review-pay', 'collection', this.classId, result]);
 					} else {
-						this.router.navigate(['login']);
+						this.router.navigate(['sign-up']);
 					}
 				}
 			});

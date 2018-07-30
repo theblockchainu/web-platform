@@ -20,7 +20,7 @@
 <div class="margin-top-20">
 	<span [hidden]="query.length<1">Didn't find
 		<span class="mat-body-2">{{query|titlecase}}</span>. Do you want to add this topic ?
-		<button mat-button type="button" class="mat-border-button" (click)="addTopic()" color="primary">
+		<button mat-button type="button" class="mat-border-button" (click)="addTopic()" color="primary" style="margin-left: 20px !important;">
 			Yes, add {{query|titlecase}}
 		</button>
 	</span>

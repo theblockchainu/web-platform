@@ -49,7 +49,10 @@
                             </div>
                         </div>
                     </div>
-                    <div [hidden]="collection.price===0">
+	                <div *ngIf="!loadingCountry" [hidden]="userCountry !== 'IN'" class="margin-top-20 margin-bottom-40">
+		                <button mat-button mat-raised-button (click)="initiatePayuPayment()">Proceed with payment</button>
+	                </div>
+                    <div *ngIf="!loadingCountry" [hidden]="collection.price===0 || userCountry === 'IN'">
                         <div class="margin-bottom-50" *ngIf="isCardExist">
                             <h3>Select payment method</h3>
                             <div class="row margin-top-50">
@@ -110,18 +113,20 @@
                             Release and Waiver, and the Cancellation Policy.</p>
                     </div>
                     <div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards || listAllCards.length < 0 ||  useAnotherCard">
-                        <i class="fa fa-lock"></i> Your Credit card information is encrypted
+                        <i class="fa fa-lock"></i> Your payment information is secured by <a href="https://stripe.com">Stripe</a>
                     </div>
-                    <div *ngIf="collection.price && collection.price!==0">
-                        <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard"
-                            [disabled]="savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment
-                            <!--<img src="/assets/images/powered_by_stripe.svg" class="stripe-image"> --> </button>
-                        <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard"
-                            [disabled]="!cardDetails.id || savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment
-                            <!--<img src="/assets/images/powered_by_stripe.svg" class="stripe-image">-->
-                        </button>
-                    </div>
-                    <button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center" *ngIf="!collection.price || collection.price===0 ">FREE - Join {{collection.type | ucwords}}</button>
+	                <div *ngIf="!loadingCountry && userCountry !== 'IN'">
+		                <div *ngIf="collection.price && collection.price!==0">
+			                <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard"
+			                        [disabled]="savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment
+			                                                <!--<img src="/assets/images/powered_by_stripe.svg" class="stripe-image"> --> </button>
+			                <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard"
+			                        [disabled]="!cardDetails.id || savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment
+			                                                                   <!--<img src="/assets/images/powered_by_stripe.svg" class="stripe-image">-->
+			                </button>
+		                </div>
+		                <button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center" *ngIf="!collection.price || collection.price===0 ">FREE - Join {{collection.type | ucwords}}</button>
+	                </div>
 	                <div class="terms-text margin-top-20" *ngIf="collection.academicGyan">
 		                <div class="terms-title">This {{collection.type}} is powered by one0x Blockchain.</div>
 		                <!--<p class="text-grey fs-15">

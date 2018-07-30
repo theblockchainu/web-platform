@@ -867,17 +867,10 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public submitExperienceTimeline() {
 		this.busySavingData = true;
 		if (this.calendarIsValid(this.step)) {
-			if ((this.totalGyan > this.gyanBalance) && (this.totalDuration !== this.totalGyan)) {
-				this.snackBar.open('You do not have enough Gyan balance or learning hours to justify a knowledge value of ' + this.totalGyan + ' Gyan. Knowledge value for this experience will be adjusted to ' + this.totalDuration + ' Gyan.',
-					'Ok').onAction().subscribe(result => {
-						this.experience.controls['academicGyan'].patchValue(this.totalDuration >= 2 ? this.totalDuration - 1 : 1);
-						this.experience.controls['nonAcademicGyan'].patchValue(1);
-						this.totalGyan = this.experience.controls['academicGyan'].value + this.experience.controls['nonAcademicGyan'].value;
-						this.checkStatusAndSubmit(this.experience, this.timeline, this.step);
-					});
-			} else {
-				this.checkStatusAndSubmit(this.experience, this.timeline, this.step);
-			}
+			this.experience.controls['academicGyan'].patchValue(this.totalDuration >= 2 ? this.totalDuration - 1 : 1);
+			this.experience.controls['nonAcademicGyan'].patchValue(1);
+			this.totalGyan = this.experience.controls['academicGyan'].value + this.experience.controls['nonAcademicGyan'].value;
+			this.checkStatusAndSubmit(this.experience, this.timeline, this.step);
 		}
 	}
 
@@ -1045,7 +1038,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	public submitTimeline(collectionId, data: FormGroup) {
 		const body = data.value.calendar;
 		const itinerary = data.controls.contentGroup.value.itenary;
-		if (body.startDate && body.endDate && itinerary && itinerary.length > 0) {
+		if (body.startDate && body.endDate && itinerary && itinerary.length > 0 && this.totalDuration > 0) {
 			this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body, this.requestHeaderService.options)
 				.subscribe((response) => {
 					if (this.exitAfterSave) {
@@ -1060,7 +1053,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		} else {
 			this.busySavingData = false;
 			console.log('No date selected or no content added to itinerary! - ' + JSON.stringify(itinerary));
-			if (!itinerary || itinerary.length === 0) {
+			if (!itinerary || itinerary.length === 0 || this.totalDuration === 0) {
 				if (this.exitAfterSave) {
 					this.snackBar.open('You need to add at least 1 activity to your experience to proceed.', 'Exit Anyways', {
 						duration: 5000
@@ -1186,19 +1179,15 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			case 3:
 				this.submitInterests();
 				break;
-			case 14:
-				this.submitExperience();
+			case 12:
+				this.certificateComponent.submitCertificate();
 				break;
 			case 13:
 				this.submitAssessment();
 				break;
-			case 12:
-				this.certificateComponent.submitCertificate();
-				break;
 			case 16:
 				this.submitExperienceTimeline();
 				break;
-			case 17:
 			case 18:
 				this.exit();
 				break;

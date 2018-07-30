@@ -318,11 +318,20 @@ export class DialogsService {
         return dialogRef5.afterClosed();
     }
 
-    public selectDateDialog(allItenaries, mode, participants, userType, collectionType, maxSeats) {
+    public selectDateDialog(allItenaries, mode, participants, userType, collectionType, maxSeats, accountApproved, userId) {
         return this.dialog.open(SelectDateDialogComponent, {
             panelClass: 'responsive-dialog', width: '45vw',
             height: '100vh',
-            data: { itineraries: allItenaries, mode: mode, participants: participants, userType: userType, collectionType: collectionType, maxSeats: maxSeats }
+            data: {
+            	itineraries: allItenaries,
+				mode: mode,
+				participants: participants,
+				userType: userType,
+				collectionType: collectionType,
+				maxSeats: maxSeats,
+				accountApproved: accountApproved,
+				userId: userId
+            }
         }).afterClosed();
     }
 
