@@ -6,11 +6,11 @@
 					<img src="/assets/images/pb_logo.png" alt="logo">
 				</a>
 			</span>
-			<span style="margin-left: 35px;" *ngIf="(isLoggedIn | async) && isEmailVerified" class="hide-small">
+			<span style="margin-left: 35px;" *ngIf="(isLoggedIn | async) && isAccountApproved" class="hide-small">
 				<mat-icon>search</mat-icon>
 			</span>
 			<span class="search-form hide-small">
-				<mat-form-field style="color:#333333 !important" class="mat-block" *ngIf="(isLoggedIn | async) && isEmailVerified" [floatLabel]="'never'">
+				<mat-form-field style="color:#333333 !important" class="mat-block" *ngIf="(isLoggedIn | async) && isAccountApproved" [floatLabel]="'never'">
 					<input #searchInputBar name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="myControl"
 					 [matAutocomplete]="auto" placeholder="Try 'Mumbai' ">
 					<mat-autocomplete #auto="matAutocomplete">
@@ -58,7 +58,7 @@
 					</span>
 					<mat-icon class="show-small-inline">add_circle_outline</mat-icon>
 				</button>
-				<button mat-button class="headerButtons" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async) && isEmailVerified && isTeacher">
+				<button mat-button class="headerButtons" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async) && isAccountApproved && isTeacher">
 					<span class="hide-small">
 						Teacher
 					</span>
@@ -70,7 +70,7 @@
 				<button mat-button class="headerButtons hide-small" (click)="gotoConsoleLearning()" *ngIf="(isLoggedIn | async)">
 					Activities
 				</button>
-				<button mat-button class="headerButtons show-small-inline" (click)="showSearchBar()" *ngIf="(isLoggedIn | async) && isEmailVerified">
+				<button mat-button class="headerButtons show-small-inline" (click)="showSearchBar()" *ngIf="(isLoggedIn | async) && isAccountApproved">
 					<mat-icon>search</mat-icon>
 				</button>
 				<!-- <button mat-button class="headerButtons" #notificationsButton (click)="openNotificationsDialog()" *ngIf="(isLoggedIn | async) && isEmailVerified"
@@ -81,13 +81,13 @@
 				<div style="display: inline-block;" *ngIf="(isLoggedIn | async) && isEmailVerified">
 					<mat-icon class="notifDot" *ngIf="hasNewNotification">fiber_manual_record</mat-icon>
 				</div> -->
-				<button mat-button class="headerButtons" #messagesButton (click)="openMessagesDialog()" *ngIf="(isLoggedIn | async) && isEmailVerified">
+				<button mat-button class="headerButtons" #messagesButton (click)="openMessagesDialog()" *ngIf="(isLoggedIn | async) && isAccountApproved">
 					<span class="hide-small">
 						Messages
 					</span>
 					<mat-icon class="show-small-inline">chat</mat-icon>
 				</button>
-				<div style="display: inline-block;" *ngIf="(isLoggedIn | async) && isEmailVerified">
+				<div style="display: inline-block;" *ngIf="(isLoggedIn | async) && isAccountApproved">
 					<mat-icon class="notifDot" *ngIf="hasNewMessage || hasNewNotification">fiber_manual_record</mat-icon>
 				</div>
 				<button mat-button class="headerButtons" [matMenuTriggerFor]="creditMenu">
@@ -127,10 +127,10 @@
 				</button>
 			</span>
 		</mat-toolbar-row>
-		<mat-toolbar-row [ngClass]="{'show-small': true, 'searchBar' : true, 'searchBarHeight': isSearchBarVisible}" *ngIf="(isLoggedIn | async) && isEmailVerified"
+		<mat-toolbar-row [ngClass]="{'show-small': true, 'searchBar' : true, 'searchBarHeight': isSearchBarVisible}" *ngIf="(isLoggedIn | async) && isAccountApproved"
 		 style="border-top: 1px solid #ddd;">
 			<span class="search-form">
-				<mat-form-field style="color:#333333 !important" class="mat-block" *ngIf="(isLoggedIn | async) && isEmailVerified" [floatLabel]="'never'">
+				<mat-form-field style="color:#333333 !important" class="mat-block" *ngIf="(isLoggedIn | async) && isAccountApproved" [floatLabel]="'never'">
 					<input #searchInputBar name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="myControl"
 					 [matAutocomplete]="auto" placeholder="Try 'Mumbai' ">
 					<mat-autocomplete #auto="matAutocomplete">
@@ -184,30 +184,31 @@
 </header>
 
 <mat-menu #creditMenu [overlapTrigger]="false">
-	<span mat-menu-item style="width: 18vw" *ngIf="isEmailVerified && !profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
+	<span mat-menu-item style="width: 18vw" *ngIf="isAccountApproved && !profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
 		Setup Karma Wallet
 		<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
 			on one0x Blockchain
 		</div>
 	</span>
-	<span mat-menu-item style="width: 18vw" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['story', 'me']">
+	<span mat-menu-item style="width: 18vw" *ngIf="isAccountApproved && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['story', 'me']">
 		GYAN
 		<div class="pull-right header-progress-bar">
-			{{profile.peer[0].id | gyanBalance : 'fixed' | async}}
+			{{profile.peer[0].id | gyanBalance : 'fixed' | async}} &nbsp; &nbsp;
 			<div style="font-size: 0.7rem">&#40;+ {{profile.peer[0].id | gyanBalance: 'floating' | async}} NEW&#41;
 			</div>
 		</div>
 	</span>
-	<span mat-menu-item style="width: 18vw" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
+	<span mat-menu-item style="width: 18vw" *ngIf="isAccountApproved && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
 		KARMA
 		<div class="pull-right header-progress-bar">
 
-			{{profile.peer[0].id | karmaBalance : 'peer' | async | currency : ' ' : ' ' : '1.0-0'}}
+			{{profile.peer[0].id | karmaBalance : 'peer' | async | currency : ' ' : ' ' : '1.0-0'}} &nbsp; &nbsp;
 			<div style="font-size: 0.7rem">
 				&#40;{{profile.peer[0].id | karmaBalance : 'peer': 'USD' | async | currency: 'USD'}} USD&#41;
 			</div>
 		</div>
 	</span>
+	<hr>
 	<span mat-menu-item disableRipple="true" style="width: 18vw" style="text-align:center!important">
 		<button color="accent" [routerLink]="['invite', '1']" mat-raised-button>Invite & Earn</button>
 	</span>

@@ -23,6 +23,7 @@ export class SignupComponentDialogComponent implements OnInit {
 	public emailRegister = false;
 	public envVariable;
 	private invitationId: string;
+	public loading = false;
 	invite: any;
 	public invitor;
 	
@@ -87,19 +88,23 @@ export class SignupComponentDialogComponent implements OnInit {
 	}
 	
 	submitForm() {
+		this.loading = true;
 		console.log(this.signupForm);
 		if (this.signupForm.valid) {
 			const registerObject = this.signupForm.value;
 			const birthdate = <Date>registerObject.birthdate;
 			delete registerObject.birthdate;
-			registerObject.dobDay = birthdate.getDate();
-			registerObject.dobMonth = Number(birthdate.getMonth() + 1);
-			registerObject.dobYear = birthdate.getFullYear();
-			console.log(registerObject);
+			if (birthdate) {
+				registerObject.dobDay = birthdate.getDate();
+				registerObject.dobMonth = Number(birthdate.getMonth() + 1);
+				registerObject.dobYear = birthdate.getFullYear();
+				console.log(registerObject);
+			}
 			
 			this._AuthenticationService.signup(registerObject).subscribe((res: any) => {
 				if (res.status === 'failed') {
 					this._MatSnackBar.open(res.reason, 'Close', { duration: 5000 });
+					this.loading = false;
 				} else {
 					this.signIn();
 				}
@@ -107,6 +112,8 @@ export class SignupComponentDialogComponent implements OnInit {
 				console.log(err);
 				this.signIn();
 			});
+		} else {
+			this.loading = false;
 		}
 	}
 	
@@ -116,17 +123,20 @@ export class SignupComponentDialogComponent implements OnInit {
 			this._RequestHeaderService.refreshToken.next(true);
 			this._AuthenticationService.isLoginSubject.next(true);
 			this._SocketService.addUser(userId);
-			this._router.navigate(['verification', '1']);
+			this._router.navigate([this.data.returnTo]);
+			this.loading = false;
+			this.dialogRef.close();
 		} else {
+			this.loading = false;
 			this._MatSnackBar.open('An error occurred', 'close', { duration: 3000 });
 		}
 	}
 	
 	public openLogin() {
-		const dialogRef1: MatDialogRef<LoginComponentDialog> = this.dialog.open(LoginComponentDialog, {
+		this.dialog.open(LoginComponentDialog, {
 			panelClass: 'responsive-dialog'
 		});
-		return dialogRef1.afterClosed();
+		this.dialogRef.close();
 	}
 	
 	public back() {

@@ -1264,14 +1264,15 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						this.router.navigate(['review-pay', 'collection', this.experienceId, result]);
 					} else {
 						// this.router.navigate(['sign-up']);
-						this.openSignup();
+						const returnTo = 'review-pay/collection/' + this.experienceId + '/' + result;
+						this.openSignup(returnTo);
 					}
 				}
 			});
 	}
 	
-	public openSignup() {
-		this.dialogsService.openSignup().subscribe();
+	public openSignup(returnTo) {
+		this.dialogsService.openSignup(returnTo).subscribe();
 	}
 
 	private extractTime(dateString: string) {

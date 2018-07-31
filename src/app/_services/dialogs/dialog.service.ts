@@ -56,6 +56,7 @@ import { CertificateVerificationComponent } from './certificate-verification/cer
 import { CollectionStandardsDialogComponent } from './collection-standards-dialog/collection-standards-dialog.component';
 import { TermsAndConditionsDialogComponent } from './terms-and-conditions-dialog/terms-and-conditions-dialog.component';
 import { CancelCohortDialogComponent } from './cancel-cohort-dialog/cancel-cohort-dialog.component';
+import {OnboardingDialogComponent} from "./onboarding-dialog/onboarding-dialog.component";
 
 @Injectable()
 export class DialogsService {
@@ -63,12 +64,15 @@ export class DialogsService {
     constructor(public dialog: MatDialog
     ) { }
 
-    public openSignup() {
+    public openSignup(returnTo: string) {
         let dialogRef: MatDialogRef<SignupComponentDialogComponent>;
 
         dialogRef = this.dialog.open(SignupComponentDialogComponent, {
             panelClass: 'responsive-dialog',
-			width: '30vw'
+			width: '30vw',
+			data: {
+            	returnTo: returnTo
+			}
         });
 
         return dialogRef.afterClosed();
@@ -137,6 +141,17 @@ export class DialogsService {
         });
         return dialogRef9.afterClosed();
     }
+	
+	public openOnboardingDialog() {
+		let dialogRef: MatDialogRef<OnboardingDialogComponent>;
+		
+		dialogRef = this.dialog.open(OnboardingDialogComponent, {
+			panelClass: 'responsive-dialog',
+			width: '30vw',
+			height: '80vh'
+		});
+		return dialogRef.afterClosed();
+	}
 
     public openFollowTopicDialog(type, inputs) {
         let dialogRef5: MatDialogRef<MultiselectTopicDialogComponent>;

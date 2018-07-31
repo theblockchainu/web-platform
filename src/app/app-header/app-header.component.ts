@@ -42,7 +42,7 @@ export class AppHeaderComponent implements OnInit {
 	public envVariable;
 	public options: any[];
 	public isEmailVerified: boolean;
-
+	public isAccountApproved: boolean;
 	public defaultProfileUrl: string;
 	public isTeacher: boolean;
 	public makeOldNotification: Array<any>;
@@ -101,6 +101,7 @@ export class AppHeaderComponent implements OnInit {
 		this.envVariable = environment;
 		this.profile = {};
 		this.isEmailVerified = false;
+		this.isAccountApproved = false;
 		this.loggedIn = this.authService.isLoginSubject.value;
 		this.userId = this._cookieService.getValue('userId');
 		console.log(this.userId);
@@ -124,12 +125,13 @@ export class AppHeaderComponent implements OnInit {
 				if (profile && profile.length > 0) {
 					this.profile = profile[0];
 					this.isEmailVerified = this.profile.peer[0].emailVerified;
+					this.isAccountApproved = this.profile.peer[0].accountVerified;
 					if (this.profile.peer[0].ownedCollections !== undefined && this.profile.peer[0].ownedCollections.length > 0) {
 						this.isTeacher = true;
 					}
 					this.profileCompletionObject = this._profileService.getProfileProgressObject(this.profile);
 					console.log(this.profileCompletionObject);
-					if (this.router.url !== '/signup-social' && this.router.url !== '/verification/1' && this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
+					/*if (this.router.url !== '/signup-social' && this.router.url !== '/verification/1' && this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
 						// Incomplete Social signup. Redirect user to finish it.
 						this.router.navigate(['signup-social']);
 						this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {
@@ -140,7 +142,7 @@ export class AppHeaderComponent implements OnInit {
 						this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {
 							duration: 5000
 						});
-					}
+					}*/
 				}
 			});
 		} else {
@@ -159,7 +161,7 @@ export class AppHeaderComponent implements OnInit {
 
 	public goToHome() {
 		if (this.loggedIn) {
-			if (this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
+			/*if (this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
 				// Incomplete Social signup. Redirect user to finish it.
 				this.router.navigate(['signup-social']);
 				this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {
@@ -172,7 +174,8 @@ export class AppHeaderComponent implements OnInit {
 				});
 			} else {
 				this.router.navigate(['home', 'homefeed']);
-			}
+			}*/
+			this.router.navigate(['home', 'homefeed']);
 		} else {
 			this.router.navigate(['/']);
 		}

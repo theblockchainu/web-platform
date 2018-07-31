@@ -10,9 +10,9 @@ import { ScholarshipService } from '../_services/scholarship/scholarship.service
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { sha512 } from 'js-sha512';
+import {DialogsService} from '../_services/dialogs/dialog.service';
 
 declare var Stripe: any;
-declare var bolt: any;
 
 @Component({
     selector: 'app-review-pay',
@@ -26,6 +26,7 @@ export class ReviewPayComponent implements OnInit {
     public card: any;
     @ViewChild('cardForm', { read: ElementRef }) cardForm: ElementRef;
     public userId;
+    public emailVerified;
     public collectionId;
     public collectionCalendarId;
     public collection: any = {};
@@ -65,6 +66,7 @@ export class ReviewPayComponent implements OnInit {
         private _collectionService: CollectionService,
         public profileService: ProfileService,
         public paymentService: PaymentService,
+        public _dialogsService: DialogsService,
         private router: Router,
         private _scholarshipService: ScholarshipService,
         private titleService: Title,
@@ -143,11 +145,18 @@ export class ReviewPayComponent implements OnInit {
         this.profileService.getPeer(this.userId).subscribe(peer => {
             if (peer) {
             	this.student = peer;
+            	this.emailVerified = peer.profiles[0].emailVerified;
                 this.createSourceData.email = peer.email;
                 this.createChargeData.customer = peer.stripeCustId;
                 this.custId = peer.stripeCustId;
                 this.burnAddress = peer.ethAddress;
                 console.log(this.custId);
+                
+                if (!this.emailVerified) {
+                	this._dialogsService.openOnboardingDialog().subscribe(result => {
+                		// do nothing
+					});
+				}
 
                 // get all cards
                 this.paymentService.listAllCards(this.userId, this.custId).subscribe((cards: any) => {
@@ -415,7 +424,7 @@ export class ReviewPayComponent implements OnInit {
         return Math.floor((gyanPercent / 100) * totalGyan);
     }
     
-    public initiatePayuPayment() {
+    /*public initiatePayuPayment() {
 		const hashSequence = 'wru4V51W|b2f35875-220c-4dd5-b39b-9955af0b875d|' + this.collection.price + '|' + this.collection.type + '-' + this.collection.id + '|' + this.student.profiles[0].first_name + '|' + this.student.email + '|||||||||||YlbRhVlw58';
 		const hash = sha512(hashSequence);
 		const RequestData = {
@@ -442,5 +451,5 @@ export class ReviewPayComponent implements OnInit {
 			}
 		});
 		
-	}
+	}*/
 }
