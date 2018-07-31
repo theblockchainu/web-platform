@@ -85,6 +85,8 @@ export class CollectionService {
 				}, (err) => {
 					cb(err);
 				}).subscribe();
+		} else {
+			cb(null, []);
 		}
 	}
 

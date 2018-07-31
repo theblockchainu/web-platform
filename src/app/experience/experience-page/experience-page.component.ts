@@ -369,6 +369,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			} else {
 				for (const owner of this.experience.owners) {
 					if (owner.id === this.userId) {
+						console.log('ownerId:' + owner.id + ' userId:' + this.userId);
+
 						this.userType = 'teacher';
 						this.getCertificatetemplate();
 						this.sortAssessmentRules();
@@ -618,9 +620,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 							});
 						} else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
 							const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
-							snackBarRef.onAction().subscribe(() => {
-								this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
-							});
+							snackBarRef.onAction().subscribe();
 						}
 						this.recordStartView();
 					});
@@ -848,7 +848,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public cancelExperience() {
 		this.dialogsService.openCancelCollection(this.experience).subscribe((response) => {
 			if (response) {
-				this.router.navigate(['experience', this.experienceId]);
+				this.initializePage();
 			}
 		});
 	}
@@ -1054,9 +1054,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	public cancelCohort() {
-		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res) => {
+		this.dialogsService.cancelCohortDialog(this.calendarId).subscribe((res) => {
 			if (res) {
-				this.router.navigate(['class', this.experienceId, 'calendar', this.calendarId]);
+				this.initializePage();
 			}
 		}, err => {
 			console.log(err);
@@ -1066,7 +1066,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public deleteCohort() {
 		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res) => {
 			if (res) {
-				this.router.navigate(['class', this.experienceId]);
+				this.initializePage();
 			}
 		});
 	}

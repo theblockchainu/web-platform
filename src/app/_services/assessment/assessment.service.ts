@@ -5,22 +5,22 @@ import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AssessmentService {
-	
-	
+
+
 	constructor(private httpClient: HttpClient,
-				public _requestHeaderService: RequestHeaderService
+		public _requestHeaderService: RequestHeaderService
 	) {
 	}
-	
+
 	public submitAssessment(assessment: Array<AssessmentResult>) {
 		return this.httpClient.post(environment.apiUrl + '/api/assessment_results', assessment, this._requestHeaderService.options);
 	}
-	
+
 	public getAssessmentItems(fileLocation: string) {
 		return this.httpClient.get(fileLocation, this._requestHeaderService.options);
 	}
-	
-	
+
+
 	public getAvailableAssessments(): Array<AssessmentTypeData> {
 		return [
 			{
@@ -180,9 +180,9 @@ export class AssessmentService {
 				description: 'Pass / Fail'
 			}
 		];
-		
+
 	}
-	
+
 }
 
 interface AssessmentResult {

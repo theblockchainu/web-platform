@@ -168,3 +168,26 @@ md-form-field textarea.mat-input-element {
 	color: #ffffff !important;
 	padding: 3px 8px !important;
 }
+
+.notification-area{
+	max-height: 28vh;
+    overflow-y: scroll;
+}
+
+.notification-area::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+}
+
+.notification-area::-webkit-scrollbar
+{
+  width: 4px;
+}
+
+.notification-area::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #383838;
+}

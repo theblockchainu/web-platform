@@ -115,7 +115,7 @@
 							<button class="mat-button mat-border-button" color="primary" (click)="openGroupChat()">Group Chat</button> &emsp;
 							<button mat-button class="mat-border-button" *ngIf="userType ==='participant' || userType === 'teacher'" (click)="scrollToDiscussion()">Discussion</button> &emsp;
 							<button mat-button class="mat-border-button" *ngIf="userType==='teacher'" (click)="gotoEdit()">Edit</button>&emsp;
-							<mat-icon [matMenuTriggerFor]="menu" style="cursor: pointer;top: 5px; color: #ccc;">more_vert</mat-icon>
+							<mat-icon *ngIf="class.status !== 'cancelled'" [matMenuTriggerFor]="menu" style="cursor: pointer;top: 5px; color: #ccc;">more_vert</mat-icon>
 							<mat-menu #menu="matMenu">
 								<button mat-menu-item *ngIf="userType==='participant' && currentCalendar !== undefined && isCancelable()" (click)="dropOutClass()">Cancel Participation</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length === 0" (click)="deleteClass()">Delete Class</button>
@@ -944,7 +944,8 @@
 											</div>
 											<div class="col-md-12">
 												<span matTooltip="Earn up to {{class.academicGyan + class.nonAcademicGyan}} Gyan from this class" style="font-weight: 700; vertical-align: middle;">
-													Earn <i class="fab fa-ethereum lightText"></i> {{class.academicGyan + class.nonAcademicGyan}}
+													Earn
+													<i class="fab fa-ethereum lightText"></i> {{class.academicGyan + class.nonAcademicGyan}}
 												</span>
 												<!--<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
 												<span matTooltip="KARMA required to be burned for participation" style="font-weight: 700; vertical-align: middle;">
@@ -1037,7 +1038,8 @@
 				</div>
 				<div class="col-md-12">
 					<span matTooltip="Earn up to {{class.academicGyan + class.nonAcademicGyan}} Gyan from this class" style="font-weight: 700; vertical-align: middle;">
-						Earn <i class="fab fa-ethereum"></i> {{class.academicGyan + class.nonAcademicGyan}}
+						Earn
+						<i class="fab fa-ethereum"></i> {{class.academicGyan + class.nonAcademicGyan}}
 					</span>
 					<!--<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
 					<span matTooltip="KARMA required to be burned for participation" style="font-weight: 700; vertical-align: middle;">
