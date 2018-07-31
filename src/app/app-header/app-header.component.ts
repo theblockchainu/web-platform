@@ -324,45 +324,50 @@ export class AppHeaderComponent implements OnInit {
 	}
 
 	public createExperience() {
-		this.isLoggedIn.subscribe(res => {
-			if (res) {
-				this.router.navigateByUrl('/console/teaching/experiences');
-			} else {
-				this.dialogsService.openLogin().subscribe(result => {
-					if (result) {
-						this.router.navigateByUrl('/console/teaching/experiences');
-					}
-				});
-			}
-		});
+		// this.isLoggedIn.subscribe(res => {
+		// 	if (res) {
+		// 		this.router.navigateByUrl('/console/teaching/experiences');
+		// 	} else {
+		// 		this.dialogsService.openLogin().subscribe(result => {
+		// 			if (result) {
+		// 				this.router.navigateByUrl('/console/teaching/experiences');
+		// 			}
+		// 		});
+		// 	}
+		// });
+		this.router.navigate(['digest', 'experiences']);
 	}
 
 	public createClass() {
-		this.isLoggedIn.subscribe(res => {
-			if (res) {
-				this.router.navigateByUrl('/console/teaching/classes');
-			} else {
-				this.dialogsService.openLogin().subscribe(result => {
-					if (result) {
-						this.router.navigateByUrl('/console/teaching/classes');
-					}
-				});
-			}
-		});
+		// this.isLoggedIn.subscribe(res => {
+		// 	if (res) {
+		// 		this.router.navigateByUrl('/console/teaching/classes');
+		// 	} else {
+		// 		this.dialogsService.openLogin().subscribe(result => {
+		// 			if (result) {
+		// 				this.router.navigateByUrl('/console/teaching/classes');
+		// 			}
+		// 		});
+		// 	}
+		// });
+		this.router.navigate(['digest', 'experiences']);
+
 	}
 
 	public createSession() {
-		this.isLoggedIn.subscribe(res => {
-			if (res) {
-				this.router.navigateByUrl('/console/teaching/sessions');
-			} else {
-				this.dialogsService.openLogin().subscribe(result => {
-					if (result) {
-						this.router.navigateByUrl('/console/teaching/sessions');
-					}
-				});
-			}
-		});
+		this.router.navigate(['digest', 'peers']);
+
+		// this.isLoggedIn.subscribe(res => {
+		// 	if (res) {
+		// 		this.router.navigateByUrl('/console/teaching/sessions');
+		// 	} else {
+		// 		this.dialogsService.openLogin().subscribe(result => {
+		// 			if (result) {
+		// 				this.router.navigateByUrl('/console/teaching/sessions');
+		// 			}
+		// 		});
+		// 	}
+		// });
 	}
 
 	public gotoCredit() {

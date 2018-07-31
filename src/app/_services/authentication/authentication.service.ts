@@ -62,6 +62,7 @@ export class AuthenticationService {
 					this.isLoginSubject.next(true);
 					this._socketService.addUser(user.userId);
 				}
+				return response;
 			}, (err) => {
 				console.log('Error: ' + err);
 			});
