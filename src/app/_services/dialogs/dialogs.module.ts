@@ -66,6 +66,7 @@ import { SelectFieldDialogComponent } from './select-field-dialog/select-field-d
 import { CertificateVerificationComponent } from './certificate-verification/certificate-verification.component';
 import { CollectionStandardsDialogComponent } from './collection-standards-dialog/collection-standards-dialog.component';
 import { TermsAndConditionsDialogComponent } from './terms-and-conditions-dialog/terms-and-conditions-dialog.component';
+import {SocialSharingService} from '../social-sharing/social-sharing.service';
 
 @NgModule({
 	imports: [
@@ -116,7 +117,8 @@ import { TermsAndConditionsDialogComponent } from './terms-and-conditions-dialog
 	providers: [
 		DialogsService,
 		TwilioServicesService,
-		ProjectSubmissionService
+		ProjectSubmissionService,
+		SocialSharingService
 	],
 	entryComponents: [
 		SignupComponentDialogComponent, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent,

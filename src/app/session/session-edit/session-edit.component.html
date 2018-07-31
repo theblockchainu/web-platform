@@ -10,6 +10,10 @@
 				<mat-icon>menu</mat-icon>
 			</button>
 			<div class="pull-right" *ngIf="step!=1 && step !=6 && step !=12">
+				<button mat-button (click)="openSession()">
+					<span *ngIf="!busyPreview">Preview</span>
+					<ngx-loading [show]="busyPreview"></ngx-loading>
+				</button>
 				<button mat-button *ngIf="session.controls['status'].value !== 'active'" (click)="saveandexit()">
 					<span *ngIf="!busySave">Save &amp; Exit</span>
 					<span *ngIf="busySave"> </span>
@@ -19,10 +23,6 @@
 					<span>
 						Exit
 					</span>
-				</button>
-				<button mat-button (click)="openSession()">
-					<span *ngIf="!busyPreview">Preview</span>
-					<ngx-loading [show]="busyPreview"></ngx-loading>
 				</button>
 			</div>
 			<div class="pull-left">

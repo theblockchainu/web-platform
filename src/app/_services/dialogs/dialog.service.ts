@@ -66,7 +66,8 @@ export class DialogsService {
         let dialogRef: MatDialogRef<SignupComponentDialogComponent>;
 
         dialogRef = this.dialog.open(SignupComponentDialogComponent, {
-            panelClass: 'responsive-dialog'
+            panelClass: 'responsive-dialog',
+			width: '30vw'
         });
 
         return dialogRef.afterClosed();
