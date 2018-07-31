@@ -78,26 +78,28 @@ export class IndexComponent implements OnInit {
 		public _profileService: ProfileService,
 		public _searchService: SearchService
 	) {
-		this.userId = this._cookieUtilsService.getValue('userId');
-		authenticationService.isLoggedIn().subscribe((res) => {
-			this.loggedIn = res;
-			if (this.loggedIn) {
-				this._router.navigate(['home', 'homefeed']);
-			}
-		});
-		_activatedRoute.url.subscribe(res => {
-			if (res[0] && res[0].path === 'login') {
-				if (!this.loggedIn) {
-					this.dialogsService.openLogin().subscribe();
-				}
-			}
-		});
 	}
 	ngOnInit() {
 		this.loadingHome = false;
 		this.notifyForm = this._fb.group(
 			{ email: ['', [Validators.required, Validators.email]] }
 		);
+
+		this.userId = this._cookieUtilsService.getValue('userId');
+		this.authenticationService.isLoggedIn().first().subscribe((res) => {
+			this.loggedIn = res;
+			if (this.loggedIn) {
+				this._router.navigate(['home', 'homefeed']);
+			}
+		});
+		this._activatedRoute.url.first().subscribe(res => {
+			if (res[0] && res[0].path === 'login') {
+				if (!this.loggedIn) {
+					this.dialogsService.openLogin().subscribe();
+				}
+			}
+		});
+
 		this.setTags();
 		this.fetchClasses();
 		this.fetchExperiences();
@@ -474,7 +476,13 @@ export class IndexComponent implements OnInit {
 	}
 
 	public openLogin() {
-		this.dialogsService.openLogin().subscribe();
+		this.dialogsService.openLogin().subscribe(
+			res => {
+				if (res) {
+					this._router.navigate(['home', 'homefeed']);
+				}
+			}
+		);
 	}
 
 	public onSearchOptionClicked(option) {
@@ -482,29 +490,35 @@ export class IndexComponent implements OnInit {
 		this.myControl.reset();
 	}
 	public createExperience() {
-		this.dialogsService.openLogin().subscribe(result => {
-			if (result) {
-				this._router.navigateByUrl('/console/teaching/experiences');
-			}
-		});
+		this._router.navigate(['digest', 'experiences']);
+
+		// this.dialogsService.openLogin().subscribe(result => {
+		// 	if (result) {
+		// 		this._router.navigateByUrl('/console/teaching/experiences');
+		// 	}
+		// });
 
 	}
 
 	public createClass() {
-		this.dialogsService.openLogin().subscribe(result => {
-			if (result) {
-				this._router.navigateByUrl('/console/teaching/classes');
-			}
-		});
+		this._router.navigate(['digest', 'classes']);
+
+		// this.dialogsService.openLogin().subscribe(result => {
+		// 	if (result) {
+		// 		this._router.navigateByUrl('/console/teaching/classes');
+		// 	}
+		// });
 
 	}
 
 	public createSession() {
-		this.dialogsService.openLogin().subscribe(result => {
-			if (result) {
-				this._router.navigateByUrl('/console/teaching/sessions');
-			}
-		});
+		this._router.navigate(['digest', 'peers']);
+
+		// this.dialogsService.openLogin().subscribe(result => {
+		// 	if (result) {
+		// 		this._router.navigateByUrl('/console/teaching/sessions');
+		// 	}
+		// });
 	}
 
 	public gotoCredit() {
