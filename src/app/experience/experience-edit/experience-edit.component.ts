@@ -278,11 +278,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			nARules: this._fb.array([
 				this._fb.group({
 					value: ['engagement', Validators.required],
-					gyan: ['', [Validators.required, Validators.max(100), Validators.min(1), this.changeControl(1)]]
+					gyan: [50, [Validators.required, Validators.max(100), Validators.min(1), this.changeControl(1)]]
 				}),
 				this._fb.group({
 					value: ['commitment', Validators.required],
-					gyan: ['', [Validators.required, Validators.max(100), Validators.min(1)]]
+					gyan: [50, [Validators.required, Validators.max(100), Validators.min(1)]]
 				})
 			])
 		});
@@ -769,9 +769,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		}
 
 		// Currency, Amount, Cancellation Policy
-		this.experience.controls.price.patchValue(res.price);
 		if (res.price === 0) {
 			this.freeExperience = true;
+			this.experience.controls.price.patchValue(0);
+		} else {
+			this.experience.controls.price.patchValue(res.price);
 		}
 		if (res.currency) { this.experience.controls.currency.patchValue(res.currency); }
 		if (res.cancellationPolicy) { this.experience.controls.cancellationPolicy.setValue(res.cancellationPolicy); }

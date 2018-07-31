@@ -77,7 +77,7 @@ export class AppComponent implements OnInit {
 			|| /^\/session\/.*\/edit\/./.test(location.url)
 			|| /^\/digest\/.*./.test(location.url)
 			|| /^\/error/.test(location.url));
-		if (this.router.url === '/') {
+		if (this.router.url === '/' || this.router.url === '/login') {
 			this.showHeader = false;
 		}
 	}

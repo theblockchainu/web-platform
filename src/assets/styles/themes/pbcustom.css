@@ -2041,6 +2041,10 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	.show-small .headerButtons {
 		flex: 1;
 	}
+	
+	.show-small-inline-flex {
+		display: inline-flex;
+	}
 
 	.search-form .mat-input-container {
 		display: inline-block;

@@ -35,7 +35,7 @@ export class AppHeaderComponent implements OnInit {
 	public profile: any;
 	public userType: string;
 	public myControl = new FormControl('');
-	@ViewChild('notificationsButton') notificationsButton;
+	@ViewChild('messagesButton') messagesButton;
 	@ViewChild('searchInputBar') searchInputBar;
 	@ViewChild('messageNotification') messageNotification;
 	public userId;
@@ -245,33 +245,33 @@ export class AppHeaderComponent implements OnInit {
 		this.tempJoinedRooms = this.joinedRooms;
 	}
 
-	public openNotificationsDialog(): void {
-		const dialogRef = this.dialog.open(AppNotificationDialogComponent, {
-			width: '350px',
-			height: '70vh',
-			panelClass: 'responsive-fixed-position',
-			data: {
-			},
-			disableClose: false,
-			position: {
-				top: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().bottom + 8 + 'px',
-				left: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().left - 220 + 'px'
-			}
-		});
+	// public openNotificationsDialog(): void {
+	// 	const dialogRef = this.dialog.open(AppNotificationDialogComponent, {
+	// 		width: '350px',
+	// 		height: '70vh',
+	// 		panelClass: 'responsive-fixed-position',
+	// 		data: {
+	// 		},
+	// 		disableClose: false,
+	// 		position: {
+	// 			top: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().bottom + 8 + 'px',
+	// 			left: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().left - 220 + 'px'
+	// 		}
+	// 	});
 
-		dialogRef.afterClosed().subscribe(result => {
-			if (this.makeOldNotification.length > 0) {
-				this.makeOldNotification.forEach(notifItem => {
-					this._notificationService.updateNotification(this.userId, notifItem, (err, patchResult) => {
-						if (err) {
-							console.log(err);
-						}
-					});
-				});
-				this.hasNewNotification = false;
-			}
-		});
-	}
+	// 	dialogRef.afterClosed().subscribe(result => {
+	// 		if (this.makeOldNotification.length > 0) {
+	// 			this.makeOldNotification.forEach(notifItem => {
+	// 				this._notificationService.updateNotification(this.userId, notifItem, (err, patchResult) => {
+	// 					if (err) {
+	// 						console.log(err);
+	// 					}
+	// 				});
+	// 			});
+	// 			this.hasNewNotification = false;
+	// 		}
+	// 	});
+	// }
 
 	public openMessagesDialog(): void {
 		const dialogRef = this.dialog.open(InboxDialogComponent, {
@@ -282,8 +282,8 @@ export class AppHeaderComponent implements OnInit {
 			},
 			disableClose: false,
 			position: {
-				top: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().bottom + 8 + 'px',
-				left: this.notificationsButton._elementRef.nativeElement.getBoundingClientRect().left - 220 + 'px'
+				top: this.messagesButton._elementRef.nativeElement.getBoundingClientRect().bottom + 8 + 'px',
+				left: this.messagesButton._elementRef.nativeElement.getBoundingClientRect().left - 220 + 'px'
 			}
 		});
 
@@ -321,5 +321,89 @@ export class AppHeaderComponent implements OnInit {
 		if (this.profile && this.profile.peer && this.profile.peer.length > 0) {
 			this.router.navigate(['profile', this.profile.peer[0].id, 'story']);
 		}
+	}
+
+	public createExperience() {
+		this.isLoggedIn.subscribe(res => {
+			if (res) {
+				this.router.navigateByUrl('/console/teaching/experiences');
+			} else {
+				this.dialogsService.openLogin().subscribe(result => {
+					if (result) {
+						this.router.navigateByUrl('/console/teaching/experiences');
+					}
+				});
+			}
+		});
+	}
+
+	public createClass() {
+		this.isLoggedIn.subscribe(res => {
+			if (res) {
+				this.router.navigateByUrl('/console/teaching/classes');
+			} else {
+				this.dialogsService.openLogin().subscribe(result => {
+					if (result) {
+						this.router.navigateByUrl('/console/teaching/classes');
+					}
+				});
+			}
+		});
+	}
+
+	public createSession() {
+		this.isLoggedIn.subscribe(res => {
+			if (res) {
+				this.router.navigateByUrl('/console/teaching/sessions');
+			} else {
+				this.dialogsService.openLogin().subscribe(result => {
+					if (result) {
+						this.router.navigateByUrl('/console/teaching/sessions');
+					}
+				});
+			}
+		});
+	}
+
+	public gotoCredit() {
+		this.isLoggedIn.subscribe(res => {
+			if (res) {
+				this.router.navigateByUrl('/home');
+			} else {
+				this.dialogsService.openLogin().subscribe(result => {
+					if (result) {
+						this.router.navigateByUrl('/home');
+					}
+				});
+			}
+		});
+	}
+
+	public gotoBookmarks() {
+		this.isLoggedIn.subscribe(res => {
+			if (res) {
+				this.router.navigateByUrl('/console/learning/bookmarks');
+			} else {
+				this.dialogsService.openLogin().subscribe(result => {
+					if (result) {
+						this.router.navigateByUrl('/console/learning/bookmarks');
+					}
+				});
+			}
+		});
+	}
+
+	public gotoConsoleLearning() {
+		this.isLoggedIn.subscribe(res => {
+			if (res) {
+				this.router.navigateByUrl('/console/learning/all');
+			} else {
+				this.dialogsService.openLogin().subscribe(result => {
+					if (result) {
+						this.router.navigateByUrl('/console/learning/all');
+					}
+				});
+			}
+		});
 	}
 }

@@ -10,6 +10,9 @@
 				<mat-icon>menu</mat-icon>
 			</button>
 			<div class="pull-right" *ngIf="step!=1 && step !=6 && step !=15 && step !=17">
+				<mat-chip>
+					{{experience.controls['status'].value | titlecase}}
+				</mat-chip>
 				<button mat-button *ngIf="experience.controls['status'].value !== 'active'" (click)="saveandexit()">
 					<span *ngIf="!busySave">Save &amp; Exit</span>
 					<ngx-loading [show]="busySave"></ngx-loading>
@@ -39,7 +42,7 @@
 				</mat-chip-list>
 			</div>
 		</div>
-		
+
 	</mat-toolbar>
 	<mat-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: hidden; background: #ffffff;">
 		<mat-sidenav #snav [mode]="mobileQuery.matches === true ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" [opened]="!mobileQuery.matches">
@@ -477,7 +480,7 @@
 								</div>
 								<div class="row">
 									<div class="col-md-8">
-										<div class="stepHeader">Upload Video</div>
+										<div class="stepHeader">Upload a video for cover</div>
 										<app-upload-file (uploaded)="addVideoUrl($event)"></app-upload-file>
 										<h5>Max File Size
 											<b>1000MB</b>
@@ -551,9 +554,9 @@
 										</span>
 									</mat-radio-group>
 								</div>
-								<div class="row padding-top-10">
+								<div class="row padding-top-30">
 									<div class="col-xs-12 subtitle">
-									
+
 									</div>
 								</div>
 								<span *ngIf="assessmentForm.controls['rules']['controls'].length>0">
@@ -882,7 +885,7 @@
 									Connect existing account
 								</span>
 							</div>
-							<div class="row table" *ngIf="!payoutLoading">
+							<div class="row  padding-top-40 table" *ngIf="!payoutLoading">
 								<div class="col-md-10">
 									<div class="row table-header">
 										<div class="col-md-3 ">

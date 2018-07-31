@@ -1,22 +1,22 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {ProfileService} from '../../_services/profile/profile.service';
-import {ScholarshipService} from '../../_services/scholarship/scholarship.service';
-import {WalletService} from "../../_services/wallet/wallet.service";
+import { Observable } from 'rxjs/Observable';
+import { ProfileService } from '../../_services/profile/profile.service';
+import { ScholarshipService } from '../../_services/scholarship/scholarship.service';
+import { WalletService } from '../../_services/wallet/wallet.service';
 
 @Pipe({
-  name: 'karmaBalance'
+	name: 'karmaBalance'
 })
 export class KarmaBalancePipe implements PipeTransform {
-	
+
 	constructor(
 		private _profileService: ProfileService,
 		private _scholarshipService: ScholarshipService,
 		private _walletService: WalletService
 	) {
-	
+
 	}
-	
+
 	transform(userId: string, forNode: string, convertTo = 'KARMA'): any {
 		if (!userId || userId.length === 0) {
 			// create observable
