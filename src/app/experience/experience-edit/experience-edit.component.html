@@ -9,10 +9,20 @@
 			<button *ngIf="mobileQuery.matches" class="side-nav-toggle-button" mat-icon-button (click)="snav.toggle()">
 				<mat-icon>menu</mat-icon>
 			</button>
+			<div class="pull-left">
+				<mat-chip-list>
+					<mat-chip style="margin-top: 5px;">
+						{{experience.controls['status'].value | titlecase}}
+					</mat-chip>
+					<mat-chip>
+						<i class="fab fa-ethereum"></i>&nbsp; {{totalGyan}} Gyan
+					</mat-chip>
+					<mat-chip>
+						<i class="fa fa-fire"></i>&nbsp; {{totalGyan | convertCrypto: 'GYAN' : 'KARMA' | async}} Karma
+					</mat-chip>
+				</mat-chip-list>
+			</div>
 			<div class="pull-right" *ngIf="step!=1 && step !=6 && step !=15 && step !=17">
-				<mat-chip>
-					{{experience.controls['status'].value | titlecase}}
-				</mat-chip>
 				<button mat-button *ngIf="experience.controls['status'].value !== 'active'" (click)="saveandexit()">
 					<span *ngIf="!busySave">Save &amp; Exit</span>
 					<ngx-loading [show]="busySave"></ngx-loading>
@@ -28,29 +38,17 @@
 					</span>
 				</button>
 			</div>
-			<div class="pull-left">
-				<mat-chip-list>
-					<mat-chip style="margin-top: 5px;">
-						{{experience.controls['status'].value | titlecase}}
-					</mat-chip>
-					<mat-chip>
-						<i class="fab fa-ethereum"></i>&nbsp; {{totalGyan}} Gyan
-					</mat-chip>
-					<mat-chip>
-						<i class="fa fa-fire"></i>&nbsp; {{totalGyan | convertCrypto: 'GYAN' : 'KARMA' | async}} Karma
-					</mat-chip>
-				</mat-chip-list>
-			</div>
 		</div>
 
 	</mat-toolbar>
 	<mat-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: hidden; background: #ffffff;">
-		<mat-sidenav #snav [mode]="mobileQuery.matches === true ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" [opened]="!mobileQuery.matches">
+		<mat-sidenav class="scroll-box" #snav [mode]="mobileQuery.matches === true ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+		 [opened]="!mobileQuery.matches">
 			<app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
 		</mat-sidenav>
 		<!-- Page Content -->
 		<mat-sidenav-content>
-			<div class="navbar-page-content">
+			<div class="navbar-page-content scroll-box">
 				<!--Disclaimer-->
 				<div class="onboarding step-1" [hidden]="step!=1">
 					<div class="row">

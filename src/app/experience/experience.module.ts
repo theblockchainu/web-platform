@@ -24,8 +24,7 @@ import { DataSharingService } from '../_services/data-sharing-service/data-shari
         ExperienceContentProjectComponent,
         ExperienceContentVideoComponent,
         ExperienceContentInpersonComponent,
-        AddLocationDialogComponent
-    ],
+        AddLocationDialogComponent],
     providers: [DataSharingService],
     bootstrap: [],
     entryComponents: [ExperienceContentProjectComponent,

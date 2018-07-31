@@ -1,21 +1,54 @@
 <!-- header start here -->
 <header>
 	<nav class="navbar navbar-expand-md navbar-dark">
-		<a class="navbar-brand" href="#"><img src="/assets/images/peerbuds-logo.png" alt="peerbuds-logo"></a>
+		<a class="navbar-brand" href="#">
+			<img src="/assets/images/peerbuds-logo.png" alt="peerbuds-logo">
+		</a>
 		<span class="example-spacer"></span>
 		<span class="options" style="position: relative; top: -15px;">
-			<button mat-button class="headerButtons mat-button hide-small" [routerLink]="['/sign-up']">
+			<button mat-button class="headerButtons mat-button hide-small" [matMenuTriggerFor]="headerTeachMenu">
 				Become a teacher
 			</button>
 			<!--<button mat-button class="headerButtons mat-button hide-small" [routerLink]="['/whitepaper']">
 				White Paper
 			</button>-->
-			<button mat-button class="headerButtons mat-button" (click)="openLogin()">
+			<button mat-button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)" (click)="openLogin()">
 				Log in
 			</button>
-			<button mat-button class="headerButtons mat-button" [routerLink]="['/sign-up']">
+			<button mat-button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)" [routerLink]="['/sign-up']">
 				Sign up
 			</button>
+			<span *ngIf="(isLoggedIn | async) && profile">
+				<a ddress mat-button disableRipple="true" class="clickable" [matMenuTriggerFor]="headerUserMenu">
+					<img *ngIf="!profile.picture_url" style="margin:0px" src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb">
+					<img *ngIf="profile.picture_url" style="margin:0px" src="{{envVariable.apiUrl + profile.picture_url + '/100'}}" alt="A" class="circle-thumb">
+				</a>
+				<mat-menu #headerUserMenu [overlapTrigger]="false">
+					<button mat-menu-item [routerLink]="['/profile', userId]">
+						<i class="fas fa-user lighterText"></i>&nbsp;&nbsp;&nbsp; {{profile.first_name | titlecase}} {{profile.last_name | titlecase}}
+					</button>
+					<button mat-menu-item *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].isAdmin" [routerLink]="['/console/admin']">
+						<i class="fas fa-lock lighterText"></i>&nbsp;&nbsp; Admin
+					</button>
+					<button mat-menu-item [routerLink]="['/console/profile/account']">
+						<i class="fas fa-pencil-alt lighterText"></i>&nbsp;&nbsp; Account Settings
+					</button>
+					<button mat-menu-item (click)="authService.logout()">
+						<i class="fas fa-sign-out-alt lighterText"></i>&nbsp;&nbsp; Logout
+					</button>
+				</mat-menu>
+			</span>
+			<mat-menu #headerTeachMenu [overlapTrigger]="false">
+				<button mat-menu-item [routerLink]="['/digest','experiences']">
+					Create Experience
+				</button>
+				<button mat-menu-item [routerLink]="['/digest','classes']">
+					Create Class
+				</button>
+				<button mat-menu-item [routerLink]="['/digest','peers']">
+					Create Session
+				</button>
+			</mat-menu>
 		</span>
 	</nav>
 </header>
@@ -27,8 +60,8 @@
 			<h1>Host a Class on Peerbuds</h1>
 			<h2>Earn money giving people the best online learning experience.</h2>
 			<div class="action-button">
-				<a href="#" class="btn btn-white btn-lg mr-2">Continue</a>
-				<a href="#" class="btn btn-outline-light btn-lg">Learn More</a>
+				<a (click)="createClass()" class="btn btn-white btn-lg mr-2 clickable">Continue</a>
+				<a href="#" class="btn btn-outline-light btn-lg clickable">Learn More</a>
 			</div>
 		</div>
 	</div>
@@ -39,7 +72,11 @@
 		<div class="dark-white-overlay visible-xs visible-sm"></div>
 		<div class="content-center text-center">
 			<h2 class="section-title">What are Peerbuds Classes?</h2>
-			<p class="section-para">Peerbuds Classes are interactive online classes designed and led by peers from our global community. While not everyone can attend our in-person learning <b>experiences</b>, they should have access to the same experience online. Classes go beyond creating a typical video course by allowing you to provide interactive live sessions for the cohort your teaching. They also consist of projects, videos, assignments, and a place for your cohort to discuss and stay connected on the Peerbuds Platform.
+			<p class="section-para">Peerbuds Classes are interactive online classes designed and led by peers from our global community. While not everyone
+				can attend our in-person learning
+				<b>experiences</b>, they should have access to the same experience online. Classes go beyond creating a typical video course
+				by allowing you to provide interactive live sessions for the cohort your teaching. They also consist of projects, videos,
+				assignments, and a place for your cohort to discuss and stay connected on the Peerbuds Platform.
 			</p>
 		</div>
 	</div>
@@ -52,7 +89,8 @@
 				<div class="d-table">
 					<div class="d-table-cell align-middle content ">
 						<h2 class="section-title">Share your knowledge with the world</h2>
-						<p class="section-para">Everyone has something to teach and learn. You have the opportunity and chance to share your expertise, skills, and ideas with peers who are looking to learn something new. We’ll help you set up an online class in no time.</p>
+						<p class="section-para">Everyone has something to teach and learn. You have the opportunity and chance to share your expertise, skills, and
+							ideas with peers who are looking to learn something new. We’ll help you set up an online class in no time.</p>
 					</div>
 				</div>
 			</div>
@@ -89,7 +127,13 @@
 				<div class="owl-carousel quotes" id="meet-peers">
 					<div class="background-img1">
 						<div class="carousel-quote dark-gray-gradient-overlay-bottom text-center white-text">
-							<div class="stars"><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i></div>
+							<div class="stars">
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+							</div>
 							<div class="quote">"Some guests are now writing and sending postcards to penpals around the world, including me!"</div>
 							<div class="author">
 								<span class="name">Jena</span>
@@ -112,7 +156,8 @@
 				<div class="d-table">
 					<div class="d-table-cell align-middle content ">
 						<h2 class="section-title">Meet like-minded peers</h2>
-						<p class="section-para">Connect with a community of peers from around the world who share your passion for learning and teaching others. There’s a good chance you’ll make some new friends and share some new ideas to collaborate on.</p>
+						<p class="section-para">Connect with a community of peers from around the world who share your passion for learning and teaching others. There’s
+							a good chance you’ll make some new friends and share some new ideas to collaborate on.</p>
 					</div>
 				</div>
 			</div>
@@ -128,12 +173,15 @@
 					<div class="d-table">
 						<div class="d-table-cell align-middle content ">
 							<h2 class="section-title">Host on your terms</h2>
-							<p class="section-para">Create a schedule that’s best for you, whether you host daily, weekly, or monthly. Choose your price and group size, and manage all the details on the go with a convenient mobile app</p>
+							<p class="section-para">Create a schedule that’s best for you, whether you host daily, weekly, or monthly. Choose your price and group size,
+								and manage all the details on the go with a convenient mobile app</p>
 						</div>
 					</div>
 				</div>
 				<div class="col-xs-12 col-md-7">
-					<div class="background-img"><img src="/assets/images/your-calendar.png" alt="your-calendar" class="img-responsive"></div>
+					<div class="background-img">
+						<img src="/assets/images/your-calendar.png" alt="your-calendar" class="img-responsive">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -145,13 +193,16 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12 col-md-7">
-					<div class="background-img"><img src="/assets/images/horseback.png" alt="horseback" class="img-responsive"></div>
+					<div class="background-img">
+						<img src="/assets/images/horseback.png" alt="horseback" class="img-responsive">
+					</div>
 				</div>
 				<div class="col-xs-12 col-md-5">
 					<div class="d-table">
 						<div class="d-table-cell align-middle content ">
 							<h2 class="section-title">Start a business with no upfront costs</h2>
-							<p class="section-para">We give you your own page on Peerbuds that peers can use to sign up for your class. Peerbuds handles payment processing, and provides 24-hour customer service.
+							<p class="section-para">We give you your own page on Peerbuds that peers can use to sign up for your class. Peerbuds handles payment processing,
+								and provides 24-hour customer service.
 							</p>
 						</div>
 					</div>
@@ -164,7 +215,10 @@
 <section class="home-kind-people mt-4">
 	<div class="content-center text-center">
 		<h2 class="section-title">What kind of people host?</h2>
-		<p class="section-para pb-3">Hosts are techies, multilingual speakers, musicians, dancers, chefs, and anyone else who have something to teach through interactive online sessions and projects that give their fellow peers the chance to learn beyond a traditional classroom. They make everyone feel welcome, and allow everyone to let go of their anxieties of learning something new, and connecting with others.
+		<p class="section-para pb-3">Hosts are techies, multilingual speakers, musicians, dancers, chefs, and anyone else who have something to teach through
+			interactive online sessions and projects that give their fellow peers the chance to learn beyond a traditional classroom.
+			They make everyone feel welcome, and allow everyone to let go of their anxieties of learning something new, and connecting
+			with others.
 		</p>
 	</div>
 	<div class="container">
@@ -173,7 +227,8 @@
 				<div class="background-img1">
 					<div class="thumb-content dark-gray-gradient-overlay-bottom text-center">
 						<h3 class="heading">DJ Jigüe</h3>
-						<p>DJ Jigüe is dedicated to sharing his passion for Afro-Cuban music. Some of the guests he’s exposed to Cuba’s complex musical history even went to see him play a show in Austin, Texas.</p>
+						<p>DJ Jigüe is dedicated to sharing his passion for Afro-Cuban music. Some of the guests he’s exposed to Cuba’s complex
+							musical history even went to see him play a show in Austin, Texas.</p>
 					</div>
 				</div>
 			</div>
@@ -181,7 +236,8 @@
 				<div class="background-img2">
 					<div class="thumb-content dark-gray-gradient-overlay-bottom text-center">
 						<h3 class="heading">Toby</h3>
-						<p>Toby has been hosting Airbnb guests in her San Francisco home for years.  Now she’s opened up her art studio to teach painting techniques to travelers and locals alike.</p>
+						<p>Toby has been hosting Airbnb guests in her San Francisco home for years. Now she’s opened up her art studio to teach
+							painting techniques to travelers and locals alike.</p>
 					</div>
 				</div>
 			</div>
@@ -189,7 +245,8 @@
 				<div class="background-img3">
 					<div class="thumb-content dark-gray-gradient-overlay-bottom text-center">
 						<h3 class="heading">Mio</h3>
-						<p>After studying sewing at an art college, Mio created a kimono dressing ceremony to simplify the art of kimono wearing. Now she shares her personalized ceremony with guests, and sells her creations online.</p>
+						<p>After studying sewing at an art college, Mio created a kimono dressing ceremony to simplify the art of kimono wearing.
+							Now she shares her personalized ceremony with guests, and sells her creations online.</p>
 					</div>
 				</div>
 			</div>
@@ -248,7 +305,10 @@
 		</section>
 		<section class="faq">
 			<h3 class="question">Do I need a business license?</h3>
-			<p>Depending on activities involved, certain experiences may require a business license. Make sure to check local laws in your area to determine which licenses may be required for your experience, especially if there is food, alcohol, or transportation involved.</p>
+			<p>Depending on activities involved, certain experiences may require a business license. Make sure to check local laws in
+				your area to determine which licenses may be required for your experience, especially if there is food, alcohol, or transportation
+				involved.
+			</p>
 		</section>
 	</div>
 </section>
