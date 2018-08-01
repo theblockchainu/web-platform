@@ -101,6 +101,10 @@ export class ClassIntroComponent implements OnInit {
 	public openLogin() {
 		this.dialogsService.openLogin().subscribe();
 	}
+	
+	public openSignup() {
+		this.dialogsService.openSignup('/console/teaching/classes').subscribe();
+	}
 
 	/**
 	* createClass
@@ -109,12 +113,13 @@ export class ClassIntroComponent implements OnInit {
 		if (this.userId && this.userId.length > 5 && this.accountVerified) {
 			this.submitClass();
 		} else if (!this.userId || this.userId.length < 5) {
-			this.dialogsService.openLogin().subscribe(res => {
+			/*this.dialogsService.openLogin().subscribe(res => {
 				if (res) {
 					this.fetchData();
 					this.createClass();
 				}
-			});
+			});*/
+			this.openSignup();
 		} else if (!this.accountVerified) {
 			this.matSnackBar.open('Account not yet verified. Please wait while your account is being verified', 'Close', {
 				duration: 3000
@@ -128,6 +133,14 @@ export class ClassIntroComponent implements OnInit {
 		this._collectionService.postCollection(this.userId, 'class').subscribe((classObject: any) => {
 			this.router.navigate(['class', classObject.id, 'edit', 1]);
 		});
+	}
+	
+	public goToHome() {
+		if (this.isLoggedIn) {
+			this.router.navigate(['home', 'homefeed']);
+		} else {
+			this.router.navigate(['/']);
+		}
 	}
 
 }

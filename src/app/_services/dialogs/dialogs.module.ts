@@ -66,6 +66,8 @@ import { SelectFieldDialogComponent } from './select-field-dialog/select-field-d
 import { CertificateVerificationComponent } from './certificate-verification/certificate-verification.component';
 import { CollectionStandardsDialogComponent } from './collection-standards-dialog/collection-standards-dialog.component';
 import { TermsAndConditionsDialogComponent } from './terms-and-conditions-dialog/terms-and-conditions-dialog.component';
+import {SocialSharingService} from '../social-sharing/social-sharing.service';
+import {OnboardingDialogComponent} from './onboarding-dialog/onboarding-dialog.component';
 
 @NgModule({
 	imports: [
@@ -111,12 +113,14 @@ import { TermsAndConditionsDialogComponent } from './terms-and-conditions-dialog
 		SelectFieldDialogComponent,
 		CertificateVerificationComponent,
 		CollectionStandardsDialogComponent,
-		TermsAndConditionsDialogComponent
+		TermsAndConditionsDialogComponent,
+		OnboardingDialogComponent
 	],
 	providers: [
 		DialogsService,
 		TwilioServicesService,
-		ProjectSubmissionService
+		ProjectSubmissionService,
+		SocialSharingService
 	],
 	entryComponents: [
 		SignupComponentDialogComponent, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent,
@@ -133,7 +137,7 @@ import { TermsAndConditionsDialogComponent } from './terms-and-conditions-dialog
 		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent, RequestCommunityDialogComponent,
 		ScholarshipDialogComponent, GenerateKnowledgeStoryComponent, RequestKnowledgeStoryComponent, ConfirmPasswordDialogComponent,
 		AddViewerDialogComponent, GyanPromptComponent, AddCommunityDialogComponent, CreateAccreditationDialogComponent, SelectFieldDialogComponent,
-		CertificateVerificationComponent, TermsAndConditionsDialogComponent, CollectionStandardsDialogComponent
+		CertificateVerificationComponent, TermsAndConditionsDialogComponent, CollectionStandardsDialogComponent, OnboardingDialogComponent
 	],
 })
 export class DialogsModule { }

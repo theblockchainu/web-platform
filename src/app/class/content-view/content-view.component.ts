@@ -268,8 +268,11 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 					{
 						panelClass: 'responsive-dialog',
 						data: {
-							itenaryForm: this.itenaryForm, index: index, isEdit: isEdit,
-							collectionStartDate: this.collectionStartDate, collectionEndDate: this.collectionEndDate
+							itenaryForm: this.itenaryForm,
+							index: index,
+							isEdit: isEdit,
+							collectionStartDate: this.collectionStartDate,
+							collectionEndDate: this.collectionEndDate
 						}, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh'
 					});
 				break;

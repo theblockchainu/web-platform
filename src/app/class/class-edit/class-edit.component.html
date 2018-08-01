@@ -22,7 +22,7 @@
 					</mat-chip>
 				</mat-chip-list>
 			</div>
-			<div class="pull-right" *ngIf="step!=1 && step !=6 && step !=15 && step !=17">
+			<div class="pull-right" *ngIf="step!=1 && step !=6 && step !=15">
 				<button mat-button *ngIf="class.controls['status'].value !== 'active'" (click)="saveandexit()">
 					<span *ngIf="!busySave">Save &amp; Exit</span>
 					<ngx-loading [show]="busySave"></ngx-loading>
@@ -277,7 +277,7 @@
 								<button mat-raised-button type="button" (click)="back()" color="primary" class="mat-border-button">
 									Back
 								</button>
-								<button mat-raised-button (click)="next()" color="primary" class="pull-right">
+								<button mat-button (click)="next()" color="primary" class="pull-right mat-border-button">
 									Next
 								</button>
 							</div>
@@ -967,6 +967,9 @@
 												</form>
 
 											</ng-container>
+											<div *ngIf="!addingAccount && (!payoutAccounts || payoutAccounts.length === 0)" class="lightText">
+												You have no payout accounts added yet
+											</div>
 										</div>
 									</div>
 								</div>
@@ -979,7 +982,7 @@
 							<!-- <form [formGroup]="paymentInfo "> -->
 							<div style="margin-top:10px; " *ngIf="!payoutLoading">
 								<!--<button mat-button>PayTM</button> &emsp;-->
-								<button mat-button class="mat-border-button pull-right">
+								<button mat-button class="mat-border-button">
 									<a [href]="connectPaymentUrl">
 										<img src="../../../assets/images/stripe.png" style="width: 50px;" />
 									</a>

@@ -1,425 +1,182 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <title>Peerbuds Client</title>
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <base href="/">
-
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-
-
-    <!-- base url -->
-    <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
-    <!-- bootstrap css -->
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-    <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    <style>
-         .signup-box {
-            background-color: #fff;
-            padding: 20px 20px;
-            width: 500px;
-        }
-
-    
-        .signup-box label {
-            font-weight: normal;
-            color: #666;
-            font-size: 14px;
-        }
-
-        .login-section {
-            margin: 20px 0;
-        }
-
-        .form-control {
-            height: 35px;
-        }
-
-        .form-control:focus {
-            outline: none;
-            outline-color: transparent;
-        }
-
-        .form-control[readonly] {
-            background-color: inherit!important;
-        }
-
-        .btn {
-            height: 40px;
-            width: 200px;
-            padding: 9px 20px;
-            background-color: #FF5B5F;
-        }
-
-        .btn:focus {
-            outline: none;
-            box-shadow: none;
-        }
-
-        .btn-primary {
-            border-color: #fff;
-            color: #fff;
-        }
-
-        .btn-primary:hover,
-        .btn-primary:active .btn-primary:focus,
-        .btn-primary:active:after {
-            background-color: #ff5b5f!important;
-            border-color: #ff5b5f!important;
-            color: #fff!important;
-        }
-
-        .btn-social {
-            color: #fff;
-            display: block;
-            padding: 10px 20px;
-            position: relative;
-            font-size: 15px;
-            font-weight: 500;
-            border-radius: 4px;
-            text-align: center;
-            height: 50px;
-            line-height: 29px;
-        }
-
-        .btn-social i {
-            border-right: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 13px;
-            left: 16px;
-            padding-right: 7px;
-            position: absolute;
-            top: 15px;
-        }
-
-        .btn-social i.fa-google,
-        .btn-social i.fa-facebook,
-        .btn-social i.fa-envelope {
-            border-right-color: #999;
-        }
-
-        .btn-ggl,
-        .btn-fb
-        {
-            color: #666;
-            background-color: #fff;
-            border: 1px solid #d3d3d3;
-        }
-
-        .btn-email {
-            background-color: #FF5B5F;
-            color: #fff!important;
-        }
-
-        .btn-ggl:hover {
-            background-color: #dd3723;
-        }
-
-        .btn-email:hover {
-            background-color: #FF5B5F;
-        }
-
-        .btn-fb:hover{
-            background-color: #324B80;
-        }
-
-        .btn-fb:active,
-        .btn-fb:focus,
-        .btn-fb:hover,
-        .btn-ggl:active,
-        .btn-ggl:focus,
-        .btn-ggl:hover,
-        .btn-email:active,
-        .btn-email:focus,
-        .btn-email:hover {
-            color: #fff!important;
-            text-decoration: none;
-            border-color: transparent;
-        }
-
-        .btn-email:hover i {
-            border-right-color: #ccc;
-        }
-
-        .btn-link {
-            color: #33bd9e;
-        }
-        .btn-link:hover{
-            color: #1dad8d;
-        }
-
-        .or-seperator-vertical {
-            border-bottom: 1px solid rgba(199, 199, 199, 0.5);
-            content: "";
-            display: inline-block;
-            left: 0;
-            position: absolute;
-            top: 17px;
-            width: 100%;
-        }
-
-        .round-or-text {
-            border-radius: 24px;
-            color: #fff;
-            display: inline-block;
-            height: 30px;
-            line-height: 30px;
-            width: 50px;
-            font-size: 20px;
-        }
-
-        .or-text-vertical {
-            background-color: #fff;
-            color: rgba(74, 74, 74, 0.5);
-            position: relative;
-            font-size: 13px;
-        }
-
-        .position-relative {
-            position: relative;
-        }
-
-        .margin-bottom-20 {
-            margin-bottom: 20px;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        label.error {
-            color: #f00 !important;
-            font-size: 13px !important;
-        }
-
-        .fs-13 {
-            font-size: 13px;
-        }
-        .container{
-            width: 500px;
-            padding-right: 10px;
-            padding-left: 10px;
-        }
-        .col-md-offset-3,.col-md-6{
-            margin-left: 15%;
-            margin-right: 10%;
-        }
-
-.fa-facebook{
-    background-color: #335397;
-    color: #fff!important;
-}
-
-.fa-google{
-    background-color: #dd4a38;
-    color: #fff!important;
-}
-
-.circle-icon {
-    padding:4px;
-    border-radius: 100%;
-}
-
-    </style>
-    <script>
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-            $.validator.addMethod("check_date_of_birth", function (value, element) {
-                var day = $("#birthDay").val();
-                var month = $("#birthMonth").val();
-                var year = $("#birthYear").val();
-                var age = 18;
-                var mydate = new Date();
-                var mydate2 = mydate;
-                mydate.setFullYear(year, month - 1, day);
-                var currdate = new Date();
-                currdate.setFullYear(currdate.getFullYear() - age);
-                return currdate > mydate2;
-            }, "You must be at least 18 years of age.");
-            $("#signupForm").validate({
-                rules: {
-                    first_name: "required",
-                    last_name: "required",
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    password: "required",
-                    birthMonth: "required",
-                    birthDay: "required",
-                    birthYear: {
-                        required: true,
-                        check_date_of_birth: true
-                    }
-                },
-                messages: {
-                    first_name: "Please enter your first name",
-                    last_name: "Please enter your last name",
-                    email: {
-                        required: "Please enter email address",
-                        email: "Please enter a valid email address"
-                    },
-                    password: "Please enter password",
-                    birthMonth: "Please select a month",
-                    birthDay: "Please select a date",
-                    birthYear: {
-                        required: "Please select a year"
-                    },
-                },
-                errorPlacement: function (error, element) {
-                    if (element.attr("name") == "first_name")
-                        error.insertAfter(".input-group-first-name");
-                    else if (element.attr("name") == "last_name")
-                        error.insertAfter(".input-group-last-name");
-                    else if (element.attr("name") == "email")
-                        error.insertAfter(".input-group-email");
-                    else if (element.attr("name") == "password")
-                        error.insertAfter(".input-group-password");
-                    else
-                        error.insertAfter(element);
-                },
-                success: function () {
-                    //$('.error').hide();
-                }
-            });
-            //Load year
-            var presentYear = new Date().getFullYear();
-            var maxYear = presentYear;
-            var period = 100;
-            for (var i = maxYear; i >= maxYear - 100; i--) {
-                $("#birthYear").append(new Option(i, i));
-            }
-            //Load MONTH
-            for (var i = 1; i <= 31; i++) {
-                var newI;
-                if (i < 10) {
-                    newI = '0' + i;
-                }
-                $("#birthDay").append(new Option(i, newI));
-            }
-        });
-        function signupEmail() {
-            $(".signupEmail").removeClass("hide");
-            $(".btnSignupEmail").addClass("hide");
-        }
-        function signup() {
-            if ($('#promoOptIn').prop('checked')) {
-                $('#promoOptIn').val(true);
-            }
-            else
-                $('#promoOptIn').val(false);
-            $('#dob').val($('#birthYear').val() + "-" + $('#birthMonth').val() + "-" + $('#birthDay').val());
-            $('#signupForm').submit();
-        }
-    </script>
-
-</head>
-
-<body>
-    <div class="login-section" id="content">
-        <div class="container">
-            <div class="col-md-6 col-md-offset-3 position-relative">
-                <div class="signup-box drop-shadow">
-                    <form id="signupForm" name="form" action="http://localhost:3000/signup?returnTo=identity-verification" method="POST">
-                        <input type="hidden" name="dob" id="dob" value="" required/>
-                        <div class="margin-bottom-20">
-                            <a class="btn-social btn-fb pi-margin-bottom-20" href="http://localhost:3000/auth/facebook?returnTo=signup-social"><i class="fa fa-facebook circle-icon"></i> Continue with Facebook</a>
-                        </div>
-                        <div class="margin-bottom-20">
-                            <a class="btn-social btn-ggl pi-margin-bottom-20" href="http://localhost:3000/auth/google?returnTo=signup-social"><i class="fa fa-google circle-icon"></i> Continue with Google</a>
-                        </div>
-                        <div class="position-relative margin-bottom-20 text-center">
-                            <div class="or-seperator-vertical"></div>
-                            <span class="round-or-text or-text-vertical">OR</span>
-                        </div>
-                        <div class="margin-bottom-20 btnSignupEmail">
-                            <a class="btn-social btn-email pi-margin-bottom-20" href="javascript:;" onclick="signupEmail()"> Continue with Email</a>
-                        </div>
-                        <div class="btn-hide text-center">Have an account already? <a href="#" class="btn-link link" style="font-size:14px;text-decoration: none;">Log In</a></div>
-
-                        <div class="signupEmail hide">
-                            <div class="margin-bottom-20 text-center">
-                                <strong>Complete your information</strong><br> Please review and provide any missing information
-                                to finish signing up.
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group input-group-first-name">
-                                    <input type="text" class="form-control" name="first_name" placeholder="First Name" />
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group input-group-last-name">
-                                    <input type="text" class="form-control" name="last_name" placeholder="Last Name" />
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group input-group-email">
-                                    <input type="text" class="form-control" name="email" placeholder="Email" />
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group input-group-password">
-                                    <input type="password" class="form-control" name="password" placeholder="Password" />
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                </div>
-                            </div>
-                            <div class="margin-bottom-20">
-                                <label><strong>Birthday</strong></label><br>
-                                <p class="fs-13">To sign up, you must be 18 or older. Other people won't see your birthday.</p>
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <select class="form-control" name="birthMonth" id="birthMonth">
-                                            <option value="" selected>Month</option>
-                                            <option value="01">January</option>
-                                            <option value="02">February</option>
-                                            <option value="03">March</option>
-                                            <option value="04">April</option>
-                                            <option value="05">May</option>
-                                            <option value="06">June</option>
-                                            <option value="07">July</option>
-                                            <option value="08">August</option>
-                                            <option value="09">September</option>
-                                            <option value="10">October</option>
-                                            <option value="11">November</option>
-                                            <option value="12">December</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <select class="form-control" name="birthDay" id="birthDay">
-                                            <option value="" selected>Day</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <select class="form-control" name="birthYear" id="birthYear">
-                                            <option value="" selected>Year</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="checkbox">
-                                <label><input type="checkbox" name="promoOptIn" id="promoOptIn"/> I'd like to receive coupons, promotions, surveys, and updates via email about Peerbuds and its partners.</label>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary" type="submit" onclick="signup()">Signup</button>
-                                <a href="/login" class="btn btn-link">Cancel</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</body>
-
-</html>
+<div class="mat-dialog-focus-trap"></div>
+<div mat-dialog-content class="dialog-container" style="padding: 20px 50px !important;">
+	<div class="row margin-top-10 margin-bottom-10">
+		<div class="col-xs-12 center margin-bottom-20" *ngIf="invite && invite.peers[0] && invite.peers[0].profiles[0]">
+			<h2>Hi {{invite.name}}, you have been invited by </h2>
+		</div>
+		<div class="col-sm-12 col-xs-1 margin-bottom-20" *ngIf="invite && invite.peers[0] && invite.peers[0].profiles[0]">
+			<mat-card>
+				<div class="row">
+					<div class="col-xs-2">
+						<img *ngIf="!invite.peers[0].profiles[0].picture_url" src="/assets/images/user-placeholder.jpg" alt="A" class="clickable circle-thumb">
+						<img *ngIf="invite.peers[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ invite.peers[0].profiles[0].picture_url + '/100'}}"
+						     class="clickable circle-thumb" alt="dp"> </div>
+					<div class="col-xs-10">
+						<div class="row">
+							<div class="col-xs-12">
+								<b>
+									{{invite.peers[0].profiles[0].first_name +' ' + invite.peers[0].profiles[0].last_name}}
+								
+								</b>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								{{invite.peers[0].profiles[0].headline}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</mat-card>
+		</div>
+		<div class="col-xs-12 center margin-bottom-20" *ngIf="invitor && invitor.profiles[0]">
+			<h2>Hi, you have been invited by </h2>
+		</div>
+		<div class="col-sm-12 col-xs-1 margin-bottom-20" *ngIf="invitor && invitor.profiles[0]">
+			<mat-card>
+				<div class="row">
+					<div class="col-xs-2">
+						<app-profile-popup [peer]="invitor" style="margin-left: 0;"></app-profile-popup>
+					</div>
+					<div class="col-xs-10">
+						<div class="row">
+							<div class="col-xs-12">
+								<b>
+									{{invitor.profiles[0].first_name +' ' + invitor.profiles[0].last_name}}
+								
+								</b>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								{{invitor.profiles[0].headline}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</mat-card>
+		</div>
+		<div class="col-sm-12 col-xs-12" [hidden]="emailRegister">
+			<div class="row">
+				<div class="col-md-12 col-xs-12">
+					<div class="row margin-bottom-20">
+					</div>
+					<div class="row margin-bottom-20">
+						<div class="col-xs-12 center">
+							<a mat-raised-button class="invert-fb btn-block" href="{{envVariable.apiUrl}}/auth/facebook?returnTo={{data.returnTo}}">
+								<span class="circle-icon1">
+									<i class="fa fa-facebook-f"></i>
+								</span>Continue with Facebook
+							</a>
+						</div>
+					</div>
+					<div class="row margin-bottom-20">
+						<div class="col-xs-12 center">
+							<a mat-raised-button class="invert-google btn-block" href="{{envVariable.apiUrl}}/auth/google?returnTo={{data.returnTo}}">
+								<span class="circle-icon2">
+									<i class="fa fa-google"></i>
+								</span>Continue with Google
+							</a>
+						</div>
+					</div>
+					<div class="row margin-bottom-20">
+						<div class="col-xs-12 center">
+							<a mat-raised-button class="invert-fb btn-block" href="{{envVariable.apiUrl}}/auth/linkedin?returnTo={{data.returnTo}}">
+								<span class="circle-icon1">
+									<i class="fab fa-linkedin-in"></i>
+								</span>Continue with LinkedIn
+							</a>
+						</div>
+					</div>
+					<div class="btn-hide position-relative text-center">
+						<div class="or-seperator-vertical"></div>
+						<span class="round-or-text or-text-vertical">or</span>
+					</div>
+					<div class="row margin-top-20 margin-bottom-20">
+						<div class="col-xs-12 center">
+							<button mat-button class="mat-border-button pb-block" color="accent" (click)="signupEmail()">
+								Continue with email
+							</button>
+						</div>
+					</div>
+					<div class="row margin-bottom-20">
+						<div class=" col-xs-10 col-xs-offset-1  margin-bottom-20 small-font btn-hide text-center">Have an account already?
+							<a class="btn-link link margin-top-10 clickable" (click)="openLogin()" style="font-size:14px;text-decoration: none;">Log in</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12 col-xs-12" [hidden]="!emailRegister">
+			<form id="signupForm" [formGroup]="signupForm" (ngSubmit)="submitForm()">
+				<div class="margin-bottom-20"> </div>
+				<div class="text-center">Sign up with
+					<a href="{{envVariable.apiUrl}}/auth/facebook?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">Facebook</a> or
+					<a href="{{envVariable.apiUrl}}/auth/google?returnTo=signup-social" class="btn-link link margin-top-10" style="font-size:14px;text-decoration: none;">
+						Google</a>
+				</div>
+				<div class="position-relative margin-bottom-20 text-center">
+					<div class="or-seperator-vertical"></div>
+					<span class="round-or-text or-text-vertical">or</span>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 col-xs-12">
+						<mat-form-field class="pb-block">
+							<input matInput formControlName="first_name" placeholder="First Name">
+						</mat-form-field>
+					</div>
+					<div class="col-sm-6 col-xs-12">
+						<mat-form-field class="pb-block">
+							<input matInput formControlName="last_name" placeholder="Last Name">
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<mat-form-field class="pb-block">
+							<input matInput formControlName="email" type="email" placeholder="Email">
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<mat-form-field class="pb-block">
+							<input matInput formControlName="password" placeholder="Enter your password" [type]="hide ? 'password' : 'text'">
+							<mat-icon class="clickable" matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+						</mat-form-field>
+					</div>
+				</div>
+				
+				<div class="row margin-bottom-20">
+					<div class="col-xs-12">
+						<mat-form-field class="pb-block">
+							<input matInput [matDatepicker]="picker2" placeholder="Select Birthdate" formControlName="birthdate" (click)="picker2.open()">
+							<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+							<mat-datepicker touchUi="true" startView="multi-year" [startAt]="startDate" disabled="false" #picker2></mat-datepicker>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="row margin-bottom-20">
+					<!--<div class="col-xs-5 col-xs-offset-1" style="text-align: center">
+						<button mat-button class="mat-border-button" color="accent" type="button" (click)="back()">Back</button>
+					</div>-->
+					<div class="col-xs-12" style="text-align: center">
+						<button mat-button class="mat-border-button" color="primary" type="submit" [disabled]="loading">
+							<span *ngIf="!loading">
+								Continue
+							</span>
+							<span>
+								<ngx-loading [show]="loading"></ngx-loading>
+							</span>
+						</button>
+					</div>
+				
+				</div>
+			</form>
+			<div class="align text-center small-font margin-top-40">
+				Have an account already?
+				<a class="btn-link link margin-top-10 clickable" (click)="openLogin()" style="font-size:14px;text-decoration: none;">Log in</a>
+			</div>
+		</div>
+	</div>
+</div>

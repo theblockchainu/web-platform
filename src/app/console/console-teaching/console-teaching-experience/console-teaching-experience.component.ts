@@ -11,6 +11,7 @@ import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { MatSnackBar } from '@angular/material';
 import { UcFirstPipe } from 'ngx-pipes';
+import {ProfileService} from '../../../_services/profile/profile.service';
 
 @Component({
 	selector: 'app-console-teaching-experience',
@@ -32,6 +33,7 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 	public liveExperiencesObject: any;
 	public upcomingExperiencesObject: any;
 	public accountVerified = false;
+	public emailVerified = false;
 
 	constructor(
 		public activatedRoute: ActivatedRoute,
@@ -39,6 +41,7 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 		public _collectionService: CollectionService,
 		private _cookieUtilsService: CookieUtilsService,
 		private _dialogService: DialogsService,
+		private _profileService: ProfileService,
 		public router: Router,
 		public dialog: MatDialog,
 		public snackBar: MatSnackBar,
@@ -61,6 +64,15 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 	}
 
 	private fetchData() {
+		this._profileService.getPeerData(this.userId).subscribe(res => {
+			this.emailVerified = res.emailVerified;
+			if (!this.emailVerified) {
+				this._dialogService.openOnboardingDialog().subscribe(res => {
+					// do nothing
+				});
+			}
+		});
+		
 		this._collectionService.getOwnedCollections(this.userId,
 			'{ "where": {"type":"experience"}, "include": ["calendars", "owners",' +
 			' {"participants": ["reviewsAboutYou", "ownedCollections", "profiles"]}, "topics", ' +

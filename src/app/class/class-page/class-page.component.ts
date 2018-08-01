@@ -1170,7 +1170,9 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					if (this.userId) {
 						this.router.navigate(['review-pay', 'collection', this.classId, result]);
 					} else {
-						this.router.navigate(['sign-up']);
+						// this.router.navigate(['sign-up']);
+						const returnTo = 'review-pay/collection/' + this.classId + '/' + result;
+						this.openSignup(returnTo);
 					}
 				}
 			});
@@ -1559,6 +1561,10 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 
 	public openLoginPage() {
 		this.router.navigate(['login']);
+	}
+	
+	public openSignup(returnTo) {
+		this.dialogsService.openSignup(returnTo).subscribe();
 	}
 
 	public openProfilePage(peerId) {

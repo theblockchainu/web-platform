@@ -59,18 +59,6 @@ export class PeerIntroComponent implements OnInit {
 						if (this.profile.peer[0].ownedCollections !== undefined && this.profile.peer[0].ownedCollections.length > 0) {
 							this.isTeacher = true;
 						}
-						// if (this.router.url !== '/signup-social' && this.router.url !== '/verification/1' && this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
-						// 	// Incomplete Social signup. Redirect user to finish it.
-						// 	this.router.navigate(['signup-social']);
-						// 	this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {
-						// 		duration: 5000
-						// 	});
-						// } else if (this.router.url !== '/verification/1' && (!this.profile.peer[0].identities || this.profile.peer[0].identities.length === 0) && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
-						// 	this.router.navigate(['verification', '1']);
-						// 	this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {
-						// 		duration: 5000
-						// 	});
-						// }
 					}
 				});
 			} else {
@@ -79,10 +67,10 @@ export class PeerIntroComponent implements OnInit {
 		});
 	}
 	private setTags() {
-		this.titleService.setTitle('Sessiones');
+		this.titleService.setTitle('Sessions');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds Sessiones'
+			content: 'Peerbuds Sessions'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
@@ -105,6 +93,10 @@ export class PeerIntroComponent implements OnInit {
 			}
 		});
 	}
+	
+	public openSignup() {
+		this.dialogsService.openSignup('/console/teaching/sessions').subscribe();
+	}
 
 	/**
 	* createSession
@@ -113,12 +105,13 @@ export class PeerIntroComponent implements OnInit {
 		if (this.userId && this.userId.length > 5 && this.accountVerified) {
 			this.submitSession();
 		} else if (!this.userId || this.userId.length < 5) {
-			this.dialogsService.openLogin().subscribe(res => {
+			/*this.dialogsService.openLogin().subscribe(res => {
 				if (res) {
 					this.fetchData();
 					this.createSession();
 				}
-			});
+			});*/
+			this.openSignup();
 		} else if (!this.accountVerified) {
 			this.matSnackBar.open('Account not yet verified. Please wait while your account is being verified', 'Close', {
 				duration: 3000
@@ -132,6 +125,14 @@ export class PeerIntroComponent implements OnInit {
 		this._collectionService.postCollection(this.userId, 'session').subscribe((sessionObject: any) => {
 			this.router.navigate(['session', sessionObject.id, 'edit', 1]);
 		});
+	}
+	
+	public goToHome() {
+		if (this.isLoggedIn) {
+			this.router.navigate(['home', 'homefeed']);
+		} else {
+			this.router.navigate(['/']);
+		}
 	}
 
 }

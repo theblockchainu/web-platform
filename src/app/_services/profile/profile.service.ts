@@ -106,6 +106,10 @@ export class ProfileService {
 				.map(
 					(response: any) => response
 				);
+		} else {
+			return new Observable(observer => {
+				observer.next([]);
+			});
 		}
 	}
 

@@ -116,7 +116,6 @@ export class IndexComponent implements OnInit {
 				if (!err) {
 					this.options = result;
 					this.searching = false;
-
 				} else {
 					console.log(err);
 					this.searching = false;
@@ -143,10 +142,9 @@ export class IndexComponent implements OnInit {
 			});
 		}
 	}
-
+	
 	public openSignup() {
-		// window.location.href = environment.clientUrl + '/signup.html';
-		this._router.navigate(['sign-up']);
+		this.dialogsService.openSignup('invite/1').subscribe();
 	}
 
 	public openTelegram() {
@@ -491,40 +489,20 @@ export class IndexComponent implements OnInit {
 	}
 	public createExperience() {
 		this._router.navigate(['digest', 'experiences']);
-
-		// this.dialogsService.openLogin().subscribe(result => {
-		// 	if (result) {
-		// 		this._router.navigateByUrl('/console/teaching/experiences');
-		// 	}
-		// });
-
 	}
 
 	public createClass() {
 		this._router.navigate(['digest', 'classes']);
-
-		// this.dialogsService.openLogin().subscribe(result => {
-		// 	if (result) {
-		// 		this._router.navigateByUrl('/console/teaching/classes');
-		// 	}
-		// });
-
 	}
 
 	public createSession() {
 		this._router.navigate(['digest', 'peers']);
-
-		// this.dialogsService.openLogin().subscribe(result => {
-		// 	if (result) {
-		// 		this._router.navigateByUrl('/console/teaching/sessions');
-		// 	}
-		// });
 	}
 
 	public gotoCredit() {
 		this.dialogsService.openLogin().subscribe(result => {
 			if (result) {
-				this._router.navigateByUrl('/home');
+				this._router.navigateByUrl('/invite/1');
 			}
 		});
 	}

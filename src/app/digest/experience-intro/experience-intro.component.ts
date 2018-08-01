@@ -105,6 +105,10 @@ export class ExperienceIntroComponent implements OnInit {
 			}
 		});
 	}
+	
+	public openSignup() {
+		this.dialogsService.openSignup('/console/teaching/experiences').subscribe();
+	}
 
 	/**
 	* createExperience
@@ -113,12 +117,13 @@ export class ExperienceIntroComponent implements OnInit {
 		if (this.userId && this.userId.length > 5 && this.accountVerified) {
 			this.submitExperience();
 		} else if (!this.userId || this.userId.length < 5) {
-			this.dialogsService.openLogin().subscribe(res => {
+			/*this.dialogsService.openLogin().subscribe(res => {
 				if (res) {
 					this.fetchData();
 					this.createExperience();
 				}
-			});
+			});*/
+			this.openSignup();
 		} else if (!this.accountVerified) {
 			this.matSnackBar.open('Account not yet verified. Please wait while your account is being verified', 'Close', {
 				duration: 3000
@@ -132,6 +137,14 @@ export class ExperienceIntroComponent implements OnInit {
 		this._collectionService.postCollection(this.userId, 'experience').subscribe((experienceObject: any) => {
 			this.router.navigate(['experience', experienceObject.id, 'edit', 1]);
 		});
+	}
+	
+	public goToHome() {
+		if (this.isLoggedIn) {
+			this.router.navigate(['home', 'homefeed']);
+		} else {
+			this.router.navigate(['/']);
+		}
 	}
 
 }

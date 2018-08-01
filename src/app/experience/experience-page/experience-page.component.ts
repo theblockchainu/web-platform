@@ -1263,10 +1263,16 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 					if (this.userId) {
 						this.router.navigate(['review-pay', 'collection', this.experienceId, result]);
 					} else {
-						this.router.navigate(['sign-up']);
+						// this.router.navigate(['sign-up']);
+						const returnTo = 'review-pay/collection/' + this.experienceId + '/' + result;
+						this.openSignup(returnTo);
 					}
 				}
 			});
+	}
+	
+	public openSignup(returnTo) {
+		this.dialogsService.openSignup(returnTo).subscribe();
 	}
 
 	private extractTime(dateString: string) {

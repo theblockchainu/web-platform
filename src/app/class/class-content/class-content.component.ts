@@ -131,7 +131,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 				let collectionId;
 				if (result.isNewInstance) {
 					collectionId = result.id;
-					this.reload(collectionId, 13);
+					this.reload(collectionId, 16);
 				} else {
 					window.location.reload();
 				}
@@ -297,7 +297,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 							Form.controls['startDay'].patchValue(resp.startDay);
 						}
 						if (collectionId) {
-							this.reload(collectionId, 13);
+							this.reload(collectionId, 16);
 						}
 					})
 					.subscribe();
@@ -371,7 +371,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 					.subscribe();
 
 				if (collectionId) {
-					this.reload(collectionId, 13);
+					this.reload(collectionId, 16);
 				}
 			})
 			.subscribe();
@@ -419,7 +419,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 							const result = response;
 							if (result && result.isNewInstance) {
 								collectionId = result.id;
-								this.reload(collectionId, 13);
+								this.reload(collectionId, 16);
 							} else {
 								const itenary = <FormArray>this.myForm.controls.itenary;
 							}

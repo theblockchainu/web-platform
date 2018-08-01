@@ -49,10 +49,10 @@
                             </div>
                         </div>
                     </div>
-	                <div *ngIf="!loadingCountry" [hidden]="userCountry !== 'IN'" class="margin-top-20 margin-bottom-40">
+	                <div *ngIf="!loadingCountry" [hidden]="true" class="margin-top-20 margin-bottom-40">
 		                <button mat-button mat-raised-button (click)="initiatePayuPayment()">Proceed with payment</button>
 	                </div>
-                    <div *ngIf="!loadingCountry" [hidden]="collection.price===0 || userCountry === 'IN'">
+                    <div *ngIf="!loadingCountry" [hidden]="collection.price===0">
                         <div class="margin-bottom-50" *ngIf="isCardExist">
                             <h3>Select payment method</h3>
                             <div class="row margin-top-50">
@@ -115,7 +115,7 @@
                     <div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards || listAllCards.length < 0 ||  useAnotherCard">
                         <i class="fa fa-lock"></i> Your payment information is secured by <a href="https://stripe.com">Stripe</a>
                     </div>
-	                <div *ngIf="!loadingCountry && userCountry !== 'IN'">
+	                <div *ngIf="!loadingCountry">
 		                <div *ngIf="collection.price && collection.price!==0">
 			                <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard"
 			                        [disabled]="savingData">{{collection.price | convertCurrency: collection.currency |async}} - Confirm Payment

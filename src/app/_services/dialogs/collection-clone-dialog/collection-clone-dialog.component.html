@@ -1,14 +1,14 @@
 <div mat-dialog-content class="dialog-container">
-  <div class="mat-display-1">Active {{data.type|titlecase}} Warning</div>
+  <div class="mat-display-1">You are editing an approved {{data.type|titlecase}}</div>
   <div>
     <div style="margin-top: 50px; margin-bottom: 40px;">
-      You are editing an active {{data.type}}!
+      Your {{data.type}} was previously approved
       <br>
-      <br> We will create a new copy of your current {{data.type}} with all your changes which will be in draft status.
+      <br> Because of this change, your {{data.type}} will have to be submitted for Peerbuds approval again. New students will not be able to sign up until this {{data.type}} is approved.
     </div>
   </div>
   <mat-dialog-actions>
-    <button mat-raised-button [mat-dialog-close]="'accept'" color="accent">Accept</button> &emsp;
-    <button mat-raised-button [mat-dialog-close]="'reject'">No, Thanks</button>
+    <button mat-raised-button [mat-dialog-close]="'accept'" color="accent">OK, Save Changes</button> &emsp;
+    <button mat-raised-button [mat-dialog-close]="'reject'">No, Discard Changes</button>
   </mat-dialog-actions>
 </div>

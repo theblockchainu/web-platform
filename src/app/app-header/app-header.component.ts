@@ -42,7 +42,7 @@ export class AppHeaderComponent implements OnInit {
 	public envVariable;
 	public options: any[];
 	public isEmailVerified: boolean;
-
+	public isAccountApproved: boolean;
 	public defaultProfileUrl: string;
 	public isTeacher: boolean;
 	public makeOldNotification: Array<any>;
@@ -84,8 +84,8 @@ export class AppHeaderComponent implements OnInit {
 			this.searching = true;
 			this._searchService.getAllSearchResults(this.userId, value, (err, result) => {
 				if (!err) {
-					// this.options = result;
-					// this.searching = false;
+					this.options = result;
+					this.searching = false;
 				} else {
 					console.log(err);
 					this.searching = false;
@@ -101,6 +101,7 @@ export class AppHeaderComponent implements OnInit {
 		this.envVariable = environment;
 		this.profile = {};
 		this.isEmailVerified = false;
+		this.isAccountApproved = false;
 		this.loggedIn = this.authService.isLoginSubject.value;
 		this.userId = this._cookieService.getValue('userId');
 		console.log(this.userId);
@@ -124,12 +125,13 @@ export class AppHeaderComponent implements OnInit {
 				if (profile && profile.length > 0) {
 					this.profile = profile[0];
 					this.isEmailVerified = this.profile.peer[0].emailVerified;
+					this.isAccountApproved = this.profile.peer[0].accountVerified;
 					if (this.profile.peer[0].ownedCollections !== undefined && this.profile.peer[0].ownedCollections.length > 0) {
 						this.isTeacher = true;
 					}
 					this.profileCompletionObject = this._profileService.getProfileProgressObject(this.profile);
 					console.log(this.profileCompletionObject);
-					if (this.router.url !== '/signup-social' && this.router.url !== '/verification/1' && this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
+					/*if (this.router.url !== '/signup-social' && this.router.url !== '/verification/1' && this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
 						// Incomplete Social signup. Redirect user to finish it.
 						this.router.navigate(['signup-social']);
 						this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {
@@ -140,7 +142,7 @@ export class AppHeaderComponent implements OnInit {
 						this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {
 							duration: 5000
 						});
-					}
+					}*/
 				}
 			});
 		} else {
@@ -149,7 +151,7 @@ export class AppHeaderComponent implements OnInit {
 	}
 
 	public openSignup() {
-		this.dialogsService.openSignup().subscribe();
+		this.dialogsService.openSignup('invite/1').subscribe();
 	}
 
 
@@ -159,7 +161,7 @@ export class AppHeaderComponent implements OnInit {
 
 	public goToHome() {
 		if (this.loggedIn) {
-			if (this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
+			/*if (this.profile.peer[0].identities && this.profile.peer[0].identities.length > 0 && (!this.profile.peer[0].phoneVerified || !this.profile.peer[0].emailVerified)) {
 				// Incomplete Social signup. Redirect user to finish it.
 				this.router.navigate(['signup-social']);
 				this.snackBar.open('We need just a few more details before continuing. Redirecting you to finish signup...', 'OK', {
@@ -172,7 +174,8 @@ export class AppHeaderComponent implements OnInit {
 				});
 			} else {
 				this.router.navigate(['home', 'homefeed']);
-			}
+			}*/
+			this.router.navigate(['home', 'homefeed']);
 		} else {
 			this.router.navigate(['/']);
 		}
@@ -324,50 +327,29 @@ export class AppHeaderComponent implements OnInit {
 	}
 
 	public createExperience() {
-		// this.isLoggedIn.subscribe(res => {
-		// 	if (res) {
-		// 		this.router.navigateByUrl('/console/teaching/experiences');
-		// 	} else {
-		// 		this.dialogsService.openLogin().subscribe(result => {
-		// 			if (result) {
-		// 				this.router.navigateByUrl('/console/teaching/experiences');
-		// 			}
-		// 		});
-		// 	}
-		// });
-		this.router.navigate(['digest', 'experiences']);
+		if (this.isTeacher) {
+			this.router.navigate(['console', 'teaching', 'experiences']);
+		} else {
+			this.router.navigate(['digest', 'experiences']);
+		}
+		
 	}
 
 	public createClass() {
-		// this.isLoggedIn.subscribe(res => {
-		// 	if (res) {
-		// 		this.router.navigateByUrl('/console/teaching/classes');
-		// 	} else {
-		// 		this.dialogsService.openLogin().subscribe(result => {
-		// 			if (result) {
-		// 				this.router.navigateByUrl('/console/teaching/classes');
-		// 			}
-		// 		});
-		// 	}
-		// });
-		this.router.navigate(['digest', 'classes']);
+		if (this.isTeacher) {
+			this.router.navigate(['console', 'teaching', 'classes']);
+		} else {
+			this.router.navigate(['digest', 'classes']);
+		}
 
 	}
 
 	public createSession() {
-		this.router.navigate(['digest', 'peers']);
-
-		// this.isLoggedIn.subscribe(res => {
-		// 	if (res) {
-		// 		this.router.navigateByUrl('/console/teaching/sessions');
-		// 	} else {
-		// 		this.dialogsService.openLogin().subscribe(result => {
-		// 			if (result) {
-		// 				this.router.navigateByUrl('/console/teaching/sessions');
-		// 			}
-		// 		});
-		// 	}
-		// });
+		if (this.isTeacher) {
+			this.router.navigate(['console', 'teaching', 'sessions']);
+		} else {
+			this.router.navigate(['digest', 'peers']);
+		}
 	}
 
 	public gotoCredit() {
