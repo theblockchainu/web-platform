@@ -55,6 +55,9 @@
 							<source src="{{envVariable.apiUrl+data.content.imageUrl}}" type="video/mp4">
 						</video>
 					</vg-player>
+					<video width="100%" height="auto" *ngIf="userType === 'public'" style="max-height: 300px;" preload="metadata">
+						<source src="{{envVariable.apiUrl+data.content.imageUrl}}">
+					</video>
 				</div>
 			</div>
 			<div *ngIf="!data.content.imageUrl">

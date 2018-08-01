@@ -55,7 +55,7 @@
 		</div>
 		<div class="mat-body-2" style="margin-top: -3px; font-weight: 900; color: #333;">{{experience.title | titlecase}}</div>
 		<div style="margin-top: 2px; font-size: 15px; color: #333;">
-			<span style="color: #333;">{{experience.price | convertCurrency: experience.currency |async}}</span>
+			<span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span>
 			<mat-icon style="font-size: 5px; top: -3px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
 			<span matTooltip="Earn upto {{experience.academicGyan + experience.nonAcademicGyan}} Gyan">
 				Earn <i class="fab fa-ethereum lightText"></i> {{experience.academicGyan + experience.nonAcademicGyan}}
