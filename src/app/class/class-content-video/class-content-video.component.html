@@ -21,90 +21,70 @@
 	</div>
 	<div *ngIf="lastIndex>-1">
 		<form [formGroup]="itenaryForm.controls['contents']['controls'][lastIndex]">
-			<div>
-				<div class="row">
-					<div class="col-sm-12 margin-bottom-30">
-						<mat-form-field class="pb-block margin-top-20 margin-bot-20">
-							<input matInput #title formControlName="title" placeholder="Video Title">
-						</mat-form-field>
+			<div class="row">
+				<div class="col-sm-12 margin-bottom-30">
+					<mat-form-field class="pb-block margin-top-20 margin-bot-20">
+						<input matInput #title formControlName="title" placeholder="Video Title">
+					</mat-form-field>
 
-						<div class="form-group">
-							<label>Upload Video:</label>
-							<div class="upload-image-section imageHolder">
-
-								<app-upload-file (uploaded)="imageUploadNew($event)"></app-upload-file>
-
-								<h5>Max File Size
-									<b>1000MB</b>
-								</h5>
-								<div class="col-md-4 embed-responsive embed-responsive-16by9 padding-left-0 pic delete imageContainer" *ngIf="urlForVideo">
-									<vg-player (onPlayerReady)="onPlayerReady($event)">
-										<vg-overlay-play></vg-overlay-play>
-										<vg-buffering></vg-buffering>
-
-										<vg-scrub-bar>
-											<vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-											<vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-										</vg-scrub-bar>
-
-										<vg-controls>
-											<vg-play-pause></vg-play-pause>
-											<vg-playback-button></vg-playback-button>
-
-											<vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
-
-											<vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
-											<vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
-
-											<vg-mute></vg-mute>
-											<vg-volume></vg-volume>
-
-											<vg-fullscreen></vg-fullscreen>
-										</vg-controls>
-
-										<video [vgMedia]="media" #media id="singleVideo" width="100%" preload="metadata" style="max-height: 300px;" crossorigin>
-											<source src="{{envVariable.apiUrl + urlForVideo}}" type="video/mp4">
-										</video>
-									</vg-player>
-									<mat-icon (click)="deleteFromContainer(urlForVideo, 'video')" class="delete-button">close</mat-icon>
-								</div>
-							</div>
-						</div>
-						<div class="clearfix"></div>
-
-						<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
-							<textarea matInput #description maxlength="2000" rows="1" matTextareaAutosize formControlName="description" placeholder="What will we do?"
-							 [required]="true"></textarea>
-							<mat-hint align="end">{{description.value.length}} / 2000</mat-hint>
-						</mat-form-field>
-
-						<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
-							<textarea matInput #prerequisites maxlength="1000" rows="1" matTextareaAutosize formControlName="prerequisites" placeholder="What do learners need to know?"
-							 [required]="true"></textarea>
-							<mat-hint align="end">{{prerequisites.value.length}} / 1000</mat-hint>
-						</mat-form-field>
-
-						<div class="form-group">
-							<label class="display-block">Add supporting material</label>
-					
-							<app-upload-file (uploaded)="addAttachmentUrl($event)"></app-upload-file>
-
+					<div class="form-group">
+						<label>Upload Video:</label>
+						<div class="upload-image-section imageHolder">
+							<app-upload-file (uploaded)="imageUploadNew($event)"></app-upload-file>
 							<h5>Max File Size
 								<b>1000MB</b>
 							</h5>
-							<div *ngIf="attachmentUrls.length" class="pic delete">
-								<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
-									<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
-									<mat-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'file')" class="delete-image">close</mat-icon>
-									<div *ngIf="file.type.includes('application')" class="uploaded_file">
-										<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
-									</div>
-									<mat-icon *ngIf="file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')" class="delete-file">close</mat-icon>
-									<video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc; position: relative;" preload="metadata">
-										<source src="{{envVariable.apiUrl + file.url}}">
+							<div *ngIf="urlForVideo">
+								<span [hidden]="!loadingUploadedVideo">
+									<span>Fetching Video</span>
+									<mat-progress-bar mode="buffer"></mat-progress-bar>
+								</span>
+								<div class="col-md-4 embed-responsive embed-responsive-16by9 padding-left-0 pic delete imageContainer" [hidden]="loadingUploadedVideo">
+									<video style="max-height: 40vh;" controls #video preload="metadata" (loadedmetadata)="onMetadata($event, video)" (error)="videoError($event)">
+										<source src="{{envVariable.apiUrl + urlForVideo}}" type="video/mp4" crossorigin>
 									</video>
-									<mat-icon *ngIf="file.type.includes('video')" (click)="deleteFromContainer(file.url, '')" class="delete-button">close</mat-icon>
+									<mat-icon (click)="deleteFromContainer(urlForVideo, 'video')" class="delete-button">close</mat-icon>
 								</div>
+							</div>
+
+						</div>
+						<span *ngIf=" itenaryForm.value.contents[lastIndex] && itenaryForm.value.contents[lastIndex].videoLength">
+							Duration: {{itenaryForm.value.contents[lastIndex].videoLength }} Seconds
+						</span>
+					</div>
+					<div class="clearfix"></div>
+
+					<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
+						<textarea matInput #description maxlength="2000" rows="1" matTextareaAutosize formControlName="description" placeholder="What will we do?"
+						 [required]="true"></textarea>
+						<mat-hint align="end">{{description.value.length}} / 2000</mat-hint>
+					</mat-form-field>
+
+					<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
+						<textarea matInput #prerequisites maxlength="1000" rows="1" matTextareaAutosize formControlName="prerequisites" placeholder="What do learners need to know?"
+						 [required]="true"></textarea>
+						<mat-hint align="end">{{prerequisites.value.length}} / 1000</mat-hint>
+					</mat-form-field>
+
+					<div class="form-group">
+						<label class="display-block">Add supporting material</label>
+
+						<app-upload-file (uploaded)="addAttachmentUrl($event)"></app-upload-file>
+						<h5>Max File Size
+							<b>1000MB</b>
+						</h5>
+						<div *ngIf="attachmentUrls.length" class="pic delete">
+							<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
+								<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
+								<mat-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'file')" class="delete-image">close</mat-icon>
+								<div *ngIf="file.type.includes('application')" class="uploaded_file">
+									<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
+								</div>
+								<mat-icon *ngIf="file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')" class="delete-file">close</mat-icon>
+								<video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc; position: relative;" preload="metadata">
+									<source src="{{envVariable.apiUrl + file.url}}">
+								</video>
+								<mat-icon *ngIf="file.type.includes('video')" (click)="deleteFromContainer(file.url, '')" class="delete-button">close</mat-icon>
 							</div>
 						</div>
 					</div>
