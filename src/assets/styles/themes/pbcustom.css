@@ -2111,4 +2111,10 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 		width: 100% !important;
 	}
 
+	.home-banner .mat-form-field-label{
+		left: 17% !important;
+		top: 45% !important;
+		font-size: 17px !important;
+	}
+
 }

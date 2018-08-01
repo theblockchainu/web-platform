@@ -19,25 +19,25 @@ import { environment } from '../../../environments/environment';
 	// Every Angular template is first compiled by the browser before Angular runs it's compiler
 	templateUrl: './class-content.component.html',
 	styleUrls: ['./class-content.component.scss']
-	
+
 })
 
 export class ClassContentComponent implements OnInit, AfterViewInit {
 	@Input()
 	public myForm: FormGroup;
-	
+
 	@Input()
 	public collection: any;
-	
+
 	@Input()
 	public status: string;
-	
+
 	@Input()
 	public calendar: any;
-	
+
 	@Output()
 	days = new EventEmitter<any>();
-	
+
 	public envVariable;
 	constructor(
 		public authenticationService: AuthenticationService,
@@ -53,15 +53,15 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 	) {
 		this.envVariable = environment;
 	}
-	
+
 	ngOnInit() {
 		this.myForm.addControl('itenary', this._fb.array([this.initItenary()]));
 	}
-	
+
 	ngAfterViewInit() {
 		this.cd.detectChanges();
 	}
-	
+
 	initItenary() {
 		return this._fb.group({
 			date: [null],
@@ -69,18 +69,18 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 			contents: this._fb.array([])
 		});
 	}
-	
+
 	addItenary() {
 		this.checkClassActive();
 	}
-	
+
 	removeItenary(i: number) {
 		const itenaries = <FormArray>this.myForm.controls.itenary;
 		const itenaryGroup = <FormGroup>itenaries.controls[i];
 		const contents = <Array<any>>itenaryGroup.value.contents;
-		
+
 		let deleteIndex = 0;
-		
+
 		while (deleteIndex !== contents.length) {
 			this.http.delete(environment.apiUrl + '/api/contents/' + contents[deleteIndex].id, this.requestHeaderService.options)
 				.map((response: any) => {
@@ -92,7 +92,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 		itenaries.removeAt(i);
 		this.days.emit(itenaries);
 	}
-	
+
 	save(myForm: FormGroup) {
 		console.log(myForm.value);
 	}
@@ -104,7 +104,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 		const start = moment(startDate);
 		return current.diff(start, 'days');
 	}
-	
+
 	checkClassActive() {
 		if (this.collection.status === 'active') {
 			this.showDialogForActiveClass(false);
@@ -114,11 +114,11 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 			this.days.emit(itenaries);
 		}
 	}
-	
+
 	reload(collectionId, step) {
 		window.location.href = '/class/' + collectionId + '/edit/' + step;
 	}
-	
+
 	private executeSubmitClass(collection) {
 		const calendars = collection.calendars;
 		const timeline = collection.contents;
@@ -137,7 +137,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 				}
 			}).subscribe();
 	}
-	
+
 	showDialogForActiveClass(isContent) {
 		this._dialogsService.openCollectionCloneDialog({
 			type: 'class'
@@ -152,8 +152,9 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 			}
 		});
 	}
-	
+
 	saveTriggered(event, i) {
+		console.log('save triggered');
 		if (event.action === 'add') {
 			// Show cloning warning since collection is active
 			if (this.collection.status === 'active') {
@@ -170,7 +171,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 			} else {
 				this.postContent(event, i);
 			}
-			
+
 		} else if (event.action === 'update') {
 			if (this.collection.status === 'active') {
 				this._dialogsService.openCollectionCloneDialog({
@@ -223,7 +224,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 			console.log('unhandledEvent Triggered');
 		}
 	}
-	
+
 	postContent(event, i) {
 		let collectionId;
 		const itenaryObj = this.myForm.value.itenary[i];
@@ -234,13 +235,13 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 		delete contentObj.id;
 		delete contentObj.schedule;
 		delete contentObj.pending;
-		
+
 		let contentId;
 		const itenary = <FormArray>this.myForm.controls.itenary;
 		const form = <FormGroup>itenary.controls[i];
 		const contentsArray = <FormArray>form.controls.contents;
 		const contentGroup = <FormGroup>contentsArray.controls[event.value];
-		
+
 		if (contentObj.type === 'project' || contentObj.type === 'video') {
 			if (contentObj.type === 'video') {
 				schedule.endDay = 0;
@@ -258,7 +259,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 			const startMin = startTimeArr[1];
 			schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);*/
 			schedule.startTime = moment('01-02-1990 ' + schedule.startTime + ':00').format();
-			
+
 			/*const endTimeArr = schedule.endTime.toString().split(':');
 			const endHour = endTimeArr[0];
 			const endMin = endTimeArr[1];
@@ -267,12 +268,12 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 			schedule.endDay = 0;
 		}
 		schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
-		
+
 		this.http.post(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents', contentObj, this.requestHeaderService.options)
 			.map((response: any) => {
-				
+
 				const result = response;
-				
+
 				if (result.isNewInstance) {
 					collectionId = result.id;
 					result.contents.forEach((content) => {
@@ -284,7 +285,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 					contentId = result.id;
 				}
 				contentGroup.controls.id.setValue(contentId);
-				
+
 				this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.requestHeaderService.options)
 					.map((resp: any) => {
 						if (resp.status === 200) {
@@ -303,7 +304,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 			})
 			.subscribe();
 	}
-	
+
 	patchContent(event, i) {
 		let collectionId;
 		const itenary = <FormArray>this.myForm.controls.itenary;
@@ -312,7 +313,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 		const contentGroup = <FormGroup>contentsArray.controls[event.value];
 		const ContentSchedule = <FormGroup>contentGroup.controls.schedule;
 		contentGroup.controls.pending.setValue(true);
-		
+
 		const itenaryObj = this.myForm.value.itenary[i];
 		const scheduleDate = itenaryObj.date;
 		const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
@@ -368,23 +369,25 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 						}
 					})
 					.subscribe();
-				
+
 				if (collectionId) {
 					this.reload(collectionId, 16);
 				}
 			})
 			.subscribe();
 	}
-	
+
 	deleteContent(eventIndex, index) {
+		console.log('deleting collection evI:' + eventIndex + ' itI' + index);
+
 		const itenaryObj = this.myForm.value.itenary[index];
 		const scheduleDate = itenaryObj.date;
 		let collectionId;
-		if (eventIndex) {
+		if (eventIndex !== undefined) {
 			const contentObj = itenaryObj.contents[eventIndex];
 			const contentId = contentObj.id;
 			this.http.delete(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, this.requestHeaderService.options)
-				.map((response: any) => {
+				.subscribe((response: any) => {
 					if (response !== null) {
 						const result = response;
 						if (result.isNewInstance) {
@@ -395,6 +398,8 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 							const form = <FormGroup>itenary.controls[index];
 							const contentsArray = <FormArray>form.controls.contents;
 							contentsArray.removeAt(eventIndex);
+							console.log('removed ' + eventIndex);
+
 						}
 					} else {
 						const itenary = <FormArray>this.myForm.controls.itenary;
@@ -402,13 +407,14 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 						const contentsArray = <FormArray>form.controls.contents;
 						contentsArray.removeAt(eventIndex);
 					}
-				})
-				.subscribe();
+				});
 		} else {
+			console.log('else delete');
+
 			const contentArray = itenaryObj.contents;
 			contentArray.forEach(content => {
 				this.http.delete(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + content.id, this.requestHeaderService.options)
-					.map((response: any) => {
+					.subscribe((response: any) => {
 						if (response !== null) {
 							const result = response;
 							if (result && result.isNewInstance) {
@@ -420,20 +426,19 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 						} else {
 							const itenary = <FormArray>this.myForm.controls.itenary;
 						}
-					})
-					.subscribe();
+					});
 			});
 		}
 	}
-	
+
 	getCalendarStartDate() {
 		return new Date(this.calendar.startDate);
 	}
-	
+
 	getCalendarEndDate() {
 		return new Date(this.calendar.endDate);
 	}
-	
+
 	getSelectedItineraryDates() {
 		const selectedDates = [];
 		const itineraries = <FormArray>this.myForm.controls.itenary;
@@ -444,5 +449,5 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 		});
 		return selectedDates;
 	}
-	
+
 }

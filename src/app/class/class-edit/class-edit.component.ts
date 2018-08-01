@@ -619,7 +619,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.profileImagePending = true;
 		this.classVideoPending = true;
 		this.classImage1Pending = true;
-		
+
 		this.timeline.valueChanges.subscribe(res => {
 			this.totalHours();
 		});
@@ -906,7 +906,12 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.totalVideoDuration = 0;
 		this.timeline.value.contentGroup.itenary.forEach((itenaryObj: any) => {
 			itenaryObj.contents.forEach(contentObj => {
-				if (contentObj.type === 'online' && contentObj.schedule && contentObj.schedule.startTime && contentObj.schedule.endTime && contentObj.schedule.startTime !== '' && contentObj.schedule.endTime !== '') {
+				if (contentObj.type === 'online'
+					&& contentObj.schedule
+					&& contentObj.schedule.startTime
+					&& contentObj.schedule.endTime
+					&& contentObj.schedule.startTime !== ''
+					&& contentObj.schedule.endTime !== '') {
 					let startMoment, endMoment, contentLength;
 					if (moment(contentObj.schedule.startTime).isValid()) {
 						startMoment = moment(contentObj.schedule.startTime);
@@ -915,17 +920,20 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 						startMoment = moment('01-02-1990 ' + contentObj.schedule.startTime);
 						endMoment = moment('01-02-1990 ' + contentObj.schedule.endTime);
 					}
-					contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
+					contentLength = endMoment.diff(startMoment, 'minutes');
+					console.log('videoLength ' + parseInt(contentLength, 10));
 					totalLength += parseInt(contentLength, 10);
 				} else if (contentObj.type === 'video' && contentObj.videoLength) {
+					console.log('videoLength:' + contentObj.videoLength);
 					this.totalVideoDuration += contentObj.videoLength;
-					totalLength += Math.round(contentObj.videoLength / 3600);
-					console.log(totalLength);
+					const contentLength = contentObj.videoLength / 60;
+					console.log(contentLength);
+					totalLength += Math.round(contentLength);
 				}
 			});
 		});
-		this.totalDuration = totalLength;
-		this.totalGyan = totalLength;
+		this.totalDuration = totalLength / 60;
+		this.totalGyan = totalLength / 60;
 		this.class.controls['academicGyan'].patchValue(totalLength);
 	}
 	
@@ -1005,10 +1013,10 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		current.add(day, 'days');
 		return current.toDate();
 	}
-	
+
 	public submitClassTimeline() {
 		this.busySavingData = true;
-		
+
 		if (this.calendarIsValid(this.step)) {
 			this.class.controls['academicGyan'].patchValue(this.totalDuration >= 2 ? this.totalDuration - 1 : 1);
 			this.class.controls['nonAcademicGyan'].patchValue(1);
@@ -1035,9 +1043,9 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else {
 			this.busySavingData = false;
 			console.log('No date selected or no content added to itinerary! - ' + JSON.stringify(itinerary));
-			if (!itinerary || itinerary.length === 0 || this.totalDuration === 0) {
+			if (!itinerary || itinerary.length === 0 || this.totalDuration < 1) {
 				if (this.exitAfterSave) {
-					this.snackBar.open('You need to add at least 1 activity to your class to proceed.', 'Exit Anyways', {
+					this.snackBar.open('You need to add at least 1 hour of activity to your class to proceed.', 'Exit Anyways', {
 						duration: 5000
 					}).onAction().subscribe(res => {
 						this.exit();

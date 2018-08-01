@@ -53,8 +53,8 @@ export class MediaUploaderService {
 		return this.http.post(environment.apiUrl + '/api/media', data, this.requestHeaderService.options);
 	}
 
-	delete(file) {
-		return this.http.delete(environment.apiUrl + file, this.requestHeaderService.options);
+	delete(fileUrl) {
+		return this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options);
 	}
 
 }

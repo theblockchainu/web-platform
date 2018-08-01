@@ -327,29 +327,29 @@ export class AppHeaderComponent implements OnInit {
 	}
 
 	public createExperience() {
-		this.router.navigate(['digest', 'experiences']);
+		if (this.isTeacher) {
+			this.router.navigate(['console', 'teaching', 'experiences']);
+		} else {
+			this.router.navigate(['digest', 'experiences']);
+		}
+		
 	}
 
 	public createClass() {
-		this.router.navigate(['digest', 'classes']);
+		if (this.isTeacher) {
+			this.router.navigate(['console', 'teaching', 'classes']);
+		} else {
+			this.router.navigate(['digest', 'classes']);
+		}
 
 	}
 
 	public createSession() {
-		this.router.navigate(['digest', 'peers']);
-	}
-	
-	public createExistingUserExperience() {
-		this.router.navigate(['console', 'teaching', 'experiences']);
-	}
-	
-	public createExistingUserClass() {
-		this.router.navigate(['console', 'teaching', 'classes']);
-		
-	}
-	
-	public createExistingUserSession() {
-		this.router.navigate(['console', 'teaching', 'sessions']);
+		if (this.isTeacher) {
+			this.router.navigate(['console', 'teaching', 'sessions']);
+		} else {
+			this.router.navigate(['digest', 'peers']);
+		}
 	}
 
 	public gotoCredit() {
