@@ -56,6 +56,7 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		this.initializeForms();
 		this.getDiscussions();
+		this.duration = Math.round(this.data.content.videoLength / 60);
 	}
 	
 	ngOnDestroy() {
@@ -193,9 +194,9 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 	public onPlayerReady(api: VgAPI) {
 		this.api = api;
 		
-		this.api.getDefaultMedia().subscriptions.canPlay.subscribe(() => {
+		/*this.api.getDefaultMedia().subscriptions.canPlay.subscribe(() => {
 			this.duration = Math.round(this.api.duration / 60);
-		});
+		});*/
 		
 		this.api.getDefaultMedia().subscriptions.playing.subscribe(() => {
 			const view = {
