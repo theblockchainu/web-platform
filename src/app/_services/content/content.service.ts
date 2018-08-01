@@ -39,9 +39,9 @@ export class ContentService {
 	public getMediaObject(urlString: string) {
 		const query = {
 			'where':
-				{
-					url: urlString
-				}
+			{
+				url: urlString
+			}
 		};
 		return this.http.get(environment.apiUrl + '/api/media?filter=' + JSON.stringify(query), this.requestHeaderService.options)
 			.map((response: any) =>
@@ -68,9 +68,10 @@ export class ContentService {
 	}
 
 	public deleteContent(contentId) {
-		return this.http.delete(environment.apiUrl + '/api/contents/' + contentId, this.requestHeaderService.options)
-			.map((response: any) => response, (err) => {
-				console.log('Error: ' + err);
-			});
+		return this.http.delete(environment.apiUrl + '/api/contents/' + contentId, this.requestHeaderService.options);
+	}
+
+	public patchContent(contentId, contentbody) {
+		return this.http.patch(environment.apiUrl + '/api/contents/' + contentId, contentbody, this.requestHeaderService.options);
 	}
 }

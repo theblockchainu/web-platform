@@ -350,7 +350,7 @@ export class AppHeaderComponent implements OnInit {
 		// 		});
 		// 	}
 		// });
-		this.router.navigate(['digest', 'experiences']);
+		this.router.navigate(['digest', 'classes']);
 
 	}
 
