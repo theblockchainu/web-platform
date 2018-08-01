@@ -178,7 +178,7 @@ mat-sidenav a:hover {
 }
 
 .scroll-box::-webkit-scrollbar {
-	width: .4em; 
+	width: .4em;
 }
 .scroll-box::-webkit-scrollbar,
 .scroll-box::-webkit-scrollbar-thumb {
@@ -186,7 +186,7 @@ mat-sidenav a:hover {
 	border-radius: 4px;
 }
 .scroll-box::-webkit-scrollbar-thumb {
-	background: rgba(0,0,0,.2); 
+	background: rgba(0,0,0,.2);
 }
 
 .ui-spinner {
@@ -1022,6 +1022,12 @@ h3.calendarTitle  {
 
 .signin-form .text-muted a {
 	color: #333
+}
+
+.otpInput {
+	font-size: 26px !important;
+	font-weight: 800 !important;
+	text-align: center !important;
 }
 
 .page-contact .contactmap-container {
@@ -2013,7 +2019,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	.show-small .headerButtons {
 		flex: 1;
 	}
-	
+
 	.show-small-inline-flex {
 		display: inline-flex;
 	}

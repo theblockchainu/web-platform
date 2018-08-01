@@ -22,7 +22,7 @@
 					</mat-chip>
 				</mat-chip-list>
 			</div>
-			<div class="pull-right" *ngIf="step!=1 && step !=6 && step !=15 && step !=17">
+			<div class="pull-right" *ngIf="step!=1 && step !=6 && step !=15">
 				<button mat-button *ngIf="experience.controls['status'].value !== 'active'" (click)="saveandexit()">
 					<span *ngIf="!busySave">Save &amp; Exit</span>
 					<ngx-loading [show]="busySave"></ngx-loading>
@@ -924,6 +924,9 @@
 													</mat-radio-group>
 												</form>
 											</ng-container>
+											<div *ngIf="!addingAccount && (!payoutAccounts || payoutAccounts.length === 0)" class="lightText">
+												You have no payout accounts added yet
+											</div>
 										</div>
 									</div>
 								</div>

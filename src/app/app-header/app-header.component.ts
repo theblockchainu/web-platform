@@ -84,8 +84,8 @@ export class AppHeaderComponent implements OnInit {
 			this.searching = true;
 			this._searchService.getAllSearchResults(this.userId, value, (err, result) => {
 				if (!err) {
-					// this.options = result;
-					// this.searching = false;
+					this.options = result;
+					this.searching = false;
 				} else {
 					console.log(err);
 					this.searching = false;
@@ -151,7 +151,7 @@ export class AppHeaderComponent implements OnInit {
 	}
 
 	public openSignup() {
-		this.dialogsService.openSignup().subscribe();
+		this.dialogsService.openSignup('invite/1').subscribe();
 	}
 
 
@@ -327,50 +327,29 @@ export class AppHeaderComponent implements OnInit {
 	}
 
 	public createExperience() {
-		// this.isLoggedIn.subscribe(res => {
-		// 	if (res) {
-		// 		this.router.navigateByUrl('/console/teaching/experiences');
-		// 	} else {
-		// 		this.dialogsService.openLogin().subscribe(result => {
-		// 			if (result) {
-		// 				this.router.navigateByUrl('/console/teaching/experiences');
-		// 			}
-		// 		});
-		// 	}
-		// });
 		this.router.navigate(['digest', 'experiences']);
 	}
 
 	public createClass() {
-		// this.isLoggedIn.subscribe(res => {
-		// 	if (res) {
-		// 		this.router.navigateByUrl('/console/teaching/classes');
-		// 	} else {
-		// 		this.dialogsService.openLogin().subscribe(result => {
-		// 			if (result) {
-		// 				this.router.navigateByUrl('/console/teaching/classes');
-		// 			}
-		// 		});
-		// 	}
-		// });
-		this.router.navigate(['digest', 'experiences']);
+		this.router.navigate(['digest', 'classes']);
 
 	}
 
 	public createSession() {
 		this.router.navigate(['digest', 'peers']);
-
-		// this.isLoggedIn.subscribe(res => {
-		// 	if (res) {
-		// 		this.router.navigateByUrl('/console/teaching/sessions');
-		// 	} else {
-		// 		this.dialogsService.openLogin().subscribe(result => {
-		// 			if (result) {
-		// 				this.router.navigateByUrl('/console/teaching/sessions');
-		// 			}
-		// 		});
-		// 	}
-		// });
+	}
+	
+	public createExistingUserExperience() {
+		this.router.navigate(['console', 'teaching', 'experiences']);
+	}
+	
+	public createExistingUserClass() {
+		this.router.navigate(['console', 'teaching', 'classes']);
+		
+	}
+	
+	public createExistingUserSession() {
+		this.router.navigate(['console', 'teaching', 'sessions']);
 	}
 
 	public gotoCredit() {

@@ -23,13 +23,15 @@ const PHONE_REGEX = /^(\+\d{1,3}[- ]?)?\d{7,10}$/;
 })
 export class OnboardingDialogComponent implements OnInit {
 	
-	public step = 1;
+	public step = 0;
 	public uploadingImage = false;
 	public peer: FormGroup;
 	public phoneOtp: FormGroup;
 	public emailOtp: FormGroup;
 	public emailForm: FormGroup;
 	public phoneForm: FormGroup;
+	public loadingCountry = true;
+	public userCountry;
 	public success;
 	public otpReceived: string;
 	public verificationIdUrl: string;
@@ -120,7 +122,16 @@ export class OnboardingDialogComponent implements OnInit {
 					})
 				);
 		});
+		this.getUserProfile();
 		this.getUserCountry();
+	}
+	
+	private getUserProfile() {
+		this._profileService.getPeerData(this.userId).subscribe(res => {
+			if (res && res.phoneVerified) {
+				this.sendEmailOTP(4);
+			}
+		});
 	}
 	
 	filter(country: string): CountryCode[] {
@@ -135,8 +146,10 @@ export class OnboardingDialogComponent implements OnInit {
 	continue(p, isBack = false) {
 		if (isBack) {
 			this.step = p;
-			this.router.navigate(['verification', +this.step]);
 		} else {
+			if (p === 1) {
+				this.step = 1;
+			}
 			if (p === 2) {
 				this.sendPhoneOTP(p);
 			}
@@ -263,7 +276,7 @@ export class OnboardingDialogComponent implements OnInit {
 			.subscribe((res) => {
 					this.httpLoading = false;
 					this.success = res;
-					this.step = nextStep;
+					this.sendEmailOTP(nextStep + 1);
 				},
 				(err) => {
 					console.log(err);
@@ -312,6 +325,10 @@ export class OnboardingDialogComponent implements OnInit {
 	
 	public skipOnboarding() {
 		this.dialogRef.close('false');
+	}
+	
+	public closeOnboarding() {
+		this.dialogRef.close('true');
 	}
 	
 	private getUserCountry() {

@@ -1,7 +1,7 @@
 <!-- header start here -->
 <header>
 	<nav class="navbar navbar-expand-md navbar-dark">
-		<a class="navbar-brand" href="#">
+		<a class="navbar-brand" href="javascript:void(0)" (click)="goToHome()">
 			<img src="/assets/images/peerbuds-logo.png" alt="peerbuds-logo">
 		</a>
 		<span class="example-spacer"></span>
@@ -40,13 +40,13 @@
 			</span>
 			<mat-menu #headerTeachMenu [overlapTrigger]="false">
 				<button mat-menu-item [routerLink]="['/digest','experiences']">
-					Create Experience
+					Host an offline experience
 				</button>
 				<button mat-menu-item [routerLink]="['/digest','classes']">
-					Create Class
+					Create an online class
 				</button>
 				<button mat-menu-item [routerLink]="['/digest','peers']">
-					Create Session
+					Start a peer session
 				</button>
 			</mat-menu>
 		</span>
@@ -57,11 +57,11 @@
 	<div class="dark-gray-overlay"></div>
 	<div class="container">
 		<div class="content">
-			<h1>Host a Session on Peerbuds</h1>
-			<h2>Earn money giving people the best online learning session.</h2>
+			<h1>Start a peer session on peerbuds</h1>
+			<h2>Earn money mentoring people on topics you know.</h2>
 			<div class="action-button">
 				<a (click)="createSession()" class="btn btn-white btn-lg mr-2 clickable">Continue</a>
-				<a href="#" class="btn btn-outline-light btn-lg clickable">Learn More</a>
+				<!--<a href="#" class="btn btn-outline-light btn-lg clickable">Learn More</a>-->
 			</div>
 		</div>
 	</div>
@@ -71,7 +71,7 @@
 	<div class="home-peerbuds-session">
 		<div class="dark-white-overlay visible-xs visible-sm"></div>
 		<div class="content-center text-center">
-			<h2 class="section-title">What are Peerbuds Sessions?</h2>
+			<h2 class="section-title">What are peerbuds sessions?</h2>
 			<p class="section-para">Peerbuds Sessions are interactive online sessions designed and led by peers from our global community. While not everyone
 				can attend our in-person learning
 				<b>sessions</b>, they should have access to the same session online. Sessions go beyond creating a typical video course

@@ -270,7 +270,7 @@
 																<div class="col-xs-5">
 																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media" src="{{envVariable.apiUrl+content.imageUrl}}/300"
 																	 (error)="_collectionService.imgErrorHandler($event)">
-																	<video #videoContent width="100%" height="auto" *ngIf="content.type==='video'" class="itenary-media" preload="metadata" poster="../../../assets/images/placeholder-image.jpg">
+																	<video #videoContent width="100%" height="auto" *ngIf="content.type==='video'" class="itenary-media" preload="metadata">
 																		<source src="{{envVariable.apiUrl+content.imageUrl}}">
 																	</video>
 																</div>

@@ -148,7 +148,7 @@ export class DialogsService {
 		dialogRef = this.dialog.open(OnboardingDialogComponent, {
 			panelClass: 'responsive-dialog',
 			width: '30vw',
-			height: '80vh'
+			disableClose: true
 		});
 		return dialogRef.afterClosed();
 	}
@@ -356,7 +356,7 @@ export class DialogsService {
         return this.dialog.open(CollectionCloneDialogComponent,
             {
                 data: collection,
-                disableClose: true, hasBackdrop: true, panelClass: 'responsive-dialog', width: '30vw'
+                disableClose: true, hasBackdrop: true, panelClass: 'responsive-dialog', width: '40vw'
             }).afterClosed();
     }
 

@@ -13,9 +13,9 @@
 				White Paper
 			</button> -->
 			<button mat-button class="headerButtons" (click)="gotoCredit()">
-				Credit
+				Earn Credit
 			</button>
-			<button mat-button class="headerButtons" [routerLink]="['/sign-up']">
+			<button mat-button class="headerButtons" (click)="openSignup()">
 				Sign up
 			</button>
 			<button mat-button class="headerButtons" (click)="openLogin()">
@@ -25,13 +25,13 @@
 	</nav>
 	<mat-menu #headerTeachMenu [overlapTrigger]="false">
 		<button mat-menu-item (click)="createExperience()">
-			Create Experience
+			Host an offline experience
 		</button>
 		<button mat-menu-item (click)="createClass()">
-			Create Class
+			Create an online class
 		</button>
 		<button mat-menu-item (click)="createSession()">
-			Create Session
+			Start a peer session
 		</button>
 	</mat-menu>
 </header>
@@ -46,19 +46,24 @@
 				<mat-form-field [floatPlaceholder]="'never'" class="search-form pb-block mat-elevation-z20">
 					<input #searchInputBar name="search" placeholder='Try "Blockchain or Hyperledger"' matInput [formControl]="myControl" [matAutocomplete]="auto">
 					<mat-autocomplete #auto="matAutocomplete">
-						<mat-option *ngIf="searching" class="center">
+						<mat-option *ngIf="searching">
 							<span>
-								<ngx-loading [show]="true"></ngx-loading>
+								<ngx-loading [show]="true" style="position: absolute; top: 13px;"></ngx-loading>
 							</span>
 						</mat-option>
-						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)">
-							<span>
+						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)" style="height: auto;">
+							<div style="display: inline-block; vertical-align: middle;">
 								<img src="{{_searchService.getSearchOptionImage(option)}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
-								 (error)="_collectionService.imgErrorHandler($event)" />
-							</span>
-							<span>
-								{{_searchService.getSearchOptionText(option)}}
-							</span>
+								     (error)="_collectionService.imgErrorHandler($event)" />
+							</div>
+							<div style="display: inline-block; vertical-align: middle;">
+								<div>
+									{{_searchService.getSearchOptionText(option)}}
+								</div>
+								<div class="mat-h5 lightText" style="margin-top: -14px;">
+									{{option.data.type | uppercase}}
+								</div>
+							</div>
 						</mat-option>
 					</mat-autocomplete>
 				</mat-form-field>

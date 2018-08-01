@@ -12,21 +12,26 @@
 			<span class="search-form hide-small">
 				<mat-form-field style="color:#333333 !important" class="mat-block" *ngIf="(isLoggedIn | async) && isAccountApproved" [floatLabel]="'never'">
 					<input #searchInputBar name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="myControl"
-					 [matAutocomplete]="auto" placeholder="Try 'Mumbai' ">
+					 [matAutocomplete]="auto" placeholder="Try 'Hyperledger' or 'Blockchain' ">
 					<mat-autocomplete #auto="matAutocomplete">
-						<mat-option *ngIf="searching" class="center">
+						<mat-option *ngIf="searching">
 							<span>
-								<ngx-loading [show]="true"></ngx-loading>
+								<ngx-loading [show]="true" style="position: absolute; top: 13px;"></ngx-loading>
 							</span>
 						</mat-option>
-						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)">
-							<span>
+						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)" style="height: auto;">
+							<div style="display: inline-block; vertical-align: middle;">
 								<img src="{{_searchService.getSearchOptionImage(option)}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
 								 (error)="_collectionService.imgErrorHandler($event)" />
-							</span>
-							<span>
-								{{_searchService.getSearchOptionText(option)}}
-							</span>
+							</div>
+							<div style="display: inline-block; vertical-align: middle;">
+								<div>
+									{{_searchService.getSearchOptionText(option)}}
+								</div>
+								<div class="mat-h5 lightText" style="margin-top: -14px;">
+									{{option.data.type | uppercase}}
+								</div>
+							</div>
 						</mat-option>
 					</mat-autocomplete>
 				</mat-form-field>
@@ -68,7 +73,7 @@
 					Saved
 				</button>
 				<button mat-button class="headerButtons hide-small" (click)="gotoConsoleLearning()" *ngIf="(isLoggedIn | async)">
-					Activities
+					Learner
 				</button>
 				<button mat-button class="headerButtons show-small-inline" (click)="showSearchBar()" *ngIf="(isLoggedIn | async) && isAccountApproved">
 					<mat-icon>search</mat-icon>
@@ -119,7 +124,7 @@
 				<!--<a mat-button class="headerButtons" href="/signup.html" *ngIf="!(isLoggedIn | async)">
 					Sign Up
 				</a>-->
-				<button mat-button class="headerButtons" [routerLink]="['/sign-up']" *ngIf="!(isLoggedIn | async)">
+				<button mat-button class="headerButtons" (click)="openSignup()" *ngIf="!(isLoggedIn | async)">
 					Sign up
 				</button>
 				<button mat-button class="headerButtons" (click)="openLogin()" *ngIf="!(isLoggedIn | async)">
@@ -230,18 +235,18 @@
 	<button mat-menu-item [routerLink]="['/console/dashboard']" *ngIf="isTeacher">
 		Dashboard
 	</button>
-	<button mat-menu-item (click)="createExperience()">
-		Create Experience
+	<button mat-menu-item (click)="createExistingTeacherExperience()">
+		Host an offline experience
 	</button>
-	<button mat-menu-item (click)="createClass()">
-		Create Class
+	<button mat-menu-item (click)="createExistingTeacherClass()">
+		Create an online class
 	</button>
-	<button mat-menu-item (click)="createSession()">
+	<button mat-menu-item (click)="createExistingTeacherSession()">
 		<span *ngIf="sessionId.length < 5">
-			Create Session
+			Start a peer session
 		</span>
 		<span *ngIf="isSessionApproved && sessionId.length > 5">
-			Edit Session
+			Edit session availability
 		</span>
 	</button>
 	<button mat-menu-item [routerLink]="['/console/teaching/all']" *ngIf="isTeacher">
@@ -301,7 +306,7 @@
 	<button mat-menu-item *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].isAdmin" [routerLink]="['/console/admin']">
 		<i class="fas fa-lock lighterText"></i>&nbsp;&nbsp; Admin
 	</button>
-	<button mat-menu-item [routerLink]="['/console/profile/account']">
+	<button mat-menu-item [routerLink]="['/console/profile']">
 		<i class="fas fa-pencil-alt lighterText"></i>&nbsp;&nbsp; Account Settings
 	</button>
 	<!-- <button mat-menu-item *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].ethAddress" [routerLink]="['/console/learning/story']">

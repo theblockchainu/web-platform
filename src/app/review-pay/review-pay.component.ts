@@ -145,7 +145,7 @@ export class ReviewPayComponent implements OnInit {
         this.profileService.getPeer(this.userId).subscribe(peer => {
             if (peer) {
             	this.student = peer;
-            	this.emailVerified = peer.profiles[0].emailVerified;
+            	this.emailVerified = peer.emailVerified;
                 this.createSourceData.email = peer.email;
                 this.createChargeData.customer = peer.stripeCustId;
                 this.custId = peer.stripeCustId;
