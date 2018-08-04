@@ -1,0 +1,131 @@
+<div class="dialog-container">
+  <div class="row">
+    <div class="col-xs-12">
+      <h2> Add Promo Code </h2>
+    </div>
+  </div>
+
+  <mat-horizontal-stepper class="hide-header" #stepper>
+    <mat-step>
+      <div class="row margin-top-10">
+        <form [formGroup]="promoCodeForm">
+          <div class="col-xs-12 margin-top-10">
+            <mat-form-field class="pb-block">
+              <input (keydown.space)="$event.preventDefault()" type="text" matInput placeholder="Code" formControlName="code">
+              <mat-hint align="start">
+                <strong>Enter the Code here</strong>
+              </mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="col-xs-12 margin-top-10">
+            <mat-form-field class="pb-block">
+              <textarea matInput placeholder="Description" #description maxlength="2000" formControlName="description"></textarea>
+              <mat-hint align="start">
+                <strong>Describe this promo code</strong>
+              </mat-hint>
+              <mat-hint align="end">{{description.value.length}}/2000</mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="col-xs-12 margin-top-10">
+            <div class="row">
+              <div class="col-xs-6">
+                <mat-form-field class="pb-block">
+                  <mat-select #discountType formControlName="discountType" placeholder="Discount Type">
+                    <mat-option *ngFor="let type of discountTypes" [value]="type">
+                      {{type|titlecase}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 margin-top-10">
+            <div class="row">
+              <div class="col-xs-6">
+                <mat-form-field class="pb-block">
+                  <input type="number" min=0 matInput placeholder="Discount Value" formControlName="discountValue">
+                  <mat-hint align="start">
+                    <strong>Discount value for the code</strong>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-xs-6">
+                <mat-form-field class="pb-block" *ngIf="discountType.value==='absolute'">
+                  <mat-select formControlName="discountCurrency" placeholder="Discount Currency">
+                    <mat-option [value]="'INR'"> INR </mat-option>
+                    <mat-option [value]="'USD'"> USD </mat-option>
+                  </mat-select>
+                  <mat-hint align="start">
+                    <strong>Currenct for discount value</strong>
+                  </mat-hint>
+                </mat-form-field>
+                <span *ngIf="discountType.value==='percentage'">
+                  %
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 margin-top-10">
+            <mat-form-field class="pb-block">
+              <input matInput [matDatepicker]="validFrom" #fromDate formControlName="validFrom" (click)="validFrom.open()" placeholder="Choose a Start date">
+              <mat-datepicker-toggle matSuffix [for]="validFrom"></mat-datepicker-toggle>
+              <mat-datepicker #validFrom></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-xs-6 margin-top-10">
+            <mat-form-field class="pb-block">
+              <input matInput [matDatepicker]="validTo" formControlName="validTo" (click)="validTo.open()" [min]="fromDate.value" placeholder="Choose a End date">
+              <mat-datepicker-toggle matSuffix [for]="validTo"></mat-datepicker-toggle>
+              <mat-datepicker #validTo></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-xs-12 margin-top-10">
+            <button type="button" matStepperNext class="pull-right" mat-raised-button color="accent">
+              Next
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-step>
+    <mat-step>
+      <div class="row">
+        <div [hidden]="allPeer" class="col-xs-12">
+          <mat-form-field class="pb-block">
+            <mat-chip-list #chipList>
+              <mat-chip *ngFor="let peer of selectedPeers" [selectable]="selectable" [removable]="removable" (remove)="removePeer(peer)">
+                {{peer.name}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+              </mat-chip>
+              <input placeholder="Select peers this story is visible to" #peerInput [formControl]="myControl" [matAutocomplete]="auto"
+                [matChipInputFor]="chipList" [matChipInputAddOnBlur]="addOnBlur" />
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of searchOptions" [value]="" (click)="onSearchOptionClicked(option)">
+                <span>
+                  <img src="{{envVariable.apiUrl+option.profiles[0].picture_url}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
+                    (error)="_collectionService.imgErrorHandler($event)" />
+                </span>
+                <span>
+                  {{option.profiles[0].first_name + ' ' + option.profiles[0].last_name }}
+                </span>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="col-xs-12">
+          <mat-checkbox [(ngModel)]="allPeer">Applies to everyone</mat-checkbox>
+        </div>
+      </div>
+      <div class="row margin-top-20">
+        <div class="col-xs-12 margin-top-10">
+          <button matStepperPrevious mat-raised-button>
+            Back
+          </button>
+          <button (click)="submitForm()" matStepperNext class="pull-right" mat-raised-button color="accent">
+            Submit
+          </button>
+        </div>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

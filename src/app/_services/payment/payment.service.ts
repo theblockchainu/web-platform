@@ -122,10 +122,10 @@ export class PaymentService {
 	/**
 	 * convertCurrency
 	 */
-	public convertCurrency(amount: number, from: string) {
+	public convertCurrency(amount: number, from: string, to?: number): Observable<{ amount: number, currency: string }> {
 		const body = {
 			'from': from,
-			'to': this._cookieUtilsService.getValue('currency'),
+			'to': (to) ? to : this._cookieUtilsService.getValue('currency'),
 			'amount': amount
 		};
 		console.log(body);
@@ -180,7 +180,7 @@ export class PaymentService {
 	public retrieveLocalPayoutAccounts() {
 		return this.http.get(environment.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue('userId') + '/payoutaccs', this._requestHeaderService.options).map(result => result);
 	}
-	
+
 	public getUserCountry() {
 		return this.http.get('http://ip-api.com/json').map(result => result);
 	}

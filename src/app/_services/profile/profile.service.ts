@@ -849,4 +849,8 @@ export class ProfileService {
 	public getAccreditationsSubscribed(peerId: string, filter: any) {
 		return this.http.get(environment.apiUrl + '/api/peers/' + peerId + '/accreditationsSubscribed?filter=' + JSON.stringify(filter), this._requestHeaderService.options);
 	}
+
+	public linkPromoCode(peerId: string, promoCodeId: string) {
+		return this.http.put(environment.apiUrl + '/api/peers/' + peerId + '/promoCodesApplied/rel/' + promoCodeId, {}, this._requestHeaderService.options);
+	}
 }

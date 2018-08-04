@@ -592,18 +592,13 @@ export class CollectionService {
 	/**
 	 * addParticipant
 	 collectionID:string,userId:string,calendarId:string   */
-	public addParticipant(collectionId: string, userId: string, calendarId: string, scholarshipId: string, cb) {
+	public addParticipant(collectionId: string, userId: string, calendarId: string, scholarshipId: string) {
 		const body = {
 			'calendarId': calendarId,
 			'scholarshipId': scholarshipId
 		};
-		this.httpClient
-			.put(environment.apiUrl + '/api/collections/' + collectionId + '/participants/rel/' + userId, body, this.requestHeaderService.options)
-			.map((response) => {
-				cb(null, response);
-			}, (err) => {
-				cb(err);
-			}).subscribe();
+		return this.httpClient
+			.put(environment.apiUrl + '/api/collections/' + collectionId + '/participants/rel/' + userId, body, this.requestHeaderService.options);
 	}
 
 	public linkCommunityToCollection(communityId, collectionId, cb) {
@@ -1052,6 +1047,20 @@ export class CollectionService {
 
 	public submitCertificate(experienceId: string, body: any) {
 		return this.httpClient.patch(environment.apiUrl + '/api/collections/' + experienceId + '/certificate_template', body, this.requestHeaderService.options);
+	}
+
+	public addPromoCode(collectionId: string, promoCodeObj: any) {
+		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/promoCodes', promoCodeObj, this.requestHeaderService.options);
+	}
+
+	public getPromoCode(collectionId: string, promoCode: string) {
+		const filter = {
+			'where': {
+				'code': promoCode
+			},
+			'include': ['peersAllowed']
+		};
+		return this.httpClient.get(environment.apiUrl + '/api/collections/' + collectionId + '/promoCodes?filter=' + JSON.stringify(filter), this.requestHeaderService.options);
 	}
 
 }

@@ -21,10 +21,7 @@ export class CurrencyPickerService {
 	 * @returns {Observable<any>}
 	 */
 	public getCurrencies() {
-		return this.http.get(environment.apiUrl + '/api/currencies', this.requestHeaderService.options)
-			.map((response: any) => {
-				return response;
-			});
+		return this.http.get(environment.apiUrl + '/api/currencies', this.requestHeaderService.options);
 	}
 
 }

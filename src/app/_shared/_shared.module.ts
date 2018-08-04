@@ -99,6 +99,7 @@ import { CustomCertificateFormComponent } from './custom-certificate-form/custom
 import { CertificateService } from '../_services/certificate/certificate.service';
 import { SafePipe } from './safe-pipe/safe.pipe';
 import { UploadFileComponent } from './upload-file/upload-file.component';
+import { PromocodeService } from '../_services/promocode/promocode.service';
 
 @NgModule({
     imports: [
@@ -193,7 +194,8 @@ import { UploadFileComponent } from './upload-file/upload-file.component';
         KnowledgeStoryService,
         UcWordsPipe,
         AccreditationService,
-        CertificateService
+        CertificateService,
+        PromocodeService
     ],
     exports: [
         CommonModule,
