@@ -191,7 +191,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 	}
 
 	getCurrencies() {
-		this._currencyService.getCurrencies().subscribe(currencies => {
+		this._currencyService.getCurrencies().subscribe((currencies: any) => {
 			this.currencies = currencies;
 			this.currenciesAsync.next(this.currencies);
 			this.profileForm.controls['currency'].valueChanges
