@@ -334,7 +334,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	private initializeAssessment(result) {
 		if (result.assessment_models[0]) {
-			this.assessmentForm.controls['type'].patchValue(result.assessment_models[0].type);
+			// this.assessmentForm.controls['type'].patchValue(result.assessment_models[0].type);
 			this.assessmentForm.controls['style'].patchValue(result.assessment_models[0].style);
 			if (result.assessment_models[0].assessment_rules && result.assessment_models[0].assessment_rules.length > 0) {
 				const rulesArray = <FormArray>this.assessmentForm.controls['rules'];

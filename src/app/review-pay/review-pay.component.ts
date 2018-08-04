@@ -7,11 +7,11 @@ import { PaymentService } from '../_services/payment/payment.service';
 import { CollectionService } from '../_services/collection/collection.service';
 import { environment } from '../../environments/environment';
 import { ScholarshipService } from '../_services/scholarship/scholarship.service';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { sha512 } from 'js-sha512';
-import {DialogsService} from '../_services/dialogs/dialog.service';
-
+import { DialogsService } from '../_services/dialogs/dialog.service';
+import { MatSnackBar } from '@angular/material';
 declare var Stripe: any;
 
 @Component({
@@ -59,6 +59,9 @@ export class ReviewPayComponent implements OnInit {
     public assessmentRules: Array<any>;
     public loadingCountry = true;
     public userCountry = 'USA';
+    public discountCode: FormControl;
+    public totalPrice: number;
+    public codefound: any;
 
     constructor(
         private _cookieUtilsService: CookieUtilsService,
@@ -71,7 +74,8 @@ export class ReviewPayComponent implements OnInit {
         private _scholarshipService: ScholarshipService,
         private titleService: Title,
         private metaService: Meta,
-        private _fb: FormBuilder
+        private _fb: FormBuilder,
+        private matSnackBar: MatSnackBar
     ) {
         this.envVariable = environment;
         this.activatedRoute.params.subscribe(params => {
@@ -116,6 +120,7 @@ export class ReviewPayComponent implements OnInit {
             if (collectionData) {
                 console.log(collectionData);
                 this.createChargeData.amount = (collectionData.price) * 100;
+                this.totalPrice = collectionData.price;
                 this.createChargeData.currency = collectionData.currency;
                 this.createChargeData.description = collectionData.description;
                 this.collection = collectionData;
@@ -144,19 +149,19 @@ export class ReviewPayComponent implements OnInit {
         });
         this.profileService.getPeer(this.userId).subscribe(peer => {
             if (peer) {
-            	this.student = peer;
-            	this.emailVerified = peer.emailVerified;
+                this.student = peer;
+                this.emailVerified = peer.emailVerified;
                 this.createSourceData.email = peer.email;
                 this.createChargeData.customer = peer.stripeCustId;
                 this.custId = peer.stripeCustId;
                 this.burnAddress = peer.ethAddress;
                 console.log(this.custId);
-                
+
                 if (!this.emailVerified) {
-                	this._dialogsService.openOnboardingDialog().subscribe(result => {
-                		// do nothing
-					});
-				}
+                    this._dialogsService.openOnboardingDialog().subscribe(result => {
+                        // do nothing
+                    });
+                }
 
                 // get all cards
                 this.paymentService.listAllCards(this.userId, this.custId).subscribe((cards: any) => {
@@ -174,35 +179,36 @@ export class ReviewPayComponent implements OnInit {
 
         });
         this.fetchScholarships();
+        this.discountCode = this._fb.control([]);
         this.scholarshipAmount = 0;
     }
 
     private sortAssessmentRules() {
-    	if (this.collection.assessment_models && this.collection.assessment_models.length > 0) {
-			const assessmentRulesUnsorted = <Array<any>>this.collection.assessment_models[0].assessment_rules;
-			this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
-				if (a.value > b.value) {
-					return 1;
-				} else if (a.value === b.value) {
-					return 0;
-				} else {
-					return -1;
-				}
-			});
-		}
+        if (this.collection.assessment_models && this.collection.assessment_models.length > 0) {
+            const assessmentRulesUnsorted = <Array<any>>this.collection.assessment_models[0].assessment_rules;
+            this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
+                if (a.value > b.value) {
+                    return 1;
+                } else if (a.value === b.value) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            });
+        }
     }
-    
+
     private getUserCountry() {
-    	this.loadingCountry = true;
-    	this.paymentService.getUserCountry().subscribe(res => {
-    		this.userCountry = res['countryCode'];
-    		console.log(this.userCountry);
-    		this.loadingCountry = false;
-		}, err => {
-    		console.log(err);
-    		this.loadingCountry = false;
-		});
-	}
+        this.loadingCountry = true;
+        this.paymentService.getUserCountry().subscribe(res => {
+            this.userCountry = res['countryCode'];
+            console.log(this.userCountry);
+            this.loadingCountry = false;
+        }, err => {
+            console.log(err);
+            this.loadingCountry = false;
+        });
+    }
 
     private setTags() {
         this.titleService.setTitle('Review & Pay');
@@ -228,6 +234,7 @@ export class ReviewPayComponent implements OnInit {
     public processPayment(e: Event) {
         console.log('processing payment');
         this.savingData = true;
+        this.createChargeData.amount = this.totalPrice * 100;
         e.preventDefault();
         if (this.collection.price > 0) {
             if (this.isCardExist === true && !this.useAnotherCard) {
@@ -238,13 +245,13 @@ export class ReviewPayComponent implements OnInit {
                         this.savingData = false;
                         this.joinCollection();
                     } else {
-                    	this.message = 'Payment unsuccessful. Please try again using another card or wait a few minutes.';
-                    	this.savingData = false;
-					}
+                        this.message = 'Payment unsuccessful. Please try again using another card or wait a few minutes.';
+                        this.savingData = false;
+                    }
                 }, (err: any) => {
-					this.message = 'Payment unsuccessful. Reason: ' + err.error.message;
-					this.savingData = false;
-				});
+                    this.message = 'Payment unsuccessful. Reason: ' + err.error.message;
+                    this.savingData = false;
+                });
             } else {
                 const form = document.querySelector('form');
                 const extraDetails = {
@@ -258,19 +265,19 @@ export class ReviewPayComponent implements OnInit {
                             if (res) {
                                 // console.log(JSON.stringify(res ));
                                 this.createChargeData.source = res.id;
-                                this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe( (resp: any) => {
-                                	if (resp) {
-										this.message = 'Payment successful. Redirecting...';
-										this.savingData = false;
-										this.joinCollection();
-									} else {
-										this.message = 'Error occurred. Please try again.';
-										this.savingData = false;
-									}
-								}, (err: any) => {
-									this.message = 'Payment unsuccessful. Reason: ' + err.error.message;
-									this.savingData = false;
-								});
+                                this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: any) => {
+                                    if (resp) {
+                                        this.message = 'Payment successful. Redirecting...';
+                                        this.savingData = false;
+                                        this.joinCollection();
+                                    } else {
+                                        this.message = 'Error occurred. Please try again.';
+                                        this.savingData = false;
+                                    }
+                                }, (err: any) => {
+                                    this.message = 'Payment unsuccessful. Reason: ' + err.error.message;
+                                    this.savingData = false;
+                                });
                             } else {
                                 this.message = 'Error occurred. Please try again.';
                                 this.savingData = false;
@@ -341,12 +348,19 @@ export class ReviewPayComponent implements OnInit {
     }
 
     public joinCollection() {
-        this._collectionService.addParticipant(this.collectionId, this.userId, this.collectionCalendarId, this.selectedScholarship, (err: any, response: any) => {
-            if (err) {
-                console.log(err);
+        this._collectionService.addParticipant(this.collectionId, this.userId, this.collectionCalendarId, this.selectedScholarship).subscribe((response: any) => {
+            if (this.codefound && this.codefound.id.length > 5) {
+                this.profileService.linkPromoCode(this.userId, this.codefound.id).subscribe(
+                    res => {
+                        this.router.navigate([this.collection.type, this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+                    }
+                );
             } else {
                 this.router.navigate([this.collection.type, this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
             }
+        }, err => {
+            console.log(err);
+            this.matSnackBar.open('Error Joining Collection. Please contact us.', 'Close', { duration: 3000 });
         });
     }
 
@@ -423,7 +437,7 @@ export class ReviewPayComponent implements OnInit {
     public getGyanForRule(gyanPercent, totalGyan) {
         return Math.floor((gyanPercent / 100) * totalGyan);
     }
-    
+
     /*public initiatePayuPayment() {
 		const hashSequence = 'wru4V51W|b2f35875-220c-4dd5-b39b-9955af0b875d|' + this.collection.price + '|' + this.collection.type + '-' + this.collection.id + '|' + this.student.profiles[0].first_name + '|' + this.student.email + '|||||||||||YlbRhVlw58';
 		const hash = sha512(hashSequence);
@@ -451,5 +465,60 @@ export class ReviewPayComponent implements OnInit {
 			}
 		});
 		
-	}*/
+    }*/
+
+
+    applyPromo() {
+        this._collectionService.getPromoCode(this.collectionId, this.discountCode.value).subscribe((res: any) => {
+            if (res.length > 0) {
+                const codefound = res[0];
+                console.log(res);
+                if (codefound.peersAllowed && codefound.peersAllowed.length > 0) {
+                    const peerFound = codefound.peersAllowed.find(peer => {
+                        return peer.id === this.userId;
+                    });
+                    if (peerFound) {
+                        if (moment().isBetween(moment(codefound.validFrom), moment(codefound.validTo))) {
+                            this.updatePrice(codefound);
+                        } else {
+                            this.matSnackBar.open('Promocode expired', 'Close', { duration: 3000 });
+                        }
+                    } else {
+                        this.matSnackBar.open('You are not allowed to use this code!', 'Close', { duration: 3000 });
+                    }
+                } else {
+                    if (moment().isBetween(moment(codefound.validFrom), moment(codefound.validTo))) {
+                        this.updatePrice(codefound);
+                    } else {
+                        this.matSnackBar.open('Promocode expired', 'Close', { duration: 3000 });
+                    }
+                }
+
+            } else {
+                this.matSnackBar.open('Invalid Code', 'Close', { duration: 3000 });
+            }
+        }, err => {
+            this.matSnackBar.open('Error applying code', 'Close', { duration: 3000 });
+        });
+    }
+
+    updatePrice(codefound) {
+        this.matSnackBar.open('Promocode successfully applied!', 'Close', { duration: 3000 });
+        if (codefound.discountType === 'percentage') {
+            this.totalPrice = this.collection.price - (this.collection.price * codefound.discountValue / 100);
+        } else if (codefound.discountType === 'absolute') {
+            this.paymentService.convertCurrency(codefound.discountValue, codefound.discountCurrency, this.collection.currency).subscribe(convertedAmount => {
+                this.totalPrice = this.collection.price - convertedAmount.amount;
+            });
+        }
+        this.codefound = codefound;
+        this.discountCode.disable();
+    }
+
+    removeCode() {
+        this.totalPrice = this.collection.price;
+        this.discountCode.reset();
+        this.discountCode.enable();
+        delete this.codefound;
+    }
 }

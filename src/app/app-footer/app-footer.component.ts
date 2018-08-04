@@ -11,12 +11,12 @@ import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.servic
 	styleUrls: ['./app-footer.component.scss']
 })
 export class AppFooterComponent implements OnInit {
-	
+
 	isLoggedIn: Observable<boolean>;
 	loggedIn: boolean;
 	public selectedCurrency = 'USD';
 	public availableCurrencies: Array<any>;
-	
+
 	constructor(
 		public authService: AuthenticationService,
 		public activatedRoute: ActivatedRoute,
@@ -29,15 +29,15 @@ export class AppFooterComponent implements OnInit {
 		});
 	}
 	ngOnInit() {
-		this._currencypickerService.getCurrencies().subscribe(res => {
+		this._currencypickerService.getCurrencies().subscribe((res: any) => {
 			console.log(res);
 			this.availableCurrencies = res;
 		});
 		this.selectedCurrency = this._cookieUtilsService.getValue('currency') && this._cookieUtilsService.getValue('currency').length > 0 ? this._cookieUtilsService.getValue('currency').toUpperCase() : 'USD';
 	}
-	
+
 	public updateCurrencyCookie() {
 		this._cookieUtilsService.setValue('currency', this.selectedCurrency);
 	}
-	
+
 }
