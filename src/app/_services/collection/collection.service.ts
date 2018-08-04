@@ -1053,13 +1053,7 @@ export class CollectionService {
 		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/promoCodes', promoCodeObj, this.requestHeaderService.options);
 	}
 
-	public getPromoCode(collectionId: string, promoCode: string) {
-		const filter = {
-			'where': {
-				'code': promoCode
-			},
-			'include': ['peersAllowed']
-		};
+	public getPromoCodes(collectionId: string, filter: any) {
 		return this.httpClient.get(environment.apiUrl + '/api/collections/' + collectionId + '/promoCodes?filter=' + JSON.stringify(filter), this.requestHeaderService.options);
 	}
 

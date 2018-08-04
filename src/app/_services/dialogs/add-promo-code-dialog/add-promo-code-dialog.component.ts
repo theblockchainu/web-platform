@@ -9,6 +9,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../../environments/environment';
 import { CollectionService } from '../../collection/collection.service';
+import { PromocodeService } from '../../promocode/promocode.service';
 @Component({
   selector: 'app-add-promo-code-dialog',
   templateUrl: './add-promo-code-dialog.component.html',
@@ -23,7 +24,7 @@ export class AddPromoCodeDialogComponent implements OnInit {
   public options: Array<any>;
   public selectedPeers: Array<PeerObject>;
   public filteredPeer: Observable<Array<any>>;
-  public allPeer = false;
+  public allPeer = true;
   public discountTypes: Array<string>;
   public availableCurrencies: Array<any>;
   visible = true;
@@ -32,29 +33,32 @@ export class AddPromoCodeDialogComponent implements OnInit {
   addOnBlur = true;
   public envVariable: any;
   public loadingData: boolean;
-
+  public data: any;
+  public collectionId: string;
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA];
 
   @ViewChild('peerInput') peerInput: ElementRef;
-
-
 
   constructor(
     private _fb: FormBuilder,
     private _communityService: CommunityService,
     public dialogRef: MatDialogRef<AddPromoCodeDialogComponent>,
     private matSnackBar: MatSnackBar,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public formdata: any,
     public _searchService: SearchService,
     private _CookieUtilsService: CookieUtilsService,
     private _profileService: ProfileService,
-    public _collectionService: CollectionService) {
-    this.userId = this._CookieUtilsService.getValue('userId');
-    this.envVariable = environment;
+    public _collectionService: CollectionService,
+    private promocodeService: PromocodeService) {
   }
 
   ngOnInit() {
+    this.userId = this._CookieUtilsService.getValue('userId');
+    this.envVariable = environment;
+    this.data = (this.formdata.promoCodeData) ? this.formdata.promoCodeData : {};
+    this.collectionId = this.formdata.collectionId;
+
     this.promoCodeForm = this._fb.group({
       code: this.data.code ? this.data.code : '',
       description: this.data.description ? this.data.description : '',
@@ -83,16 +87,30 @@ export class AddPromoCodeDialogComponent implements OnInit {
 
   public submitForm() {
     this.loadingData = true;
-    this._collectionService.addPromoCode(this.data,
-      this.promoCodeForm.value).subscribe(res => {
-        this.loadingData = false;
-        this.matSnackBar.open('Code Added', 'Close', { duration: 3000 });
-        this.dialogRef.close();
-      }, err => {
-        this.matSnackBar.open('Error in adding the code. Try again?', 'Retry', { duration: 3000 }).onAction().subscribe(res => {
-          this.submitForm();
+    if (this.data.id) {
+      this.promocodeService.patchPromoCode(this.data.id,
+        this.promoCodeForm.value).subscribe(res => {
+          this.loadingData = false;
+          this.matSnackBar.open('Code Updated', 'Close', { duration: 3000 });
+          this.dialogRef.close();
+        }, err => {
+          this.matSnackBar.open('Error in adding the code. Try again?', 'Retry', { duration: 3000 }).onAction().subscribe(res => {
+            this.submitForm();
+          });
         });
-      });
+    } else {
+      this._collectionService.addPromoCode(this.collectionId,
+        this.promoCodeForm.value).subscribe(res => {
+          this.loadingData = false;
+          this.matSnackBar.open('Code Added', 'Close', { duration: 3000 });
+          this.dialogRef.close();
+        }, err => {
+          this.matSnackBar.open('Error in adding the code. Try again?', 'Retry', { duration: 3000 }).onAction().subscribe(res => {
+            this.submitForm();
+          });
+        });
+    }
+
   }
 
 

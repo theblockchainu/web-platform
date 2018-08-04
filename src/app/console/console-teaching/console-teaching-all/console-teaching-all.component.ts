@@ -40,7 +40,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
 		public consoleTeachingComponent: ConsoleTeachingComponent,
 		public router: Router,
 		public _collectionService: CollectionService,
-		private _dialogService: DialogsService,
+		public _dialogService: DialogsService,
 		private _cookieUtilsService: CookieUtilsService,
 		public dialog: MatDialog,
 		public snackBar: MatSnackBar,

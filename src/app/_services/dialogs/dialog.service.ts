@@ -58,6 +58,8 @@ import { TermsAndConditionsDialogComponent } from './terms-and-conditions-dialog
 import { CancelCohortDialogComponent } from './cancel-cohort-dialog/cancel-cohort-dialog.component';
 import { OnboardingDialogComponent } from './onboarding-dialog/onboarding-dialog.component';
 import { AddPromoCodeDialogComponent } from './add-promo-code-dialog/add-promo-code-dialog.component';
+import { ViewPromocodeDialogComponent } from './view-promocode-dialog/view-promocode-dialog.component';
+
 @Injectable()
 export class DialogsService {
 
@@ -665,6 +667,17 @@ export class DialogsService {
 
     public addPromoCodeDialog(collectionId: string) {
         const dialogRef = this.dialog.open(AddPromoCodeDialogComponent, {
+            data: { collectionId: collectionId },
+            panelClass: 'responsive-dialog',
+            width: '55vw',
+            height: '80vh'
+        });
+
+        return dialogRef.afterClosed();
+    }
+
+    public viewPromoCodeDialog(collectionId: string) {
+        const dialogRef = this.dialog.open(ViewPromocodeDialogComponent, {
             data: collectionId,
             panelClass: 'responsive-dialog',
             width: '55vw',

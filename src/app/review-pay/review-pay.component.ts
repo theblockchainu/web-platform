@@ -469,7 +469,13 @@ export class ReviewPayComponent implements OnInit {
 
 
     applyPromo() {
-        this._collectionService.getPromoCode(this.collectionId, this.discountCode.value).subscribe((res: any) => {
+        const filter = {
+            'where': {
+                'code': this.discountCode.value
+            },
+            'include': ['peersAllowed']
+        };
+        this._collectionService.getPromoCodes(this.collectionId, filter).subscribe((res: any) => {
             if (res.length > 0) {
                 const codefound = res[0];
                 console.log(res);
