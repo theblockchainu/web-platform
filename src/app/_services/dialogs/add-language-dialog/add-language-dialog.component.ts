@@ -14,8 +14,8 @@ export class AddLanguageDialogComponent implements OnInit {
   public newLanguage: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<AddLanguageDialogComponent>,
-              public _contentService: ContentService,
-              private _fb: FormBuilder) { }
+    public _contentService: ContentService,
+    private _fb: FormBuilder) { }
 
   ngOnInit() {
     this.newLanguage = this._fb.group({
@@ -25,10 +25,10 @@ export class AddLanguageDialogComponent implements OnInit {
 
   addNewLanguage() {
     this._contentService.addNewLanguage(this.newLanguage.controls['name'].value)
-        .map((res) => {
-          this.dialogRef.close(res);
-        })
-        .subscribe();
+      .subscribe((res : any) => {
+        this.dialogRef.close(res);
+      })
+      ;
   }
 
 }

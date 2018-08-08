@@ -14,8 +14,8 @@ export class AddTopicDialogComponent implements OnInit {
   public newTopic: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<AddTopicDialogComponent>,
-              public _topicService: TopicService,
-              private _fb: FormBuilder) { }
+    public _topicService: TopicService,
+    private _fb: FormBuilder) { }
 
   ngOnInit() {
     this.newTopic = this._fb.group({
@@ -25,10 +25,10 @@ export class AddTopicDialogComponent implements OnInit {
 
   addNewTopic() {
     this._topicService.addNewTopic(this.newTopic.controls['topicName'].value)
-        .map((res) => {
-          this.dialogRef.close(res);
-        })
-        .subscribe();
+      .subscribe((res : any) => {
+        this.dialogRef.close(res);
+      })
+      ;
   }
 
 }

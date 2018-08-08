@@ -144,7 +144,7 @@ export class ConsoleTeachingSessionComponent implements OnInit {
 			content: session,
 			participants: session.peers
 		};
-		this.dialogsService.startLiveSession(data).subscribe(result => {
+		this.dialogsService.startLiveSession(data).subscribe((result: any) => {
 		});
 	}
 	

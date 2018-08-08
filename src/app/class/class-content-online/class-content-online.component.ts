@@ -50,7 +50,7 @@ export class ClassContentOnlineComponent implements OnInit {
         this.image = contentForm.controls['imageUrl'];
         this.attachments = contentForm.controls['supplementUrls'];
         this.attachments.value.forEach(file => {
-            this.contentService.getMediaObject(file).subscribe((res) => {
+            this.contentService.getMediaObject(file).subscribe((res : any) => {
                 this.attachmentUrls.push(res[0]);
             });
         });
@@ -175,7 +175,7 @@ export class ClassContentOnlineComponent implements OnInit {
 
     public addAttachmentUrl(url: string) {
         this.attachments.push(new FormControl(url));
-        this.contentService.getMediaObject(url).subscribe((res) => {
+        this.contentService.getMediaObject(url).subscribe((res : any) => {
             this.attachmentUrls.push(res[0]);
         });
     }
@@ -188,7 +188,7 @@ export class ClassContentOnlineComponent implements OnInit {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
         this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-            .subscribe((response) => {
+            .subscribe((response : any) => {
                 console.log(response);
                 if (fileType === 'file') {
                     const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
@@ -202,7 +202,7 @@ export class ClassContentOnlineComponent implements OnInit {
                     this.attachmentUrls = [];
                     suppUrl.forEach(file => {
                         supplementUrls.push(new FormControl(file));
-                        this.contentService.getMediaObject(file).subscribe((res) => {
+                        this.contentService.getMediaObject(file).subscribe((res : any) => {
                             this.attachmentUrls.push(res[0]);
                         });
                     });

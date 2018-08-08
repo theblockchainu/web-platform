@@ -44,7 +44,7 @@ export class ContentOnlineComponent implements OnInit {
 		this.classId = data.collectionId;
 		this.userId = _cookieUtilsService.getValue('userId');
 		data.content.supplementUrls.forEach(file => {
-			this.contentService.getMediaObject(file).subscribe((res) => {
+			this.contentService.getMediaObject(file).subscribe((res : any) => {
 				this.attachmentUrls.push(res[0]);
 			});
 		});
@@ -204,7 +204,7 @@ export class ContentOnlineComponent implements OnInit {
 			content: content,
 			participants: this.data.collection.participants
 		};
-		this.dialogsService.startLiveSession(data).subscribe(result => {
+		this.dialogsService.startLiveSession(data).subscribe((result: any) => {
 		});
 	}
 	

@@ -49,7 +49,7 @@ export class ConsoleProfilePhotosComponent implements OnInit {
 	uploadVideo(event) {
 		this.uploadingVideo = true;
 		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response) => {
+			this.mediaUploader.upload(file).subscribe((response : any) => {
 				this.profile_video = response.url;
 				this._profileService.updateProfile(this.userId, {
 					'profile_video': response.url
@@ -68,7 +68,7 @@ export class ConsoleProfilePhotosComponent implements OnInit {
 	uploadImage(event) {
 		this.uploadingImage = true;
 		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response) => {
+			this.mediaUploader.upload(file).subscribe((response : any) => {
 				this.picture_url = response.url;
 				this._profileService.updateProfile(this.userId, {
 					'picture_url': response.url

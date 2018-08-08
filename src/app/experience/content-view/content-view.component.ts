@@ -55,7 +55,7 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 	) {
 		this.envVariable = environment;
 		this.countryPickerService.getCountries()
-			.subscribe((countries) => this.countries = countries);
+			.subscribe((countries: any) => this.countries = countries);
 	}
 
 	ngOnInit() {
@@ -277,7 +277,7 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 				break;
 		}
 
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result !== undefined) {
 				console.log(result);
 				result = JSON.parse(result);

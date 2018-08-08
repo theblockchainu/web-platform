@@ -118,7 +118,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 				}
 			}
 			if (peer.accountVerified && peer.verificationIdUrl) {
-				this.contentService.getMediaObject(peer.verificationIdUrl).subscribe((res) => {
+				this.contentService.getMediaObject(peer.verificationIdUrl).subscribe((res : any) => {
 					this.alreadyVerified.push({
 						text: 'Government Id',
 						value: res[0]
@@ -127,7 +127,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 				
 			} else {
 				if (peer.verificationIdUrl && peer.verificationIdUrl.length > 5) {
-					this.contentService.getMediaObject(peer.verificationIdUrl).subscribe((res) => {
+					this.contentService.getMediaObject(peer.verificationIdUrl).subscribe((res : any) => {
 						this.notVerified.push({
 							text: 'Government Id',
 							value: res[0],

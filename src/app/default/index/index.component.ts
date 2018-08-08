@@ -86,7 +86,7 @@ export class IndexComponent implements OnInit {
 		);
 
 		this.userId = this._cookieUtilsService.getValue('userId');
-		this.authenticationService.isLoggedIn().pipe(first()).subscribe((res) => {
+		this.authenticationService.isLoggedIn().pipe(first()).subscribe((res: any) => {
 			this.loggedIn = res;
 			if (this.loggedIn) {
 				this._router.navigate(['home', 'homefeed']);
@@ -112,7 +112,7 @@ export class IndexComponent implements OnInit {
 		this.myControl.valueChanges.subscribe((value) => {
 			console.log(value);
 			this.options = [];
-			if (value.length > 0) {
+			if (value && value.length > 0) {
 				this.searching = true;
 				this._searchService.getAllSearchResults(null, value, (err, result) => {
 					if (!err) {
@@ -196,7 +196,7 @@ export class IndexComponent implements OnInit {
 		this.loadingClasses = true;
 		this.classes = [];
 		this._topicService.getTopics(query).subscribe(
-			(response) => {
+			(response: any) => {
 				this.loadingClasses = false;
 				for (const responseObj of response) {
 					responseObj.collections.forEach(collection => {
@@ -256,7 +256,7 @@ export class IndexComponent implements OnInit {
 		this.loadingExperiences = true;
 		this.experiences = [];
 		this._topicService.getTopics(query).subscribe(
-			(response) => {
+			(response: any) => {
 				for (const responseObj of response) {
 					responseObj.collections.forEach(collection => {
 						let experienceLocation = 'Unknown location';
@@ -340,7 +340,7 @@ export class IndexComponent implements OnInit {
 		};
 		this.loadingCommunities = true;
 		this._topicService.getTopics(query).subscribe(
-			(response) => {
+			(response: any) => {
 				this.loadingCommunities = false;
 				this.communities = [];
 				for (const responseObj of response) {
@@ -505,7 +505,7 @@ export class IndexComponent implements OnInit {
 	}
 
 	public gotoCredit() {
-		this.dialogsService.openLogin().subscribe(result => {
+		this.dialogsService.openLogin().subscribe((result: any) => {
 			if (result) {
 				this._router.navigateByUrl('/invite/1');
 			}

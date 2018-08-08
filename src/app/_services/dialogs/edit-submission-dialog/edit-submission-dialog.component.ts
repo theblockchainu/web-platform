@@ -88,7 +88,7 @@ export class EditSubmissionDialogComponent implements OnInit {
 		const fileurl = fileUrl;
 		fileUrl = _.replace(fileUrl, 'download', 'files');
 		this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-			.subscribe((response) => {
+			.subscribe((response : any) => {
 				console.log(response);
 				this.urlForImages = [];
 				this.submitEntryForm.controls['picture_url'].patchValue('');
@@ -98,7 +98,7 @@ export class EditSubmissionDialogComponent implements OnInit {
 	uploadImage(event) {
 		this.uploadingImage = true;
 		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response) => {
+			this.mediaUploader.upload(file).subscribe((response : any) => {
 				this.addImageUrl(response.url);
 				this.uploadingImage = false;
 			});
@@ -107,7 +107,7 @@ export class EditSubmissionDialogComponent implements OnInit {
 
 	public addImageUrl(value) {
 		console.log('Adding image url: ' + value);
-		this._contentService.getMediaObject(value).subscribe((res) => {
+		this._contentService.getMediaObject(value).subscribe((res : any) => {
 			this.urlForImages.push(res[0]);
 		});
 		const control = <FormArray>this.submitEntryForm.controls['picture_url'];

@@ -169,7 +169,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 	}
 
 	getLanguages() {
-		this._languageService.getLanguages().subscribe(data => {
+		this._languageService.getLanguages().subscribe((data: any) => {
 			this.languages = data;
 			this.languagesAsync.next(this.languages);
 			this.profileForm.controls['preferred_language'].valueChanges.pipe(
@@ -210,7 +210,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 
 	getTimezones() {
 		const filter = `{  "order": "offset ASC" }`;
-		this._timezoneService.getTimezones(filter).subscribe(timezones => {
+		this._timezoneService.getTimezones(filter).subscribe((timezones: any) => {
 			this.timezones = timezones;
 			this.timezoneAsync.next(this.timezones);
 			this.profileForm.controls['timezone'].valueChanges.pipe(
@@ -396,25 +396,25 @@ export class ConsoleProfileEditComponent implements OnInit {
 		this.busyUpdate = true;
 		this._profileService.updateProfile(this.userId, profileData)
 			.pipe(
-				flatMap((response) => {
+				flatMap((response: any) => {
 					return this._profileService.updatePhoneNumbers(this.userId, this.profile.id, phone_numbers);
 				}),
-				flatMap((response) => {
+				flatMap((response: any) => {
 					return this._profileService.updateEmergencyContact(this.userId, this.profile.id, emergency_contacts);
 				}),
-				flatMap((response) => {
+				flatMap((response: any) => {
 					return this._profileService.updateWork(this.userId, this.profile.id, work);
 				}),
-				flatMap((response) => {
+				flatMap((response: any) => {
 					return this._profileService.updateEducation(this.userId, this.profile.id, education);
 				}),
-				flatMap((response) => {
+				flatMap((response: any) => {
 					return this._profileService.updatePeer(this.userId, { 'email': email });
 				}),
-				flatMap((response) => {
+				flatMap((response: any) => {
 					return this._profileService.updatePeer(this.userId, { 'phone': profileData.phone_numbers });
 				})
-			).subscribe((response) => {
+			).subscribe((response: any) => {
 				this.busyUpdate = false;
 				this.snackBar.open('Profile Updated', 'Close', {
 					duration: 5000
@@ -424,7 +424,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 				console.log(err);
 				this.snackBar.open('Profile Update Failed', 'Retry', {
 					duration: 5000
-				}).onAction().subscribe((response) => {
+				}).onAction().subscribe((response: any) => {
 					this.busyUpdate = false;
 					this.saveProfile();
 				});

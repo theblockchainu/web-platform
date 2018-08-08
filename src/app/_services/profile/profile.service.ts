@@ -302,7 +302,7 @@ export class ProfileService {
 	public deleteProfileWorks(profileId, cb) {
 		this.http
 			.delete(environment.apiUrl + '/api/profiles/' + profileId + '/work', this._requestHeaderService.options)
-			.subscribe((response) => {
+			.subscribe((response : any) => {
 				cb(null, response);
 			}, (err) => {
 				cb(err);
@@ -322,7 +322,7 @@ export class ProfileService {
 			return this.http.delete(environment.apiUrl + '/api/profiles/' + profileId + '/work', this._requestHeaderService.options)
 				.pipe(
 					flatMap(
-						(response) => {
+						(response : any) => {
 							return this.http
 								.post(environment.apiUrl + '/api/profiles/' + profileId + '/work', this.sanitize(work), this._requestHeaderService.options);
 						}
@@ -338,7 +338,7 @@ export class ProfileService {
 			return this.http.delete(environment.apiUrl + '/api/profiles/' + profileId + '/emergency_contacts', this._requestHeaderService.options)
 				.pipe(
 					flatMap(
-						(response) => {
+						(response : any) => {
 							return this.http
 								.post(environment.apiUrl + '/api/profiles/' + profileId + '/emergency_contacts', this.sanitize(emergency_contact), this._requestHeaderService.options);
 						}
@@ -353,7 +353,7 @@ export class ProfileService {
 		} else {
 			return this.http.delete(environment.apiUrl + '/api/profiles/' + profileId + '/phone_numbers', this._requestHeaderService.options)
 				.pipe(flatMap(
-					(response) => {
+					(response : any) => {
 						return this.http
 							.post(environment.apiUrl + '/api/profiles/' + profileId + '/phone_numbers', this.sanitize(phone_numbers), this._requestHeaderService.options);
 					}
@@ -384,7 +384,7 @@ export class ProfileService {
 	public deleteProfileEducations(profileId, cb) {
 		this.http
 			.delete(environment.apiUrl + '/api/profiles/' + profileId + '/education', this._requestHeaderService.options)
-			.subscribe((response) => {
+			.subscribe((response : any) => {
 				cb(null, response);
 			}, (err) => {
 				cb(err);
@@ -412,7 +412,7 @@ export class ProfileService {
 		} else {
 			return this.http.delete(environment.apiUrl + '/api/profiles/' + profileId + '/education', this._requestHeaderService.options)
 				.pipe(
-					flatMap((response) => {
+					flatMap((response : any) => {
 						return this.http
 							.post(environment.apiUrl + '/api/profiles/' + profileId + '/education', this.sanitize(education), this._requestHeaderService.options);
 					})
@@ -501,7 +501,7 @@ export class ProfileService {
 		if (body) {
 			console.log(topicId + ' ' + body.experience);
 			return this.http.delete(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId, this._requestHeaderService.options)
-				.pipe(flatMap((response) => {
+				.pipe(flatMap((response : any) => {
 					return this.http.put(environment.apiUrl + '/api/peers/' + userId + '/topicsTeaching/rel/' + topicId, body, this._requestHeaderService.options);
 				}));
 		} else {
@@ -764,7 +764,7 @@ export class ProfileService {
 		const filter = JSON.stringify(query);
 		this.http
 			.get(environment.apiUrl + '/api/peers/' + userId + '/bookmarks' + '?filter=' + filter, this._requestHeaderService.options)
-			.subscribe((response) => {
+			.subscribe((response : any) => {
 				cb(null, response);
 			}, (err) => {
 				cb(err);

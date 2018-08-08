@@ -119,7 +119,7 @@ export class ConsoleTeachingComponent implements OnInit {
         // Show popup here
         const query = { 'relInclude': 'calendarId', 'include': ['profiles', 'reviewsAboutYou'] };
         this._collectionService.getParticipants(collection.id, query).subscribe(
-            result => {
+            (result: any) => {
                 const participants = result;
                 const data = collection;
                 data.participants = participants;

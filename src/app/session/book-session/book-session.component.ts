@@ -159,7 +159,7 @@ export class BookSessionComponent implements OnInit {
 				{ owners: 'profiles' }
 			]
 		};
-		this.profileService.getCollections(this.teacherId, filter).subscribe(result => {
+		this.profileService.getCollections(this.teacherId, filter).subscribe((result: any) => {
 			const res = result[0];
 			this.session = res;
 			if (res.availability && res.availability.length > 0) {

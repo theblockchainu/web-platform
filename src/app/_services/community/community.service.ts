@@ -49,7 +49,7 @@ export class CommunityService {
         const body = {};
         this.http
             .put(environment.apiUrl + '/api/communities/' + communityId + '/participants/rel/' + userId, body, this.requestHeaderService.options)
-            .subscribe((response) => {
+            .subscribe((response : any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
@@ -71,7 +71,7 @@ export class CommunityService {
         this.http
             .get(environment.apiUrl + '/api/communities/' + communityId + '/comments' + '?filter=' + filter, this.requestHeaderService.options)
             .subscribe(
-                (response) => {
+                (response : any) => {
                     cb(null, response);
                 }, (err) => {
                     cb(err);
@@ -85,7 +85,7 @@ export class CommunityService {
     public postComments(communityId: string, commentBody: any, cb) {
         this.http
             .post(environment.apiUrl + '/api/communities/' + communityId + '/comments', commentBody, this.requestHeaderService.options)
-            .subscribe((response) => {
+            .subscribe((response : any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
@@ -102,7 +102,7 @@ export class CommunityService {
         const filter = JSON.stringify(query);
         this.http
             .get(environment.apiUrl + '/api/communities/' + communityId + '/questions' + '?filter=' + filter, this.requestHeaderService.options)
-            .subscribe((response) => {
+            .subscribe((response : any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
@@ -119,7 +119,7 @@ export class CommunityService {
         const filter = JSON.stringify(query);
         this.http
             .get(environment.apiUrl + '/api/communities/' + communityId + '/links' + '?filter=' + filter, this.requestHeaderService.options)
-            .subscribe((response) => {
+            .subscribe((response : any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
@@ -136,7 +136,7 @@ export class CommunityService {
         const filter = JSON.stringify(query);
         this.http
             .get(environment.apiUrl + '/api/communities/' + communityId + '/collections' + '?filter=' + filter, this.requestHeaderService.options)
-            .subscribe((response) => {
+            .subscribe((response : any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
@@ -209,7 +209,7 @@ export class CommunityService {
         const body = {};
         this.http
             .post(environment.apiUrl + '/api/communities/' + communityId + '/bookmarks', body, this.requestHeaderService.options)
-            .subscribe((response) => {
+            .subscribe((response : any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
@@ -220,7 +220,7 @@ export class CommunityService {
         const body = {};
         this.http
             .delete(environment.apiUrl + '/api/bookmarks/' + bookmarkId, this.requestHeaderService.options)
-            .subscribe((response) => {
+            .subscribe((response : any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
@@ -234,7 +234,7 @@ export class CommunityService {
         const filter = JSON.stringify(query);
         this.http
             .get(environment.apiUrl + '/api/communities/' + communityId + '/bookmarks' + '?filter=' + filter, this.requestHeaderService.options)
-            .subscribe((response) => {
+            .subscribe((response : any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
@@ -268,7 +268,7 @@ export class CommunityService {
     public addLinkToCommunity(communityId, linkBody, cb) {
         this.http
             .post(environment.apiUrl + '/api/communities/' + communityId + '/links', linkBody, this.requestHeaderService.options)
-            .subscribe((response) => {
+            .subscribe((response : any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);

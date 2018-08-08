@@ -58,7 +58,7 @@ export class ContentProjectComponent implements OnInit {
 		}
 		this.userId = cookieUtilsService.getValue('userId');
 		this.data.content.supplementUrls.forEach(file => {
-			this.contentService.getMediaObject(file).subscribe((res) => {
+			this.contentService.getMediaObject(file).subscribe((res : any) => {
 				this.attachmentUrls.push(res[0]);
 			});
 		});

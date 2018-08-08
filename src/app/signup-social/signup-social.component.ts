@@ -163,7 +163,7 @@ export class SignupSocialComponent implements OnInit {
 			password: password
 		};
 		this._walletService.fixWallet(this.userId, passwordObj)
-			.subscribe(result => {
+			.subscribe((result: any) => {
 				this.snackbar.open('Successfully updated wallet. Redirecting...', 'Ok', { duration: 5000 });
 				this.authService.isLoginSubject.next(true);
 				this.router.navigate(['verification', '1']);

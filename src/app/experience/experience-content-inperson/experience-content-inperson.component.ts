@@ -58,7 +58,7 @@ export class ExperienceContentInpersonComponent implements OnInit {
         this.image = this.contentForm.controls['imageUrl'];
         this.attachments = this.contentForm.controls['supplementUrls'];
         this.attachments.value.forEach(file => {
-            this.contentService.getMediaObject(file).subscribe((res) => {
+            this.contentService.getMediaObject(file).subscribe((res : any) => {
                 this.attachmentUrls.push(res[0]);
             });
         });
@@ -207,7 +207,7 @@ export class ExperienceContentInpersonComponent implements OnInit {
     public addAttachmentUrl(url: string) {
         // console.log('Adding image url: ' + value);
         this.attachments.push(new FormControl(url));
-        this.contentService.getMediaObject(url).subscribe((res) => {
+        this.contentService.getMediaObject(url).subscribe((res : any) => {
             this.attachmentUrls.push(res[0]);
         });
     }
@@ -220,7 +220,7 @@ export class ExperienceContentInpersonComponent implements OnInit {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
         this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-            .subscribe((response) => {
+            .subscribe((response : any) => {
                 console.log(response);
                 if (fileType === 'file') {
                     const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
@@ -234,7 +234,7 @@ export class ExperienceContentInpersonComponent implements OnInit {
                     this.attachmentUrls = [];
                     suppUrl.forEach(file => {
                         supplementUrls.push(new FormControl(file));
-                        this.contentService.getMediaObject(file).subscribe((res) => {
+                        this.contentService.getMediaObject(file).subscribe((res : any) => {
                             this.attachmentUrls.push(res[0]);
                         });
                     });

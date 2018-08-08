@@ -72,7 +72,7 @@ export class ConsoleAccountWalletComponent implements OnInit {
 			.subscribe(res => {
 				if (res) {
 					this._walletService.fixWallet(this.userId, res)
-						.subscribe(result => {
+						.subscribe((result: any) => {
 								this.snackBar.open('Successfully updated wallet', 'Ok', { duration: 5000 });
 								this.fetchTransactions();
 								this._authService.isLoginSubject.next(true);

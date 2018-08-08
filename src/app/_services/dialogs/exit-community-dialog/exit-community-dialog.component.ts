@@ -18,7 +18,7 @@ export class ExitCommunityDialogComponent implements OnInit {
     }
 
     dropOut() {
-        this._communityService.removeParticipant(this.data.communityId, this.data.userId).subscribe((response) => {
+        this._communityService.removeParticipant(this.data.communityId, this.data.userId).subscribe((response : any) => {
             this.dialogRef.close(true);
         }, err => {
             this.snackBar.open('Couldn&#39;t cancel membership', 'Retry', {

@@ -216,7 +216,7 @@ export class UploadDocsComponent implements OnInit {
 	public resendEmailOTP() {
 		this.httpLoading = true;
 		this._profileService.sendVerifyEmail(this.userId, this.emailForm.controls.email.value)
-			.subscribe((response) => {
+			.subscribe((response: any) => {
 				this.httpLoading = false;
 				this.snackBar.open('Code Resent', 'OK', {
 					duration: 5000
@@ -232,7 +232,7 @@ export class UploadDocsComponent implements OnInit {
 	public resendPhoneOTP() {
 		this.httpLoading = true;
 		this._profileService.sendVerifySms(this.phoneForm.controls.phone.value, this.phoneForm.controls.countryCode.value.code)
-			.subscribe((response) => {
+			.subscribe((response: any) => {
 				this.httpLoading = false;
 				this.snackBar.open('Code Resent', 'OK', {
 					duration: 5000
@@ -251,7 +251,7 @@ export class UploadDocsComponent implements OnInit {
 				'verificationIdUrl': this.peer.controls['verificationIdUrl'].value,
 				'email': this.peer.controls['email'].value
 			})
-			.subscribe((response) => {
+			.subscribe((response: any) => {
 				console.log('File Saved Successfully');
 			}, (err) => {
 				console.log('Error updating Peer: ');
@@ -262,7 +262,7 @@ export class UploadDocsComponent implements OnInit {
 	verifyEmail(nextStep) {
 		this.httpLoading = true;
 		this._profileService.confirmEmail(this.userId, '' + this.emailOtp.controls['inputOTP'].value)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				this.httpLoading = false;
 				this.success = res;
 				this.step = nextStep;
@@ -283,7 +283,7 @@ export class UploadDocsComponent implements OnInit {
 	verifyPhone(nextStep) {
 		this.httpLoading = true;
 		this._profileService.confirmSmsOTP('' + this.phoneOtp.controls['inputOTP'].value)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				this.httpLoading = false;
 				this.success = res;
 				this.step = nextStep;
@@ -308,13 +308,13 @@ export class UploadDocsComponent implements OnInit {
 		this.uploadingImage = true;
 		console.log(event.files);
 		for (const file of event.files) {
-			this.mediaUploader.upload(file).map((responseObj) => {
+			this.mediaUploader.upload(file).subscribe((responseObj: any) => {
 				this.verificationIdUrl = responseObj.url;
 				this.fileName = responseObj['originalFilename'];
 				this.fileType = responseObj.type;
 				this.peer.controls['verificationIdUrl'].setValue(responseObj.url);
 				this.uploadingImage = false;
-			}).subscribe();
+			});
 		}
 	}
 

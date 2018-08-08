@@ -242,7 +242,7 @@ export class SubmissionViewComponent implements OnInit {
         const commentId = commentBody.id;
         delete commentBody.id;
         this._collectionService.updateComment(commentId, commentBody).subscribe(
-            result => {
+            (result: any) => {
                 if (result) {
                     delete this.editCommentForm;
                     this.getDiscussions();
@@ -294,7 +294,7 @@ export class SubmissionViewComponent implements OnInit {
         const replyId = replyBody.id;
         delete replyBody.id;
         this._commentService.updateReply(replyId, replyBody).subscribe(
-            result => {
+            (result: any) => {
                 if (result) {
                     delete this.editReplyForm;
                     this.getDiscussions();

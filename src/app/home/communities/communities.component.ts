@@ -114,7 +114,7 @@ export class CommunitiesComponent implements OnInit {
         };
         return this._topicService.getTopics(query).pipe(
             map(
-                (response) => {
+                (response : any) => {
                     const availableTopics = [];
                     response.forEach(topic => {
                         availableTopics.push({ 'topic': topic, 'checked': false });
@@ -164,7 +164,7 @@ export class CommunitiesComponent implements OnInit {
 
         this._topicService.getTopics(query)
             .subscribe(
-                (response) => {
+                (response : any) => {
                     const communities = [];
                     for (const responseObj of response) {
                         responseObj.communities.forEach(community => {
@@ -226,7 +226,7 @@ export class CommunitiesComponent implements OnInit {
             }
         });
 
-        dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().subscribe((result: any) => {
             if (result) {
                 this.availableTopics = result;
                 this.fetchCommunities();

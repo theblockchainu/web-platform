@@ -44,7 +44,7 @@ export class ConsoleAccountSecurityComponent implements OnInit {
   public changePassword() {
     this.busyChangePassword = true;
     const passwordData = this.changePasswordForm.value;
-    this._profileService.changePassword(this.userId, passwordData.oldPassword, passwordData.newPassword).subscribe((res) => {
+    this._profileService.changePassword(this.userId, passwordData.oldPassword, passwordData.newPassword).subscribe((res : any) => {
       console.log(res);
     });
   }

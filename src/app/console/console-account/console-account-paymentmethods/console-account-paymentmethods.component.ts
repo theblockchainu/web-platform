@@ -63,7 +63,7 @@ export class ConsoleAccountPaymentmethodsComponent implements OnInit {
   }
 
   public addCard() {
-    this.dialogService.addCard().subscribe(result => {
+    this.dialogService.addCard().subscribe((result: any) => {
       if (result) {
         this.createSourceData.token = result.token.id;
         this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: any) => {

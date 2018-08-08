@@ -835,7 +835,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	 */
 	public changeDates() {
 		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.experience.type, this.experience.maxSpots, this.accountApproved, this.userId)
-			.subscribe(result => {
+			.subscribe((result: any) => {
 				if (result) {
 					this.router.navigate(['experience', this.experienceId, 'calendar', result]);
 				}
@@ -846,7 +846,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	 * cancelExperience
 	 */
 	public cancelExperience() {
-		this.dialogsService.openCancelCollection(this.experience).subscribe((response) => {
+		this.dialogsService.openCancelCollection(this.experience).subscribe((response : any) => {
 			if (response) {
 				this.initializePage();
 			}
@@ -857,7 +857,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	 * dropoutExperience
 	 */
 	public dropOutExperience() {
-		this.dialogsService.openExitCollection(this.experienceId, this.userId).subscribe((response) => {
+		this.dialogsService.openExitCollection(this.experienceId, this.userId).subscribe((response : any) => {
 			if (response) {
 				this.router.navigate(['experience', this.experienceId]);
 			}
@@ -868,7 +868,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	 * deleteExperience
 	 */
 	public deleteExperience() {
-		this.dialogsService.openDeleteCollection(this.experience).subscribe((response) => {
+		this.dialogsService.openDeleteCollection(this.experience).subscribe((response : any) => {
 			if (response) {
 				this.router.navigate(['/console/teaching/experiences']);
 			}
@@ -1020,7 +1020,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			height: '90vh'
 		});
 
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
 				location.reload();
 			}
@@ -1054,7 +1054,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	public cancelCohort() {
-		this.dialogsService.cancelCohortDialog(this.calendarId).subscribe((res) => {
+		this.dialogsService.cancelCohortDialog(this.calendarId).subscribe((res : any) => {
 			if (res) {
 				this.initializePage();
 			}
@@ -1064,7 +1064,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	public deleteCohort() {
-		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res) => {
+		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res : any) => {
 			if (res) {
 				this.initializePage();
 			}
@@ -1198,7 +1198,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			]
 		};
 		this._topicService.getTopics(query).subscribe(
-			(response) => {
+			(response : any) => {
 				for (const responseObj of response) {
 					responseObj.collections.forEach(collection => {
 						let experienceLocation = 'Unknown location';
@@ -1258,7 +1258,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public selectJoiningDates() {
 
 		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.experience.type, this.experience.maxSpots, this.accountApproved, this.userId)
-			.subscribe(result => {
+			.subscribe((result: any) => {
 				if (result) {
 					if (this.userId) {
 						this.router.navigate(['review-pay', 'collection', this.experienceId, result]);
@@ -1369,7 +1369,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public postReview() {
 		this.busyReview = true;
 		this._collectionService.postReview(this.experience.owners[0].id, this.reviewForm.value).subscribe(
-			result => {
+			(result: any) => {
 				if (result) {
 					this.busyReview = false;
 					this.getReviews();
@@ -1388,7 +1388,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		reviewBody.score = this.newUserRating;
 		delete reviewBody.id;
 		this._collectionService.updateReview(reviewId, reviewBody).subscribe(
-			result => {
+			(result: any) => {
 				if (result) {
 					this.busyReview = false;
 					delete this.editReviewForm;
@@ -1407,7 +1407,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		const commentId = commentBody.id;
 		delete commentBody.id;
 		this._collectionService.updateComment(commentId, commentBody).subscribe(
-			result => {
+			(result: any) => {
 				if (result) {
 					this.busyDiscussion = false;
 					delete this.editCommentForm;
@@ -1426,7 +1426,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		const replyId = replyBody.id;
 		delete replyBody.id;
 		this._commentService.updateReply(replyId, replyBody).subscribe(
-			result => {
+			(result: any) => {
 				if (result) {
 					this.busyReply = false;
 					delete this.editReplyForm;
@@ -1772,7 +1772,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						});
 					}
 				});
-				this._assessmentService.submitAssessment(assessmentArray).subscribe(result => {
+				this._assessmentService.submitAssessment(assessmentArray).subscribe((result: any) => {
 					console.log(result);
 					this.initializeExperience();
 					this.snackBar.open('Your assessment has been submitted. Students will be informed over email.', 'Ok', { duration: 5000 });
@@ -1794,7 +1794,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	public openMessageDialog(peer) {
-		this.dialogsService.messageParticipant(peer).subscribe(result => {
+		this.dialogsService.messageParticipant(peer).subscribe((result: any) => {
 		});
 	}
 

@@ -34,7 +34,7 @@ export class ShowRSVPPopupComponent implements OnInit {
         if (isPresent ) {
             paramIsPresent = true;
         }
-        this._collectionService.markPresence(attendie.id, attendie.rsvpId, paramIsPresent).subscribe((response) => {
+        this._collectionService.markPresence(attendie.id, attendie.rsvpId, paramIsPresent).subscribe((response : any) => {
             this.hasChanged = true;
             console.log('removed rsvp');
         });

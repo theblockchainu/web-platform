@@ -49,7 +49,7 @@ export class ContentInpersonComponent implements OnInit {
 		this.experienceId = data.collectionId;
 		this.userId = _cookieUtilsService.getValue('userId');
 		data.content.supplementUrls.forEach(file => {
-			this.contentService.getMediaObject(file).subscribe((res) => {
+			this.contentService.getMediaObject(file).subscribe((res : any) => {
 				this.attachmentUrls.push(res[0]);
 			});
 		});
@@ -247,7 +247,7 @@ export class ContentInpersonComponent implements OnInit {
 			height: '90vh'
 		});
 		
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
 				location.reload();
 			}

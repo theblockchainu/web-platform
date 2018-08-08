@@ -102,7 +102,7 @@ export class CreateAccreditationDialogComponent implements OnInit {
     body = {
       'targetIds': topicArray
     };
-    this.accreditationService.linkTopics(accreditationId, body).subscribe((res) => {
+    this.accreditationService.linkTopics(accreditationId, body).subscribe((res : any) => {
       this.dialogRef.close(true);
       this.snackBar.open('Accreditation Created', 'close', { duration: 3000 });
     }, err => {

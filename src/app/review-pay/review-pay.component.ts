@@ -116,7 +116,7 @@ export class ReviewPayComponent implements OnInit {
             },
         });
 
-        this.paymentService.getCollectionDetails(this.collectionId).subscribe(collectionData => {
+        this.paymentService.getCollectionDetails(this.collectionId).subscribe((collectionData: any) => {
             if (collectionData) {
                 console.log(collectionData);
                 this.createChargeData.amount = (collectionData.price) * 100;
@@ -158,7 +158,7 @@ export class ReviewPayComponent implements OnInit {
                 console.log(this.custId);
 
                 if (!this.emailVerified) {
-                    this._dialogsService.openOnboardingDialog().subscribe(result => {
+                    this._dialogsService.openOnboardingDialog().subscribe((result: any) => {
                         // do nothing
                     });
                 }
@@ -422,7 +422,7 @@ export class ReviewPayComponent implements OnInit {
         this.selectedScholarship = 'NA';
         this.scholarshipForm.value.scholarships.forEach(scholarship => {
             if (scholarship.selected) {
-                this._scholarshipService.getKarmaBalance(scholarship.id).subscribe(res => {
+                this._scholarshipService.getKarmaBalance(scholarship.id).subscribe((res: any) => {
                     this.scholarshipAmount += Math.min(Math.min(this.karma, res), scholarship.max_karma);
                     this.burnAddress = scholarship.ethAddress;
                     this.selectedScholarship = scholarship.id;

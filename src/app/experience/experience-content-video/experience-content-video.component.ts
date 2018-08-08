@@ -50,7 +50,7 @@ export class ExperienceContentVideoComponent implements OnInit {
         this.urlForVideo = contentForm.controls['imageUrl'].value;
         this.attachments = contentForm.controls['supplementUrls'];
         this.attachments.value.forEach(file => {
-            this.contentService.getMediaObject(file).subscribe((res) => {
+            this.contentService.getMediaObject(file).subscribe((res : any) => {
                 this.attachmentUrls.push(res[0]);
             });
         });
@@ -74,7 +74,7 @@ export class ExperienceContentVideoComponent implements OnInit {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
         this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-            .subscribe((response) => {
+            .subscribe((response : any) => {
                 console.log(response);
                 if (fileType === 'file') {
                     const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
@@ -88,7 +88,7 @@ export class ExperienceContentVideoComponent implements OnInit {
                     this.attachmentUrls = [];
                     suppUrl.forEach(file => {
                         supplementUrls.push(new FormControl(file));
-                        this.contentService.getMediaObject(file).subscribe((res) => {
+                        this.contentService.getMediaObject(file).subscribe((res : any) => {
                             this.attachmentUrls.push(res[0]);
                         });
                     });
@@ -116,7 +116,7 @@ export class ExperienceContentVideoComponent implements OnInit {
     //       const fileurl = file;
     //       file = _.replace(file, 'download', 'files');
     //       this.http.delete(environment.apiUrl + file)
-    //         .map((response) => {
+    //         .map((response : any) => {
     //           console.log(response);
     //           if (fileType === 'video') {
     //             this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -141,7 +141,7 @@ export class ExperienceContentVideoComponent implements OnInit {
         this.filesUploaded = 0;
         this.uploadingAttachments = true;
         for (const file of event.files) {
-            this.mediaUploader.upload(file).subscribe((response) => {
+            this.mediaUploader.upload(file).subscribe((response : any) => {
                 this.addAttachmentUrl(response);
                 this.filesUploaded++;
                 this.uploadingAttachments = false;

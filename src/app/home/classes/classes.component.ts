@@ -196,7 +196,7 @@ export class ClassesComponent implements OnInit {
 			order: 'name ASC'
 		};
 		return this._topicService.getTopics(query).pipe(map(
-			(response) => {
+			(response : any) => {
 				const availableTopics = [];
 				response.forEach(topic => {
 					availableTopics.push({ 'topic': topic, 'checked': false });
@@ -234,7 +234,7 @@ export class ClassesComponent implements OnInit {
 
 		this._topicService.getTopics(query)
 			.subscribe(
-				(response) => {
+				(response : any) => {
 					const classes = [];
 					for (const responseObj of response) {
 						responseObj.collections.forEach(collection => {
@@ -326,7 +326,7 @@ export class ClassesComponent implements OnInit {
 			}
 		});
 
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
 				this.availableTopics = result;
 				this.fetchClasses();
@@ -350,7 +350,7 @@ export class ClassesComponent implements OnInit {
 			}
 		});
 
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
 				this.selectedRange = result.selectedRange;
 				this.fitlerResults();
@@ -373,7 +373,7 @@ export class ClassesComponent implements OnInit {
 				left: this.durationButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
 			}
 		});
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
 				this.selectedDurationRange = result.selectedRange;
 				this.fitlerResults();

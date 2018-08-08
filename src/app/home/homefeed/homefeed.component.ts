@@ -219,7 +219,7 @@ export class HomefeedComponent implements OnInit {
 		};
 		this.loadingClasses = true;
 		this._topicService.getTopics(query).subscribe(
-			(response) => {
+			(response : any) => {
 				this.loadingClasses = false;
 				this.classes = [];
 				for (const responseObj of response) {
@@ -275,7 +275,7 @@ export class HomefeedComponent implements OnInit {
 		};
 		this.loadingExperiences = true;
 		this._topicService.getTopics(query).subscribe(
-			(response) => {
+			(response : any) => {
 				this.loadingExperiences = false;
 				this.experiences = [];
 				for (const responseObj of response) {
@@ -355,7 +355,7 @@ export class HomefeedComponent implements OnInit {
 		};
 		this.loadingCommunities = true;
 		this._topicService.getTopics(query).subscribe(
-			(response) => {
+			(response : any) => {
 				this.loadingCommunities = false;
 				this.communities = [];
 				for (const responseObj of response) {

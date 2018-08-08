@@ -151,7 +151,7 @@ export class ProfileComponent implements OnInit {
 	}
 
 	public getPeerData() {
-		this._profileService.getPeerNode(this.urluserId).subscribe(result => {
+		this._profileService.getPeerNode(this.urluserId).subscribe((result: any) => {
 			this.peerObj = result;
 		});
 	}
@@ -355,7 +355,7 @@ export class ProfileComponent implements OnInit {
 				}
 			]
 		};
-		this._profileService.getExternalProfileData(this.urluserId, query).subscribe((response) => {
+		this._profileService.getExternalProfileData(this.urluserId, query).subscribe((response: any) => {
 			this.profileObj = response[0];
 			console.log(this.profileObj);
 			if (this.profileObj.other_languages) {
@@ -586,7 +586,7 @@ export class ProfileComponent implements OnInit {
 	}
 
 	public reportProfile() {
-		this._dialogsService.reportProfile().subscribe(result => {
+		this._dialogsService.reportProfile().subscribe((result: any) => {
 			if (result) {
 				// console.log('report' + result);
 				this._profileService.reportProfile(this.urluserId, {
@@ -658,7 +658,7 @@ export class ProfileComponent implements OnInit {
 	 * openCollectionGrid
 	 type:string,title:string,collecions   */
 	public openCollectionGrid(title: string, collections: Array<any>) {
-		this._dialogsService.openCollectionGrid(title, collections).subscribe(result => {
+		this._dialogsService.openCollectionGrid(title, collections).subscribe((result: any) => {
 			if (result) {
 				this.router.navigateByUrl('/' + collections[0].type + '/' + result);
 			}
@@ -682,7 +682,7 @@ export class ProfileComponent implements OnInit {
 	public openMessageDialog() {
 		this.peerObj.profiles = [];
 		this.peerObj.profiles.push(this.profileObj);
-		this._dialogsService.messageParticipant(this.peerObj).subscribe(result => {
+		this._dialogsService.messageParticipant(this.peerObj).subscribe((result: any) => {
 			// console.log(result);
 		});
 	}
@@ -706,7 +706,7 @@ export class ProfileComponent implements OnInit {
 		const topics = [];
 		const peers = [];
 		this._dialogsService.generateKnowledgeStoryDialog(this.cookieUserId, inputs)
-			.subscribe(dialogResult => {
+			.subscribe((dialogResult: any) => {
 				let createdKnowledgeStoryId;
 				if (dialogResult) {
 					dialogResult.selectedTopics.forEach(topic => {
@@ -724,7 +724,7 @@ export class ProfileComponent implements OnInit {
 							createdKnowledgeStoryId = res.id;
 							return this._knowledgeStoryService.connectTopics(res.id, { targetIds: topics }).pipe(
 								map(
-									result => {
+									(result: any) => {
 										this._knowledgeStoryService.connectPeers(res.id, { targetIds: peers }).subscribe(peersConnected => {
 											console.log('peers connected');
 										});
@@ -757,7 +757,7 @@ export class ProfileComponent implements OnInit {
 		};
 		const topics: Array<string> = [];
 		this._dialogsService.requestStoryDialog(this.cookieUserId, inputs)
-			.subscribe(result => {
+			.subscribe((result: any) => {
 				if (result) {
 					result.forEach(topic => {
 						topics.push(topic.id);

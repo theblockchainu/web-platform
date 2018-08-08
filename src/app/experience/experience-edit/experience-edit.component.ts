@@ -583,7 +583,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.availableDefaultAssessments = this.assesmentService.getAvailableAssessments();
 
 		this.countryPickerService.getCountries()
-			.subscribe((countries) => this.countries = countries);
+			.subscribe((countries: any) => this.countries = countries);
 
 		this.languagePickerService.getLanguages()
 			.subscribe((languages) => {
@@ -843,7 +843,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	uploadImage(event) {
 		this.uploadingImage = true;
 		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response) => {
+			this.mediaUploader.upload(file).subscribe((response: any) => {
 				this.addImageUrl(response.url);
 				this.uploadingImage = false;
 			}, err => {
@@ -1040,7 +1040,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		const itinerary = data.controls.contentGroup.value.itenary;
 		if (body.startDate && body.endDate && itinerary && itinerary.length > 0 && this.totalDuration > 0) {
 			this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body, this.requestHeaderService.options)
-				.subscribe((response) => {
+				.subscribe((response: any) => {
 					if (this.exitAfterSave) {
 						this.exit();
 					} else {
@@ -1098,7 +1098,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 					flatMap(res => {
 						return this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel', body, this.requestHeaderService.options);
 					})
-				).subscribe((res) => {
+				).subscribe((res: any) => {
 					this._collectionService.getCollectionDetail(this.experienceId, this.query)
 						.subscribe((resData) => {
 							this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
@@ -1114,7 +1114,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				});
 			} else {
 				this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel', body, this.requestHeaderService.options)
-					.subscribe((res) => {
+					.subscribe((res: any) => {
 						this._collectionService.getCollectionDetail(this.experienceId, this.query)
 							.subscribe((resData) => {
 								this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
@@ -1156,7 +1156,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	submitForReview() {
 		// Post Experience for review
 		this._collectionService.submitForReview(this.experienceId)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				this.experience.controls.status.setValue('submitted');
 				console.log('Experience submitted for review');
 				this.isSubmitted = true;
@@ -1208,7 +1208,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		let topic;
 		this.dialogsService
 			.addNewTopic()
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				if (res) {
 					topic = res;
 					topic.checked = true;
@@ -1222,7 +1222,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	addNewLanguage() {
 		this.dialogsService
 			.addNewLanguage()
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				if (res) {
 					this.languagesArray.push(res);
 					this.experience.controls.selectedLanguage.patchValue(res.name);
@@ -1292,7 +1292,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		const fileurl = fileUrl;
 		fileUrl = _.replace(fileUrl, 'download', 'files');
 		this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-			.subscribe((response) => {
+			.subscribe((response: any) => {
 				console.log(response);
 				if (fileType === 'video') {
 					this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -1316,7 +1316,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			const fileurl = file;
 			file = _.replace(file, 'download', 'files');
 			this.http.delete(environment.apiUrl + file, this.requestHeaderService.options)
-				.subscribe((response) => {
+				.subscribe((response: any) => {
 					console.log(response);
 					if (fileType === 'video') {
 						this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -1345,7 +1345,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 		element.textContent = text;
 		this._collectionService.sendVerifySMS(this.phoneDetails.controls.phoneNo.value, this.phoneDetails.controls.countryCode.value)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				this.otpSent = true;
 				this.phoneDetails.controls.phoneNo.disable();
 				this.phoneDetails.controls.countryCode.disable();
@@ -1355,7 +1355,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	submitOTP() {
 		this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				console.log(res);
 				this.snackBar.open('Token Verified', 'Close', {
 					duration: 5000
@@ -1382,7 +1382,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	private retrieveAccounts() {
 		this.payoutAccounts = [];
-		this._paymentService.retrieveConnectedAccount().subscribe(result => {
+		this._paymentService.retrieveConnectedAccount().subscribe((result: any) => {
 			console.log(result);
 			if (result.length > 0) {
 				this.payoutAccounts = result;

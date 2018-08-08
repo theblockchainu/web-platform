@@ -37,7 +37,7 @@ export class ViewEntryDialogComponent implements OnInit {
     public viewSubmission(submissionId) {
         const query = '{"include":[{"upvotes":"peer"}, {"peer": "profiles"}, ' +
             '{"comments": [{"peer": {"profiles": "work"}}, {"replies": [{"peer": {"profiles": "work"}}]}]}]}';
-        this._projectSubmissionService.viewSubmission(submissionId, query).subscribe((response) => {
+        this._projectSubmissionService.viewSubmission(submissionId, query).subscribe((response : any) => {
             if (response) {
                 const dialogRef = this.dialog.open(SubmissionViewComponent, {
                     data: {

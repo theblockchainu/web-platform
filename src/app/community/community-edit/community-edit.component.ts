@@ -759,7 +759,7 @@ export class CommunityEditComponent implements OnInit {
       let observable: Observable<any>;
       observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.communityId + '/topics/rel', body, this.requestHeaderService.options)
         .pipe(publishReplay(), refCount());
-      observable.subscribe((res) => {
+      observable.subscribe((res : any) => {
         this.step++;
         this._collectionService.getCollectionDetail(this.communityId, this.query)
           .subscribe((resData) => {
@@ -779,7 +779,7 @@ export class CommunityEditComponent implements OnInit {
     //   topicArray.forEach(topicId => {
     //     observable = this._topicService.relTopicCollection(this.communityId, topicId)
     //                   .map(response => response).publishReplay().refCount();
-    //     observable.subscribe((res) => {
+    //     observable.subscribe((res : any) => {
     //       this.step++;
     //       this._collectionService.getCollectionDetail(this.communityId, this.query)
     //         .subscribe((resData) => {
@@ -819,7 +819,7 @@ export class CommunityEditComponent implements OnInit {
   submitForReview() {
     // Post Community for review
     this._collectionService.submitForReview(this.communityId)
-      .subscribe((res) => {
+      .subscribe((res : any) => {
         this.community.controls.status.setValue('submitted');
         console.log('Community submitted for review');
         this.isSubmitted = true;
@@ -845,7 +845,7 @@ export class CommunityEditComponent implements OnInit {
       const body = data.value.calendar;
       if (body.startDate && body.endDate) {
         this.http.patch(environment.apiUrl + '/api/collections/' + this.communityId + '/calendar', body, this.requestHeaderService.options)
-          .subscribe((response) => {
+          .subscribe((response : any) => {
             this.busySave = false;
             this.router.navigate(['console/teaching/communities']);
           })
@@ -862,7 +862,7 @@ export class CommunityEditComponent implements OnInit {
       const body = data.value;
       delete body.selectedLanguage;
       this._collectionService.patchCollection(this.communityId, body).subscribe(
-        (response) => {
+        (response : any) => {
           this.router.navigate(['console/teaching/communities']);
         });
     }
@@ -878,7 +878,7 @@ export class CommunityEditComponent implements OnInit {
     let topic;
     this.dialogsService
       .addNewTopic()
-      .subscribe((res) => {
+      .subscribe((res : any) => {
         if (res) {
           topic = res;
           topic.checked = true;
@@ -892,7 +892,7 @@ export class CommunityEditComponent implements OnInit {
   addNewLanguage() {
     this.dialogsService
       .addNewLanguage()
-      .subscribe((res) => {
+      .subscribe((res : any) => {
         if (res) {
           this.languagesArray.push(res);
           this.community.controls.selectedLanguage.patchValue(res.name);
@@ -962,7 +962,7 @@ export class CommunityEditComponent implements OnInit {
     const fileurl = fileUrl;
     fileUrl = _.replace(fileUrl, 'download', 'files');
     this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-      .subscribe((response) => {
+      .subscribe((response : any) => {
         console.log(response);
         if (fileType === 'video') {
           this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -986,7 +986,7 @@ export class CommunityEditComponent implements OnInit {
       const fileurl = file;
       file = _.replace(file, 'download', 'files');
       this.http.delete(environment.apiUrl + file, this.requestHeaderService.options)
-        .subscribe((response) => {
+        .subscribe((response : any) => {
           console.log(response);
           if (fileType === 'video') {
             this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -1015,7 +1015,7 @@ export class CommunityEditComponent implements OnInit {
 
     element.textContent = text;
     this._collectionService.sendVerifySMS(this.phoneDetails.controls.phoneNo.value, this.phoneDetails.controls.countryCode.value)
-      .subscribe((res) => {
+      .subscribe((res : any) => {
         this.otpSent = true;
         this.phoneDetails.controls.phoneNo.disable();
         element.textContent = 'OTP Sent';
@@ -1024,7 +1024,7 @@ export class CommunityEditComponent implements OnInit {
 
   submitOTP() {
     this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
-      .subscribe((res) => {
+      .subscribe((res : any) => {
         console.log(res);
         this.snackBar.open('Token Verified', 'close', {
           duration: 5000
@@ -1063,7 +1063,7 @@ export class CommunityEditComponent implements OnInit {
 
   private retrieveAccounts() {
     this.payoutAccounts = [];
-    this._paymentService.retrieveConnectedAccount().subscribe(result => {
+    this._paymentService.retrieveConnectedAccount().subscribe((result: any) => {
       console.log(result);
       this.payoutAccounts = result;
       result.forEach(account => {

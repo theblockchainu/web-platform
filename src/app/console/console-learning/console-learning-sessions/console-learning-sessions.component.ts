@@ -140,7 +140,7 @@ export class ConsoleLearningSessionsComponent implements OnInit {
 			content: session,
 			participants: [this.participant]
 		};
-		this.dialogsService.startLiveSession(data).subscribe(result => {
+		this.dialogsService.startLiveSession(data).subscribe((result: any) => {
 		});
 	}
 	

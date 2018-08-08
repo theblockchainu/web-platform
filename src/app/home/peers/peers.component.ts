@@ -155,7 +155,7 @@ export class PeersComponent implements OnInit {
 		this.loading = true;
 		this._topicService.getTopics(query)
 			.subscribe(
-				(response) => {
+				(response : any) => {
 					const peers = [];
 					response.forEach(topic => {
 						topic.peersTeaching.forEach(peer => {
@@ -190,7 +190,7 @@ export class PeersComponent implements OnInit {
 		};
 		this._topicService.getTopics(query).pipe(
 			map(
-				(response) => {
+				(response : any) => {
 					const availableTopics = [];
 					response.forEach(topic => {
 						availableTopics.push({ 'topic': topic, 'checked': false });

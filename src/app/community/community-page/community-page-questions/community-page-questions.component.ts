@@ -183,7 +183,7 @@ export class CommunityPageQuestionsComponent implements OnInit {
                 this.questionForm.value['gyan'] = 1;
             }
             this.busyQuestion = true;
-            this._communityService.postQuestion(this.communityId, this.questionForm.value).subscribe(result => {
+            this._communityService.postQuestion(this.communityId, this.questionForm.value).subscribe((result: any) => {
                 this._authService.isLoginSubject.next(true);
                 this.questionForm.reset();
                 this.busyQuestion = false;

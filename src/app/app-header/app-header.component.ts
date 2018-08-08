@@ -207,7 +207,7 @@ export class AppHeaderComponent implements OnInit {
 	public getMessages() {
 		if (this.userId) {
 			this._inboxService.getRoomData(5)
-				.subscribe((response) => {
+				.subscribe((response: any) => {
 					if (response) {
 						this.sortFilterJoinedRooms(response);
 						this.tempJoinedRooms = this.joinedRooms;
@@ -262,7 +262,7 @@ export class AppHeaderComponent implements OnInit {
 	// 		}
 	// 	});
 
-	// 	dialogRef.afterClosed().subscribe(result => {
+	// 	dialogRef.afterClosed().subscribe((result: any) => {
 	// 		if (this.makeOldNotification.length > 0) {
 	// 			this.makeOldNotification.forEach(notifItem => {
 	// 				this._notificationService.updateNotification(this.userId, notifItem, (err, patchResult) => {
@@ -290,7 +290,7 @@ export class AppHeaderComponent implements OnInit {
 			}
 		});
 
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: any) => {
 			this.getMessages();
 		});
 	}
@@ -357,7 +357,7 @@ export class AppHeaderComponent implements OnInit {
 			if (res) {
 				this.router.navigateByUrl('/home');
 			} else {
-				this.dialogsService.openLogin().subscribe(result => {
+				this.dialogsService.openLogin().subscribe((result: any) => {
 					if (result) {
 						this.router.navigateByUrl('/home');
 					}
@@ -371,7 +371,7 @@ export class AppHeaderComponent implements OnInit {
 			if (res) {
 				this.router.navigateByUrl('/console/learning/bookmarks');
 			} else {
-				this.dialogsService.openLogin().subscribe(result => {
+				this.dialogsService.openLogin().subscribe((result: any) => {
 					if (result) {
 						this.router.navigateByUrl('/console/learning/bookmarks');
 					}
@@ -385,7 +385,7 @@ export class AppHeaderComponent implements OnInit {
 			if (res) {
 				this.router.navigateByUrl('/console/learning/all');
 			} else {
-				this.dialogsService.openLogin().subscribe(result => {
+				this.dialogsService.openLogin().subscribe((result: any) => {
 					if (result) {
 						this.router.navigateByUrl('/console/learning/all');
 					}

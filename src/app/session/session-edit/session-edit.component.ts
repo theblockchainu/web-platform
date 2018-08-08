@@ -330,7 +330,7 @@ export class SessionEditComponent implements OnInit {
 		const queryTeaching = {
 			'relInclude': 'experience'
 		};
-		this._profileService.getTeachingTopics(this.userId, queryTeaching).subscribe((response) => {
+		this._profileService.getTeachingTopics(this.userId, queryTeaching).subscribe((response: any) => {
 			console.log(response);
 			// Topics
 			this.relTopics = _.uniqBy(response, 'id');
@@ -495,7 +495,7 @@ export class SessionEditComponent implements OnInit {
 		this.key = 'access_token';
 
 		this.countryPickerService.getCountries()
-			.subscribe((countries) => this.countries = countries);
+			.subscribe((countries: any) => this.countries = countries);
 
 		this.languagePickerService.getLanguages()
 			.subscribe((languages) => {
@@ -566,7 +566,7 @@ export class SessionEditComponent implements OnInit {
 
 	private retrieveAccounts() {
 		this.payoutAccounts = [];
-		this._paymentService.retrieveConnectedAccount().subscribe(result => {
+		this._paymentService.retrieveConnectedAccount().subscribe((result: any) => {
 			this.payoutAccounts = result;
 			Array.from(this.payoutAccounts).forEach(account => {
 				if (this.payoutRuleNodeId && this.payoutRuleAccountId && account.payoutaccount.id === this.payoutRuleAccountId) {
@@ -581,7 +581,7 @@ export class SessionEditComponent implements OnInit {
 			console.log(err);
 			this.payoutLoading = false;
 		});
-		/*this._paymentService.retrieveLocalPayoutAccounts().subscribe(result => {
+		/*this._paymentService.retrieveLocalPayoutAccounts().subscribe((result: any) => {
 		  console.log(result);
 		  this.payoutAccounts = result;
 		  this.payoutLoading = false;
@@ -779,7 +779,7 @@ export class SessionEditComponent implements OnInit {
 		console.log('topics');
 		if (topicArray.length !== 0) {
 			this.http.patch(environment.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel', body, this.requestHeaderService.options)
-				.subscribe((response) => {
+				.subscribe((response: any) => {
 					this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
 						{ topicsObject: response });
 					this._collectionService.patchCollection(this.sessionId, {
@@ -816,7 +816,7 @@ export class SessionEditComponent implements OnInit {
 	submitForReview() {
 		// Post Session for review
 		this._collectionService.submitForReview(this.sessionId)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				this.session.controls.status.setValue('submitted');
 				this.isSubmitted = true;
 				this.dialogsService.openCollectionSubmitDialog({
@@ -846,7 +846,7 @@ export class SessionEditComponent implements OnInit {
 		const body = data.value;
 		delete body.selectedLanguage;
 		this._collectionService.patchCollection(this.sessionId, body)
-			.subscribe((response) => {
+			.subscribe((response: any) => {
 				this.router.navigate(['console/teaching/sessions']);
 			});
 	}
@@ -861,7 +861,7 @@ export class SessionEditComponent implements OnInit {
 		let topic;
 		this.dialogsService
 			.addNewTopic()
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				if (res) {
 					topic = res;
 					topic.checked = true;
@@ -875,7 +875,7 @@ export class SessionEditComponent implements OnInit {
 	addNewLanguage() {
 		this.dialogsService
 			.addNewLanguage()
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				if (res) {
 					this.languagesArray.push(res);
 					this.session.controls.selectedLanguage.patchValue(res.name);
@@ -952,7 +952,7 @@ export class SessionEditComponent implements OnInit {
 
 		element.textContent = text;
 		this._collectionService.sendVerifySMS(this.phoneDetails.controls.phoneNo.value, this.phoneDetails.controls.countryCode.value)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				this.otpSent = true;
 				this.phoneDetails.controls.phoneNo.disable();
 				this.phoneDetails.controls.countryCode.disable();
@@ -962,7 +962,7 @@ export class SessionEditComponent implements OnInit {
 
 	submitOTP() {
 		this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				this.snackBar.open('Token Verified', 'Close', {
 					duration: 5000
 				});
@@ -1009,14 +1009,14 @@ export class SessionEditComponent implements OnInit {
 	 */
 	public saveProfile() {
 		this._profileService.updateProfile(this.userId, this.profileForm.value)
-			.subscribe((response) => {
+			.subscribe((response: any) => {
 				this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
 					{ profileObject: response });
 				this.nextStep();
 			}, (err) => {
 				console.log('Error updating Peer: ');
 				console.log(err);
-				this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe((response) => {
+				this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe((response: any) => {
 					this.saveProfile();
 				});
 			});
@@ -1025,17 +1025,17 @@ export class SessionEditComponent implements OnInit {
 	public saveWorkEducation() {
 		this._profileService.updateWork(this.userId, this.profile.id, this.workForm.controls['work'].value)
 			.pipe(
-				flatMap((response) => {
+				flatMap((response: any) => {
 					return this._profileService.updateEducation(this.userId, this.profile.id, this.workForm.controls['education'].value);
 				})
-			).subscribe((response) => {
+			).subscribe((response: any) => {
 				this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
 					{ educationObject: response });
 				this.nextStep();
 			}, (err) => {
 				console.log('Error updating Peer: ');
 				console.log(err);
-				this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe((response) => {
+				this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe((response: any) => {
 					this.saveProfile();
 				});
 			});
@@ -1064,7 +1064,7 @@ export class SessionEditComponent implements OnInit {
 	uploadVideo(event) {
 		this.uploadingVideo = true;
 		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response) => {
+			this.mediaUploader.upload(file).subscribe((response: any) => {
 				this.profile_video = response.url;
 				this._profileService.updateProfile(this.userId, {
 					'profile_video': response.url
@@ -1083,7 +1083,7 @@ export class SessionEditComponent implements OnInit {
 	uploadImage(event) {
 		this.uploadingImage = true;
 		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response) => {
+			this.mediaUploader.upload(file).subscribe((response: any) => {
 				this.picture_url = response.url;
 				this._profileService.updateProfile(this.userId, {
 					'picture_url': response.url
@@ -1148,7 +1148,7 @@ export class SessionEditComponent implements OnInit {
 
 
 	getLanguages() {
-		this.languagePickerService.getLanguages().subscribe(data => {
+		this.languagePickerService.getLanguages().subscribe((data: any) => {
 			this.languages = data;
 			this.languagesAsync.next(this.languages);
 			this.profileForm.controls['preferred_language'].valueChanges
@@ -1246,7 +1246,7 @@ export class SessionEditComponent implements OnInit {
 	}
 
 	public unfollowTopic(type, topic: any) {
-		this._profileService.unfollowTopic(this.userId, type, topic.id).subscribe((response) => {
+		this._profileService.unfollowTopic(this.userId, type, topic.id).subscribe((response: any) => {
 			this._collectionService.patchCollection(this.sessionId, {
 				status: 'draft',
 				isApproved: false
@@ -1264,7 +1264,7 @@ export class SessionEditComponent implements OnInit {
 	 */
 	public saveProvision() {
 		this._collectionService.updateProvisions(this.sessionId, this.provisionForm.controls['provisions'].value)
-			.subscribe((response) => {
+			.subscribe((response: any) => {
 				this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems, {
 					provisionObject: response
 				});
@@ -1272,7 +1272,7 @@ export class SessionEditComponent implements OnInit {
 			}, (err) => {
 				console.log('Error updating Provision');
 				console.log(err);
-				this.snackBar.open('Provision Update Failed', 'Retry').onAction().subscribe((response) => {
+				this.snackBar.open('Provision Update Failed', 'Retry').onAction().subscribe((response: any) => {
 					this.saveProvision();
 				});
 			});

@@ -209,7 +209,7 @@ export class ExperiencesComponent implements OnInit {
 		};
 		return this._topicService.getTopics(query).pipe(
 			map(
-				(response) => {
+				(response : any) => {
 					const availableTopics = [];
 					response.forEach(topic => {
 						availableTopics.push({ 'topic': topic, 'checked': false });
@@ -248,7 +248,7 @@ export class ExperiencesComponent implements OnInit {
 
 		this._topicService.getTopics(query)
 			.subscribe(
-				(response) => {
+				(response : any) => {
 					const experiences = [];
 					for (const responseObj of response) {
 						responseObj.collections.forEach(collection => {
@@ -365,7 +365,7 @@ export class ExperiencesComponent implements OnInit {
 			}
 		});
 
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
 				this.availableTopics = result;
 				this.fetchExperiences();
@@ -389,7 +389,7 @@ export class ExperiencesComponent implements OnInit {
 			}
 		});
 
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
 				this.selectedRange = result.selectedRange;
 				this.fitlerResults();
@@ -412,7 +412,7 @@ export class ExperiencesComponent implements OnInit {
 				left: this.durationButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
 			}
 		});
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
 				this.selectedDurationRange = result.selectedRange;
 				this.fitlerResults();

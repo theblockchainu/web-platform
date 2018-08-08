@@ -40,7 +40,7 @@ export class ViewParticipantsComponent implements OnInit {
 			data: participant,
 			panelClass: 'responsive-dialog', width: '50vw',
 			height: '60vh'
-		}).afterClosed().subscribe(result => {
+		}).afterClosed().subscribe((result: any) => {
 			if (result) {
 				console.log(result);
 			}
@@ -51,7 +51,7 @@ export class ViewParticipantsComponent implements OnInit {
 	 * removeParticipant
 	 */
 	public removeParticipant(participantId: string) {
-		this._collectionService.removeParticipant(this.data.collectionId, participantId).subscribe((response) => {
+		this._collectionService.removeParticipant(this.data.collectionId, participantId).subscribe((response : any) => {
 			location.reload();
 			console.log('deleted');
 		});
@@ -61,7 +61,7 @@ export class ViewParticipantsComponent implements OnInit {
 		this.dialog.open(ReportProfileComponent, {
 			panelClass: 'responsive-dialog', width: '40vw',
 			height: '70vh'
-		}).afterClosed().subscribe(result => {
+		}).afterClosed().subscribe((result: any) => {
 			if (result) {
 				console.log('report' + result);
 				this._profileService.reportProfile(participantId, {

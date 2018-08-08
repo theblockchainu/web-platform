@@ -113,7 +113,7 @@ export class AccreditationPageComponent implements OnInit {
       } else {
         const query = { 'include': 'accreditationsSubscribed' };
         console.log('querying for peerdata');
-        this.profileService.getPeerData(this.userId, query).subscribe(result => {
+        this.profileService.getPeerData(this.userId, query).subscribe((result: any) => {
           if (result.accreditationsSubscribed && result.accreditationsSubscribed.length > 0) {
             let totalSalaryShare = 0;
             result.accreditationsSubscribed.forEach(accreditation => {

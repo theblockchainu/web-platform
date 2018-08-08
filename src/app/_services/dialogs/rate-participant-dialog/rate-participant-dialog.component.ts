@@ -64,7 +64,7 @@ export class RateParticipantComponent implements OnInit {
               'collectionCalendarId': participantCalendarId
           };
           this._collectionService.postReview(participant.id, reviewBody).subscribe(
-              result => {
+              (result: any) => {
               }, err => {
                   console.log(err);
               }

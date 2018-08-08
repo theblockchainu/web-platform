@@ -52,12 +52,12 @@ export class ClassContentProjectComponent implements OnInit {
 		const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
 		const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
 		this.urlForVideo = contentForm.controls['imageUrl'].value;
-		this.contentService.getMediaObject(this.urlForVideo).subscribe((res) => {
+		this.contentService.getMediaObject(this.urlForVideo).subscribe((res : any) => {
 			this.mediaObject = res[0];
 		});
 		this.attachments = contentForm.controls['supplementUrls'];
 		this.attachments.value.forEach(file => {
-			this.contentService.getMediaObject(file).subscribe((res) => {
+			this.contentService.getMediaObject(file).subscribe((res : any) => {
 				this.attachmentUrls.push(res[0]);
 			});
 		});
@@ -73,7 +73,7 @@ export class ClassContentProjectComponent implements OnInit {
 	addAttachmentUrl(url: any) {
 		console.log('Adding image url: ' + url);
 		this.attachments.push(new FormControl(url));
-		this.contentService.getMediaObject(url).subscribe((res) => {
+		this.contentService.getMediaObject(url).subscribe((res : any) => {
 			this.attachmentUrls.push(res[0]);
 		});
 	}
@@ -82,7 +82,7 @@ export class ClassContentProjectComponent implements OnInit {
 		const fileurl = fileUrl;
 		fileUrl = _.replace(fileUrl, 'download', 'files');
 		this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-			.subscribe((response) => {
+			.subscribe((response : any) => {
 				console.log(response);
 				if (fileType === 'file') {
 					const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
@@ -96,7 +96,7 @@ export class ClassContentProjectComponent implements OnInit {
 					this.attachmentUrls = [];
 					suppUrl.forEach(file => {
 						supplementUrls.push(new FormControl(file));
-						this.contentService.getMediaObject(file).subscribe((res) => {
+						this.contentService.getMediaObject(file).subscribe((res : any) => {
 							this.attachmentUrls.push(res[0]);
 						});
 					});
@@ -125,7 +125,7 @@ export class ClassContentProjectComponent implements OnInit {
 		const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
 		const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
 		contentForm.controls['imageUrl'].patchValue(url);
-		this.contentService.getMediaObject(url).subscribe((res) => {
+		this.contentService.getMediaObject(url).subscribe((res : any) => {
 			this.mediaObject = res;
 		});
 

@@ -90,7 +90,7 @@ export class InviteComponent implements OnInit {
 			this.userCredentials = res.credentials;
 			this.emailVerified = res.emailVerified;
 			if (!this.emailVerified) {
-				this._dialogsService.openOnboardingDialog().subscribe(result => {
+				this._dialogsService.openOnboardingDialog().subscribe((result: any) => {
 					// do nothing
 				});
 			}
