@@ -19,9 +19,7 @@ export class CountryPickerService {
 	}
 
 	public getCountries() {
-		return this.http.get(environment.apiUrl + '/api/countries', this.requestHeaderService.options).map((response: any) => {
-			return response;
-		});
+		return this.http.get(environment.apiUrl + '/api/countries', this.requestHeaderService.options);
 	}
 
 	/**

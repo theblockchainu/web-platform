@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material';
 import * as moment from 'moment';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { environment } from '../../../environments/environment';
-
+import { flatMap } from 'rxjs/operators';
 @Component({
 	selector: 'app-class-content',
 	// We need to tell Angular's Dependency Injection which providers are in our app.
@@ -83,10 +83,9 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 
 		while (deleteIndex !== contents.length) {
 			this.http.delete(environment.apiUrl + '/api/contents/' + contents[deleteIndex].id, this.requestHeaderService.options)
-				.map((response: any) => {
+				.subscribe((response: any) => {
 					console.log(response);
-				})
-				.subscribe();
+				});
 			deleteIndex++;
 		}
 		itenaries.removeAt(i);
@@ -125,7 +124,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 		delete collection.calendars;
 		delete collection.contents;
 		const body = collection;
-		this._collectionService.patchCollection(collection.id, body).map(
+		this._collectionService.patchCollection(collection.id, body).subscribe(
 			(response: any) => {
 				const result = response;
 				let collectionId;
@@ -135,7 +134,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 				} else {
 					window.location.reload();
 				}
-			}).subscribe();
+			});
 	}
 
 	showDialogForActiveClass(isContent) {
@@ -270,39 +269,41 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 		schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
 
 		this.http.post(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents', contentObj, this.requestHeaderService.options)
-			.map((response: any) => {
+			.pipe(
+				flatMap((response: any) => {
 
-				const result = response;
+					const result = response;
 
-				if (result.isNewInstance) {
-					collectionId = result.id;
-					result.contents.forEach((content) => {
-						if (content.isNewInstance) {
-							contentId = content.id;
-						}
-					});
-				} else {
-					contentId = result.id;
+					if (result.isNewInstance) {
+						collectionId = result.id;
+						result.contents.forEach((content) => {
+							if (content.isNewInstance) {
+								contentId = content.id;
+							}
+						});
+					} else {
+						contentId = result.id;
+					}
+					contentGroup.controls.id.setValue(contentId);
+
+					return this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.requestHeaderService.options);
+				})
+			)
+			.subscribe(
+				(resp: any) => {
+					if (resp.status === 200) {
+						const Itenary = <FormArray>this.myForm.controls.itenary;
+						const Form = <FormGroup>Itenary.controls[i];
+						const ContentsArray = <FormArray>Form.controls.contents;
+						const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
+						ContentGroup.controls.pending.setValue(false);
+						Form.controls['startDay'].patchValue(resp.startDay);
+					}
+					if (collectionId) {
+						this.reload(collectionId, 16);
+					}
 				}
-				contentGroup.controls.id.setValue(contentId);
-
-				this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.requestHeaderService.options)
-					.map((resp: any) => {
-						if (resp.status === 200) {
-							const Itenary = <FormArray>this.myForm.controls.itenary;
-							const Form = <FormGroup>Itenary.controls[i];
-							const ContentsArray = <FormArray>Form.controls.contents;
-							const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
-							ContentGroup.controls.pending.setValue(false);
-							Form.controls['startDay'].patchValue(resp.startDay);
-						}
-						if (collectionId) {
-							this.reload(collectionId, 16);
-						}
-					})
-					.subscribe();
-			})
-			.subscribe();
+			);
 	}
 
 	patchContent(event, i) {
@@ -352,29 +353,31 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 			schedule.endTime = moment('01-02-1990 ' + schedule.endTime + ':00').format();
 		}
 		this.http.put(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, contentObj, this.requestHeaderService.options)
-			.map((response: any) => {
-				const result = response;
-				if (result.isNewInstance) {
-					collectionId = result.id;
-					result.contents.forEach((content) => {
-						if (content.isNewInstance) {
-							contentId = content.id;
-						}
-					});
-				}
-				this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.requestHeaderService.options)
-					.map((resp: any) => {
-						if (resp.status === 200) {
-							contentGroup.controls.pending.setValue(false);
-						}
-					})
-					.subscribe();
+			.pipe(
+				flatMap((response: any) => {
+					const result = response;
+					if (result.isNewInstance) {
+						collectionId = result.id;
+						result.contents.forEach((content) => {
+							if (content.isNewInstance) {
+								contentId = content.id;
+							}
+						});
+					}
+					return this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.requestHeaderService.options);
 
-				if (collectionId) {
-					this.reload(collectionId, 16);
+					if (collectionId) {
+						this.reload(collectionId, 16);
+					}
+				})
+			)
+			.subscribe(
+				(resp: any) => {
+					if (resp.status === 200) {
+						contentGroup.controls.pending.setValue(false);
+					}
 				}
-			})
-			.subscribe();
+			);
 	}
 
 	deleteContent(eventIndex, index) {

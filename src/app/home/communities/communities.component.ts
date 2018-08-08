@@ -15,8 +15,8 @@ import { CommunityService } from '../../_services/community/community.service';
 import { environment } from '../../../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import {TitleCasePipe} from "@angular/common";
-
+import { TitleCasePipe } from '@angular/common';
+import { map } from 'rxjs/operators';
 @Component({
     selector: 'app-communities',
     templateUrl: './communities.component.html',
@@ -62,9 +62,9 @@ export class CommunitiesComponent implements OnInit {
         private titleService: Title,
         private metaService: Meta,
         private router: Router,
-		private titlecasepipe: TitleCasePipe,
+        private titlecasepipe: TitleCasePipe,
         public _communityService: CommunityService
-	) {
+    ) {
         this.userId = _cookieUtilsService.getValue('userId');
         this.envVariable = environment;
     }
@@ -109,19 +109,21 @@ export class CommunitiesComponent implements OnInit {
     }
 
     fetchTopics(): Observable<Array<any>> {
-		const query = {
-			order: 'name ASC'
-		};
-        return this._topicService.getTopics(query).map(
-            (response) => {
-                const availableTopics = [];
-                response.forEach(topic => {
-                    availableTopics.push({ 'topic': topic, 'checked': false });
-                });
-                return availableTopics;
-            }, (err) => {
-                console.log(err);
-            }
+        const query = {
+            order: 'name ASC'
+        };
+        return this._topicService.getTopics(query).pipe(
+            map(
+                (response) => {
+                    const availableTopics = [];
+                    response.forEach(topic => {
+                        availableTopics.push({ 'topic': topic, 'checked': false });
+                    });
+                    return availableTopics;
+                }, (err) => {
+                    console.log(err);
+                }
+            )
         );
     }
 
@@ -145,7 +147,7 @@ export class CommunitiesComponent implements OnInit {
                         'include': [
                             'topics',
                             'views',
-							'questions',
+                            'questions',
                             'invites',
                             'rooms',
                             { 'collections': ['owners'] },
@@ -153,7 +155,7 @@ export class CommunitiesComponent implements OnInit {
                             { 'participants': [{ 'profiles': ['work'] }] },
                             { 'owners': [{ 'profiles': ['work'] }] }
                         ],
-						'order': 'createdAt desc'
+                        'order': 'createdAt desc'
                     }
                 }
             ],
@@ -166,38 +168,38 @@ export class CommunitiesComponent implements OnInit {
                     const communities = [];
                     for (const responseObj of response) {
                         responseObj.communities.forEach(community => {
-							if (community.status === 'active') {
-								let totalGyan = 0;
-								if (community.questions) {
-									community.questions.forEach(question => {
-										if (question.gyan !== undefined && question.gyan > 0) {
-											totalGyan += parseInt(question.gyan, 10);
-										}
-									});
-								}
-								const participants = [];
-								community.allParticipants = community.participants;
-								if (community.participants) {
-									community.participants.forEach((participant, index) => {
-										if (index < 4) {
-											participants.push(participant);
-										}
-									});
-								}
-								community.participants = participants;
-								const topics = [];
-								community.topics.forEach(topicObj => {
-									topics.push(this.titlecasepipe.transform(topicObj.name));
-								});
-								if (topics.length > 0) {
-									community.topics = topics;
-								} else {
-									topics.push('No topics selected');
-									community.topics = topics;
-								}
-								community.gyan = totalGyan;
-								communities.push(community);
-							}
+                            if (community.status === 'active') {
+                                let totalGyan = 0;
+                                if (community.questions) {
+                                    community.questions.forEach(question => {
+                                        if (question.gyan !== undefined && question.gyan > 0) {
+                                            totalGyan += parseInt(question.gyan, 10);
+                                        }
+                                    });
+                                }
+                                const participants = [];
+                                community.allParticipants = community.participants;
+                                if (community.participants) {
+                                    community.participants.forEach((participant, index) => {
+                                        if (index < 4) {
+                                            participants.push(participant);
+                                        }
+                                    });
+                                }
+                                community.participants = participants;
+                                const topics = [];
+                                community.topics.forEach(topicObj => {
+                                    topics.push(this.titlecasepipe.transform(topicObj.name));
+                                });
+                                if (topics.length > 0) {
+                                    community.topics = topics;
+                                } else {
+                                    topics.push('No topics selected');
+                                    community.topics = topics;
+                                }
+                                community.gyan = totalGyan;
+                                communities.push(community);
+                            }
                         });
                     }
                     this.communities = _.uniqBy(communities, 'id');
@@ -242,11 +244,11 @@ export class CommunitiesComponent implements OnInit {
         this.availableTopics = _.cloneDeep(this.topicsBackup);
         this.fetchCommunities();
     }
-	
-	public onCommunityRefresh(event) {
-		if (event) {
-			this.fetchCommunities();
-		}
-	}
+
+    public onCommunityRefresh(event) {
+        if (event) {
+            this.fetchCommunities();
+        }
+    }
 
 }

@@ -32,7 +32,7 @@ export class MediaUploaderService {
 		}
 		formData.append(type, file, file.name);
 		return this.http.post(environment.apiUrl + '/api/media/upload?container=peerbuds-dev1290', formData, this.requestHeaderService.mediaOptions)
-			.map((response: any) => response);
+			;
 	}
 
 	public getUploadURL(file: File) {

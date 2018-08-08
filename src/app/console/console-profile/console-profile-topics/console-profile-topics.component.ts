@@ -104,9 +104,9 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 
 	public getSuggestedTopics() {
 		this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.requestHeaderService.options)
-			.map((response: any) => {
+			.subscribe((response: any) => {
 				this.suggestedTopics = response.slice(0, 5);
-			}).subscribe();
+			});
 	}
 
 	public selected(event) {

@@ -12,6 +12,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { TopicService } from '../../_services/topic/topic.service';
 import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
+import { flatMap } from 'rxjs/operators';
 declare var moment: any;
 
 
@@ -256,11 +257,13 @@ export class ConsoleAdminComponent implements OnInit {
 	public createScholarship() {
 		this._dialogsService.createScholarshipDialog(
 			{ type: 'public' }
-		).flatMap(res => {
-			if (res) {
-				return this._scholarshipService.createScholarship(res.scholarshipForm);
-			}
-		}).subscribe(res => {
+		).pipe(
+			flatMap(res => {
+				if (res) {
+					return this._scholarshipService.createScholarship(res.scholarshipForm);
+				}
+			})
+		).subscribe(res => {
 			console.log(res);
 			this.fetchScholarShips();
 			this.snackBar.open('Scholarship created', 'close', { duration: 5000 });
@@ -273,11 +276,11 @@ export class ConsoleAdminComponent implements OnInit {
 	public createCommunity() {
 		this._dialogsService.createCommunityDialog(
 			{ type: 'public' }
-		).flatMap(res => {
+		).pipe(flatMap(res => {
 			if (res) {
 				return this._communityService.createCommunity(res.communityFormData);
 			}
-		}).subscribe(res => {
+		})).subscribe(res => {
 			console.log(res);
 			this.fetchScholarShips();
 			this.snackBar.open('Scholarship created', 'close', { duration: 5000 });
@@ -303,11 +306,11 @@ export class ConsoleAdminComponent implements OnInit {
 	 */
 	public editScholarship() {
 		this._dialogsService.createScholarshipDialog(this.scholarship)
-			.flatMap(res => {
+			.pipe(flatMap(res => {
 				if (res) {
 					return this._scholarshipService.patchScholarship(this.scholarship.id, res.scholarshipForm);
 				}
-			})
+			}))
 			.subscribe(res => {
 				console.log(res);
 				this.snackBar.open('Updated', 'Close', {

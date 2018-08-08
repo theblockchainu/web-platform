@@ -17,7 +17,7 @@ import { environment } from '../../../environments/environment';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-
+import { map } from 'rxjs/operators';
 @Component({
 	selector: 'app-classes',
 	templateUrl: './classes.component.html',
@@ -195,7 +195,7 @@ export class ClassesComponent implements OnInit {
 		const query = {
 			order: 'name ASC'
 		};
-		return this._topicService.getTopics(query).map(
+		return this._topicService.getTopics(query).pipe(map(
 			(response) => {
 				const availableTopics = [];
 				response.forEach(topic => {
@@ -205,7 +205,7 @@ export class ClassesComponent implements OnInit {
 			}, (err) => {
 				console.log(err);
 			}
-		);
+		));
 	}
 
 	fetchClasses(): void {

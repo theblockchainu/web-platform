@@ -22,7 +22,7 @@ import { RequestHeaderService } from '../../requestHeader/request-header.service
 
 import * as _ from 'lodash';
 import { ConsoleLearningAllComponent } from '../../../console/console-learning/console-learning-all/console-learning-all.component';
-
+import { flatMap } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-request-knowledge-story',
@@ -120,10 +120,10 @@ export class RequestKnowledgeStoryComponent implements OnInit {
 		});
 		console.log('Displaying filteredList');
 		console.log(this.filteredList);
-		this.myControl.valueChanges.flatMap((value) => {
+		this.myControl.valueChanges.pipe(flatMap((value) => {
 			console.log(value);
 			return this._searchService.getPeerSearchResults(value);
-		}).subscribe((res: any) => {
+		})).subscribe((res: any) => {
 			console.log(res);
 			this.searchOptions = res;
 		});
@@ -166,7 +166,7 @@ export class RequestKnowledgeStoryComponent implements OnInit {
 			if (this.searchUrl) {
 				const finalSearchURL = this.searchUrl + this.query;
 				this.http.get(finalSearchURL, this.requestHeaderService.options)
-					.map((res: any) => {
+					.subscribe((res: any) => {
 						this.loadingSuggestions = false;
 						this.filteredList = [];
 						res.map(item => {
@@ -186,8 +186,7 @@ export class RequestKnowledgeStoryComponent implements OnInit {
 						if (showItemNotFound) {
 							this.emitRequestTopic();
 						}
-					})
-					.subscribe();
+					});
 			}
 		} else {
 			this.loadingSuggestions = false;

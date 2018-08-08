@@ -24,11 +24,8 @@ export class LeftSidebarService {
     ) {
     }
 
-    public getMenuItems(fileLocation: string): Observable<SideBarMenuItem> {
-        return this.http.get(fileLocation, this.requestHeaderService.options)
-            .map((response: any) => {
-                return response;
-            });
+    public getMenuItems(fileLocation: string): Observable<any> {
+        return this.http.get(fileLocation, this.requestHeaderService.options);
     }
 
     public updateSideMenu(collection, sidebarMenuItems) {

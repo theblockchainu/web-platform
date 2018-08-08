@@ -25,9 +25,7 @@ export class TwilioServicesService {
 	 */
 	public getToken() {
 		return this.http.get(environment.apiUrl + '/api/vsessions/token', this._requestHeaderService.options)
-			.map(
-				(response) => response
-			);
+			;
 	}
 
 

@@ -405,22 +405,21 @@ export class CommunityEditComponent implements OnInit {
     this.key = 'access_token';
 
     this.countryPickerService.getCountries()
-      .subscribe((countries) => this.countries = countries);
+      .subscribe((countries: any) => this.countries = countries);
 
     this.languagePickerService.getLanguages()
       .subscribe((languages) => {
         this.languagesArray = _.map(languages, 'name');
         this.filteredLanguageOptions = this.community.controls.selectedLanguage.valueChanges
-          .pipe(startWith(null))
-          .map(val => val ? this.filter(val) : this.languagesArray.slice());
-        console.log(this.filteredLanguageOptions);
+          .pipe(startWith(null), map(val => val ? this.filter(val) : this.languagesArray.slice()))
+          ;
       });
 
     if (this.interests.length === 0) {
       this.http.get(environment.searchUrl + '/api/search/topics', this.requestHeaderService.options)
-        .map((response: any) => {
+        .subscribe((response: any) => {
           this.suggestedTopics = response.slice(0, 7);
-        }).subscribe();
+        });
     } else {
       this.suggestedTopics = this.interests;
     }
@@ -498,9 +497,7 @@ export class CommunityEditComponent implements OnInit {
     if (this.removedInterests.length !== 0) {
       this.removedInterests.forEach((topic) => {
         this.http.delete(environment.apiUrl + '/api/collections/' + this.communityId + '/topics/rel/' + topic.id, this.requestHeaderService.options)
-          .map((response) => {
-            console.log(response);
-          }).subscribe();
+          .subscribe();
       });
 
     }
@@ -632,7 +629,7 @@ export class CommunityEditComponent implements OnInit {
   uploadVideo(event) {
     this.uploadingVideo = true;
     for (const file of event.files) {
-      this.mediaUploader.upload(file).subscribe((response) => {
+      this.mediaUploader.upload(file).subscribe((response: any) => {
         this.addVideoUrl(response.url);
         this.uploadingVideo = false;
       });
@@ -642,7 +639,7 @@ export class CommunityEditComponent implements OnInit {
   uploadImage(event) {
     this.uploadingImage = true;
     for (const file of event.files) {
-      this.mediaUploader.upload(file).subscribe((response) => {
+      this.mediaUploader.upload(file).subscribe((response: any) => {
         this.addImageUrl(response.url);
         this.uploadingImage = false;
       }, err => {
@@ -685,31 +682,32 @@ export class CommunityEditComponent implements OnInit {
     const body = data.value;
     delete body.selectedLanguage;
 
-    this._collectionService.patchCollection(this.communityId, body).map(
-      (response: any) => {
-        const result = response;
-        let collectionId;
-        if (result.isNewInstance) {
-          this.community.controls.status.setValue(result.status);
-          collectionId = result.id;
-        } else {
-          collectionId = this.communityId;
-        }
-        result.topics = this.communityData.topics;
-        result.contents = this.communityData.contents;
-        result.owners = this.communityData.owners;
-        this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
+    this._collectionService.patchCollection(this.communityId, body)
+      .subscribe(
+        (response: any) => {
+          const result = response;
+          let collectionId;
+          if (result.isNewInstance) {
+            this.community.controls.status.setValue(result.status);
+            collectionId = result.id;
+          } else {
+            collectionId = this.communityId;
+          }
+          result.topics = this.communityData.topics;
+          result.contents = this.communityData.contents;
+          result.owners = this.communityData.owners;
+          this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
 
-        if (step && step > 12) {
-          this.submitTimeline(collectionId, timeline);
-        }
-        if (!result.isNewInstance) {
-          this.step++;
-          this.communityStepUpdate();
-        }
-        this.router.navigate(['community', collectionId, 'edit', this.step]);
+          if (step && step > 12) {
+            this.submitTimeline(collectionId, timeline);
+          }
+          if (!result.isNewInstance) {
+            this.step++;
+            this.communityStepUpdate();
+          }
+          this.router.navigate(['community', collectionId, 'edit', this.step]);
 
-      }).subscribe();
+        });
   }
 
   /**
@@ -734,13 +732,6 @@ export class CommunityEditComponent implements OnInit {
     const body = data.value.calendar;
     if (body.startDate && body.endDate) {
       this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body, this.requestHeaderService.options)
-        .map((response) => {
-          // console.log(this.step);
-          // this.step++;
-          //  console.log(this.step);
-          // this.communityStepUpdate();
-          // this.router.navigate(['community', collectionId, 'edit', this.step]);
-        })
         .subscribe();
     } else {
       console.log('Enter Date!');
@@ -767,7 +758,7 @@ export class CommunityEditComponent implements OnInit {
     if (topicArray.length !== 0) {
       let observable: Observable<any>;
       observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.communityId + '/topics/rel', body, this.requestHeaderService.options)
-        .map(response => response).pipe(publishReplay(), refCount());
+        .pipe(publishReplay(), refCount());
       observable.subscribe((res) => {
         this.step++;
         this._collectionService.getCollectionDetail(this.communityId, this.query)
@@ -854,11 +845,11 @@ export class CommunityEditComponent implements OnInit {
       const body = data.value.calendar;
       if (body.startDate && body.endDate) {
         this.http.patch(environment.apiUrl + '/api/collections/' + this.communityId + '/calendar', body, this.requestHeaderService.options)
-          .map((response) => {
+          .subscribe((response) => {
             this.busySave = false;
             this.router.navigate(['console/teaching/communities']);
           })
-          .subscribe();
+          ;
       } else {
         console.log('Enter Date!');
       }
@@ -870,10 +861,10 @@ export class CommunityEditComponent implements OnInit {
       lang.push(this._fb.control(data.value.selectedLanguage));
       const body = data.value;
       delete body.selectedLanguage;
-      this._collectionService.patchCollection(this.communityId, body).map(
+      this._collectionService.patchCollection(this.communityId, body).subscribe(
         (response) => {
           this.router.navigate(['console/teaching/communities']);
-        }).subscribe();
+        });
     }
   }
 
@@ -971,7 +962,7 @@ export class CommunityEditComponent implements OnInit {
     const fileurl = fileUrl;
     fileUrl = _.replace(fileUrl, 'download', 'files');
     this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-      .map((response) => {
+      .subscribe((response) => {
         console.log(response);
         if (fileType === 'video') {
           this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -985,7 +976,7 @@ export class CommunityEditComponent implements OnInit {
           this.community.controls.imageUrls.patchValue(this.urlForImages);
         }
         this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(this.community.value, this.sidebarMenuItems);
-      }).subscribe();
+      });
 
   }
 
@@ -995,7 +986,7 @@ export class CommunityEditComponent implements OnInit {
       const fileurl = file;
       file = _.replace(file, 'download', 'files');
       this.http.delete(environment.apiUrl + file, this.requestHeaderService.options)
-        .map((response) => {
+        .subscribe((response) => {
           console.log(response);
           if (fileType === 'video') {
             this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -1008,7 +999,7 @@ export class CommunityEditComponent implements OnInit {
             });
             this.community.controls.imageUrls.patchValue(this.urlForImages);
           }
-        }).subscribe();
+        });
 
     }
   }

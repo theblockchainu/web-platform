@@ -20,9 +20,7 @@ export class LanguagePickerService {
     public getLanguages() {
 
         return this.http.get(environment.apiUrl + '/api/languages', this.requestHeaderService.options)
-            .map((response: any) => {
-                return response;
-            });
+           ;
     }
 
     /**

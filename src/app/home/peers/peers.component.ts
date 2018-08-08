@@ -9,7 +9,8 @@ import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TopicService } from '../../_services/topic/topic.service';
 import * as _ from 'lodash';
-import {TitleCasePipe} from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
+import { map } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-peers',
@@ -71,7 +72,7 @@ export class PeersComponent implements OnInit {
 			property: 'og:title',
 			content: 'Explore Peers'
 		});
-		
+
 		this.metaService.updateTag({
 			property: 'og:site_name',
 			content: 'peerbuds.com'
@@ -103,22 +104,22 @@ export class PeersComponent implements OnInit {
 					{
 						'relation': 'peersTeaching',
 						'scope':
-							{
-								'include':
-									[
-										{
-											'relation': 'ownedCollections',
-											'scope': {
-												'where': { 'type': 'session' }
-											}
-										},
-										'reviewsAboutYou',
-										'wallet',
-										'profiles',
-										'topicsTeaching'
-									]
+						{
+							'include':
+								[
+									{
+										'relation': 'ownedCollections',
+										'scope': {
+											'where': { 'type': 'session' }
+										}
+									},
+									'reviewsAboutYou',
+									'wallet',
+									'profiles',
+									'topicsTeaching'
+								]
 
-							}
+						}
 					}
 				],
 				'limit': 50
@@ -129,21 +130,21 @@ export class PeersComponent implements OnInit {
 					{
 						'relation': 'peersTeaching',
 						'scope':
-							{
-								'include':
-									[
-										{
-											'relation': 'ownedCollections',
-											'scope': {
-												'where': { 'type': 'session' }
-											}
-										},
-										'reviewsAboutYou',
-										'profiles',
-										'topicsTeaching'
-									]
+						{
+							'include':
+								[
+									{
+										'relation': 'ownedCollections',
+										'scope': {
+											'where': { 'type': 'session' }
+										}
+									},
+									'reviewsAboutYou',
+									'profiles',
+									'topicsTeaching'
+								]
 
-							}
+						}
 					}
 				],
 				'where': { or: this.selectedTopics },
@@ -187,16 +188,18 @@ export class PeersComponent implements OnInit {
 		const query = {
 			order: 'name ASC'
 		};
-		this._topicService.getTopics(query).map(
-			(response) => {
-				const availableTopics = [];
-				response.forEach(topic => {
-					availableTopics.push({ 'topic': topic, 'checked': false });
-				});
-				return availableTopics;
-			}, (err) => {
-				console.log(err);
-			}
+		this._topicService.getTopics(query).pipe(
+			map(
+				(response) => {
+					const availableTopics = [];
+					response.forEach(topic => {
+						availableTopics.push({ 'topic': topic, 'checked': false });
+					});
+					return availableTopics;
+				}, (err) => {
+					console.log(err);
+				}
+			)
 		).subscribe(response => {
 			this.loading = false;
 			this.availableTopics = response;

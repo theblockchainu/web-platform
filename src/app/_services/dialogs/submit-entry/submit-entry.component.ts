@@ -116,11 +116,11 @@ export class SubmitEntryComponent implements OnInit {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
         this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-            .map((response) => {
+            .subscribe((response) => {
                 console.log(response);
                 this.urlForImages = [];
                 this.submitEntryForm.controls['picture_url'].patchValue('');
-            }).subscribe();
+            });
     }
 
     uploadImage(event) {

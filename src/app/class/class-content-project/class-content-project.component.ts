@@ -82,7 +82,7 @@ export class ClassContentProjectComponent implements OnInit {
 		const fileurl = fileUrl;
 		fileUrl = _.replace(fileUrl, 'download', 'files');
 		this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-			.map((response) => {
+			.subscribe((response) => {
 				console.log(response);
 				if (fileType === 'file') {
 					const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
@@ -110,13 +110,12 @@ export class ClassContentProjectComponent implements OnInit {
 						this.deleteFromContent(contentForm, { 'imageUrl': '' });
 					}
 				}
-			}).subscribe();
+			});
 
 	}
 
 	deleteFromContent(contentForm, body) {
 		this.http.patch(environment.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.requestHeaderService.options)
-			.map((response) => { })
 			.subscribe();
 	}
 

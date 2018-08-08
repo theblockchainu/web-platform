@@ -10,7 +10,7 @@ import { ContentService } from '../../content/content.service';
 import { environment } from '../../../../environments/environment';
 import * as _ from 'lodash';
 import { RequestHeaderService } from '../../requestHeader/request-header.service';
-
+import { map } from 'rxjs/operators';
 @Component({
 	selector: 'app-edit-submission-dialog',
 	templateUrl: './edit-submission-dialog.component.html',
@@ -88,11 +88,11 @@ export class EditSubmissionDialogComponent implements OnInit {
 		const fileurl = fileUrl;
 		fileUrl = _.replace(fileUrl, 'download', 'files');
 		this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-			.map((response) => {
+			.subscribe((response) => {
 				console.log(response);
 				this.urlForImages = [];
 				this.submitEntryForm.controls['picture_url'].patchValue('');
-			}).subscribe();
+			});
 	}
 
 	uploadImage(event) {

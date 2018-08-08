@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
-
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { environment } from '../../../environments/environment';
-
+import { map } from 'rxjs/operators';
 @Injectable()
 export class ContentService {
 
@@ -18,10 +17,7 @@ export class ContentService {
 	}
 
 	public getEvents(userId: string) {
-		return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/eventCalendar', this.requestHeaderService.options)
-			.map((response: any) => response, (err) => {
-				console.log('Error: ' + err);
-			});
+		return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/eventCalendar', this.requestHeaderService.options);
 
 	}
 
@@ -30,10 +26,7 @@ export class ContentService {
 			'name': name,
 			'code': name
 		};
-		return this.http.post(environment.apiUrl + '/api/languages', body, this.requestHeaderService.options)
-			.map((response: any) => response, (err) => {
-				console.log('Error: ' + err);
-			});
+		return this.http.post(environment.apiUrl + '/api/languages', body, this.requestHeaderService.options);
 	}
 
 	public getMediaObject(urlString: string) {
@@ -43,13 +36,7 @@ export class ContentService {
 				url: urlString
 			}
 		};
-		return this.http.get(environment.apiUrl + '/api/media?filter=' + JSON.stringify(query), this.requestHeaderService.options)
-			.map((response: any) =>
-				response,
-				(err) => {
-					console.log('Error:' + err);
-				}
-			);
+		return this.http.get(environment.apiUrl + '/api/media?filter=' + JSON.stringify(query), this.requestHeaderService.options);
 	}
 
 	public deleteRSVP(rsvpId) {
@@ -63,8 +50,7 @@ export class ContentService {
 			'calendarId': calendarId
 		};
 		return this.http
-			.post(environment.apiUrl + '/api/contents/' + contentId + '/rsvps', body, this.requestHeaderService.options)
-			.map((response: any) => response);
+			.post(environment.apiUrl + '/api/contents/' + contentId + '/rsvps', body, this.requestHeaderService.options);
 	}
 
 	public deleteContent(contentId) {

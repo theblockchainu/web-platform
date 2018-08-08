@@ -9,7 +9,6 @@ import { MatDialog } from '@angular/material';
 import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.component';
 import { SelectPriceComponent } from '../dialogs/select-price/select-price.component';
 import { SelectDurationComponentComponent } from '../dialogs/select-duration-component/select-duration-component.component';
-
 import * as moment from 'moment';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
@@ -17,7 +16,7 @@ import { environment } from '../../../environments/environment';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-
+import { map } from 'rxjs/operators';
 @Component({
 	selector: 'app-experiences',
 	templateUrl: './experiences.component.html',
@@ -208,16 +207,18 @@ export class ExperiencesComponent implements OnInit {
 		const query = {
 			order: 'name ASC'
 		};
-		return this._topicService.getTopics(query).map(
-			(response) => {
-				const availableTopics = [];
-				response.forEach(topic => {
-					availableTopics.push({ 'topic': topic, 'checked': false });
-				});
-				return availableTopics;
-			}, (err) => {
-				console.log(err);
-			}
+		return this._topicService.getTopics(query).pipe(
+			map(
+				(response) => {
+					const availableTopics = [];
+					response.forEach(topic => {
+						availableTopics.push({ 'topic': topic, 'checked': false });
+					});
+					return availableTopics;
+				}, (err) => {
+					console.log(err);
+				}
+			)
 		);
 	}
 
