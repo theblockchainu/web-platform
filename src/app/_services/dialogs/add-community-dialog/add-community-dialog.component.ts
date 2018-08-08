@@ -150,7 +150,7 @@ export class AddCommunityDialogComponent implements OnInit {
       const fileurl = file;
       file = _.replace(file, 'download', 'files');
       this.mediaUploader.delete(file)
-        .subscribe((response : any) => {
+        .subscribe((response: any) => {
           console.log(response);
           if (fileType === 'video') {
             this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -171,7 +171,7 @@ export class AddCommunityDialogComponent implements OnInit {
     const fileurl = fileUrl;
     fileUrl = _.replace(fileUrl, 'download', 'files');
     this.mediaUploader.delete(fileUrl)
-      .subscribe((response : any) => {
+      .subscribe((response: any) => {
         console.log(response);
         if (fileType === 'video') {
           this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -248,7 +248,7 @@ export class AddCommunityDialogComponent implements OnInit {
     body = {
       'targetIds': topicArray
     };
-    this.communityService.linkTopics(communityId, body).subscribe((res : any) => {
+    this.communityService.linkTopics(communityId, body).subscribe((res: any) => {
       this.submitting = false;
       this.dialogRef.close(true);
     }, err => {
