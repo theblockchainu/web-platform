@@ -25,7 +25,7 @@ export class AddLanguageDialogComponent implements OnInit {
 
   addNewLanguage() {
     this._contentService.addNewLanguage(this.newLanguage.controls['name'].value)
-      .subscribe((res : any) => {
+      .subscribe((res: any) => {
         this.dialogRef.close(res);
       })
       ;

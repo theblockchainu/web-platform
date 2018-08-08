@@ -4,7 +4,7 @@ import { ConsoleProfileComponent } from '../console-profile.component';
 import { ProfileService } from '../../../_services/profile/profile.service';
 import { MediaUploaderService } from '../../../_services/mediaUploader/media-uploader.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 declare var moment: any;
 
@@ -36,7 +36,7 @@ export class ConsoleProfilePhotosComponent implements OnInit {
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.loadingMediaPage = true;
 		this._profileService.getProfile(this.userId).subscribe((profiles) => {
@@ -45,11 +45,11 @@ export class ConsoleProfilePhotosComponent implements OnInit {
 			this.loadingMediaPage = false;
 		});
 	}
-	
+
 	uploadVideo(event) {
 		this.uploadingVideo = true;
 		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response : any) => {
+			this.mediaUploader.upload(file).subscribe((response: any) => {
 				this.profile_video = response.url;
 				this._profileService.updateProfile(this.userId, {
 					'profile_video': response.url
@@ -64,11 +64,11 @@ export class ConsoleProfilePhotosComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	uploadImage(event) {
 		this.uploadingImage = true;
 		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response : any) => {
+			this.mediaUploader.upload(file).subscribe((response: any) => {
 				this.picture_url = response.url;
 				this._profileService.updateProfile(this.userId, {
 					'picture_url': response.url
@@ -83,7 +83,7 @@ export class ConsoleProfilePhotosComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	setProfilePic(image, type) {
 		this._profileService.updateProfile(this.userId, {
 			'picture_url': image
@@ -93,12 +93,12 @@ export class ConsoleProfilePhotosComponent implements OnInit {
 			console.log(err);
 		});
 	}
-	
-	
+
+
 	deleteFromContainerArr(event) {
 		console.log(event);
 	}
-	
+
 	deleteFromContainer(url: string, type: string) {
 		if (type === 'image') {
 			this._profileService.updateProfile(this.userId, {
@@ -114,8 +114,8 @@ export class ConsoleProfilePhotosComponent implements OnInit {
 			});
 		} else {
 			console.log('error');
-			
+
 		}
 	}
-	
+
 }

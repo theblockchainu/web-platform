@@ -24,7 +24,7 @@ export class AppFooterComponent implements OnInit {
 		private _currencypickerService: CurrencyPickerService
 	) {
 		this.isLoggedIn = authService.isLoggedIn();
-		authService.isLoggedIn().subscribe((res : any) => {
+		authService.isLoggedIn().subscribe((res: any) => {
 			this.loggedIn = res;
 		});
 	}

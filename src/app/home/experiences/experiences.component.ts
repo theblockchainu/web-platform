@@ -209,7 +209,7 @@ export class ExperiencesComponent implements OnInit {
 		};
 		return this._topicService.getTopics(query).pipe(
 			map(
-				(response : any) => {
+				(response: any) => {
 					const availableTopics = [];
 					response.forEach(topic => {
 						availableTopics.push({ 'topic': topic, 'checked': false });
@@ -248,7 +248,7 @@ export class ExperiencesComponent implements OnInit {
 
 		this._topicService.getTopics(query)
 			.subscribe(
-				(response : any) => {
+				(response: any) => {
 					const experiences = [];
 					for (const responseObj of response) {
 						responseObj.collections.forEach(collection => {

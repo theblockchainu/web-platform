@@ -62,7 +62,7 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 	ngOnInit() {
 		this.loadingMessages = true;
 		this._inboxService.getRoomData(50)
-			.subscribe((response : any) => {
+			.subscribe((response: any) => {
 				if (response) {
 					this.getPeerDataAndInitialize(response);
 				} else {
@@ -186,7 +186,7 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 		console.log(tempMessage);
 		this.selectedRoom.messages.push(tempMessage);
 		this._inboxService.postMessage(roomId, body)
-			.subscribe((response : any) => {
+			.subscribe((response: any) => {
 				response['peer'] = [];
 				response['peer'].push(this.loggedInPeer);
 				console.log(response);

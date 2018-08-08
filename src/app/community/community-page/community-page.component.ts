@@ -333,7 +333,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	 * dropoutCommunity
 	 */
 	public dropOutCommunity() {
-		this.dialogsService.openExitCommunity(this.communityId, this.userId).subscribe((response : any) => {
+		this.dialogsService.openExitCommunity(this.communityId, this.userId).subscribe((response: any) => {
 			this.initializePage();
 		});
 	}
@@ -342,7 +342,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	 * deleteCommunity
 	 */
 	public deleteCommunity() {
-		this.dialogsService.openDeleteCommunity(this.community).subscribe((response : any) => {
+		this.dialogsService.openDeleteCommunity(this.community).subscribe((response: any) => {
 			if (response) {
 				this.router.navigate(['/console/teaching/all']);
 			}

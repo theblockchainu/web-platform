@@ -84,7 +84,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 	 topic:any   */
 	public unfollowTopic(type, topic: any) {
 		console.log(topic);
-		this._profileService.unfollowTopic(this.userId, type, topic.id).subscribe((response : any) => {
+		this._profileService.unfollowTopic(this.userId, type, topic.id).subscribe((response: any) => {
 			this.getTopics();
 		}, (err) => {
 			console.log(err);
@@ -95,7 +95,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 	 * stopTeachingTopic
 	 */
 	public stopTeachingTopic(topic: any) {
-		this._profileService.stopTeachingTopic(this.userId, topic.id).subscribe((response : any) => {
+		this._profileService.stopTeachingTopic(this.userId, topic.id).subscribe((response: any) => {
 			this.getTopics();
 		}, (err) => {
 			console.log(err);
@@ -197,7 +197,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 					}
 					topicArray.forEach(topicId => {
 						this._profileService.followTopic(this.userId, type, topicId, {})
-							.subscribe((response : any) => { console.log(response); });
+							.subscribe((response: any) => { console.log(response); });
 					});
 				}
 			});

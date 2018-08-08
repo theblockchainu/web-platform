@@ -25,7 +25,7 @@ export class NotificationService {
         if (userId) {
             this.http
                 .get(environment.apiUrl + '/api/peers/' + userId + '/notifications?' + 'filter=' + options, this.requestHeaderService.options)
-                .subscribe((response : any) => {
+                .subscribe((response: any) => {
                     console.log(response);
                     cb(null, response);
                 }, (err) => {
@@ -38,7 +38,7 @@ export class NotificationService {
         if (userId) {
             this.http
                 .patch(environment.apiUrl + '/api/notifications/' + body.id, body, this.requestHeaderService.options)
-                .subscribe((response : any) => {
+                .subscribe((response: any) => {
                     console.log(response);
                     cb(null, response);
                 }, (err) => {

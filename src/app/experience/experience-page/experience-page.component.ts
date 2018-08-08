@@ -846,7 +846,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	 * cancelExperience
 	 */
 	public cancelExperience() {
-		this.dialogsService.openCancelCollection(this.experience).subscribe((response : any) => {
+		this.dialogsService.openCancelCollection(this.experience).subscribe((response: any) => {
 			if (response) {
 				this.initializePage();
 			}
@@ -857,7 +857,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	 * dropoutExperience
 	 */
 	public dropOutExperience() {
-		this.dialogsService.openExitCollection(this.experienceId, this.userId).subscribe((response : any) => {
+		this.dialogsService.openExitCollection(this.experienceId, this.userId).subscribe((response: any) => {
 			if (response) {
 				this.router.navigate(['experience', this.experienceId]);
 			}
@@ -868,7 +868,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	 * deleteExperience
 	 */
 	public deleteExperience() {
-		this.dialogsService.openDeleteCollection(this.experience).subscribe((response : any) => {
+		this.dialogsService.openDeleteCollection(this.experience).subscribe((response: any) => {
 			if (response) {
 				this.router.navigate(['/console/teaching/experiences']);
 			}
@@ -1054,7 +1054,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	public cancelCohort() {
-		this.dialogsService.cancelCohortDialog(this.calendarId).subscribe((res : any) => {
+		this.dialogsService.cancelCohortDialog(this.calendarId).subscribe((res: any) => {
 			if (res) {
 				this.initializePage();
 			}
@@ -1064,7 +1064,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	public deleteCohort() {
-		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res : any) => {
+		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res: any) => {
 			if (res) {
 				this.initializePage();
 			}
@@ -1198,7 +1198,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			]
 		};
 		this._topicService.getTopics(query).subscribe(
-			(response : any) => {
+			(response: any) => {
 				for (const responseObj of response) {
 					responseObj.collections.forEach(collection => {
 						let experienceLocation = 'Unknown location';
@@ -1270,7 +1270,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-	
+
 	public openSignup(returnTo) {
 		this.dialogsService.openSignup(returnTo).subscribe();
 	}

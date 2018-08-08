@@ -7,8 +7,8 @@ import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { ContentService } from '../../../_services/content/content.service';
 import * as moment from 'moment';
-import {Router} from '@angular/router';
-import {environment} from '../../../../environments/environment';
+import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 @Component({
 	selector: 'app-content-online',
@@ -16,7 +16,7 @@ import {environment} from '../../../../environments/environment';
 	styleUrls: ['./content-online.component.scss']
 })
 export class ContentOnlineComponent implements OnInit {
-	
+
 	public userType = 'public';
 	public classId = '';
 	public chatForm: FormGroup;
@@ -27,7 +27,7 @@ export class ContentOnlineComponent implements OnInit {
 	public attachmentUrls = [];
 	public duration = 0;
 	public envVariable;
-	
+
 	constructor(
 		public _collectionService: CollectionService,
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -44,7 +44,7 @@ export class ContentOnlineComponent implements OnInit {
 		this.classId = data.collectionId;
 		this.userId = _cookieUtilsService.getValue('userId');
 		data.content.supplementUrls.forEach(file => {
-			this.contentService.getMediaObject(file).subscribe((res : any) => {
+			this.contentService.getMediaObject(file).subscribe((res: any) => {
 				this.attachmentUrls.push(res[0]);
 			});
 		});
@@ -53,18 +53,18 @@ export class ContentOnlineComponent implements OnInit {
 		const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
 		this.duration = parseInt(contentLength, 10);
 	}
-	
+
 	ngOnInit() {
 		this.initializeForms();
 		this.getDiscussions();
 	}
-	
+
 	private initializeForms() {
 		this.chatForm = this._fb.group({
 			description: ['', Validators.required]
 		});
 	}
-	
+
 	/**
 	 * postComment
 	 */
@@ -78,14 +78,14 @@ export class ContentOnlineComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public createReplyForm(comment: any) {
 		this.replyingToCommentId = comment.id;
 		this.replyForm = this._fb.group({
 			description: ''
 		});
 	}
-	
+
 	/**
 	 * postReply
 	 */
@@ -99,7 +99,7 @@ export class ContentOnlineComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	private getDiscussions() {
 		const query = {
 			'include': [
@@ -136,44 +136,44 @@ export class ContentOnlineComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	addCommentUpvote(comment: any) {
 		this._commentService.addCommentUpvote(comment.id, {}).subscribe(
 			response => {
 				if (comment.upvotes !== undefined) {
-					comment.upvotes.push(response );
+					comment.upvotes.push(response);
 				} else {
 					comment.upvotes = [];
-					comment.upvotes.push(response );
+					comment.upvotes.push(response);
 				}
 			}, err => {
 				console.log(err);
 			}
 		);
 	}
-	
+
 	addReplyUpvote(reply: any) {
 		this._commentService.addReplyUpvote(reply.id, {}).subscribe(
 			response => {
 				if (reply.upvotes !== undefined) {
-					reply.upvotes.push(response );
+					reply.upvotes.push(response);
 				} else {
 					reply.upvotes = [];
-					reply.upvotes.push(response );
+					reply.upvotes.push(response);
 				}
 			}, err => {
 				console.log(err);
 			}
 		);
 	}
-	
+
 	/**
 	 * joinSession
 	 */
 	public joinSession() {
 		console.log('Handle Online session here');
 	}
-	
+
 	public hasUpvoted(upvotes) {
 		let result = false;
 		if (upvotes !== undefined) {
@@ -189,11 +189,11 @@ export class ContentOnlineComponent implements OnInit {
 		}
 		return result;
 	}
-	
+
 	public isMyComment(comment) {
 		return comment.peer[0].id === this.userId;
 	}
-	
+
 	/**
 	 * joinLiveSession
 	 */
@@ -207,9 +207,9 @@ export class ContentOnlineComponent implements OnInit {
 		this.dialogsService.startLiveSession(data).subscribe((result: any) => {
 		});
 	}
-	
+
 	public openProfilePage(peerId) {
 		this.router.navigate(['profile', peerId]);
 	}
-	
+
 }

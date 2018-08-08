@@ -25,7 +25,7 @@ export class AddTopicDialogComponent implements OnInit {
 
   addNewTopic() {
     this._topicService.addNewTopic(this.newTopic.controls['topicName'].value)
-      .subscribe((res : any) => {
+      .subscribe((res: any) => {
         this.dialogRef.close(res);
       })
       ;

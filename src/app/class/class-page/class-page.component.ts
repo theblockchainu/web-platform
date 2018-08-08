@@ -836,7 +836,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	 * cancelClass
 	 */
 	public cancelClass() {
-		this.dialogsService.openCancelCollection(this.class).subscribe((response : any) => {
+		this.dialogsService.openCancelCollection(this.class).subscribe((response: any) => {
 			if (response) {
 				this.initializePage();
 			}
@@ -847,7 +847,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	 * dropoutClass
 	 */
 	public dropOutClass() {
-		this.dialogsService.openExitCollection(this.classId, this.userId).subscribe((response : any) => {
+		this.dialogsService.openExitCollection(this.classId, this.userId).subscribe((response: any) => {
 			if (response) {
 				this.initializePage();
 			}
@@ -855,7 +855,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	public cancelCohort() {
-		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res : any) => {
+		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res: any) => {
 			if (res) {
 				this.initializePage();
 			}
@@ -876,7 +876,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	 * deleteClass
 	 */
 	public deleteClass() {
-		this.dialogsService.openDeleteCollection(this.class).subscribe((response : any) => {
+		this.dialogsService.openDeleteCollection(this.class).subscribe((response: any) => {
 			if (response) {
 				this.router.navigate(['/console/teaching/classes']);
 			}
@@ -1124,7 +1124,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			]
 		};
 		this._topicService.getTopics(query).subscribe(
-			(response : any) => {
+			(response: any) => {
 				for (const responseObj of response) {
 					responseObj.collections.forEach(collection => {
 						if (collection.status === 'active' && collection.id !== this.classId) {
@@ -1562,7 +1562,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public openLoginPage() {
 		this.router.navigate(['login']);
 	}
-	
+
 	public openSignup(returnTo) {
 		this.dialogsService.openSignup(returnTo).subscribe();
 	}

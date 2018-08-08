@@ -6,7 +6,7 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { ContentService } from '../../../_services/content/content.service';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 @Component({
 	selector: 'app-console-profile-verification',
@@ -14,13 +14,13 @@ import {environment} from '../../../../environments/environment';
 	styleUrls: ['./console-profile-verification.component.scss']
 })
 export class ConsoleProfileVerificationComponent implements OnInit {
-	
+
 	public userId;
 	public loading = false;
 	public profile: any;
 	public alreadyVerified: Array<any>;
 	public notVerified: Array<any>;
-	private queryForSocialIdentities = { 'include': [{profiles : 'phone_numbers'}, 'identities', 'credentials'] };
+	private queryForSocialIdentities = { 'include': [{ profiles: 'phone_numbers' }, 'identities', 'credentials'] };
 	public socialIdentitiesConnected: any = [];
 	public boolShowConnectedSocials = false;
 	public envVariable;
@@ -29,7 +29,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 		'google': false,
 		'linkedin': false
 	};
-	
+
 	constructor(
 		public activatedRoute: ActivatedRoute,
 		public consoleProfileComponent: ConsoleProfileComponent,
@@ -47,30 +47,30 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.loading = true;
 		this.getProfile();
 	}
-	
+
 	public openIdVerify() {
 		this.dialogsService.openIdVerify().subscribe(res => {
 			this.getProfile();
 		});
 	}
-	
+
 	public openEmailVerify() {
 		this.dialogsService.openEmailVerify().subscribe(res => {
 			this.getProfile();
 		});
 	}
-	
+
 	public openPhoneVerify() {
 		this.dialogsService.openPhoneVerify().subscribe(res => {
 			this.getProfile();
 		});
 	}
-	
+
 	private getProfile() {
 		this._profileService.getPeerData(this.userId, this.queryForSocialIdentities).subscribe((peer) => {
 			this.alreadyVerified = [];
@@ -81,7 +81,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 				});
 				this.alreadyVerified.push({
 					text: 'Phone Number',
-					value: '+' + primaryPhoneNumber.country_code + ' ' +  primaryPhoneNumber.subscriber_number
+					value: '+' + primaryPhoneNumber.country_code + ' ' + primaryPhoneNumber.subscriber_number
 				});
 			} else {
 				if (peer.profiles && peer.profiles.length > 0 && peer.profiles[0].phone_numbers && peer.profiles[0].phone_numbers.length > 0) {
@@ -90,7 +90,7 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 					});
 					this.notVerified.push({
 						text: 'Phone Number',
-						value: '+' + primaryPhoneNumber.country_code + ' ' +  primaryPhoneNumber.subscriber_number
+						value: '+' + primaryPhoneNumber.country_code + ' ' + primaryPhoneNumber.subscriber_number
 					});
 				} else {
 					this.notVerified.push({
@@ -118,23 +118,23 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 				}
 			}
 			if (peer.accountVerified && peer.verificationIdUrl) {
-				this.contentService.getMediaObject(peer.verificationIdUrl).subscribe((res : any) => {
+				this.contentService.getMediaObject(peer.verificationIdUrl).subscribe((res: any) => {
 					this.alreadyVerified.push({
 						text: 'Government Id',
 						value: res[0]
 					});
 				});
-				
+
 			} else {
 				if (peer.verificationIdUrl && peer.verificationIdUrl.length > 5) {
-					this.contentService.getMediaObject(peer.verificationIdUrl).subscribe((res : any) => {
+					this.contentService.getMediaObject(peer.verificationIdUrl).subscribe((res: any) => {
 						this.notVerified.push({
 							text: 'Government Id',
 							value: res[0],
 							submitted: true
 						});
 					});
-					
+
 				} else {
 					this.notVerified.push({
 						text: 'Government Id',
@@ -168,5 +168,5 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 			this.loading = false;
 		});
 	}
-	
+
 }

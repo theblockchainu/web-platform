@@ -20,7 +20,7 @@ export class CancelCohortDialogComponent implements OnInit {
     const cancelObj = {
       status: 'cancelled'
     };
-    this._collectionService.patchCalendar(this.data, cancelObj).subscribe((res : any) => {
+    this._collectionService.patchCalendar(this.data, cancelObj).subscribe((res: any) => {
       if (res) {
         this.dialogRef.close(true);
       }

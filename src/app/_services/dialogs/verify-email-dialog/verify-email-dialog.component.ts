@@ -78,7 +78,7 @@ export class VerifyEmailDialogComponent implements OnInit {
   verifyEmail() {
     this.peer.controls['email'].setValue(this.email);
     this._profileService.confirmEmail(this.userId, this.otp.controls['inputOTP'].value)
-      .subscribe((res : any) => {
+      .subscribe((res: any) => {
         console.log(res);
         console.log('verified email');
         this.success = res;

@@ -34,7 +34,7 @@ export class CollectionService {
 					(response: any) => {
 						const responseObj = response;
 						console.log(response);
-						responseObj.forEach((res : any) => {
+						responseObj.forEach((res: any) => {
 							if (res.type === type) {
 								collections.push(res);
 							}
@@ -79,7 +79,7 @@ export class CollectionService {
 		if (userId) {
 			this.httpClient
 				.get(environment.apiUrl + '/api/peers/' + userId + '/collections?' + 'filter=' + options, this.requestHeaderService.options)
-				.subscribe((response : any) => {
+				.subscribe((response: any) => {
 					console.log(response);
 					cb(null, response);
 				}, (err) => {
@@ -501,7 +501,7 @@ export class CollectionService {
 		const body = {};
 		this.httpClient
 			.post(environment.apiUrl + '/api/collections/' + collectionId + '/bookmarks', body, this.requestHeaderService.options)
-			.subscribe((response : any) => {
+			.subscribe((response: any) => {
 				cb(null, response);
 			}, (err) => {
 				cb(err);
@@ -512,7 +512,7 @@ export class CollectionService {
 		const body = {};
 		this.httpClient
 			.delete(environment.apiUrl + '/api/bookmarks/' + bookmarkId, this.requestHeaderService.options)
-			.subscribe((response : any) => {
+			.subscribe((response: any) => {
 				cb(null, response);
 			}, (err) => {
 				cb(err);
@@ -526,7 +526,7 @@ export class CollectionService {
 		const filter = JSON.stringify(query);
 		this.httpClient
 			.get(environment.apiUrl + '/api/collections/' + collectionId + '/bookmarks' + '?filter=' + filter, this.requestHeaderService.options)
-			.subscribe((response : any) => {
+			.subscribe((response: any) => {
 				cb(null, response);
 			}, (err) => {
 				cb(err);
@@ -571,7 +571,7 @@ export class CollectionService {
 	public linkCommunityToCollection(communityId, collectionId, cb) {
 		this.httpClient
 			.put(environment.apiUrl + '/api/communities/' + communityId + '/collections/rel/' + collectionId, {}, this.requestHeaderService.options)
-			.subscribe((response : any) => {
+			.subscribe((response: any) => {
 				cb(null, response);
 			}, (err) => {
 				cb(err);
@@ -632,7 +632,7 @@ export class CollectionService {
 		this.httpClient
 			.get(environment.apiUrl + '/api/collections/' + classId + '/comments' + '?filter=' + filter, this.requestHeaderService.options)
 			.subscribe(
-				(response : any) => {
+				(response: any) => {
 					cb(null, response);
 				}, (err) => {
 					cb(err);
@@ -650,7 +650,7 @@ export class CollectionService {
 		const filter = JSON.stringify(query);
 		this.httpClient
 			.get(environment.apiUrl + '/api/contents/' + contentId + '/comments' + '?filter=' + filter, this.requestHeaderService.options)
-			.subscribe((response : any) => {
+			.subscribe((response: any) => {
 				cb(null, response);
 			}, (err) => {
 				cb(err);
@@ -667,7 +667,7 @@ export class CollectionService {
 		const filter = JSON.stringify(query);
 		this.httpClient
 			.get(environment.apiUrl + '/api/submissions/' + submissionId + '/comments' + '?filter=' + filter, this.requestHeaderService.options)
-			.subscribe((response : any) => {
+			.subscribe((response: any) => {
 				cb(null, response);
 			}, (err) => {
 				cb(err);
@@ -678,7 +678,7 @@ export class CollectionService {
 		const filter = JSON.stringify(query);
 		this.httpClient
 			.get(environment.apiUrl + '/api/peers/' + peerId + '/reviewsAboutYou' + '?filter=' + filter, this.requestHeaderService.options)
-			.subscribe((response : any) => {
+			.subscribe((response: any) => {
 				cb(null, response);
 			}, (err) => {
 				cb(err);
@@ -691,7 +691,7 @@ export class CollectionService {
 	public postComments(classId: string, commentBody: any, cb) {
 		this.httpClient
 			.post(environment.apiUrl + '/api/collections/' + classId + '/comments', commentBody, this.requestHeaderService.options)
-			.subscribe((response : any) => {
+			.subscribe((response: any) => {
 				cb(null, response);
 			}, (err) => {
 				cb(err);
@@ -707,7 +707,7 @@ export class CollectionService {
 	public postSubmissionComments(submissionId: string, commentBody: any, cb) {
 		this.httpClient
 			.post(environment.apiUrl + '/api/submissions/' + submissionId + '/comments', commentBody, this.requestHeaderService.options)
-			.subscribe((response : any) => {
+			.subscribe((response: any) => {
 				cb(null, response);
 			}, (err) => {
 				cb(err);
@@ -723,7 +723,7 @@ export class CollectionService {
 	public postContentComments(contentId: string, commentBody: any, cb) {
 		this.httpClient
 			.post(environment.apiUrl + '/api/contents/' + contentId + '/comments', commentBody, this.requestHeaderService.options)
-			.subscribe((response : any) => {
+			.subscribe((response: any) => {
 				cb(null, response);
 			}, (err) => {
 				cb(err);
