@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import * as _ from 'lodash';
 import { DomSanitizer } from '@angular/platform-browser';
-import { timer } from 'rxjs/observable/timer';
+import { timer } from 'rxjs';
 @Component({
 	selector: 'app-custom-certificate-form',
 	templateUrl: './custom-certificate-form.component.html',

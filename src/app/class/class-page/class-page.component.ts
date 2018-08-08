@@ -25,7 +25,7 @@ import {
 	addWeeks
 } from 'date-fns';
 import { GetMonthViewArgs, MonthView, getMonthView } from 'calendar-utils';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import {
 	CalendarEvent,
 	CalendarDateFormatter,

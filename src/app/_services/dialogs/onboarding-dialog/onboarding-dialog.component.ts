@@ -1,18 +1,18 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CookieUtilsService} from '../../cookieUtils/cookie-utils.service';
-import {MediaUploaderService} from '../../mediaUploader/media-uploader.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ProfileService} from '../../profile/profile.service';
-import {Meta, Title} from '@angular/platform-browser';
-import {map, startWith} from 'rxjs/operators';
-import {environment} from '../../../../environments/environment';
-import {RequestHeaderService} from '../../requestHeader/request-header.service';
-import {Observable} from 'rxjs/Observable';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
-import {CountryPickerService} from '../../countrypicker/countrypicker.service';
-import {HttpClient} from '@angular/common/http';
-import {PaymentService} from '../../payment/payment.service';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
+import { MediaUploaderService } from '../../mediaUploader/media-uploader.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProfileService } from '../../profile/profile.service';
+import { Meta, Title } from '@angular/platform-browser';
+import { map, startWith } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
+import { RequestHeaderService } from '../../requestHeader/request-header.service';
+import { Observable } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
+import { CountryPickerService } from '../../countrypicker/countrypicker.service';
+import { HttpClient } from '@angular/common/http';
+import { PaymentService } from '../../payment/payment.service';
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const PHONE_REGEX = /^(\+\d{1,3}[- ]?)?\d{7,10}$/;
 
@@ -22,7 +22,7 @@ const PHONE_REGEX = /^(\+\d{1,3}[- ]?)?\d{7,10}$/;
 	styleUrls: ['./onboarding-dialog.component.scss']
 })
 export class OnboardingDialogComponent implements OnInit {
-	
+
 	public step = 0;
 	public uploadingImage = false;
 	public peer: FormGroup;
@@ -45,7 +45,7 @@ export class OnboardingDialogComponent implements OnInit {
 	public httpLoading = false;
 	public countryCodes: Array<CountryCode>;
 	public filteredCountryCodes: Observable<CountryCode[]>;
-	
+
 	constructor(
 		public dialogRef: MatDialogRef<OnboardingDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -67,24 +67,24 @@ export class OnboardingDialogComponent implements OnInit {
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.peer = this._fb.group({
 			email: ['',
 				[Validators.required,
-					Validators.pattern(EMAIL_REGEX)]],
+				Validators.pattern(EMAIL_REGEX)]],
 			verificationIdUrl: ['', Validators.required]
 		});
 		this.emailForm = this._fb.group({
 			email: ['',
 				[Validators.required,
-					Validators.pattern(EMAIL_REGEX)]]
+				Validators.pattern(EMAIL_REGEX)]]
 		});
 		this.phoneForm = this._fb.group({
 			countryCode: ['', [Validators.required]],
 			phone: ['',
 				[Validators.required,
-					Validators.pattern(PHONE_REGEX)]]
+				Validators.pattern(PHONE_REGEX)]]
 		});
 		this.phoneForm.disable();
 		this.emailOtp = this._fb.group({
@@ -94,7 +94,7 @@ export class OnboardingDialogComponent implements OnInit {
 			inputOTP: [null, [Validators.required]]
 		});
 		this._profileService.getPeerNode(this.userId)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				if (res.email && res.email.length > 0) {
 					this.emailForm.controls.email.setValue(res.email);
 					this.emailForm.controls.email.disable();
@@ -125,7 +125,7 @@ export class OnboardingDialogComponent implements OnInit {
 		this.getUserProfile();
 		this.getUserCountry();
 	}
-	
+
 	private getUserProfile() {
 		this._profileService.getPeerData(this.userId).subscribe(res => {
 			if (res && res.phoneVerified) {
@@ -133,7 +133,7 @@ export class OnboardingDialogComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	filter(country: string): CountryCode[] {
 		return this.countryCodes.filter(option => {
 			if (option.country.toLowerCase().indexOf(country.toLowerCase()) === 0) {
@@ -142,7 +142,7 @@ export class OnboardingDialogComponent implements OnInit {
 			return option.country.toLowerCase().indexOf(country.toLowerCase()) === 0;
 		});
 	}
-	
+
 	continue(p, isBack = false) {
 		if (isBack) {
 			this.step = p;
@@ -164,7 +164,7 @@ export class OnboardingDialogComponent implements OnInit {
 			}
 		}
 	}
-	
+
 	public sendEmailOTP(nextStep) {
 		this.httpLoading = true;
 		this._profileService.sendVerifyEmail(this.userId, this.emailForm.controls.email.value)
@@ -179,32 +179,32 @@ export class OnboardingDialogComponent implements OnInit {
 			});
 		console.log('mail sent');
 	}
-	
+
 	public sendPhoneOTP(nextStep) {
 		this.httpLoading = true;
 		this.phoneFormError = null;
 		this._profileService.sendVerifySms(this.phoneForm.controls.phone.value, this.phoneForm.controls.countryCode.value.code)
 			.subscribe(response => {
-					this.httpLoading = false;
-					this.step = nextStep;
-				}, err => {
-					this.httpLoading = false;
-					console.log(err);
-					if (err && err.error && err.error.error && err.error.error.message) {
-						this.phoneFormError = err.error.error.message;
-					} else {
-						this.snackBar.open('An error occurred', 'Retry?', {
-							duration: 3000
-						}).onAction().subscribe(res => {
-							this.sendPhoneOTP(nextStep);
-						});
-					}
+				this.httpLoading = false;
+				this.step = nextStep;
+			}, err => {
+				this.httpLoading = false;
+				console.log(err);
+				if (err && err.error && err.error.error && err.error.error.message) {
+					this.phoneFormError = err.error.error.message;
+				} else {
+					this.snackBar.open('An error occurred', 'Retry?', {
+						duration: 3000
+					}).onAction().subscribe(res => {
+						this.sendPhoneOTP(nextStep);
+					});
 				}
+			}
 			);
 		console.log('sms sent');
 	}
-	
-	
+
+
 	public resendEmailOTP() {
 		this.httpLoading = true;
 		this._profileService.sendVerifyEmail(this.userId, this.emailForm.controls.email.value)
@@ -220,7 +220,7 @@ export class OnboardingDialogComponent implements OnInit {
 				});
 			});
 	}
-	
+
 	public resendPhoneOTP() {
 		this.httpLoading = true;
 		this._profileService.sendVerifySms(this.phoneForm.controls.phone.value, this.phoneForm.controls.countryCode.value.code)
@@ -236,7 +236,7 @@ export class OnboardingDialogComponent implements OnInit {
 				});
 			});
 	}
-	
+
 	updatePeer() {
 		this._profileService
 			.updatePeer(this.userId, {
@@ -250,49 +250,49 @@ export class OnboardingDialogComponent implements OnInit {
 				console.log(err);
 			});
 	}
-	
+
 	verifyEmail(nextStep) {
 		this.httpLoading = true;
 		this._profileService.confirmEmail(this.userId, '' + this.emailOtp.controls['inputOTP'].value)
 			.subscribe((res) => {
-					this.httpLoading = false;
-					this.success = res;
-					this.step = nextStep;
-				},
+				this.httpLoading = false;
+				this.success = res;
+				this.step = nextStep;
+			},
 				(err) => {
 					this.httpLoading = false;
 					console.log(err);
 					if (err.status === 400) {
 						this.emailOtpError = 'The code you entered does not match our records. Did you enter the most recent one?';
 					}
-					
+
 				}
 			);
 	}
-	
+
 	verifyPhone(nextStep) {
 		this.httpLoading = true;
 		this._profileService.confirmSmsOTP('' + this.phoneOtp.controls['inputOTP'].value)
 			.subscribe((res) => {
-					this.httpLoading = false;
-					this.success = res;
-					this.sendEmailOTP(nextStep + 1);
-				},
+				this.httpLoading = false;
+				this.success = res;
+				this.sendEmailOTP(nextStep + 1);
+			},
 				(err) => {
 					console.log(err);
 					this.httpLoading = false;
 					if (err.status === 400) {
 						this.phoneOtpError = 'The code you entered does not match our records. Did you enter the most recent one?';
 					}
-					
+
 				}
 			);
 	}
-	
+
 	public redirectToOnboarding() {
 		this.router.navigate(['/onboarding/1']);
 	}
-	
+
 	uploadImage(event) {
 		this.uploadingImage = true;
 		console.log(event.files);
@@ -306,7 +306,7 @@ export class OnboardingDialogComponent implements OnInit {
 			}).subscribe();
 		}
 	}
-	
+
 	deleteFromContainer(url: string, type: string) {
 		if (type === 'image' || type === 'file') {
 			this._profileService.updatePeer(this.userId, {
@@ -318,19 +318,19 @@ export class OnboardingDialogComponent implements OnInit {
 			console.log('error');
 		}
 	}
-	
+
 	displayFn(country: CountryCode) {
 		return country ? country.country : undefined;
 	}
-	
+
 	public skipOnboarding() {
 		this.dialogRef.close('false');
 	}
-	
+
 	public closeOnboarding() {
 		this.dialogRef.close('true');
 	}
-	
+
 	private getUserCountry() {
 		this.loadingCountry = true;
 		this.paymentService.getUserCountry().subscribe(res => {
@@ -343,7 +343,7 @@ export class OnboardingDialogComponent implements OnInit {
 			this.loadingCountry = false;
 		});
 	}
-	
+
 }
 
 interface CountryCode {

@@ -110,7 +110,7 @@ export class ConsoleAdminComponent implements OnInit {
 		const filter = {
 			order: 'createdAt DESC'
 		};
-		this._profileService.getEmailSubscriptions(filter).subscribe(result => {
+		this._profileService.getEmailSubscriptions(filter).subscribe((result: any) => {
 			this.emailSubscriptions = result;
 			this.emailSubLoaded = true;
 		});

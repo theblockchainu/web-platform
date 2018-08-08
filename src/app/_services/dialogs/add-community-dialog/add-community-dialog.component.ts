@@ -5,9 +5,10 @@ import { MediaUploaderService } from '../../../_services/mediaUploader/media-upl
 import * as _ from 'lodash';
 import { environment } from '../../../../environments/environment';
 import { LanguagePickerService } from '../../../_services/languagepicker/languagepicker.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { SearchService } from '../../search/search.service';
 import { CommunityService } from '../../community/community.service';
+import { startWith, map } from 'rxjs/operators';
 @Component({
   selector: 'app-add-community-dialog',
   templateUrl: './add-community-dialog.component.html',
@@ -60,8 +61,10 @@ export class AddCommunityDialogComponent implements OnInit {
       .subscribe((languages) => {
         this.languagesArray = _.map(languages, 'name');
         this.filteredLanguageOptions = this.communityForm.controls.selectedLanguage.valueChanges
-          .startWith(null)
-          .map(val => val ? this.filter(val) : this.languagesArray.slice());
+          .pipe(
+            startWith(null)
+            , map(val => val ? this.filter(val) : this.languagesArray.slice())
+          );
         console.log(this.filteredLanguageOptions);
       });
 

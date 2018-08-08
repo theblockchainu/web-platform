@@ -1,11 +1,8 @@
-import 'rxjs/add/operator/switchMap';
+
 import { Component, OnInit, OnDestroy, Input, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators, ValidatorFn } from '@angular/forms';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/share';
-import 'rxjs/add/operator/publishReplay';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import * as moment from 'moment';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
@@ -19,7 +16,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
 import { environment } from '../../../environments/environment';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, merge } from 'rxjs';
 import { TopicService } from '../../_services/topic/topic.service';
 import { PaymentService } from '../../_services/payment/payment.service';
 import { DataSharingService } from '../../_services/data-sharing-service/data-sharing.service';
@@ -28,8 +25,8 @@ import { Meta, Title } from '@angular/platform-browser';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { CustomCertificateFormComponent } from '../../_shared/custom-certificate-form/custom-certificate-form.component';
-import { merge } from 'rxjs/observable/merge';
 import { AssessmentService } from '../../_services/assessment/assessment.service';
+import { flatMap, startWith, map } from 'rxjs/operators';
 @Component({
 	selector: 'app-experience-edit',
 	templateUrl: './experience-edit.component.html',
@@ -592,16 +589,17 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			.subscribe((languages) => {
 				this.languagesArray = _.map(languages, 'name');
 				this.filteredLanguageOptions = this.experience.controls.selectedLanguage.valueChanges
-					.startWith(null)
-					.map(val => val ? this.filter(val) : this.languagesArray.slice());
+					.pipe(startWith(null),
+						map(val => val ? this.filter(val) : this.languagesArray.slice()))
+					;
 				console.log(this.filteredLanguageOptions);
 			});
 
 		if (this.interests.length === 0) {
 			this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.requestHeaderService.options)
-				.map((response: any) => {
+				.subscribe((response: any) => {
 					this.suggestedTopics = response.slice(0, 5);
-				}).subscribe();
+				});
 		} else {
 			this.suggestedTopics = this.interests;
 		}
@@ -640,7 +638,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		console.log('Inside init experience');
 		if (this.experienceId) {
 			this._collectionService.getCollectionDetail(this.experienceId, this.query)
-				.subscribe((res) => {
+				.subscribe((res: any) => {
 					console.log(res);
 					this.experienceData = res;
 					if (this.experienceData.payoutrules && this.experienceData.payoutrules.length > 0) {
@@ -1096,10 +1094,11 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				});
 				console.log(unlinkObeservables);
 				const finalObservable = merge(...unlinkObeservables);
-				finalObservable.flatMap(res => {
-					console.log(res);
-					return this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel', body, this.requestHeaderService.options);
-				}).subscribe((res) => {
+				finalObservable.pipe(
+					flatMap(res => {
+						return this.http.patch(environment.apiUrl + '/api/collections/' + this.experienceId + '/topics/rel', body, this.requestHeaderService.options);
+					})
+				).subscribe((res) => {
 					this._collectionService.getCollectionDetail(this.experienceId, this.query)
 						.subscribe((resData) => {
 							this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
@@ -1293,7 +1292,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		const fileurl = fileUrl;
 		fileUrl = _.replace(fileUrl, 'download', 'files');
 		this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-			.map((response) => {
+			.subscribe((response) => {
 				console.log(response);
 				if (fileType === 'video') {
 					this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -1307,7 +1306,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 					this.experience.controls.imageUrls.patchValue(this.urlForImages);
 				}
 				this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(this.experience.value, this.sidebarMenuItems);
-			}).subscribe();
+			});
 
 	}
 
@@ -1317,7 +1316,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			const fileurl = file;
 			file = _.replace(file, 'download', 'files');
 			this.http.delete(environment.apiUrl + file, this.requestHeaderService.options)
-				.map((response) => {
+				.subscribe((response) => {
 					console.log(response);
 					if (fileType === 'video') {
 						this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -1330,7 +1329,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 						});
 						this.experience.controls.imageUrls.patchValue(this.urlForImages);
 					}
-				}).subscribe();
+				});
 
 		}
 	}
@@ -1489,15 +1488,18 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this._collectionService.updateAssessmentModel(this.experienceId, {
 			type: this.assessmentForm.controls['type'].value,
 			style: this.assessmentForm.controls['style'].value
-		}).flatMap(res => {
-			console.log(res);
-			assessmentModelObject = <any>res;
-			this.experienceData.assessment_models = [assessmentModelObject];
-			return this._collectionService.updateAssessmentRules(assessmentModelObject.id, this.assessmentForm.controls['rules'].value);
-		}).flatMap(res => {
-			this.experienceData.assessment_models[0].assessment_rules = res;
-			return this._collectionService.updateNAAssessmentRules(assessmentModelObject.id, this.assessmentForm.controls['nARules'].value);
-		}).subscribe(res => {
+		}).pipe(
+			flatMap(res => {
+				console.log(res);
+				assessmentModelObject = <any>res;
+				this.experienceData.assessment_models = [assessmentModelObject];
+				return this._collectionService.updateAssessmentRules(assessmentModelObject.id, this.assessmentForm.controls['rules'].value);
+			}),
+			flatMap(res => {
+				this.experienceData.assessment_models[0].assessment_rules = res;
+				return this._collectionService.updateNAAssessmentRules(assessmentModelObject.id, this.assessmentForm.controls['nARules'].value);
+			})
+		).subscribe(res => {
 			this.experienceData.assessment_models[0].assessment_na_rules = res;
 			this._leftSideBarService.updateSideMenu(this.experienceData, this.sidebarMenuItems);
 

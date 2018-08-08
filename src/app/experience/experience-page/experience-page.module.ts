@@ -12,7 +12,6 @@ import { VgCoreModule } from 'videogular2/core';
 import { VgControlsModule } from 'videogular2/controls';
 import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
-import { StickyModule } from 'ng2-sticky-kit';
 import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
 
 @NgModule({
@@ -32,12 +31,11 @@ import { ContentInpersonComponent } from './content-inperson/content-inperson.co
 		VgControlsModule,
 		VgOverlayPlayModule,
 		VgBufferingModule,
-		StickyModule
 	],
-	
+
 	declarations: [ExperiencePageComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
 	bootstrap: [ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
 	providers: [ProjectSubmissionService]
-	
+
 })
 export class ExperiencePageModule { }

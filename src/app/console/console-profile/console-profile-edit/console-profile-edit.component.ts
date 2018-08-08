@@ -8,10 +8,9 @@ import { TimezonePickerService } from '../../../_services/timezone-picker/timezo
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { MatSnackBar } from '@angular/material';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { startWith, map, flatMap } from 'rxjs/operators';
+
 import { HttpClient } from '@angular/common/http';
 
 import { UcFirstPipe } from 'ngx-pipes';
@@ -131,8 +130,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 				'emergency_contacts'
 			]
 		};
-		this._profileService.getProfileData(this.userId, query).subscribe((profiles) => {
-			console.log(profiles);
+		this._profileService.getProfileData(this.userId, query).subscribe((profiles: any) => {
 			this.setFormValues(profiles);
 		});
 
@@ -174,19 +172,19 @@ export class ConsoleProfileEditComponent implements OnInit {
 		this._languageService.getLanguages().subscribe(data => {
 			this.languages = data;
 			this.languagesAsync.next(this.languages);
-			this.profileForm.controls['preferred_language'].valueChanges
-				.startWith(null)
-				.subscribe(val => {
-					if (val) {
-						this.filteredOptions = _.filter(this.languages, (item) => {
-							return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
-						});
-					} else {
-						this.languages.slice();
-					}
-					// console.log(this.filteredOptions);
+			this.profileForm.controls['preferred_language'].valueChanges.pipe(
+				startWith(null)
+			).subscribe(val => {
+				if (val) {
+					this.filteredOptions = _.filter(this.languages, (item) => {
+						return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
+					});
+				} else {
+					this.languages.slice();
 				}
-				);
+				// console.log(this.filteredOptions);
+			}
+			);
 		}, error => console.log('Could not load languages.'));
 	}
 
@@ -194,18 +192,18 @@ export class ConsoleProfileEditComponent implements OnInit {
 		this._currencyService.getCurrencies().subscribe((currencies: any) => {
 			this.currencies = currencies;
 			this.currenciesAsync.next(this.currencies);
-			this.profileForm.controls['currency'].valueChanges
-				.startWith(null)
-				.subscribe(val => {
-					if (val) {
-						this.filteredCurrencies = _.filter(this.currencies, (item) => {
-							return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
-						});
-					} else {
-						this.currencies.slice();
-					}
+			this.profileForm.controls['currency'].valueChanges.pipe(
+				startWith(null)
+			).subscribe(val => {
+				if (val) {
+					this.filteredCurrencies = _.filter(this.currencies, (item) => {
+						return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
+					});
+				} else {
+					this.currencies.slice();
 				}
-				);
+			}
+			);
 		}, error => console.log('Could not load currencies'));
 
 	}
@@ -215,18 +213,18 @@ export class ConsoleProfileEditComponent implements OnInit {
 		this._timezoneService.getTimezones(filter).subscribe(timezones => {
 			this.timezones = timezones;
 			this.timezoneAsync.next(this.timezones);
-			this.profileForm.controls['timezone'].valueChanges
-				.startWith(null)
-				.subscribe(val => {
-					if (val) {
-						this.filteredTimezones = _.filter(this.timezones, (item) => {
-							return item.text.toLowerCase().indexOf(val.toLowerCase()) > -1;
-						});
-					} else {
-						this.timezones.slice();
-					}
+			this.profileForm.controls['timezone'].valueChanges.pipe(
+				startWith(null)
+			).subscribe(val => {
+				if (val) {
+					this.filteredTimezones = _.filter(this.timezones, (item) => {
+						return item.text.toLowerCase().indexOf(val.toLowerCase()) > -1;
+					});
+				} else {
+					this.timezones.slice();
 				}
-				);
+			}
+			);
 		}, error => console.log('Could not load timezones'));
 	}
 
@@ -397,21 +395,26 @@ export class ConsoleProfileEditComponent implements OnInit {
 		// console.log(phone_numbers);
 		this.busyUpdate = true;
 		this._profileService.updateProfile(this.userId, profileData)
-			.flatMap((response) => {
-				return this._profileService.updatePhoneNumbers(this.userId, this.profile.id, phone_numbers);
-			})
-			.flatMap((response) => {
-				return this._profileService.updateEmergencyContact(this.userId, this.profile.id, emergency_contacts);
-			})
-			.flatMap((response) => {
-				return this._profileService.updateWork(this.userId, this.profile.id, work);
-			}).flatMap((response) => {
-				return this._profileService.updateEducation(this.userId, this.profile.id, education);
-			}).flatMap((response) => {
-				return this._profileService.updatePeer(this.userId, { 'email': email });
-			}).flatMap((response) => {
-				return this._profileService.updatePeer(this.userId, { 'phone': profileData.phone_numbers });
-			}).subscribe((response) => {
+			.pipe(
+				flatMap((response) => {
+					return this._profileService.updatePhoneNumbers(this.userId, this.profile.id, phone_numbers);
+				}),
+				flatMap((response) => {
+					return this._profileService.updateEmergencyContact(this.userId, this.profile.id, emergency_contacts);
+				}),
+				flatMap((response) => {
+					return this._profileService.updateWork(this.userId, this.profile.id, work);
+				}),
+				flatMap((response) => {
+					return this._profileService.updateEducation(this.userId, this.profile.id, education);
+				}),
+				flatMap((response) => {
+					return this._profileService.updatePeer(this.userId, { 'email': email });
+				}),
+				flatMap((response) => {
+					return this._profileService.updatePeer(this.userId, { 'phone': profileData.phone_numbers });
+				})
+			).subscribe((response) => {
 				this.busyUpdate = false;
 				this.snackBar.open('Profile Updated', 'Close', {
 					duration: 5000

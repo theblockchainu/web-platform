@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { PaymentService } from '../../_services/payment/payment.service';
 import { CurrencyPipe } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import {WalletService} from '../../_services/wallet/wallet.service';
 @Pipe({

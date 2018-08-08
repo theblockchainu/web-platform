@@ -6,7 +6,7 @@ import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
 import { ProfileService } from '../../profile/profile.service';
 import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { CollectionService } from '../../collection/collection.service';
 import { PromocodeService } from '../../promocode/promocode.service';

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
-import 'rxjs/add/operator/map';
+
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 import { environment } from '../../../environments/environment';

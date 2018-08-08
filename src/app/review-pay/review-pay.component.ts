@@ -147,7 +147,7 @@ export class ReviewPayComponent implements OnInit {
                 this.card.mount('#card-element');
             }
         });
-        this.profileService.getPeer(this.userId).subscribe(peer => {
+        this.profileService.getPeer(this.userId).subscribe((peer: any) => {
             if (peer) {
                 this.student = peer;
                 this.emailVerified = peer.emailVerified;

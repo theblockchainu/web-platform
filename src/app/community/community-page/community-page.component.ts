@@ -26,7 +26,7 @@ import {
 	subWeeks,
 	addWeeks
 } from 'date-fns';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarDateFormatter, CalendarUtils } from 'angular-calendar';
 import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
 import { DialogsService } from '../../_services/dialogs/dialog.service';

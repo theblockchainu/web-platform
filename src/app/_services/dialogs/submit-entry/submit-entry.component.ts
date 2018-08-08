@@ -6,7 +6,7 @@ import { MediaUploaderService } from '../../mediaUploader/media-uploader.service
 import { SubmissionViewComponent } from '../submission-view/submission-view.component';
 import { ProjectSubmissionService } from '../../project-submission/project-submission.service';
 import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
-import 'rxjs/add/operator/map';
+
 import { ContentService } from '../../content/content.service';
 import { environment } from '../../../../environments/environment';
 import * as _ from 'lodash';

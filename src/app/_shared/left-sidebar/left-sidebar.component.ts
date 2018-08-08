@@ -3,8 +3,7 @@ import {
 	, HostBinding, HostListener, Output
 } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 
 import { LeftSidebarService, SideBarMenuItem } from '../../_services/left-sidebar/left-sidebar.service';
@@ -31,7 +30,7 @@ import * as _ from 'lodash';
 })
 
 export class LeftSidebarComponent implements OnInit {
-	
+
 	menuState = 'out';
 	public menuJSON: Observable<Array<any>>;
 	public step: number;
@@ -39,23 +38,23 @@ export class LeftSidebarComponent implements OnInit {
 	public path: string;
 	public status = 'draft';
 	public collection: any;
-	
+
 	public sidebarMenuItems;
-	
+
 	// Input Parameter
 	@Input()
 	private menuFile;
-	
+
 	@Output()
 	private menuArray = new EventEmitter<any>();
-	
+
 	constructor(
 		public router: Router,
 		private _leftSidebarService: LeftSidebarService,
 		private activatedRoute: ActivatedRoute,
 		public _collectionService: CollectionService) {
 	}
-	
+
 	ngOnInit() {
 		this._leftSidebarService.getMenuItems(this.menuFile).subscribe(response => {
 			this.sidebarMenuItems = response;
@@ -78,29 +77,29 @@ export class LeftSidebarComponent implements OnInit {
 				]
 			};
 			this._collectionService.getCollectionDetail(this.id, query)
-				.subscribe(res => {
-						this.status = res.status;
-						this.collection = res;
-						if (this.sidebarMenuItems) {
-							this.sidebarMenuItems = this._leftSidebarService.updateSideMenu(this.collection, this.sidebarMenuItems);
-						} else {
-							this._leftSidebarService.getMenuItems(this.menuFile).subscribe(response => {
-								this.sidebarMenuItems = this._leftSidebarService.updateSideMenu(this.collection, response);
-							});
-						}
-						this.menuArray.emit(this.sidebarMenuItems);
-					},
+				.subscribe((res: any) => {
+					this.status = res.status;
+					this.collection = res;
+					if (this.sidebarMenuItems) {
+						this.sidebarMenuItems = this._leftSidebarService.updateSideMenu(this.collection, this.sidebarMenuItems);
+					} else {
+						this._leftSidebarService.getMenuItems(this.menuFile).subscribe(response => {
+							this.sidebarMenuItems = this._leftSidebarService.updateSideMenu(this.collection, response);
+						});
+					}
+					this.menuArray.emit(this.sidebarMenuItems);
+				},
 					err => console.log('error'),
 					() => console.log('Completed!'));
 		} else {
 			console.log('NO COLLECTION');
 		}
 	}
-	
+
 	public toggleMenu() {
 		this.menuState = this.menuState === 'out' ? 'in' : 'out';
 	}
-	
+
 	public goto(item) {
 		let step = item.step;
 		const isLocked = item.locked;
@@ -112,5 +111,5 @@ export class LeftSidebarComponent implements OnInit {
 			this.router.navigate([this.path, this.id, 'edit', step]);
 		}
 	}
-	
+
 }

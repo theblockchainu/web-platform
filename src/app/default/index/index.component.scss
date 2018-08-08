@@ -183,6 +183,7 @@ header .right-links a.nav-link:hover{
 	background: #535353 url('/assets/images/home-banner-bg.jpg') no-repeat center;
 	background-size: cover;
 	height: 100vh;
+	min-height: 600px;
 	position: relative;
 }
 .home-banner .content{

@@ -40,7 +40,7 @@ export class ConsoleAccountPaymentmethodsComponent implements OnInit {
 
   private fetchCards() {
     this.loadingCards = true;
-    this.profileService.getPeer(this.userId).subscribe(peer => {
+    this.profileService.getPeer(this.userId).subscribe((peer: any) => {
       if (peer) {
         this.createSourceData.email = peer.email;
         if (peer.stripeCustId) {

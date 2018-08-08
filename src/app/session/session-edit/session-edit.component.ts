@@ -1,11 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
-import 'rxjs/add/operator/switchMap';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/share';
-import 'rxjs/add/operator/publishReplay';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import * as moment from 'moment';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
@@ -18,14 +14,13 @@ import * as _ from 'lodash';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { TopicService } from '../../_services/topic/topic.service';
 import { PaymentService } from '../../_services/payment/payment.service';
 import { ProfileService } from '../../_services/profile/profile.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { environment } from '../../../environments/environment';
 import { MediaMatcher } from '@angular/cdk/layout';
-
+import { map, startWith, flatMap } from 'rxjs/operators';
 @Component({
 	selector: 'app-session-edit',
 	templateUrl: './session-edit.component.html',
@@ -360,7 +355,7 @@ export class SessionEditComponent implements OnInit {
 				'emergency_contacts'
 			]
 		};
-		this._profileService.getProfileData(this.userId, query).subscribe((profiles) => {
+		this._profileService.getProfileData(this.userId, query).subscribe((profiles: any) => {
 			this.profile = profiles[0];
 			this.picture_url = profiles[0].picture_url;
 			this.profile_video = profiles[0].profile_video;
@@ -506,15 +501,17 @@ export class SessionEditComponent implements OnInit {
 			.subscribe((languages) => {
 				this.languagesArray = _.map(languages, 'name');
 				this.filteredLanguageOptions = this.session.controls.selectedLanguage.valueChanges
-					.startWith(null)
-					.map(val => val ? this.filter(val) : this.languagesArray.slice());
+					.pipe(
+						startWith(null)
+						, map(val => val ? this.filter(val) : this.languagesArray.slice())
+					);
 			});
 
 		if (this.interests.length === 0) {
 			this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.requestHeaderService.options)
-				.map((response: any) => {
+				.subscribe((response: any) => {
 					this.suggestedTopics = response.slice(0, 7);
-				}).subscribe();
+				});
 		} else {
 			this.suggestedTopics = this.interests;
 		}
@@ -532,7 +529,7 @@ export class SessionEditComponent implements OnInit {
 	private initializeSession() {
 		if (this.sessionId) {
 			this._collectionService.getCollectionDetail(this.sessionId, this.query)
-				.subscribe((res) => {
+				.subscribe((res: any) => {
 					this.sessionData = res;
 					if (this.sessionData.payoutrules && this.sessionData.payoutrules.length > 0) {
 						this.payoutRuleNodeId = this.sessionData.payoutrules[0].id;
@@ -848,10 +845,10 @@ export class SessionEditComponent implements OnInit {
 		lang.push(this._fb.control(data.value.selectedLanguage));
 		const body = data.value;
 		delete body.selectedLanguage;
-		this._collectionService.patchCollection(this.sessionId, body).map(
-			(response) => {
+		this._collectionService.patchCollection(this.sessionId, body)
+			.subscribe((response) => {
 				this.router.navigate(['console/teaching/sessions']);
-			}).subscribe();
+			});
 	}
 
 	exit() {
@@ -1027,9 +1024,11 @@ export class SessionEditComponent implements OnInit {
 
 	public saveWorkEducation() {
 		this._profileService.updateWork(this.userId, this.profile.id, this.workForm.controls['work'].value)
-			.flatMap((response) => {
-				return this._profileService.updateEducation(this.userId, this.profile.id, this.workForm.controls['education'].value);
-			}).subscribe((response) => {
+			.pipe(
+				flatMap((response) => {
+					return this._profileService.updateEducation(this.userId, this.profile.id, this.workForm.controls['education'].value);
+				})
+			).subscribe((response) => {
 				this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
 					{ educationObject: response });
 				this.nextStep();
@@ -1153,8 +1152,9 @@ export class SessionEditComponent implements OnInit {
 			this.languages = data;
 			this.languagesAsync.next(this.languages);
 			this.profileForm.controls['preferred_language'].valueChanges
-				.startWith(null)
-				.subscribe(val => {
+				.pipe(
+					startWith(null)
+				).subscribe(val => {
 					if (val) {
 						this.filteredOptions = _.filter(this.languages, (item) => {
 							return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;

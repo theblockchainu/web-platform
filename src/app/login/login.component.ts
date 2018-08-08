@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService } from '../_services/alert/alert.service';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import {environment} from '../../environments/environment';
 import {DialogsService} from '../_services/dialogs/dialog.service';

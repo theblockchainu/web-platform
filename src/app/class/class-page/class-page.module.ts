@@ -12,7 +12,6 @@ import { VgCoreModule } from 'videogular2/core';
 import { VgControlsModule } from 'videogular2/controls';
 import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
-import { StickyModule } from 'ng2-sticky-kit';
 
 @NgModule({
   imports: [
@@ -31,7 +30,6 @@ import { StickyModule } from 'ng2-sticky-kit';
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
-    StickyModule
   ],
 
   declarations: [ClassPageComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent],

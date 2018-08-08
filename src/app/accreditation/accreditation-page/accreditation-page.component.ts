@@ -103,7 +103,7 @@ export class AccreditationPageComponent implements OnInit {
       this.eligibilityReason = 'You are the owner';
       return;
     }
-    this.profileService.getGyanBalance(this.userId, 'fixed').subscribe(res => {
+    this.profileService.getGyanBalance(this.userId, 'fixed').subscribe((res: any) => {
       this.userGyan = res;
       this.userGyan = 10;
       if (this.userGyan < this.accreditation.minimum_gyan) {

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import {ProfileService} from '../../_services/profile/profile.service';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 
 @Pipe({
 	name: 'gyanBalance'

@@ -7,8 +7,8 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import * as _ from 'lodash';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import { ContentService } from '../../_services/content/content.service';
-import { timer } from 'rxjs/observable/timer';
-
+import { timer } from 'rxjs';
+import { first } from 'rxjs/operators';
 @Component({
     selector: 'app-class-content-video',
     templateUrl: './class-content-video.component.html',
@@ -85,7 +85,7 @@ export class ClassContentVideoComponent implements OnInit {
     deleteFromContainer(fileUrl, fileType) {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
-        this.mediaUploader.delete(fileUrl).first()
+        this.mediaUploader.delete(fileUrl).pipe(first())
             .subscribe((response) => {
                 console.log(response);
                 if (fileType === 'file') {

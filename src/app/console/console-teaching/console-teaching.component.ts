@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import 'rxjs/add/operator/map';
+
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
@@ -7,7 +7,7 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 
 import { ConsoleComponent } from '../console.component';
 import { ProfileService } from '../../_services/profile/profile.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 declare var moment: any;
 
 @Component({

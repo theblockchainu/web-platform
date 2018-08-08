@@ -3,7 +3,7 @@ import { LoginComponentDialog } from './login-dialog/login-dialog.component';
 import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
 import { LiveSessionDialogComponent } from './live-session-dialog/live-session-dialog.component';
 import { MultiselectTopicDialogComponent } from './multiselect-topic-dialog/multiselect-topic-dialog.component';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { VerifyIdDialogComponent } from './verify-id-dialog/verify-id-dialog.component';
 import { VerifyEmailDialogComponent } from './verify-email-dialog/verify-email-dialog.component';
 import { IdPolicyDialogComponent } from './id-policy-dialog/id-policy-dialog.component';

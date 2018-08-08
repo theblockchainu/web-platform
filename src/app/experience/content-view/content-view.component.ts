@@ -2,7 +2,6 @@ import { Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef, Afte
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
-import { ModalModule, ModalDirective } from 'ngx-bootstrap';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { MatDialog } from '@angular/material';
 import { ExperienceContentProjectComponent } from '../experience-content-project/experience-content-project.component';
@@ -37,7 +36,6 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 	triggerSave: EventEmitter<any> = new EventEmitter<any>();
 
 	public tempForm: FormGroup;
-	public modal: ModalModule;
 	public lastIndex: number;
 	public dontAllow: true;
 	public editIndex: number;

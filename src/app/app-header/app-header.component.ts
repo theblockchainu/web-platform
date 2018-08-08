@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ProfileService } from '../_services/profile/profile.service';
 import { FormControl } from '@angular/forms';
 import { environment } from '../../environments/environment';
@@ -121,7 +121,7 @@ export class AppHeaderComponent implements OnInit {
 
 	getProfile() {
 		if (this.loggedIn) {
-			this._profileService.getCompactProfile(this.userId).subscribe(profile => {
+			this._profileService.getCompactProfile(this.userId).subscribe((profile: any) => {
 				if (profile && profile.length > 0) {
 					this.profile = profile[0];
 					this.isEmailVerified = this.profile.peer[0].emailVerified;
@@ -332,7 +332,7 @@ export class AppHeaderComponent implements OnInit {
 		} else {
 			this.router.navigate(['digest', 'experiences']);
 		}
-		
+
 	}
 
 	public createClass() {

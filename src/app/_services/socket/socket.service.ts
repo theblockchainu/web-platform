@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 import {environment} from '../../../environments/environment';
 import {InboxService} from '../inbox/inbox.service';

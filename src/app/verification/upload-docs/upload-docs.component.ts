@@ -14,7 +14,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 const PHONE_REGEX = /^(\+\d{1,3}[- ]?)?\d{7,10}$/;
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
 import { startWith, map } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'app-upload-docs',
@@ -92,7 +92,7 @@ export class UploadDocsComponent implements OnInit {
 			inputOTP: [null, [Validators.required]]
 		});
 		this._profileService.getPeerNode(this.userId)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				if (res.email && res.email.length > 0) {
 					this.emailForm.controls.email.setValue(res.email);
 					this.emailForm.controls.email.disable();

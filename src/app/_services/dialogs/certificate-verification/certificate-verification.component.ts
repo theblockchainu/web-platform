@@ -4,7 +4,7 @@ import { CertificateService } from '../../certificate/certificate.service';
 import { CollectionService } from '../../collection/collection.service';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { ProfileService } from '../../profile/profile.service';
 import { environment } from '../../../../environments/environment';
 @Component({

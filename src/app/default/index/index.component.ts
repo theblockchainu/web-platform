@@ -14,7 +14,7 @@ import { TopicService } from '../../_services/topic/topic.service';
 import { CommunityService } from '../../_services/community/community.service';
 import { TitleCasePipe } from '@angular/common';
 import { SearchService } from '../../_services/search/search.service';
-
+import { first } from 'rxjs/operators';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -86,13 +86,13 @@ export class IndexComponent implements OnInit {
 		);
 
 		this.userId = this._cookieUtilsService.getValue('userId');
-		this.authenticationService.isLoggedIn().first().subscribe((res) => {
+		this.authenticationService.isLoggedIn().pipe(first()).subscribe((res) => {
 			this.loggedIn = res;
 			if (this.loggedIn) {
 				this._router.navigate(['home', 'homefeed']);
 			}
 		});
-		this._activatedRoute.url.first().subscribe(res => {
+		this._activatedRoute.url.pipe(first()).subscribe(res => {
 			if (res[0] && res[0].path === 'login') {
 				if (!this.loggedIn) {
 					this.dialogsService.openLogin().subscribe();
@@ -111,17 +111,22 @@ export class IndexComponent implements OnInit {
 	initialiseSearchService() {
 		this.myControl.valueChanges.subscribe((value) => {
 			console.log(value);
-			this.searching = true;
-			this._searchService.getAllSearchResults(null, value, (err, result) => {
-				if (!err) {
-					this.options = result;
-					this.searching = false;
-				} else {
-					console.log(err);
-					this.searching = false;
-
-				}
-			});
+			this.options = [];
+			if (value.length > 0) {
+				this.searching = true;
+				this._searchService.getAllSearchResults(null, value, (err, result) => {
+					if (!err) {
+						this.options = result;
+						this.searching = false;
+					} else {
+						console.log(err);
+						this.searching = false;
+					}
+				});
+			} else {
+				this.searching = false;
+				this.options = [];
+			}
 		});
 	}
 	public openVideo() {
@@ -142,7 +147,7 @@ export class IndexComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	public openSignup() {
 		this.dialogsService.openSignup('invite/1').subscribe();
 	}

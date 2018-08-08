@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/toPromise';
+
 import { HttpClient } from '@angular/common/http';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 

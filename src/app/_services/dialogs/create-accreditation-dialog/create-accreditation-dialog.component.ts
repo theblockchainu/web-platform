@@ -5,7 +5,7 @@ import { MediaUploaderService } from '../../../_services/mediaUploader/media-upl
 import * as _ from 'lodash';
 import { environment } from '../../../../environments/environment';
 import { LanguagePickerService } from '../../../_services/languagepicker/languagepicker.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { SearchService } from '../../search/search.service';
 import { AccreditationService } from '../../accreditation/accreditation.service';
 

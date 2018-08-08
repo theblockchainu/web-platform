@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProfileService } from '../_services/profile/profile.service';
-import 'rxjs/add/operator/map';
+
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { environment } from '../../environments/environment';

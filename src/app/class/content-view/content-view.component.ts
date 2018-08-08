@@ -9,7 +9,6 @@ import { ClassContentProjectComponent } from '../class-content-project/class-con
 import { ClassContentVideoComponent } from '../class-content-video/class-content-video.component';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { environment } from '../../../environments/environment';
-import { ModalModule } from 'ngx-bootstrap';
 
 declare var moment: any;
 
@@ -37,7 +36,6 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 	triggerSave: EventEmitter<any> = new EventEmitter<any>();
 
 	public tempForm: FormGroup;
-	public modal: ModalModule;
 	public lastIndex: number;
 	public dontAllow: true;
 	public editIndex: number;

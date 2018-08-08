@@ -1,11 +1,8 @@
-import 'rxjs/add/operator/switchMap';
+
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/share';
-import 'rxjs/add/operator/publishReplay';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import * as moment from 'moment';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
@@ -19,10 +16,10 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
 import { environment } from '../../../environments/environment';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { TopicService } from '../../_services/topic/topic.service';
 import { PaymentService } from '../../_services/payment/payment.service';
-
+import { startWith, map, publishReplay, refCount } from 'rxjs/operators';
 
 @Component({
   selector: 'app-community-edit',
@@ -414,7 +411,7 @@ export class CommunityEditComponent implements OnInit {
       .subscribe((languages) => {
         this.languagesArray = _.map(languages, 'name');
         this.filteredLanguageOptions = this.community.controls.selectedLanguage.valueChanges
-          .startWith(null)
+          .pipe(startWith(null))
           .map(val => val ? this.filter(val) : this.languagesArray.slice());
         console.log(this.filteredLanguageOptions);
       });
@@ -443,7 +440,7 @@ export class CommunityEditComponent implements OnInit {
     console.log('Inside init community');
     if (this.communityId) {
       this._collectionService.getCollectionDetail(this.communityId, this.query)
-        .subscribe((res) => {
+        .subscribe((res: any) => {
           console.log(res);
           this.communityData = res;
           if (this.communityData.payoutrules && this.communityData.payoutrules.length > 0) {
@@ -770,7 +767,7 @@ export class CommunityEditComponent implements OnInit {
     if (topicArray.length !== 0) {
       let observable: Observable<any>;
       observable = this.http.patch(environment.apiUrl + '/api/collections/' + this.communityId + '/topics/rel', body, this.requestHeaderService.options)
-        .map(response => response).publishReplay().refCount();
+        .map(response => response).pipe(publishReplay(), refCount());
       observable.subscribe((res) => {
         this.step++;
         this._collectionService.getCollectionDetail(this.communityId, this.query)

@@ -23,7 +23,7 @@ export class VerifyPhoneDialogComponent implements OnInit {
 	public userId;
 	public profileId;
 	private phone_numbers: any = [];
-	
+
 	constructor(
 		public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -39,19 +39,19 @@ export class VerifyPhoneDialogComponent implements OnInit {
 		});
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.peer = this._fb.group({
 			phone: ['', Validators.required],
 			countryCode: ['', Validators.required]
 		});
-		
+
 		this.otp = this._fb.group({
 			inputOTP: [null]
 		});
 		const filter = {
 			include: {
-				profiles : 'phone_numbers'
+				profiles: 'phone_numbers'
 			}
 		};
 		this._profileService.getPeerData(this.userId, filter)
@@ -63,10 +63,10 @@ export class VerifyPhoneDialogComponent implements OnInit {
 				this.profileId = res.profiles[0].id;
 			});
 	}
-	
+
 	continue(p) {
 		this.step = p;
-		
+
 		if (p === 3) {
 			const phone_number = {
 				country_code: this.peer.controls.countryCode.value,
@@ -78,14 +78,14 @@ export class VerifyPhoneDialogComponent implements OnInit {
 			this.sendOTP();
 		}
 	}
-	
+
 	public sendOTP() {
 		this._profileService.sendVerifySms(this.peer.controls.phone.value, this.peer.controls.countryCode.value)
 			.subscribe();
 		console.log(this.phone);
 		console.log('otp sent');
 	}
-	
+
 	public resendOTP() {
 		this._profileService.sendVerifySms(this.peer.controls.phone.value, this.peer.controls.countryCode.value)
 			.subscribe((response) => {
@@ -94,10 +94,10 @@ export class VerifyPhoneDialogComponent implements OnInit {
 				});
 			});
 	}
-	
+
 	verifyPhone() {
 		this._profileService.confirmSmsOTP(this.otp.controls['inputOTP'].value)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				console.log(res.phone);
 				console.log('verified phone');
 				this.success = res;

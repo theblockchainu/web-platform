@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import 'rxjs/add/operator/map';
+
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { ConsoleTeachingComponent } from '../console-teaching.component';

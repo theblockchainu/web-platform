@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
 import { CurrencyPickerService } from '../_services/currencypicker/currencypicker.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';

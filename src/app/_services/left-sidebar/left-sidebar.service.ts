@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import 'rxjs/add/operator/map';
+
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 
 export class SideBarMenuItem {

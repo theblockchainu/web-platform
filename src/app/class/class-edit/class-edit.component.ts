@@ -1,11 +1,8 @@
-import 'rxjs/add/operator/switchMap';
+
 import { Component, OnInit, Input, OnDestroy, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/share';
-import 'rxjs/add/operator/publishReplay';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
@@ -19,7 +16,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
 import { environment } from '../../../environments/environment';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, merge } from 'rxjs';
 import { TopicService } from '../../_services/topic/topic.service';
 import { PaymentService } from '../../_services/payment/payment.service';
 import { MediaMatcher } from '@angular/cdk/layout';
@@ -27,9 +24,8 @@ import { Meta, Title } from '@angular/platform-browser';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { CustomCertificateFormComponent } from '../../_shared/custom-certificate-form/custom-certificate-form.component';
-import { merge } from 'rxjs/observable/merge';
 import { AssessmentService } from '../../_services/assessment/assessment.service';
-
+import { map, startWith, flatMap } from 'rxjs/operators';
 @Component({
 	selector: 'app-class-edit',
 	templateUrl: './class-edit.component.html',
@@ -41,7 +37,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public busyInterest = false;
 	public busyPayment = false;
 	public busySavingData = false;
-	
+
 	public sidebarFilePath = 'assets/menu/class-static-left-sidebar-menu.json';
 	public sidebarMenuItems;
 	public itenariesForMenu = [];
@@ -54,11 +50,11 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public conditions: FormGroup;
 	public phoneDetails: FormGroup;
 	public assessmentForm: FormGroup;
-	
+
 	public supplementUrls = new FormArray([]);
 	public uploadingImage = false;
 	public uploadingVideo = false;
-	
+
 	public classId: string;
 	public classData: any;
 	public isClassActive = false;
@@ -70,13 +66,13 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public userId;
 	public selectedValues: boolean[] = [false, false];
 	public selectedOption = -1;
-	
+
 	public searchTopicURL = '';
 	public createTopicURL = '';
 	public placeholderStringTopic = 'Search for a topic ';
 	public maxTopicMsg = 'Choose max 3 related topics';
-	
-	
+
+
 	public difficulties = [];
 	public cancellationPolicies = [];
 	public contentComplete = false;
@@ -86,12 +82,12 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public key;
 	public maxTopics = 3;
 	public otpSent = false;
-	
+
 	profileImagePending: Boolean;
 	classVideoPending: Boolean;
 	classImage1Pending: Boolean;
 	classImage2Pending: Boolean;
-	
+
 	public step = 1;
 	public max = 14;
 	public learnerType_array;
@@ -100,24 +96,24 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public interests = [];
 	public removedInterests = [];
 	public relTopics = [];
-	
+
 	public days;
-	
+
 	public _CANVAS;
 	public _VIDEO;
 	public _CTX;
 	public showBackground = false;
 	public urlForVideo = [];
 	public urlForImages = [];
-	
+
 	public datesEditable = false;
 	public isPhoneVerified = false;
 	public isSubmitted = false;
 	public connectPaymentUrl = '';
 	private payoutRuleAccountId: string;
-	
+
 	filteredLanguageOptions: Observable<string[]>;
-	
+
 	public query = {
 		'include': [
 			'topics',
@@ -152,7 +148,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	defaultAssesment: any;
 	availableDefaultAssessments: Array<AssessmentTypeData>;
 	availableSubtypes: Array<SubTypeInterface>;
-	
+
 	// TypeScript public modifiers
 	constructor(
 		public router: Router,
@@ -179,7 +175,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		private profileService: ProfileService,
 		private certificateService: CertificateService,
 		private assesmentService: AssessmentService
-	
+
 	) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
@@ -193,22 +189,22 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.searchTopicURL = environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics/suggest?field=name&query=';
 			this.createTopicURL = environment.apiUrl + '/api/topics';
 		});
-		
-		
+
+
 		this.userId = _cookieUtilsService.getValue('userId');
 		this.currentDate = moment().toDate();
-		
+
 	}
-	
+
 	public ngOnInit() {
 		console.log('Inside oninit class');
 		this.setTags();
 		this.interest1 = new FormGroup({});
-		
+
 		this.newTopic = this._fb.group({
 			topicName: ['', Validators.requiredTrue]
 		});
-		
+
 		this.class = this._fb.group({
 			type: 'class',
 			title: '',
@@ -236,7 +232,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			nonAcademicGyan: 1,
 			subCategory: 'class'
 		});
-		
+
 		this.timeline = this._fb.group({
 			calendar: this._fb.group({
 				startDate: null,
@@ -246,24 +242,24 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				itenary: this._fb.array([])
 			})
 		});
-		
+
 		this.conditions = this._fb.group({
 			standards: '',
 			terms: ''
 		});
-		
+
 		this.selectedTopic = new FormGroup({});
-		
+
 		this.phoneDetails = this._fb.group({
 			phoneNo: [{ value: '', disabled: true }],
 			inputOTP: '',
 			countryCode: [{ value: '', disabled: true }]
 		});
-		
+
 		this.paymentInfo = this._fb.group({
 			id: ''
 		});
-		
+
 		this.assessmentForm = this._fb.group({
 			type: ['Teacher', Validators.required],
 			style: ['Grades', Validators.required],
@@ -279,26 +275,26 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				})
 			])
 		});
-		
+
 		this.certificateForm = this._fb.group({
 			certificateHTML: [''],
 			expiryDate: [''],
 			formData: [null]
 		});
-		
+
 		this.initializeFormFields();
 		this.initializeClass();
 		this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
 		this._VIDEO = document.querySelector('#main-video');
 		this.getGyanBalance();
-		
+
 		this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
 		this._mobileQueryListener = () => this.cd.detectChanges();
 		this.mobileQuery.addListener(this._mobileQueryListener);
-		
+
 	}
-	
-	
+
+
 	initializeCertificate() {
 		this.certificateService.getCertificateTemplate(this.classId).subscribe((res: any) => {
 			this.sidebarMenuItems = this._leftSideBarService.updateSideMenuCertificate(res, this.sidebarMenuItems);
@@ -313,14 +309,14 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			console.log(err);
 		});
 	}
-	
+
 	getGyanBalance() {
 		this.gyanBalance = 0;
 		this.profileService.getGyanBalance(this.userId, 'fixed').subscribe(res => {
 			this.gyanBalance = Number(res);
 		});
 	}
-	
+
 	private setTags() {
 		this.titleService.setTitle('Create Class');
 		this.metaService.updateTag({
@@ -340,7 +336,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			content: environment.clientUrl + this.router.url
 		});
 	}
-	
+
 	private changeControl(indexOfOtherControl: number): ValidatorFn {
 		return (control: AbstractControl): { [key: string]: any } | null => {
 			if (indexOfOtherControl === 1 && this.assessmentForm && this.assessmentForm.controls['nARules'] && this.assessmentForm.controls['nARules']['controls'][indexOfOtherControl]) {
@@ -353,7 +349,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 		};
 	}
-	
+
 	private initializeAssessment(result) {
 		if (result.assessment_models[0]) {
 			this.assessmentForm.controls['type'].patchValue(result.assessment_models[0].type);
@@ -388,25 +384,25 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 		}
 	}
-	
+
 	ngOnDestroy(): void {
 		this.mobileQuery.removeListener(this._mobileQueryListener);
 	}
-	
+
 	ngAfterViewInit() {
 		this.cd.detectChanges();
 	}
-	
-	
+
+
 	private extractDate(dateString: string) {
 		return moment.utc(dateString).local().toDate();
 	}
-	
+
 	private extractTime(dateString: string) {
 		const time = moment.utc(dateString).local().format('HH:mm:ss');
 		return time;
 	}
-	
+
 	private initializeTimeLine(res) {
 		const sortedCalendar = this.sort(res.calendars, 'startDate', 'endDate');
 		if (sortedCalendar[0] !== undefined && sortedCalendar[0].startDate) {
@@ -414,7 +410,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			calendar['startDate'] = this.extractDate(calendar.startDate);
 			calendar['endDate'] = this.extractDate(calendar.endDate);
 			this._collectionService.sanitize(calendar);
-			
+
 			if (this.classData.status === 'active') {
 				this.isClassActive = true;
 				this.activeClass = 'disabledMAT';
@@ -424,7 +420,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.initializeContentForm(res);
 		}
 		this.initializeCalendarCheck(res);
-		
+
 	}
 	private initializeCalendarCheck(classData: any) {
 		const calendarForm = <FormGroup>this.timeline.controls['calendar'];
@@ -445,7 +441,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	public initializeContentForm(res) {
 		const contentGroup = <FormGroup>this.timeline.controls.contentGroup;
 		const itenary = <FormArray>contentGroup.controls.itenary;
@@ -468,7 +464,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		console.log(itenary);
 		this.totalHours();
 	}
-	
+
 	/**
 	 * assignFormValues
 	 */
@@ -495,7 +491,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 		}
 	}
-	
+
 	public InitItenary() {
 		return this._fb.group({
 			contents: this._fb.array([]),
@@ -503,7 +499,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			startDay: ['']
 		});
 	}
-	
+
 	public InitContent() {
 		return this._fb.group({
 			id: [''],
@@ -527,7 +523,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			pending: ['']
 		});
 	}
-	
+
 	public getContents(contents) {
 		const itenaries = {};
 		for (const contentObj of contents) {
@@ -559,22 +555,22 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			// this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(this.class.value, this.sidebarMenuItems);
 			// this.sidebarMenuItems[2]['submenu'] = [];
 		}
-		
+
 		return itenaries;
 	}
-	
+
 	private initializeFormFields() {
 		this.maxGyanExceding = false;
 		this.difficulties = ['Beginner', 'Intermediate', 'Advanced'];
-		
+
 		this.cancellationPolicies = ['24 Hours', '3 Days', '1 Week'];
-		
+
 		this.currencies = ['USD', 'INR', 'GBP'];
-		
+
 		this.availableAssessmentTypes = ['Peer', 'Teacher', 'Third Party'];
-		
+
 		this.availableAssessmentStyles = ['Grades', 'Percentage', 'Percentile'];
-		
+
 		this.nAAssessmentParams = ['engagement', 'commitment'];
 		this.learnerType_array = {
 			learner_type: [
@@ -584,38 +580,38 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				, { id: 'kinesthetic', display: 'Kinesthetic' }
 			]
 		};
-		
+
 		this.availableSubtypes = [
 			{ name: 'instructor led', pic_url: '/assets/images/class_icon2.jpg', description: '' },
 			{ name: 'self paced', pic_url: '/assets/images/class_icon2.jpg', description: '' }
 		];
 		this.placeholderStringTopic = 'Start typing to to see a list of suggested topics...';
-		
+
 		this.key = 'access_token';
-		
+
 		this.availableDefaultAssessments = this.assesmentService.getAvailableAssessments();
-		
+
 		this.countryPickerService.getCountries()
 			.subscribe((countries) => this.countries = countries);
-		
+
 		this.languagePickerService.getLanguages()
 			.subscribe((languages) => {
 				this.languagesArray = _.map(languages, 'name');
-				this.filteredLanguageOptions = this.class.controls.selectedLanguage.valueChanges
-					.startWith(null)
-					.map(val => val ? this.filter(val) : this.languagesArray.slice());
-				console.log(this.filteredLanguageOptions);
+				this.filteredLanguageOptions = this.class.controls.selectedLanguage.valueChanges.pipe(
+					startWith(null),
+					map(val => val ? this.filter(val) : this.languagesArray.slice())
+				);
 			});
-		
+
 		if (this.interests.length === 0) {
 			this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.requestHeaderService.options)
-				.map((response: any) => {
+				.subscribe((response: any) => {
 					this.suggestedTopics = response.slice(0, 5);
-				}).subscribe();
+				});
 		} else {
 			this.suggestedTopics = this.interests;
 		}
-		
+
 		this.profileImagePending = true;
 		this.classVideoPending = true;
 		this.classImage1Pending = true;
@@ -624,51 +620,51 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.totalHours();
 		});
 	}
-	
+
 	filter(val: string): string[] {
 		console.log('filtering');
 		return this.languagesArray.filter(option =>
 			option.toLowerCase().indexOf(val.toLowerCase()) === 0);
 	}
-	
+
 	private initializeClass() {
 		if (this.classId) {
 			this._collectionService.getCollectionDetail(this.classId, this.query)
-				.subscribe((res) => {
-						this.classData = res;
-						if (this.classData.payoutrules && this.classData.payoutrules.length > 0) {
-							this.payoutRuleNodeId = this.classData.payoutrules[0].id;
-							this.payoutRuleAccountId = this.classData.payoutrules[0].payoutId1;
-						}
-						this.retrieveAccounts();
-						this.initializeFormValues(res);
-						this.initializeTimeLine(res);
-						this.initializeAssessment(res);
-						this.initializeCertificate();
-						
-						if (res.status === 'active' && this.sidebarMenuItems) {
-							this.sidebarMenuItems[3].visible = false;
-							this.sidebarMenuItems[4].visible = true;
-							this.sidebarMenuItems[4].active = true;
-							this.sidebarMenuItems[4].submenu[0].visible = true;
-							this.sidebarMenuItems[4].submenu[1].visible = true;
-						}
-						
-					},
+				.subscribe((res: any) => {
+					this.classData = res;
+					if (this.classData.payoutrules && this.classData.payoutrules.length > 0) {
+						this.payoutRuleNodeId = this.classData.payoutrules[0].id;
+						this.payoutRuleAccountId = this.classData.payoutrules[0].payoutId1;
+					}
+					this.retrieveAccounts();
+					this.initializeFormValues(res);
+					this.initializeTimeLine(res);
+					this.initializeAssessment(res);
+					this.initializeCertificate();
+
+					if (res.status === 'active' && this.sidebarMenuItems) {
+						this.sidebarMenuItems[3].visible = false;
+						this.sidebarMenuItems[4].visible = true;
+						this.sidebarMenuItems[4].active = true;
+						this.sidebarMenuItems[4].submenu[0].visible = true;
+						this.sidebarMenuItems[4].submenu[1].visible = true;
+					}
+
+				},
 					err => console.log('error'),
 					() => console.log('Completed!'));
-			
+
 		} else {
 			console.log('NO COLLECTION');
 		}
 	}
-	
+
 	public languageChange(event) {
 		if (event) {
 			this.selectedLanguages = event;
 		}
 	}
-	
+
 	public selected(event) {
 		if (event.length > 3) {
 			this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
@@ -680,21 +676,21 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			return obj;
 		});
 	}
-	
+
 	public removed(event) {
 		const body = {};
 		this.removedInterests = event;
 		if (this.removedInterests.length !== 0) {
 			this.removedInterests.forEach((topic) => {
 				this.http.delete(environment.apiUrl + '/api/collections/' + this.classId + '/topics/rel/' + topic.id, this.requestHeaderService.options)
-					.map((response) => {
-						console.log(response);
-					}).subscribe();
+					.subscribe(res => {
+						this.snackBar.open('Deleted', 'Close', { duration: 3000 });
+					});
 			});
-			
+
 		}
 	}
-	
+
 	public daysCollection(event) {
 		this.days = event;
 		this.sidebarMenuItems[2]['submenu'] = [];
@@ -710,12 +706,12 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			});
 		}, this);
 	}
-	
+
 	public getMenuArray(event) {
 		this.sidebarMenuItems = event;
 	}
-	
-	
+
+
 	private initializeFormValues(res) {
 		// Topics
 		this.relTopics = _.uniqBy(res.topics, 'id');
@@ -732,28 +728,28 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		// aboutHost TBD
 		this.class.controls.aboutHost.patchValue(res.aboutHost);
 		console.log(this.class.controls.aboutHost.value);
-		
-		
+
+
 		// Title
 		this.class.controls.title.patchValue(res.title);
-		
+
 		// Headline
 		this.class.controls.headline.patchValue(res.headline);
-		
+
 		// Description
 		this.class.controls.description.patchValue(res.description);
 		console.log(this.class.controls.description.value);
-		
+
 		// Difficulty Level
 		this.class.controls.difficultyLevel.patchValue(res.difficultyLevel);
-		
+
 		// Notes
 		this.class.controls.notes.patchValue(res.notes);
 		console.log(this.class.controls.notes.value);
-		
+
 		// Seats
 		this.class.controls.maxSpots.patchValue(res.maxSpots);
-		
+
 		// Photos and Videos
 		if (res.videoUrls && res.videoUrls.length > 0) {
 			this.class.controls['videoUrls'].patchValue(res.videoUrls);
@@ -763,7 +759,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.class.controls['imageUrls'].patchValue(res.imageUrls);
 			this.urlForImages = res.imageUrls;
 		}
-		
+
 		// Currency, Amount, Cancellation Policy
 		this.class.controls.price.patchValue(res.price);
 		if (res.price === 0) {
@@ -771,22 +767,22 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 		if (res.currency) { this.class.controls.currency.patchValue(res.currency); }
 		if (res.cancellationPolicy) { this.class.controls.cancellationPolicy.setValue(res.cancellationPolicy); }
-		
+
 		// Status
 		this.class.controls.status.setValue(res.status);
-		
+
 		// Gyan
 		this.class.controls['academicGyan'].patchValue(res.academicGyan);
-		
+
 		this.class.controls['nonAcademicGyan'].patchValue(res.nonAcademicGyan);
-		
+
 		this.class.controls['subCategory'].patchValue(res.subCategory);
-		
-		
+
+
 		this.isPhoneVerified = res.owners[0].phoneVerified;
-		
+
 		this.isSubmitted = this.class.controls.status.value === 'submitted';
-		
+
 		if (res.owners[0].profiles[0].phone_numbers && res.owners[0].profiles[0].phone_numbers.length) {
 			this.phoneDetails.controls.phoneNo.patchValue(res.owners[0].profiles[0].phone_numbers[0].subscriber_number);
 			this.phoneDetails.controls.countryCode.patchValue(res.owners[0].profiles[0].phone_numbers[0].country_code);
@@ -795,7 +791,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.makeDatesEditable();
 		}
 	}
-	
+
 	initAddress() {
 		// initialize our address
 		return this._fb.group({
@@ -809,9 +805,9 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				'stage': this.step
 			});
 		}
-		
+
 	}
-	
+
 	public addImageUrl(value: String) {
 		console.log('Adding image url: ' + value);
 		this.urlForImages.push(value);
@@ -822,7 +818,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		tempClassData.imageUrls = this.class.controls['imageUrls'].value;
 		this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(tempClassData, this.sidebarMenuItems);
 	}
-	
+
 	public addVideoUrl(value: String) {
 		console.log('Adding video url: ' + value);
 		this.urlForVideo.push(value);
@@ -833,7 +829,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		tempClassData.videoUrls = this.class.controls['videoUrls'].value;
 		this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(tempClassData, this.sidebarMenuItems);
 	}
-	
+
 	uploadImage(event) {
 		this.uploadingImage = true;
 		for (const file of event.files) {
@@ -848,7 +844,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			});
 		}
 	}
-	
+
 	public changeInterests(topic: any) {
 		const index = this.interests.indexOf(topic);
 		if (index > -1) {
@@ -857,7 +853,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.interests.push(topic); // Otherwise add this topic.
 		}
 	}
-	
+
 	public submitCertificate(certificate: any) {
 		this.busySavingData = true;
 		this.certificateForm.controls['certificateHTML'].patchValue(certificate.htmlData);
@@ -881,11 +877,11 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			});
 		});
 	}
-	
+
 	public submitClass() {
 		this.checkStatusAndSubmit(this.class, this.timeline, this.step);
 	}
-	
+
 	private checkStatusAndSubmit(data, timeline?, step?) {
 		if (this.class.controls.status.value === 'active') {
 			this.dialogsService.openCollectionCloneDialog({ type: 'class' })
@@ -900,7 +896,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.executeSubmitClass(data, timeline, step);
 		}
 	}
-	
+
 	private totalHours(): void {
 		let totalLength = 0;
 		this.totalVideoDuration = 0;
@@ -936,7 +932,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.totalGyan = totalLength / 60;
 		this.class.controls['academicGyan'].patchValue(totalLength);
 	}
-	
+
 	private calendarIsValid(step) {
 		const calendarGroup = <FormGroup>this.timeline.controls['calendar'];
 		const startMoment = moment(calendarGroup.controls['startDate'].value).local();
@@ -958,14 +954,14 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 		return true;
 	}
-	
+
 	private executeSubmitClass(data, timeline?, step?) {
 		const lang = <FormArray>this.class.controls.language;
 		lang.removeAt(0);
 		lang.push(this._fb.control(data.value.selectedLanguage));
 		const body = data.value;
 		delete body.selectedLanguage;
-		
+
 		this._collectionService.patchCollection(this.classId, body).subscribe(
 			(response: any) => {
 				const result = response;
@@ -980,7 +976,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				result.contents = this.classData.contents;
 				result.owners = this.classData.owners;
 				this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(result, this.sidebarMenuItems);
-				
+
 				if (step && step === this.timelineStep) {
 					this.submitTimeline(collectionId, timeline);
 				} else {
@@ -995,7 +991,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			});
 	}
-	
+
 	/**
 	 * numberOfdays
 	 */
@@ -1004,7 +1000,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		const start = moment(startDate);
 		return current.diff(start, 'days');
 	}
-	
+
 	/**
 	 * calculatedDate
 	 currenDate,day */
@@ -1024,7 +1020,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.checkStatusAndSubmit(this.class, this.timeline, this.step);
 		}
 	}
-	
+
 	public submitTimeline(collectionId, data: FormGroup) {
 		const body = data.value.calendar;
 		const itinerary = data.controls.contentGroup.value.itenary;
@@ -1061,10 +1057,10 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				});
 			}
 		}
-		
-		
+
+
 	}
-	
+
 	public submitInterests() {
 		this.busySavingData = false;
 		let body = {};
@@ -1076,7 +1072,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		body = {
 			'targetIds': topicArray
 		};
-		
+
 		if (topicArray.length !== 0) {
 			if (this.originalInterests.length > 0) {
 				const unlinkObeservables: Array<Observable<ArrayBuffer>> = [];
@@ -1086,10 +1082,12 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				});
 				console.log(unlinkObeservables);
 				const finalObservable = merge(...unlinkObeservables);
-				finalObservable.flatMap(res => {
-					console.log(res);
-					return this.http.patch(environment.apiUrl + '/api/collections/' + this.classId + '/topics/rel', body, this.requestHeaderService.options);
-				}).subscribe((res) => {
+				finalObservable.pipe(
+					flatMap(res => {
+						console.log(res);
+						return this.http.patch(environment.apiUrl + '/api/collections/' + this.classId + '/topics/rel', body, this.requestHeaderService.options);
+					})
+				).subscribe((res) => {
 					this._collectionService.getCollectionDetail(this.classId, this.query)
 						.subscribe((resData) => {
 							this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(resData, this.sidebarMenuItems);
@@ -1120,8 +1118,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 						}
 					});
 			}
-			
-			
+
+
 		} else {
 			if (this.exitAfterSave) {
 				this.exit();
@@ -1132,7 +1130,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 		}
 	}
-	
+
 	/**
 	 * goto(toggleStep)  */
 	public goto(toggleStep) {
@@ -1140,9 +1138,9 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.router.navigate(['class', this.classId, 'edit', +toggleStep]);
 		this.showBackground = this.step && (this.step.toString() === '6');
 	}
-	
-	
-	
+
+
+
 	submitForReview() {
 		// Post Class for review
 		this._collectionService.submitForReview(this.classId)
@@ -1157,12 +1155,12 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 					this.sidebarMenuItems[4].active = true;
 					this.sidebarMenuItems[4].submenu[0].visible = true;
 					this.sidebarMenuItems[4].submenu[1].visible = true;
-					
+
 				}
 			});
-		
+
 	}
-	
+
 	saveandexit() {
 		this.exitAfterSave = true;
 		switch (this.step) {
@@ -1187,12 +1185,12 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				break;
 		}
 	}
-	
-	
+
+
 	exit() {
 		this.router.navigate(['console/teaching/classes']);
 	}
-	
+
 	addNewTopic() {
 		let tempArray = [];
 		tempArray = _.union(this.interests, tempArray);
@@ -1209,7 +1207,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			});
 	}
-	
+
 	addNewLanguage() {
 		this.dialogsService
 			.addNewLanguage()
@@ -1219,42 +1217,42 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 					this.class.controls.selectedLanguage.patchValue(res.name);
 				}
 			});
-		
+
 	}
-	
+
 	uploadImage1(event) {
 		if (event.target.files == null || event.target.files === undefined) {
 			document.write('This Browser has no support for HTML5 FileReader yet!');
 			return false;
 		}
-		
+
 		for (let i = 0; i < event.target.files.length; i++) {
 			const file = event.target.files[i];
 			const imageType = /image.*/;
-			
+
 			if (!file.type.match(imageType)) {
 				continue;
-				
+
 			}
-			
+
 			const reader = new FileReader();
-			
+
 			if (reader != null) {
-				
+
 				reader.onload = this.GetThumbnail;
 				reader.readAsDataURL(file);
 			}
-			
-			
+
+
 		}
 	}
-	
+
 	GetThumbnail(e) {
 		const myCan = document.createElement('canvas');
 		const img = new Image();
 		img.src = e.target.result;
 		img.onload = function () {
-			
+
 			myCan.id = 'myTempCanvas';
 			const tsize = 100;
 			myCan.width = Number(tsize);
@@ -1263,27 +1261,27 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				const cntxt = myCan.getContext('2d');
 				cntxt.drawImage(img, 0, 0, myCan.width, myCan.height);
 				const dataURL = myCan.toDataURL();
-				
-				
+
+
 				if (dataURL != null && dataURL !== undefined) {
 					const nImg = document.createElement('img');
 					nImg.src = dataURL;
 					document.getElementById('image-holder').appendChild(nImg);
-					
+
 				} else {
 					alert('unable to get context');
 				}
-				
+
 			}
 		};
-		
+
 	}
-	
+
 	deleteFromContainer(fileUrl, fileType) {
 		const fileurl = fileUrl;
 		fileUrl = _.replace(fileUrl, 'download', 'files');
 		this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-			.map((response) => {
+			.subscribe((response) => {
 				console.log(response);
 				if (fileType === 'video') {
 					this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -1297,17 +1295,17 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 					this.class.controls.imageUrls.patchValue(this.urlForImages);
 				}
 				this.sidebarMenuItems = this._leftSideBarService.updateSideMenu(this.class.value, this.sidebarMenuItems);
-			}).subscribe();
-		
+			});
+
 	}
-	
+
 	deleteFromContainerArr(event, fileType) {
 		for (let i = 0; i < event.target.files.length; i++) {
 			let file = event.target.files[i];
 			const fileurl = file;
 			file = _.replace(file, 'download', 'files');
 			this.http.delete(environment.apiUrl + file, this.requestHeaderService.options)
-				.map((response) => {
+				.subscribe((response) => {
 					console.log(response);
 					if (fileType === 'video') {
 						this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -1320,20 +1318,20 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 						});
 						this.class.controls.imageUrls.patchValue(this.urlForImages);
 					}
-				}).subscribe();
-			
+				});
+
 		}
 	}
-	
+
 	toggleChoice(choice) {
 		this.selectedOption = choice;
 	}
-	
-	
+
+
 	submitPhoneNo(element, text) {
 		// Call the OTP service
 		// Post Class for review
-		
+
 		element.textContent = text;
 		this._collectionService.sendVerifySMS(this.phoneDetails.controls.phoneNo.value, this.phoneDetails.controls.countryCode.value)
 			.subscribe((res) => {
@@ -1343,34 +1341,34 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				element.textContent = 'Verification code sent';
 			});
 	}
-	
+
 	submitOTP() {
 		this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
 			.subscribe((res) => {
-					console.log(res);
-					this.snackBar.open('Token Verified', 'Close', {
-						duration: 5000
-					});
-					this.step++;
-				},
+				console.log(res);
+				this.snackBar.open('Token Verified', 'Close', {
+					duration: 5000
+				});
+				this.step++;
+			},
 				(error) => {
 					this.snackBar.open(error.message, 'Close', {
 						duration: 5000
 					});
 				});
 	}
-	
+
 	/**
 	 * Make the dates section of this page editable
 	 */
 	makeDatesEditable() {
 		this.datesEditable = true;
 	}
-	
+
 	sort(calendars, param1, param2) {
 		return _.sortBy(calendars, [param1, param2]);
 	}
-	
+
 	private retrieveAccounts() {
 		this.payoutAccounts = [];
 		this._paymentService.retrieveConnectedAccount().subscribe(result => {
@@ -1386,14 +1384,14 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.paymentInfo.controls['id'].valueChanges.subscribe(res => {
 				this.updatePayoutRule(res);
 			});
-			
+
 			this.payoutLoading = false;
 		}, err => {
 			console.log(err);
 			this.payoutLoading = false;
 		});
 	}
-	
+
 	private updatePayoutRule(newPayoutId) {
 		if (this.payoutRuleNodeId) {
 			this.payoutLoading = true;
@@ -1427,24 +1425,24 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 					duration: 5000
 				});
 			});
-			
+
 		}
 	}
-	
+
 	onFreeChange(event) {
 		if (event) {
 			this.class.controls['price'].setValue(0);
 		}
 	}
-	
+
 	back() {
 		this.goto(this.step - 1);
 	}
-	
+
 	next() {
 		this.goto(this.step + 1);
 	}
-	
+
 	public addAssessmentRule() {
 		const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
 		console.log(rulesArray);
@@ -1453,18 +1451,18 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			gyan: ['', [Validators.required, Validators.max(100), Validators.min(1)]]
 		}));
 	}
-	
+
 	public deleteAssessmentRule(i: number) {
 		const rulesArray = <FormArray>this.assessmentForm.controls['rules'];
 		rulesArray.removeAt(i);
 	}
-	
+
 	public deleteNAAssessmentRule(i: number) {
 		const rulesArray = <FormArray>this.assessmentForm.controls['nARules'];
 		rulesArray.removeAt(i);
 	}
-	
-	
+
+
 	public addNAAssessmentRule() {
 		const rulesArray = <FormArray>this.assessmentForm.controls['nARules'];
 		rulesArray.push(this._fb.group({
@@ -1472,23 +1470,26 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			gyan: ''
 		}));
 	}
-	
+
 	public submitAssessment() {
 		let assessmentModelObject;
 		this.busySavingData = true;
-		
+
 		this._collectionService.updateAssessmentModel(this.classId, {
 			type: this.assessmentForm.controls['type'].value,
 			style: this.assessmentForm.controls['style'].value
-		}).flatMap(res => {
-			console.log(res);
-			assessmentModelObject = <any>res;
-			this.classData.assessment_models = [assessmentModelObject];
-			return this._collectionService.updateAssessmentRules(assessmentModelObject.id, this.assessmentForm.controls['rules'].value);
-		}).flatMap(res => {
-			this.classData.assessment_models[0].assessment_rules = res;
-			return this._collectionService.updateNAAssessmentRules(assessmentModelObject.id, this.assessmentForm.controls['nARules'].value);
-		}).subscribe(res => {
+		}).pipe(
+			flatMap(res => {
+				console.log(res);
+				assessmentModelObject = <any>res;
+				this.classData.assessment_models = [assessmentModelObject];
+				return this._collectionService.updateAssessmentRules(assessmentModelObject.id, this.assessmentForm.controls['rules'].value);
+			}),
+			flatMap(res => {
+				this.classData.assessment_models[0].assessment_rules = res;
+				return this._collectionService.updateNAAssessmentRules(assessmentModelObject.id, this.assessmentForm.controls['nARules'].value);
+			})
+		).subscribe(res => {
 			this.classData.assessment_models[0].assessment_na_rules = res;
 			this._leftSideBarService.updateSideMenu(this.classData, this.sidebarMenuItems);
 			if (this.exitAfterSave) {
@@ -1498,18 +1499,17 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.classStepUpdate();
 				this.router.navigate(['class', this.classId, 'edit', this.step]);
 				this.busySavingData = false;
-				
 			}
 		}, err => {
 			console.log(err);
 			this.busySavingData = false;
-			
+
 			this.snackBar.open('An error occurred', 'close', {
 				duration: 5000
 			});
 		});
 	}
-	
+
 	public classHasOnlineContent(timeline: any) {
 		if (timeline) {
 			let classValid = false;
@@ -1527,20 +1527,20 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 		return false;
 	}
-	
+
 	public importProfileBio() {
 		this.class.controls.aboutHost.patchValue(this.classData.owners[0].profiles[0].description);
 	}
-	
-	
+
+
 	public termsAndCondition() {
 		this.dialogsService.termsAndConditionsDialog().subscribe();
 	}
-	
+
 	public standards() {
 		this.dialogsService.collectionStandardsDialog().subscribe();
 	}
-	
+
 	public assessmentChange(event: any) {
 		const value = <AssessmentTypeData['values']>event.value;
 		console.log(value);

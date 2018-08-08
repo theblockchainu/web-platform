@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { MediaUploaderService } from '../../mediaUploader/media-uploader.service';
 import { ProjectSubmissionService } from '../../project-submission/project-submission.service';
 import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
-import 'rxjs/add/operator/map';
+
 import { ContentService } from '../../content/content.service';
 import { environment } from '../../../../environments/environment';
 import * as _ from 'lodash';

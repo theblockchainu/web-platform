@@ -102,7 +102,7 @@ export class CommunityPageQuestionsComponent implements OnInit {
     }
 
     public getGyanBalance() {
-        this._profileService.getGyanBalance(this.userId, 'fixed').subscribe(res => {
+        this._profileService.getGyanBalance(this.userId, 'fixed').subscribe((res: any) => {
             this.gyanBalance = parseInt(res, 10);
 
             if (this.gyanBalance === 0) {

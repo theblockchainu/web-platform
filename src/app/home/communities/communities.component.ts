@@ -4,10 +4,10 @@ import { TopicService } from '../../_services/topic/topic.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.component';
-import 'rxjs/add/operator/do';
+
 import * as moment from 'moment';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
