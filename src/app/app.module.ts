@@ -88,7 +88,7 @@ export class RavenErrorHandler implements ErrorHandler {
 		PrivatebetaComponent
 	],
 	imports: [
-		BrowserModule,
+		BrowserModule.withServerTransition({appId: 'peerbuds2.0'}),
 		CoreModule,
 		DialogsModule,
 		AppRoutingModule,
