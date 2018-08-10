@@ -27,12 +27,9 @@
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/fullcalendar/dist/fullcalendar.css",
               "src/styles.scss"
             ],
-            "scripts": [
-              "node_modules/fullcalendar/dist/fullcalendar.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -79,15 +76,12 @@
             "karmaConfig": "./karma.conf.js",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
-            "scripts": [
-              "node_modules/fullcalendar/dist/fullcalendar.js"
-            ],
+            "scripts": [],
             "styles": [
               "node_modules/videogular2/fonts/videogular.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/fullcalendar/dist/fullcalendar.css",
               "src/styles.scss"
             ],
             "assets": [
@@ -116,6 +110,16 @@
             "outputPath": "dist/server",
             "main": "src/main.server.ts",
             "tsConfig": "src/tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            }
           }
         }
       }

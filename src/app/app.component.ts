@@ -11,9 +11,10 @@ import {
 
 import { SpinnerService } from './_services/spinner/spinner.service';
 import { SocketService } from './_services/socket/socket.service';
+
 import { AuthenticationService } from './_services/authentication/authentication.service';
 import { Title } from '@angular/platform-browser';
-
+import { CookieUtilsService } from './_services/cookieUtils/cookie-utils.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -35,18 +36,21 @@ export class AppComponent implements OnInit {
 		private _spinnerService: SpinnerService,
 		private _socketService: SocketService,
 		private _authService: AuthenticationService,
-		private titleService: Title
+		private titleService: Title,
+		private cookieService: CookieUtilsService
 	) {
 	}
 
 	ngOnInit() {
-		this.loading = this._spinnerService.getSpinnerState();
-		this.router.events.subscribe((event: RouterEvent) => {
-			this.navigationInterceptor(event);
-		});
+		if (this.cookieService.isBrowser) {
+			this.loading = this._spinnerService.getSpinnerState();
+			this.router.events.subscribe((event: RouterEvent) => {
+				this.navigationInterceptor(event);
+			});
+			this.router.events.subscribe(event => this.triggerAnalytics(event));
+		}
 		this.router.events.subscribe(event => this.modifyHeader(event));
 		this.router.events.subscribe(event => this.modifyFooter(event));
-		this.router.events.subscribe(event => this.triggerAnalytics(event));
 		this.setTitle('Peerbuds - Immersive & Incentivized Education');
 	}
 

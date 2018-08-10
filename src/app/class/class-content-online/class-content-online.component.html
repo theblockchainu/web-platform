@@ -30,18 +30,12 @@
 						<div formGroupName="schedule" class="row">
 							<div class="col-md-4 col-xs-6">
 								<mat-form-field class="timeInput margin-top-20 margin-bot-20">
-									<!-- <input matInput #startTime [owlDateTimeTrigger]="startTimePicker" [owlDateTime]="startTimePicker" formControlName="startTime"
-									 placeholder="Start Time" [required]="'true'">
-									<owl-date-time #startTimePicker [hour12Timer]="'true'" [pickerType]="'timer'"></owl-date-time> -->
 									<input matInput #startTime type="time" atp-time-picker placeholder="Start Time" formControlName="startTime" arrowStyle="{'background': '#33bd9e', 'color': 'white'}"
 									/>
 								</mat-form-field>
 							</div>
 							<div class="col-md-4 col-xs-6">
 								<mat-form-field class="timeInput margin-top-20 margin-bot-20">
-									<!-- <input matInput #endTime [owlDateTimeTrigger]="endTimePicker" [owlDateTime]="endTimePicker" formControlName="endTime" placeholder="End Time"
-									 [required]="'true'">
-									<owl-date-time #endTimePicker [hour12Timer]="'true'" [pickerType]="'timer'"></owl-date-time> -->
 									<input matInput type="time" #endTime atp-time-picker placeholder="End Time" formControlName="endTime" arrowStyle="{'background': '#33bd9e', 'color': 'white'}"
 									/>
 								</mat-form-field>
@@ -53,8 +47,8 @@
 								<div class="loading-container" [hidden]="!uploadingImage">
 									<ngx-loading [show]="true"></ngx-loading>
 								</div>
-								<p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)" maxFileSize="10000000"
-								 accept="image/*" chooseLabel="Browse">
+								<p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)"
+								 maxFileSize="10000000" accept="image/*" chooseLabel="Browse">
 									<ng-template pTemplate="toolbar">
 										<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
 									</ng-template>
