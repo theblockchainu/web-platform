@@ -46,7 +46,7 @@ export class ConsoleComponent implements OnInit {
 	
 	ngOnInit() {
 		this._profileService.getPeerData(this.userId).subscribe(
-			result => {
+			(result: any) => {
 				if (result) {
 					this.isAdmin = result.isAdmin;
 					this.setTags();

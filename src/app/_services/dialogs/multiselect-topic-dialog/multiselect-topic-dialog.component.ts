@@ -152,13 +152,12 @@ export class MultiselectTopicDialogComponent implements OnInit {
 			if (this.searchUrl) {
 				const finalSearchURL = this.searchUrl + this.query;
 				this.http.get(finalSearchURL, this.requestHeaderService.options)
-					.map((res: any) => {
+					.subscribe((res: any) => {
 						this.loadingSuggestions = false;
 						this.filteredList = [];
 						res.map(item => {
 							this.entryInSelected = _.find(this.selected, function (entry) { return entry.id === item.id; });
 							showItemNotFound = !this.entryInSelected;
-
 							const obj = {};
 							obj['id'] = item.id;
 							obj['name'] = item.name;
@@ -172,8 +171,7 @@ export class MultiselectTopicDialogComponent implements OnInit {
 						if (showItemNotFound) {
 							this.emitRequestTopic();
 						}
-					})
-					.subscribe();
+					});
 			}
 		} else {
 			this.loadingSuggestions = false;

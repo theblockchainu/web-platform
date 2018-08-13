@@ -11,7 +11,7 @@ import { CommunityService } from '../../_services/community/community.service';
 import { environment } from '../../../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import {TitleCasePipe} from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
 	selector: 'app-feed',
@@ -43,7 +43,7 @@ export class HomefeedComponent implements OnInit {
 	public loadingContinueLearning = false;
 	private today = moment();
 	public envVariable;
-	
+
 	public ongoingArray: Array<any>;
 	public upcomingArray: Array<any>;
 	public pastArray: Array<any>;
@@ -52,7 +52,7 @@ export class HomefeedComponent implements OnInit {
 	public upcomingClassesObject: any;
 	public now: Date;
 	public cardInFocus = false;
-	
+
 	constructor(
 		public _collectionService: CollectionService,
 		public _profileService: ProfileService,
@@ -68,7 +68,7 @@ export class HomefeedComponent implements OnInit {
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.fetchContinueLearning();
 		this.fetchClasses();
@@ -77,14 +77,14 @@ export class HomefeedComponent implements OnInit {
 		this.fetchCommunities();
 		this.setTags();
 	}
-	
+
 	private setTags() {
 		this.titleService.setTitle('Peerbuds - Immersive & Incentivized Education');
 		this.metaService.updateTag({
 			property: 'og:title',
 			content: 'Explore Peerbuds'
 		});
-		
+
 		this.metaService.updateTag({
 			property: 'og:site_name',
 			content: 'peerbuds.com'
@@ -98,7 +98,7 @@ export class HomefeedComponent implements OnInit {
 			content: environment.clientUrl + this.router.url
 		});
 	}
-	
+
 	private fetchContinueLearning() {
 		this.loadingContinueLearning = true;
 		this._collectionService.getParticipatingCollections(this.userId,
@@ -119,7 +119,7 @@ export class HomefeedComponent implements OnInit {
 				}
 			});
 	}
-	
+
 	private createOutput(data: any) {
 		const now = moment();
 		data.forEach(_class => {
@@ -139,14 +139,14 @@ export class HomefeedComponent implements OnInit {
 				}
 			});
 		});
-		
+
 		for (const key in this.liveClassesObject) {
 			if (this.liveClassesObject.hasOwnProperty(key)) {
 				this.ongoingArray.push(this.liveClassesObject[key].class);
 			}
 		}
 	}
-	
+
 	/**
 	 * Get the most upcoming content details
 	 */
@@ -186,7 +186,7 @@ export class HomefeedComponent implements OnInit {
 		contents[0].hasStarted = false;
 		return contents[0];
 	}
-	
+
 	/**
 	 * get calendar signed up by this learner
 	 */
@@ -199,7 +199,7 @@ export class HomefeedComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	fetchClasses() {
 		const query = {
 			'include': [
@@ -219,7 +219,7 @@ export class HomefeedComponent implements OnInit {
 		};
 		this.loadingClasses = true;
 		this._topicService.getTopics(query).subscribe(
-			(response) => {
+			(response: any) => {
 				this.loadingClasses = false;
 				this.classes = [];
 				for (const responseObj of response) {
@@ -249,13 +249,13 @@ export class HomefeedComponent implements OnInit {
 				this.classes = _.uniqBy(this.classes, 'id');
 				this.classes = _.orderBy(this.classes, ['createdAt'], ['desc']);
 				this.classes = _.chunk(this.classes, 5)[0];
-				
+
 			}, (err) => {
 				console.log(err);
 			}
 		);
 	}
-	
+
 	fetchExperiences() {
 		const query = {
 			'include': [
@@ -275,7 +275,7 @@ export class HomefeedComponent implements OnInit {
 		};
 		this.loadingExperiences = true;
 		this._topicService.getTopics(query).subscribe(
-			(response) => {
+			(response: any) => {
 				this.loadingExperiences = false;
 				this.experiences = [];
 				for (const responseObj of response) {
@@ -324,14 +324,14 @@ export class HomefeedComponent implements OnInit {
 				this.experiences = _.uniqBy(this.experiences, 'id');
 				this.experiences = _.orderBy(this.experiences, ['createdAt'], ['desc']);
 				this.experiences = _.chunk(this.experiences, 5)[0];
-				
+
 			}, (err) => {
 				console.log(err);
 			}
 		);
 	}
-	
-	
+
+
 	fetchCommunities() {
 		const query = {
 			'include': [
@@ -355,7 +355,7 @@ export class HomefeedComponent implements OnInit {
 		};
 		this.loadingCommunities = true;
 		this._topicService.getTopics(query).subscribe(
-			(response) => {
+			(response: any) => {
 				this.loadingCommunities = false;
 				this.communities = [];
 				for (const responseObj of response) {
@@ -397,14 +397,14 @@ export class HomefeedComponent implements OnInit {
 				this.communities = _.uniqBy(this.communities, 'id');
 				this.communities = _.orderBy(this.communities, ['createdAt'], ['desc']);
 				this.communities = _.chunk(this.communities, 5)[0];
-				
+
 			}, (err) => {
 				console.log(err);
 			}
 		);
 	}
-	
-	
+
+
 	fetchPeers() {
 		const query = {
 			'include': [
@@ -421,9 +421,10 @@ export class HomefeedComponent implements OnInit {
 					}
 				}
 			],
-			'where': { and : [
-					{'id': { 'neq': this.userId }},
-					{'accountVerified': true}
+			'where': {
+				and: [
+					{ 'id': { 'neq': this.userId } },
+					{ 'accountVerified': true }
 				]
 			},
 			'limit': 50,
@@ -463,24 +464,24 @@ export class HomefeedComponent implements OnInit {
 			console.log(err);
 		});
 	}
-	
+
 	public onExperienceRefresh(event) {
 		if (event) {
 			this.fetchExperiences();
 		}
 	}
-	
+
 	public onCommunityRefresh(event) {
 		if (event) {
 			this.fetchCommunities();
 		}
 	}
-	
+
 	public onClassRefresh(event) {
 		if (event) {
 			this.fetchClasses();
 		}
 	}
-	
+
 }
 

@@ -50,7 +50,7 @@ export class ClassContentOnlineComponent implements OnInit {
         this.image = contentForm.controls['imageUrl'];
         this.attachments = contentForm.controls['supplementUrls'];
         this.attachments.value.forEach(file => {
-            this.contentService.getMediaObject(file).subscribe((res) => {
+            this.contentService.getMediaObject(file).subscribe((res: any) => {
                 this.attachmentUrls.push(res[0]);
             });
         });
@@ -65,11 +65,11 @@ export class ClassContentOnlineComponent implements OnInit {
 
     imageUploadNew(event) {
         for (const file of event.files) {
-            this.mediaUploader.upload(file).map((responseObj: any) => {
+            this.mediaUploader.upload(file).subscribe((responseObj: any) => {
                 const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
                 contentForm.controls['imageUrl'].patchValue(responseObj.url);
-            }).subscribe();
+            });
         }
     }
 
@@ -78,14 +78,14 @@ export class ClassContentOnlineComponent implements OnInit {
         this.filesToUpload = event.files.length;
         this.filesUploaded = 0;
         for (const file of event.files) {
-            this.mediaUploader.upload(file).map((responseObj: any) => {
+            this.mediaUploader.upload(file).subscribe((responseObj: any) => {
                 const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
                 const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
                 const supplementUrls = <FormArray>contentForm.controls.supplementUrls;
                 supplementUrls.reset();
                 supplementUrls.push(this._fb.control(responseObj.url));
                 this.filesUploaded++;
-            }).subscribe();
+            });
         }
     }
 
@@ -162,7 +162,7 @@ export class ClassContentOnlineComponent implements OnInit {
     uploadImage(event) {
         this.uploadingImage = true;
         for (const file of event.files) {
-            this.mediaUploader.upload(file).subscribe((response) => {
+            this.mediaUploader.upload(file).subscribe((response: any) => {
                 this.addImageUrl(response.url);
                 this.uploadingImage = false;
             });
@@ -175,7 +175,7 @@ export class ClassContentOnlineComponent implements OnInit {
 
     public addAttachmentUrl(url: string) {
         this.attachments.push(new FormControl(url));
-        this.contentService.getMediaObject(url).subscribe((res) => {
+        this.contentService.getMediaObject(url).subscribe((res: any) => {
             this.attachmentUrls.push(res[0]);
         });
     }
@@ -188,7 +188,7 @@ export class ClassContentOnlineComponent implements OnInit {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
         this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-            .map((response) => {
+            .subscribe((response: any) => {
                 console.log(response);
                 if (fileType === 'file') {
                     const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
@@ -202,7 +202,7 @@ export class ClassContentOnlineComponent implements OnInit {
                     this.attachmentUrls = [];
                     suppUrl.forEach(file => {
                         supplementUrls.push(new FormControl(file));
-                        this.contentService.getMediaObject(file).subscribe((res) => {
+                        this.contentService.getMediaObject(file).subscribe((res: any) => {
                             this.attachmentUrls.push(res[0]);
                         });
                     });
@@ -218,16 +218,14 @@ export class ClassContentOnlineComponent implements OnInit {
                         this.deleteFromContent(contentForm, { 'imageUrl': '' });
                     }
                 }
-            }).subscribe((response) => {
-
             });
 
     }
 
     deleteFromContent(contentForm, body) {
         this.http.patch(environment.apiUrl + '/api/contents/' + contentForm.controls['id'].value, body, this.requestHeaderService.options)
-            .map((response: any) => { })
-            .subscribe();
+            .subscribe((response: any) => { })
+            ;
     }
 
 }

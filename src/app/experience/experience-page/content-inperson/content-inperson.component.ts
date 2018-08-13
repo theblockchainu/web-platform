@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA, MatDialog} from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommentService } from '../../../_services/comment/comment.service';
@@ -8,9 +8,9 @@ import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { ContentService } from '../../../_services/content/content.service';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import {Router} from '@angular/router';
-import {environment} from '../../../../environments/environment';
-import {ShowRSVPPopupComponent} from '../show-rsvp-participants-dialog/show-rsvp-dialog.component';
+import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
+import { ShowRSVPPopupComponent } from '../show-rsvp-participants-dialog/show-rsvp-dialog.component';
 
 @Component({
 	selector: 'app-content-inperson',
@@ -18,7 +18,7 @@ import {ShowRSVPPopupComponent} from '../show-rsvp-participants-dialog/show-rsvp
 	styleUrls: ['./content-inperson.component.scss']
 })
 export class ContentInpersonComponent implements OnInit {
-	
+
 	public userType = 'public';
 	public experienceId = '';
 	public chatForm: FormGroup;
@@ -31,7 +31,7 @@ export class ContentInpersonComponent implements OnInit {
 	public lat;
 	public lng;
 	public envVariable;
-	
+
 	constructor(
 		public _collectionService: CollectionService,
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -49,7 +49,7 @@ export class ContentInpersonComponent implements OnInit {
 		this.experienceId = data.collectionId;
 		this.userId = _cookieUtilsService.getValue('userId');
 		data.content.supplementUrls.forEach(file => {
-			this.contentService.getMediaObject(file).subscribe((res) => {
+			this.contentService.getMediaObject(file).subscribe((res: any) => {
 				this.attachmentUrls.push(res[0]);
 			});
 		});
@@ -62,18 +62,18 @@ export class ContentInpersonComponent implements OnInit {
 			this.lng = parseFloat(data.content.locations[0].map_lng);
 		}
 	}
-	
+
 	ngOnInit() {
 		this.initializeForms();
 		this.getDiscussions();
 	}
-	
+
 	private initializeForms() {
 		this.chatForm = this._fb.group({
 			description: ['', Validators.required]
 		});
 	}
-	
+
 	/**
 	 * postComment
 	 */
@@ -87,14 +87,14 @@ export class ContentInpersonComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public createReplyForm(comment: any) {
 		this.replyingToCommentId = comment.id;
 		this.replyForm = this._fb.group({
 			description: ''
 		});
 	}
-	
+
 	/**
 	 * postReply
 	 */
@@ -108,7 +108,7 @@ export class ContentInpersonComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	private getDiscussions() {
 		const query = {
 			'include': [
@@ -145,37 +145,37 @@ export class ContentInpersonComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	addCommentUpvote(comment: any) {
 		this._commentService.addCommentUpvote(comment.id, {}).subscribe(
 			response => {
 				if (comment.upvotes !== undefined) {
-					comment.upvotes.push(response );
+					comment.upvotes.push(response);
 				} else {
 					comment.upvotes = [];
-					comment.upvotes.push(response );
+					comment.upvotes.push(response);
 				}
 			}, err => {
 				console.log(err);
 			}
 		);
 	}
-	
+
 	addReplyUpvote(reply: any) {
 		this._commentService.addReplyUpvote(reply.id, {}).subscribe(
 			response => {
 				if (reply.upvotes !== undefined) {
-					reply.upvotes.push(response );
+					reply.upvotes.push(response);
 				} else {
 					reply.upvotes = [];
-					reply.upvotes.push(response );
+					reply.upvotes.push(response);
 				}
 			}, err => {
 				console.log(err);
 			}
 		);
 	}
-	
+
 	public hasUpvoted(upvotes) {
 		let result = false;
 		if (upvotes !== undefined) {
@@ -191,15 +191,15 @@ export class ContentInpersonComponent implements OnInit {
 		}
 		return result;
 	}
-	
+
 	public isMyComment(comment) {
 		return comment.peer[0].id === this.userId;
 	}
-	
+
 	public openProfilePage(peerId) {
 		this.router.navigate(['profile', peerId]);
 	}
-	
+
 	rsvpContent(contentId) {
 		this.contentService.createRSVP(contentId, this.data.calendarId)
 			.subscribe((response: any) => {
@@ -207,7 +207,7 @@ export class ContentInpersonComponent implements OnInit {
 				this.data.content.hasRSVPd = true;
 			});
 	}
-	
+
 	cancelRSVP(content) {
 		console.log(content);
 		this.contentService.deleteRSVP(content.rsvpId)
@@ -216,7 +216,7 @@ export class ContentInpersonComponent implements OnInit {
 				this.data.content.hasRSVPd = false;
 			});
 	}
-	
+
 	public viewRSVPs(content, userType) {
 		let attendies = this.data.participants;
 		if (content.rsvps) {
@@ -246,24 +246,24 @@ export class ContentInpersonComponent implements OnInit {
 			width: '45vw',
 			height: '90vh'
 		});
-		
-		dialogRef.afterClosed().subscribe(result => {
+
+		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
 				location.reload();
 			}
 		});
 	}
-	
+
 	public getDirections(content) {
 		// TODO: get directions to this content location
 	}
-	
+
 	public hasDatePassed(date) {
 		const eventDate = moment(date);
 		const currentDate = moment();
 		return (this.data.calendarId !== undefined && eventDate.diff(currentDate, 'seconds') < 0);
 	}
-	
+
 	/**
 	 * isLive
 	 */
@@ -273,16 +273,16 @@ export class ContentInpersonComponent implements OnInit {
 		const endMoment = startMoment.clone();
 		endMoment.add(content.schedules[0].endDay, 'day');
 		const currentMoment = moment();
-		
+
 		const startTime = moment(content.schedules[0].startTime);
 		const endTime = moment(content.schedules[0].endTime);
-		
+
 		startMoment.hours(startTime.hours());
 		startMoment.minutes(startTime.minutes());
-		
+
 		endMoment.hours(endTime.hours());
 		endMoment.minutes(endTime.minutes());
-		
+
 		if (currentMoment.isBetween(startMoment, endMoment)) {
 			content.isLive = true;
 			return true;
@@ -290,5 +290,5 @@ export class ContentInpersonComponent implements OnInit {
 			return false;
 		}
 	}
-	
+
 }

@@ -66,8 +66,10 @@ import { SelectFieldDialogComponent } from './select-field-dialog/select-field-d
 import { CertificateVerificationComponent } from './certificate-verification/certificate-verification.component';
 import { CollectionStandardsDialogComponent } from './collection-standards-dialog/collection-standards-dialog.component';
 import { TermsAndConditionsDialogComponent } from './terms-and-conditions-dialog/terms-and-conditions-dialog.component';
-import {SocialSharingService} from '../social-sharing/social-sharing.service';
-import {OnboardingDialogComponent} from './onboarding-dialog/onboarding-dialog.component';
+import { SocialSharingService } from '../social-sharing/social-sharing.service';
+import { OnboardingDialogComponent } from './onboarding-dialog/onboarding-dialog.component';
+import { AddPromoCodeDialogComponent } from './add-promo-code-dialog/add-promo-code-dialog.component';
+import { ViewPromocodeDialogComponent } from './view-promocode-dialog/view-promocode-dialog.component';
 
 @NgModule({
 	imports: [
@@ -114,7 +116,9 @@ import {OnboardingDialogComponent} from './onboarding-dialog/onboarding-dialog.c
 		CertificateVerificationComponent,
 		CollectionStandardsDialogComponent,
 		TermsAndConditionsDialogComponent,
-		OnboardingDialogComponent
+		OnboardingDialogComponent,
+		AddPromoCodeDialogComponent,
+		ViewPromocodeDialogComponent
 	],
 	providers: [
 		DialogsService,
@@ -137,7 +141,8 @@ import {OnboardingDialogComponent} from './onboarding-dialog/onboarding-dialog.c
 		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent, RequestCommunityDialogComponent,
 		ScholarshipDialogComponent, GenerateKnowledgeStoryComponent, RequestKnowledgeStoryComponent, ConfirmPasswordDialogComponent,
 		AddViewerDialogComponent, GyanPromptComponent, AddCommunityDialogComponent, CreateAccreditationDialogComponent, SelectFieldDialogComponent,
-		CertificateVerificationComponent, TermsAndConditionsDialogComponent, CollectionStandardsDialogComponent, OnboardingDialogComponent
+		CertificateVerificationComponent, TermsAndConditionsDialogComponent, CollectionStandardsDialogComponent, OnboardingDialogComponent, AddPromoCodeDialogComponent,
+		ViewPromocodeDialogComponent
 	],
 })
 export class DialogsModule { }

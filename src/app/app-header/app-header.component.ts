@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ProfileService } from '../_services/profile/profile.service';
 import { FormControl } from '@angular/forms';
 import { environment } from '../../environments/environment';
@@ -121,7 +121,7 @@ export class AppHeaderComponent implements OnInit {
 
 	getProfile() {
 		if (this.loggedIn) {
-			this._profileService.getCompactProfile(this.userId).subscribe(profile => {
+			this._profileService.getCompactProfile(this.userId).subscribe((profile: any) => {
 				if (profile && profile.length > 0) {
 					this.profile = profile[0];
 					this.isEmailVerified = this.profile.peer[0].emailVerified;
@@ -207,7 +207,7 @@ export class AppHeaderComponent implements OnInit {
 	public getMessages() {
 		if (this.userId) {
 			this._inboxService.getRoomData(5)
-				.subscribe((response) => {
+				.subscribe((response: any) => {
 					if (response) {
 						this.sortFilterJoinedRooms(response);
 						this.tempJoinedRooms = this.joinedRooms;
@@ -262,7 +262,7 @@ export class AppHeaderComponent implements OnInit {
 	// 		}
 	// 	});
 
-	// 	dialogRef.afterClosed().subscribe(result => {
+	// 	dialogRef.afterClosed().subscribe((result: any) => {
 	// 		if (this.makeOldNotification.length > 0) {
 	// 			this.makeOldNotification.forEach(notifItem => {
 	// 				this._notificationService.updateNotification(this.userId, notifItem, (err, patchResult) => {
@@ -290,7 +290,7 @@ export class AppHeaderComponent implements OnInit {
 			}
 		});
 
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: any) => {
 			this.getMessages();
 		});
 	}
@@ -332,7 +332,7 @@ export class AppHeaderComponent implements OnInit {
 		} else {
 			this.router.navigate(['digest', 'experiences']);
 		}
-		
+
 	}
 
 	public createClass() {
@@ -357,7 +357,7 @@ export class AppHeaderComponent implements OnInit {
 			if (res) {
 				this.router.navigateByUrl('/home');
 			} else {
-				this.dialogsService.openLogin().subscribe(result => {
+				this.dialogsService.openLogin().subscribe((result: any) => {
 					if (result) {
 						this.router.navigateByUrl('/home');
 					}
@@ -371,7 +371,7 @@ export class AppHeaderComponent implements OnInit {
 			if (res) {
 				this.router.navigateByUrl('/console/learning/bookmarks');
 			} else {
-				this.dialogsService.openLogin().subscribe(result => {
+				this.dialogsService.openLogin().subscribe((result: any) => {
 					if (result) {
 						this.router.navigateByUrl('/console/learning/bookmarks');
 					}
@@ -385,7 +385,7 @@ export class AppHeaderComponent implements OnInit {
 			if (res) {
 				this.router.navigateByUrl('/console/learning/all');
 			} else {
-				this.dialogsService.openLogin().subscribe(result => {
+				this.dialogsService.openLogin().subscribe((result: any) => {
 					if (result) {
 						this.router.navigateByUrl('/console/learning/all');
 					}

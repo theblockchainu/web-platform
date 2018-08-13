@@ -6,7 +6,7 @@ import { CollectionService } from '../../../_services/collection/collection.serv
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { SocketService } from '../../../_services/socket/socket.service';
 import { Router } from '@angular/router';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { VgAPI } from 'videogular2/core';
 import { ContentService } from '../../../_services/content/content.service';
 
@@ -16,7 +16,7 @@ import { ContentService } from '../../../_services/content/content.service';
 	styleUrls: ['./content-video.component.scss']
 })
 export class ContentVideoComponent implements OnInit, OnDestroy {
-	
+
 	public userType = 'public';
 	public classId = '';
 	public chatForm: FormGroup;
@@ -29,7 +29,7 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 	public attachmentUrls = [];
 	public duration = 0;
 	public envVariable;
-	
+
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		public _collectionService: CollectionService,
@@ -47,28 +47,28 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 		this.classId = data.collectionId;
 		this.userId = cookieUtilsService.getValue('userId');
 		this.data.content.supplementUrls.forEach(file => {
-			this.contentService.getMediaObject(file).subscribe((res) => {
+			this.contentService.getMediaObject(file).subscribe((res: any) => {
 				this.attachmentUrls.push(res[0]);
 			});
 		});
 	}
-	
+
 	ngOnInit() {
 		this.initializeForms();
 		this.getDiscussions();
 		this.duration = Math.round(this.data.content.videoLength / 60);
 	}
-	
+
 	ngOnDestroy() {
-	
+
 	}
-	
+
 	private initializeForms() {
 		this.chatForm = this._fb.group({
 			description: ['', Validators.required]
 		});
 	}
-	
+
 	/**
 	 * postComment
 	 */
@@ -82,14 +82,14 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	public createReplyForm(comment: any) {
 		this.replyingToCommentId = comment.id;
 		this.replyForm = this._fb.group({
 			description: ''
 		});
 	}
-	
+
 	/**
 	 * postReply
 	 */
@@ -103,7 +103,7 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	private getDiscussions() {
 		const query = {
 			'include': [
@@ -140,7 +140,7 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	addCommentUpvote(comment: any) {
 		this._commentService.addCommentUpvote(comment.id, {}).subscribe(
 			response => {
@@ -155,7 +155,7 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	addReplyUpvote(reply: any) {
 		this._commentService.addReplyUpvote(reply.id, {}).subscribe(
 			response => {
@@ -170,7 +170,7 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	public hasUpvoted(upvotes) {
 		let result = false;
 		if (upvotes !== undefined) {
@@ -186,18 +186,18 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 		}
 		return result;
 	}
-	
+
 	public isMyComment(comment) {
 		return comment.peer[0].id === this.userId;
 	}
-	
+
 	public onPlayerReady(api: VgAPI) {
 		this.api = api;
-		
+
 		/*this.api.getDefaultMedia().subscriptions.canPlay.subscribe(() => {
 			this.duration = Math.round(this.api.duration / 60);
 		});*/
-		
+
 		this.api.getDefaultMedia().subscriptions.playing.subscribe(() => {
 			const view = {
 				type: 'user',
@@ -217,7 +217,7 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 				console.log(startedView);
 			});
 		});
-		
+
 		this.api.getDefaultMedia().subscriptions.pause.subscribe(() => {
 			this.startedView.viewer = {
 				id: this.userId
@@ -230,9 +230,9 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 			});
 		});
 	}
-	
+
 	public openProfilePage(peerId) {
 		this.router.navigate(['profile', peerId]);
 	}
-	
+
 }

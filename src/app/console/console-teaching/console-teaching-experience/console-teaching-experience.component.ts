@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import 'rxjs/add/operator/map';
+
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { ConsoleTeachingComponent } from '../console-teaching.component';
@@ -11,7 +11,7 @@ import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { MatSnackBar } from '@angular/material';
 import { UcFirstPipe } from 'ngx-pipes';
-import {ProfileService} from '../../../_services/profile/profile.service';
+import { ProfileService } from '../../../_services/profile/profile.service';
 
 @Component({
 	selector: 'app-console-teaching-experience',
@@ -40,7 +40,7 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 		public consoleTeachingComponent: ConsoleTeachingComponent,
 		public _collectionService: CollectionService,
 		private _cookieUtilsService: CookieUtilsService,
-		private _dialogService: DialogsService,
+		public _dialogService: DialogsService,
 		private _profileService: ProfileService,
 		public router: Router,
 		public dialog: MatDialog,
@@ -67,12 +67,10 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 		this._profileService.getPeerData(this.userId).subscribe(res => {
 			this.emailVerified = res.emailVerified;
 			if (!this.emailVerified) {
-				this._dialogService.openOnboardingDialog().subscribe(res => {
-					// do nothing
-				});
+				this._dialogService.openOnboardingDialog().subscribe();
 			}
 		});
-		
+
 		this._collectionService.getOwnedCollections(this.userId,
 			'{ "where": {"type":"experience"}, "include": ["calendars", "owners",' +
 			' {"participants": ["reviewsAboutYou", "ownedCollections", "profiles"]}, "topics", ' +
@@ -215,7 +213,7 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 	}
 
 	public deleteCollection(collection: any) {
-		this._dialogService.openDeleteCollection(collection).subscribe(result => {
+		this._dialogService.openDeleteCollection(collection).subscribe((result: any) => {
 			if (result) {
 				this.fetchData();
 				this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Deleted', 'Close', {
@@ -229,7 +227,7 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 	 * cancelCollection
 	 collection:any     */
 	public cancelCollection(collection: any) {
-		this._dialogService.openCancelCollection(collection).subscribe(result => {
+		this._dialogService.openCancelCollection(collection).subscribe((result: any) => {
 			if (result) {
 				this.fetchData();
 				this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Cancelled', 'Close', {

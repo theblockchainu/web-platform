@@ -16,7 +16,7 @@ import { environment } from '../../../../environments/environment';
 	styleUrls: ['./content-project.component.scss']
 })
 export class ContentProjectComponent implements OnInit {
-	
+
 	public noImage = 'assets/images/no-image.jpg';
 	public defaultProfileUrl = '/assets/images/avatar.png';
 	public hasPublicSubmission = false;
@@ -28,7 +28,7 @@ export class ContentProjectComponent implements OnInit {
 	public startedView;
 	public userType = 'public';
 	public envVariable;
-	
+
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		public dialog: MatDialog,
@@ -58,18 +58,18 @@ export class ContentProjectComponent implements OnInit {
 		}
 		this.userId = cookieUtilsService.getValue('userId');
 		this.data.content.supplementUrls.forEach(file => {
-			this.contentService.getMediaObject(file).subscribe((res) => {
+			this.contentService.getMediaObject(file).subscribe((res: any) => {
 				this.attachmentUrls.push(res[0]);
 			});
 		});
 	}
-	
+
 	ngOnInit() {
 	}
-	
+
 	public onPlayerReady(api: VgAPI) {
 		this.api = api;
-		
+
 		this.api.getDefaultMedia().subscriptions.playing.subscribe(() => {
 			const view = {
 				type: 'user',
@@ -89,7 +89,7 @@ export class ContentProjectComponent implements OnInit {
 				console.log(startedView);
 			});
 		});
-		
+
 		this.api.getDefaultMedia().subscriptions.pause.subscribe(() => {
 			this.startedView.viewer = {
 				id: this.userId
@@ -102,7 +102,7 @@ export class ContentProjectComponent implements OnInit {
 			});
 		});
 	}
-	
+
 	openSubmitEntryDialog(data: any) {
 		this._dialogsService.submitEntry(data).subscribe(res => {
 			if (res) {
@@ -110,11 +110,11 @@ export class ContentProjectComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	openViewEntryDialog(data: any) {
 		this._dialogsService.viewEntry(data);
 	}
-	
+
 	public viewSubmission(submissionId) {
 		const query = '{"include":[{"upvotes":"peer"}, {"peer": "profiles"}, ' +
 			'{"comments": [{"peer": {"profiles": "work"}}, {"replies": [{"peer": {"profiles": "work"}}]}]}]}';
@@ -130,15 +130,15 @@ export class ContentProjectComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public calculateDate(fromdate, day) {
 		const tempMoment = moment(fromdate);
 		tempMoment.add(day, 'days');
 		return tempMoment.format('ddd, MMM DD YYYY');
 	}
-	
+
 	public openProfilePage(peerId) {
 		this.router.navigate(['profile', peerId]);
 	}
-	
+
 }

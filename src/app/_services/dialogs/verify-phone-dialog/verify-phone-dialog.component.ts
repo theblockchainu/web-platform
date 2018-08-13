@@ -23,7 +23,7 @@ export class VerifyPhoneDialogComponent implements OnInit {
 	public userId;
 	public profileId;
 	private phone_numbers: any = [];
-	
+
 	constructor(
 		public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -39,23 +39,23 @@ export class VerifyPhoneDialogComponent implements OnInit {
 		});
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.peer = this._fb.group({
 			phone: ['', Validators.required],
 			countryCode: ['', Validators.required]
 		});
-		
+
 		this.otp = this._fb.group({
 			inputOTP: [null]
 		});
 		const filter = {
 			include: {
-				profiles : 'phone_numbers'
+				profiles: 'phone_numbers'
 			}
 		};
 		this._profileService.getPeerData(this.userId, filter)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				if (res && res.profiles && res.profiles.length > 0 && res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0) {
 					this.peer.controls.phone.setValue(res.profiles[0].phone_numbers[0].subscriber_number);
 					this.peer.controls.countryCode.setValue(res.profiles[0].phone_numbers[0].country_code);
@@ -63,10 +63,10 @@ export class VerifyPhoneDialogComponent implements OnInit {
 				this.profileId = res.profiles[0].id;
 			});
 	}
-	
+
 	continue(p) {
 		this.step = p;
-		
+
 		if (p === 3) {
 			const phone_number = {
 				country_code: this.peer.controls.countryCode.value,
@@ -78,26 +78,26 @@ export class VerifyPhoneDialogComponent implements OnInit {
 			this.sendOTP();
 		}
 	}
-	
+
 	public sendOTP() {
 		this._profileService.sendVerifySms(this.peer.controls.phone.value, this.peer.controls.countryCode.value)
 			.subscribe();
 		console.log(this.phone);
 		console.log('otp sent');
 	}
-	
+
 	public resendOTP() {
 		this._profileService.sendVerifySms(this.peer.controls.phone.value, this.peer.controls.countryCode.value)
-			.subscribe((response) => {
+			.subscribe((response: any) => {
 				this.snackBar.open('Code sent again', 'OK', {
 					duration: 5000
 				});
 			});
 	}
-	
+
 	verifyPhone() {
 		this._profileService.confirmSmsOTP(this.otp.controls['inputOTP'].value)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				console.log(res.phone);
 				console.log('verified phone');
 				this.success = res;

@@ -40,7 +40,7 @@ export class ConsoleAccountPaymentmethodsComponent implements OnInit {
 
   private fetchCards() {
     this.loadingCards = true;
-    this.profileService.getPeer(this.userId).subscribe(peer => {
+    this.profileService.getPeer(this.userId).subscribe((peer: any) => {
       if (peer) {
         this.createSourceData.email = peer.email;
         if (peer.stripeCustId) {
@@ -63,7 +63,7 @@ export class ConsoleAccountPaymentmethodsComponent implements OnInit {
   }
 
   public addCard() {
-    this.dialogService.addCard().subscribe(result => {
+    this.dialogService.addCard().subscribe((result: any) => {
       if (result) {
         this.createSourceData.token = result.token.id;
         this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: any) => {

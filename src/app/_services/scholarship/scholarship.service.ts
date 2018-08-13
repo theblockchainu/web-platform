@@ -64,10 +64,6 @@ export class ScholarshipService {
 	public getKarmaBalance(scholarshipId, convertTo = 'KARMA') {
 		return this.http
 			.get(environment.apiUrl + '/api/scholarships/' + scholarshipId + '/karmaBalance?convertTo=' + convertTo, this._requestHeaderService.options)
-			.map(
-				(response: any) => response,
-				(err) => {
-					console.log('Error: ' + err);
-				});
+			;
 	}
 }

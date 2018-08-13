@@ -4,7 +4,8 @@ import { CertificateService } from '../../certificate/certificate.service';
 import { CollectionService } from '../../collection/collection.service';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
+import { flatMap, map } from 'rxjs/operators';
 import { ProfileService } from '../../profile/profile.service';
 import { environment } from '../../../../environments/environment';
 @Component({
@@ -27,7 +28,7 @@ export class CertificateVerificationComponent implements OnInit {
 	public certificateValid: boolean;
 	public certificateProcessed: boolean;
 	public envVariable: any;
-	
+
 	constructor(
 		private certificateService: CertificateService,
 		public dialogRef: MatDialogRef<CertificateVerificationComponent>,
@@ -35,7 +36,7 @@ export class CertificateVerificationComponent implements OnInit {
 		private collectionService: CollectionService,
 		private profileService: ProfileService
 	) { }
-	
+
 	ngOnInit() {
 		this.envVariable = environment;
 		this.loading = true;
@@ -47,22 +48,23 @@ export class CertificateVerificationComponent implements OnInit {
 				this.initializeVerification();
 			});
 		console.log(this.data);
-		
+
 	}
-	
+
 	getCollection() {
 		const filter = {
 			include: ['owners', 'participants', 'certificate_templates']
 		};
 		return this.collectionService.getCollectionDetail(this.data.collection.id, filter);
 	}
-	
+
 	initializeVerification() {
 		this.certificateValid = true;
 		this.certificateProcessed = false;
 		console.log('initialied Verification');
-		this.formatvalidation()
-			.flatMap((res: any) => {
+		this.formatvalidation().pipe(
+
+			flatMap((res: any) => {
 				console.log('----->Form Processed');
 				if (!res) {
 					this.certificateValid = false;
@@ -71,7 +73,7 @@ export class CertificateVerificationComponent implements OnInit {
 				this.verificationSteps[0].verified = res;
 				return this.hashComparison();
 			})
-			.flatMap(res => {
+			, flatMap((res: any) => {
 				console.log('----->Hash Processed');
 				if (!res) {
 					this.certificateValid = false;
@@ -80,7 +82,7 @@ export class CertificateVerificationComponent implements OnInit {
 				this.verificationSteps[1].processed = true;
 				return this.statusCheck();
 			})
-			.flatMap(res => {
+			, flatMap((res: any) => {
 				console.log('----->Status Processed');
 				if (!res) {
 					this.certificateValid = false;
@@ -88,7 +90,8 @@ export class CertificateVerificationComponent implements OnInit {
 				this.verificationSteps[2].verified = res;
 				this.verificationSteps[2].processed = true;
 				return this.metaDataCheck();
-			}).subscribe(res => {
+			})
+		).subscribe((res: any) => {
 			console.log('----->Meta Processed');
 			if (!res) {
 				this.certificateValid = false;
@@ -98,31 +101,31 @@ export class CertificateVerificationComponent implements OnInit {
 			this.certificateProcessed = true;
 		});
 	}
-	
+
 	getBlockChainTransactionId() {
 		return new BehaviorSubject(this.data.signature.anchors[0].sourceId);
 	}
-	
+
 	getLocalHash() {
 		return new BehaviorSubject(this.hashData());
 	}
-	
+
 	fethBlockchainHash() {
 		return this.certificateService.getBlockchainHash(this.data.collection.id, this.data.recipient.ethAddress);
 	}
-	
+
 	compareHash() {
 		return new BehaviorSubject(this.localSHA === this.blockchainHash);
 	}
-	
+
 	fetchParticipantAddress() {
 		return new BehaviorSubject(this.data.recipient.ethAddress);
 	}
-	
+
 	checkParticipantReceipt() {
 		return new BehaviorSubject(this.data.signature);
 	}
-	
+
 	checkIfDropped() {
 		return new BehaviorSubject(
 			this.collection.participants.find((peer) => {
@@ -130,152 +133,162 @@ export class CertificateVerificationComponent implements OnInit {
 			})
 		);
 	}
-	
+
 	checkIssuerAddress() {
 		return new BehaviorSubject(this.collection.owners[0].id === this.data.issuer.id);
 	}
-	
+
 	checkExpiry() {
 		const currentMoment = moment(this.collection.certificate_templates[0].expiryDate);
 		return new BehaviorSubject(
 			currentMoment.isAfter(moment())
 		);
 	}
-	
+
 	verifyAccreditation() {
 		const filter = {
 			'include': [{ 'accreditationsSubscribed': [{ 'createdBy': { 'profiles': ['work'] } }, 'topics'] }]
 		};
-		return this.profileService.getPeerData(this.data.issuer.id, filter).map(res => {
-			this.accreditation = res.accreditationsSubscribed[0];
-			return true;
-		});
-		
+		return this.profileService.getPeerData(this.data.issuer.id, filter).pipe(
+			map(res => {
+				this.accreditation = res.accreditationsSubscribed[0];
+				return true;
+			})
+		);
+
 	}
-	
+
 	fetchGyan() {
 		return this.profileService.getGyanBalance(this.data.recipient.id, 'fixed');
 	}
-	
+
 	formatvalidation() {
 		let formValidated = true;
 		return this.getBlockChainTransactionId()
-			.flatMap(
-				res => {
-					console.log('Blockchain transaction processed');
-					this.verificationSteps[0].steps[0].processed = true;
+			.pipe(
+				flatMap(
+					res => {
+						console.log('Blockchain transaction processed');
+						this.verificationSteps[0].steps[0].processed = true;
+						if (res) {
+							this.transactionId = res;
+							this.verificationSteps[0].steps[0].verified = true;
+						} else {
+							formValidated = false;
+						}
+						return this.getLocalHash();
+					}
+				), flatMap(res => {
+					console.log('Local Hash processed');
+					this.verificationSteps[0].steps[1].processed = true;
 					if (res) {
-						this.transactionId = res;
-						this.verificationSteps[0].steps[0].verified = true;
+						this.localSHA = res;
+						this.verificationSteps[0].steps[1].verified = true;
+
 					} else {
 						formValidated = false;
 					}
-					return this.getLocalHash();
-				}
-			).flatMap(res => {
-				console.log('Local Hash processed');
-				this.verificationSteps[0].steps[1].processed = true;
-				if (res) {
-					this.localSHA = res;
-					this.verificationSteps[0].steps[1].verified = true;
-					
-				} else {
-					formValidated = false;
-				}
-				return this.fethBlockchainHash();
-			}).flatMap((res: any) => {
-				console.log('Fetch Hash processed');
-				this.verificationSteps[0].steps[2].processed = true;
-				if (res) {
-					this.blockchainHash = res;
-					this.verificationSteps[0].steps[2].verified = true;
-				} else {
-					formValidated = false;
-				}
-				return this.fetchParticipantAddress();
-			}).map(res => {
-				console.log('Fetch Participant processed');
-				this.verificationSteps[0].steps[3].processed = true;
-				if (res) {
-					this.participantAddress = res;
-					this.verificationSteps[0].steps[3].verified = true;
-				}
-				return formValidated;
-			});
+					return this.fethBlockchainHash();
+				}), flatMap((res: any) => {
+					console.log('Fetch Hash processed');
+					this.verificationSteps[0].steps[2].processed = true;
+					if (res) {
+						this.blockchainHash = res;
+						this.verificationSteps[0].steps[2].verified = true;
+					} else {
+						formValidated = false;
+					}
+					return this.fetchParticipantAddress();
+				}), map(res => {
+					console.log('Fetch Participant processed');
+					this.verificationSteps[0].steps[3].processed = true;
+					if (res) {
+						this.participantAddress = res;
+						this.verificationSteps[0].steps[3].verified = true;
+					}
+					return formValidated;
+				})
+			);
 	}
-	
+
 	hashComparison() {
 		let stepVerified = true;
 		return this.compareHash()
-			.flatMap(res => {
-				console.log('Compare Hash processed');
-				this.verificationSteps[1].steps[0].processed = true;
-				if (res) {
-					this.hashVerified = res;
-					this.verificationSteps[1].steps[0].verified = true;
-				} else {
-					stepVerified = false;
-				}
-				return this.fetchParticipantAddress();
-			})
-			.flatMap(res => {
-				console.log('Fetch Participant Address processed');
-				this.verificationSteps[1].steps[1].processed = true;
-				if (res) {
-					this.participantAddress = res;
-					this.verificationSteps[1].steps[1].verified = true;
-				} else {
-					stepVerified = false;
-				}
-				return this.checkParticipantReceipt();
-			}).map(res => {
-				this.verificationSteps[1].steps[2].processed = true;
-				if (res) {
-					this.verificationSteps[1].steps[2].verified = true;
-				} else {
-					stepVerified = false;
-				}
-				return stepVerified;
-			});
+			.pipe(
+				flatMap(res => {
+					console.log('Compare Hash processed');
+					this.verificationSteps[1].steps[0].processed = true;
+					if (res) {
+						this.hashVerified = res;
+						this.verificationSteps[1].steps[0].verified = true;
+					} else {
+						stepVerified = false;
+					}
+					return this.fetchParticipantAddress();
+				})
+				, flatMap(res => {
+					console.log('Fetch Participant Address processed');
+					this.verificationSteps[1].steps[1].processed = true;
+					if (res) {
+						this.participantAddress = res;
+						this.verificationSteps[1].steps[1].verified = true;
+					} else {
+						stepVerified = false;
+					}
+					return this.checkParticipantReceipt();
+				}), map(res => {
+					this.verificationSteps[1].steps[2].processed = true;
+					if (res) {
+						this.verificationSteps[1].steps[2].verified = true;
+					} else {
+						stepVerified = false;
+					}
+					return stepVerified;
+				})
+			);
 	}
-	
+
 	statusCheck() {
 		let stepVerified = true;
 		return this.checkIfDropped()
-			.flatMap(res => {
-				console.log('checkidropped');
-				this.verificationSteps[2].steps[0].processed = true;
-				if (res) {
-					this.verificationSteps[2].steps[0].verified = true;
-				} else {
-					stepVerified = false;
-				}
-				return this.checkIssuerAddress();
-			}).flatMap(res => {
-				console.log('checkIssuerAddress');
-				this.verificationSteps[2].steps[1].processed = true;
-				if (res) {
-					this.verificationSteps[2].steps[1].verified = true;
-				} else {
-					stepVerified = false;
-				}
-				return this.checkExpiry();
-			}).map(res => {
-				console.log('checkExpiry');
-				this.verificationSteps[2].steps[2].processed = true;
-				if (res) {
-					this.verificationSteps[2].steps[2].verified = true;
-				} else {
-					stepVerified = false;
-				}
-				return stepVerified;
-			});
+			.pipe(
+				flatMap(res => {
+					console.log('checkidropped');
+					this.verificationSteps[2].steps[0].processed = true;
+					if (res) {
+						this.verificationSteps[2].steps[0].verified = true;
+					} else {
+						stepVerified = false;
+					}
+					return this.checkIssuerAddress();
+				}),
+				flatMap(res => {
+					console.log('checkIssuerAddress');
+					this.verificationSteps[2].steps[1].processed = true;
+					if (res) {
+						this.verificationSteps[2].steps[1].verified = true;
+					} else {
+						stepVerified = false;
+					}
+					return this.checkExpiry();
+				}),
+				map(res => {
+					console.log('checkExpiry');
+					this.verificationSteps[2].steps[2].processed = true;
+					if (res) {
+						this.verificationSteps[2].steps[2].verified = true;
+					} else {
+						stepVerified = false;
+					}
+					return stepVerified;
+				})
+			);
 	}
-	
+
 	metaDataCheck() {
 		let stepVerified = true;
-		return this.verifyAccreditation()
-			.flatMap(res => {
+		return this.verifyAccreditation().pipe(
+			flatMap(res => {
 				this.verificationSteps[3].steps[0].processed = true;
 				if (res) {
 					this.verificationSteps[3].steps[0].verified = true;
@@ -283,7 +296,7 @@ export class CertificateVerificationComponent implements OnInit {
 					stepVerified = false;
 				}
 				return this.fetchGyan();
-			}).map(res => {
+			}), map(res => {
 				this.verificationSteps[3].steps[1].processed = true;
 				if (res) {
 					this.verificationSteps[3].steps[1].verified = true;
@@ -291,9 +304,10 @@ export class CertificateVerificationComponent implements OnInit {
 					stepVerified = false;
 				}
 				return stepVerified;
-			});
+			})
+		);
 	}
-	
+
 	initializeVerificationSteps() {
 		this.verificationSteps = [
 			{
@@ -386,7 +400,7 @@ export class CertificateVerificationComponent implements OnInit {
 			}
 		];
 	}
-	
+
 	hashData() {
 		this.signature = this.data.signature;
 		const certificateData = _.cloneDeep(this.data);
@@ -394,7 +408,7 @@ export class CertificateVerificationComponent implements OnInit {
 		const sha = this.certificateService.getSHA(JSON.stringify(certificateData)).slice(0, 32);
 		return sha;
 	}
-	
+
 	toggleExpansionpanel(index: number) {
 		if (this.expandedPanel === index) {
 			this.expandedPanel = -1;

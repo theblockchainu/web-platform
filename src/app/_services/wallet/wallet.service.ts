@@ -21,38 +21,28 @@ export class WalletService {
 	 */
 	public getWallet() {
 		return this.http.get(environment.apiUrl + '/api/peers/' + this.userId + '/wallet', this.requestHeaderService.options)
-			.map((response: any) => response, (err) => {
-				console.log(err);
-			});
+			;
 	}
 
 	public fixWallet(userId, body) {
 		return this.http
 			.post(environment.apiUrl + '/api/peers/' + userId + '/fixWallet', body, this.requestHeaderService.options)
-			.map(
-				(response: any) => response,
-				(err) => {
-					console.log('Error: ' + err);
-				});
+			;
 
 	}
-	
+
 	public getKarmaSupply() {
 		return this.http
 			.get(environment.apiUrl + '/api/peers/karmaSupply', this.requestHeaderService.options)
-			.map(
-				(response: any) => response,
-				(err) => {
-					console.log('Error: ' + err);
-				});
-		
+			;
+
 	}
-	
+
 	public karmaToDollar(karma) {
 		return this.http
 			.get(environment.apiUrl + '/karmaToDollar?karma=' + karma, this.requestHeaderService.options);
 	}
-	
+
 	public gyanToDollar(gyan) {
 		return this.http
 			.get(environment.apiUrl + '/gyanToDollar?gyan=' + gyan, this.requestHeaderService.options);
@@ -68,14 +58,10 @@ export class WalletService {
 		}, this.requestHeaderService.options);
 
 	}
-	
+
 	public getKarmaToBurn(gyan: number) {
-		return this.http.post(environment.apiUrl + '/getKarmaToBurn', {gyan: gyan}, this.requestHeaderService.options)
-			.map(
-				(response: any) => response.karma,
-				(err) => {
-					console.log('Error: ' + err);
-				});
+		return this.http.post(environment.apiUrl + '/getKarmaToBurn', { gyan: gyan }, this.requestHeaderService.options)
+			;
 	}
 
 }

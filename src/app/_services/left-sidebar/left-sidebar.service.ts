@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import 'rxjs/add/operator/map';
+
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 
 export class SideBarMenuItem {
@@ -24,11 +24,8 @@ export class LeftSidebarService {
     ) {
     }
 
-    public getMenuItems(fileLocation: string): Observable<SideBarMenuItem> {
-        return this.http.get(fileLocation, this.requestHeaderService.options)
-            .map((response: any) => {
-                return response;
-            });
+    public getMenuItems(fileLocation: string): Observable<any> {
+        return this.http.get(fileLocation, this.requestHeaderService.options);
     }
 
     public updateSideMenu(collection, sidebarMenuItems) {

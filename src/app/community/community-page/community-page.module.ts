@@ -9,7 +9,6 @@ import { VgCoreModule } from 'videogular2/core';
 import { VgControlsModule } from 'videogular2/controls';
 import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
-import { StickyModule } from 'ng2-sticky-kit';
 import { CommunityPageComponent } from './community-page.component';
 import { CommunityPageQuestionsComponent } from './community-page-questions/community-page-questions.component';
 import { CommunityPageClassesComponent } from './community-page-classes/community-page-classes.component';
@@ -32,9 +31,7 @@ import { CommunityPageLinksComponent } from './community-page-links/community-pa
     VgCoreModule,
     VgControlsModule,
     VgOverlayPlayModule,
-    VgBufferingModule,
-    StickyModule
-  ],
+    VgBufferingModule],
 
   declarations: [CommunityPageComponent, MessageParticipantComponent, CommunityPageQuestionsComponent, CommunityPageClassesComponent, CommunityPageExperiencesComponent, CommunityPageLinksComponent],
   bootstrap: [MessageParticipantComponent],

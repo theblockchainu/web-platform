@@ -40,7 +40,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
 		public consoleTeachingComponent: ConsoleTeachingComponent,
 		public router: Router,
 		public _collectionService: CollectionService,
-		private _dialogService: DialogsService,
+		public _dialogService: DialogsService,
 		private _cookieUtilsService: CookieUtilsService,
 		public dialog: MatDialog,
 		public snackBar: MatSnackBar,
@@ -239,7 +239,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
 	}
 
 	public deleteCollection(collection: any) {
-		this._dialogService.openDeleteCollection(collection).subscribe(result => {
+		this._dialogService.openDeleteCollection(collection).subscribe((result: any) => {
 			if (result) {
 				this.fetchData();
 				this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Deleted', 'Close', {
@@ -253,7 +253,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
 	 * cancelCollection
 	 collection:any     */
 	public cancelCollection(collection: any) {
-		this._dialogService.openCancelCollection(collection).subscribe(result => {
+		this._dialogService.openCancelCollection(collection).subscribe((result: any) => {
 			if (result) {
 				this.fetchData();
 				this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Cancelled', 'Close', {

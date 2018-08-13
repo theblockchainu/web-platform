@@ -8,7 +8,7 @@
 <div class="row">
 	<div class="col-md-12 margin-top-10" *ngIf="loaded">
 		<div #noContentView *ngIf="ongoingArray.length === 0 && upcomingArray.length===0 && drafts.length === 0 && pastArray.length === 0"
-		     class="center" style="margin-top: 10%; margin-bottom: 10%">
+		 class="center" style="margin-top: 10%; margin-bottom: 10%">
 			<div class="lightText">
 				You are not teaching any experience
 				<br>
@@ -58,7 +58,8 @@
 										<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
 										<!-- <mat-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></mat-progress-bar> -->
 										<div class="cohortDate">
-											<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
+											<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
+												MMM' }}</span>
 										</div>
 										<div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
 											{{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
@@ -75,7 +76,8 @@
 												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
 											</div>
 											<div class="upcomingEventTime">
-												{{ _collectionService.getUpcomingEvent(collection).type | titlecase}} {{ _collectionService.getUpcomingEvent(collection).fillerWord}} today
+												{{ _collectionService.getUpcomingEvent(collection).type | titlecase}} {{ _collectionService.getUpcomingEvent(collection).fillerWord}}
+												today
 											</div>
 										</span>
 										<span *ngIf=" _collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart > 0">
@@ -109,6 +111,12 @@
 										</button>
 										<button mat-menu-item (click)="_collectionService.openEditExperience(collection)">
 											Edit Experience
+										</button>
+										<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
+											Add Promo Code
+										</button>
+										<button mat-menu-item (click)="_dialogService.viewPromoCodeDialog(collection.id)">
+											View Promo Codes
 										</button>
 									</mat-menu>
 									<mat-card-actions *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).hasStarted">
@@ -147,7 +155,8 @@
 										</div>
 										<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
 										<div class="cohortDate">
-											<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
+											<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
+												MMM' }}</span>
 										</div>
 										<div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
 											{{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
@@ -161,7 +170,8 @@
 												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
 											</div>
 											<div class="upcomingEventTime">
-												{{ _collectionService.getUpcomingEvent(collection).type | titlecase}} {{ _collectionService.getUpcomingEvent(collection).fillerWord}} today
+												{{ _collectionService.getUpcomingEvent(collection).type | titlecase}} {{ _collectionService.getUpcomingEvent(collection).fillerWord}}
+												today
 											</div>
 										</span>
 										<span *ngIf=" _collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart > 0">
@@ -180,6 +190,12 @@
 									<mat-menu #upcomingCardMenu>
 										<button mat-menu-item (click)="cancelCollection(collection)">
 											Cancel
+										</button>
+										<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
+											Add Promo Code
+										</button>
+										<button mat-menu-item (click)="_dialogService.viewPromoCodeDialog(collection.id)">
+											View Promo Codes
 										</button>
 										<button mat-menu-item (click)="_collectionService.openEditExperience(collection)">
 											Edit Experience
@@ -239,7 +255,7 @@
 											<button mat-raised-button (click)="onSelect(collection)">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
 										</mat-card-actions>
 										<mat-card-footer>
-										
+
 										</mat-card-footer>
 									</mat-card>
 									<mat-menu #draftCardMenu>
@@ -280,7 +296,7 @@
 											<button mat-raised-button (click)="onSelect(collection)">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
 										</mat-card-actions>
 										<mat-card-footer>
-										
+
 										</mat-card-footer>
 									</mat-card>
 									<mat-menu #draftCardMenu>
@@ -346,7 +362,8 @@
 												{{ collection.itenaries.length}} Days | {{collection.contents.length}} Activity |
 												<span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
 											</div>
-											<div *ngIf="collection.participants.length !== collection.participantReviewCount" class="teachingRatingReminder clickable" (click)="consoleTeachingComponent.showRateStudentsPopup(collection)">
+											<div *ngIf="collection.participants.length !== collection.participantReviewCount" class="teachingRatingReminder clickable"
+											 (click)="consoleTeachingComponent.showRateStudentsPopup(collection)">
 												Review your students now
 											</div>
 											<div *ngIf="collection.participants.length === collection.participantReviewCount" class="teachingRatingReminder disabled">
@@ -356,6 +373,12 @@
 										<mat-menu #pastCardMenu>
 											<button mat-menu-item (click)="_collectionService.viewExperience(collection)">
 												View Experience
+											</button>
+											<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
+												Add Promo Code
+											</button>
+											<button mat-menu-item (click)="_dialogService.viewPromoCodeDialog(collection.id)">
+												View Promo Codes
 											</button>
 										</mat-menu>
 										<mat-card-actions>

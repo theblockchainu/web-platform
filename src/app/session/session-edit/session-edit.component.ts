@@ -1,11 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
-import 'rxjs/add/operator/switchMap';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators } from '@angular/forms';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/share';
-import 'rxjs/add/operator/publishReplay';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
 import * as moment from 'moment';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
@@ -18,14 +14,13 @@ import * as _ from 'lodash';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { TopicService } from '../../_services/topic/topic.service';
 import { PaymentService } from '../../_services/payment/payment.service';
 import { ProfileService } from '../../_services/profile/profile.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { environment } from '../../../environments/environment';
 import { MediaMatcher } from '@angular/cdk/layout';
-
+import { map, startWith, flatMap } from 'rxjs/operators';
 @Component({
 	selector: 'app-session-edit',
 	templateUrl: './session-edit.component.html',
@@ -335,7 +330,7 @@ export class SessionEditComponent implements OnInit {
 		const queryTeaching = {
 			'relInclude': 'experience'
 		};
-		this._profileService.getTeachingTopics(this.userId, queryTeaching).subscribe((response) => {
+		this._profileService.getTeachingTopics(this.userId, queryTeaching).subscribe((response: any) => {
 			console.log(response);
 			// Topics
 			this.relTopics = _.uniqBy(response, 'id');
@@ -360,7 +355,7 @@ export class SessionEditComponent implements OnInit {
 				'emergency_contacts'
 			]
 		};
-		this._profileService.getProfileData(this.userId, query).subscribe((profiles) => {
+		this._profileService.getProfileData(this.userId, query).subscribe((profiles: any) => {
 			this.profile = profiles[0];
 			this.picture_url = profiles[0].picture_url;
 			this.profile_video = profiles[0].profile_video;
@@ -500,21 +495,23 @@ export class SessionEditComponent implements OnInit {
 		this.key = 'access_token';
 
 		this.countryPickerService.getCountries()
-			.subscribe((countries) => this.countries = countries);
+			.subscribe((countries: any) => this.countries = countries);
 
 		this.languagePickerService.getLanguages()
 			.subscribe((languages) => {
 				this.languagesArray = _.map(languages, 'name');
 				this.filteredLanguageOptions = this.session.controls.selectedLanguage.valueChanges
-					.startWith(null)
-					.map(val => val ? this.filter(val) : this.languagesArray.slice());
+					.pipe(
+						startWith(null)
+						, map(val => val ? this.filter(val) : this.languagesArray.slice())
+					);
 			});
 
 		if (this.interests.length === 0) {
 			this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.requestHeaderService.options)
-				.map((response: any) => {
+				.subscribe((response: any) => {
 					this.suggestedTopics = response.slice(0, 7);
-				}).subscribe();
+				});
 		} else {
 			this.suggestedTopics = this.interests;
 		}
@@ -532,7 +529,7 @@ export class SessionEditComponent implements OnInit {
 	private initializeSession() {
 		if (this.sessionId) {
 			this._collectionService.getCollectionDetail(this.sessionId, this.query)
-				.subscribe((res) => {
+				.subscribe((res: any) => {
 					this.sessionData = res;
 					if (this.sessionData.payoutrules && this.sessionData.payoutrules.length > 0) {
 						this.payoutRuleNodeId = this.sessionData.payoutrules[0].id;
@@ -569,7 +566,7 @@ export class SessionEditComponent implements OnInit {
 
 	private retrieveAccounts() {
 		this.payoutAccounts = [];
-		this._paymentService.retrieveConnectedAccount().subscribe(result => {
+		this._paymentService.retrieveConnectedAccount().subscribe((result: any) => {
 			this.payoutAccounts = result;
 			Array.from(this.payoutAccounts).forEach(account => {
 				if (this.payoutRuleNodeId && this.payoutRuleAccountId && account.payoutaccount.id === this.payoutRuleAccountId) {
@@ -584,7 +581,7 @@ export class SessionEditComponent implements OnInit {
 			console.log(err);
 			this.payoutLoading = false;
 		});
-		/*this._paymentService.retrieveLocalPayoutAccounts().subscribe(result => {
+		/*this._paymentService.retrieveLocalPayoutAccounts().subscribe((result: any) => {
 		  console.log(result);
 		  this.payoutAccounts = result;
 		  this.payoutLoading = false;
@@ -782,7 +779,7 @@ export class SessionEditComponent implements OnInit {
 		console.log('topics');
 		if (topicArray.length !== 0) {
 			this.http.patch(environment.apiUrl + '/api/peers/' + this.userId + '/topicsTeaching/rel', body, this.requestHeaderService.options)
-				.subscribe((response) => {
+				.subscribe((response: any) => {
 					this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
 						{ topicsObject: response });
 					this._collectionService.patchCollection(this.sessionId, {
@@ -819,7 +816,7 @@ export class SessionEditComponent implements OnInit {
 	submitForReview() {
 		// Post Session for review
 		this._collectionService.submitForReview(this.sessionId)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				this.session.controls.status.setValue('submitted');
 				this.isSubmitted = true;
 				this.dialogsService.openCollectionSubmitDialog({
@@ -848,10 +845,10 @@ export class SessionEditComponent implements OnInit {
 		lang.push(this._fb.control(data.value.selectedLanguage));
 		const body = data.value;
 		delete body.selectedLanguage;
-		this._collectionService.patchCollection(this.sessionId, body).map(
-			(response) => {
+		this._collectionService.patchCollection(this.sessionId, body)
+			.subscribe((response: any) => {
 				this.router.navigate(['console/teaching/sessions']);
-			}).subscribe();
+			});
 	}
 
 	exit() {
@@ -864,7 +861,7 @@ export class SessionEditComponent implements OnInit {
 		let topic;
 		this.dialogsService
 			.addNewTopic()
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				if (res) {
 					topic = res;
 					topic.checked = true;
@@ -878,7 +875,7 @@ export class SessionEditComponent implements OnInit {
 	addNewLanguage() {
 		this.dialogsService
 			.addNewLanguage()
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				if (res) {
 					this.languagesArray.push(res);
 					this.session.controls.selectedLanguage.patchValue(res.name);
@@ -955,7 +952,7 @@ export class SessionEditComponent implements OnInit {
 
 		element.textContent = text;
 		this._collectionService.sendVerifySMS(this.phoneDetails.controls.phoneNo.value, this.phoneDetails.controls.countryCode.value)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				this.otpSent = true;
 				this.phoneDetails.controls.phoneNo.disable();
 				this.phoneDetails.controls.countryCode.disable();
@@ -965,7 +962,7 @@ export class SessionEditComponent implements OnInit {
 
 	submitOTP() {
 		this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
-			.subscribe((res) => {
+			.subscribe((res: any) => {
 				this.snackBar.open('Token Verified', 'Close', {
 					duration: 5000
 				});
@@ -1012,14 +1009,14 @@ export class SessionEditComponent implements OnInit {
 	 */
 	public saveProfile() {
 		this._profileService.updateProfile(this.userId, this.profileForm.value)
-			.subscribe((response) => {
+			.subscribe((response: any) => {
 				this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
 					{ profileObject: response });
 				this.nextStep();
 			}, (err) => {
 				console.log('Error updating Peer: ');
 				console.log(err);
-				this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe((response) => {
+				this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe((response: any) => {
 					this.saveProfile();
 				});
 			});
@@ -1027,16 +1024,18 @@ export class SessionEditComponent implements OnInit {
 
 	public saveWorkEducation() {
 		this._profileService.updateWork(this.userId, this.profile.id, this.workForm.controls['work'].value)
-			.flatMap((response) => {
-				return this._profileService.updateEducation(this.userId, this.profile.id, this.workForm.controls['education'].value);
-			}).subscribe((response) => {
+			.pipe(
+				flatMap((response: any) => {
+					return this._profileService.updateEducation(this.userId, this.profile.id, this.workForm.controls['education'].value);
+				})
+			).subscribe((response: any) => {
 				this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems,
 					{ educationObject: response });
 				this.nextStep();
 			}, (err) => {
 				console.log('Error updating Peer: ');
 				console.log(err);
-				this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe((response) => {
+				this.snackBar.open('Profile Update Failed', 'Retry').onAction().subscribe((response: any) => {
 					this.saveProfile();
 				});
 			});
@@ -1065,7 +1064,7 @@ export class SessionEditComponent implements OnInit {
 	uploadVideo(event) {
 		this.uploadingVideo = true;
 		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response) => {
+			this.mediaUploader.upload(file).subscribe((response: any) => {
 				this.profile_video = response.url;
 				this._profileService.updateProfile(this.userId, {
 					'profile_video': response.url
@@ -1084,7 +1083,7 @@ export class SessionEditComponent implements OnInit {
 	uploadImage(event) {
 		this.uploadingImage = true;
 		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response) => {
+			this.mediaUploader.upload(file).subscribe((response: any) => {
 				this.picture_url = response.url;
 				this._profileService.updateProfile(this.userId, {
 					'picture_url': response.url
@@ -1149,12 +1148,13 @@ export class SessionEditComponent implements OnInit {
 
 
 	getLanguages() {
-		this.languagePickerService.getLanguages().subscribe(data => {
+		this.languagePickerService.getLanguages().subscribe((data: any) => {
 			this.languages = data;
 			this.languagesAsync.next(this.languages);
 			this.profileForm.controls['preferred_language'].valueChanges
-				.startWith(null)
-				.subscribe(val => {
+				.pipe(
+					startWith(null)
+				).subscribe(val => {
 					if (val) {
 						this.filteredOptions = _.filter(this.languages, (item) => {
 							return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
@@ -1246,7 +1246,7 @@ export class SessionEditComponent implements OnInit {
 	}
 
 	public unfollowTopic(type, topic: any) {
-		this._profileService.unfollowTopic(this.userId, type, topic.id).subscribe((response) => {
+		this._profileService.unfollowTopic(this.userId, type, topic.id).subscribe((response: any) => {
 			this._collectionService.patchCollection(this.sessionId, {
 				status: 'draft',
 				isApproved: false
@@ -1264,7 +1264,7 @@ export class SessionEditComponent implements OnInit {
 	 */
 	public saveProvision() {
 		this._collectionService.updateProvisions(this.sessionId, this.provisionForm.controls['provisions'].value)
-			.subscribe((response) => {
+			.subscribe((response: any) => {
 				this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems, {
 					provisionObject: response
 				});
@@ -1272,7 +1272,7 @@ export class SessionEditComponent implements OnInit {
 			}, (err) => {
 				console.log('Error updating Provision');
 				console.log(err);
-				this.snackBar.open('Provision Update Failed', 'Retry').onAction().subscribe((response) => {
+				this.snackBar.open('Provision Update Failed', 'Retry').onAction().subscribe((response: any) => {
 					this.saveProvision();
 				});
 			});

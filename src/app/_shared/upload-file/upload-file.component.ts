@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { flatMap } from 'rxjs/operators';
 @Component({
   selector: 'app-upload-file',
   templateUrl: './upload-file.component.html',
@@ -26,15 +27,17 @@ export class UploadFileComponent implements OnInit {
       let container;
       let name;
       let downloadUrl;
-      this.mediaUploader.getUploadURL(file).flatMap(
-        (res: any) => {
-          console.log(res);
-          container = res.container;
-          name = res.fileName;
-          downloadUrl = res.url;
-          return this.mediaUploader.uploadFile(res.uploadUrl, file);
-        }
-      ).subscribe((response) => {
+      this.mediaUploader.getUploadURL(file).pipe(
+        flatMap(
+          (res: any) => {
+            console.log(res);
+            container = res.container;
+            name = res.fileName;
+            downloadUrl = res.url;
+            return this.mediaUploader.uploadFile(res.uploadUrl, file);
+          }
+        )
+      ).subscribe((response: any) => {
         if (response.type === HttpEventType.UploadProgress) {
           // This is an upload progress event. Compute and show the % done:
           const percentDone = Math.round(100 * response.loaded / response.total);

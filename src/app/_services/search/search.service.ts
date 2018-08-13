@@ -24,12 +24,12 @@ export class SearchService {
         }
         this.httpSubscription = this.http
             .get(environment.searchUrl + '/searchAll?' + 'query=' + query, this.requestHeaderService.options)
-            .map((response) => {
+            .subscribe((response: any) => {
                 console.log(response);
                 cb(null, response);
             }, (err) => {
                 cb(err);
-            }).subscribe();
+            });
     }
 
     public getPeerSearchResults(query: any) {
@@ -43,12 +43,12 @@ export class SearchService {
         if (userId) {
             this.http
                 .get(environment.searchUrl + '/searchCommunity?' + 'query=' + query, this.requestHeaderService.options)
-                .map((response) => {
+                .subscribe((response: any) => {
                     console.log(response);
                     cb(null, response);
                 }, (err) => {
                     cb(err);
-                }).subscribe();
+                });
         }
     }
 

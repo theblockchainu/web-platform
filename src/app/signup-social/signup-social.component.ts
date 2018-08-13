@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProfileService } from '../_services/profile/profile.service';
-import 'rxjs/add/operator/map';
+
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { environment } from '../../environments/environment';
@@ -163,7 +163,7 @@ export class SignupSocialComponent implements OnInit {
 			password: password
 		};
 		this._walletService.fixWallet(this.userId, passwordObj)
-			.subscribe(result => {
+			.subscribe((result: any) => {
 				this.snackbar.open('Successfully updated wallet. Redirecting...', 'Ok', { duration: 5000 });
 				this.authService.isLoginSubject.next(true);
 				this.router.navigate(['verification', '1']);

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import 'rxjs/add/operator/map';
+
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { ConsoleTeachingComponent } from '../console-teaching.component';
@@ -19,7 +19,7 @@ import { UcFirstPipe } from 'ngx-pipes';
 	providers: [UcFirstPipe]
 })
 export class ConsoleTeachingClassComponent implements OnInit {
-	
+
 	public collections: any;
 	public loaded: boolean;
 	public now: Date;
@@ -32,13 +32,13 @@ export class ConsoleTeachingClassComponent implements OnInit {
 	public liveClassesObject: any;
 	public upcomingClassesObject: any;
 	public accountVerified = false;
-	
+
 	constructor(
 		public activatedRoute: ActivatedRoute,
 		public consoleTeachingComponent: ConsoleTeachingComponent,
 		public _collectionService: CollectionService,
 		private _cookieUtilsService: CookieUtilsService,
-		private _dialogService: DialogsService,
+		public _dialogService: DialogsService,
 		public router: Router,
 		public dialog: MatDialog,
 		public snackBar: MatSnackBar,
@@ -53,13 +53,13 @@ export class ConsoleTeachingClassComponent implements OnInit {
 		});
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.loaded = false;
 		this.fetchData();
 		this.accountVerified = (this._cookieUtilsService.getValue('accountApproved') === 'true');
 	}
-	
+
 	private fetchData() {
 		this._collectionService.getOwnedCollections(this.userId, '{ "where": {"type":"class"}, "include": ["calendars", "owners", {"participants": ["reviewsAboutYou", "ownedCollections", "profiles"]}, "topics", {"contents":"schedules"}] }', (err, result) => {
 			if (err) {
@@ -78,7 +78,7 @@ export class ConsoleTeachingClassComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	private createOutput(data: any) {
 		const now = moment();
 		data.forEach(_class => {
@@ -112,7 +112,7 @@ export class ConsoleTeachingClassComponent implements OnInit {
 									this.liveClassesObject[_class.id]['class']['calendars'] = [calendar];
 								}
 							}
-							
+
 						} else {
 							if (_class.id in this.pastClassesObject) {
 								this.pastClassesObject[_class.id]['class']['calendars'].push(calendar);
@@ -133,11 +133,11 @@ export class ConsoleTeachingClassComponent implements OnInit {
 				});
 			}
 		});
-		
+
 		this.drafts.sort((a, b) => {
 			return moment(b.updatedAt).diff(moment(a.updatedAt), 'days');
 		});
-		
+
 		for (const key in this.pastClassesObject) {
 			if (this.pastClassesObject.hasOwnProperty(key)) {
 				this.pastClassesObject[key].class.calendars.sort((a, b) => {
@@ -146,11 +146,11 @@ export class ConsoleTeachingClassComponent implements OnInit {
 				this.pastArray.push(this.pastClassesObject[key].class);
 			}
 		}
-		
+
 		this.pastArray.sort((a, b) => {
 			return moment(b.calendars[0].endDate).diff(moment(a.calendars[0].endDate), 'days');
 		});
-		
+
 		for (const key in this.upcomingClassesObject) {
 			if (this.upcomingClassesObject.hasOwnProperty(key)) {
 				this.upcomingClassesObject[key].class.calendars.sort((a, b) => {
@@ -159,69 +159,69 @@ export class ConsoleTeachingClassComponent implements OnInit {
 				this.upcomingArray.push(this.upcomingClassesObject[key].class);
 			}
 		}
-		
+
 		this.upcomingArray.sort((a, b) => {
 			return moment(a.calendars[0].startDate).diff(moment(b.calendars[0].startDate), 'days');
 		});
-		
-		
+
+
 		for (const key in this.liveClassesObject) {
 			if (this.liveClassesObject.hasOwnProperty(key)) {
 				this.ongoingArray.push(this.liveClassesObject[key].class);
 			}
 		}
 	}
-	
+
 	public onSelect(_class) {
-	this.router.navigate(['/class/', _class.id, 'edit', _class.stage ? _class.stage : 1]);
-}
+		this.router.navigate(['/class/', _class.id, 'edit', _class.stage ? _class.stage : 1]);
+	}
 
-public createClass() {
-	this._collectionService.postCollection(this.userId, 'class').subscribe((classObject: any) => {
-		this.router.navigate(['class', classObject.id, 'edit', 1]);
-	});
-}
+	public createClass() {
+		this._collectionService.postCollection(this.userId, 'class').subscribe((classObject: any) => {
+			this.router.navigate(['class', classObject.id, 'edit', 1]);
+		});
+	}
 
-/**
- * compareCalendars
- */
-public compareCalendars(a, b) {
-	return moment(a.startDate).diff(moment(b.startDate), 'days');
-}
+	/**
+	 * compareCalendars
+	 */
+	public compareCalendars(a, b) {
+		return moment(a.startDate).diff(moment(b.startDate), 'days');
+	}
 
-public openCohortDetailDialog(cohortData: any, status) {
-	cohortData['status'] = status;
-	const dialogRef = this.dialog.open(CohortDetailDialogComponent, {
-		width: '45vw',
-		data: cohortData,
-		panelClass: 'responsive-dialog',
-		
-	});
-}
+	public openCohortDetailDialog(cohortData: any, status) {
+		cohortData['status'] = status;
+		const dialogRef = this.dialog.open(CohortDetailDialogComponent, {
+			width: '45vw',
+			data: cohortData,
+			panelClass: 'responsive-dialog',
 
-public deleteCollection(collection: any) {
-	this._dialogService.openDeleteCollection(collection).subscribe(result => {
-		if (result) {
-			this.fetchData();
-			this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Deleted', 'Close', {
-				duration: 5000
-			});
-		}
-	});
-}
+		});
+	}
 
-/**
- * cancelCollection
- collection:any     */
-public cancelCollection(collection: any) {
-	this._dialogService.openCancelCollection(collection).subscribe(result => {
-		if (result) {
-			this.fetchData();
-			this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Cancelled', 'Close', {
-				duration: 5000
-			});
-		}
-	});
-}
+	public deleteCollection(collection: any) {
+		this._dialogService.openDeleteCollection(collection).subscribe((result: any) => {
+			if (result) {
+				this.fetchData();
+				this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Deleted', 'Close', {
+					duration: 5000
+				});
+			}
+		});
+	}
+
+	/**
+	 * cancelCollection
+	 collection:any     */
+	public cancelCollection(collection: any) {
+		this._dialogService.openCancelCollection(collection).subscribe((result: any) => {
+			if (result) {
+				this.fetchData();
+				this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Cancelled', 'Close', {
+					duration: 5000
+				});
+			}
+		});
+	}
 
 }

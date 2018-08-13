@@ -1,13 +1,12 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import 'rxjs/add/operator/map';
 import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { SocketService } from '../socket/socket.service';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 import { HttpClient } from '@angular/common/http';
+import { map, take } from 'rxjs/operators';
 
 @Injectable()
 export class AuthenticationService {
@@ -52,20 +51,20 @@ export class AuthenticationService {
 		const body = `{"email":"${email}","password":"${password}","rememberMe":${rememberMe}}`;
 		return this.http
 			.post(environment.apiUrl + '/auth/local', body, this._requestHeaderService.options)
-			.map((response: any) => {
-				console.log(response);
-				// if res code is xxx and response "error"
-				// login successful if there's a jwt token in the response
-				const user = response;
-				if (user && user.access_token) {
-					this._requestHeaderService.refreshToken.next(true);
-					this.isLoginSubject.next(true);
-					this._socketService.addUser(user.userId);
-				}
-				return response;
-			}, (err) => {
-				console.log('Error: ' + err);
-			});
+			.pipe(
+				map((response: any) => {
+					console.log(response);
+					// if res code is xxx and response "error"
+					// login successful if there's a jwt token in the response
+					const user = response;
+					if (user && user.access_token) {
+						this._requestHeaderService.refreshToken.next(true);
+						this.isLoginSubject.next(true);
+						this._socketService.addUser(user.userId);
+					}
+					return response;
+				})
+			);
 	}
 
 	/**
@@ -103,10 +102,7 @@ export class AuthenticationService {
 			email: email
 		};
 		return this.http
-			.post(environment.apiUrl + '/api/peers/forgotPassword', body, this._requestHeaderService.options)
-			.map((response: any) => response, (err) => {
-				console.log('Error: ' + err);
-			});
+			.post(environment.apiUrl + '/api/peers/forgotPassword', body, this._requestHeaderService.options);
 	}
 
 	sendEmailSubscriptions(email): any {
@@ -115,15 +111,16 @@ export class AuthenticationService {
 		};
 		return this.http
 			.post(environment.apiUrl + '/api/emailSubscriptions', body, this._requestHeaderService.options)
-			.map((response: any) => response, (err) => {
-				console.log('Error: ' + err);
-			});
+			.pipe(
+				map((response: any) => response, (err) => {
+					console.log('Error: ' + err);
+				})
+			);
 	}
 
 	resetPassword(body: any): any {
 		return this.http
-			.post(environment.apiUrl + '/api/peers/resetPassword', body, this._requestHeaderService.options)
-			.map((response: any) => response);
+			.post(environment.apiUrl + '/api/peers/resetPassword', body, this._requestHeaderService.options);
 	}
 	createGuestContacts(first_name, last_name, email, subject, message): any {
 		const body = {
@@ -134,10 +131,7 @@ export class AuthenticationService {
 			message: message
 		};
 		return this.http
-			.post(environment.apiUrl + '/api/guestContacts', body, this._requestHeaderService.options)
-			.map((response: any) => response, (err) => {
-				console.log('Error: ' + err);
-			});
+			.post(environment.apiUrl + '/api/guestContacts', body, this._requestHeaderService.options);
 	}
 
 	/**

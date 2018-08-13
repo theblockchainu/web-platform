@@ -8,9 +8,9 @@ import { ProfileService } from '../_services/profile/profile.service';
 import { TopicService } from '../_services/topic/topic.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import * as _ from 'lodash';
-import {environment} from '../../environments/environment';
-import {CollectionService} from '../_services/collection/collection.service';
-import {Meta, Title} from '@angular/platform-browser';
+import { environment } from '../../environments/environment';
+import { CollectionService } from '../_services/collection/collection.service';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-onboarding',
@@ -30,14 +30,14 @@ export class OnboardingComponent implements OnInit {
 	public searchTopicURL = '';
 	public createTopicURL = '';
 	public suggestTopicURL = '';
-	
+
 	public socialIdentitiesConnected: any = [];
 	public boolShowConnectedSocials = false;
 	public connectedIdentities = {
 		'fb': false,
 		'google': false
 	};
-	
+
 	public maxTopicMsg = 'Choose max 3 related topics';
 	public maxTopics = 3;
 	public removedInterests = [];
@@ -46,7 +46,7 @@ export class OnboardingComponent implements OnInit {
 	public topicForRequest = '';
 	public queriesSearchedArray = [];
 	private queryForSocialIdentities = { 'include': ['identities', 'credentials'] };
-	
+
 	constructor(
 		public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -62,7 +62,7 @@ export class OnboardingComponent implements OnInit {
 		public _collectionService: CollectionService
 	) {
 		this.envVariable = environment;
-		
+
 		const query = {
 			'limit': 5,
 			'order': 'createdAt DESC'
@@ -76,39 +76,39 @@ export class OnboardingComponent implements OnInit {
 		this.interest1 = new FormGroup({
 		});
 		this.countryPickerService.getCountries()
-			.subscribe((countries) => this.countries = countries);
-		
+			.subscribe((countries: any) => this.countries = countries);
+
 		this.userId = _cookieUtilsService.getValue('userId');
-		
+
 		this._profileService.getSocialIdentities(this.queryForSocialIdentities, this.userId)
 			.subscribe((response: any) => {
-					this.socialIdentitiesConnected = response;
-					if (this.socialIdentitiesConnected.identities.length > 0) {
-						this.boolShowConnectedSocials = true;
-						this.socialIdentitiesConnected.identities.forEach(element => {
-							if (element.provider === 'google') {
-								this.connectedIdentities.google = true;
-							} else if (element.provider === 'facebook') {
-								this.connectedIdentities.fb = true;
-							}
-						});
-					}
-					if (this.socialIdentitiesConnected.credentials.length > 0) {
-						this.boolShowConnectedSocials = true;
-						this.socialIdentitiesConnected.credentials.forEach(element => {
-							if (element.provider === 'google') {
-								this.connectedIdentities.google = true;
-							} else if (element.provider === 'facebook') {
-								this.connectedIdentities.fb = true;
-							}
-						});
-					}
-				},
+				this.socialIdentitiesConnected = response;
+				if (this.socialIdentitiesConnected.identities.length > 0) {
+					this.boolShowConnectedSocials = true;
+					this.socialIdentitiesConnected.identities.forEach(element => {
+						if (element.provider === 'google') {
+							this.connectedIdentities.google = true;
+						} else if (element.provider === 'facebook') {
+							this.connectedIdentities.fb = true;
+						}
+					});
+				}
+				if (this.socialIdentitiesConnected.credentials.length > 0) {
+					this.boolShowConnectedSocials = true;
+					this.socialIdentitiesConnected.credentials.forEach(element => {
+						if (element.provider === 'google') {
+							this.connectedIdentities.google = true;
+						} else if (element.provider === 'facebook') {
+							this.connectedIdentities.fb = true;
+						}
+					});
+				}
+			},
 				(err) => {
 					console.log('Error: ' + err);
 				});
 	}
-	
+
 	private setTags() {
 		this.titleService.setTitle('Welcome to peerbuds...');
 		this.metaService.updateTag({
@@ -128,7 +128,7 @@ export class OnboardingComponent implements OnInit {
 			content: environment.clientUrl + this.router.url
 		});
 	}
-	
+
 	public selected(event) {
 		if (this.interests.length >= 3) {
 			this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
@@ -137,7 +137,7 @@ export class OnboardingComponent implements OnInit {
 		this.interests = event;
 		this.suggestedTopics = _.differenceBy(this.suggestedTopics, this.interests, 'id');
 	}
-	
+
 	public requestNewTopicEnabled(event) {
 		if (event !== '') {
 			this.showRequestNewTopic = true;
@@ -147,7 +147,7 @@ export class OnboardingComponent implements OnInit {
 			this.topicForRequest = event;
 		}
 	}
-	
+
 	public removed(event) {
 		this.removedInterests = event;
 		// Add back to suggestions
@@ -157,16 +157,16 @@ export class OnboardingComponent implements OnInit {
 			this.removedInterests.forEach((topic) => {
 				topicArray.push(topic.id);
 			});
-			
+
 			if (topicArray.length !== 0) {
 				topicArray.forEach(topicId => {
 					this._topicService.deleteRelTopic(this.userId, topicId)
-						.subscribe((response) => { console.log(response); });
+						.subscribe((response: any) => { console.log(response); });
 				});
 			}
 		}
 	}
-	
+
 	public ngOnInit() {
 		this.setTags();
 		this._topicService.getDefaultTopicsAtOnboarding(this.suggestTopicURL)
@@ -175,28 +175,28 @@ export class OnboardingComponent implements OnInit {
 				this.suggestedTopics = response;
 			});
 	}
-	
+
 	continue(p) {
 		this.step = p;
 		if (this.step === 2 || this.step === 1) {
 			this.router.navigate(['onboarding', +this.step]);
 		}
 	}
-	
+
 	back() {
 		if (this.step === 2) {
 			this.router.navigate(['onboarding', '1']);
 		}
 	}
-	
+
 	public goToHome() {
 		this.router.navigate(['home', 'homefeed']);
 	}
-	
+
 	public showConnectedSocials() {
 		this.boolShowConnectedSocials = true;
 	}
-	
+
 	public submitInterests(interests) {
 		const topicArray = [];
 		this.interests.forEach((topic) => {
@@ -204,7 +204,7 @@ export class OnboardingComponent implements OnInit {
 		});
 		topicArray.forEach(topicId => {
 			this._topicService.relTopic(this.userId, topicId)
-				.subscribe((response) => { console.log(response); });
+				.subscribe((response: any) => { console.log(response); });
 		});
 	}
 	public changeInterests(topic: any) {
@@ -215,13 +215,13 @@ export class OnboardingComponent implements OnInit {
 			this.interests.push(topic); // Otherwise add this topic.
 		}
 	}
-	
+
 	public requestNewTopic(topic: string) {
-		this._topicService.requestNewTopic(topic).subscribe((res) => {
+		this._topicService.requestNewTopic(topic).subscribe((res: any) => {
 			console.log(res);
 		});
 	}
-	
+
 	public queriesSearched(event) {
 		this.queriesSearchedArray = event;
 		if (this.interests.length !== 0 && this.queriesSearchedArray.length !== 0) {
@@ -250,11 +250,11 @@ export class OnboardingComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	public userActive(event) {
 		this.active = event;
 	}
-	
+
 	private select(item) {
 		const itemPresent = _.find(this.interests, function (entry) { return item.id === entry.id; });
 		if (itemPresent) {

@@ -51,7 +51,7 @@ export class VerifyEmailDialogComponent implements OnInit {
     });
 
     this._profileService.getPeerNode(this.userId)
-      .subscribe((res) => {
+      .subscribe((res: any) => {
         this.peer.controls.email.setValue(res.email);
       });
   }
@@ -78,7 +78,7 @@ export class VerifyEmailDialogComponent implements OnInit {
   verifyEmail() {
     this.peer.controls['email'].setValue(this.email);
     this._profileService.confirmEmail(this.userId, this.otp.controls['inputOTP'].value)
-      .subscribe((res) => {
+      .subscribe((res: any) => {
         console.log(res);
         console.log('verified email');
         this.success = res;

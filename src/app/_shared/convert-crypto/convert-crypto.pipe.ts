@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import {WalletService} from '../../_services/wallet/wallet.service';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 
 @Pipe({
 	name: 'convertCrypto'

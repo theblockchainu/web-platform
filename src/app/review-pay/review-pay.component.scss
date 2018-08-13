@@ -166,7 +166,7 @@ label .field.is-focused + span {
     opacity: 0;
 }
 
-button {
+.payButton {
     display: block;
     background: #33bd9e;
     color: white;
@@ -181,11 +181,11 @@ button {
     outline: none;
 }
 
-button:focus {
+.payButton:focus {
     background: #24B47E;
 }
 
-button:active {
+.payButton:active {
     background: #159570;
 }
 

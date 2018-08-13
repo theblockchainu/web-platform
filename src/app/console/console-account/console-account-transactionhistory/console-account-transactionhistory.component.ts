@@ -67,11 +67,11 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
       toMonth: ''
     });
 
-    this.filterForm.valueChanges.subscribe(result => {
+    this.filterForm.valueChanges.subscribe((result: any) => {
       this.transactions = this.filterResults(result, this.retrievedTransactions);
     });
 
-    this.filterFutureForm.valueChanges.subscribe(result => {
+    this.filterFutureForm.valueChanges.subscribe((result: any) => {
       console.log(result);
       this.futureTransactions = this.filterResults(result, this.retrievedFutureTransactions);
     });
@@ -121,7 +121,7 @@ export class ConsoleAccountTransactionhistoryComponent implements OnInit {
     this.loadingTransactions = true;
     const query1 = { 'include': [{ 'collections': ['calendars'] }, {'contents': ['availabilities', 'packages', {'collections': {'owners': 'profiles'}}]}], 'order': 'modified desc' };
     this.totalTransactions = 0;
-    this._paymentService.getTransactions(this.userId, query1).subscribe(result => {
+    this._paymentService.getTransactions(this.userId, query1).subscribe((result: any) => {
       this.retrievedTransactions = result;
       this.transactions = result;
       this.loadingTransactions = false;

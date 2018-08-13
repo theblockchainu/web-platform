@@ -47,7 +47,7 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
   }
 
   addAccount(code: string, state?: string) {
-    this._paymentService.createConnectedAccount(code).subscribe(result => {
+    this._paymentService.createConnectedAccount(code).subscribe((result: any) => {
       if (state) {
         location.href = state;
       }
@@ -83,7 +83,7 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
 
   private retrieveAccounts() {
     this.payoutAccounts = [];
-    this._paymentService.retrieveConnectedAccount().subscribe(result => {
+    this._paymentService.retrieveConnectedAccount().subscribe((result: any) => {
       result.forEach(account => {
         this.payoutAccounts = this.payoutAccounts.concat(account.external_accounts.data);
       });
@@ -100,7 +100,7 @@ export class ConsoleAccountPayoutmethodsComponent implements OnInit {
    */
   public editAccount(accountId: string) {
     this._paymentService.createLoginLink(accountId).subscribe(
-      result => {
+      (result: any) => {
         window.location.href = result.url;
       }, err => {
         console.log(err);

@@ -30,7 +30,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			let commitmentResult = '';
 			this.data.assessment_models[0].assessment_rules.forEach(assessment_rule => {
 				if (assessment_rule.assessment_result) {
-					assessment_rule.assessment_result.forEach(result => {
+					assessment_rule.assessment_result.forEach((result: any) => {
 						if (result.assessees && result.assessees.length > 0 && result.assessees[0].id === participant.id) {
 							isParticipantAssessed = true;
 							participantResult = assessment_rule;
@@ -42,7 +42,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			});
 			this.data.assessment_models[0].assessment_na_rules.forEach(assessment_na_rule => {
 				if (assessment_na_rule.assessment_result) {
-					assessment_na_rule.assessment_result.forEach(result => {
+					assessment_na_rule.assessment_result.forEach((result: any) => {
 						if (result.assessees && result.assessees.length > 0 && result.assessees[0].id === participant.id) {
 							if (assessment_na_rule.value === 'engagement') {
 								isParticipantEngagementAssessed = true;

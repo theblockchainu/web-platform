@@ -4,10 +4,10 @@ import { TopicService } from '../../_services/topic/topic.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.component';
-import 'rxjs/add/operator/do';
+
 import * as moment from 'moment';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
@@ -15,8 +15,8 @@ import { CommunityService } from '../../_services/community/community.service';
 import { environment } from '../../../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import {TitleCasePipe} from "@angular/common";
-
+import { TitleCasePipe } from '@angular/common';
+import { map } from 'rxjs/operators';
 @Component({
     selector: 'app-communities',
     templateUrl: './communities.component.html',
@@ -62,9 +62,9 @@ export class CommunitiesComponent implements OnInit {
         private titleService: Title,
         private metaService: Meta,
         private router: Router,
-		private titlecasepipe: TitleCasePipe,
+        private titlecasepipe: TitleCasePipe,
         public _communityService: CommunityService
-	) {
+    ) {
         this.userId = _cookieUtilsService.getValue('userId');
         this.envVariable = environment;
     }
@@ -109,19 +109,21 @@ export class CommunitiesComponent implements OnInit {
     }
 
     fetchTopics(): Observable<Array<any>> {
-		const query = {
-			order: 'name ASC'
-		};
-        return this._topicService.getTopics(query).map(
-            (response) => {
-                const availableTopics = [];
-                response.forEach(topic => {
-                    availableTopics.push({ 'topic': topic, 'checked': false });
-                });
-                return availableTopics;
-            }, (err) => {
-                console.log(err);
-            }
+        const query = {
+            order: 'name ASC'
+        };
+        return this._topicService.getTopics(query).pipe(
+            map(
+                (response: any) => {
+                    const availableTopics = [];
+                    response.forEach(topic => {
+                        availableTopics.push({ 'topic': topic, 'checked': false });
+                    });
+                    return availableTopics;
+                }, (err) => {
+                    console.log(err);
+                }
+            )
         );
     }
 
@@ -145,7 +147,7 @@ export class CommunitiesComponent implements OnInit {
                         'include': [
                             'topics',
                             'views',
-							'questions',
+                            'questions',
                             'invites',
                             'rooms',
                             { 'collections': ['owners'] },
@@ -153,7 +155,7 @@ export class CommunitiesComponent implements OnInit {
                             { 'participants': [{ 'profiles': ['work'] }] },
                             { 'owners': [{ 'profiles': ['work'] }] }
                         ],
-						'order': 'createdAt desc'
+                        'order': 'createdAt desc'
                     }
                 }
             ],
@@ -162,42 +164,42 @@ export class CommunitiesComponent implements OnInit {
 
         this._topicService.getTopics(query)
             .subscribe(
-                (response) => {
+                (response: any) => {
                     const communities = [];
                     for (const responseObj of response) {
                         responseObj.communities.forEach(community => {
-							if (community.status === 'active') {
-								let totalGyan = 0;
-								if (community.questions) {
-									community.questions.forEach(question => {
-										if (question.gyan !== undefined && question.gyan > 0) {
-											totalGyan += parseInt(question.gyan, 10);
-										}
-									});
-								}
-								const participants = [];
-								community.allParticipants = community.participants;
-								if (community.participants) {
-									community.participants.forEach((participant, index) => {
-										if (index < 4) {
-											participants.push(participant);
-										}
-									});
-								}
-								community.participants = participants;
-								const topics = [];
-								community.topics.forEach(topicObj => {
-									topics.push(this.titlecasepipe.transform(topicObj.name));
-								});
-								if (topics.length > 0) {
-									community.topics = topics;
-								} else {
-									topics.push('No topics selected');
-									community.topics = topics;
-								}
-								community.gyan = totalGyan;
-								communities.push(community);
-							}
+                            if (community.status === 'active') {
+                                let totalGyan = 0;
+                                if (community.questions) {
+                                    community.questions.forEach(question => {
+                                        if (question.gyan !== undefined && question.gyan > 0) {
+                                            totalGyan += parseInt(question.gyan, 10);
+                                        }
+                                    });
+                                }
+                                const participants = [];
+                                community.allParticipants = community.participants;
+                                if (community.participants) {
+                                    community.participants.forEach((participant, index) => {
+                                        if (index < 4) {
+                                            participants.push(participant);
+                                        }
+                                    });
+                                }
+                                community.participants = participants;
+                                const topics = [];
+                                community.topics.forEach(topicObj => {
+                                    topics.push(this.titlecasepipe.transform(topicObj.name));
+                                });
+                                if (topics.length > 0) {
+                                    community.topics = topics;
+                                } else {
+                                    topics.push('No topics selected');
+                                    community.topics = topics;
+                                }
+                                community.gyan = totalGyan;
+                                communities.push(community);
+                            }
                         });
                     }
                     this.communities = _.uniqBy(communities, 'id');
@@ -224,7 +226,7 @@ export class CommunitiesComponent implements OnInit {
             }
         });
 
-        dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().subscribe((result: any) => {
             if (result) {
                 this.availableTopics = result;
                 this.fetchCommunities();
@@ -242,11 +244,11 @@ export class CommunitiesComponent implements OnInit {
         this.availableTopics = _.cloneDeep(this.topicsBackup);
         this.fetchCommunities();
     }
-	
-	public onCommunityRefresh(event) {
-		if (event) {
-			this.fetchCommunities();
-		}
-	}
+
+    public onCommunityRefresh(event) {
+        if (event) {
+            this.fetchCommunities();
+        }
+    }
 
 }

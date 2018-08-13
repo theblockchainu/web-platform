@@ -32,10 +32,6 @@ import {
     MatButtonToggleModule
 } from '@angular/material';
 import {
-    ModalModule, BsDropdownModule, ProgressbarModule,
-    TabsModule, PopoverModule, DatepickerModule, TimepickerModule
-} from 'ngx-bootstrap';
-import {
     FileUploadModule, ScheduleModule, DialogModule,
     CheckboxModule, LightboxModule, RatingModule,
     AccordionModule, SliderModule, ColorPickerModule,
@@ -63,12 +59,11 @@ import { NotificationService } from '../_services/notification/notification.serv
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { ExtractTimePipe } from './extract-time/extract-time.pipe';
 import { SocketService } from '../_services/socket/socket.service';
-import { StickyModule } from 'ng2-sticky-kit';
 import { ConvertCurrencyPipe } from './convert-currency/convert-currency.pipe';
 import { TrimPipe } from './trim/trim.pipe';
 import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
 import { TextIconCarouselComponent } from './text-icon-carousel/text-icon-carousel.component';
-import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
+import { NgxGeoautocompleteModule } from 'ngx-geoautocomplete';
 import { AgmCoreModule } from '@agm/core';
 import { QuestionService } from '../_services/question/question.service';
 import { CommunityService } from '../_services/community/community.service';
@@ -99,16 +94,12 @@ import { CustomCertificateFormComponent } from './custom-certificate-form/custom
 import { CertificateService } from '../_services/certificate/certificate.service';
 import { SafePipe } from './safe-pipe/safe.pipe';
 import { UploadFileComponent } from './upload-file/upload-file.component';
+import { PromocodeService } from '../_services/promocode/promocode.service';
 
 @NgModule({
     imports: [
         CommonModule,
-        ProgressbarModule.forRoot(),
-        ModalModule.forRoot(),
-        TabsModule.forRoot(),
-        BsDropdownModule.forRoot(),
         FileUploadModule,
-        PopoverModule.forRoot(),
         CalendarModule.forRoot(),
         FormsModule,
         RatingModule,
@@ -120,14 +111,13 @@ import { UploadFileComponent } from './upload-file/upload-file.component';
             secondaryColour: '#ff5b5f',
             tertiaryColour: '#ff6d71'
         }),
-        StickyModule,
         NguCarouselModule,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyCCXlBKSUs2yVH1dUogUgb0Ku2VmmR61Ww',
             libraries: ['places'],
             language: 'en-US'
         }),
-        Ng4GeoautocompleteModule.forRoot(),
+        NgxGeoautocompleteModule.forRoot(),
         MatIconModule,
         MatButtonModule,
         MatTooltipModule,
@@ -193,17 +183,14 @@ import { UploadFileComponent } from './upload-file/upload-file.component';
         KnowledgeStoryService,
         UcWordsPipe,
         AccreditationService,
-        CertificateService
+        CertificateService,
+        PromocodeService
     ],
     exports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        ProgressbarModule,
-        ModalModule,
         RatingModule,
-        TabsModule,
-        BsDropdownModule,
         FileUploadModule,
         ScheduleModule,
         DialogModule,
@@ -212,11 +199,8 @@ import { UploadFileComponent } from './upload-file/upload-file.component';
         MultiselectAutocompleteModule,
         GenericMultiselectAutocompleteComponentModule,
         SocialSyncModule,
-        PopoverModule,
         LightboxModule,
         LeftSidebarModule,
-        DatepickerModule,
-        TimepickerModule,
         NgPipesModule,
         AccordionModule,
         MatChipsModule,
@@ -255,7 +239,7 @@ import { UploadFileComponent } from './upload-file/upload-file.component';
         ProfilePopupComponent,
         TrimPipe,
         TextIconCarouselComponent,
-        Ng4GeoautocompleteModule,
+        NgxGeoautocompleteModule,
         AgmCoreModule,
         TimeToNowPipe,
         TopicRowComponent,

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { ScholarshipService } from '../../_services/scholarship/scholarship.service';
 import { WalletService } from '../../_services/wallet/wallet.service';

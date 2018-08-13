@@ -6,7 +6,7 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { MatSnackBar } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 
@@ -52,7 +52,7 @@ export class ExperienceIntroComponent implements OnInit {
 	getProfile() {
 		this.isLoggedIn.subscribe(loggedIn => {
 			if (loggedIn) {
-				this._profileService.getCompactProfile(this.userId).subscribe(profile => {
+				this._profileService.getCompactProfile(this.userId).subscribe((profile: any) => {
 					if (profile && profile.length > 0) {
 						this.profile = profile[0];
 						this.isEmailVerified = this.profile.peer[0].emailVerified;
@@ -105,7 +105,7 @@ export class ExperienceIntroComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public openSignup() {
 		this.dialogsService.openSignup('/console/teaching/experiences').subscribe();
 	}
@@ -138,7 +138,7 @@ export class ExperienceIntroComponent implements OnInit {
 			this.router.navigate(['experience', experienceObject.id, 'edit', 1]);
 		});
 	}
-	
+
 	public goToHome() {
 		if (this.isLoggedIn) {
 			this.router.navigate(['home', 'homefeed']);

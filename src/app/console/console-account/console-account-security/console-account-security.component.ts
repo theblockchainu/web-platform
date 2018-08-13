@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {ConsoleAccountComponent} from '../console-account.component';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ProfileService} from '../../../_services/profile/profile.service';
-import {CookieUtilsService} from '../../../_services/cookieUtils/cookie-utils.service';
+import { ActivatedRoute } from '@angular/router';
+import { ConsoleAccountComponent } from '../console-account.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProfileService } from '../../../_services/profile/profile.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 
 @Component({
   selector: 'app-console-account-security',
@@ -32,19 +32,19 @@ export class ConsoleAccountSecurityComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.changePasswordForm = this._fb.group(
-          {
-              old_password: ['', Validators.requiredTrue],
-              new_password: ['', Validators.requiredTrue],
-              confirm_password: ['', Validators.requiredTrue]
-          }
-      );
+    this.changePasswordForm = this._fb.group(
+      {
+        old_password: ['', Validators.requiredTrue],
+        new_password: ['', Validators.requiredTrue],
+        confirm_password: ['', Validators.requiredTrue]
+      }
+    );
   }
 
   public changePassword() {
     this.busyChangePassword = true;
     const passwordData = this.changePasswordForm.value;
-    this._profileService.changePassword(this.userId, passwordData.oldPassword, passwordData.newPassword).subscribe((res) => {
+    this._profileService.changePassword(this.userId, passwordData.oldPassword, passwordData.newPassword).subscribe((res: any) => {
       console.log(res);
     });
   }

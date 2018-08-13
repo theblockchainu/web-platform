@@ -10,8 +10,8 @@
 				<mat-icon>search</mat-icon>
 			</span>
 			<span class="search-form hide-small">
-				<mat-form-field style="color:#333333 !important" class="mat-block" [floatLabel]="'never'">
-					<input #searchInputBar name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="myControl"
+				<mat-form-field style="color:#767676 !important" class="pb-block" floatLabel="never">
+					<input #searchInputBar name="search" style="color:#333333 !important" class="mat-block search-box" matInput [formControl]="myControl"
 					 [matAutocomplete]="auto" placeholder="Try 'Hyperledger' or 'Blockchain' ">
 					<mat-autocomplete #auto="matAutocomplete">
 						<mat-option *ngIf="searching">

@@ -3,7 +3,7 @@ import { LoginComponentDialog } from './login-dialog/login-dialog.component';
 import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
 import { LiveSessionDialogComponent } from './live-session-dialog/live-session-dialog.component';
 import { MultiselectTopicDialogComponent } from './multiselect-topic-dialog/multiselect-topic-dialog.component';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { VerifyIdDialogComponent } from './verify-id-dialog/verify-id-dialog.component';
 import { VerifyEmailDialogComponent } from './verify-email-dialog/verify-email-dialog.component';
 import { IdPolicyDialogComponent } from './id-policy-dialog/id-policy-dialog.component';
@@ -56,7 +56,9 @@ import { CertificateVerificationComponent } from './certificate-verification/cer
 import { CollectionStandardsDialogComponent } from './collection-standards-dialog/collection-standards-dialog.component';
 import { TermsAndConditionsDialogComponent } from './terms-and-conditions-dialog/terms-and-conditions-dialog.component';
 import { CancelCohortDialogComponent } from './cancel-cohort-dialog/cancel-cohort-dialog.component';
-import {OnboardingDialogComponent} from "./onboarding-dialog/onboarding-dialog.component";
+import { OnboardingDialogComponent } from './onboarding-dialog/onboarding-dialog.component';
+import { AddPromoCodeDialogComponent } from './add-promo-code-dialog/add-promo-code-dialog.component';
+import { ViewPromocodeDialogComponent } from './view-promocode-dialog/view-promocode-dialog.component';
 
 @Injectable()
 export class DialogsService {
@@ -69,10 +71,10 @@ export class DialogsService {
 
         dialogRef = this.dialog.open(SignupComponentDialogComponent, {
             panelClass: 'responsive-dialog',
-			width: '30vw',
-			data: {
-            	returnTo: returnTo
-			}
+            width: '30vw',
+            data: {
+                returnTo: returnTo
+            }
         });
 
         return dialogRef.afterClosed();
@@ -141,17 +143,17 @@ export class DialogsService {
         });
         return dialogRef9.afterClosed();
     }
-	
-	public openOnboardingDialog() {
-		let dialogRef: MatDialogRef<OnboardingDialogComponent>;
-		
-		dialogRef = this.dialog.open(OnboardingDialogComponent, {
-			panelClass: 'responsive-dialog',
-			width: '30vw',
-			disableClose: true
-		});
-		return dialogRef.afterClosed();
-	}
+
+    public openOnboardingDialog() {
+        let dialogRef: MatDialogRef<OnboardingDialogComponent>;
+
+        dialogRef = this.dialog.open(OnboardingDialogComponent, {
+            panelClass: 'responsive-dialog',
+            width: '30vw',
+            disableClose: true
+        });
+        return dialogRef.afterClosed();
+    }
 
     public openFollowTopicDialog(type, inputs) {
         let dialogRef5: MatDialogRef<MultiselectTopicDialogComponent>;
@@ -340,14 +342,14 @@ export class DialogsService {
             panelClass: 'responsive-dialog', width: '45vw',
             height: '100vh',
             data: {
-            	itineraries: allItenaries,
-				mode: mode,
-				participants: participants,
-				userType: userType,
-				collectionType: collectionType,
-				maxSeats: maxSeats,
-				accountApproved: accountApproved,
-				userId: userId
+                itineraries: allItenaries,
+                mode: mode,
+                participants: participants,
+                userType: userType,
+                collectionType: collectionType,
+                maxSeats: maxSeats,
+                accountApproved: accountApproved,
+                userId: userId
             }
         }).afterClosed();
     }
@@ -658,6 +660,28 @@ export class DialogsService {
         const dialogRef = this.dialog.open(CancelCohortDialogComponent, {
             data: calendarId,
             panelClass: 'responsive-dialog', width: '30vw'
+        });
+
+        return dialogRef.afterClosed();
+    }
+
+    public addPromoCodeDialog(collectionId: string) {
+        const dialogRef = this.dialog.open(AddPromoCodeDialogComponent, {
+            data: { collectionId: collectionId },
+            panelClass: 'responsive-dialog',
+            width: '55vw',
+            height: '80vh'
+        });
+
+        return dialogRef.afterClosed();
+    }
+
+    public viewPromoCodeDialog(collectionId: string) {
+        const dialogRef = this.dialog.open(ViewPromocodeDialogComponent, {
+            data: collectionId,
+            panelClass: 'responsive-dialog',
+            width: '55vw',
+            height: '80vh'
         });
 
         return dialogRef.afterClosed();

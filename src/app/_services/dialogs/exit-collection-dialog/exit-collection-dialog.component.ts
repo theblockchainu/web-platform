@@ -18,7 +18,7 @@ export class ExitCollectionDialogComponent implements OnInit {
   }
 
   dropOut() {
-    this._collectionService.removeParticipant(this.data.collectionId, this.data.userId).subscribe((response) => {
+    this._collectionService.removeParticipant(this.data.collectionId, this.data.userId).subscribe((response : any) => {
       if (response) {
         this.dialogRef.close(true);
       }

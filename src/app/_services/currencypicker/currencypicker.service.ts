@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import 'rxjs/add/operator/map';
+
 import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 
@@ -21,10 +21,7 @@ export class CurrencyPickerService {
 	 * @returns {Observable<any>}
 	 */
 	public getCurrencies() {
-		return this.http.get(environment.apiUrl + '/api/currencies', this.requestHeaderService.options)
-			.map((response: any) => {
-				return response;
-			});
+		return this.http.get(environment.apiUrl + '/api/currencies', this.requestHeaderService.options);
 	}
 
 }

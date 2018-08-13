@@ -7,8 +7,8 @@ import { PaymentService } from '../../_services/payment/payment.service';
 import { CollectionService } from '../../_services/collection/collection.service';
 import * as _ from 'lodash';
 import { MatSnackBar } from '@angular/material';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import {environment} from '../../../environments/environment';
+import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 declare var Stripe: any;
 
@@ -57,7 +57,7 @@ export class BookSessionComponent implements OnInit {
 	public contentId;
 	public desiredContent: any;
 	public selectedFormattedTime = '';
-	
+
 	constructor(
 		private _cookieUtilsService: CookieUtilsService,
 		private activatedRoute: ActivatedRoute,
@@ -82,7 +82,7 @@ export class BookSessionComponent implements OnInit {
 		});
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.stripe = Stripe(environment.stripePublishableKey);
 		const elements = this.stripe.elements();
@@ -96,7 +96,7 @@ export class BookSessionComponent implements OnInit {
 					fontWeight: 300,
 					fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
 					fontSize: '19px',
-					
+
 					'::placeholder': {
 						color: '#8898AA',
 					},
@@ -120,7 +120,7 @@ export class BookSessionComponent implements OnInit {
 		this.totalCost = new BehaviorSubject(0);
 		this.totalDuration = new BehaviorSubject(0);
 	}
-	
+
 	private initializeInputs() {
 		const inputs = document.querySelectorAll('input.field');
 		Array.prototype.forEach.call(inputs, function (input) {
@@ -140,7 +140,7 @@ export class BookSessionComponent implements OnInit {
 		});
 		this.card.mount('#card-element');
 	}
-	
+
 	/**
 	 * getAvailableSessions
 	 */
@@ -153,13 +153,13 @@ export class BookSessionComponent implements OnInit {
 				'payoutrules',
 				'provisions',
 				'packages',
-				{'contents' : ['packages']},
+				{ 'contents': ['packages'] },
 				'preferences',
-				{ relation: 'availability', scope: {include: {relation: 'contents'} , where: {startDateTime : {'gt' : moment()}}}},
+				{ relation: 'availability', scope: { include: { relation: 'contents' }, where: { startDateTime: { 'gt': moment() } } } },
 				{ owners: 'profiles' }
 			]
 		};
-		this.profileService.getCollections(this.teacherId, filter).subscribe(result => {
+		this.profileService.getCollections(this.teacherId, filter).subscribe((result: any) => {
 			const res = result[0];
 			this.session = res;
 			if (res.availability && res.availability.length > 0) {
@@ -223,12 +223,12 @@ export class BookSessionComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	/**
 	 * getPeerDetails
 	 */
 	public getPeerDetails() {
-		this.profileService.getPeer(this.userId).subscribe(peer => {
+		this.profileService.getPeer(this.userId).subscribe((peer: any) => {
 			if (peer) {
 				this.createSourceData.email = peer.email;
 				this.createChargeData.customer = peer.stripeCustId;
@@ -245,10 +245,10 @@ export class BookSessionComponent implements OnInit {
 					}
 				});
 			}
-			
+
 		});
 	}
-	
+
 	public processPayment(content: any) {
 		if ((this.bookingProcess === 'manual' && this.displayMode === 'request') || (this.bookingProcess === 'auto' && this.totalCost.getValue() === 0)) {
 			// Skip payment. Redirect to console.
@@ -259,7 +259,7 @@ export class BookSessionComponent implements OnInit {
 			this.createChargeData.amount = (this.totalCost.getValue()) * 100;
 			this.createChargeData.currency = this.packages[this.selectedPackageIndex].currency;
 			this.createChargeData.description = this.session.id;
-			
+
 			if (this.isCardExist === true && !this.useAnotherCard) {
 				console.log('card exist');
 				this.paymentService.createContentCharge(this.userId, content.id, this.createChargeData).subscribe((resp: any) => {
@@ -291,7 +291,7 @@ export class BookSessionComponent implements OnInit {
 								}, err => {
 									console.log(err);
 								});
-								
+
 							} else {
 								this.message = 'Error occurred. Please try again.';
 								this.savingData = false;
@@ -314,7 +314,7 @@ export class BookSessionComponent implements OnInit {
 			}
 		}
 	}
-	
+
 	getcardDetails(event) {
 		this.listAllCards.forEach(card => {
 			if (card.id === event.value) {
@@ -323,7 +323,7 @@ export class BookSessionComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public handleEventClick(eventHandle) {
 		this.availability.forEach((eventObj, index) => {
 			if (eventObj.id === eventHandle.calEvent.id) {
@@ -338,7 +338,7 @@ export class BookSessionComponent implements OnInit {
 		});
 		this.updateSelectedData();
 	}
-	
+
 	private cancel(eventHandle, index) {
 		if (this.selectedPackageIndex) {
 			const numberOfSlots = this.packages[this.selectedPackageIndex].duration / 60;
@@ -359,7 +359,7 @@ export class BookSessionComponent implements OnInit {
 			this.availability[index] = temp;
 		}
 	}
-	
+
 	private book(eventHandle, index) {
 		if (this.selectedPackageIndex && this.packages[this.selectedPackageIndex].type === 'paid') {
 			const numberOfSlots = this.packages[this.selectedPackageIndex].duration / 60;
@@ -420,18 +420,18 @@ export class BookSessionComponent implements OnInit {
 				duration: 5000
 			});
 		}
-		
+
 	}
-	
-	
+
+
 	public bookSession() {
 		this.step++;
 	}
-	
+
 	public goBack() {
 		this.step--;
 	}
-	
+
 	public joinSession(e?: Event) {
 		e.preventDefault();
 		this.savingData = true;
@@ -465,7 +465,7 @@ export class BookSessionComponent implements OnInit {
 			this.processPayment(this.desiredContent);
 		}
 	}
-	
+
 	convertTime(units: number) {
 		if (units < 60) {
 			return units + ' minutes';
@@ -473,12 +473,12 @@ export class BookSessionComponent implements OnInit {
 			return Math.round((units / 60) * 100) / 100 + ' hours';
 		}
 	}
-	
+
 	public resetSelectedSlots(event: any) {
 		this.availability = _.cloneDeep(this.backupSlots);
 		this.updateSelectedData();
 	}
-	
+
 	public updateSelectedData() {
 		let totalCost = 0;
 		let totalDuration = 0;

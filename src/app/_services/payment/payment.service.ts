@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import 'rxjs/add/operator/map';
+
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 import { environment } from '../../../environments/environment';
+import { map } from 'rxjs/operators';
 @Injectable()
 export class PaymentService {
 	public key = 'userId';
@@ -64,23 +65,16 @@ export class PaymentService {
 	]}`;
 		return this.http
 			.get(environment.apiUrl + '/api/collections/' + id + '?filter=' + filter, this._requestHeaderService.options)
-			.map((response: any) => response, (err) => {
-				console.log('Error: ' + err);
-			});
+			;
 
 	}
 
 	public createConnectedAccount(authcode: string, error?: any, errDescription?: any): Observable<any> {
 		if (error) {
-			return this.http.get(environment.apiUrl + '/api/payoutaccs/create-connected-account?error=' + error + '&errorDesc=' + errDescription, this._requestHeaderService.options).map((response: any) => response, (err) => {
-				console.log('Error: ' + err);
-			});
+			return this.http.get(environment.apiUrl + '/api/payoutaccs/create-connected-account?error=' + error + '&errorDesc=' + errDescription, this._requestHeaderService.options);
 		} else {
 			console.log(authcode);
-
-			return this.http.get(environment.apiUrl + '/api/payoutaccs/create-connected-account?authCode=' + authcode, this._requestHeaderService.options).map((response: any) => response, (err) => {
-				console.log('Error: ' + err);
-			});
+			return this.http.get(environment.apiUrl + '/api/payoutaccs/create-connected-account?authCode=' + authcode, this._requestHeaderService.options);
 		}
 	}
 	/**
@@ -88,18 +82,14 @@ export class PaymentService {
 	 */
 	public retrieveConnectedAccount(): Observable<any> {
 		return this.http.get(environment.apiUrl + '/api/payoutaccs/retrieve-connected-accounts', this._requestHeaderService.options)
-			.map((response: any) => response, (err) => {
-				console.log('Error: ' + err);
-			});
+			;
 	}
 	/**
 	 * createLoginLink
 	 */
 	public createLoginLink(accountId: string): Observable<any> {
 		return this.http.get(environment.apiUrl + '/api/payoutaccs/create-login-link?accountId=' + accountId, this._requestHeaderService.options)
-			.map((response: any) => response, (err) => {
-				console.log('Error: ' + err);
-			});
+			;
 	}
 
 	/**
@@ -108,30 +98,26 @@ export class PaymentService {
 	public getTransactions(userId, filter?: any): Observable<any> {
 		if (filter) {
 			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/transactions?filter=' + JSON.stringify(filter), this._requestHeaderService.options)
-				.map((response: any) => response, (err) => {
-					console.log('Error: ' + err);
-				});
+				;
 		} else {
 			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/transactions', this._requestHeaderService.options)
-				.map((response: any) => response, (err) => {
-					console.log('Error: ' + err);
-				});
+				;
 		}
 	}
 
 	/**
 	 * convertCurrency
 	 */
-	public convertCurrency(amount: number, from: string) {
+	public convertCurrency(amount: number, from: string, to?: number): Observable<{ amount: number, currency: string }> {
 		const body = {
 			'from': from,
-			'to': this._cookieUtilsService.getValue('currency'),
+			'to': (to) ? to : this._cookieUtilsService.getValue('currency'),
 			'amount': amount
 		};
 		console.log(body);
 		/*if (from.length === 3 && this._cookieUtilsService.getValue('currency').length === 3) {*/
 		return this.http.post(environment.apiUrl + '/convertCurrency', body, this._requestHeaderService.options)
-			.map((response: any) => {
+			.pipe(map((response: any) => {
 				const res = response;
 				console.log(res);
 				if (res && res.success) {
@@ -151,7 +137,7 @@ export class PaymentService {
 					amount: amount,
 					currency: from
 				};
-			});
+			}));
 		// }
 	}
 
@@ -160,7 +146,7 @@ export class PaymentService {
 	 */
 	public patchPayoutRule(payoutRuleId: string, newPayoutId: string) {
 		return this.http.patch(environment.apiUrl + '/api/payoutrules/' + payoutRuleId, { 'payoutId1': newPayoutId }, this._requestHeaderService.options)
-			.map(result => result);
+			;
 	}
 
 	/**
@@ -171,18 +157,18 @@ export class PaymentService {
 			'percentage1': 100,
 			'payoutId1': 'string'
 		};
-		return this.http.post(environment.apiUrl + '/api/collections/' + collectionId + '/payoutrules', body, this._requestHeaderService.options).map(result => result);
+		return this.http.post(environment.apiUrl + '/api/collections/' + collectionId + '/payoutrules', body, this._requestHeaderService.options);
 	}
 
 	/**
 	 * retrieveLocalPayoutAccounts
 	 */
 	public retrieveLocalPayoutAccounts() {
-		return this.http.get(environment.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue('userId') + '/payoutaccs', this._requestHeaderService.options).map(result => result);
+		return this.http.get(environment.apiUrl + '/api/peers/' + this._cookieUtilsService.getValue('userId') + '/payoutaccs', this._requestHeaderService.options);
 	}
-	
+
 	public getUserCountry() {
-		return this.http.get('http://ip-api.com/json').map(result => result);
+		return this.http.get('http://ip-api.com/json');
 	}
 
 }

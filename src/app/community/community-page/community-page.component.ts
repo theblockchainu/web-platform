@@ -26,7 +26,7 @@ import {
 	subWeeks,
 	addWeeks
 } from 'date-fns';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarDateFormatter, CalendarUtils } from 'angular-calendar';
 import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
@@ -333,7 +333,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	 * dropoutCommunity
 	 */
 	public dropOutCommunity() {
-		this.dialogsService.openExitCommunity(this.communityId, this.userId).subscribe((response) => {
+		this.dialogsService.openExitCommunity(this.communityId, this.userId).subscribe((response: any) => {
 			this.initializePage();
 		});
 	}
@@ -342,7 +342,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	 * deleteCommunity
 	 */
 	public deleteCommunity() {
-		this.dialogsService.openDeleteCommunity(this.community).subscribe((response) => {
+		this.dialogsService.openDeleteCommunity(this.community).subscribe((response: any) => {
 			if (response) {
 				this.router.navigate(['/console/teaching/all']);
 			}
