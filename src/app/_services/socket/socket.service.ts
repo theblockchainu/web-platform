@@ -18,6 +18,10 @@ export class SocketService {
         this.envVariable = environment;
         this.userId = _cookieUtilsService.getValue('userId');
         this.socket = io(environment.apiUrl);
+        if (!this._cookieUtilsService.isBrowser) {
+            this.socket.close();
+            console.log('closingsocket');
+        }
         if (this.userId) {
             this.addUser(this.userId);
         }

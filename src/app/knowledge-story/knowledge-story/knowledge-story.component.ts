@@ -34,7 +34,7 @@ export class KnowledgeStoryComponent implements OnInit {
 	public requested: boolean;
 	public globalStory = false;
 	public certificates: any;
-
+	public isBrowser: boolean;
 	constructor(
 		private activatedRoute: ActivatedRoute,
 		private _cookieUtilsService: CookieUtilsService,
@@ -50,6 +50,7 @@ export class KnowledgeStoryComponent implements OnInit {
 		private _certificateService: CertificateService
 	) {
 		this.envVariable = environment;
+		this.isBrowser = this._cookieUtilsService.isBrowser;
 	}
 
 	ngOnInit() {

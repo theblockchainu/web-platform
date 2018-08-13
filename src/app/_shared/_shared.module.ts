@@ -79,7 +79,6 @@ import { KarmaBalancePipe } from './karma-balance/karma-balance.pipe';
 import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-story.service';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ShareModule } from '@ngx-share/core';
-import { QRCodeModule } from 'angularx-qrcode';
 import { ConvertCryptoPipe } from './convert-crypto/convert-crypto.pipe';
 import { ShortNumberPipe } from './short-number/short-number.pipe';
 import { RouterModule } from '@angular/router';
@@ -246,7 +245,6 @@ import { PromocodeService } from '../_services/promocode/promocode.service';
         MatStepperModule,
         ClipboardModule,
         ShareModule,
-        QRCodeModule,
         ExperienceCardComponent,
         CommunityCardComponent,
         PeerCardComponent,

@@ -19,8 +19,12 @@
 								</span>
 								<mat-menu #menu="matMenu">
 									<button (click)="deleteStory()" mat-menu-item *ngIf="!globalStory">Delete Story</button>
-									<button *ngIf="!globalStory && knowledgeStory.visibility === 'public'" (click)="setVisibility('private')" mat-menu-item>Make Private</button>
-									<button *ngIf="!globalStory && knowledgeStory.visibility === 'private'" (click)="setVisibility('public')" mat-menu-item>Make Public</button>
+									<button *ngIf="!globalStory && knowledgeStory.visibility === 'public'" (click)="setVisibility('private')" mat-menu-item>Make
+										Private
+									</button>
+									<button *ngIf="!globalStory && knowledgeStory.visibility === 'private'" (click)="setVisibility('public')" mat-menu-item>Make
+										Public
+									</button>
 								</mat-menu>
 							</p>
 							<p class="mat-caption lightText" *ngIf="!globalStory">
@@ -244,7 +248,8 @@
 											<hr>
 											<span *ngIf="userId !== undefined && userId.length > 5 && !requested" matTooltip="Please wait for your account to be approved before requesting to view this private knowledge story"
 											 [matTooltipDisabled]="accountApproved === 'true'">
-												<button mat-raised-button (click)="requestToView()" color="primary" [disabled]="accountApproved !== 'true'">Request to view</button>
+												<button mat-raised-button (click)="requestToView()" color="primary" [disabled]="accountApproved !== 'true'">Request
+													to view</button>
 											</span>
 											<span *ngIf="userId !== undefined && userId.length > 5 && requested" matTooltip="Please wait for your request to be approved.">
 												<button mat-raised-button color="primary" disabled>Requested</button>
@@ -267,7 +272,7 @@
 										</div>
 									</div>
 									<hr>
-									<div class="row padding-top-10">
+									<div class="row padding-top-10" *ngIf="isBrowser">
 										<div class="col-xs-6 col-xs-offset-3">
 											<!-- <qrcode [qrdata]="pageUrl" [size]="256" [level]="'M'"></qrcode> -->
 										</div>
