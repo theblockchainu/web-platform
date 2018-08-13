@@ -19,7 +19,7 @@
       <div>
         <div class="row">
           <div class="col-sm-6 col-xs-12 margin-bottom-30">
-            <ng4geo-autocomplete class="geoLocation" required [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ng4geo-autocomplete>
+            <ngxgeo-autocomplete class="geoLocation" required [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ngxgeo-autocomplete>
             <mat-form-field class="pb-block margin-top-20 margin-bottom-20">
               <input name="country" #country style="border-bottom: 0px;" placeholder="Country" matInput formControlName="country" [matAutocomplete]="auto"
                 [required]="true">

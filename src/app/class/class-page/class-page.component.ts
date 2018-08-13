@@ -25,7 +25,7 @@ import {
 	addWeeks
 } from 'date-fns';
 import { GetMonthViewArgs, MonthView, getMonthView } from 'calendar-utils';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import {
 	CalendarEvent,
 	CalendarDateFormatter,
@@ -825,7 +825,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	 */
 	public changeDates() {
 		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.class.type, this.class.maxSpots, this.accountApproved, this.userId)
-			.subscribe(result => {
+			.subscribe((result: any) => {
 				if (result) {
 					this.router.navigate(['class', this.classId, 'calendar', result]);
 				}
@@ -836,7 +836,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	 * cancelClass
 	 */
 	public cancelClass() {
-		this.dialogsService.openCancelCollection(this.class).subscribe((response) => {
+		this.dialogsService.openCancelCollection(this.class).subscribe((response: any) => {
 			if (response) {
 				this.initializePage();
 			}
@@ -847,7 +847,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	 * dropoutClass
 	 */
 	public dropOutClass() {
-		this.dialogsService.openExitCollection(this.classId, this.userId).subscribe((response) => {
+		this.dialogsService.openExitCollection(this.classId, this.userId).subscribe((response: any) => {
 			if (response) {
 				this.initializePage();
 			}
@@ -855,7 +855,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	public cancelCohort() {
-		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res) => {
+		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res: any) => {
 			if (res) {
 				this.initializePage();
 			}
@@ -876,7 +876,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	 * deleteClass
 	 */
 	public deleteClass() {
-		this.dialogsService.openDeleteCollection(this.class).subscribe((response) => {
+		this.dialogsService.openDeleteCollection(this.class).subscribe((response: any) => {
 			if (response) {
 				this.router.navigate(['/console/teaching/classes']);
 			}
@@ -1124,7 +1124,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			]
 		};
 		this._topicService.getTopics(query).subscribe(
-			(response) => {
+			(response: any) => {
 				for (const responseObj of response) {
 					responseObj.collections.forEach(collection => {
 						if (collection.status === 'active' && collection.id !== this.classId) {
@@ -1165,7 +1165,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public selectJoiningDates() {
 
 		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.class.type, this.class.maxSpots, this.accountApproved, this.userId)
-			.subscribe(result => {
+			.subscribe((result: any) => {
 				if (result) {
 					if (this.userId) {
 						this.router.navigate(['review-pay', 'collection', this.classId, result]);
@@ -1272,7 +1272,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public postReview() {
 		this.busyReview = true;
 		this._collectionService.postReview(this.class.owners[0].id, this.reviewForm.value).subscribe(
-			result => {
+			(result: any) => {
 				if (result) {
 					this.busyReview = false;
 					this.getReviews();
@@ -1291,7 +1291,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		reviewBody.score = this.newUserRating;
 		delete reviewBody.id;
 		this._collectionService.updateReview(reviewId, reviewBody).subscribe(
-			result => {
+			(result: any) => {
 				if (result) {
 					this.busyReview = false;
 					delete this.editReviewForm;
@@ -1310,7 +1310,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		const commentId = commentBody.id;
 		delete commentBody.id;
 		this._collectionService.updateComment(commentId, commentBody).subscribe(
-			result => {
+			(result: any) => {
 				if (result) {
 					this.busyDiscussion = false;
 					delete this.editCommentForm;
@@ -1329,7 +1329,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		const replyId = replyBody.id;
 		delete replyBody.id;
 		this._commentService.updateReply(replyId, replyBody).subscribe(
-			result => {
+			(result: any) => {
 				if (result) {
 					this.busyReply = false;
 					delete this.editReplyForm;
@@ -1562,7 +1562,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public openLoginPage() {
 		this.router.navigate(['login']);
 	}
-	
+
 	public openSignup(returnTo) {
 		this.dialogsService.openSignup(returnTo).subscribe();
 	}
@@ -1584,7 +1584,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			content: content,
 			participants: this.class.participants
 		};
-		this.dialogsService.startLiveSession(data).subscribe(result => {
+		this.dialogsService.startLiveSession(data).subscribe((result: any) => {
 		});
 	}
 
@@ -1696,7 +1696,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						});
 					}
 				});
-				this._assessmentService.submitAssessment(assessmentArray).subscribe(result => {
+				this._assessmentService.submitAssessment(assessmentArray).subscribe((result: any) => {
 					console.log(result);
 					this.snackBar.open('Your assessment has been submitted. Students will be informed over email.', 'Ok', { duration: 5000 });
 					this._authenticationService.isLoginSubject.next(true);
@@ -1717,7 +1717,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	public openMessageDialog(peer) {
-		this.dialogsService.messageParticipant(peer).subscribe(result => {
+		this.dialogsService.messageParticipant(peer).subscribe((result: any) => {
 			// console.log(result);
 		});
 	}

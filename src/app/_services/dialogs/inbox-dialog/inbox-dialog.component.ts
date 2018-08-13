@@ -54,7 +54,7 @@ export class InboxDialogComponent implements OnInit {
 	private getMessages() {
 		this.loadingMessages = true;
 		this._inboxService.getRoomData(5)
-			.subscribe((response) => {
+			.subscribe((response : any) => {
 				if (response) {
 					this.initializeInbox(response);
 				} else {

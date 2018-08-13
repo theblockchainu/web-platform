@@ -3,7 +3,8 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 @Component({
@@ -167,8 +168,10 @@ export class AddLocationDialogComponent implements OnInit {
             .subscribe((countries) => {
                 this.countriesArray = _.map(countries, 'name');
                 this.filteredCountryOptions = this.locationForm.controls.country.valueChanges
-                    .startWith(null)
-                    .map(val => val ? this.filter(val) : this.countriesArray.slice());
+                    .pipe(
+                        startWith(null)
+                        , map(val => val ? this.filter(val) : this.countriesArray.slice())
+                    );
             });
     }
 

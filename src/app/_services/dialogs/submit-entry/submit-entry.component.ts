@@ -6,7 +6,7 @@ import { MediaUploaderService } from '../../mediaUploader/media-uploader.service
 import { SubmissionViewComponent } from '../submission-view/submission-view.component';
 import { ProjectSubmissionService } from '../../project-submission/project-submission.service';
 import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
-import 'rxjs/add/operator/map';
+
 import { ContentService } from '../../content/content.service';
 import { environment } from '../../../../environments/environment';
 import * as _ from 'lodash';
@@ -92,7 +92,7 @@ export class SubmitEntryComponent implements OnInit {
         const query = '{"include":[{"upvotes":"peer"}, {"peer": "profiles"}, ' +
             '{"comments": [{"peer": {"profiles": "work"}}, {"replies": [{"peer": {"profiles": "work"}}]}]}]}';
         this.projectSubmissionService.viewSubmission(submissionId, query)
-            .subscribe((response) => {
+            .subscribe((response: any) => {
                 if (response) {
                     const dialogRef = this.dialog.open(SubmissionViewComponent, {
                         data: {
@@ -116,17 +116,17 @@ export class SubmitEntryComponent implements OnInit {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
         this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-            .map((response) => {
+            .subscribe((response: any) => {
                 console.log(response);
                 this.urlForImages = [];
                 this.submitEntryForm.controls['picture_url'].patchValue('');
-            }).subscribe();
+            });
     }
 
     uploadImage(event) {
         this.uploadingImage = true;
         for (const file of event.files) {
-            this.mediaUploader.upload(file).subscribe((response) => {
+            this.mediaUploader.upload(file).subscribe((response: any) => {
                 this.addImageUrl(response.url);
                 this.uploadingImage = false;
             });
@@ -135,7 +135,7 @@ export class SubmitEntryComponent implements OnInit {
 
     public addImageUrl(value) {
         console.log('Adding image url: ' + value);
-        this._contentService.getMediaObject(value).subscribe((res) => {
+        this._contentService.getMediaObject(value).subscribe((res: any) => {
             this.urlForImages.push(res[0]);
         });
         const control = <FormArray>this.submitEntryForm.controls['picture_url'];

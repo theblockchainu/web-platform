@@ -5,13 +5,14 @@ import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.
 import { ScholarshipService } from '../../../_services/scholarship/scholarship.service';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { MatSnackBar } from '@angular/material';
+import { flatMap } from 'rxjs/operators';
 @Component({
 	selector: 'app-console-account-scholarships',
 	templateUrl: './console-account-scholarships.component.html',
 	styleUrls: ['./console-account-scholarships.component.scss']
 })
 export class ConsoleAccountScholarshipsComponent implements OnInit {
-	
+
 	private userId: string;
 	public scholarshipsLoaded: boolean;
 	public scholarships: Array<any>;
@@ -31,12 +32,12 @@ export class ConsoleAccountScholarshipsComponent implements OnInit {
 		});
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.fetchScholarships();
 		this.fetchHostedScholarships();
 	}
-	
+
 	private fetchHostedScholarships() {
 		const filter = { 'include': [{ 'owner': 'profiles' }, 'peers_joined', 'allowed_collections'] };
 		this._scholarshipService.fetchUserHostedScholarships(filter).subscribe((res: any) => {
@@ -48,7 +49,7 @@ export class ConsoleAccountScholarshipsComponent implements OnInit {
 			this.hostedScholarshipsLoaded = true;
 		});
 	}
-	
+
 	private fetchScholarships() {
 		const filter = { 'include': [{ 'owner': 'profiles' }, 'peers_joined', 'allowed_collections'] };
 		this._scholarshipService.fetchUserScholarships(filter)
@@ -56,11 +57,11 @@ export class ConsoleAccountScholarshipsComponent implements OnInit {
 				this.scholarships = res;
 				this.scholarshipsLoaded = true;
 				console.log(this.scholarships);
-		}, err => {
-			this.scholarshipsLoaded = true;
-		});
+			}, err => {
+				this.scholarshipsLoaded = true;
+			});
 	}
-	
+
 	/**
 	 * hostScholarship
 	 */
@@ -68,8 +69,8 @@ export class ConsoleAccountScholarshipsComponent implements OnInit {
 		const selectedCollections = [];
 		this._dialogsService.createScholarshipDialog({
 			type: 'private'
-		})
-			.flatMap(res => {
+		}).pipe(
+			flatMap(res => {
 				if (res) {
 					res.selectedCollections.forEach(collection => {
 						selectedCollections.push(collection.id);
@@ -77,7 +78,7 @@ export class ConsoleAccountScholarshipsComponent implements OnInit {
 					return this._scholarshipService.createScholarship(res.scholarshipForm);
 				}
 			})
-			.flatMap((res: any) => {
+			, flatMap((res: any) => {
 				if (selectedCollections.length > 0) {
 					return this._scholarshipService.connectCollections(res.id, selectedCollections);
 				} else {
@@ -85,12 +86,12 @@ export class ConsoleAccountScholarshipsComponent implements OnInit {
 					this.fetchHostedScholarships();
 				}
 			})
-			.subscribe(res => {
-				this._matSnackBar.open('Successfully created new scholarship', 'Close', { duration: 5000 });
-				this.fetchHostedScholarships();
-			});
+		).subscribe(res => {
+			this._matSnackBar.open('Successfully created new scholarship', 'Close', { duration: 5000 });
+			this.fetchHostedScholarships();
+		});
 	}
-	
+
 	/**
 	 * deleteScholarship
 	 */
@@ -102,7 +103,7 @@ export class ConsoleAccountScholarshipsComponent implements OnInit {
 			this.fetchHostedScholarships();
 		});
 	}
-	
+
 	/**
 	 * leaveScholarship
 	 id:string   */
@@ -114,5 +115,5 @@ export class ConsoleAccountScholarshipsComponent implements OnInit {
 			this.fetchScholarships();
 		});
 	}
-	
+
 }

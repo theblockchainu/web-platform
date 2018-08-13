@@ -115,6 +115,9 @@
 										<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
 											Add Promo Code
 										</button>
+										<button mat-menu-item (click)="_dialogService.viewPromoCodeDialog(collection.id)">
+											View Promo Codes
+										</button>
 									</mat-menu>
 									<mat-card-actions *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).hasStarted">
 										<button mat-raised-button (click)="_collectionService.viewExperience(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
@@ -187,6 +190,12 @@
 									<mat-menu #upcomingCardMenu>
 										<button mat-menu-item (click)="cancelCollection(collection)">
 											Cancel
+										</button>
+										<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
+											Add Promo Code
+										</button>
+										<button mat-menu-item (click)="_dialogService.viewPromoCodeDialog(collection.id)">
+											View Promo Codes
 										</button>
 										<button mat-menu-item (click)="_collectionService.openEditExperience(collection)">
 											Edit Experience
@@ -364,6 +373,12 @@
 										<mat-menu #pastCardMenu>
 											<button mat-menu-item (click)="_collectionService.viewExperience(collection)">
 												View Experience
+											</button>
+											<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
+												Add Promo Code
+											</button>
+											<button mat-menu-item (click)="_dialogService.viewPromoCodeDialog(collection.id)">
+												View Promo Codes
 											</button>
 										</mat-menu>
 										<mat-card-actions>

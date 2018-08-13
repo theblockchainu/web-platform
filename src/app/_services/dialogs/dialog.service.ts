@@ -3,7 +3,7 @@ import { LoginComponentDialog } from './login-dialog/login-dialog.component';
 import { AddCardDialogComponent } from './add-card-dialog/add-card-dialog.component';
 import { LiveSessionDialogComponent } from './live-session-dialog/live-session-dialog.component';
 import { MultiselectTopicDialogComponent } from './multiselect-topic-dialog/multiselect-topic-dialog.component';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { VerifyIdDialogComponent } from './verify-id-dialog/verify-id-dialog.component';
 import { VerifyEmailDialogComponent } from './verify-email-dialog/verify-email-dialog.component';
 import { IdPolicyDialogComponent } from './id-policy-dialog/id-policy-dialog.component';
@@ -58,6 +58,8 @@ import { TermsAndConditionsDialogComponent } from './terms-and-conditions-dialog
 import { CancelCohortDialogComponent } from './cancel-cohort-dialog/cancel-cohort-dialog.component';
 import { OnboardingDialogComponent } from './onboarding-dialog/onboarding-dialog.component';
 import { AddPromoCodeDialogComponent } from './add-promo-code-dialog/add-promo-code-dialog.component';
+import { ViewPromocodeDialogComponent } from './view-promocode-dialog/view-promocode-dialog.component';
+
 @Injectable()
 export class DialogsService {
 
@@ -665,6 +667,17 @@ export class DialogsService {
 
     public addPromoCodeDialog(collectionId: string) {
         const dialogRef = this.dialog.open(AddPromoCodeDialogComponent, {
+            data: { collectionId: collectionId },
+            panelClass: 'responsive-dialog',
+            width: '55vw',
+            height: '80vh'
+        });
+
+        return dialogRef.afterClosed();
+    }
+
+    public viewPromoCodeDialog(collectionId: string) {
+        const dialogRef = this.dialog.open(ViewPromocodeDialogComponent, {
             data: collectionId,
             panelClass: 'responsive-dialog',
             width: '55vw',

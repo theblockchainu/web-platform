@@ -7,7 +7,7 @@ import {
     , NG_VALIDATORS, Validator
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 
@@ -57,13 +57,13 @@ export class GenericMultiselectAutocompleteComponent {
     @Input()
     private createURL = '';
 
-    @Input('title')
+    @Input()
     public title = '';
 
     @Input()
     public preSelectedItems = [];
 
-    @Input('maxSelection')
+    @Input()
     public maxSelection = -1;
 
     @Output()
@@ -130,7 +130,7 @@ export class GenericMultiselectAutocompleteComponent {
             if (this.searchUrl) {
                 const finalSearchURL = this.searchUrl + this.query;
                 this.http.get(finalSearchURL, this.requestHeaderService.options)
-                    .map((res: any) => {
+                    .subscribe((res: any) => {
                         this.filteredList = [];
                         res.map(item => {
                             const obj = {};
@@ -141,21 +141,7 @@ export class GenericMultiselectAutocompleteComponent {
                             obj['updatedAt'] = item.updatedAt;
                             this.filteredList.push(obj);
                         });
-                        // if(this.filteredList.length === 0 && this.create)
-                        // {
-                        //   //Post the new item into the respective collection
-                        //   const body = {
-                        //     'name' : this.query,
-                        //     'type': 'user'
-                        //   };
-                        //   this.http.post(this.createURL, body, this.requestHeaderService.options)
-                        //             .map((res: any) => {
-                        //               this.select(res);
-                        //             })
-                        //             .subscribe();
-                        // }
-                    })
-                    .subscribe();
+                    });
             }
         } else {
             this.filteredList = [];

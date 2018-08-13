@@ -14,7 +14,7 @@ import { SocketService } from './_services/socket/socket.service';
 import { AuthenticationService } from './_services/authentication/authentication.service';
 import { Title } from '@angular/platform-browser';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'app-root',

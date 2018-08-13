@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import 'rxjs/add/operator/map';
+
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 
 class RequestOptions {
 

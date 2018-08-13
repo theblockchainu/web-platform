@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
 import { CurrencyPickerService } from '../_services/currencypicker/currencypicker.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
@@ -24,7 +24,7 @@ export class AppFooterComponent implements OnInit {
 		private _currencypickerService: CurrencyPickerService
 	) {
 		this.isLoggedIn = authService.isLoggedIn();
-		authService.isLoggedIn().subscribe((res) => {
+		authService.isLoggedIn().subscribe((res: any) => {
 			this.loggedIn = res;
 		});
 	}

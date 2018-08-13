@@ -5,9 +5,10 @@ import { MediaUploaderService } from '../../../_services/mediaUploader/media-upl
 import * as _ from 'lodash';
 import { environment } from '../../../../environments/environment';
 import { LanguagePickerService } from '../../../_services/languagepicker/languagepicker.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { SearchService } from '../../search/search.service';
 import { CommunityService } from '../../community/community.service';
+import { startWith, map } from 'rxjs/operators';
 @Component({
   selector: 'app-add-community-dialog',
   templateUrl: './add-community-dialog.component.html',
@@ -60,8 +61,10 @@ export class AddCommunityDialogComponent implements OnInit {
       .subscribe((languages) => {
         this.languagesArray = _.map(languages, 'name');
         this.filteredLanguageOptions = this.communityForm.controls.selectedLanguage.valueChanges
-          .startWith(null)
-          .map(val => val ? this.filter(val) : this.languagesArray.slice());
+          .pipe(
+            startWith(null)
+            , map(val => val ? this.filter(val) : this.languagesArray.slice())
+          );
         console.log(this.filteredLanguageOptions);
       });
 
@@ -126,7 +129,7 @@ export class AddCommunityDialogComponent implements OnInit {
   uploadVideo(event) {
     this.uploadingVideo = true;
     for (const file of event.files) {
-      this.mediaUploader.upload(file).subscribe((response) => {
+      this.mediaUploader.upload(file).subscribe((response: any) => {
         this.addVideoUrl(response.url);
         this.uploadingVideo = false;
       });
@@ -147,7 +150,7 @@ export class AddCommunityDialogComponent implements OnInit {
       const fileurl = file;
       file = _.replace(file, 'download', 'files');
       this.mediaUploader.delete(file)
-        .subscribe((response) => {
+        .subscribe((response: any) => {
           console.log(response);
           if (fileType === 'video') {
             this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -168,7 +171,7 @@ export class AddCommunityDialogComponent implements OnInit {
     const fileurl = fileUrl;
     fileUrl = _.replace(fileUrl, 'download', 'files');
     this.mediaUploader.delete(fileUrl)
-      .subscribe((response) => {
+      .subscribe((response: any) => {
         console.log(response);
         if (fileType === 'video') {
           this.urlForVideo = _.remove(this.urlForVideo, function (n) {
@@ -188,7 +191,7 @@ export class AddCommunityDialogComponent implements OnInit {
   uploadImage(event) {
     this.uploadingImage = true;
     for (const file of event.files) {
-      this.mediaUploader.upload(file).subscribe((response) => {
+      this.mediaUploader.upload(file).subscribe((response: any) => {
         this.addImageUrl(response.url);
         this.uploadingImage = false;
       }, err => {
@@ -245,7 +248,7 @@ export class AddCommunityDialogComponent implements OnInit {
     body = {
       'targetIds': topicArray
     };
-    this.communityService.linkTopics(communityId, body).subscribe((res) => {
+    this.communityService.linkTopics(communityId, body).subscribe((res: any) => {
       this.submitting = false;
       this.dialogRef.close(true);
     }, err => {

@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
@@ -29,10 +28,7 @@ export class CommunityService {
     public getCommunityDetail(id: string, param: any) {
         const filter = JSON.stringify(param);
         return this.http
-            .get(environment.apiUrl + '/api/communities/' + id + '?filter=' + filter, this.requestHeaderService.options)
-            .map((response: any) => response, (err) => {
-                console.log('Error: ' + err);
-            });
+            .get(environment.apiUrl + '/api/communities/' + id + '?filter=' + filter, this.requestHeaderService.options);
 
     }
 
@@ -53,11 +49,11 @@ export class CommunityService {
         const body = {};
         this.http
             .put(environment.apiUrl + '/api/communities/' + communityId + '/participants/rel/' + userId, body, this.requestHeaderService.options)
-            .map((response) => {
+            .subscribe((response: any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
-            }).subscribe();
+            });
     }
 
     /**
@@ -74,11 +70,13 @@ export class CommunityService {
         const filter = JSON.stringify(query);
         this.http
             .get(environment.apiUrl + '/api/communities/' + communityId + '/comments' + '?filter=' + filter, this.requestHeaderService.options)
-            .map((response) => {
-                cb(null, response);
-            }, (err) => {
-                cb(err);
-            }).subscribe();
+            .subscribe(
+                (response: any) => {
+                    cb(null, response);
+                }, (err) => {
+                    cb(err);
+                }
+            );
     }
 
     /**
@@ -87,11 +85,11 @@ export class CommunityService {
     public postComments(communityId: string, commentBody: any, cb) {
         this.http
             .post(environment.apiUrl + '/api/communities/' + communityId + '/comments', commentBody, this.requestHeaderService.options)
-            .map((response) => {
+            .subscribe((response: any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
-            }).subscribe();
+            });
     }
 
     /**
@@ -104,11 +102,11 @@ export class CommunityService {
         const filter = JSON.stringify(query);
         this.http
             .get(environment.apiUrl + '/api/communities/' + communityId + '/questions' + '?filter=' + filter, this.requestHeaderService.options)
-            .map((response) => {
+            .subscribe((response: any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
-            }).subscribe();
+            });
     }
 
     /**
@@ -121,11 +119,11 @@ export class CommunityService {
         const filter = JSON.stringify(query);
         this.http
             .get(environment.apiUrl + '/api/communities/' + communityId + '/links' + '?filter=' + filter, this.requestHeaderService.options)
-            .map((response) => {
+            .subscribe((response: any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
-            }).subscribe();
+            });
     }
 
     /**
@@ -138,11 +136,11 @@ export class CommunityService {
         const filter = JSON.stringify(query);
         this.http
             .get(environment.apiUrl + '/api/communities/' + communityId + '/collections' + '?filter=' + filter, this.requestHeaderService.options)
-            .map((response) => {
+            .subscribe((response: any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
-            }).subscribe();
+            });
     }
 
 
@@ -211,22 +209,22 @@ export class CommunityService {
         const body = {};
         this.http
             .post(environment.apiUrl + '/api/communities/' + communityId + '/bookmarks', body, this.requestHeaderService.options)
-            .map((response) => {
+            .subscribe((response: any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
-            }).subscribe();
+            });
     }
 
     public removeBookmark(bookmarkId, cb) {
         const body = {};
         this.http
             .delete(environment.apiUrl + '/api/bookmarks/' + bookmarkId, this.requestHeaderService.options)
-            .map((response) => {
+            .subscribe((response: any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
-            }).subscribe();
+            });
     }
 
     /**
@@ -236,11 +234,11 @@ export class CommunityService {
         const filter = JSON.stringify(query);
         this.http
             .get(environment.apiUrl + '/api/communities/' + communityId + '/bookmarks' + '?filter=' + filter, this.requestHeaderService.options)
-            .map((response) => {
+            .subscribe((response: any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
-            }).subscribe();
+            });
     }
 
 
@@ -270,11 +268,11 @@ export class CommunityService {
     public addLinkToCommunity(communityId, linkBody, cb) {
         this.http
             .post(environment.apiUrl + '/api/communities/' + communityId + '/links', linkBody, this.requestHeaderService.options)
-            .map((response) => {
+            .subscribe((response: any) => {
                 cb(null, response);
             }, (err) => {
                 cb(err);
-            }).subscribe();
+            });
     }
 
     /**

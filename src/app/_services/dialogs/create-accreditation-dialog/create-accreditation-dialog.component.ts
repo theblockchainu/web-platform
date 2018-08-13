@@ -5,7 +5,7 @@ import { MediaUploaderService } from '../../../_services/mediaUploader/media-upl
 import * as _ from 'lodash';
 import { environment } from '../../../../environments/environment';
 import { LanguagePickerService } from '../../../_services/languagepicker/languagepicker.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { SearchService } from '../../search/search.service';
 import { AccreditationService } from '../../accreditation/accreditation.service';
 
@@ -102,7 +102,7 @@ export class CreateAccreditationDialogComponent implements OnInit {
     body = {
       'targetIds': topicArray
     };
-    this.accreditationService.linkTopics(accreditationId, body).subscribe((res) => {
+    this.accreditationService.linkTopics(accreditationId, body).subscribe((res : any) => {
       this.dialogRef.close(true);
       this.snackBar.open('Accreditation Created', 'close', { duration: 3000 });
     }, err => {

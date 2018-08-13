@@ -9,7 +9,6 @@ import * as _ from 'lodash';
 import { environment } from '../../../environments/environment';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { TopicService } from '../../_services/topic/topic.service';
-
 @Component({
 	selector: 'app-multiselect-autocomplete',
 	providers: [
@@ -62,16 +61,16 @@ export class MultiselectAutocompleteComponent implements OnChanges {
 	@Input()
 	private createURL = '';
 
-	@Input('title')
+	@Input()
 	public title = '';
 
 	@Input()
 	private preSelectedTopics: any = [];
 
-	@Input('minSelection')
+	@Input()
 	private minSelection = -1;
 
-	@Input('maxSelection')
+	@Input()
 	private maxSelection = -1;
 
 	@Output()
@@ -166,7 +165,7 @@ export class MultiselectAutocompleteComponent implements OnChanges {
 			if (this.searchUrl) {
 				const finalSearchURL = this.searchUrl + this.query;
 				this.http.get(finalSearchURL, this.requestHeaderService.options)
-					.map((res: any) => {
+					.subscribe((res: any) => {
 						this.loadingSuggestions = false;
 						this.filteredList = [];
 						res.map(item => {
@@ -186,8 +185,7 @@ export class MultiselectAutocompleteComponent implements OnChanges {
 						if (showItemNotFound) {
 							this.emitRequestTopic();
 						}
-					})
-					.subscribe();
+					});
 			}
 		} else {
 			this.loadingSuggestions = false;

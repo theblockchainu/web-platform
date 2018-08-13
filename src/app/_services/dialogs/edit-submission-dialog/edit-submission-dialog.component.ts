@@ -5,12 +5,12 @@ import { HttpClient } from '@angular/common/http';
 import { MediaUploaderService } from '../../mediaUploader/media-uploader.service';
 import { ProjectSubmissionService } from '../../project-submission/project-submission.service';
 import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
-import 'rxjs/add/operator/map';
+
 import { ContentService } from '../../content/content.service';
 import { environment } from '../../../../environments/environment';
 import * as _ from 'lodash';
 import { RequestHeaderService } from '../../requestHeader/request-header.service';
-
+import { map } from 'rxjs/operators';
 @Component({
 	selector: 'app-edit-submission-dialog',
 	templateUrl: './edit-submission-dialog.component.html',
@@ -88,17 +88,17 @@ export class EditSubmissionDialogComponent implements OnInit {
 		const fileurl = fileUrl;
 		fileUrl = _.replace(fileUrl, 'download', 'files');
 		this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options)
-			.map((response) => {
+			.subscribe((response: any) => {
 				console.log(response);
 				this.urlForImages = [];
 				this.submitEntryForm.controls['picture_url'].patchValue('');
-			}).subscribe();
+			});
 	}
 
 	uploadImage(event) {
 		this.uploadingImage = true;
 		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response) => {
+			this.mediaUploader.upload(file).subscribe((response: any) => {
 				this.addImageUrl(response.url);
 				this.uploadingImage = false;
 			});
@@ -107,7 +107,7 @@ export class EditSubmissionDialogComponent implements OnInit {
 
 	public addImageUrl(value) {
 		console.log('Adding image url: ' + value);
-		this._contentService.getMediaObject(value).subscribe((res) => {
+		this._contentService.getMediaObject(value).subscribe((res: any) => {
 			this.urlForImages.push(res[0]);
 		});
 		const control = <FormArray>this.submitEntryForm.controls['picture_url'];

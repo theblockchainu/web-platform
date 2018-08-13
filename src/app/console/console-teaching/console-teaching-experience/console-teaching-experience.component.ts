@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import 'rxjs/add/operator/map';
+
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { ConsoleTeachingComponent } from '../console-teaching.component';
@@ -213,7 +213,7 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 	}
 
 	public deleteCollection(collection: any) {
-		this._dialogService.openDeleteCollection(collection).subscribe(result => {
+		this._dialogService.openDeleteCollection(collection).subscribe((result: any) => {
 			if (result) {
 				this.fetchData();
 				this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Deleted', 'Close', {
@@ -227,7 +227,7 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 	 * cancelCollection
 	 collection:any     */
 	public cancelCollection(collection: any) {
-		this._dialogService.openCancelCollection(collection).subscribe(result => {
+		this._dialogService.openCancelCollection(collection).subscribe((result: any) => {
 			if (result) {
 				this.fetchData();
 				this.snackBar.open(this.ucFirstPipe.transform(collection.type) + ' Cancelled', 'Close', {

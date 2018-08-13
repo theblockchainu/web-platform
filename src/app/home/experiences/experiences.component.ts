@@ -4,12 +4,11 @@ import { TopicService } from '../../_services/topic/topic.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.component';
 import { SelectPriceComponent } from '../dialogs/select-price/select-price.component';
 import { SelectDurationComponentComponent } from '../dialogs/select-duration-component/select-duration-component.component';
-import 'rxjs/add/operator/do';
 import * as moment from 'moment';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
@@ -17,7 +16,7 @@ import { environment } from '../../../environments/environment';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-
+import { map } from 'rxjs/operators';
 @Component({
 	selector: 'app-experiences',
 	templateUrl: './experiences.component.html',
@@ -208,16 +207,18 @@ export class ExperiencesComponent implements OnInit {
 		const query = {
 			order: 'name ASC'
 		};
-		return this._topicService.getTopics(query).map(
-			(response) => {
-				const availableTopics = [];
-				response.forEach(topic => {
-					availableTopics.push({ 'topic': topic, 'checked': false });
-				});
-				return availableTopics;
-			}, (err) => {
-				console.log(err);
-			}
+		return this._topicService.getTopics(query).pipe(
+			map(
+				(response: any) => {
+					const availableTopics = [];
+					response.forEach(topic => {
+						availableTopics.push({ 'topic': topic, 'checked': false });
+					});
+					return availableTopics;
+				}, (err) => {
+					console.log(err);
+				}
+			)
 		);
 	}
 
@@ -247,7 +248,7 @@ export class ExperiencesComponent implements OnInit {
 
 		this._topicService.getTopics(query)
 			.subscribe(
-				(response) => {
+				(response: any) => {
 					const experiences = [];
 					for (const responseObj of response) {
 						responseObj.collections.forEach(collection => {
@@ -364,7 +365,7 @@ export class ExperiencesComponent implements OnInit {
 			}
 		});
 
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
 				this.availableTopics = result;
 				this.fetchExperiences();
@@ -388,7 +389,7 @@ export class ExperiencesComponent implements OnInit {
 			}
 		});
 
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
 				this.selectedRange = result.selectedRange;
 				this.fitlerResults();
@@ -411,7 +412,7 @@ export class ExperiencesComponent implements OnInit {
 				left: this.durationButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
 			}
 		});
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
 				this.selectedDurationRange = result.selectedRange;
 				this.fitlerResults();

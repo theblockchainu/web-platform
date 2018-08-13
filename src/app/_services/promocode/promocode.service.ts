@@ -12,7 +12,16 @@ export class PromocodeService {
   ) { }
 
   getPromoCode(promoCodeID: string, filter: any) {
-    this.httpClient.get(environment.apiUrl + '/api/promoCode?filter=' + JSON.stringify(filter), this.requestHeaderService.options);
+    this.httpClient.get(environment.apiUrl + '/api/promoCodes?filter=' + JSON.stringify(filter), this.requestHeaderService.options);
   }
+
+  deletePromoCode(promoCodeId) {
+    return this.httpClient.delete(environment.apiUrl + '/api/promoCodes/' + promoCodeId, this.requestHeaderService.options);
+  }
+
+  public patchPromoCode(promoCodesId: string, promoCodeObj: any) {
+    return this.httpClient.patch(environment.apiUrl + '/api/promoCodes/' + promoCodesId, promoCodeObj, this.requestHeaderService.options);
+  }
+
 }
 

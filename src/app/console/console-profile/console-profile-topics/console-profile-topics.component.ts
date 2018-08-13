@@ -84,7 +84,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 	 topic:any   */
 	public unfollowTopic(type, topic: any) {
 		console.log(topic);
-		this._profileService.unfollowTopic(this.userId, type, topic.id).subscribe((response) => {
+		this._profileService.unfollowTopic(this.userId, type, topic.id).subscribe((response: any) => {
 			this.getTopics();
 		}, (err) => {
 			console.log(err);
@@ -95,7 +95,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 	 * stopTeachingTopic
 	 */
 	public stopTeachingTopic(topic: any) {
-		this._profileService.stopTeachingTopic(this.userId, topic.id).subscribe((response) => {
+		this._profileService.stopTeachingTopic(this.userId, topic.id).subscribe((response: any) => {
 			this.getTopics();
 		}, (err) => {
 			console.log(err);
@@ -104,9 +104,9 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 
 	public getSuggestedTopics() {
 		this.http.get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode + '_topics', this.requestHeaderService.options)
-			.map((response: any) => {
+			.subscribe((response: any) => {
 				this.suggestedTopics = response.slice(0, 5);
-			}).subscribe();
+			});
 	}
 
 	public selected(event) {
@@ -197,7 +197,7 @@ export class ConsoleProfileTopicsComponent implements OnInit {
 					}
 					topicArray.forEach(topicId => {
 						this._profileService.followTopic(this.userId, type, topicId, {})
-							.subscribe((response) => { console.log(response); });
+							.subscribe((response: any) => { console.log(response); });
 					});
 				}
 			});

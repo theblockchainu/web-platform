@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { CollectionService } from '../../../_services/collection/collection.service';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'app-rsvp-dialog',
@@ -16,9 +16,9 @@ export class ShowRSVPPopupComponent implements OnInit {
     public hasChanged = false;
     public loadingRsvpDetail = false;
     constructor(public dialogRef: MatDialogRef<ShowRSVPPopupComponent>,
-                @Inject(MAT_DIALOG_DATA) public data: any,
-                private dialog: MatDialog,
-                public _collectionService: CollectionService
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        private dialog: MatDialog,
+        public _collectionService: CollectionService
     ) {
         this.envVariable = environment;
     }
@@ -31,10 +31,10 @@ export class ShowRSVPPopupComponent implements OnInit {
      */
     public markPresence(attendie, isPresent) {
         let paramIsPresent = false;
-        if (isPresent ) {
+        if (isPresent) {
             paramIsPresent = true;
         }
-        this._collectionService.markPresence(attendie.id, attendie.rsvpId, paramIsPresent).subscribe((response) => {
+        this._collectionService.markPresence(attendie.id, attendie.rsvpId, paramIsPresent).subscribe((response: any) => {
             this.hasChanged = true;
             console.log('removed rsvp');
         });

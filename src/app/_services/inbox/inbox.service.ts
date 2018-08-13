@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
-import 'rxjs/add/operator/map';
+
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 import { environment } from '../../../environments/environment';
@@ -51,45 +51,39 @@ export class InboxService {
 			'limit': limit
 		};
 		if (userId) {
-			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/joinedRooms?filter=' + JSON.stringify(query), this._requestHeaderService.options)
-				.map(
-					(response: any) => response
-				);
+			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/joinedRooms?filter=' + JSON.stringify(query), this._requestHeaderService.options);
 		} else {
 			return null;
 		}
 	}
 
 	public getRooms(userId, query) {
-		return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/joinedRooms?filter=' + JSON.stringify(query), this._requestHeaderService.options)
-			.map(
-				(response: any) => response
-			);
+		return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/joinedRooms?filter=' + JSON.stringify(query), this._requestHeaderService.options);
 	}
 
 	public createRoom(peerId, body) {
 		return this.http.post(environment.apiUrl + '/api/peers/' + peerId + '/joinedRooms', body, this._requestHeaderService.options)
-			.map((response: any) => response);
+			;
 	}
 
 	public addParticipantToRoom(roomId, participantId) {
 		return this.http.put(environment.apiUrl + '/api/rooms/' + roomId + '/participants/rel/' + participantId, {}, this._requestHeaderService.options)
-			.map((response: any) => response);
+			;
 	}
 
 	public postMessage(roomId, body) {
 		return this.http.post(environment.apiUrl + '/api/rooms/' + roomId + '/messages', body, this._requestHeaderService.options)
-			.map((response: any) => response);
+			;
 	}
 
 	public postMessageDeliveryReceipt(messageId, body) {
 		return this.http.post(environment.apiUrl + '/api/messages/' + messageId + '/deliveryReceipts', body, this._requestHeaderService.options)
-			.map((response: any) => response);
+			;
 	}
 
 	public postMessageReadReceipt(messageId, body) {
 		return this.http.post(environment.apiUrl + '/api/messages/' + messageId + '/readReceipts', body, this._requestHeaderService.options)
-			.map((response: any) => response);
+			;
 	}
 
 	public formatDateTime(room, loggedInUserId) {

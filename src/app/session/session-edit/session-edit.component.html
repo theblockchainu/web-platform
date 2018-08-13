@@ -216,7 +216,7 @@
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Tell us more about yourself</h2>
 							<p class="subtitle margin-bottom-30">Update your students on where you are located and what languages you can speak</p>
-							<ng4geo-autocomplete class="geoLocation" required [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ng4geo-autocomplete>
+							<ngxgeo-autocomplete class="geoLocation" required [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ngxgeo-autocomplete>
 							<div class="pb-block">
 								<agm-map [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"
 								 [usePanning]="true" [zoom]="14" [scrollwheel]="false" [disableDoubleClickZoom]="true" [zoomControl]="false" [streetViewControl]="false">

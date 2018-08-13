@@ -8,9 +8,9 @@ import { KnowledgeStoryService } from '../../_services/knowledge-story/knowledge
 import { CollectionService } from '../../_services/collection/collection.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
-import {ProfileService} from '../../_services/profile/profile.service';
-import {CertificateService} from '../../_services/certificate/certificate.service';
-
+import { ProfileService } from '../../_services/profile/profile.service';
+import { CertificateService } from '../../_services/certificate/certificate.service';
+import { flatMap } from 'rxjs/operators';
 @Component({
 	selector: 'app-knowledge-story',
 	templateUrl: './knowledge-story.component.html',
@@ -34,7 +34,7 @@ export class KnowledgeStoryComponent implements OnInit {
 	public requested: boolean;
 	public globalStory = false;
 	public certificates: any;
-	
+
 	constructor(
 		private activatedRoute: ActivatedRoute,
 		private _cookieUtilsService: CookieUtilsService,
@@ -143,7 +143,7 @@ export class KnowledgeStoryComponent implements OnInit {
 			this.storyNotFound = true;
 		}
 	}
-	
+
 	private fetchPeerProfile() {
 		const filter = {
 			'include': [
@@ -152,7 +152,7 @@ export class KnowledgeStoryComponent implements OnInit {
 		};
 		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
 			this.knowledgeStory = {
-				'protagonist' : []
+				'protagonist': []
 			};
 			this.knowledgeStory.protagonist.push(res);
 			this.setTags();
@@ -161,7 +161,7 @@ export class KnowledgeStoryComponent implements OnInit {
 			this.loadingKnowledgeStory = false;
 		});
 	}
-	
+
 	private fetchBlockTransactions(topics) {
 		this.loadingBlockTransactions = true;
 		this._knowledgeStoryService.fetchBlockTransactions(this.knowledgeStory.protagonist[0].ethAddress, topics)
@@ -180,7 +180,7 @@ export class KnowledgeStoryComponent implements OnInit {
 				}
 			);
 	}
-	
+
 	private fetchCertificates(topics) {
 		this.loadingCertificates = true;
 		this._certificateService.getCertificates(this.userId)
@@ -268,9 +268,11 @@ export class KnowledgeStoryComponent implements OnInit {
 	}
 
 	approveRequest(requesterId: string) {
-		this._knowledgeStoryService.deleteRequest(this.knowledgeStoryId, requesterId).flatMap(res => {
-			return this._knowledgeStoryService.connectPeer(this.knowledgeStoryId, requesterId);
-		}).subscribe(res => {
+		this._knowledgeStoryService.deleteRequest(this.knowledgeStoryId, requesterId).pipe(
+			flatMap(res => {
+				return this._knowledgeStoryService.connectPeer(this.knowledgeStoryId, requesterId);
+			})
+		).subscribe(res => {
 			this.matSnackBar.open('Peer approved', 'Close', { duration: 3000 });
 			this.initializePage();
 		}, err => {
@@ -286,7 +288,7 @@ export class KnowledgeStoryComponent implements OnInit {
 			this.matSnackBar.open('Error', 'Close', { duration: 3000 });
 		});
 	}
-	
+
 	public parseTransactionLog(result) {
 		const parsedLog = {
 			events: [],
@@ -304,11 +306,11 @@ export class KnowledgeStoryComponent implements OnInit {
 		}
 		return parsedLog;
 	}
-	
+
 	public parseCertificate(certificate) {
 		return JSON.parse(certificate);
 	}
-	
+
 	public openCertificate(certId) {
 		this.router.navigate(['certificate', certId]);
 	}

@@ -14,10 +14,7 @@ export class TimezonePickerService {
 	}
 
 	public getTimezones(filter: string) {
-		return this.http.get(environment.apiUrl + '/api/timezones?filter=' + filter, this.requestHeaderService.options)
-			.map((response: any) => {
-				return response;
-			});
+		return this.http.get(environment.apiUrl + '/api/timezones?filter=' + filter, this.requestHeaderService.options);
 	}
 
 }

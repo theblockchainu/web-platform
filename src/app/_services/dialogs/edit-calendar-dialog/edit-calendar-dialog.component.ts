@@ -22,7 +22,7 @@ import {
     isSameMonth,
     addHours
 } from 'date-fns';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import {
     CalendarEvent,
     CalendarEventAction,
@@ -235,7 +235,7 @@ export class EditCalendarDialogComponent implements OnInit {
         this.minDate = moment(this.endDate).add(1, 'days').toDate();
         // Get all the events for a user
         this._contentService.getEvents(this.userId)
-            .subscribe((response) => {
+            .subscribe((response: any) => {
                 this.eventCalendar = [];
                 this.eventCalendar = response;
                 console.log(this.eventCalendar);
@@ -269,7 +269,7 @@ export class EditCalendarDialogComponent implements OnInit {
             element.endDate = moment(element.endDate).format('YYYY-MM-DD').toString();
         });
         this._collectionService.postCalendars(this.collection.id, tempCalendar)
-            .subscribe((response) => {
+            .subscribe((response: any) => {
                 this.dialogRef.close({
                     calendarsSaved: 'calendarsSaved',
                     cohortDeleted: this.cohortDeleted
@@ -626,10 +626,10 @@ export class EditCalendarDialogComponent implements OnInit {
      */
     public viewCohorts() {
         this.dialog.open(SelectDateDialogComponent, {
-			panelClass: 'responsive-dialog',
+            panelClass: 'responsive-dialog',
             width: '45vw',
             height: '100vh',
-            data: { itineraries: this.allItenaries, mode: 'editDelete', participants: this.participants, userType: 'teacher', collectionType: this.collection.type, maxSeats: this.collection.maxSpots}
+            data: { itineraries: this.allItenaries, mode: 'editDelete', participants: this.participants, userType: 'teacher', collectionType: this.collection.type, maxSeats: this.collection.maxSpots }
         }).afterClosed()
             .subscribe((data) => {
                 // Handle the deleted calendar if any

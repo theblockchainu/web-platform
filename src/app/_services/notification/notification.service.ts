@@ -25,12 +25,12 @@ export class NotificationService {
         if (userId) {
             this.http
                 .get(environment.apiUrl + '/api/peers/' + userId + '/notifications?' + 'filter=' + options, this.requestHeaderService.options)
-                .map((response) => {
+                .subscribe((response: any) => {
                     console.log(response);
                     cb(null, response);
                 }, (err) => {
                     cb(err);
-                }).subscribe();
+                });
         }
     }
 
@@ -38,12 +38,12 @@ export class NotificationService {
         if (userId) {
             this.http
                 .patch(environment.apiUrl + '/api/notifications/' + body.id, body, this.requestHeaderService.options)
-                .map((response) => {
+                .subscribe((response: any) => {
                     console.log(response);
                     cb(null, response);
                 }, (err) => {
                     cb(err);
-                }).subscribe();
+                });
         }
     }
 

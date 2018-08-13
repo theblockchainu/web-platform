@@ -12,7 +12,6 @@ import { HomefeedComponent } from './homefeed/homefeed.component';
 import { SharedModule } from '../_shared/_shared.module';
 import { SelectTopicsComponent } from './dialogs/select-topics/select-topics.component';
 import { SelectPriceComponent } from './dialogs/select-price/select-price.component';
-import { StickyModule } from 'ng2-sticky-kit';
 import { CommunitiesComponent } from './communities/communities.component';
 import { SelectDurationComponentComponent } from './dialogs/select-duration-component/select-duration-component.component';
 
@@ -21,8 +20,7 @@ import { SelectDurationComponentComponent } from './dialogs/select-duration-comp
 		CommonModule,
 		HomeRoutingModule,
 		MatTabsModule,
-		SharedModule,
-		StickyModule
+		SharedModule
 	],
 	declarations: [
 		HomeComponent,

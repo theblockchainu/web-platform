@@ -7,8 +7,8 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import * as _ from 'lodash';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import { ContentService } from '../../_services/content/content.service';
-import { timer } from 'rxjs/observable/timer';
-
+import { timer } from 'rxjs';
+import { first } from 'rxjs/operators';
 @Component({
     selector: 'app-class-content-video',
     templateUrl: './class-content-video.component.html',
@@ -53,7 +53,7 @@ export class ClassContentVideoComponent implements OnInit {
         this.urlForVideo = contentForm.controls['imageUrl'].value;
         this.attachments = contentForm.controls['supplementUrls'];
         this.attachments.value.forEach(file => {
-            this.contentService.getMediaObject(file).subscribe((res) => {
+            this.contentService.getMediaObject(file).subscribe((res: any) => {
                 this.attachmentUrls.push(res[0]);
             });
         });
@@ -85,8 +85,8 @@ export class ClassContentVideoComponent implements OnInit {
     deleteFromContainer(fileUrl, fileType) {
         const fileurl = fileUrl;
         fileUrl = _.replace(fileUrl, 'download', 'files');
-        this.mediaUploader.delete(fileUrl).first()
-            .subscribe((response) => {
+        this.mediaUploader.delete(fileUrl).pipe(first())
+            .subscribe((response: any) => {
                 console.log(response);
                 if (fileType === 'file') {
                     const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
@@ -100,7 +100,7 @@ export class ClassContentVideoComponent implements OnInit {
                     this.attachmentUrls = [];
                     suppUrl.forEach(file => {
                         supplementUrls.push(new FormControl(file));
-                        this.contentService.getMediaObject(file).subscribe((res) => {
+                        this.contentService.getMediaObject(file).subscribe((res: any) => {
                             this.attachmentUrls.push(res[0]);
                         });
                     });
@@ -125,7 +125,7 @@ export class ClassContentVideoComponent implements OnInit {
     addAttachmentUrl(url: string) {
         console.log('Adding image url: ' + url);
         this.attachments.push(new FormControl(url));
-        this.contentService.getMediaObject(url).subscribe((res) => {
+        this.contentService.getMediaObject(url).subscribe((res: any) => {
             this.attachmentUrls.push(res[0]);
         });
     }
