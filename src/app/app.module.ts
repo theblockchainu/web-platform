@@ -44,6 +44,7 @@ import { PrivatebetaComponent } from './privatebeta/privatebeta.component';
 // import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { LandingPageModule } from './landing-page/landing-page.module';
 import { SharedModule } from './_shared/_shared.module';
+import { TransferHttpCacheModule } from '@nguniversal/common';
 
 
 // Raven
@@ -88,10 +89,11 @@ export class RavenErrorHandler implements ErrorHandler {
 		PrivatebetaComponent
 	],
 	imports: [
-		BrowserModule,
+		BrowserModule.withServerTransition({ appId: 'peerbuds2.0' }),
+		AppRoutingModule,
+		TransferHttpCacheModule,
 		CoreModule,
 		DialogsModule,
-		AppRoutingModule,
 		DefaultModule,
 		AppFooterModule,
 		MatCardModule,
