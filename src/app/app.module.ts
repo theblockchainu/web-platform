@@ -1,5 +1,5 @@
 import { BrowserModule, Meta, Title } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
+import {APP_ID, ErrorHandler, Inject, NgModule, PLATFORM_ID} from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 import { GlobalErrorHandlerComponent } from './error-handler/globalerrorhandler';
@@ -44,6 +44,7 @@ import { PrivatebetaComponent } from './privatebeta/privatebeta.component';
 // import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { LandingPageModule } from './landing-page/landing-page.module';
 import { SharedModule } from './_shared/_shared.module';
+import {isPlatformBrowser} from "@angular/common";
 
 
 // Raven
@@ -88,7 +89,7 @@ export class RavenErrorHandler implements ErrorHandler {
 		PrivatebetaComponent
 	],
 	imports: [
-		BrowserModule,
+		BrowserModule.withServerTransition({ appId: 'peerbuds' }),
 		CoreModule,
 		DialogsModule,
 		AppRoutingModule,
@@ -131,4 +132,13 @@ export class RavenErrorHandler implements ErrorHandler {
 	bootstrap: [AppComponent],
 	entryComponents: [AppNotificationDialogComponent]
 })
-export class AppModule { }
+export class AppModule {
+	
+	constructor(
+		@Inject(PLATFORM_ID) private platformId: Object,
+		@Inject(APP_ID) private appId: string) {
+		const platform = isPlatformBrowser(platformId) ?
+			'in the browser' : 'on the server';
+		console.log(`Running ${platform} with appId=${appId}`);
+	}
+}
