@@ -38,10 +38,21 @@ export class ViewPromocodeDialogComponent implements OnInit {
       data: { collectionId: this.data, promoCodeData: promo },
       panelClass: 'responsive-dialog',
       width: '55vw',
-      height: '80vh'
+      height: '85vh'
     }).afterClosed().subscribe(res => {
       this.fetchCodes();
-    })
+    });
+  }
+
+  add() {
+    this.dialog.open(AddPromoCodeDialogComponent, {
+      data: { collectionId: this.data },
+      panelClass: 'responsive-dialog',
+      width: '55vw',
+      height: '85vh'
+    }).afterClosed().subscribe(res => {
+      this.fetchCodes();
+    });
   }
 
   delete(promo: any) {

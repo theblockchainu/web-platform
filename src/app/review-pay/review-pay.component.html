@@ -9,21 +9,10 @@
                     <div class="text-grey" *ngIf="collection.difficultyLevel && collection.difficultyLevel.length > 0">
                         <b>This {{collection.type}} is of {{collection.difficultyLevel}} level.</b>
                     </div>
-                    <div class="text-grey margin-top-10 pre-wrapped" *ngIf="collection.notes && collection.notes.length > 0">{{collection.notes | ucfirst}}</div>
-                    <div class="text-grey margin-top-10" *ngIf="!collection.notes">There are no additional requirements to be aware of at this point</div>
-                </div>
-                <div class="row" *ngIf="collection.price && collection.price!==0">
-                    <div class="col-xs-6">
-                        <mat-form-field class="pb-block">
-                            <input matInput placeholder="Enter Promocode" [formControl]="discountCode">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-xs-6">
-                        <button *ngIf="!codefound" mat-raised-button color="primary" type="button" (click)="applyPromo()">
-                            Apply
-                        </button>
-                        <a class="clickable" (click)="removeCode()" *ngIf="codefound">Remove Code</a>
-                    </div>
+                    <div class="text-grey margin-top-10 pre-wrapped" *ngIf="collection.notes && collection.notes.length > 0">{{collection.notes
+                        | ucfirst}}</div>
+                    <div class="text-grey margin-top-10" *ngIf="!collection.notes">There are no additional requirements to
+                        be aware of at this point</div>
                 </div>
                 <div class="loading-container" [hidden]="!loadingCards">
                     <ngx-loading [show]="true"></ngx-loading>
@@ -75,7 +64,8 @@
                                 <div class="col-sm-6">
                                     <mat-form-field [floatLabel]="'always'">
                                         <mat-select placeholder="Select card" (change)="getcardDetails($event)">
-                                            <mat-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand }} {{card.object}} ending with {{card.last4}}</mat-option>
+                                            <mat-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand
+                                                }} {{card.object}} ending with {{card.last4}}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
@@ -95,7 +85,8 @@
                             </div>
                             <div class="row margin-top-20">
                                 <div class="col-sm-6">
-                                    <mat-checkbox [(ngModel)]="useAnotherCard" [ngModelOptions]="{standalone: true}">Or use another card</mat-checkbox>
+                                    <mat-checkbox [(ngModel)]="useAnotherCard" [ngModelOptions]="{standalone: true}">Or use
+                                        another card</mat-checkbox>
                                 </div>
                             </div>
                         </div>
@@ -125,8 +116,8 @@
                     </div>
                     <div class="terms-text">
                         <div class="terms-title">Terms of Service</div>
-                        <p class="text-grey fs-15">By confirming this reservation you are agreeing to peerbuds additional Terms of Service, Student
-                            Release and Waiver, and the Cancellation Policy.</p>
+                        <p class="text-grey fs-15">By confirming this reservation you are agreeing to peerbuds additional
+                            Terms of Service, Student Release and Waiver, and the Cancellation Policy.</p>
                     </div>
                     <div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards || listAllCards.length < 0 ||  useAnotherCard">
                         <i class="fa fa-lock"></i> Your payment information is secured by
@@ -135,15 +126,18 @@
                     <div *ngIf="!loadingCountry">
                         <div *ngIf="collection.price && collection.price!==0">
                             <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard"
-                                [disabled]="savingData">{{totalPrice | convertCurrency: collection.currency |async}} - Confirm Payment
+                                [disabled]="savingData">{{totalPrice | convertCurrency: collection.currency
+                                |async}} - Confirm Payment
                                 <!--<img src="/assets/images/powered_by_stripe.svg" class="stripe-image"> -->
                             </button>
                             <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard"
-                                [disabled]="!cardDetails.id || savingData">{{totalPrice | convertCurrency: collection.currency |async}} - Confirm Payment
+                                [disabled]="!cardDetails.id || savingData">{{totalPrice | convertCurrency:
+                                collection.currency |async}} - Confirm Payment
                                 <!--<img src="/assets/images/powered_by_stripe.svg" class="stripe-image">-->
                             </button>
                         </div>
-                        <button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center payButton" *ngIf="!collection.price || collection.price===0 ">FREE - Join {{collection.type | ucwords}}</button>
+                        <button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center payButton" *ngIf="!collection.price || collection.price===0 ">FREE
+                            - Join {{collection.type | ucwords}}</button>
                     </div>
                     <div class="terms-text margin-top-20" *ngIf="collection.academicGyan">
                         <div class="terms-title">This {{collection.type}} is powered by one0x Blockchain.</div>
@@ -170,16 +164,19 @@
                                 </div>
                                 <div class="fs-17">{{ collection.title | titlecase}}
                                     <br>
-                                    <span class="fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type }}</span>
+                                    <span class="fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type
+                                        }}
+                                    </span>
                                     <br>
-                                    <span class="fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by {{collection.owners[0].profiles[0].first_name | titlecase}} {{collection.owners[0].profiles[0].last_name
+                                    <span class="fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught
+                                        by {{collection.owners[0].profiles[0].first_name | titlecase}} {{collection.owners[0].profiles[0].last_name
                                         | ucwords}}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="seperate-section">
-                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate | date: 'EEE,
-                                MMM dd' }}</div>
+                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to
+                                {{ currentCalendar.endDate | date: 'EEE, MMM dd' }}</div>
                             <div class="" *ngIf="collection.contents">{{collection.contents.length}} Activities</div>
                             <!--<a href="#">See details</a>-->
                         </div>
@@ -243,10 +240,12 @@
                         </div>-->
                         <div class="seperate-section">
                             <div class="margin-bottom-10">
-                                <span class="text-grey">{{collection.price | convertCurrency: collection.currency |async}} x {{ guestCount }} Student</span>
-                                <span class="pull-right">{{collection.price * guestCount | convertCurrency: collection.currency |async}}</span>
+                                <span class="text-grey">{{collection.price | convertCurrency: collection.currency |async}}
+                                    x {{ guestCount }} Student</span>
+                                <span class="pull-right">{{collection.price * guestCount | convertCurrency: collection.currency
+                                    |async}}
+                                </span>
                             </div>
-
                             <div *ngIf="codefound" style="color:#33bd9e" class="margin-bottom-10 row">
                                 <div class="col-xs-6">
                                     Discount Code applied {{codefound.description}}
@@ -268,11 +267,26 @@
                                 <span class="fw-bold">Total</span>
                                 <span class="pull-right fw-bold">{{totalPrice | convertCurrency: collection.currency |async}}</span>
                             </div>
+                            <a [hidden]="applyPromoCode" class="clickable" (click)="togglePromo()">Apply Promo Code</a>
+                            <div class="row" *ngIf="collection.price && collection.price!==0 && applyPromoCode">
+                                <div class="col-xs-12">
+                                    <mat-form-field style="width:70%">
+                                        <input matInput placeholder="Enter Promocode" [formControl]="discountCode">
+                                    </mat-form-field>
+                                    <span class="pull-right" style="padding-top: 5%;">
+                                        <a *ngIf="!codefound" class="clickable" color="primary" (click)="applyPromo()">
+                                            Apply
+                                        </a>
+                                        <a class="clickable" (click)="removeCode()" *ngIf="codefound">Remove Code</a>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                         <div class="seperate-section">
                             <div class="fs-18 margin-bottom-10">Cancellation Policy</div>
                             <div class="fs-14 text-grey">Get a
-                                <span class="text-black">full refund</span> if you cancel within {{collection.cancellationPolicy}} of purchase.
+                                <span class="text-black">full refund</span> if you cancel within {{collection.cancellationPolicy}}
+                                of purchase.
                                 <!--<br> Karma once burned on participation cannot be refunded.-->
                             </div>
                         </div>

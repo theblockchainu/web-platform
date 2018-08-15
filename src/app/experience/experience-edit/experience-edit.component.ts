@@ -1,6 +1,6 @@
 
 import { Component, OnInit, OnDestroy, Input, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
@@ -292,13 +292,16 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 		this.initializeFormFields();
 		this.initializeExperience();
-		this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
-		this._VIDEO = document.querySelector('#main-video');
+		if (this._cookieUtilsService.isBrowser) {
+			this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
+			this._VIDEO = document.querySelector('#main-video');
+			this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
+			this._mobileQueryListener = () => this.cd.detectChanges();
+			this.mobileQuery.addListener(this._mobileQueryListener);
+		}
 		this.getGyanBalance();
 
-		this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
-		this._mobileQueryListener = () => this.cd.detectChanges();
-		this.mobileQuery.addListener(this._mobileQueryListener);
+
 
 	}
 
@@ -365,7 +368,9 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	}
 
 	ngOnDestroy(): void {
-		this.mobileQuery.removeListener(this._mobileQueryListener);
+		if (this.mobileQuery) {
+			this.mobileQuery.removeListener(this._mobileQueryListener);
+		}
 	}
 
 	ngAfterViewInit() {
@@ -1013,6 +1018,14 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 						this.router.navigate(['experience', collectionId, 'edit', this.step]);
 						this.busySavingData = false;
 					}
+				}
+			}, (err: HttpErrorResponse ) => {
+				if (err.statusText === 'Unauthorized') {
+					this.dialogsService.openLogin().subscribe(res => {
+						if (res) {
+							this.executeSubmitExperience(data, timeline, step);
+						}
+					});
 				}
 			});
 	}

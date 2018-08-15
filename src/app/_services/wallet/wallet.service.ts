@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class WalletService {
@@ -60,8 +61,13 @@ export class WalletService {
 	}
 
 	public getKarmaToBurn(gyan: number) {
-		return this.http.post(environment.apiUrl + '/getKarmaToBurn', { gyan: gyan }, this.requestHeaderService.options)
-			;
+		return this.http.post(environment.apiUrl + '/getKarmaToBurn', { gyan: gyan }, this.requestHeaderService.options).pipe(map((res: any) => {
+			if (res.karma) {
+				return res.karma;
+			} else {
+				return res;
+			}
+		}));
 	}
 
 }

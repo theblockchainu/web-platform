@@ -10,9 +10,8 @@
 				<mat-icon>search</mat-icon>
 			</span>
 			<span class="search-form hide-small">
-				<mat-form-field style="color:#767676 !important" class="pb-block" floatLabel="never">
-					<input #searchInputBar name="search" style="color:#333333 !important" class="mat-block search-box" matInput [formControl]="myControl"
-					 [matAutocomplete]="auto" placeholder="Try 'Hyperledger' or 'Blockchain' ">
+				<mat-form-field class="pb-block" floatLabel="never">
+					<input #searchInputBar name="search" class="search-box" matInput [formControl]="myControl" [matAutocomplete]="auto" placeholder="Try 'Hyperledger' or 'Blockchain' ">
 					<mat-autocomplete #auto="matAutocomplete">
 						<mat-option *ngIf="searching">
 							<span>
@@ -93,7 +92,7 @@
 					<mat-icon class="show-small-inline">chat</mat-icon>
 				</button>
 				<div style="display: inline-block;" *ngIf="(isLoggedIn | async) && isAccountApproved">
-					<mat-icon class="notifDot" *ngIf="hasNewMessage || hasNewNotification">fiber_manual_record</mat-icon>
+					<mat-icon style="padding-left: 10px;" class="notifDot" *ngIf="hasNewMessage || hasNewNotification">fiber_manual_record</mat-icon>
 				</div>
 				<button mat-button class="headerButtons" [matMenuTriggerFor]="creditMenu">
 					<span class="hide-small">

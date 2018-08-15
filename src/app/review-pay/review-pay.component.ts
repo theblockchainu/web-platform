@@ -62,7 +62,7 @@ export class ReviewPayComponent implements OnInit {
     public discountCode: FormControl;
     public totalPrice: number;
     public codefound: any;
-
+    public applyPromoCode = false;
     constructor(
         private _cookieUtilsService: CookieUtilsService,
         private activatedRoute: ActivatedRoute,
@@ -526,5 +526,9 @@ export class ReviewPayComponent implements OnInit {
         this.discountCode.reset();
         this.discountCode.enable();
         delete this.codefound;
+    }
+
+    togglePromo() {
+        this.applyPromoCode = true;
     }
 }
