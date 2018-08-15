@@ -79,7 +79,6 @@ import { KarmaBalancePipe } from './karma-balance/karma-balance.pipe';
 import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-story.service';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ShareModule } from '@ngx-share/core';
-import { QRCodeModule } from 'angularx-qrcode';
 import { ConvertCryptoPipe } from './convert-crypto/convert-crypto.pipe';
 import { ShortNumberPipe } from './short-number/short-number.pipe';
 import { RouterModule } from '@angular/router';
@@ -87,7 +86,6 @@ import { ExperienceCardComponent } from './experience-card/experience-card.compo
 import { CommunityCardComponent } from './community-card/community-card.component';
 import { PeerCardComponent } from './peer-card/peer-card.component';
 import { ClassCardComponent } from './class-card/class-card.component';
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { AccreditationService } from '../_services/accreditation/accreditation.service';
 import { CustomCertificateFormComponent } from './custom-certificate-form/custom-certificate-form.component';
@@ -247,13 +245,10 @@ import { PromocodeService } from '../_services/promocode/promocode.service';
         MatStepperModule,
         ClipboardModule,
         ShareModule,
-        QRCodeModule,
         ExperienceCardComponent,
         CommunityCardComponent,
         PeerCardComponent,
         ClassCardComponent,
-        OwlDateTimeModule,
-        OwlNativeDateTimeModule,
         AmazingTimePickerModule,
         CustomCertificateFormComponent,
         SafePipe,

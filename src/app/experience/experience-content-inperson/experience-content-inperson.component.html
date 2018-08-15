@@ -30,17 +30,11 @@
 						<div formGroupName="schedule" class="row">
 							<div class="col-md-4 col-xs-6">
 								<mat-form-field [floatLabel]="'always'" class="timeInput margin-top-20 margin-bot-20">
-									<!-- <input matInput #startTime [owlDateTimeTrigger]="startTimePicker" [owlDateTime]="startTimePicker" placeholder="Start Time"
-									 [required]="'true'">
-									<owl-date-time #startTimePicker [hour12Timer]="'true'" [pickerType]="'timer'"></owl-date-time> -->
 									<input matInput type="time" #startTime atp-time-picker placeholder="Start Time" formControlName="startTime" />
 								</mat-form-field>
 							</div>
 							<div class="col-md-4 col-xs-6">
 								<mat-form-field [floatLabel]="'always'" class="timeInput margin-top-20 margin-bot-20">
-									<!-- <input matInput #endTime [owlDateTimeTrigger]="endTimePicker" [owlDateTime]="endTimePicker" formControlName="endTime" placeholder="End Time"
-									 [required]="'true'">
-									<owl-date-time #endTimePicker [hour12Timer]="'true'" [pickerType]="'timer'"></owl-date-time> -->
 									<input matInput type="time" #endTime atp-time-picker placeholder="End Time" formControlName="endTime" />
 								</mat-form-field>
 							</div>
