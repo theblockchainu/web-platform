@@ -26,8 +26,8 @@ import { Observable } from 'rxjs';
 export class AppComponent implements OnInit {
 	title = 'app';
 	public activePath = 'home';
-	showHeader = true;
-	showFooter = true;
+	public showHeader: boolean;
+	public showFooter: boolean;
 	// showProgressbar = true;
 	// Sets initial value to true to show loading spinner on first load
 	public loading: Observable<boolean>;
@@ -42,16 +42,18 @@ export class AppComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		if (this.cookieService.isBrowser) {
-			this.loading = this._spinnerService.getSpinnerState();
-			this.router.events.subscribe((event: RouterEvent) => {
-				this.navigationInterceptor(event);
-			});
-			this.router.events.subscribe(event => this.triggerAnalytics(event));
-		}
-		this.router.events.subscribe(event => this.modifyHeader(event));
-		this.router.events.subscribe(event => this.modifyFooter(event));
 		this.setTitle('Peerbuds - Immersive & Incentivized Education');
+		this.loading = this._spinnerService.getSpinnerState();
+		this.router.events.subscribe((event: RouterEvent) => {
+			this.showHeader = true;
+			this.showFooter = true;
+			if (this.cookieService.isBrowser) {
+				this.navigationInterceptor(event);
+				this.triggerAnalytics(event);
+			}
+			this.modifyHeader(this.router.url);
+			this.modifyFooter(this.router.url);
+		});
 	}
 
 	public triggerAnalytics(event) {
@@ -61,27 +63,27 @@ export class AppComponent implements OnInit {
 		}
 	}
 
-	modifyFooter(location) {
+	modifyFooter(url) {
 		this.showFooter = !(
-			/^\/verification\/.*./.test(location.url)
-			|| /^\/onboarding\/.*./.test(location.url)
-			|| /\/console\/inbox\/.*./.test(location.url)
-			|| /^\/class\/.*\/edit\/./.test(location.url)
-			|| /^\/experience\/.*\/edit\/./.test(location.url)
-			|| /^\/session\/.*\/edit\/./.test(location.url));
-		if (this.router.url === '/') {
+			/^\/verification\/.*./.test(url)
+			|| /^\/onboarding\/.*./.test(url)
+			|| /\/console\/inbox\/.*./.test(url)
+			|| /^\/class\/.*\/edit\/./.test(url)
+			|| /^\/experience\/.*\/edit\/./.test(url)
+			|| /^\/session\/.*\/edit\/./.test(url));
+		if (url === '/') {
 			this.showFooter = false;
 		}
 	}
 
-	modifyHeader(location) {
+	modifyHeader(url) {
 		this.showHeader = !(
-			/^\/class\/.*\/edit\/./.test(location.url)
-			|| /^\/experience\/.*\/edit\/./.test(location.url)
-			|| /^\/session\/.*\/edit\/./.test(location.url)
-			|| /^\/digest\/.*./.test(location.url)
-			|| /^\/error/.test(location.url));
-		if (this.router.url === '/' || this.router.url === '/login') {
+			/^\/class\/.*\/edit\/./.test(url)
+			|| /^\/experience\/.*\/edit\/./.test(url)
+			|| /^\/session\/.*\/edit\/./.test(url)
+			|| /^\/digest\/.*./.test(url)
+			|| /^\/error/.test(url));
+		if (url === '/' || url === '/login') {
 			this.showHeader = false;
 		}
 	}

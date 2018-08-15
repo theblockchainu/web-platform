@@ -25,7 +25,7 @@ import { NoContentComponent } from './no-content/no-content.component';
 import { DefaultComponent } from './default/default.component';
 import {
 	MatAutocompleteModule, MatCardModule, MatIconModule, MatInputModule, MatMenuModule, MatNativeDateModule,
-	MatToolbarModule, MatProgressBarModule,
+	MatToolbarModule, MatProgressBarModule, MatBadgeModule,
 	MatProgressSpinnerModule,
 } from '@angular/material';
 import { MatListModule } from '@angular/material';
@@ -108,6 +108,7 @@ import { TransferHttpCacheModule } from '@nguniversal/common';
 		MatProgressBarModule,
 		MatTooltipModule,
 		MatListModule,
+		MatBadgeModule,
 		// PdfViewerModule,
 		LoadingModule.forRoot({
 			animationType: ANIMATION_TYPES.threeBounce,
