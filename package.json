@@ -67,6 +67,7 @@
     "rxjs": "^6.2.2",
     "rxjs-compat": "^6.2.2",
     "rxjs-tslint": "^0.1.5",
+    "ts-loader": "^4.4.2",
     "ts-node": "^7.0.0",
     "twilio-video": "^1.13.1",
     "videogular2": "^6.3.0",
