@@ -55,11 +55,11 @@ import { TransferHttpCacheModule } from '@nguniversal/common';
 // 	environment: (environment.production) ? 'production' : 'development'
 // });
 
-export class RavenErrorHandler implements ErrorHandler {
-	handleError(err: any): void {
-		Raven.captureException(err);
-	}
-}
+// export class RavenErrorHandler implements ErrorHandler {
+// 	handleError(err: any): void {
+// 		Raven.captureException(err);
+// 	}
+// }
 
 
 @NgModule({

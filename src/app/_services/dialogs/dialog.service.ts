@@ -670,7 +670,7 @@ export class DialogsService {
             data: { collectionId: collectionId },
             panelClass: 'responsive-dialog',
             width: '55vw',
-            height: '80vh'
+            height: '85vh'
         });
 
         return dialogRef.afterClosed();

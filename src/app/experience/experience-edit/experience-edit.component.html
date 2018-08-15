@@ -54,19 +54,19 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Peerbuds Experience Guidelines</h2>
-							<p class="subtitle">Peerbuds is a platform dedicated to connecting people who are forward thinking, passionate about education, and open-minded
-								in general. We're pretty sure that each individual who joins our community is a cool, high-caliber person with unique
-								talents and knowledge to share. That said, we'd like to establish just a few common-sense expectations so our platform
-								can continue to be as high quality as possible.
+							<p class="subtitle">Peerbuds is a platform dedicated to connecting people who are forward thinking, passionate about
+								education, and open-minded in general. We're pretty sure that each individual who joins our community is a cool,
+								high-caliber person with unique talents and knowledge to share. That said, we'd like to establish just a few common-sense
+								expectations so our platform can continue to be as high quality as possible.
 							</p>
 							<ul class="guideline-points text-grey">
-								<li>Respect others and their differences. Not everyone on Peerbuds is going to have the same worldview, and that's actually
-									a good thing. It's how we can learn from each other. Keep all comments and observations fair, controlled and as
-									positive as possible.</li>
+								<li>Respect others and their differences. Not everyone on Peerbuds is going to have the same worldview, and that's
+									actually a good thing. It's how we can learn from each other. Keep all comments and observations fair, controlled
+									and as positive as possible.</li>
 								<li>Take your responsibilities seriously. Whether you sign up to learn or to teach (or both!), be sure to communicate
 									with all your peers as necessary and always be on time to events.</li>
-								<li>You can't go wrong with the "golden rule." Treat everyone you meet on Peerbuds with the same basic courtesy and friendliness
-									you'd like to be shown and you're pretty much good to go. Good vibes are infectious - everybody wins.
+								<li>You can't go wrong with the "golden rule." Treat everyone you meet on Peerbuds with the same basic courtesy and
+									friendliness you'd like to be shown and you're pretty much good to go. Good vibes are infectious - everybody wins.
 								</li>
 							</ul>
 							<div class="margin-top-20">
@@ -194,8 +194,8 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Which language will you host in?</h2>
-							<p class="subtitle">You will write your descriptions and present your experience in this language. Guests will be notified of this in
-								your experience description.</p>
+							<p class="subtitle">You will write your descriptions and present your experience in this language. Guests will be
+								notified of this in your experience description.</p>
 							<br/>
 							<form [formGroup]="experience" (ngSubmit)="submitExperience()">
 								<div class="row margin-top-10">
@@ -265,8 +265,8 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Create the page learners will see</h2>
-							<p class="subtitle" style="color: #333333;">Write in a clear, straightforward and friendly way. We'll prompt you on when to show off your personality and be more
-								descriptive.
+							<p class="subtitle" style="color: #333333;">Write in a clear, straightforward and friendly way. We'll prompt you on
+								when to show off your personality and be more descriptive.
 							</p>
 							<br/>
 							<div style="margin-top:60px;">
@@ -604,14 +604,14 @@
 									<div *ngFor="let ruleForm of assessmentForm.controls['nARules']['controls']; let i = index" [formGroupName]="i" class="row">
 										<div class="col-xs-12" *ngIf="i<1">
 											<div class="row">
-												<div class="col-xs-3">
+												<div class="col-xs-3" *ngIf="assessmentForm.value.nARules[0]">
 													Experience discussions {{assessmentForm.value.nARules[0].gyan}}%
 												</div>
 												<div class="col-xs-6" style="margin-top: -10px">
 													<mat-slider class="pb-block" max="99" min="1" thumbLabel="true" formControlName="gyan">
 													</mat-slider>
 												</div>
-												<div class="col-xs-3">
+												<div class="col-xs-3" *ngIf="assessmentForm.value.nARules[1]">
 													Experience attendance {{assessmentForm.value.nARules[1].gyan}}%
 												</div>
 											</div>
@@ -650,7 +650,8 @@
 								<div style="border: 1px solid #ddd; padding: 25px;">
 									<div class="row">
 										<div class="col-md-3">
-											<mat-checkbox [(ngModel)]="freeExperience" (ngModelChange)="onFreeChange($event)" [ngModelOptions]="{standalone: true}">Make it free</mat-checkbox>
+											<mat-checkbox [(ngModel)]="freeExperience" (ngModelChange)="onFreeChange($event)" [ngModelOptions]="{standalone: true}">Make
+												it free</mat-checkbox>
 										</div>
 									</div>
 									<br/>
@@ -706,8 +707,8 @@
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Add content to your Experience</h2>
 							<form [formGroup]="experience">
-								<p class="subtitle">Create a detailed timeline of your experience and add content for every event in your itinerary. Learners will see
-									this before they sign up for your experience.</p>
+								<p class="subtitle">Create a detailed timeline of your experience and add content for every event in your itinerary.
+									Learners will see this before they sign up for your experience.</p>
 								<div style="margin-top:60px;">
 									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
@@ -845,7 +846,8 @@
 												Send Code as SMS
 											</button>
 											<button mat-raised-button #sendOtpButton color="accent" *ngIf="isPhoneVerified">
-												<mat-icon mat-prefix style="margin-top: -12px; margin-right: 5px; color: white;">check_circle</mat-icon> Phone Verified
+												<mat-icon mat-prefix style="margin-top: -12px; margin-right: 5px; color: white;">check_circle</mat-icon> Phone
+												Verified
 											</button>
 										</div>
 										<div *ngIf="otpSent && !isPhoneVerified" style="margin: 20px 0px 50px 0px;">
@@ -855,7 +857,9 @@
 											</mat-form-field>
 											<button mat-button color="accent" (click)="submitOTP()">Confirm Code</button>
 										</div>
-										<mat-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</mat-radio-button>
+										<mat-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No,
+											thanks
+										</mat-radio-button>
 									</mat-radio-group>
 								</div>
 								<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">

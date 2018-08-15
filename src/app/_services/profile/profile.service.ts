@@ -49,8 +49,7 @@ export class ProfileService {
 
 	public getProfileData(userId, filter: any) {
 		if (userId) {
-			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + JSON.stringify(filter), this._requestHeaderService.options)
-				;
+			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + JSON.stringify(filter), this._requestHeaderService.options);
 		}
 	}
 
