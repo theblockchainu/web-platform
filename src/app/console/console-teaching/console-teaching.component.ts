@@ -45,12 +45,18 @@ export class ConsoleTeachingComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.loadPage();
+    }
+
+    loadPage() {
         this.loaded = false;
         this.accountVerified = (this._cookieUtilsService.getValue('accountApproved') === 'true');
         this.getSessions();
-        this._profileService.getProfileData(this.userId, {}).subscribe(res => {
-            this.profile = res[0];
-        });
+        if (this.userId) {
+            this._profileService.getProfileData(this.userId, {}).subscribe(res => {
+                this.profile = res[0];
+            });
+        }
     }
 
     public getSessions() {

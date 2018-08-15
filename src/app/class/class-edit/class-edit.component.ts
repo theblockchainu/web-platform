@@ -1,6 +1,6 @@
 
 import { Component, OnInit, Input, OnDestroy, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -284,13 +284,14 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		this.initializeFormFields();
 		this.initializeClass();
-		this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
-		this._VIDEO = document.querySelector('#main-video');
 		this.getGyanBalance();
-
-		this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
-		this._mobileQueryListener = () => this.cd.detectChanges();
-		this.mobileQuery.addListener(this._mobileQueryListener);
+		if (this._cookieUtilsService.isBrowser) {
+			this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
+			this._VIDEO = document.querySelector('#main-video');
+			this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
+			this._mobileQueryListener = () => this.cd.detectChanges();
+			this.mobileQuery.addListener(this._mobileQueryListener);
+		}
 
 	}
 
@@ -386,7 +387,9 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		this.mobileQuery.removeListener(this._mobileQueryListener);
+		if (this.mobileQuery) {
+			this.mobileQuery.removeListener(this._mobileQueryListener);
+		}
 	}
 
 	ngAfterViewInit() {
@@ -988,6 +991,14 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 						this.router.navigate(['class', collectionId, 'edit', this.step]);
 						this.busySavingData = false;
 					}
+				}
+			}, (err: HttpErrorResponse ) => {
+				if (err.statusText === 'Unauthorized') {
+					this.dialogsService.openLogin().subscribe(res => {
+						if (res) {
+							this.executeSubmitClass(data, timeline, step);
+						}
+					});
 				}
 			});
 	}

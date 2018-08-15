@@ -313,15 +313,16 @@ export class SessionEditComponent implements OnInit {
 		this.getTeachingTopics();
 		this.languagesAsync = <BehaviorSubject<any[]>>new BehaviorSubject([]);
 		this.language = this.languagesAsync.asObservable();
-		this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
-		this._VIDEO = document.querySelector('#main-video');
 		this.years = this.getYearsArray();
 		this.events = [];
 
-
-		this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
-		this._mobileQueryListener = () => this.cd.detectChanges();
-		this.mobileQuery.addListener(this._mobileQueryListener);
+		if (this._cookieUtilsService.isBrowser) {
+			this._CANVAS = <HTMLCanvasElement>document.querySelector('#video-canvas');
+			this._VIDEO = document.querySelector('#main-video');
+			this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
+			this._mobileQueryListener = () => this.cd.detectChanges();
+			this.mobileQuery.addListener(this._mobileQueryListener);
+		}
 
 
 	}

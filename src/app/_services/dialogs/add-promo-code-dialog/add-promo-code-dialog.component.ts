@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ElementRef, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CommunityService } from '../../community/community.service';
 import { SearchService } from '../../search/search.service';
 import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
@@ -60,13 +60,13 @@ export class AddPromoCodeDialogComponent implements OnInit {
     this.collectionId = this.formdata.collectionId;
 
     this.promoCodeForm = this._fb.group({
-      code: this.data.code ? this.data.code : '',
-      description: this.data.description ? this.data.description : '',
-      discountType: this.data.discountType ? this.data.discountType : '',
+      code: [this.data.code ? this.data.code : '', Validators.required],
+      description: [this.data.description ? this.data.description : '', Validators.required],
+      discountType: [this.data.discountType ? this.data.discountType : '', Validators.required],
       discountCurrency: this.data.discountCurrency ? this.data.discountCurrency : '',
-      discountValue: this.data.discountValue ? this.data.discountValue : '',
-      validFrom: this.data.validFrom ? this.data.validFrom : '',
-      validTo: this.data.validTo ? this.data.validTo : ''
+      discountValue: [this.data.discountValue ? this.data.discountValue : '', Validators.required],
+      validFrom: [this.data.validFrom ? this.data.validFrom : '', Validators.required],
+      validTo: [this.data.validTo ? this.data.validTo : '', Validators.required]
     });
     this.myControl.valueChanges.subscribe((value) => {
       console.log(value);

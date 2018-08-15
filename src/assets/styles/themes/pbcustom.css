@@ -1258,6 +1258,10 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 	font-size: 14px;
 }
 
+.search-form .mat-form-field-underline{
+	display: none !important;
+}
+
 .search-home .mat-form-field-wrapper {
     padding-bottom: 0em !important;
 }
