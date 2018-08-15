@@ -1,6 +1,6 @@
 
 import { Component, OnInit, OnDestroy, Input, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, AbstractControl, Validators, ValidatorFn } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
@@ -1013,6 +1013,14 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 						this.router.navigate(['experience', collectionId, 'edit', this.step]);
 						this.busySavingData = false;
 					}
+				}
+			}, (err: HttpErrorResponse ) => {
+				if (err.statusText === 'Unauthorized') {
+					this.dialogsService.openLogin().subscribe(res => {
+						if (res) {
+							this.executeSubmitExperience(data, timeline, step);
+						}
+					});
 				}
 			});
 	}

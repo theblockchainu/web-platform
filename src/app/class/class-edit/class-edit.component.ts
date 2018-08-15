@@ -1,6 +1,6 @@
 
 import { Component, OnInit, Input, OnDestroy, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -988,6 +988,14 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 						this.router.navigate(['class', collectionId, 'edit', this.step]);
 						this.busySavingData = false;
 					}
+				}
+			}, (err: HttpErrorResponse ) => {
+				if (err.statusText === 'Unauthorized') {
+					this.dialogsService.openLogin().subscribe(res => {
+						if (res) {
+							this.executeSubmitClass(data, timeline, step);
+						}
+					});
 				}
 			});
 	}
