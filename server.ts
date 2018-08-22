@@ -1,6 +1,8 @@
 // These are important and needed before anything else
 import 'zone.js/dist/zone-node';
 import 'reflect-metadata';
+const https = require('https');
+const sslConfig = require('./ssl-config');
 
 import { renderModuleFactory } from '@angular/platform-server';
 import { enableProdMode } from '@angular/core';
@@ -16,7 +18,7 @@ enableProdMode();
 // Express server
 const app = express();
 
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 8080;
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
 // Our index.html we'll use as our template
@@ -46,7 +48,14 @@ app.get('*', function (req, res) {
     res.render(join(DIST_FOLDER, 'browser', 'index.html'), { req });
 });
 
+const options = {
+	key: sslConfig.privateKey,
+	cert: sslConfig.certificate,
+};
+let server = null;
+server = https.createServer(options, app);
+
 // Start up the Node server
-app.listen(PORT, () => {
-    console.log(`Node server listening on http://localhost:${PORT}`);
+server.listen(PORT, () => {
+    console.log(`Node server listening on https://localhost:${PORT}`);
 });

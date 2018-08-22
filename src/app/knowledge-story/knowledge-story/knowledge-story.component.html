@@ -138,12 +138,15 @@
 										<mat-card-content>
 											<div [innerHTML]="parseCertificate(certificate.stringifiedJSON).displayHtml | safe : 'html'"></div>
 											<div class="certificateCardFooter">
-												<button mat-button mat-raised-button color="primary" (click)="openCertificate(certificate.id)">Verify with
+												<button mat-button mat-raised-button (click)="openCertificate(certificate.id)">Verify with
 													<img style="width: 75px; margin-left: 10px;" src="assets/images/one0x.png" alt="logo">
 												</button>
 											</div>
 										</mat-card-content>
 									</mat-card>
+								</div>
+								<div class="col-md-12 lightText mat-caption" *ngIf="!certificates || certificates.length === 0">
+									You do not have any certificates issued at this time.
 								</div>
 							</div>
 							<div class="loading-container" [hidden]="!loadingBlockTransactions" style="margin-top: 3%;">
@@ -160,7 +163,7 @@
 									{{parseTransactionLog(transaction.result).events}}
 									<br>
 									<span class="mat-h5 lightText">
-										<a href="https://ropsten.etherscan.io/address/{{parseTransactionLog(transaction.result).hash}}" target="_blank" class="lightText">{{parseTransactionLog(transaction.result).hash}}</a>
+										<a href="https://ropsten.etherscan.io/tx/{{parseTransactionLog(transaction.result).hash}}" target="_blank" class="lightText">{{parseTransactionLog(transaction.result).hash}}</a>
 									</span>
 									<br>
 									<span class="mat-h5 lightText">
