@@ -9,15 +9,49 @@
 							<div class="text-center">
 								<img src="/assets/images/peerbuds-logo.png" alt="peerbuds-logo" style="width: 40px;">
 								<h1 class="mat-title title-explore text-center margin-top-20">Welcome to Peerbuds</h1>
-								<div class="text-white margin-top-40">Teachers and students on Peerbuds are real people with real knowledge. That's why you'll have to confirm a few, quick details to activate your account.</div>
+								<div class="text-white margin-top-40">Teachers and students on Peerbuds are real people with real knowledge. That's
+									why you'll have to confirm a few, quick details to activate your account.</div>
 								<div class="checkbox margin-top-50">
-									<button mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" (click)="continue(1)">Next - 2 steps left</button>
+									<button mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" (click)="continue(1)">Next
+										- 2 steps left</button>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="position-relative step-6" [hidden]="step!=6">
+			<form [formGroup]="passwordForm">
+				<div class="col-md-12 center">
+					<div class="verification-box drop-shadow">
+						<h2 class="headline">Set a password</h2>
+						<p class="description1 margin-bottom-10">This is so we can create a wallet on the one0x blockchain.</p>
+						<mat-form-field class="pb-block margin-top-20" [floatLabel]="'auto'">
+							<input type="password" matInput formControlName="password" placeholder="Password" />
+						</mat-form-field>
+						<mat-form-field class="pb-block margin-top-20" [floatLabel]="'auto'">
+							<input type="password" matInput formControlName="confirmPassword" placeholder="Confirm Password" />
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<div class="col-md-12 bottom-section clearfix">
+						<div>
+							<span>
+								<button class="pb-block" mat-raised-button color="accent" (click)="submitPassword()" [disabled]="httpLoading">Set
+									Password
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12 center margin-top-20">
+					<a class="mat-h5" href="javascript:void(0)" (click)="skipOnboarding()">
+						I'll do this later
+					</a>
+				</div>
+			</form>
 		</div>
 		<!-- step 5 ends -->
 		<div class="position-relative step-1" [hidden]="step!=1">
@@ -45,7 +79,8 @@
 					<div class="col-md-12 bottom-section clearfix">
 						<div>
 							<span matTooltip="Please enter a valid phone number" [matTooltipDisabled]="phoneForm.valid">
-								<button class="pb-block" mat-raised-button color="accent" (click)="continue(2)" [disabled]="!phoneForm.valid || httpLoading">Confirm Phone Number</button>
+								<button class="pb-block" mat-raised-button color="accent" (click)="continue(2)" [disabled]="!phoneForm.valid || httpLoading">Confirm
+									Phone Number</button>
 							</span>
 						</div>
 					</div>
@@ -83,7 +118,9 @@
 					<div class="col-md-12 bottom-section clearfix">
 						<div>
 							<span matTooltip="Please enter a valid code" [matTooltipDisabled]="inputPhoneOTP.value.length === 6">
-								<button class="pb-block" mat-raised-button color="accent" (click)="continue(3)" [disabled]="inputPhoneOTP.value.length !== 6 || httpLoading">Verify Phone</button>
+								<button class="pb-block" mat-raised-button color="accent" (click)="continue(3)" [disabled]="inputPhoneOTP.value.length !== 6 || httpLoading">Verify
+									Phone
+								</button>
 							</span>
 						</div>
 					</div>
@@ -104,8 +141,8 @@
 							<i class="fa fa-envelope-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
 						</button>
 						<h2 class="headline">Verify your email address</h2>
-						<p class="description1 margin-bottom-40">Please let us know how can we reach you by email. To help keep your peerbuds account secure, make sure only you can
-						                                         log into this email address.</p>
+						<p class="description1 margin-bottom-40">Please let us know how can we reach you by email. To help keep your peerbuds
+							account secure, make sure only you can log into this email address.</p>
 						<mat-form-field [floatLabel]="'auto'" style="width:50% !important" class="pb-block margin-bottom-60 margin-top-20">
 							<input type="email" matInput #email formControlName="email" placeholder="Email Address" />
 						</mat-form-field>
@@ -115,7 +152,9 @@
 					<div class="col-md-12 bottom-section clearfix">
 						<div class="pull-right">
 							<span matTooltip="Please enter a valid email ID" [matTooltipDisabled]="!emailForm.controls.email.invalid || !emailForm.controls.email.dirty && emailForm.value.length !== 0">
-								<button mat-raised-button color="accent" (click)="continue(4)" [disabled]="(emailForm.controls['email'].invalid && emailForm.controls['email'].dirty) || email.value.length === 0  || httpLoading">Send Code</button>
+								<button mat-raised-button color="accent" (click)="continue(4)" [disabled]="(emailForm.controls['email'].invalid && emailForm.controls['email'].dirty) || email.value.length === 0  || httpLoading">Send
+									Code
+								</button>
 							</span>
 						</div>
 					</div>
@@ -148,7 +187,9 @@
 					<div class="col-md-12 bottom-section clearfix">
 						<div>
 							<span matTooltip="Please enter a valid code" [matTooltipDisabled]="inputEmailOTP.value.length === 6">
-								<button class="pb-block" mat-raised-button color="accent" (click)="continue(5)" [disabled]="inputEmailOTP.value.length !== 6 || httpLoading">Verify Email</button>
+								<button class="pb-block" mat-raised-button color="accent" (click)="continue(5)" [disabled]="inputEmailOTP.value.length !== 6 || httpLoading">Verify
+									Email
+								</button>
 							</span>
 						</div>
 					</div>
@@ -170,7 +211,9 @@
 								<h1 class="mat-title title-explore text-center">You're now ready to teach
 									<br> and learn anything to your heart's desires</h1>
 								<div class="checkbox margin-top-50">
-									<button mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" (click)="closeOnboarding()">Start Exploring</button>
+									<button mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" (click)="closeOnboarding()">Start
+										Exploring
+									</button>
 								</div>
 							</div>
 						</div>
