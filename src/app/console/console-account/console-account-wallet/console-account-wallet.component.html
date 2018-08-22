@@ -24,7 +24,7 @@
 				Create Wallet
 			</button>
 		</div>
-		<div class="col-xs-1">
+		<div class="col-xs-1" *ngIf="peer.ethAddress">
 			<button mat-icon-button (click)="toggleWalletId()">
 				<mat-icon *ngIf="!showWalletId">lock_outline</mat-icon>
 				<mat-icon *ngIf="showWalletId">lock_open</mat-icon>

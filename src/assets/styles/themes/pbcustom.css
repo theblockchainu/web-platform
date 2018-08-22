@@ -1836,6 +1836,10 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	background: none !important;
 }
 
+.search-form .mat-form-field-underline {
+	display: none !important;
+}
+
 .headerChat .mat-form-field-flex {
 	padding: 2px 15px !important;
 }
@@ -1846,6 +1850,14 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 
 .mat-fab .mat-button-wrapper {
 	padding: 0 !important;
+}
+
+.experience-header .mat-border-button {
+	margin: 0 5px !important;
+}
+
+.class-header .mat-border-button {
+	margin: 0 5px !important;
 }
 
 .classSelector .mat-form-field-underline {
@@ -1909,7 +1921,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 }
 
 .spinner-three-bounce {
-	z-index: 2;
+	z-index: 2 !important;
 }
 
 .gyanBubble {
