@@ -45,6 +45,8 @@ export class OnboardingDialogComponent implements OnInit {
 	public httpLoading = false;
 	public countryCodes: Array<CountryCode>;
 	public filteredCountryCodes: Observable<CountryCode[]>;
+	public userIdentities: Array<any>;
+	public passwordForm: FormGroup;
 
 	constructor(
 		public dialogRef: MatDialogRef<OnboardingDialogComponent>,
@@ -122,8 +124,25 @@ export class OnboardingDialogComponent implements OnInit {
 					})
 				);
 		});
+		this.passwordForm = this._fb.group({
+			password: ['', Validators.required],
+			confirmPassword: ['', Validators.required],
+
+		});
 		this.getUserProfile();
 		this.getUserCountry();
+		this.getIdentities();
+	}
+
+
+	private getIdentities() {
+		this.userIdentities = [];
+		const filter = {
+			include: ['identities']
+		};
+		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
+			this.userIdentities = res.identities;
+		});
 	}
 
 	private getUserProfile() {
@@ -143,12 +162,17 @@ export class OnboardingDialogComponent implements OnInit {
 		});
 	}
 
+
 	continue(p, isBack = false) {
 		if (isBack) {
 			this.step = p;
 		} else {
 			if (p === 1) {
-				this.step = 1;
+				if (this.userIdentities.length > 0) {
+					this.step = 6;
+				} else {
+					this.step = 1;
+				}
 			}
 			if (p === 2) {
 				this.sendPhoneOTP(p);
@@ -162,6 +186,23 @@ export class OnboardingDialogComponent implements OnInit {
 			if (p === 5) {
 				this.verifyEmail(p);
 			}
+		}
+	}
+
+	public submitPassword() {
+		this.httpLoading = true;
+		if (this.passwordForm.value.password === this.passwordForm.value.confirmPassword) {
+			this._profileService.setPassword(this.userId, this.passwordForm.value.password).subscribe(res => {
+				this.step = 1;
+				this.httpLoading = false;
+			}, err => {
+				console.log(err);
+				this.httpLoading = false;
+				this.snackBar.open('Error in setting password', 'Close', { duration: 3000 });
+			});
+		} else {
+			this.httpLoading = false;
+			this.snackBar.open('The passwords no not match', 'Close', { duration: 3000 });
 		}
 	}
 
