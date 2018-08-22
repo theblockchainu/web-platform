@@ -1,6 +1,6 @@
 <span class="clickable" (click)="openProfile()">
 	<img *ngIf="!peer.profiles || !peer.profiles[0].picture_url" #profilePic (mouseenter)="openProfileDialog($event)" (mouseleave)="closeProfileDialog()"
-	     src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb margin-top-5" style="margin-left: 0px; vertical-align: top;">
+	     src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb" style="margin-left: 0px; vertical-align: top;">
 	<img *ngIf="peer.profiles && peer.profiles[0].picture_url" #profilePic (mouseenter)="openProfileDialog($event)" (mouseleave)="closeProfileDialog()"
-	     src="{{envVariable.apiUrl+peer.profiles[0].picture_url + '/100'}}" class="circle-thumb margin-top-5" alt="dp" style="margin-left: 0px; vertical-align: top;">
+	     src="{{envVariable.apiUrl+peer.profiles[0].picture_url + '/100'}}" class="circle-thumb" alt="dp" style="margin-left: 0px; vertical-align: top;">
 </span>

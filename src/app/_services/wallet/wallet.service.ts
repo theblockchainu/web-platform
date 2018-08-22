@@ -62,7 +62,8 @@ export class WalletService {
 
 	public getKarmaToBurn(gyan: number) {
 		return this.http.post(environment.apiUrl + '/getKarmaToBurn', { gyan: gyan }, this.requestHeaderService.options).pipe(map((res: any) => {
-			if (res.karma) {
+			console.log(res);
+			if (res.karma || res.hasOwnProperty('karma') || res['karma']) {
 				return res.karma;
 			} else {
 				return res;

@@ -154,19 +154,19 @@
 							<div class="col-xs-8">
 								<div class="row" *ngIf="userType === 'public'">
 									<div class="col-md-12">
-										<mat-icon style="top: 7px;">schedule</mat-icon>&emsp;
+										<mat-icon style="top: 7px; margin-right: 15px;">schedule</mat-icon>&emsp;
 										<span>{{totalDuration | i18nPlural : hourMapping}} total</span>
 									</div>
 									<div class="col-md-12 margin-top-10">
-										<mat-icon style="top: 7px;">mic</mat-icon>&emsp;
+										<mat-icon style="top: 7px; margin-right: 15px;">mic</mat-icon>&emsp;
 										<span>Offered in {{class.language[0]}}</span>
 									</div>
 									<div class="col-md-12 margin-top-10">
-										<mat-icon style="top: 7px;">dvr</mat-icon>&emsp;
+										<mat-icon style="top: 7px; margin-right: 15px;">dvr</mat-icon>&emsp;
 										<span>{{getContentCount('project') | i18nPlural : projectMapping}}</span>
 									</div>
 									<div class="col-md-12 margin-top-10">
-										<mat-icon style="top: 7px;">live_tv</mat-icon>&emsp;
+										<mat-icon style="top: 7px; margin-right: 15px;">live_tv</mat-icon>&emsp;
 										<span>{{getContentCount('online') | i18nPlural : onlineSessionMapping}}</span>
 									</div>
 								</div>
