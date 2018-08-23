@@ -153,7 +153,7 @@ export class IndexComponent implements OnInit {
 	}
 
 	public openTelegram() {
-		window.location.href = 'https://t.me/peerbuds';
+		window.location.href = 'https://t.me/theblockchainu';
 	}
 
 	private setTags() {
