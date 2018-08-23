@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-md-12">
+        <div *ngIf="loadingCards" class="loading-container">
+            <ngx-loading [show]="true"></ngx-loading>
+        </div>
+        <div class="row" *ngIf="!loadingCards">
+            <div class="col-md-4" style="margin-top: 20px;">
+                <mat-card class="credit-card">
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <a class="text-center" (click)="addCard()">
+                                    <div class="col-md-12">
+                                        <mat-icon style="font-size:70px">add</mat-icon>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <span>Add Payment Method</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="col-md-4" *ngFor="let card of listAllCards" style="margin-top: 20px;">
+                <mat-card class="credit-card">
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span>XXXX XXXX XXXX {{card.last4}}</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <span>{{card.exp_month}}/{{card.exp_year}}</span>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-top: 30px">
+                                    <div class="col-md-10">
+                                        <a class="lightText" (click)="deleteCard(card.id)">
+                                            Remove
+                                        </a>
+                                        <span matTooltip="Do you want to remove this card ?" style="cursor:pointer">
+                                            <mat-icon style="font-size: 14px">help</mat-icon>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <img class="card-brand" src="/assets/icon/payment-icons/svg/single/{{card.brand.split(' ')[0] | lowercase}}.svg" alt="{{card.brand}}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

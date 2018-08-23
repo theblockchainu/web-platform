@@ -1,0 +1,36 @@
+<div class="main-content">
+	<div class="col-md-10 col-md-offset-1 homeContainer">
+		<div class="feed peerFeed">
+			<div class="row peer-feed">
+				<div class="col-md-12">
+					<div class="mat-display-1" style="margin-bottom: 5px !important; margin-top: 10px;">
+						Explore The Blockchain University
+					</div>
+					<app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
+					<div class="mat-display-1" style="margin-bottom: 25px !important;">
+						All peers teaching
+						<span class="mat-display-1" *ngIf="selectedTopics && selectedTopics.length !== 0">
+							<span *ngFor="let topicObj of selectedTopics;let i=index">
+								{{topicObj.name}}
+							</span>
+							<mat-icon class="clickable" style="font-size: 12px; font-weight: 200;" (click)="resetTopics()">
+								close
+							</mat-icon>
+						</span>
+					</div>
+					<div class="loading-container" [hidden]="!loading">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loading" class="row feed-horizontal margin-bottom-70" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="peers === undefined || peers.length === 0">
+							There are no peers to view with the selected criteria.
+						</div>
+						<div *ngFor="let peer of peers">
+							<app-peer-card [peer]="peer"></app-peer-card>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

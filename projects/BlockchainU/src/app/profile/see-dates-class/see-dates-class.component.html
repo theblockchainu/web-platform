@@ -1,0 +1,38 @@
+<div class="modal-body">
+	<div class="position-relative">
+		<button type="button" class="close" aria-label="Close">&times;</button>
+		<div class="session-join-content">
+			<h3 class="session-head">When can you attend?</h3>
+			<!-- <div class="seperate-section" *ngFor="let class of classes">
+			  <div *ngFor="let calendar of class.calendars">
+				<button class="btn btn-success session-join-btn">Choose Dates</button>
+				<div class="fs-18 margin-bottom-20">{{ calendar.startDate | date: 'EEE, MMM dd' }} - {{ calendar.endDate | date: 'EEE, MMM dd' }}</div>
+				<a href="javascript:void(0);" class="fs-13 text-link display-inline-block margin-bottom-10" (click)="showHideSession[$index] =! showHideSession[$index]">View schedule</a>
+				<div class="session-list-box" [hidden]="showHideSession[$index]">
+				  <div class="session-list" *ngFor="let content of calendar.contents">
+					<span class="display-inline-block margin-bottom-10">{{ content.schedules[0].startDate | date: 'EEE, MMM dd' }}</span>
+					<br>
+					<span class="display-inline-block">{{ content.schedules[0].startTime | date:'h:mm a' }} - {{ content.schedules[0].endTime | date:'h:mm a' }}</span>
+				  </div>
+				</div>
+			  </div>
+			</div> -->
+			<!--<div class="seperate-section">
+			  <button class="btn btn-success session-join-btn">Choose Dates</button>
+			  <span class="display-inline-block margin-bottom-5">Session 2</span>
+			  <div class="fs-18 margin-bottom-20">Sat, 19 Aug-Sun - 20th-Aug</div>
+			  <div class="session-list-box" *ngIf="showHideSession2">
+				<div class="session-list">
+				  <span class="display-inline-block margin-bottom-10">How to cook <span class="bullet">Online session</span></span><br>
+				  <span class="display-inline-block margin-bottom-10">Tue, 27th jun</span><br>
+				  <span class="display-inline-block">10.00 - 16.00</span>
+				</div>
+			  </div>
+			  <a href="javascript:void(0);" class="fs-13 text-grey" (click)="toggleSession(2);">{{showHideSession2 ? "Hide schedule" : "Show schedule"}}
+				  <i class="fa fa-angle-up" *ngIf="showHideSession2"></i>
+				  <i class="fa fa-angle-down" *ngIf="!showHideSession2"></i>
+			  </a>
+			</div>-->
+		</div>
+	</div>
+</div>

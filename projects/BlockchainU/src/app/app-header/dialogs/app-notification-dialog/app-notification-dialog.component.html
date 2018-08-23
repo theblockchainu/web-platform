@@ -1,0 +1,47 @@
+<div class="dialog-container" style="padding: 20px 25px 0px !important;">
+	<div class="row">
+		<div class="col-md-12">
+			<div *ngIf="!loaded" class="center">
+				<div class="loading-container">
+					<ngx-loading [show]="true"></ngx-loading>
+					<br>
+					<br>
+					<br>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" *ngIf="loaded">
+		<div class="col-xs-8">
+			<div class="mat-body-2">Notifications</div>
+		</div>
+		<div class="col-xs-4" style="text-align: right">
+			<p style="cursor: pointer;" (click)="openViewAll()">View all</p>
+		</div>
+	</div>
+	<div class="row margin-top-20">
+		<div class="col-md-12">
+			<div>
+				<div *ngFor="let notification of notifications">
+					<div *ngIf="!notification.hidden">
+						<div [ngClass]="{'row': true, 'notificationsRow': true, 'notificationsRowUnread': !notification.seen}" (click)="onNotificationClick(notification)">
+							<div class="col-md-2 col-xs-2">
+								<img *ngIf="!notification.actor[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb notificationsImage">
+								<img *ngIf="notification.actor[0].profiles[0].picture_url" src="{{envVariable.apiUrl + notification.actor[0].profiles[0].picture_url + '/100'}}"
+								     alt="A" class="circle-thumb notificationsImage">
+							</div>
+							<div class="col-md-8 col-xs-8" style="padding-left: 25px;">
+								<!--Content here-->
+								<div innerHTML="{{getNotificationText(notification)}}"></div>
+								<h6 class="mat-caption" style="margin-top: 0px;">{{getNotificationTime(notification)}}</h6>
+							</div>
+							<div class="col-md-1 col-xs-1" style="top: 10px;">
+								<mat-icon class="lightText" style="font-size: 10px; cursor: pointer;" (click)="hideNotification(notification)">close</mat-icon>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

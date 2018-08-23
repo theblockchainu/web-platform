@@ -1,0 +1,13 @@
+<div class="dialog-container">
+  <h1 mat-dialog-title>Cancel {{data.type | titlecase}} ?</h1>
+  <div class="row">
+    <div class="col-xs-12">
+      Are you sure you want to cancel
+      <b>{{data.title |titlecase}}</b>?
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="cancel()" color="warn" tabindex="2">Ok</button>
+    <button mat-button [mat-dialog-close] tabindex="-1">No Thanks</button>
+  </div>
+</div>

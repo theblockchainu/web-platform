@@ -1,0 +1,136 @@
+@charset "utf-8";
+/* CSS Document */
+
+$size: 0;
+
+// descriptive colors
+// =============
+
+$hopbush:                   #c69;
+$bouquet:                   #b37399;
+$venus:                     #998099;
+$patina:                    #699;
+$nebula:                    #d2e1dd;
+$white:                     #fff;
+$dawn-pink:                 #f2ece4;
+$wafer:                     #e1d7d2;
+$iron:                      #dadbdf;
+$regent-grey:               #808c99;
+$pale-sky:                  #6b717f;
+$midnight-blue:             #036;
+$black:                     #000;
+$dark-grey:                #333;
+$grey:                     #666;
+$light-grey:               #999;
+$red:                      #f67864;
+
+
+// --------------------- Custom Mixin made by Mohit -----------------------
+
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin thumb($size){
+    width: $size+px;
+    height: $size+px;
+}
+
+@mixin lh($size){
+    line-height: $size+px;
+}
+
+@while $size <= 100 {
+    .margin-top-#{$size} {
+        margin-top: $size+px;
+    }
+    .margin-bottom-#{$size} {
+        margin-bottom: $size+px;
+    }
+    .margin-left-#{$size} {
+        margin-left: $size+px;
+    }
+    .margin-right-#{$size} {
+        margin-right: $size+px;
+    }
+    .padding-top-#{$size} {
+        padding-top: $size+px!important;
+    }
+    .padding-bottom-#{$size} {
+        padding-bottom: $size+px!important;
+    }
+    .padding-left-#{$size} {
+        padding-left: $size+px!important;
+    }
+    .padding-right-#{$size} {
+        padding-right: $size+px!important;
+    }
+    $size:($size+5);
+}
+
+.margin-0{ margin:0!important; }
+.padding-0{ padding:0!important; }
+
+.thumb-circle{ border-radius:50%; }
+.thumb-circle-left{ border-radius:50% 0 0 50%; }
+.thumb-circle-right{ border-radius:0 50% 50% 0; }
+.thumb-10{ @include thumb(10); }
+.thumb-16{ @include thumb(16); }
+.thumb-20{ @include thumb(20); }
+.thumb-28{ @include thumb(28); }
+.thumb-30{ @include thumb(30); }
+.thumb-35{ @include thumb(35); }
+.thumb-38{ @include thumb(38); }
+.thumb-40{ @include thumb(40); }
+.thumb-50{ @include thumb(50); }
+.thumb-60{ @include thumb(60); }
+.thumb-80{ @include thumb(80); }
+.thumb-100{ @include thumb(100); }
+.thumb-144{ @include thumb(144); }
+.thumb-160{ @include thumb(160); }
+.thumb-180{ @include thumb(180); }
+
+.border{ border:1px solid #ccc; }
+.border-radius-0{ @include border-radius(0px); }
+.border-radius-2{ @include border-radius(2px); }
+.border-radius-2-left{ border-radius:2px 0 0 2px !important; }
+.border-radius-2-right{ border-radius:0 2px 2px 0 !important; }
+.border-radius-5{ @include border-radius(5px); }
+.border-radius-50{ @include border-radius(50%); }
+.border-left-1{ border-left:1px solid rgba(74,74,74,0.2); }
+.border-width-2{ border-width:2px!important; }
+.border-none{ border:none!important; }
+.position-absolute{ position:absolute; }
+.position-relative{ position:relative; }
+.display-block{ display:block; }
+.display-inline-block{ display:inline-block; }
+.display-table{ display:table; }
+.display-table-cell{ display:table-cell; }
+.text-grey{ color: $light-grey; }
+.text-dark-grey{ color: $grey; }
+.text-red{ color: $red; }
+.vertical-align-top{ vertical-align:top!important; }
+.vertical-align-middle{ vertical-align:middle!important; }
+.text-center{ text-align:center!important; }
+.text-white{ color: $white; }
+.text-black{ color:#4a4a4a!important; }
+.text-upper{ text-transform:uppercase; }
+.bg-black{ background-color: $black; color:$white; }
+.bg-white{ background-color: $white; color:$dark-grey; }
+
+.text-underline{text-decoration:underline !important;}
+.text-italic{ font-style:italic !important; }
+.seperator{ border-bottom:1px solid #e5e5e5; }
+.fw-300{ font-weight:300; }
+.fw-normal{ font-weight:normal; }
+.fw-600{ font-weight:600; }
+.fw-bold{ font-weight:bold; }
+.float-none{ float:none!important; }
+.overflow-hidden{ overflow:hidden; }
+.lh-18{@include lh(18);}
+.lh-28{@include lh(28);}
+.lh-24{@include lh(24);}
+.lh-38{@include lh(38);}

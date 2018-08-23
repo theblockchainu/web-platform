@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-12">
+    <div *ngIf="!loaded" class="loading-container">
+      <ngx-loading [show]="true"></ngx-loading>
+    </div>
+  </div>
+</div>
+<div class="row margin-top-10" *ngIf="loaded">
+  <div class="col-md-12">
+    <div class="mat-body-2">
+      Other settings
+    </div>
+    <div class="row margin-top-30">
+      <div class="col-md-8">
+        <b>Delete Account</b><br>
+        Delete your The Blockchain University account permanently
+      </div>
+      <div class="col-md-4">
+        <button mat-button color="primary" (click)="deleteAccount()" class="mat-border-button">
+          <span *ngIf="!busyDeleteAccount">Delete my account</span>
+          <span *ngIf="busyDeleteAccount"> </span>
+          <ngx-loading [show]="busyDeleteAccount"></ngx-loading>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <hr>
+  </div>
+  <div class="col-md-12">
+    <div class="row margin-top-30">
+      <div class="col-md-1">
+        <mat-checkbox [checked]="true"></mat-checkbox>
+      </div>
+      <div class="col-md-11">
+        <b>Make me invisible in Google Search</b>
+        <br>
+        Turn on or off the option
+      </div>
+    </div>
+    <div class="row margin-top-30">
+      <div class="col-md-1">
+        <mat-checkbox [checked]="true"></mat-checkbox>
+      </div>
+      <div class="col-md-11">
+        <b>Let other peers to message you</b>
+        <br>
+        Turn on or off the option
+      </div>
+    </div>
+  </div>
+</div>

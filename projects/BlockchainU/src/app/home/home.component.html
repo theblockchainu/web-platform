@@ -1,0 +1,352 @@
+<div class="main-content">
+	<button disableRipple mat-button style="min-width: 20px;padding: 6px 9px 0px 9px;vertical-align: middle; position: absolute; top: 90px; right: 30px; border-radius: 200px;"
+	 (click)="closeHome()">
+		<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+	</button>
+	<div class="col-md-10 col-md-offset-1 homeContainer">
+		<div class="row welcome-feed">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2">
+						<div class="mat-display-1" style="margin-bottom: 30px;">Welcome,
+							<span *ngIf="!loadingPeerData && loggedInPeer">{{loggedInPeer.profiles[0].first_name | ucwords}}!</span>
+						</div>
+					</div>
+					<!--<div class="col-md-2 pull-right" style="text-align: right" *ngIf="!loadingPeerData && loggedInPeer">
+						<a [routerLink]="['/profile', loggedInPeer.id]">
+							<span class="mat-body-1">
+								See profile
+								<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+							</span>
+						</a>
+					</div>-->
+				</div>
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2">
+						<div class="loading-container" [hidden]="!loadingPeerData">
+							<ngx-loading [show]="true"></ngx-loading>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="!loadingPeerData" class="row feed-horizontal margin-bottom-60" style="padding: 0px 15px;">
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2">
+							<div class="mat-subheading-1">
+								The Blockchain University lets you get credits for learning that happens anywhere, even when you do the things you love.
+								<br> Follow the steps below to get started.
+							</div>
+						</div>
+					</div>
+					<div class="row margin-top-30">
+						<div class="col-md-offset-2 col-md-4">
+							<button mat-button mat-raised-button [routerLink]="['/home', 'homefeed']" class="pb-block clickable" style="height: 250px; text-align: left; background: url('/assets/images/class_icon2.jpg'); background-size: cover; color: #fff;">
+								<div style="position: absolute; bottom: 0; padding: 10px 15px; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
+									<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Continue as a student</span>
+									&emsp;&emsp;&emsp; <i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
+									<br/>
+									<span class="mat-caption lightText">Explore classes, experiences and communities</span>
+								</div>
+							</button>
+						</div>
+						<div class="col-md-4">
+							<button mat-button mat-raised-button [routerLink]="['/console', 'teaching', 'all']" class="pb-block clickable" style="height: 250px; text-align: left; background: url('/assets/images/communities_icon1.jpg'); background-size: cover; color: #fff;">
+								<div style="position: absolute; bottom: 0; padding: 10px 15px; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
+									<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Continue as a teacher</span>
+									&emsp;&emsp;&emsp; <i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
+									<br/>
+									<span class="mat-caption lightText">Create a new class, experience or peer session</span>
+								</div>
+							</button>
+						</div>
+					</div>
+					<div class="row margin-top-30">
+						<div class="col-md-8 col-md-offset-2">
+							<div class="btn-hide position-relative text-center">
+								<div class="or-seperator-vertical"></div>
+								<span class="round-or-text or-text-vertical">or</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2">
+							<div class="welcome-feed-accordian" *ngIf="completeVerifySteps !== totalVerifySteps">
+								<mat-accordion class="welcome-feed-accordian">
+									<mat-expansion-panel class="verify-panel" [expanded]="true">
+										<mat-expansion-panel-header>
+											<mat-panel-title>
+												<i class="fa fa-question-circle-o expansion-panel-header-icon pending" style="top: 3px; position: relative;"></i>&emsp; Verify your account
+											</mat-panel-title>
+											<mat-panel-description>
+												{{completeVerifySteps}}/{{totalVerifySteps}}
+											</mat-panel-description>
+										</mat-expansion-panel-header>
+										<div class="row margin-top-30">
+											<div class="col-md-12">
+												Complete your identity to ensure your information is accurate and trustworthy. Once completed, you can record your learning
+												activities on the blockchain and start earning tokens.
+											</div>
+										</div>
+										<div class="row margin-top-30 margin-bottom-30">
+											<div class="col-md-6 center">
+												<mat-card class="verify-account-task-card">
+													<img src="../../assets/images/social-not-verified.svg" class="verify-account-task-image">
+													<div class="mat-subheading-1 margin-top-10">
+														Verify Social Accounts
+													</div>
+													<button mat-button color="primary" *ngIf="!loggedInPeer.accountVerified" [routerLink]="['/console', 'profile', 'verification']"
+													 class="margin-top-60 mat-border-button">Verify</button>
+													<button mat-button color="primary" *ngIf="loggedInPeer.accountVerified" class="margin-top-60 mat-border-button" disabled>Verified</button>
+												</mat-card>
+											</div>
+											<div class="col-md-6 center">
+												<mat-card class="verify-account-task-card">
+													<img src="../../assets/images/profile-not-verified.svg" class="verify-account-task-image">
+													<div class="mat-subheading-1 margin-top-10" style="margin-bottom: 0;">
+														Complete Your Profile
+													</div>
+													<mat-progress-bar mode="determinate" value="{{profileCompletionObject.progress}}" style="width:50%;display: inline-block"></mat-progress-bar>
+													<button mat-button color="primary" *ngIf="profileCompletionObject.progress < 100" [routerLink]="['/console', 'profile', 'edit']"
+													 class="margin-top-30 mat-border-button">Complete Profile</button>
+													<button mat-button color="primary" *ngIf="profileCompletionObject.progress === 100" class="margin-top-30 mat-border-button"
+													 disabled>Profile Complete</button>
+												</mat-card>
+											</div>
+										</div>
+									</mat-expansion-panel>
+								</mat-accordion>
+							</div>
+							<div class="welcome-feed-accordian" *ngIf="!socialConnections.linkedin || !socialConnections.google || !socialConnections.fb">
+								<mat-accordion class="welcome-feed-accordian">
+									<mat-expansion-panel [expanded]="true">
+										<mat-expansion-panel-header>
+											<mat-panel-title>
+												<i *ngIf="!socialConnections.linkedin || !socialConnections.google || !socialConnections.fb" class="fa fa-check-circle-o expansion-panel-header-icon pending"
+												 style="top: 3px; position: relative;"></i>
+												<i *ngIf="socialConnections.linkedin && socialConnections.google && socialConnections.fb" class="fa fa-check-circle expansion-panel-header-icon complete"
+												 style="top: 3px; position: relative;"></i>
+												&emsp; Grab your network
+											</mat-panel-title>
+										</mat-expansion-panel-header>
+										<div class="row margin-top-30 margin-bottom-30">
+											<div class="col-md-5 center">
+												<img src="../../assets/images/profile-not-verified.svg" class="verify-account-task-image">
+											</div>
+											<div class="col-md-7">
+												<div class="row">
+													<div class="col-md-12">
+														Import your professional network so you can keep track of your professional contacts across your accounts.
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12 margin-top-20">
+														<a mat-raised-button class="invert-google btn-block" href="{{envVariable.apiUrl}}/auth/google?returnTo=home/homefeed">
+															<span class="circle-icon2">
+																<i class="fa fa-google"></i>
+															</span>Import Google
+														</a>
+													</div>
+													<div class="col-md-12 margin-top-20">
+														<a mat-raised-button class="invert-fb btn-block" href="{{envVariable.apiUrl}}/auth/facebook?returnTo=home/homefeed">
+															<span class="circle-icon1">
+																<i class="fa fa-facebook-f"></i>
+															</span>Import Facebook
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</mat-expansion-panel>
+								</mat-accordion>
+							</div>
+							<div class="welcome-feed-accordian">
+								<mat-accordion class="welcome-feed-accordian">
+									<mat-expansion-panel [expanded]="true">
+										<mat-expansion-panel-header>
+											<mat-panel-title>
+												<i class="fa fa-check-circle-o expansion-panel-header-icon pending" style="top: 3px; position: relative;"></i>&emsp; Invite and Earn
+											</mat-panel-title>
+										</mat-expansion-panel-header>
+										<div class="row margin-top-30 margin-bottom-30">
+											<div class="col-md-5 center">
+												<img src="../../assets/images/invite-and-earn-step.svg" class="verify-account-task-image">
+											</div>
+											<div class="col-md-7">
+												<div class="row">
+													<div class="col-md-12">
+														We believe in building a network that brings value to everyone involved. That’s why we’re rewarding you for each friend that
+														joins Blockchain University and verifies their account.
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12 margin-top-20">
+														<button mat-button mat-raised-button color="primary" [routerLink]="['/invite', '1']" class="margin-top-30">Invite and Earn</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</mat-expansion-panel>
+								</mat-accordion>
+							</div>
+							<div class="welcome-feed-accordian" *ngIf="loggedInPeer && loggedInPeer.accountVerified">
+								<mat-accordion class="welcome-feed-accordian">
+									<mat-expansion-panel [expanded]="true">
+										<mat-expansion-panel-header>
+											<mat-panel-title>
+												<i class="fa fa-check-circle-o expansion-panel-header-icon pending" style="top: 3px; position: relative;"></i>&emsp; Utilize your Scholarships
+											</mat-panel-title>
+										</mat-expansion-panel-header>
+										<div class="row margin-top-30 margin-bottom-30">
+											<div class="col-md-5 center">
+												<img src="../../assets/images/invite-and-earn-step.svg" class="verify-account-task-image">
+											</div>
+											<div class="col-md-7">
+												<div class="row">
+													<div class="col-md-12">
+														As an early adopter of your Blockchain University platform, you have been enrolled in to
+														<b>The Blockchain University Global Scholarship</b>, a 100 Million Karma fund setup by The Blockchain University Inc.
+														<br>
+														<br> You can use these funds towards your learning costs till they last.
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12 margin-top-20">
+														<button mat-button mat-raised-button color="primary" [routerLink]="['/scholarship', 'global']" class="margin-top-30">View Global Scholarship Fund</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</mat-expansion-panel>
+								</mat-accordion>
+							</div>
+							<div class="welcome-feed-accordian" *ngIf="loggedInPeer && loggedInPeer.accountVerified">
+								<mat-accordion class="welcome-feed-accordian">
+									<mat-expansion-panel [expanded]="true">
+										<mat-expansion-panel-header>
+											<mat-panel-title>
+												<i class="fa fa-check-circle-o expansion-panel-header-icon pending" style="top: 3px; position: relative;"></i>&emsp; Add Interested Topics
+											</mat-panel-title>
+										</mat-expansion-panel-header>
+										<div class="row margin-top-30 margin-bottom-30">
+											<div class="col-md-5 center">
+												<img src="../../assets/images/invite-and-earn-step.svg" class="verify-account-task-image">
+											</div>
+											<div class="col-md-7">
+												<div class="row">
+													<div class="col-md-12">
+														Select from a list of available topics the ones you wish to learn more about and the ones you can teach to others. We keep
+														adding more new topics every day. So be sure to check out again if you missed out last time.
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12 margin-top-20">
+														<button mat-button mat-raised-button color="primary" [routerLink]="['/console', 'profile', 'topics']" class="margin-top-30">Add Topics</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</mat-expansion-panel>
+								</mat-accordion>
+							</div>
+							<div class="welcome-feed-accordian">
+								<mat-accordion class="welcome-feed-accordian">
+									<mat-expansion-panel [expanded]="true">
+										<mat-expansion-panel-header>
+											<mat-panel-title>
+												<i class="fa fa-check-circle-o expansion-panel-header-icon pending" style="top: 3px; position: relative;"></i>&emsp; Join the Blockchain University community
+											</mat-panel-title>
+										</mat-expansion-panel-header>
+										<div class="row margin-top-30">
+											<div class="col-md-12">
+												Be the first to know about Blockchain University's latest partnerships and product updates, and take part in the evolving conversation
+												about the future of our project.
+											</div>
+										</div>
+										<div class="row margin-top-30 margin-bottom-30">
+											<div class="col-md-3 center margin-top-20">
+												<mat-card class="join-community-item-card">
+													<i class="fab fa-telegram community-join-icon"></i>
+													<div class="mat-subheading-1 margin-top-10">
+														Telegram
+													</div>
+													<a mat-button color="primary" class="mat-border-button margin-top-20" href="https://t.me/peerbuds">Join</a>
+												</mat-card>
+											</div>
+											<div class="col-md-3 center margin-top-20">
+												<mat-card class="join-community-item-card">
+													<i class="fab fa-medium community-join-icon"></i>
+													<div class="mat-subheading-1 margin-top-10">
+														Medium
+													</div>
+													<a mat-button color="primary" class="mat-border-button margin-top-20" href="https://medium.com/peerbudsinc">Follow</a>
+												</mat-card>
+											</div>
+											<div class="col-md-3 center margin-top-20">
+												<mat-card class="join-community-item-card">
+													<i class="fab fa-linkedin community-join-icon"></i>
+													<div class="mat-subheading-1 margin-top-10">
+														LinkedIn
+													</div>
+													<a mat-button color="primary" class="mat-border-button margin-top-20" href="https://linkedin.com/company/peerbuds">Join</a>
+												</mat-card>
+											</div>
+											<div class="col-md-3 center margin-top-20">
+												<mat-card class="join-community-item-card">
+													<i class="fab fa-twitter community-join-icon"></i>
+													<div class="mat-subheading-1 margin-top-10">
+														Twitter
+													</div>
+													<a mat-button color="primary" class="mat-border-button margin-top-20" href="https://twitter.com/peerbuds">Follow</a>
+												</mat-card>
+											</div>
+											<div class="col-md-3 center margin-top-20">
+												<mat-card class="join-community-item-card">
+													<i class="fab fa-facebook-f community-join-icon"></i>
+													<div class="mat-subheading-1 margin-top-10">
+														Facebook
+													</div>
+													<a mat-button color="primary" class="mat-border-button margin-top-20" href="https://facebook.com/peerbuds">Follow</a>
+												</mat-card>
+											</div>
+											<div class="col-md-3 center margin-top-20">
+												<mat-card class="join-community-item-card">
+													<i class="fab fa-github community-join-icon"></i>
+													<div class="mat-subheading-1 margin-top-10">
+														Github
+													</div>
+													<a mat-button color="primary" class="mat-border-button margin-top-20" href="https://github.com/peerbuds">Watch</a>
+												</mat-card>
+											</div>
+											<div class="col-md-3 center margin-top-20">
+												<mat-card class="join-community-item-card">
+													<i class="fab fa-reddit community-join-icon"></i>
+													<div class="mat-subheading-1 margin-top-10">
+														Reddit
+													</div>
+													<a mat-button color="primary" class="mat-border-button margin-top-20" href="https://reddit.com/r/peerbuds">Subscribe</a>
+												</mat-card>
+											</div>
+											<div class="col-md-3 center margin-top-20">
+												<mat-card class="join-community-item-card">
+													<i class="fab fa-youtube community-join-icon"></i>
+													<div class="mat-subheading-1 margin-top-10">
+														Youtube
+													</div>
+													<a mat-button color="primary" class="mat-border-button margin-top-20" href="https://www.youtube.com/channel/UCu2wZg5_SDJJjlTXDI7OTcw">Subscribe</a>
+												</mat-card>
+											</div>
+										</div>
+									</mat-expansion-panel>
+								</mat-accordion>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--<div class="row">
+			<div class="col-md-12">
+				<router-outlet></router-outlet>
+			</div>
+		</div>-->
+	</div>
+</div>

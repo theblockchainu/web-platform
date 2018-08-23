@@ -1,0 +1,215 @@
+<div class="dialog-container" mat-dialog-content>
+    <div class="mat-dialog-focus-trap"></div>
+    <form [formGroup]="recurring">
+        <div class="row margin-bottom-10" style="margin-left:0px">
+            <button mat-button class="col-md-1 mat-icon-button dialog-close-button" type="button" (click)="addDeleteEvents()">
+                <mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+            </button>
+            <div class="col-md-5">
+                <h3 mat-dialog-title>Add more cohorts to your {{ duration }} day {{collection.type}}</h3>
+                <div>
+                    <span>You have
+                        <b>{{calendars.length}}</b> existing cohorts</span> &emsp;
+                    <a href="javascript:void(0);" (click)="viewCohorts()">View and manage</a>
+                </div>
+            </div>
+            <div class="col-md-6 pull-right" style="text-align: right;" *ngIf="recurringCount">
+                <h3 style="margin-bottom:10px">The Blockchain University Insights</h3>
+                <div>
+                    <label>You will have total of
+                        <b>{{ recurringCount }}</b> cohorts</label>
+                </div>
+                <div style="margin-top:5px">
+                    <label>Your {{collection.type}} will run for
+                        <b>{{ totalRunningDays }}</b> of the next
+                        <b>{{nextDays}}</b> days</label>
+                </div>
+            </div>
+        </div>
+        <hr style="margin-top: 0px;">
+        <div class="content">
+            <div class="row margin-bottom-20">
+                <div class="col-md-6 right-border">
+                    <div class="leftContent">
+                        <p class="mat-caption" *ngIf="calendars.length === 1">
+                            <mat-icon style="vertical-align:sub;font-size: 16px;">info</mat-icon>
+                            Your first cohort was automatically created when this {{collection.type}} was approved. You can add more cohorts to your {{collection.type}} at any time.
+                        </p>
+                        <br>
+                        <label *ngIf="calendars.length > 0">After your last existing cohort ends, the next cohort starts...</label>
+                        <br>
+                        <br>
+                        <mat-radio-group class="repeat-class-group" formControlName="repeatClassGroupOption" (change)="repeatFrequency($event.value)">
+                            <mat-radio-button class="repeat-class-button margin-bottom-10" value="immediate">
+                                <span>Immediately</span>
+                            </mat-radio-button>
+                            <mat-radio-button class="repeat-class-button margin-bottom-10" value="days">
+                                <span class="valignMiddle">after</span>
+                                &nbsp;&nbsp;
+                                <mat-form-field [floatLabel]="'always'">
+                                    <mat-select formControlName="days" class="widthDays padding-top-0" (change)="computeDays($event.value)">
+                                        <mat-option *ngFor="let day of daysOption" [value]="day">{{day}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <span class="valignMiddle">&nbsp;&nbsp;days</span>
+                            </mat-radio-button>
+                            <mat-radio-button class="repeat-class-button margin-bottom-10" value="weekdays">
+                                <span class="valignMiddle">from the next</span>
+                                &nbsp;&nbsp;
+                                <mat-form-field [floatLabel]="'always'">
+                                    <mat-select formControlName="weekdays" class="padding-top-0" (change)="computeWeekday($event.value)">
+                                        <mat-option *ngFor="let day of weekDayOption" [value]="day.value">{{day.text}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </mat-radio-button>
+                        </mat-radio-group>
+                        <div class="margin-top-40 flex-column">
+                            <label>It will continue repeating up to..</label>
+                            <br>
+                            <mat-radio-group class="repeat-class-group" formControlName="repeatTillOption" (change)="repeatTill($event.value)">
+                                <mat-radio-button class="repeat-class-button margin-bottom-10" value="daysRepeat">
+                                    &nbsp;&nbsp;
+                                    <mat-form-field [floatLabel]="'always'">
+                                        <mat-select formControlName="daysRepeat" class="widthDays padding-top-0" (change)="repeatTillTrigger()">
+                                            <mat-option *ngFor="let day of daysOption" [value]="day">{{day}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <span class="valignMiddle">&nbsp;&nbsp;more sessions</span>
+                                </mat-radio-button>
+                                <mat-radio-button class="repeat-class-button margin-bottom-10" value="monthsRepeat">
+                                    &nbsp;&nbsp;
+                                    <mat-form-field [floatLabel]="'always'">
+                                        <mat-select formControlName="monthsRepeat" class="widthDays padding-top-0" (change)="repeatTillTrigger()">
+                                            <mat-option *ngFor="let month of monthOption" [value]="month">{{month}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <span class="valignMiddle">&nbsp;&nbsp;more months</span>
+                                </mat-radio-button>
+                                <mat-radio-button class="repeat-class-button margin-bottom-10" value="dateRepeat">
+                                    <span class="valignMiddle">the date</span>
+                                    &nbsp;&nbsp;
+                                    <mat-form-field [floatLabel]="'always'">
+                                        <input matInput [min]="minDate" [matDatepicker]="dateRepeat" formControlName="dateRepeat" (change)="repeatTillTrigger()">
+                                        <mat-datepicker-toggle matSuffix [for]="dateRepeat"></mat-datepicker-toggle>
+                                    </mat-form-field>
+                                    <mat-datepicker #dateRepeat></mat-datepicker>
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                </div>
+                <div class="editCalendar col-md-6 rightContent">
+                    <div class="calendar" style="margin-right:10px;">
+                        <h3>Preview Cohorts</h3>
+	                    <div class="caption margin-top-20 margin-bottom-20" *ngIf="(!recurringCalendar || recurringCalendar.length === 0) || computedConflict.length === 0">
+		                    Select from the options on the left and we will show you a list of all cohorts that will be added based on your selection.
+	                    </div>
+                        <div *ngIf="(recurringCalendar && recurringCalendar.length > 0) || computedConflict.length > 0">
+                            <div class="margin-top-30 flex-column" *ngIf="computedConflict.length > 0">
+                                <h3>Avoid Conflicts</h3>
+                                <div>
+                                    <label>{{computedConflict.length}} of your {{collection.type}} sessions will have conflicts
+                                        with
+                                        <br/> existing calendar events.</label>
+                                </div>
+                                <div class="margin-top-20 margin-bottom-20">
+                                    <button mat-button class="mat-border-button" color="primary" (click)="viewConflict()">View Conflict</button>
+                                </div>
+                            </div>
+                            <p-accordion (onOpen)="onTabOpen($event)" (onClose)="onTabClose($event)">
+                                <p-accordionTab *ngFor="let day of recurringCalendar; let i=index" tabindex="-1">
+                                    <p-header>
+                                        <div *ngIf="!day.markedForDelete">
+                                            <div class="row">
+                                                <div class="col-md-8 padding-left-0">
+                                                    <div class="col-md-12 padding-left-0">
+                                                        <div class="margin-top-20 margin-bottom-20">
+                                                            <span class="mat-body-2">
+                                                                {{day.startDate | date:'EEE, MMM d'}} to {{day.endDate | date:'EEE, MMM d'}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12  padding-left-0">
+                                                        <h5 *ngIf="i!==selectedIndex">
+                                                            <b>View Schedule</b>
+                                                        </h5>
+                                                        <h5 *ngIf="i===selectedIndex">
+                                                            <b>Hide Schedule</b>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p-header>
+                                    <div class="accordianContent">
+                                        <div class="row">
+                                            <div class="col-md-12 padding-left-0" *ngFor="let content of day.content">
+                                                <div class="col-md-12 padding-left-0">
+                                                    <div class="col-md-12 padding-left-0" style="margin: 10px 0px 3px 0px;">
+                                                        {{content.startDate | date:'EE, MMM d'}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 padding-left-0" *ngFor="let content of content.contents">
+                                                    <div class="col-md-12 padding-left-0" style="margin: 3px 0px 10px 0px;">
+                                                        <b>{{ content.title | titlecase}}</b> - {{content.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.schedules[0].endTime | extractTime:'h:mm a'}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p-accordionTab>
+                            </p-accordion>
+                        </div>
+                        <div class="button-bar">
+                            <span matTooltip="Select options or solve all date conflicts before adding these cohorts" [matTooltipDisabled]="recurringCount !== 0 && (computedConflict.length <= 0 || acceptConflicts)">
+                                <button mat-raised-button color="primary" (click)="saveCalendar()" [disabled]="recurringCount == 0 || (computedConflict.length > 0 && !acceptConflicts)">Add these cohorts to my {{collection.type}}</button>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- <div class="border-calendar calendar">
+                        <div class="flex flexContainer">
+                            <div class="col-md-7">
+                                <h3 class="calendarTitle">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+                            </div>
+
+                            <span class="flex"></span>
+
+                            <div class="prevNext">
+                                <button mat-button class="mat-icon-button" type="button" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+                                    <mat-icon class="" aria-hidden="true">chevron_left</mat-icon>
+                                </button>
+
+                                <button mat-button class="mat-icon-button" type="button" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+                                    <mat-icon class="" aria-hidden="true">chevron_right</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div [ngSwitch]="view">
+                            <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [refresh]="refresh" (dayClicked)="dayClicked($event.day)">
+                            </mwl-calendar-month-view>
+                        </div>
+                    </div>
+                    <div [ngClass]="{'clickedDate' : true, 'displayNone' : !dateClicked, 'displayBlock': dateClicked}">
+                        <div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
+                            <span class="cal-day-badge"></span>
+                            <span>{{ clickedDate | date:'EEE, MMM dd' }}</span>
+                        </div>
+                        <div *ngFor="let key of objectKeys(eventsForTheDay)">
+                            <div class="displayFlex event" *ngFor="let event of eventsForTheDay[key]">
+                                <span>{{ event.start | date:'hh:mm' }}</span>
+                                <span>
+                                    <b>{{ event.start | date:'a' | lowercase}}</b>
+                                </span>
+                                &emsp;
+                                <span>{{ parseTitle(event.title)[0] | titlecase }}</span>
+                            </div>
+                            <hr>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="mat-dialog-focus-trap"></div>
+</div>

@@ -1,0 +1,73 @@
+.bullet{
+	display:inline-block;
+	position:relative;
+	padding-left: 30px;
+	&:before{
+		display: inline-block;
+		position: absolute;
+		content:"";
+		width:4px;
+		height:4px;
+		background-color: #ccc;
+		border-radius: 50%;
+		top:10px;
+		left:10px;
+	}
+}
+.review-section-title {
+	margin-bottom: 20px;
+	font-size: 19px;
+	font-weight: 600;
+}
+.review-section{
+	padding-top:20px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #dbdbdb;
+	width: 70%;
+	&:last-child{
+		padding-bottom:0;
+		border-bottom: 0;
+	}
+	.review-thumb{
+		margin-right:15px;
+		display: inline-block;
+	}
+	.review-top {
+		vertical-align: middle;
+	}
+	.reviewer{
+		margin:0;
+		display: inline-block;
+	}
+	.review-content{
+		&{
+			margin-top:10px
+		}
+		.review-desc{
+			margin-top: 7px;
+			line-height: 120%;
+		}
+		.review-bottom{
+			margin-top:5px;
+		}
+	}
+}
+rating{
+	color:#33bd9e;
+	font-size:16px;
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 14px;
+	margin-left:10px;
+}
+
+.circle-thumb {
+	margin-left: 0 !important;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.review-section {
+		width: 100%;
+	}
+}

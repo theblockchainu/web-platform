@@ -1,0 +1,8 @@
+<app-header *ngIf="showHeader"></app-header>
+<main>
+  <div [hidden]="!(loading | async)">
+    <mat-progress-bar mode="indeterminate" color="primary" class="navProgressBar"></mat-progress-bar>
+  </div>
+  <router-outlet></router-outlet>
+</main>
+<app-footer *ngIf="showFooter"></app-footer>

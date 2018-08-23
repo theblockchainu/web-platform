@@ -1,0 +1,407 @@
+<div class="row">
+	<div class="col-md-12">
+		<div *ngIf="!collectionsLoaded" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+	<div class="col-md-12 margin-top-30" *ngIf="collectionsLoaded">
+		<div style="display:inline;">
+			<h2>Collection Approvals</h2>
+		</div>
+		<div #noContentView *ngIf="unapprovedCollections.length === 0 " style="margin-top: 5%;margin-bottom: 5%;">
+			<div class="lightText">
+				No collection approval pending.
+			</div>
+		</div>
+		<div *ngIf="unapprovedCollections.length > 0">
+			<div class="row">
+				<div>
+					<div style="margin-top:20px;" class="col-md-12">
+						<div class="row">
+							<div *ngFor="let collection of unapprovedCollections">
+								<div *ngIf="collection.type !== 'session'" class="col-md-3" style="margin-top: 20px;">
+									<mat-card style="text-align: center; padding: 20px;">
+										<mat-card-content>
+											<div style="text-align: right">
+												<div class="pull-right">
+													<a mat-icon-button [matMenuTriggerFor]="approvalCardMenu" style="text-align: right; padding: 0px">
+														<mat-icon>more_vert</mat-icon>
+													</a>
+												</div>
+											</div>
+											<br/>
+											<div class="mat-body-2 collectionTitle">
+												{{collection.type | ucfirst}}
+											</div>
+											<div class="cohortDate" style="padding-top: 10px" *ngIf="collection.calendars && collection.calendars[0]">
+												<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
+													MMM' }}</span>
+											</div>
+											<div class="cohortDate" style="padding-top: 10px" *ngIf="!collection.calendars || !collection.calendars[0]">
+												<span>No dates selected</span>
+											</div>
+											<br>
+											<div class="clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+											<div class="mat-caption">
+												{{collection.submittedAt | extractTime : 'Do MMM, YYYY'}}
+											</div>
+										</mat-card-content>
+										<mat-menu #approvalCardMenu>
+											<button mat-menu-item>
+												Delete
+											</button>
+											<button *ngIf="collection.type ==='class'" mat-menu-item [routerLink]="['/class/'+collection.id]">
+												View Class
+											</button>
+											<button *ngIf="collection.type ==='experience'" mat-menu-item [routerLink]="['/experience/'+collection.id]">
+												View Experience
+											</button>
+										</mat-menu>
+										<mat-card-footer class="cardFooter" style="line-height: 30px">
+											<button mat-button (click)="approveClass(collection)">Approve</button>
+											<button mat-button (click)="rejectClass(collection)">Reject</button>
+										</mat-card-footer>
+									</mat-card>
+								</div>
+								<div *ngIf="collection.type === 'session'" class="col-md-3" style="margin-top: 20px;">
+									<mat-card style="text-align: center; padding: 20px;">
+										<mat-card-content>
+											<div style="text-align: right">
+												<div class="pull-right">
+													<a mat-icon-button [matMenuTriggerFor]="approvalCardMenu" style="text-align: right; padding: 0px">
+														<mat-icon>more_vert</mat-icon>
+													</a>
+												</div>
+											</div>
+											<br/>
+											<div class="mat-body-2 collectionTitle clickable">
+												Peer {{collection.type | ucfirst}}
+											</div>
+											<br>
+											<div class="clickable" (click)="_profileService.viewProfile(collection.owners[0])">{{collection.owners[0].profiles[0].first_name}} {{collection.owners[0].profiles[0].last_name}}</div>
+											<div>
+												<span *ngFor="let topic of collection.owners[0].topicsTeaching">
+													{{topic}},&nbsp;
+												</span>
+											</div>
+											<div class="mat-caption">
+												{{collection.submittedAt | extractTime : 'Do MMM, YYYY'}}
+											</div>
+										</mat-card-content>
+										<mat-menu #approvalCardMenu>
+											<button mat-menu-item>
+												Delete
+											</button>
+										</mat-menu>
+										<mat-card-footer class="cardFooter" style="line-height: 30px">
+											<button mat-button (click)="approveClass(collection)">Approve</button>
+											<button mat-button (click)="rejectClass(collection)">Approve</button>
+										</mat-card-footer>
+									</mat-card>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 margin-top-40">
+		<div *ngIf="!peersLoaded" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+	<div class="col-md-12 margin-top-10" *ngIf="peersLoaded">
+		<div style="display:inline;">
+			<h2>Peer Approvals</h2>
+		</div>
+		<div #noContentView *ngIf="unapprovedPeers.length === 0 " style="margin-top: 5%;margin-bottom: 5%;">
+			<div class="lightText">
+				No peer approvals pending.
+			</div>
+		</div>
+		<div *ngIf="unapprovedPeers.length > 0">
+			<div class="row">
+				<div>
+					<div style="margin-top:20px;" class="col-md-12">
+						<div class="row">
+							<div *ngFor="let peer of unapprovedPeers">
+								<div class="col-md-3" style="margin-top: 20px;">
+									<mat-card style="text-align: center; padding: 20px;">
+										<mat-card-content>
+											<div style="text-align: right">
+												<div class="pull-right">
+													<a mat-icon-button [matMenuTriggerFor]="approvalCardMenu" style="text-align: right; padding: 0px">
+														<mat-icon>more_vert</mat-icon>
+													</a>
+												</div>
+											</div>
+											<br>
+											<div class="collectionTitle clickable" [routerLink]="['/profile/'+peer.id]">{{ peer.profiles[0].first_name + ' ' + peer.profiles[0].last_name || 'No name' | ucwords }} </div>
+											<br>
+											<br>
+											<div>
+												Email: {{peer.email}}
+											</div>
+											<div>
+												Verified: &emsp;
+												<i *ngIf="peer.emailVerified" class="fa fa-envelope socialIcons "></i>
+												<i *ngIf="peer.phoneVerified" class="fas fa-mobile-alt socialIcons "></i>
+											</div>
+											<div>
+												Social Accounts: &emsp;
+												<i *ngIf="peer.facebook" class="fa fa-facebook-f"></i> &nbsp;&nbsp;&nbsp;
+												<i *ngIf="peer.google" class="fa fa-google"></i>
+											</div>
+											<div class="mat-body-2">
+												<a href="{{envVariable.apiUrl + peer.verificationIdUrl}}" target="_blank" *ngIf="peer.verificationIdUrl !== undefined">View ID</a>
+												<span *ngIf="peer.verificationIdUrl === undefined">No ID submitted</span>
+											</div>
+											<div class="mat-caption">
+												{{peer.createdAt | extractTime : 'Do MMM, YYYY'}}
+											</div>
+										</mat-card-content>
+										<mat-menu #approvalCardMenu>
+											<button mat-menu-item>
+												Send ID reminder
+											</button>
+											<button mat-menu-item [routerLink]="['/profile/'+peer.id]">
+												View Profile
+											</button>
+										</mat-menu>
+										<mat-card-footer class="cardFooter" style="line-height: 30px">
+											<button (click)="approvePeer(peer)" mat-button>Approve</button>
+											<button (click)="rejectPeer(peer)" mat-button>Reject</button>
+										</mat-card-footer>
+									</mat-card>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 margin-top-40">
+		<div *ngIf="!emailSubLoaded" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+	<div class="col-md-12 margin-top-10" *ngIf="emailSubLoaded">
+		<div style="display:inline;">
+			<h2>Email Subscriptions</h2>
+		</div>
+		<div #noContentView *ngIf="emailSubscriptions && emailSubscriptions.length === 0" style="margin-top: 5%; margin-bottom: 5%;">
+			<div class="lightText">
+				No email subscriptions.
+			</div>
+		</div>
+		<div *ngIf="emailSubscriptions && emailSubscriptions.length > 0">
+			<div class="row">
+				<div>
+					<div style="margin-top:20px;" class="col-md-12">
+						<div class="row">
+							<mat-table [dataSource]="emailSubscriptions">
+								<!-- ID Column -->
+								<ng-container matColumnDef="createdAt">
+									<mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+									<mat-cell *matCellDef="let element"> {{element.createdAt || '01-01-1900 00:00:00' | extractTime : 'Do MMM'}} </mat-cell>
+								</ng-container>
+
+								<!-- Email Column -->
+								<ng-container matColumnDef="email">
+									<mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+									<mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+								</ng-container>
+
+								<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+								<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+							</mat-table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 margin-top-40">
+		<div *ngIf="!communityRequestsLoaded" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+	<div class="col-md-12 margin-top-10" *ngIf="communityRequestsLoaded">
+		<div style="display:inline;">
+			<h2>Community Requests</h2>
+		</div>
+		<div #noContentView *ngIf="communityRequests.length === 0 " style="margin-top: 5%;margin-bottom: 5%;">
+			<div class="lightText">
+				No community requests.
+			</div>
+		</div>
+		<div *ngIf="communityRequests.length > 0">
+			<div class="row">
+				<div>
+					<div style="margin-top:20px;" class="col-md-12">
+						<div class="row">
+							<div *ngFor="let request of communityRequests">
+								<div class="col-md-3" style="margin-top: 20px;">
+									<mat-card style="text-align: center; padding: 20px;">
+										<mat-card-content>
+											<div style="text-align: right">
+												<div class="pull-right">
+													<a mat-icon-button [matMenuTriggerFor]="approvalCardMenu" style="text-align: right; padding: 0px">
+														<mat-icon>more_vert</mat-icon>
+													</a>
+												</div>
+											</div>
+											<br>
+											<div class="collectionTitle clickable">{{ request.title | ucwords }} </div>
+											<br>
+											<br>
+											<div>
+												{{request.description}}
+											</div>
+											<div class="mat-caption">
+												{{request.peers[0].profiles[0].first_name + ' '+ request.peers[0].profiles[0].last_name | ucwords }}
+											</div>
+										</mat-card-content>
+										<mat-menu #approvalCardMenu>
+											<button (click)="deleteRequest(request.id)" mat-menu-item>
+												Delete Request
+											</button>
+										</mat-menu>
+										<!-- <mat-card-footer class="cardFooter" style="line-height: 30px">
+											<button (click)="approvePeer(peer)" mat-button>Approve</button>
+											<button (click)="rejectPeer(peer)" mat-button>Reject</button>
+										</mat-card-footer> -->
+									</mat-card>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
+		<div (click)="createCommunity()" class="clickable lightText">
+			<i class="fa fa-plus"></i> Create a new Community?
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 margin-top-40">
+		<div *ngIf="!scholarshipsLoaded" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+	<div class="col-md-12 margin-top-10" *ngIf="scholarshipsLoaded">
+		<div style="display:inline;">
+			<h2>Scholarships</h2>
+		</div>
+		<div #noContentView *ngIf="!scholarship " style="margin-top: 5%;margin-bottom: 5%;">
+			<div (click)="createScholarship()" class="clickable lightText">
+				<i class="fa fa-plus"></i> No global scholarship detected. Create one now?
+			</div>
+		</div>
+		<div *ngIf="scholarship">
+			<div class="row">
+				<div>
+					<div style="margin-top:20px;" class="col-md-12">
+						<div class="row">
+							<div class="col-md-3" style="margin-top: 20px;">
+								<mat-card style="text-align: center; padding: 20px;">
+									<mat-card-content>
+										<br>
+										<div class="collectionTitle clickable" [routerLink]="'/scholarship/'+scholarship.id">{{ scholarship.title | ucwords }} </div>
+										<div class="mat-caption">{{scholarship.type | ucwords}}</div>
+										<br>
+										<br> Fund Balance
+										<div class="mat-body-2">
+											<i class="fas fa-fire"></i> {{scholarship.id | karmaBalance: 'scholarship' | async}} Karma
+										</div>
+									</mat-card-content>
+									<mat-card-footer class="cardFooter" style="line-height: 30px">
+										<button (click)="editScholarship()" mat-button>Edit</button>
+									</mat-card-footer>
+								</mat-card>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
+	</div>
+</div>
+
+<div class="row margin-top-40">
+	<div class="col-md-12 margin-top-10">
+		<div style="display:inline;">
+			<h2>Utilities</h2>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<mat-card>
+			<form [formGroup]="topicForm" (ngSubmit)="createTopics()">
+				<mat-card-header>
+					<mat-card-title>Add topics</mat-card-title>
+				</mat-card-header>
+				<mat-card-content>
+					<mat-form-field>
+						<input matInput formControlName="name" placeholder="Name">
+					</mat-form-field>
+				</mat-card-content>
+				<mat-card-actions>
+					<button type="submit" mat-button>Submit</button>
+				</mat-card-actions>
+			</form>
+		</mat-card>
+	</div>
+	<div class="col-md-3">
+		<mat-card>
+			<form [formGroup]="languageForm" (ngSubmit)="createLanguage()">
+				<mat-card-header>
+					<mat-card-title>Add Language</mat-card-title>
+				</mat-card-header>
+				<mat-card-content>
+					<mat-form-field>
+						<input matInput formControlName="name" placeholder="Name">
+					</mat-form-field>
+					<mat-form-field>
+						<input matInput formControlName="code" placeholder="Code">
+					</mat-form-field>
+				</mat-card-content>
+				<mat-card-actions>
+					<button type="submit" mat-button>Submit</button>
+				</mat-card-actions>
+			</form>
+		</mat-card>
+	</div>
+	<div class="col-md-3">
+		<mat-card>
+			<mat-card-header>
+				<mat-card-title>Add Countries</mat-card-title>
+			</mat-card-header>
+			<mat-card-actions>
+				<button (click)="addCountries()" mat-button>Add</button>
+			</mat-card-actions>
+		</mat-card>
+	</div>
+</div>

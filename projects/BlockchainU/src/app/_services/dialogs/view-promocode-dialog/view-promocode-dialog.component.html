@@ -1,0 +1,47 @@
+<div class="dialog-container">
+  <div class="row">
+    <div class="col-xs-12">
+      <span class="mat-title">
+        Available Promo Codes
+      </span>
+    </div>
+  </div>
+  <div class="padding-top-50">
+    <div class="row" *ngFor="let promo of promoCodes">
+      <div class="col-xs-3">
+        {{promo.code}}
+      </div>
+      <div class="col-xs-5">
+        {{promo.description}}
+      </div>
+      <div class="col-xs-3">
+        {{promo.discountValue}}
+        <span *ngIf="promo.discountType==='percentage'">
+          %
+        </span>
+        <span *ngIf="promo.discountType==='absolute'">
+          {{promo.discountCurrency}}
+        </span>
+      </div>
+      <div class="col-xs-1">
+        <button mat-icon-button [matMenuTriggerFor]="promoCardMenu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+      <mat-menu #promoCardMenu>
+        <button mat-menu-item (click)="delete(promo)">
+          Delete
+        </button>
+        <button mat-menu-item (click)="edit(promo)">
+          Edit
+        </button>
+      </mat-menu>
+    </div>
+    <div class="row" *ngIf="promoCodes && promoCodes.length===0">
+      <div class="col-xs-12 center">
+        No Promocodes added. <a class="clickable" (click)="add()">Add a Promocode</a>
+      </div>
+    </div>
+  </div>
+
+</div>

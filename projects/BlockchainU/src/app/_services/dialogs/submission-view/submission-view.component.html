@@ -1,0 +1,228 @@
+<div mat-dialog-content class="dialog-container" *ngIf="data">
+	<div class="fs-13 text-grey margin-bottom-20">
+		<a href="javascript:;" class="text-grey" (click)="closeDialog()" style="outline: none;">
+			&lt; Back</a>
+	</div>
+	<div class="mat-display-1">{{ data.submission.name | ucfirst }}</div>
+	<div class="margin-bottom-20 clearfix">
+		<span class="fs-13 display-inline-block margin-top-10">
+			<i *ngIf="!iHaveUpvoted" class="fa fa-thumbs-o-up" style="cursor: pointer;" (click)="addSubmissionUpvote(data.submission)"></i>&nbsp;&nbsp;
+			<i *ngIf="iHaveUpvoted" class="fa fa-thumbs-o-up" style="color: #33bd9e"></i>&nbsp;&nbsp;
+			<span *ngIf="data.submission.upvotes !== undefined">{{data.submission.upvotes.length}}</span>
+			<span *ngIf="data.submission.upvotes === undefined">0</span>
+		</span>
+		<button class="pull-right mat-border-button" mat-button (click)="editSubmission()" *ngIf="data.userType==='participant' && isMySubmission"
+		 tabindex="-1">Edit</button>
+		<div class="pull-right" *ngIf="!isMySubmission">
+			<div class="position-relative" *ngIf="data.submission.peer && data.submission.peer.length>0">
+				<img class="circle-thumb" src="{{data.submission.peer[0].profiles[0].picture_url}}/100" alt="thumb" (error)="_collectionService.imgErrorHandler($event)"
+				/>
+				<div style="display: inline-block; position: relative; top: 11px;">
+					{{data.submission.peer[0].profiles[0].first_name | ucwords}} {{data.submission.peer[0].profiles[0].last_name | ucwords}}
+					<br>
+					<p style="font-size: 90%;">{{data.submission.peer[0].profiles[0].headline | ucfirst }}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="content-image" *ngIf="data.submission.picture_url">
+		<img class="img-responsive media-middle" style="width: 100%" src="{{envVariable.apiUrl+data.submission.picture_url.split(',')[0]}}/500"
+		 alt="image" (error)="_collectionService.imgErrorHandler($event)">
+	</div>
+	<div class="default-image" *ngIf="!data.submission.picture_url">
+		<i class="fa fa-picture-o"></i>
+	</div>
+	<div class="content-box">
+		<div class="margin-top-20 margin-bottom-20">
+			<div>
+				<b>Description</b>
+			</div>
+			<div class="section-description margin-top-20 margin-bottom-20">{{ data.submission.description }}</div>
+		</div>
+	</div>
+	<hr>
+	<!--DISCUSSION THREAD-->
+	<div class="row Discussion" *ngIf="userType==='teacher' || userType==='participant'">
+		<div class="col-md-12 margin-bottom-20">
+			<div *ngIf="comments !== undefined">
+				<b>Discussion ({{comments.length}})</b>
+			</div>
+			<div *ngIf="comments === undefined">
+				<b>Discussion (0)</b>
+			</div>
+			<form [formGroup]="chatForm" (ngSubmit)="postComment()">
+				<mat-form-field [floatLabel]="'always'" class="full-width margin-top-10">
+					<input matInput type="text" #description1 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this project submission"
+					 tabindex="-1">
+					<mat-hint align="end">{{description1.value.length}}/2000</mat-hint>
+				</mat-form-field>
+				<span matTooltip="Invalid Input!" [matTooltipDisabled]="chatForm.valid">
+					<button mat-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right" tabindex="-1">Post</button>
+				</span>
+			</form>
+		</div>
+		<div class="col-md-12">
+			<div class="row lighterText" *ngIf="comments !== undefined && comments.length === 0">
+				<div class="col-md-12">
+					<div class="emptySectionText">Be the first one to start a discussion on this project submission..</div>
+				</div>
+			</div>
+			<div class="margin-top-30"></div>
+			<div class="row margin-top-10" *ngFor="let comment of comments; let i=index;">
+				<div>
+					<div class="col-md-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
+						<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
+						<mat-icon *ngIf="hasUpvoted(comment.upvotes)">arrow_drop_up</mat-icon>
+						<div>
+							{{comment.upvotes.length}}
+						</div>
+					</div>
+					<div class="col-md-11">
+						<div class="row" *ngIf="!editCommentForm || (editCommentForm && editCommentForm.value['id']!==comment.id)">
+							<div class="col-md-12">
+								<button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuComment" style="float: right; margin-right: 15px; margin-top: 15px;"
+								 tabindex="-1">
+									<mat-icon style="color: #cccccc">more_vert</mat-icon>
+								</button>
+								<mat-menu #menuComment="matMenu">
+									<button *ngIf="userType==='participant'" mat-menu-item>
+										<mat-icon>flag</mat-icon>
+										<span>Flag</span>
+									</button>
+									<button *ngIf="userType==='participant' || isMyComment(comment)" (click)="editComment(comment)" mat-menu-item>
+										<mat-icon>edit</mat-icon>
+										<span>edit</span>
+									</button>
+									<button *ngIf="userType==='teacher' || isMyComment(comment)" (click)="deleteComment(comment)" mat-menu-item>
+										<mat-icon>delete</mat-icon>
+										<span>Delete</span>
+									</button>
+								</mat-menu>
+								<div class="mat-body-1">{{comment.description}}</div>
+								<div style="margin-top: 10px;" class="" *ngIf="comment.peer.length>0">
+									<div style="float: left; margin-left: 15px;">
+										<app-profile-popup [peer]="comment.peer[0]"></app-profile-popup>
+									</div>
+									<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
+										<div>
+											<div>
+												<span style="font-weight: 500">{{comment.peer[0].profiles[0].first_name}} {{comment.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+											</div>
+										</div>
+										<div class="">
+											<span class="lighterText">{{comment.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
+										</div>
+									</div>
+								</div>
+								<div style="margin-top: 10px;" *ngIf="!(replyForm && replyingToCommentId===comment.id)">
+									<a href="javascript:void(0);" (click)="createReplyForm(comment)">
+										<mat-icon style="top: 5px;">reply</mat-icon> Reply</a>
+								</div>
+								<div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -25px;">
+									<form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
+										<img src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
+										<mat-form-field [floatLabel]="'always'" style="margin-left: 15px; width: 88%;">
+											<input matInput type="text" #description2 maxlength="2000" formControlName="description" placeholder="Reply to above comment..."
+											 tabindex="-1">
+											<mat-hint align="end">{{description2.value.length}}/2000</mat-hint>
+										</mat-form-field>
+										<span matTooltip="Invalid Input!" [matTooltipDisabled]="replyForm.valid">
+											<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary" tabindex="-1">Post</button>
+										</span>
+									</form>
+								</div>
+
+							</div>
+						</div>
+						<div class="row" *ngIf="editCommentForm && editCommentForm.value['id']===comment.id">
+							<div class="col-md-12">
+								<form [formGroup]="editCommentForm" (ngSubmit)="updateComment()">
+									<mat-form-field class="full-width margin-top-10">
+										<input matInput type="text" #description3 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this experience">
+										<mat-hint align="end">{{description3.value.length}}/2000</mat-hint>
+									</mat-form-field>
+									<button mat-raised-button color="primary" [disabled]="!editCommentForm.valid" class="pull-right">
+										Update
+									</button>
+								</form>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-11 col-md-offset-1 margin-top-10">
+								<div class="row margin-top-20" *ngFor="let reply of comment.replies">
+									<div class="row" *ngIf="!editReplyForm || (editReplyForm && editReplyForm.value['id']!==reply.id)">
+										<div class="col-md-12">
+											<button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuReply" style="float: right; margin-right: 15px; margin-top: 15px;"
+											 tabindex="-1">
+												<mat-icon style="color: #cccccc;">more_vert</mat-icon>
+											</button>
+											<mat-menu #menuReply="matMenu">
+												<button *ngIf="userType==='participant'" mat-menu-item>
+													<mat-icon>flag</mat-icon>
+													<span>Flag</span>
+												</button>
+												<button *ngIf="userType==='teacher' || isMyComment(reply)" (click)="editReply(reply)" mat-menu-item>
+													<mat-icon>edit</mat-icon>
+													<span>edit</span>
+												</button>
+												<button *ngIf="userType==='teacher' || isMyComment(reply)" (click)="deleteReply(reply)" mat-menu-item>
+													<mat-icon>delete</mat-icon>
+													<span>Delete</span>
+												</button>
+											</mat-menu>
+											<div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px;"
+											 [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
+												<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
+												<mat-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</mat-icon>
+												<div>
+													<span *ngIf="reply.upvotes !== undefined">{{reply.upvotes.length}}</span>
+													<span *ngIf="reply.upvotes === undefined">0</span>
+												</div>
+											</div>
+											<div style="display: inline-block">
+												<div class="mat-body-1">{{reply.description}}</div>
+												<div class="" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
+													<div style="float: left; margin-left: 15px;">
+														<app-profile-popup [peer]="reply.peer[0]"></app-profile-popup>
+													</div>
+													<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
+														<div>
+															<div>
+																<span style="font-weight: 500">{{reply.peer[0].profiles[0].first_name}} {{reply.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+															</div>
+														</div>
+														<div class="">
+															<span class="lighterText">{{reply.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row" *ngIf="editReplyForm && editReplyForm.value['id']===reply.id">
+										<form [formGroup]="editReplyForm" (ngSubmit)="updateReply()">
+											<img src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb margin-top-5">
+											<mat-form-field style="margin-left: 15px; width: 88%;">
+												<input matInput type="text" #description4 maxlength="2000" formControlName="description" placeholder="Reply to above comment...">
+												<mat-hint align="end">{{description4.value.length}}/2000</mat-hint>
+											</mat-form-field>
+											<button [disabled]="!editReplyForm.valid" mat-raised-button class="pull-right" color="primary">
+												<!-- <span *ngIf="!busyReply">update</span>
+												<ngx-loading [show]="busyReply"></ngx-loading> -->
+											</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<hr *ngIf="i !== (comments.length - 1)" class="margin-top-30">
+						<div *ngIf="i === (comments.length - 1)" class="margin-top-30"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

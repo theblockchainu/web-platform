@@ -1,0 +1,57 @@
+<div class="dialog-container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12">
+					<span class="mat-body-2"> {{data.profiles[0].first_name +" "+data.profiles[0].last_name |titlecase}}</span>
+				</div>
+			</div>
+			<div class="row" *ngIf="(!data.profiles[0].headline || data.profiles[0].headline===0) && (!data.profiles[0].description || data.profiles[0].description===0)">
+				<div class="col-md-12" class="lightText" style="height: 18px;margin-left: 15px;">
+					<h5>Joined on {{data.createdAt | extractTime:'D/M/YY'}}</h5>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12" class="lightText" style="height: 18px;margin-left: 15px;">
+					<h5>{{data.profiles[0].headline | titlecase}}</h5>
+				</div>
+			</div>
+			<div class="row margin-top-10 margin-bottom-10">
+				<div class="col-md-12 mat-body-2" style="height: 18px;">
+					<h5><i class="fab fa-ethereum"></i> {{data.id | gyanBalance : 'fixed' | async}} Gyan</h5>
+				</div>
+			</div>
+			<div class="row" *ngIf="data.reviewsAboutYou">
+				<div class="col-md-12" style="height: 18px;">
+					<p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 0.67rem; float: left;"></p-rating>
+					<p style="font-size: 0.67rem;">&nbsp;&nbsp;&nbsp;{{data.reviewsAboutYou.length}} reviews</p>
+				</div>
+			</div>
+			<div class="row" *ngIf="data.profiles[0].description && data.profiles[0].description.length>0">
+				<div class="col-md-12">
+					<h5 style="margin: 0">
+						{{data.profiles[0].description|shorten: 40 : '...' | titlecase}}
+					</h5>
+				</div>
+			</div>
+			<hr style="margin-top: 10px; margin-bottom: 10px;">
+			<div class="row" *ngIf="ownedCollections && ownedCollections.length>0">
+				<div class="col-md-12">
+					<b>Classes & Experiences ({{ownedCollections.length}})</b>
+				</div>
+			</div>
+			<div class="row" *ngIf="ownedCollections.length === 0">
+				<div class="col-md-12">
+					<b>{{data.profiles[0].first_name | ucwords}} hasn't started teaching yet</b>
+				</div>
+			</div>
+			<div class="row" *ngIf="ownedCollections && ownedCollections.length>0" style="margin-top: 5px;">
+				<div style="padding-left: 10px; padding-right: 10px;" *ngFor="let class of ownedCollections; let i=index">
+					<div class="col-md-4" style="padding-left: 5px; padding-right: 5px;" *ngIf="i<3">
+						<img style="width: 100%; height: auto; max-height: 80px;" src="{{envVariable.apiUrl+ class.imageUrls[0] + '/100'}}" (error)="_collectionService.imgErrorHandler($event)">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

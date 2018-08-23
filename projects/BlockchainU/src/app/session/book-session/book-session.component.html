@@ -1,0 +1,173 @@
+<!--component html goes here -->
+<div class="main-content">
+	<div class="container-fluid" style="margin: 3% 0px">
+		<div class="row onboarding step-10">
+			<div class="col-md-offset-1 col-sm-6">
+				<div [hidden]="step!==1">
+					<div class="title margin-top-20 margin-bottom-20">What package do you wish to book?</div>
+					<mat-form-field [floatLabel]="'never'">
+						<mat-select [(value)]="selectedPackageIndex" (change)="resetSelectedSlots($event)" placeholder="Click to view options">
+							<mat-option *ngFor="let pack of packages;let i=index" value="{{i}}"> {{pack.price | convertCurrency: pack.currency |async}} / {{convertTime(pack.duration)}} ~ {{pack.type | ucwords}} </mat-option>
+						</mat-select>
+					</mat-form-field>
+					<div *ngIf="selectedPackageIndex && (!availability || availability.length === 0)">
+						Oops! Looks like the teacher has no available hours to book right now. Please check back later.
+					</div>
+					<div *ngIf="selectedPackageIndex && availability && availability.length > 0">
+						<div class="margin-top-50 mat-body-2 margin-bottom-10">
+							Now, select the starting time for your session.
+						</div>
+						<div>
+							<span style="color: #33bd9e;">Green</span> boxes indicate those hours when the teacher is available.
+						</div>
+						<div style="padding-top: 5%; padding-bottom: 5%;">
+							<p-schedule [height]="500" [events]="availability" [defaultView]="'agendaWeek'" [editable]="false" (onEventClick)="handleEventClick($event)" [allDaySlot]="false" [slotDuration]="'01:00:00'"></p-schedule>
+						</div>
+						<span *ngIf="bookingProcess === 'auto'" class="pull-right" matTooltip="Select a package and your preferred time slot to continue" [matTooltipDisabled]="selectedPackageIndex && totalDuration.getValue()>0">
+							<button *ngIf="bookingProcess === 'auto'" mat-raised-button color="accent" (click)="bookSession()" [disabled]="!selectedPackageIndex || totalDuration.getValue() === 0">
+								Proceed to payment
+							</button>
+						</span>
+						<span *ngIf="bookingProcess === 'manual'" class="pull-right" matTooltip="The teacher has requested to approve every session request before final confirmation. Teachers have 24 hours to respond to requests." [matTooltipDisabled]="selectedPackageIndex && totalDuration.getValue()>0">
+							<button *ngIf="bookingProcess === 'manual'" mat-raised-button color="accent" (click)="joinSession($event)" [disabled]="!selectedPackageIndex || totalDuration.getValue() === 0">
+								Send request
+							</button>
+						</span>
+					</div>
+				</div>
+				<div [hidden]="step!==2">
+					<div class="title" *ngIf="displayMode === 'request'">
+						<mat-icon class="clickable" (click)="goBack()">arrow_back</mat-icon>
+						Change time slots
+					</div>
+					<div class="loading-container" [hidden]="!loadingCards">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<form [hidden]="loadingCards">
+						<div class="payment-message margin-top-20 margin-bottom-20 mat-body-2">{{message}}</div>
+						<span [hidden]="totalCost.getValue()===0">
+				              <div class="margin-bottom-50" *ngIf="isCardExist">
+				                <h3>Select payment method</h3>
+				                <div class="row margin-top-50">
+				                  <div class="col-sm-6">
+				                    <mat-form-field [floatLabel]="'auto'">
+					                    <mat-select placeholder="Select card" (change)="getcardDetails($event)">
+				                            <mat-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand }} {{card.object}} ending with {{card.last4}}</mat-option>
+				                        </mat-select>
+				                    </mat-form-field>
+				                  </div>
+				                  <div class="col-sm-6" *ngIf="cardDetails.id">
+				                    <span class="text-grey" *ngIf="cardDetails.brand === 'Visa'">
+				                      <i class="fa fa-cc-visa fa-2x"></i>
+				                    </span> &emsp;
+				                    <div class="display-inline-block fs-12 text-grey">
+				                      <span class="display-block lh-1">Name:
+				                        <span class="text-black">{{cardDetails.name}}</span>
+				                      </span>
+				                      <span>Expires:
+				                        <span class="text-black">{{cardDetails.exp_month}}/{{cardDetails.exp_year}}</span>
+				                      </span>
+				                    </div>
+				                  </div>
+				                </div>
+				                <div class="row margin-top-20">
+				                  <div class="col-sm-6">
+				                    <mat-checkbox [(ngModel)]="useAnotherCard" [ngModelOptions]="{standalone: true}">Or use another card</mat-checkbox>
+				                  </div>
+				                </div>
+				              </div>
+				              <div>
+				                <div class="margin-bottom-50" [hidden]="isCardExist && !useAnotherCard">
+				                  <h3>Enter payment details</h3>
+				                  <label>
+				                    <input name="cardholder-name" class="field is-empty" placeholder="Jane Doe" />
+				                    <span>
+				                      <span>Name</span>
+				                    </span>
+				                  </label>
+				                  <label>
+				                    <input class="field is-empty" name="cardholder-phone" type="tel" placeholder="(123) 456-7890" />
+				                    <span>
+				                      <span>Phone number</span>
+				                    </span>
+				                  </label>
+				                  <label>
+				                    <div id="card-element" class="field is-empty"></div>
+				                    <span>
+				                      <span>Credit or debit card number</span>
+				                    </span>
+				                  </label>
+				                </div>
+				              </div>
+                        </span>
+						<div class="terms-text">
+							<div class="terms-title">Terms of Service</div>
+							<p class="text-grey fs-15">By confirming this reservation you are agreeing to The Blockchain University additional Terms of Service, Student Release and
+								Waiver, and the Cancellation Policy.</p>
+						</div>
+						<div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards || listAllCards.length < 0 ||  useAnotherCard">
+							<i class="fa fa-lock"></i> Your Credit card information is encrypted
+						</div>
+						<span *ngIf="selectedPackageIndex && totalCost.getValue()!==0">
+                            <button mat-raised-button (click)="joinSession($event)" color="primary" type="submit" class="text-center" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard" [disabled]="savingData">{{totalCost | async | convertCurrency: packages[selectedPackageIndex].currency |async}} - Confirm Payment</button>
+                            <button mat-raised-button (click)="joinSession($event)" color="primary" type="submit" class="text-center" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard" [disabled]="!cardDetails.id || savingData">{{totalCost | async | convertCurrency: packages[selectedPackageIndex].currency |async}} - Confirm Payment</button>
+                            <div class="display-inline-block margin-top-10" *ngIf="savingData">
+                                <img src="{{loader}}" alt="loading" style="width:16px;" /> Processing Payment...
+                            </div>
+                        </span>
+						<span *ngIf="selectedPackageIndex && totalCost.getValue()===0">
+                            <button mat-raised-button (click)="joinSession($event)" color="primary" type="submit" class="text-center" [disabled]="savingData">{{totalCost | async | convertCurrency: packages[selectedPackageIndex].currency |async}} - Confirm</button>
+							<div class="display-inline-block margin-top-10" *ngIf="savingData">
+								<img src="{{loader}}" alt="loading" style="width:16px;" /> Creating peer session request and informing teacher...
+							</div>
+                        </span>
+					</form>
+				</div>
+			</div>
+			<div class="col-sm-3 col-sm-offset-1 bookSessionRightContainer" *ngIf="session">
+				<div class="sidebar-right">
+					<div class="sidebar-box">
+						<div class="seperate-section padding-top-0">
+							<div class="display-table">
+								<div class="margin-bottom-10">
+									<img class="bookSessionPeerImage" [src]="envVariable.apiUrl + session.owners[0].profiles[0].picture_url + '/300'" alt="image" (error)="_collectionService.userImgErrorHandler($event)" />
+								</div>
+								<div class="fs-17">Peer Session
+									<br>
+									<span class="fs-14 text-grey" *ngIf="session.owners && session.owners.length > 0">with {{session.owners[0].profiles[0].first_name | ucwords}} {{session.owners[0].profiles[0].last_name | ucwords}}</span>
+								</div>
+							</div>
+						</div>
+						<div class="seperate-section" *ngIf="!selectedPackageIndex">
+							<span class="fw-bold">Please select a package from the selector on the left</span>
+						</div>
+						<div class="seperate-section" *ngIf="selectedPackageIndex">
+							<span class="fw-bold">Selected Package</span>
+							<br>
+							<span *ngIf="selectedPackageIndex"> {{packages[selectedPackageIndex].price | convertCurrency: packages[selectedPackageIndex].currency |async}} for {{packages[selectedPackageIndex].duration}} minutes </span>
+						</div>
+						<div class="seperate-section" *ngIf="selectedPackageIndex && totalDuration.getValue()>0">
+							<div class="margin-bottom-10">
+								<div *ngFor="let provision of provisions">
+									<span class="text-grey">{{provision.text | ucfirst}}</span>
+									<span class="pull-right">Included</span><br/>
+								</div>
+								<span class="text-grey">{{selectedFormattedTime}}</span>
+								<span class="pull-right">{{totalCost | async | convertCurrency: packages[selectedPackageIndex].currency |async}}</span>
+								<br><br>
+								<span class="text-grey">Total</span>
+								<span class="pull-right"><b>{{totalCost | async | convertCurrency: packages[selectedPackageIndex].currency |async}}</b></span>
+							</div>
+						</div>
+						<div class="seperate-section" *ngIf="selectedPackageIndex">
+							<div class="fs-18 margin-bottom-10">Cancellation Policy</div>
+							<div class="fs-14 text-grey" *ngIf="selectedPackageIndex">Get a
+								<span class="text-black">full refund</span> if you cancel within {{packages[selectedPackageIndex].cancellationPolicy}} of purchase.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

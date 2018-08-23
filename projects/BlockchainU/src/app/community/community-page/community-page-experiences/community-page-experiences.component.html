@@ -1,0 +1,33 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="loading-container" [hidden]="!loadingExperiences">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+</div>
+<div class="row" *ngIf="!loadingExperiences">
+	<div class="col-md-12">
+		<div class="row margin-top-20" *ngIf="userType !== 'public'">
+			<div class="col-md-12">
+				<div class="mat-body-2">Add your experience</div>
+			</div>
+		</div>
+		<div class="row" *ngIf="userType !== 'public'">
+			<div class="col-md-11 col-xs-10">
+				<mat-form-field [floatLabel]="'never'" class="pb-block classSelector margin-top-20">
+					<mat-select #selectedExperience placeholder="Select from your existing experiences" [disableRipple]="'true'">
+						<mat-option *ngFor="let experience of ownedExperiences" [value]="experience.id">{{experience.title | ucwords}}</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="col-md-1 col-xs-2" style="top: 42px;">
+				<mat-icon class="clickable" style="color: #33bd9e;" (click)="addExperience(selectedExperience.value)">check_circle</mat-icon>
+			</div>
+		</div>
+		<div class="row feed-horizontal margin-top-30 margin-bottom-40" style="padding: 0px 7px;">
+			<div *ngFor="let experience of experiences; let i =index">
+				<app-experience-card [experience]="experience" (refresh)="onExperienceRefresh($event)" [cardsPerRow]="3"></app-experience-card>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,107 @@
+.profilePhotoHeading {
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.uploadContainer {
+  text-align: center;
+  vertical-align: middle;
+  border: 0.5px solid #cccccc;
+  border-radius: 1px;
+  width: 40%;
+  padding: 35px;
+  margin-bottom: 25px;
+}
+
+.darkText {
+  color: #333333;
+  margin-bottom: 15px;
+}
+
+.lighterText {
+  color: #cccccc;
+  line-height: 150%;
+}
+
+.uploaded_picture{
+  max-height: 200px;
+  width: auto;
+}
+
+.profilePic:before {
+  display: inline-block;
+  content: "";
+  vertical-align: middle;
+  min-height: 210px;
+}
+
+.profilePic {
+  max-height: 200px;
+  display: inline-block;
+  min-height: 210px;
+  margin-bottom: 10px;
+  // padding: 10px;
+}
+
+.profileVideo:before {
+  display: inline-block;
+  content: "";
+  vertical-align: middle;
+  min-height: 210px;
+}
+
+.profileVideo {
+  max-height: 200px;
+  display: inline-block;
+  min-height: 210px;
+  margin-bottom: 10px;
+  border: 0.5px solid grey;
+  // padding: 10px;
+}
+
+.delete {
+  position: relative;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.profilePic .delete-button {
+  position:absolute;
+  top:-4px;
+  right:-9px;
+  height: 20px;
+  width: 20px;
+  color: #33bd9e;
+  cursor: pointer;
+  border: 1px solid #33bd9e;
+  background: white;
+  border-radius: 20px;
+  font-size: 18px;
+}
+
+.profileVideo .delete-button {
+  position:absolute;
+  top:-10px;
+  right:-10px;
+  height: 20px;
+  width: 20px;
+  color: #33bd9e;
+  cursor: pointer;
+  border: 1px solid #33bd9e;
+  background: white;
+  border-radius: 20px;
+  font-size: 18px;
+}
+
+.consoleProfilePhotoContainer {
+	margin-right: 20px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.consoleProfilePhotoContainer {
+		padding: 0 20px;
+		margin-right: 0;
+	}
+}
