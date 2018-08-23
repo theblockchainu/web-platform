@@ -453,7 +453,7 @@ export class HomefeedComponent implements OnInit {
 							topics.push('No topics selected');
 							responseObj.topics = topics;
 						}
-						if (this.peers.length < 6) {
+						if (this.peers.length <= 6) {
 							this.peers.push(responseObj);
 						}
 					}

@@ -41,9 +41,8 @@
 		<div class="dark-gray-overlay"></div>
 		<div class="container">
 			<div class="content">
-				<h1 style="line-height: 3.2rem;">Find unique local &amp; online learning experiences
-					<br>all over the world.</h1>
-				<mat-form-field appearance="outline" color="accent" floatLabel="never" class="search-form search-home pb-block mat-elevation-z20">
+				<h1 style="line-height: 3.2rem;">Building the web 3.0 community through quality education for developers, entrepreneurs and enterprises</h1>
+				<!--<mat-form-field appearance="outline" color="accent" floatLabel="never" class="search-form search-home pb-block mat-elevation-z20">
 					<input #searchInputBar name="search" placeholder='Try "Blockchain or Hyperledger"' matInput [formControl]="myControl" [matAutocomplete]="auto">
 					<mat-autocomplete #auto="matAutocomplete">
 						<mat-option style="height: auto;" *ngIf="searching">
@@ -66,7 +65,7 @@
 							</div>
 						</mat-option>
 					</mat-autocomplete>
-				</mat-form-field>
+				</mat-form-field>-->
 			</div>
 		</div>
 	</section>
@@ -129,8 +128,7 @@
 			</div>
 			<div *ngIf="!loadingExperiences" class="row feed-horizontal" style="padding: 0px 7px;">
 				<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
-					There are no new active experiences to view right now. Browse from within your signed-up experiences
-					<a class="clickable" [routerLink]="['console','teaching','experiences']">here</a>.
+					There are no new active experiences to view right now.
 				</div>
 				<div *ngFor="let experience of experiences; let i = index;">
 					<app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
@@ -220,7 +218,7 @@
 								<span>10+ experiences</span>
 							</p>
 							<p class="title mat-body-2">Get up to speed</p>
-							<p>Learn about technologies that are changing the world</p>
+							<p>Learn about blockchain technologies that are changing the world</p>
 						</div>
 					</div>
 				</div>
@@ -228,7 +226,7 @@
 					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{topic: 'language'}">
 						<div class="card-image rounded-6px">
 							<div class="card-image-content text-center">
-								<span class="image-heading">Language</span>
+								<span class="image-heading">Finance</span>
 							</div>
 							<img src="/assets/images/language-card.jpg" alt="landscape2">
 						</div>
@@ -236,8 +234,8 @@
 							<p class="tags text-uppercase">
 								<span>10+ experiences</span>
 							</p>
-							<p class="title mat-body-2">Catch a new language</p>
-							<p>Pick from within our collection of languages you can learn in immersive experiences</p>
+							<p class="title mat-body-2">Design for the new internet</p>
+							<p>Pick from within our collection of non technical tracks like finance and blockchain solution architecture</p>
 						</div>
 					</div>
 				</div>
@@ -314,56 +312,55 @@
 			<h2 class="section-title pb-0">Classes in the spotlight</h2>
 			<div class="row small-margin">
 				<div class="col-12 col-md-4 small-padding">
-					<div class="custom-card clickable" [routerLink]="'/home/classes'" [queryParams]="{topic: 'blockchain'}">
+					<div class="custom-card clickable" [routerLink]="'/home/classes'" [queryParams]="{topic: 'ethereum'}">
 						<div class="card-image rounded-6px">
 							<div class="card-image-content text-center">
-								<span class="image-heading">Blockchain</span>
+								<span class="image-heading">Ethereum</span>
 							</div>
-							<img src="/assets/images/blockchain-category.jpg" alt="Blockchain Classes">
+							<img src="/assets/images/blockchain-category.jpg" alt="Ethereum Classes">
 						</div>
 						<div class="card-content">
 							<p class="tags text-uppercase">
 								<span>Coming soon</span>
 							</p>
-							<h3 class="title">Blockchain Classes</h3>
-							<p>Learn from online webinars, live sessions and recorded videos about blockchain, crypto currencies and DLTs
+							<h3 class="title">Ethereum Classes</h3>
+							<p>Learn from online webinars, live sessions and recorded videos about ethereum, solidity, truffle etc.
 							</p>
 						</div>
 					</div>
 				</div>
 				<div class="col-12 col-md-4 small-padding">
-					<div class="custom-card clickable" [routerLink]="'/home/classes'" [queryParams]="{topic: 'uiux'}">
+					<div class="custom-card clickable" [routerLink]="'/home/classes'" [queryParams]="{topic: 'hyperledger'}">
 						<div class="card-image rounded-6px">
 							<div class="card-image-content text-center">
-								<span class="image-heading">UI/UX</span>
+								<span class="image-heading">Hyperledger</span>
 							</div>
-							<img src="/assets/images/uiux-category.jpg" alt="UI Classes">
+							<img src="/assets/images/uiux-category.jpg" alt="Hyperledger Classes">
 						</div>
 						<div class="card-content">
 							<p class="tags text-uppercase">
 								<span>Coming soon</span>
 							</p>
-							<h3 class="title">UI/UX Classes</h3>
-							<p>Engage in interactive online sessions with experts to learn about digital design fundamentals in user interface and
-								user experience</p>
+							<h3 class="title">Hyperledger Classes</h3>
+							<p>Engage in interactive online sessions with experts to learn about hyperledger design and development</p>
 						</div>
 					</div>
 				</div>
 				<div class="col-12 col-md-4 small-padding">
-					<div class="custom-card clickable" [routerLink]="'/home/classes'" [queryParams]="{topic: 'ai'}">
+					<div class="custom-card clickable" [routerLink]="'/home/classes'" [queryParams]="{topic: 'cryptocurrency'}">
 						<div class="card-image rounded-6px">
 							<div class="card-image-content text-center">
-								<span class="image-heading">Artificial Intelligence</span>
+								<span class="image-heading">Cryptocurrency</span>
 							</div>
-							<img src="/assets/images/ai-category.jpg" alt="AI Classes">
+							<img src="/assets/images/ai-category.jpg" alt="Crypto Classes">
 						</div>
 						<div class="card-content">
 							<p class="tags text-uppercase">
 								<span>Coming soon</span>
 							</p>
-							<h3 class="title">AI Classes</h3>
-							<p>From beginner classes for AI enthusiasts to advanced programs for senior developers, from software engineers to company
-								executives, everything you need to learn about AI</p>
+							<h3 class="title">Cryptocurrency Classes</h3>
+							<p>From beginner classes for cryptocurrency enthusiasts to advanced programs for senior developers, from software engineers to company
+								executives, everything you need to learn about the new money</p>
 						</div>
 					</div>
 				</div>
@@ -398,6 +395,9 @@
 				<ngx-loading [show]="true"></ngx-loading>
 			</div>
 			<div *ngIf="!loadingPeers" class="row feed-horizontal" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="peers === undefined || peers.length === 0">
+					There are no new active peers to view right now.
+				</div>
 				<div *ngFor="let peer of peers; let i = index;">
 					<app-peer-card *ngIf="i < 6" [peer]="peer"></app-peer-card>
 				</div>
@@ -410,51 +410,51 @@
 			<h2 class="section-title pb-0">Super Peer Teachers</h2>
 			<div class="row small-margin">
 				<div class="col-12 col-md-4 small-padding">
-					<div class="custom-card clickable" [routerLink]="'/home/peers'" [queryParams]="{topic: 'coding'}">
+					<div class="custom-card clickable" [routerLink]="'/home/peers'" [queryParams]="{topic: 'solidity'}">
 						<div class="card-image rounded-6px">
 							<div class="card-image-content text-center">
-								<span class="image-heading">Coding</span>
+								<span class="image-heading">Solidity</span>
 							</div>
-							<img src="/assets/images/coding-card.jpg" alt="Peers teaching coding">
+							<img src="/assets/images/coding-card.jpg" alt="Peers teaching solidity">
 						</div>
 						<div class="card-content">
 							<p class="tags text-uppercase">
 								<span>Coming soon</span>
 							</p>
-							<p class="para">Peers teaching Coding
+							<p class="para">Peers teaching Solidity
 							</p>
 						</div>
 					</div>
 				</div>
 				<div class="col-12 col-md-4 small-padding">
-					<div class="custom-card clickable" [routerLink]="'/home/peers'" [queryParams]="{topic: 'design'}">
+					<div class="custom-card clickable" [routerLink]="'/home/peers'" [queryParams]="{topic: 'corda'}">
 						<div class="card-image rounded-6px">
 							<div class="card-image-content text-center">
-								<span class="image-heading">Design</span>
+								<span class="image-heading">Corda</span>
 							</div>
-							<img src="/assets/images/design-card.jpg" alt="Peers teaching Design">
+							<img src="/assets/images/design-card.jpg" alt="Peers teaching Corda">
 						</div>
 						<div class="card-content">
 							<p class="tags text-uppercase">
 								<span>Coming soon</span>
 							</p>
-							<p class="para">Peers teaching Design</p>
+							<p class="para">Peers teaching Corda</p>
 						</div>
 					</div>
 				</div>
 				<div class="col-12 col-md-4 small-padding">
-					<div class="custom-card clickable" [routerLink]="'/home/peers'" [queryParams]="{topic: 'cooking'}">
+					<div class="custom-card clickable" [routerLink]="'/home/peers'" [queryParams]="{topic: 'dlt'}">
 						<div class="card-image rounded-6px">
 							<div class="card-image-content text-center">
-								<span class="image-heading">Cooking</span>
+								<span class="image-heading">Distributed Ledgers</span>
 							</div>
-							<img src="/assets/images/cooking-card.jpg" alt="Peers teaching cooking">
+							<img src="/assets/images/cooking-card.jpg" alt="Peers teaching distributed ledgers">
 						</div>
 						<div class="card-content">
 							<p class="tags text-uppercase">
 								<span>Coming soon</span>
 							</p>
-							<p class="para">Peers teaching Cooking</p>
+							<p class="para">Peers teaching Distributed Ledgers</p>
 						</div>
 					</div>
 				</div>
@@ -491,7 +491,7 @@
 					<div class="custom-card" [routerLink]="'/home/communities'" [queryParams]="{topic: 'blockchain'}">
 						<div class="card-image rounded-6px">
 							<div class="card-image-content text-center">
-								<span class="image-heading">Blockchain Developers</span>
+								<span class="image-heading">Blockchain Devs</span>
 							</div>
 							<img src="/assets/images/blockchain-dev-card.jpg" alt="Blockchain developers">
 						</div>
@@ -506,36 +506,36 @@
 					</div>
 				</div>
 				<div class="col-12 col-md-4 small-padding">
-					<div class="custom-card" [routerLink]="'/home/communities'" [queryParams]="{topic: 'uiux'}">
+					<div class="custom-card" [routerLink]="'/home/communities'" [queryParams]="{topic: 'hyperledger'}">
 						<div class="card-image rounded-6px">
 							<div class="card-image-content text-center">
-								<span class="image-heading">Videography</span>
+								<span class="image-heading">Hyperledger Devs</span>
 							</div>
-							<img src="/assets/images/videography-card.jpg" alt="Videography">
+							<img src="/assets/images/videography-card.jpg" alt="Hyperledger">
 						</div>
 						<div class="card-content">
 							<p class="tags text-uppercase">
 								<span>Coming soon</span>
 							</p>
-							<h3 class="title">Videography Community</h3>
-							<p>Communities with people asking questions on Videography</p>
+							<h3 class="title">Hyperledger Developers Community</h3>
+							<p>Communities with people asking questions on Hyperledger and related technologies</p>
 						</div>
 					</div>
 				</div>
 				<div class="col-12 col-md-4 small-padding">
-					<div class="custom-card" [routerLink]="'/home/communities'" [queryParams]="{topic: 'ai'}">
+					<div class="custom-card" [routerLink]="'/home/communities'" [queryParams]="{topic: 'cryptocurrency'}">
 						<div class="card-image rounded-6px">
 							<div class="card-image-content text-center">
-								<span class="image-heading">Art</span>
+								<span class="image-heading">Crypto Enthusiasts</span>
 							</div>
-							<img src="/assets/images/art-card.jpg" alt="Art">
+							<img src="/assets/images/art-card.jpg" alt="Crypto Enthusiasts">
 						</div>
 						<div class="card-content">
 							<p class="tags text-uppercase">
 								<span>Coming soon</span>
 							</p>
-							<h3 class="title">Art Community</h3>
-							<p>Ask questions or learn from looking at answers from the Arts community</p>
+							<h3 class="title">Crypto Enthusiasts Community</h3>
+							<p>Ask questions or learn from looking at answers from the Crypto ehthusiasts community</p>
 						</div>
 					</div>
 				</div>
@@ -551,8 +551,7 @@
 			</div>
 			<div *ngIf="!loadingCommunities" class="row feed-horizontal" style="padding: 0px 7px;">
 				<div class="noDataContainer" *ngIf="communities === undefined || communities.length === 0">
-					There are no new active communities to view right now. Browse from within your signed-up communities
-					<a class="clickable">here</a>.
+					There are no new active communities to view right now.
 				</div>
 				<div *ngFor="let community of communities; let i = index;">
 					<app-community-card *ngIf="i < 5" [cardsPerRow]="3" [community]="community" (refresh)="onCommunityRefresh($event)"></app-community-card>
