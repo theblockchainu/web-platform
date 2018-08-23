@@ -1046,23 +1046,24 @@
 							</div>
 						</div>
 						<hr class="margin-top-10 margin-bottom-10">
-						<div class="row padding-top-50">
-							<div class="col-xs-12 center">
-								<h3>Contact Us</h3>
-							</div>
+						<div class="row padding-top-20 padding-bottom-20">
 							<div class="col-xs-12">
+								<h3>Want to know more?</h3>
+								<div class="lightText">Drop us a message and we'll get back immediately.</div>
+							</div>
+							<div class="col-xs-12 margin-top-10">
 								<form [formGroup]="contactUsForm">
 									<div class="row">
-										<div class="col-xs-6">
+										<div class="col-xs-12">
 											<mat-form-field class="pb-block">
-												<input matInput type="text" placeholder="First Name" formControlName="first_name">
+												<input matInput type="text" placeholder="Name" formControlName="first_name">
 											</mat-form-field>
 										</div>
-										<div class="col-xs-6">
+										<!--<div class="col-xs-12">
 											<mat-form-field class="pb-block">
 												<input matInput type="text" placeholder="Last Name" formControlName="last_name">
 											</mat-form-field>
-										</div>
+										</div>-->
 										<div class="col-xs-12">
 											<mat-form-field class="pb-block ">
 												<input matInput type="text" placeholder="Email" formControlName="email">
@@ -1070,26 +1071,24 @@
 										</div>
 										<div class="col-xs-12">
 											<mat-form-field class="pb-block">
-												<input matInput type="number" placeholder="Phone Number" formControlName="phone">
-											</mat-form-field>
-										</div>
-										<div class="col-xs-12">
-											<mat-form-field class="pb-block">
 												<textarea matInput rows="1" matTextareaAutosize placeholder="Message" formControlName="message"></textarea>
 											</mat-form-field>
 										</div>
-										<div class=" col-xs-12 margin-bottom-20 center">
-											<button mat-raised-button color="accent" type="button" class="btn-width vertical-bottom" style="padding: 6px !important;"
-											 type="submit" (click)="createGuestContacts()">
-												<span class="txtcolor">Submit</span>
+										<div class="col-xs-6">
+											<mat-form-field class="pb-block">
+												<input matInput type="number" placeholder="Phone Number" formControlName="phone">
+											</mat-form-field>
+										</div>
+										<div class="col-xs-6">
+											<button mat-button color="primary" class="mat-border-button pb-block" type="submit" (click)="createGuestContacts()" style="float: right;">
+												<span>Submit</span>
 											</button>
-											<br>
-											<br>
 										</div>
 									</div>
 								</form>
 							</div>
 						</div>
+						<hr class="margin-top-10 margin-bottom-10">
 						<div class="row" style="color: #777777">
 							<div class="col-xs-4" style="cursor: pointer;">
 								<a (click)="openInviteFriendsDialog()">Invite friends</a>
@@ -1102,7 +1101,7 @@
 									<span *ngIf="hasBookmarked">Saved</span>
 								</span>
 							</div>
-							<div class="col-xs-4">
+							<div class="col-xs-4" style="text-align: right; font-size: 18px;">
 								<a shareButton="facebook" href="javascript:;" [url]="inviteLink">
 									<i class="fab fa-facebook-square"></i>
 								</a>&nbsp;
@@ -1114,10 +1113,11 @@
 								</a>
 							</div>
 						</div>
+						<hr class="margin-top-10 margin-bottom-10">
 						<div class="row">
 							<div class="col-xs-12">
-								Contact support at:
-								<a class="pull-right" href="tel:91-7021517299">+91-7021517299</a>
+								<i class="fa fa-headphones"></i>&nbsp;&nbsp; 24x7 support at
+								<a class="pull-right" href="tel:+917021517299">+91 7021-517-299</a>
 							</div>
 						</div>
 					</div>
