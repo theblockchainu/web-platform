@@ -157,10 +157,10 @@ export class IndexComponent implements OnInit {
 	}
 
 	private setTags() {
-		this.titleService.setTitle('The Blockchain University - Immersive & Incentivized Education');
+		this.titleService.setTitle('The Blockchain University - World largest community of Blockchain Certified Professionals');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'The Blockchain University - Immersive & Incentivized Education'
+			content: 'The Blockchain University - World largest community of Blockchain Certified Professionals'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
