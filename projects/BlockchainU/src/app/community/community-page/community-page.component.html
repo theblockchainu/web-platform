@@ -1,0 +1,273 @@
+<div class="main-content">
+	<div class="communityContainer">
+		<div class="loading-container" [hidden]="!loadingCommunity" style="margin-left: 8.5%; margin-top: 3%;">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+		<div *ngIf="community">
+			<div class="row more-actions center" *ngIf="userType === 'public'">
+				<div class="col-md-10 col-md-offset-1">
+					<span>Cannot find a community you were looking for?
+						<a class="clickable" (click)="dialogsService.requestCommunityDialog()">Let us know</a> and we'll do our best to create one for you</span>
+				</div>
+			</div>
+			<div class="row pending-actions" *ngIf="community.status === 'cancelled' && userType==='owner' ">
+				<div class="col-md-10 col-md-offset-1">
+					<span>This community has been cancelled by one of the owners</span>
+				</div>
+			</div>
+			<div class="row pending-actions center" *ngIf="community.status === 'submitted' && userType==='owner' ">
+				<div class="col-md-10 col-md-offset-1">
+					<span>This community is pending approval from peerbuds team</span>
+				</div>
+			</div>
+			<div class="row pending-actions center" *ngIf="(community.status === 'draft' || community.status === '' ) && userType==='owner' ">
+				<div class="col-md-10 col-md-offset-1">
+					<span>This is a preview. Submit your community to get it approved</span>
+				</div>
+			</div>
+			<div class="row pending-actions center" *ngIf="(userType === 'public' && userId !== undefined && accountApproved !== 'true')">
+				<div class="col-md-10 col-md-offset-1">
+					<span>Your account is still under review. You can sign-up for this community after you are approved.
+						<a href="javascript:void(0);" (click)="openVerificationPage()">Check verification status</a>
+					</span>
+				</div>
+			</div>
+			<div class="row pending-actions center" *ngIf="(userId === undefined)">
+				<div class="col-md-10 col-md-offset-1">
+					<span>You need to login or sign-up to join this community.
+						<a href="javascript:void(0);" (click)="openLoginPage()">Login now</a>
+					</span>
+				</div>
+			</div>
+			<div class="row margin-top-40">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="row community-content">
+						<div class="col-md-7 col-xs-12 left-content">
+							<!--COVER IMAGE-->
+							<div class="row coverImage">
+								<div class="col-md-12">
+									<ngu-carousel [inputs]="carouselBanner">
+										<ngu-item NguCarouselItem class="bannerStyle" *ngFor="let imageUrl of carouselImages">
+											<div class="row">
+												<div class="col-md-12" [ngStyle]="{'background': 'url(' + imageUrl  + '/500' + '), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}"
+												 [ngClass]="'community-banner'">
+												</div>
+											</div>
+										</ngu-item>
+										<img NguCarouselPrev src="../../../assets/images/images_landing/arrow-left.png" class="arrow arrow-left" />
+										<img NguCarouselNext src="../../../assets/images/images_landing/arrow-right.png" class="arrow arrow-right" />
+									</ngu-carousel>
+								</div>
+							</div>
+							<!--TITLE-->
+							<div class="mat-display-1 margin-top-10" style="margin-bottom: 20px !important;">
+								{{community.title | ucwords}}
+							</div>
+							<!--DESCRIPTION SECTION-->
+							<div class="row Description">
+								<div class="col-md-12" style="text-align: justify;">
+									{{community.description | ucfirst}}
+								</div>
+							</div>
+							<!--TOPICS SECTION-->
+							<div class="row Topics margin-top-20 margin-bottom-40">
+								<div class="col-md-12">
+									<mat-chip-list style="display: inline-block;">
+										<mat-chip class="square" *ngFor="let topic of topicFix"> {{topic.name | ucwords}}
+										</mat-chip>
+									</mat-chip-list>
+									<!--<mat-icon class="clickable" color="primary" style="margin-left: 20px; top: 5px;">edit</mat-icon>-->
+								</div>
+							</div>
+							<!--DISCUSSION THREAD-->
+							<div class="row Discussion" *ngIf="userType==='owner' || userType==='participant'">
+								<div class="loading-container" [hidden]="!loadingComments">
+									<ngx-loading [show]="true"></ngx-loading>
+								</div>
+								<div class="col-md-12">
+									<!-- <div class="row" *ngFor="let comment of comments">
+										<div *ngIf="comment.isAnnouncement === true">
+											<div class="announcement">
+												<button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuComment" style="float: right;">
+													<mat-icon style="color: #cccccc">more_vert</mat-icon>
+												</button>
+												<mat-menu #menuComment="matMenu">
+													<button *ngIf="userType==='participant'" mat-menu-item>
+														<mat-icon>flag</mat-icon>
+														<span>Flag</span>
+													</button>
+													<button *ngIf="userType==='owner' || isMyComment(comment)" mat-menu-item (click)="deleteComment(comment)">
+														<mat-icon>delete</mat-icon>
+														<span>Delete</span>
+													</button>
+												</mat-menu>
+												<div class="margin-bottom-10">
+													<b>Announcement on {{comment.createdAt | extractTime: 'Do MMM, YYYY'}}
+													</b>
+												</div>
+												<div>{{comment.description}}</div>
+											</div>
+										</div>
+									</div> -->
+								</div>
+							</div>
+							<div id="questionTarget" #questionTarget></div>
+							<!--TABS-->
+							<nav mat-tab-nav-bar disableRipple>
+								<a mat-tab-link [routerLink]="['questions']" [active]="activeTab === 'questions'" style="padding-left: 0px !important; min-width: min-content !important;">
+									Q & A
+								</a>
+								<a mat-tab-link [routerLink]="['classes']" [active]="activeTab === 'classes'" style="min-width: min-content !important;">
+									Classes
+								</a>
+								<a mat-tab-link [routerLink]="['experiences']" [active]="activeTab === 'experiences'" style="min-width: min-content !important;">
+									Experiences
+								</a>
+								<a mat-tab-link [routerLink]="['links']" [active]="activeTab === 'links'" style="min-width: min-content !important;">
+									Shared links
+								</a>
+							</nav>
+							<!--TABS OUTLET-->
+							<div class="row margin-top-20 margin-bottom-50">
+								<div class="col-md-12">
+									<router-outlet></router-outlet>
+								</div>
+							</div>
+						</div>
+
+						<!--RIGHT SIDEBAR-->
+						<div class="col-md-4 col-md-offset-1 col-xs-12 col-xs-offset-0 right-content">
+							<!--ACTION BUTTONS-->
+							<div class="row hide-small" style="margin-top: 15px; text-align: right;" *ngIf="userType === 'public'">
+								<div class="col-md-12">
+									<span matTooltip="Please wait for your account to be approved before joining this community" [matTooltipDisabled]="accountApproved === 'true'">
+										<button mat-raised-button class="pb-block" color="primary" [disabled]="accountApproved !== 'true'" (click)="joinCommunity()">Join Community</button>
+									</span>
+									<hr>
+								</div>
+							</div>
+							<div class="row hide-small" style="margin-top: 15px; text-align: right" *ngIf="userType==='owner' || userType==='participant'">
+								<!--<button mat-raised-button class="" color="primary" (click)="joinGroupChat()">Join Group Chat</button> &emsp;-->
+								<button mat-button class="mat-border-button" *ngIf="userType ==='participant' || userType === 'owner'" (click)="scrollToQuestions()">Questions
+								</button> &emsp;
+								<mat-icon [matMenuTriggerFor]="menu" style="cursor: pointer;top: 5px; color: #ccc;">
+									more_vert
+								</mat-icon>
+								<mat-menu #menu="matMenu">
+									<button mat-menu-item *ngIf="userType==='participant'" (click)="dropOutCommunity()">
+										Cancel Participation
+									</button>
+									<button mat-menu-item *ngIf="userType==='owner'" (click)="deleteCommunity()">Delete Community
+									</button>
+								</mat-menu>
+								<div class="col-md-12">
+									<hr>
+								</div>
+							</div>
+							<div class="row margin-bottom-20">
+								<div class="col-md-12">
+									<mat-form-field [floatLabel]="'auto'" style="color:#767676 !important" class="pb-block">
+										<input name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="searchControl"
+										 [matAutocomplete]="auto" placeholder="Search in the community...">
+									</mat-form-field>
+									<mat-autocomplete #auto="matAutocomplete">
+										<mat-option *ngFor="let option of searchResults" [value]="_searchService.getSearchOptionText(option)" (click)="_searchService.onSearchOptionClicked(option)">
+											<span class="lightText">
+												{{_searchService.getSearchOptionType(option)}}
+											</span>
+											<span>
+												{{_searchService.getSearchOptionText(option)}}
+											</span>
+										</mat-option>
+									</mat-autocomplete>
+								</div>
+							</div>
+							<!--PARTICIPANTS-->
+							<div class="row">
+								<div class="col-md-12">
+									<h3 class="margin-bottom-20">Members</h3>
+									<div>
+										<div class="loading-container" [hidden]="!loadingParticipants">
+											<ngx-loading [show]="true"></ngx-loading>
+										</div>
+										<div>
+											<div class="row" *ngIf="participants.length === 0">
+												<div class="col-md-12">
+													<div class="clickable emptySectionText" style="margin-top: 0px;" (click)="openInviteFriendsDialog()">
+														No members yet.
+														<br> Invite peers to this community?
+													</div>
+												</div>
+											</div>
+										</div>
+										<div *ngFor="let participant of participants; let i=index">
+											<div class="row" *ngIf="participant.profiles && i<4">
+												<div class="col-md-2 vcenter clickable">
+													<app-profile-popup [peer]="participant"></app-profile-popup>
+												</div>
+												<div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
+													<div>{{participant.profiles[0].first_name | ucwords}} {{participant.profiles[0].last_name | ucwords}}</div>
+													<div *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="mat-caption lightText">{{participant.profiles[0].headline | ucwords}}</div>
+												</div>
+											</div>
+										</div>
+										<div>
+											<div class="row">
+												<div class="col-md-12 margin-top-20 margin-bottom-40">
+													<a (click)="viewParticipants()" style="cursor: pointer;" *ngIf="participants.length > 0"> View all members </a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr class="margin-top-10 margin-bottom-10">
+							<!--BOOKMARK SHARE-->
+							<div class="row" style="color: #777777">
+								<div class="col-xs-4" style="cursor: pointer;">
+									<a (click)="openInviteFriendsDialog()">Invite friends</a>
+								</div>
+								<div class="col-xs-4 clickable" (click)="saveBookmark()" style="cursor: pointer;">
+									<mat-icon [ngClass]="{'hasBookmarked': hasBookmarked}" style="font-size: 1rem; top: 2px;">bookmark
+									</mat-icon>
+									<span *ngIf="!hasBookmarked">Bookmark</span>
+									<span *ngIf="hasBookmarked">Saved</span>
+								</div>
+								<div class="col-xs-4" style="cursor: pointer;">
+									Share&nbsp;
+									<i class="fa fa-facebook-square clickable" aria-hidden="true" style="font-size: 1rem;" (click)="shareOnFb()"></i>
+									<i class="fa fa-twitter-square clickable" aria-hidden="true" style="font-size: 1rem;" (click)="shareOnTwitter()"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bottomButton">
+		<div class="row" style="text-align: left;" *ngIf="userType === 'public'">
+			<div class="col-md-12">
+				<span matTooltip="Please wait for your account to be approved before joining this community" [matTooltipDisabled]="accountApproved === 'true'">
+					<button mat-raised-button [disabled]="accountApproved !== 'true'" class="pb-block" color="primary" (click)="joinCommunity()"
+					 *ngIf="userType === 'public'">Join Community</button>
+				</span>
+				<hr>
+			</div>
+		</div>
+		<div class="row" style="text-align: left" *ngIf="userType==='owner' || userType==='participant'">
+			<mat-icon [matMenuTriggerFor]="menu" style="cursor: pointer;top: 5px; color: #ccc;">
+				more_vert
+			</mat-icon> &emsp;
+			<button mat-button class="mat-border-button" *ngIf="userType ==='participant' || userType === 'owner'" (click)="scrollToQuestions()">Questions
+			</button>
+			<mat-menu #menu="matMenu">
+				<button mat-menu-item *ngIf="userType==='participant'" (click)="dropOutCommunity()">
+					Cancel Participation
+				</button>
+				<button mat-menu-item *ngIf="userType==='owner'" (click)="deleteCommunity()">Delete Community
+				</button>
+			</mat-menu>
+		</div>
+	</div>
+</div>

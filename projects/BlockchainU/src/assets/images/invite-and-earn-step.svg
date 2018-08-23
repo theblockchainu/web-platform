@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="208" height="139" viewBox="0 0 208 139">
+    <defs>
+        <rect id="a" width="744" height="331" x="279" y="1218" rx="3"/>
+        <path id="b" d="M0 52.133l55-37.189 55 37.19v57.036H0z"/>
+        <path id="c" d="M22.33 0h64.702a3.2 3.2 0 0 1 3.2 3.2v86.302H72.457v18.36H19.13V3.2a3.2 3.2 0 0 1 3.2-3.2z"/>
+        <path id="d" d="M0 52.252l54.588 33.98L110 52.251V113H0z"/>
+        <path id="e" d="M55.856 79.649L110 113H0l53.325-33.343a2.4 2.4 0 0 1 2.531-.008z"/>
+        <ellipse id="f" cx="11.528" cy="11.658" rx="11.528" ry="11.179"/>
+        <ellipse id="h" cx="11.455" cy="8.84" rx="5.034" ry="4.966"/>
+        <path id="i" d="M21.94 25.898H.79a9.452 9.452 0 0 1-.148-1.67c0-5.537 4.8-10.025 10.723-10.025 5.922 0 10.723 4.488 10.723 10.025 0 .569-.051 1.127-.149 1.67z"/>
+        <ellipse id="k" cx="26.939" cy="26.933" rx="26.939" ry="26.933"/>
+        <filter id="j" width="207.6%" height="207.7%" x="-46.4%" y="-40.8%" filterUnits="objectBoundingBox">
+            <feOffset dx="4" dy="7" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="8.5"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.18 0"/>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g transform="matrix(1 0 0 -1 -318 1428)">
+            <use fill="#FFF" xlink:href="#a"/>
+            <rect width="743" height="330" x="279.5" y="1218.5" stroke="#E5E5E5" rx="3"/>
+        </g>
+        <g transform="translate(50 13)">
+            <use fill="#FFF" xlink:href="#b"/>
+            <path stroke="#555" stroke-width="2" d="M1 52.664v55.506h108V52.664L55 16.151 1 52.664z"/>
+        </g>
+        <path fill="#000" fill-opacity=".112" d="M67.104 54.808l63.102-37.424a4 4 0 0 1 6.04 3.44v82.48h-17.775v18.359H65.145V58.249a4 4 0 0 1 1.96-3.44z"/>
+        <g transform="translate(50 13)">
+            <use fill="#FFF" xlink:href="#c"/>
+            <path stroke="#555" stroke-width="2" d="M20.13 106.861h51.327V88.502h17.775V3.2a2.2 2.2 0 0 0-2.2-2.2H22.33a2.2 2.2 0 0 0-2.2 2.2v103.661z"/>
+        </g>
+        <g transform="translate(50 13)">
+            <use fill="#FAFAFA" xlink:href="#d"/>
+            <path stroke="#555" stroke-width="2" d="M1 54.052V112h108V54.038L54.584 87.407 1 54.052z"/>
+        </g>
+        <path fill="#000" fill-opacity=".072" d="M95.602 94.302L148.043 126H51.046v-4.123z"/>
+        <g transform="translate(50 13)">
+            <use fill="#FAFAFA" xlink:href="#e"/>
+            <path stroke="#555" stroke-width="2" d="M3.485 112H106.47L55.332 80.5a1.4 1.4 0 0 0-1.477.005L3.485 112z"/>
+        </g>
+        <path stroke="#D7D7D7" stroke-linecap="round" stroke-width="1.92" d="M85.36 64.451h39.27M82.338 71.664h45.321"/>
+        <g transform="translate(92.246 27.426)">
+            <ellipse cx="11.528" cy="11.658" fill="#F8F8F8" rx="11.528" ry="11.179"/>
+            <mask id="g" fill="#fff">
+                <use xlink:href="#f"/>
+            </mask>
+            <g mask="url(#g)">
+                <use fill="#FFF" xlink:href="#h"/>
+                <ellipse cx="11.455" cy="8.84" stroke="#555" stroke-width="1.3" rx="4.384" ry="4.316"/>
+            </g>
+            <g mask="url(#g)">
+                <use fill="#FFF" xlink:href="#i"/>
+                <path stroke="#555" stroke-width="1.3" d="M21.379 25.248c.039-.337.059-.677.059-1.02 0-5.168-4.5-9.375-10.073-9.375S1.292 19.06 1.292 24.228c0 .343.02.683.06 1.02h20.027z"/>
+            </g>
+            <ellipse cx="11.528" cy="11.658" stroke="#555" stroke-width="1.3" rx="10.878" ry="10.529"/>
+        </g>
+        <g>
+            <g transform="translate(131 48)">
+                <use fill="#000" filter="url(#j)" xlink:href="#k"/>
+                <use fill="#72E0AF" xlink:href="#k"/>
+            </g>
+            <g stroke="#FFF" stroke-linecap="round" stroke-width="4.8">
+                <path d="M149.247 84.002c.012-.691.042-2.35.092-4.978a9.642 9.642 0 0 1 13.167-8.792M162.1 76.202l6.095-6.094M162.311 63.744l6.094 6.094"/>
+            </g>
+        </g>
+    </g>
+</svg>

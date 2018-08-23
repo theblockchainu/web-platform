@@ -1,0 +1,32 @@
+.mat-dialog-content{
+    max-height: 80vh;    
+}
+.default-image{
+    background-color:#eee;
+    max-height: 280px;
+    text-align: center;
+    i{
+        font-size: 100px;
+        color:#bbb;
+        padding:90px 0;
+    }
+}
+.seperate-section{
+    &{
+        border-bottom:1px solid #ccc;
+        padding:20px 0;
+    }
+    .section-subhead{
+        font-weight: bold;
+        margin-bottom:10px;
+    }
+    .section-description{
+        color:#999;
+        line-height: 28px;
+    }
+}
+
+.hasUpvoted {
+    color: #33bd9e !important;
+    font-weight: 500;
+}

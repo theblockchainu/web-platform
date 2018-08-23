@@ -1,0 +1,519 @@
+<div class="row">
+	<div class="col-md-12 margin-top-20">
+		<div *ngIf="!loaded" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12" *ngIf="loaded">
+		<div class="row pending-actions center" *ngIf="!accountVerified">
+			<div class="col-md-10 col-md-offset-1">
+				<span class="lightText" style="color:#ffff">Your Account is pending approval from peerbuds team</span>
+			</div>
+		</div>
+		<div #noContentView *ngIf="ongoingArray.length === 0 && upcomingArray.length===0 && drafts.length === 0 && pastArray.length === 0"
+		 style="margin-top: 5%">
+			<div class="lightText">
+				Start your teaching journey by creating one of the following items..
+				<br>
+				<br>
+			</div>
+			<div class="row">
+				<div class="col-md-4 padding-top-20">
+					<span matTooltip="Your Account is pending approval from peerbuds team." [matTooltipDisabled]="accountVerified">
+						<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createExperience()" class="pb-block clickable card-button"
+						 style="background: url('/assets/images/experiences_icon.jpeg');	">
+							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create an Experience</span>
+								&emsp;
+								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
+								<br/>
+								<span class="mat-caption lightText">Create an in-person experience</span>
+							</div>
+						</button>
+					</span>
+				</div>
+				<div class="col-md-4 padding-top-20">
+					<span matTooltip="Your Account is pending approval from peerbuds team." [matTooltipDisabled]="accountVerified">
+						<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createClass()" class="pb-block clickable card-button"
+						 style="background: url('/assets/images/class_icon2.jpg');">
+							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Class</span>
+								&emsp;
+								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
+								<br/>
+								<span class="mat-caption lightText">Create an online course</span>
+							</div>
+						</button>
+					</span>
+				</div>
+				<div class="col-md-4 padding-top-20">
+					<span matTooltip="Your Account is pending approval from peerbuds team." [matTooltipDisabled]="accountVerified">
+						<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="editSessions()" class="pb-block clickable card-button"
+						 style="background: url('/assets/images/session_img.jpg');">
+							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">
+									<span *ngIf="session === undefined">
+										Enable Peer Sessions
+									</span>
+									<span *ngIf="session && session.status === 'draft'">
+										Continue Session Setup
+									</span>
+									<span *ngIf="session && session.status === 'active'">
+										Edit Session Preferences
+									</span>
+								</span>
+								&emsp;
+								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
+								<br/>
+								<span class="mat-caption lightText">Enable live sessions</span>
+							</div>
+						</button>
+					</span>
+				</div>
+				<div class="col-md-4 padding-top-20">
+					<span matTooltip="Your Account is pending approval from peerbuds team." [matTooltipDisabled]="accountVerified">
+						<button mat-button mat-raised-button [disabled]="!accountVerified" [routerLink]="'/console/account/scholarships'" class="pb-block clickable card-button"
+						 style="background: url('/assets/images/scholarship_img.jpg');">
+							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Scholarship</span>
+								&emsp;
+								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
+								<br/>
+								<span class="mat-caption lightText">Create scholarships for students</span>
+							</div>
+						</button>
+					</span>
+				</div>
+				<div class="col-md-4 padding-top-20">
+					<span matTooltip="Your Account is pending approval from peerbuds team." [matTooltipDisabled]="accountVerified">
+						<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createAccreditation()" class="pb-block clickable card-button"
+						 style="background: url('/assets/images/accreditation_img.jpg');">
+							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create an Accreditation</span>
+								&emsp;
+								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
+								<br/>
+								<span class="mat-caption lightText">Create accreditations for teachers</span>
+							</div>
+						</button>
+					</span>
+				</div>
+			</div>
+		</div>
+		<div *ngIf="ongoingArray.length > 0 || upcomingArray.length>0">
+			<div style="display:inline;">
+				<h2>Ongoing & Upcoming</h2>
+			</div>
+			<div class="row">
+				<div>
+					<div style="margin-top:20px;" class="col-md-12">
+						<div class="row">
+							<div *ngFor="let collection of ongoingArray" class="col-md-4" style="margin-top: 20px;">
+								<ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
+								<ng-template #noTopicText>No Topics</ng-template>
+								<mat-card class="upcoming-card">
+									<mat-card-content>
+										<div style="text-align: right">
+											<div class="pull-right">
+												<a mat-icon-button [matMenuTriggerFor]="ongoingCardMenu" style="text-align: right; padding: 0px">
+													<mat-icon>more_vert</mat-icon>
+												</a>
+											</div>
+										</div>
+										<div style="text-align: center">
+											<div class="pull-left">
+												<mat-chip-list class="cardTypeChip">
+													<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'class'">Class</mat-chip>
+													<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">Experience</mat-chip>
+													<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">Session</mat-chip>
+												</mat-chip-list>
+											</div>
+										</div>
+										<div class="collectionParticipantImageCarousel">
+											<span *ngFor="let participant of collection.participants; let i=index">
+												<div *ngIf="i<7" class="image-inline">
+													<app-profile-popup style="margin-left: -15px;" [peer]="participant"></app-profile-popup>
+												</div>
+											</span>
+											<div class="image-inline" *ngIf="collection.participants.length === 0">
+												<img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+											</div>
+										</div>
+										<div class="participantCount">
+											<span>{{collection.participants.length}} Participants </span>
+										</div>
+										<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+										<!-- <mat-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></mat-progress-bar> -->
+										<div class="cohortDate">
+											<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
+												MMM' }}</span>
+										</div>
+										<div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
+											{{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
+											<span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
+										</div>
+										<span matTooltip="{{consoleTeachingComponent.getProgressValue(collection)}}% completed">
+											<mat-progress-bar style="margin-bottom: 15px;" mode="determinate" value="{{consoleTeachingComponent.getProgressValue(collection)}}"></mat-progress-bar>
+										</span>
+										<span *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart === 0">
+											<p class="upcomingEventLabel">
+												Today
+											</p>
+											<div class="upcomingEventTitle">
+												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
+											</div>
+											<div class="upcomingEventTime">
+												{{ _collectionService.getUpcomingEvent(collection).type | titlecase}} {{ _collectionService.getUpcomingEvent(collection).fillerWord}}
+												today
+											</div>
+										</span>
+										<span *ngIf=" _collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart > 0">
+											<p class="upcomingEventLabel">
+												Up Next
+											</p>
+											<div class="upcomingEventTitle">
+												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
+											</div>
+											<div class="upcomingEventTime">
+												{{ _collectionService.getUpcomingEvent(collection).type | titlecase }} {{ _collectionService.getUpcomingEvent(collection).fillerWord
+												+ ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' days' }}
+											</div>
+										</span>
+										<span *ngIf="_collectionService.getUpcomingEvent(collection) &&  _collectionService.getUpcomingEvent(collection).timeToStart < 0">
+											<p class="upcomingEventLabel">
+												Last Event
+											</p>
+											<div class="upcomingEventTitle">
+												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
+											</div>
+											<div class="upcomingEventTime">
+												{{ _collectionService.getUpcomingEvent(collection).type| titlecase }} {{ _collectionService.getUpcomingEvent(collection).fillerWord
+												+ ' was ' + -(_collectionService.getUpcomingEvent(collection).timeToStart) + ' days ago' }}
+											</div>
+										</span>
+									</mat-card-content>
+									<mat-menu #ongoingCardMenu>
+										<button mat-menu-item (click)="cancelCollection(collection)">
+											Cancel {{collection.type | ucwords}}
+										</button>
+										<button mat-menu-item (click)="_collectionService.openEditCollection(collection)">
+											Edit {{collection.type | ucwords}}
+										</button>
+										<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
+											Add Promo Code
+										</button>
+										<button mat-menu-item (click)="_dialogService.viewPromoCodeDialog(collection.id)">
+											View Promo Codes
+										</button>
+									</mat-menu>
+									<mat-card-actions *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).hasStarted">
+										<button mat-raised-button (click)="_collectionService.viewCollection(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
+									</mat-card-actions>
+									<mat-card-footer class="cardFooter" style="margin-top: -4px">
+										<button mat-button [routerLink]="['/' + collection.type + '/'+collection.id+'/calendar/'+collection.calendars[0].id]">Continue Teaching</button>
+									</mat-card-footer>
+								</mat-card>
+							</div>
+							<div *ngFor="let collection of upcomingArray" class="col-md-4" style="margin-top: 20px;">
+								<ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
+								<ng-template #noTopicText>No Topics</ng-template>
+								<mat-card class="upcoming-card">
+									<mat-card-content>
+										<div style="text-align: right">
+											<div class="pull-right">
+												<a mat-icon-button [matMenuTriggerFor]="upcomingCardMenu" style="text-align: right; padding: 0px">
+													<mat-icon>more_vert</mat-icon>
+												</a>
+											</div>
+										</div>
+										<div style="text-align: center">
+											<div class="pull-left">
+												<mat-chip-list class="cardTypeChip">
+													<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'class'">Class</mat-chip>
+													<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">Experience</mat-chip>
+													<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">Session</mat-chip>
+												</mat-chip-list>
+											</div>
+										</div>
+										<div class="collectionParticipantImageCarousel">
+											<span *ngFor="let participant of collection.participants; let i=index">
+												<div *ngIf="i<6" class="image-inline">
+													<app-profile-popup style="margin-left: -15px;" [peer]="participant"></app-profile-popup>
+												</div>
+											</span>
+											<div class="image-inline" *ngIf="collection.participants.length === 0">
+												<img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+											</div>
+										</div>
+										<div style="margin-top: 15px;">
+											<span class="participantCount">{{collection.participants.length}} Participants </span> |
+											<span class="lightText">{{collection.maxSpots - collection.participants.length}} available </span>
+										</div>
+										<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+										<div class="cohortDate">
+											<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
+												MMM' }}</span>
+										</div>
+										<div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
+											{{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
+											<span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
+										</div>
+										<span *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart === 0">
+											<p class="upcomingEventLabel">
+												First Activity
+											</p>
+											<div class="upcomingEventTitle">
+												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
+											</div>
+											<div class="upcomingEventTime">
+												{{ _collectionService.getUpcomingEvent(collection).type | titlecase}} {{ _collectionService.getUpcomingEvent(collection).fillerWord}}
+												today
+											</div>
+										</span>
+										<span *ngIf=" _collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart > 0">
+											<p class="upcomingEventLabel">
+												First Activity
+											</p>
+											<div class="upcomingEventTitle">
+												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
+											</div>
+											<div class="upcomingEventTime">
+												{{ _collectionService.getUpcomingEvent(collection).type | titlecase }} {{ _collectionService.getUpcomingEvent(collection).fillerWord
+												+ ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' days' }}
+											</div>
+										</span>
+									</mat-card-content>
+									<mat-menu #upcomingCardMenu>
+										<button mat-menu-item (click)="cancelCollection(collection)">
+											Cancel
+										</button>
+										<button mat-menu-item (click)="_collectionService.openEditCollection(collection)">
+											Edit {{collection.type | ucwords}}
+										</button>
+										<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
+											Add Promo Code
+										</button>
+										<button mat-menu-item (click)="_dialogService.viewPromoCodeDialog(collection.id)">
+											View Promo Codes
+										</button>
+									</mat-menu>
+									<mat-card-actions *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).hasStarted">
+										<button mat-raised-button (click)="_collectionService.viewCollection(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
+									</mat-card-actions>
+									<mat-card-footer class="cardFooter" style="line-height: 30px; position: absolute;bottom: 24px;width: 100%;left: 24px;">
+										<a style="font-size: 1.077rem" (click)="_collectionService.viewCollection(collection)">Is this a recurring {{collection.type}}?</a>
+									</mat-card-footer>
+								</mat-card>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
+		<div *ngIf="drafts.length > 0">
+			<div style="display:inline;">
+				<h2>Drafts</h2>
+			</div>
+			<div class="row">
+				<div>
+					<div style="margin-top:20px;" class="col-md-12">
+						<div class="row">
+							<div *ngFor="let collection of drafts" [ngSwitch]="collection.status">
+								<div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'draft'">
+									<mat-card class="draft-card">
+										<mat-card-content>
+											<div class="clearfix" style="text-align: right">
+												<div class="pull-right">
+													<button mat-icon-button [matMenuTriggerFor]="draftCardMenu" style="text-align: right; padding: 0px">
+														<mat-icon>more_vert</mat-icon>
+													</button>
+												</div>
+											</div>
+											<div style="text-align: center">
+												<div class="pull-left">
+													<mat-chip-list class="cardTypeChip">
+														<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'class'">Class</mat-chip>
+														<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">Experience</mat-chip>
+														<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">Session</mat-chip>
+													</mat-chip-list>
+												</div>
+											</div>
+											<div class="mat-body-2" style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+											<div style="font-size: 12px; margin-top: -30px; margin-bottom: 10px;" *ngIf="collection.status === 'draft'">Last edited on {{collection.updatedAt | extractTime: 'Do MMM'}}</div>
+											<ng-template #draftMessage>
+												<mat-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></mat-progress-bar>
+												<p class="lightText" style="margin-top:20px">
+													You still have to complete filling up your {{collection.type}} details
+												</p>
+											</ng-template>
+											<ng-template #submittedMessage>
+												<p class="lightText" style="margin-top:20px">
+													Submitted for review
+													<br> Awaiting approval
+												</p>
+											</ng-template>
+											<span *ngIf="collection.status == 'draft'; then draftMessage else submittedMessage"></span>
+										</mat-card-content>
+										<mat-card-actions>
+											<button mat-raised-button (click)="onSelect(collection)">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
+										</mat-card-actions>
+										<mat-card-footer>
+
+										</mat-card-footer>
+									</mat-card>
+									<mat-menu #draftCardMenu>
+										<button mat-menu-item (click)="deleteCollection(collection)">
+											Delete
+										</button>
+										<button mat-menu-item (click)="_collectionService.viewCollection(collection)">
+											View {{collection.type | ucwords}}
+										</button>
+									</mat-menu>
+								</div>
+								<div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'submitted'">
+									<mat-card class="draft-card">
+										<mat-card-content>
+											<div class="clearfix" style="text-align: right">
+												<div class="pull-right">
+													<a mat-icon-button [matMenuTriggerFor]="draftCardMenu" style="text-align: right; padding: 0px">
+														<mat-icon>more_vert</mat-icon>
+													</a>
+												</div>
+											</div>
+											<div class="mat-body-2" style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
+											<ng-template #draftMessage>
+												<mat-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></mat-progress-bar>
+												<p class="lightText" style="margin-top:20px">
+													You still have to complete filling up your {{collection.type}} details
+												</p>
+											</ng-template>
+											<ng-template #submittedMessage>
+												<p class="lightText" style="margin-top:20px;margin-bottom: 40px;">
+													Submitted - {{collection.updatedAt | extractTime:'Do MMM'}}
+													<br> Awaiting approval
+												</p>
+											</ng-template>
+											<span *ngIf="collection.status == 'draft'; then draftMessage else submittedMessage"></span>
+										</mat-card-content>
+										<mat-card-actions>
+											<button mat-raised-button (click)="onSelect(collection)">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
+										</mat-card-actions>
+										<mat-card-footer>
+
+										</mat-card-footer>
+									</mat-card>
+									<mat-menu #draftCardMenu>
+										<button mat-menu-item (click)="deleteCollection(collection)">
+											Delete
+										</button>
+										<button mat-menu-item (click)="_collectionService.viewCollection(collection)">
+											View {{collection.type | ucwords}}
+										</button>
+									</mat-menu>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
+		<div *ngIf="pastArray.length > 0">
+			<div style="display:inline;">
+				<h2>Past</h2>
+			</div>
+			<div class="row">
+				<div>
+					<div style="margin-top:20px;" class="col-md-12">
+						<div class="row">
+							<div *ngFor="let collection of pastArray">
+								<ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
+								<ng-template #noTopicText>No Topics</ng-template>
+								<div class="col-md-4" style="margin-top: 20px;">
+									<mat-card class="pastCard" style="text-align: center; padding: 20px;">
+										<mat-card-content>
+											<div class="clearfix" style="text-align: right">
+												<div class="pull-right">
+													<a mat-icon-button [matMenuTriggerFor]="pastCardMenu" style="text-align: right; padding: 0px">
+														<mat-icon>more_vert</mat-icon>
+													</a>
+												</div>
+											</div>
+											<div style="text-align: center">
+												<div class="pull-left">
+													<mat-chip-list class="cardTypeChip">
+														<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type === 'class'">Class</mat-chip>
+														<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type === 'experience'">Experience</mat-chip>
+														<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type === 'session'">Session</mat-chip>
+													</mat-chip-list>
+												</div>
+											</div>
+											<div class="collectionParticipantImageCarousel">
+												<span *ngFor="let participant of collection.participants; let i=index">
+													<div *ngIf="i<7" class="image-inline">
+														<app-profile-popup style="margin-left: -15px;" [peer]="participant"></app-profile-popup>
+													</div>
+												</span>
+												<div class="image-inline" *ngIf="collection.participants.length === 0">
+													<img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+												</div>
+											</div>
+											<div class="participantCount">
+												<span>{{collection.participants.length}} Participants </span>
+											</div>
+											<div class="cohortCount">
+												<a (click)="openCohortDetailDialog(collection, 'complete')">{{consoleTeachingComponent.getCompletedCalendars(collection.calendars).length}} cohorts completed
+												</a>
+												<br>
+												<a (click)="openCohortDetailDialog(collection, 'cancelled')">{{consoleTeachingComponent.getCanceledCalendars(collection.calendars).length}} cohorts cancelled
+												</a>
+											</div>
+											<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.viewCollection(collection)">{{ collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
+											<div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
+												{{ collection.itenaries.length}} Days | {{collection.contents.length}} Activity |
+												<span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
+											</div>
+											<div *ngIf="collection.participants.length !== collection.participantReviewCount" class="teachingRatingReminder clickable"
+											 (click)="consoleTeachingComponent.showRateStudentsPopup(collection)">
+												Review your students now
+											</div>
+											<div *ngIf="collection.participants.length === collection.participantReviewCount" class="teachingRatingReminder disabled">
+												Thanks for reviewing all your students
+											</div>
+										</mat-card-content>
+										<mat-menu #pastCardMenu>
+											<button mat-menu-item (click)="_collectionService.viewCollection(collection)">
+												View {{collection.type | ucwords}}
+											</button>
+											<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
+												Add Promo Code
+											</button>
+											<button mat-menu-item (click)="_dialogService.viewPromoCodeDialog(collection.id)">
+												View Promo Codes
+											</button>
+										</mat-menu>
+										<mat-card-actions>
+											<button mat-raised-button [routerLink]="['/' + collection.type + '/'+collection.id+'/calendar/'+collection.calendars[0].id]">
+												View Details
+											</button>
+										</mat-card-actions>
+										<br>
+										<br>
+										<!-- <mat-card-footer class="cardFooter">
+										  <button mat-button (click)="_collectionService.viewTransactions()">View Transactions</button>
+										</mat-card-footer> -->
+									</mat-card>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,74 @@
+.mat-elevation-header .headerButtons {
+	font-size: 1rem;
+  margin: -4px !important;
+  vertical-align: middle !important;
+	line-height: 1 !important;
+	height: stretch;
+	color: #4e4e4e;
+}
+
+.mat-elevation-header .headerButtons .mat-button-focus-overlay {
+    background: none;
+}
+.mat-dialog-container {
+  padding-bottom: 0 !important;
+}
+
+.notifDot {
+  color: #ff5b5f;
+  font-size: 10px;
+  position: relative;
+  margin-left: -18px;
+  top: -8px;
+}
+
+.mat-menu-item-colored:hover:not([disabled]) {
+	background: #ff5b5f;
+}
+
+.mat-focused, .mat-input-placeholder{
+color: #95959f !important;
+}
+
+.input{
+color: #95959f !important;
+}
+
+.header-progress-bar{
+	font-size: 1.1rem;
+    display: -webkit-inline-box;
+    color: #33bd9e;
+}
+
+.profile-check{
+ color:#33bd9e !important;
+ font-size: 18px;
+ font-weight:bold;
+}
+
+.profile-check-disabled{
+  color:#aaaaaa !important;
+  font-size: 18px;
+  font-weight:bold;
+}
+
+.mat-menu-item-colored {
+	background: #FF6D71;
+	color: #fff;
+	margin-top: -8px;
+}
+
+.headerNewActionButton {
+	color: #ff6d71;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	.header-progress-bar{
+		top: 2px;
+  }
+
+  .mat-elevation-header .headerButtons {
+   margin: -20px !important;
+  }
+}

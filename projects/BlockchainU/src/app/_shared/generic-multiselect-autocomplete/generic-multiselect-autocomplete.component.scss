@@ -1,0 +1,164 @@
+.selected{
+	border:solid #4CAF50 1px;
+	float:left;
+	margin:2px;
+	padding:2px 15px;
+}
+
+.selected a{
+	cursor:pointer;
+	font-weight:bold;
+}
+
+.ui-widget, .ui-widget * {
+    box-sizing: border-box;
+}
+
+.ui-autocomplete {
+    width: auto;
+    zoom: 1;
+    cursor: pointer;
+    box-shadow: none;
+    position: relative;
+    display: inline-block;
+}
+.ui-inputtext, .ui-widget-content .ui-inputtext, .ui-widget-header .ui-inputtext {
+    font-weight: 400;
+}
+
+.ui-inputtext {
+    margin: 0;
+    outline: medium none;
+    padding: .25em;
+}
+
+.ui-autocomplete-multiple-container {
+    display: inline-block;
+}
+
+.ui-widget, .ui-widget * {
+    box-sizing: border-box;
+}
+
+.ui-inputtext {
+    background: #ffffff;
+    color: #222222;
+    -webkit-transition: .2s;
+    -moz-transition: .2s;
+    transition: .2s;
+}
+
+.ui-corner-all {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.ui-inputtext {
+    background: #ffffff;
+    color: #222222;
+}
+
+.ui-widget-header .ui-state-default, .ui-widget-content .ui-state-default, .ui-state-default {
+    border: 1px solid #d6d6d6;
+    background: #ffffff;
+    color: #555555;
+}
+
+.ui-widget {
+    font-family: "Roboto", "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 1em;
+}
+
+.ui-autocomplete-multiple-container.ui-inputtext {
+    clear: left;
+    cursor: text;
+    list-style-type: none;
+    margin: 0;
+    overflow: hidden;
+    padding: 0 .25em;
+}
+
+.ui-autocomplete-token {
+    cursor: default;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    padding: .625em .5em;
+    white-space: nowrap;
+    position: relative;
+    margin-right: .125em;
+    border: 0 none;
+    font-size: .9em;
+}
+
+.ui-autocomplete-token-icon {
+    margin-top: -.5em;
+    position: absolute;
+    right: .2em;
+    top: 50%;
+    cursor: pointer;
+}
+
+/*.ui-autocomplete-token-label {
+    display: block;
+    margin-right: 2em;
+}*/
+
+.ui-autocomplete-input-token {
+    display: inline-block;
+    vertical-align: middle;
+    list-style-type: none;
+    margin: 0 0 0 .125em;
+    padding: .25em .25em .25em 0;
+}
+
+.ui-autocomplete-input-token input {
+    border: 0 none;
+    width: 300px;
+    outline: medium none;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+a.ui-autocomplete-token-icon.fa-close {
+	color:white !important;
+}
+
+a.ui-autocomplete-token-icon.fa-close::before{
+	color:white !important;
+}
+
+.captitalise {
+    text-transform: capitalize;
+    color: rgba(0, 0, 0, 0.87);
+}
+
+span.ui-autocomplete-multiple {
+    width: 80%;
+}
+
+.ui-autocomplete-multiple-container {
+    border:none;
+    border-bottom: 1px solid lightgray;
+    width: 100%;
+}
+
+.ui-state-highlight {
+    background-color: #eeeeee;
+    border: 0.5px solid #ccc;
+    color: #4a4a4a;
+}
+
+a.ui-autocomplete-token-icon.fa-close::before {
+    color: gray !important;
+}
+
+.suggestions {
+    max-height: 300px;
+    overflow-y: scroll;
+    box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12)
+}

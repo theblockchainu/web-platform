@@ -1,0 +1,138 @@
+<div class="row">
+	<div class="col-md-12">
+		<div *ngIf="loading" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+</div>
+<div class="row" *ngIf="!loading">
+	<div class="col-md-12">
+		<div class="row">
+			<div style="margin-top:20px;" class="col-md-12">
+				<div class="row consoleProfileVerificationContainer">
+					<!-- <div class="col-md-12">
+					  <h3>Be ready to teach</h3>
+					</div>
+					<div class="col-md-8 mat-body-2" style="color:#767676">
+					  <p class="mat-caption">You will need to provide identification before you book, so get a head start by doing it now</p>
+					</div>
+					<div class="col-md-4">
+					  <button class="provideId" mat-button class="mat-border-button" color="accent" style="border-color:#ff5b5f !important" (click)="openIdVerify()"
+						*ngIf="!verifiedObj">Provide ID</button>
+					  <a *ngIf="verifiedObj" (click)="openIdVerify()" style="cursor:pointer;"> Awaiting Verification</a>
+					</div>
+				  </div>
+				  <hr> -->
+					<div class="row" *ngIf="alreadyVerified?.length > 0">
+						<div class="col-md-12">
+							<h3>Already Verified</h3>
+						</div>
+						<div class="col-md-12">
+							<div class="row" *ngFor="let verifiedObj of alreadyVerified">
+								<div class="col-md-12 col-xs-12">
+									<h5 style="margin-bottom:10px;font-weight:bold;">{{verifiedObj.text}}</h5>
+								</div>
+								<div class="col-md-1 col-xs-2">
+									<mat-icon [color]="'primary'" style="top: 0px;">check_circle</mat-icon>
+								</div>
+								<div class="col-md-10 col-xs-10">
+									<p class="mat-caption" *ngIf="verifiedObj.text !== 'Government Id'" style="color:#767676;">{{verifiedObj.value}}</p>
+									<a *ngIf="verifiedObj.text === 'Government Id' && verifiedObj.value" href="{{envVariable.apiUrl + verifiedObj.value.url}}" target="_blank">{{verifiedObj.value.originalFilename}}</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr *ngIf="alreadyVerified?.length > 0">
+					<div class="row" *ngIf="notVerified?.length > 0">
+						<div class="col-md-12">
+							<h3>Yet to be Verified</h3>
+						</div>
+						<div class="col-md-12">
+							<div class="row" *ngFor="let unverifiedObj of notVerified">
+								<div class="col-md-8 col-xs-8 margin-top-20">
+									<div class="row">
+										<div class="col-md-12 col-xs-12">
+											<h5 style="margin-bottom:10px;font-weight:bold;">{{unverifiedObj.text}}</h5>
+										</div>
+										<div class="col-md-10 col-xs-12">
+											<p *ngIf="!unverifiedObj.submitted" class="mat-caption" style="color:#767676">{{unverifiedObj.value}}</p>
+											<a *ngIf="unverifiedObj.text == 'Government Id'  && unverifiedObj.submitted" href="{{envVariable.apiUrl + unverifiedObj.value.url}}"
+											   target="_blank">{{unverifiedObj.value.originalFilename}}</a>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4 col-xs-4">
+									<button mat-button color="primary" *ngIf="unverifiedObj.text == 'Email address'" (click)="openEmailVerify()">Verify</button>
+									<button mat-button color="primary" *ngIf="unverifiedObj.text == 'Government Id' && !unverifiedObj.submitted" (click)="openIdVerify()">Verify</button>
+									<span matTooltip="Your ID has been submitted and is awaiting approval from our KYC team." *ngIf="unverifiedObj.text == 'Government Id' && unverifiedObj.submitted">
+										<button mat-button color="primary" [disabled]="true">Submitted. Awaiting verification.</button>
+									</span>
+									<button mat-button color="primary" *ngIf="unverifiedObj.text == 'Phone Number'" (click)="openPhoneVerify()">Verify</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr *ngIf="notVerified?.length > 0">
+					<div class="row">
+						<div class="col-md-12">
+							<h3>Social accounts</h3>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-8 col-xs-8">
+							<div class="row">
+								<div class="col-md-12 col-xs-12">
+									<h5 style="font-weight:bold">Facebook</h5>
+								</div>
+								<div class="col-md-10 col-xs-12">
+									<p class="mat-caption" style="color:#767676">
+										Sign in with your facebook and discover your trusted connections to teachers and learners all over the world.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-xs-4 margin-top-20">
+							<a *ngIf="!connectedIdentities.fb" mat-button href="{{envVariable.apiUrl + '/link/facebook?returnTo=console/profile/verification'}}">Connect</a>
+							<p *ngIf="connectedIdentities.fb" href="#" style="color: #33bd9e">Connected</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-8 col-xs-8 margin-top-20">
+							<div class="row">
+								<div class="col-md-12 col-xs-12">
+									<h5 style="font-weight:bold">Google</h5>
+								</div>
+								<div class="col-md-10 col-xs-12">
+									<p class="mat-caption" style="color:#767676">
+										Sign in with your Google and discover your trusted connections to teachers and learners all over the world.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-xs-4 margin-top-40">
+							<a *ngIf="!connectedIdentities.google" mat-button href="{{envVariable.apiUrl + '/link/google?returnTo=console/profile/verification'}}">Connect</a>
+							<p *ngIf="connectedIdentities.google" href="#" style="color: #33bd9e">Connected</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-8 col-xs-8 margin-top-20">
+							<div class="row">
+								<div class="col-md-12">
+									<h5 style="font-weight:bold">LinkedIn</h5>
+								</div>
+								<div class="col-md-10">
+									<p class="mat-caption" style="color:#767676">
+										Sign in with your LinkedIn and discover your trusted connections to teachers and learners all over the world.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-xs-4 margin-top-40">
+							<a *ngIf="!connectedIdentities.linkedin" mat-button href="{{envVariable.apiUrl + '/link/linkedin?returnTo=console/profile/verification'}}">Connect</a>
+							<p *ngIf="connectedIdentities.linkedin" href="#" style="color: #33bd9e">Connected</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

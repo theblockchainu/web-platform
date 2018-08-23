@@ -1,0 +1,298 @@
+<!--component html goes here -->
+<div class="main-content" *ngIf="collection">
+    <div class="container-fluid reviewPayContainer">
+        <div class="row">
+            <div class="col-md-offset-1 col-sm-6">
+                <div class="title">Review and pay</div>
+                <div class="seperate-section margin-bottom-20">
+                    <div class="fw-bold margin-bottom-10">Student requirements / prerequisites</div>
+                    <div class="text-grey" *ngIf="collection.difficultyLevel && collection.difficultyLevel.length > 0">
+                        <b>This {{collection.type}} is of {{collection.difficultyLevel}} level.</b>
+                    </div>
+                    <div class="text-grey margin-top-10 pre-wrapped" *ngIf="collection.notes && collection.notes.length > 0">{{collection.notes
+                        | ucfirst}}</div>
+                    <div class="text-grey margin-top-10" *ngIf="!collection.notes">There are no additional requirements to
+                        be aware of at this point</div>
+                </div>
+                <div class="loading-container" [hidden]="!loadingCards">
+                    <ngx-loading [show]="true"></ngx-loading>
+                </div>
+                <form [hidden]="loadingCards">
+                    <div class="payment-message margin-top-20 margin-bottom-20 mat-body-2">{{message}}</div>
+                    <div class="assessment seperate-section row margin-bottom-50 padding-bottom-40" *ngIf="collection.assessment_models && collection.assessment_models.length>0">
+                        <div class="col-sm-12 margin-top-20">
+                            <div class="fw-bold margin-bottom-10">Assessment Rules</div>
+                            <span>Your teacher will assess your academic performance in
+                                <b>{{collection.assessment_models[0].style}}</b>
+                            </span>.
+                        </div>
+                        <div class="col-xs-12 margin-top-20">
+                            <div class="row" *ngFor="let assessment_rule of assessmentRules">
+                                <div class="col-xs-4">
+                                    For {{assessment_rule.value | titlecase}}
+                                </div>
+                                <div class="col-xs-6">
+                                    you get
+                                    <i class="fab fa-ethereum"></i>
+                                    <b>{{getGyanForRule(assessment_rule.gyan, collection.academicGyan)}} Gyan</b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 margin-top-20" *ngIf="collection.nonAcademicGyan > 0">
+                            <div class="row" *ngFor="let assessment_rule of collection.assessment_models[0].assessment_na_rules">
+                                <div class="col-xs-4">
+                                    For {{assessment_rule.value | titlecase}}
+                                </div>
+                                <div class="col-xs-6">
+                                    you get
+                                    <i class="fab fa-ethereum"></i>
+                                    <b>{{getGyanForRule(assessment_rule.gyan, collection.nonAcademicGyan)}} Gyan</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div *ngIf="!loadingCountry" [hidden]="true" class="margin-top-20 margin-bottom-40">
+		                <button mat-button mat-raised-button (click)="initiatePayuPayment()">Proceed with payment</button>
+                    </div> -->
+                    <div>
+
+                    </div>
+                    <div *ngIf="!loadingCountry" [hidden]="collection.price===0">
+                        <div class="margin-bottom-50" *ngIf="isCardExist">
+                            <h3>Select payment method</h3>
+                            <div class="row margin-top-50">
+                                <div class="col-sm-6">
+                                    <mat-form-field [floatLabel]="'always'">
+                                        <mat-select placeholder="Select card" (change)="getcardDetails($event)">
+                                            <mat-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand
+                                                }} {{card.object}} ending with {{card.last4}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-6" *ngIf="cardDetails['id']">
+                                    <span class="text-grey" *ngIf="cardDetails['brand'] === 'Visa'">
+                                        <i class="fa fa-cc-visa fa-2x"></i>
+                                    </span> &emsp;
+                                    <div class="display-inline-block fs-12 text-grey">
+                                        <span class="display-block lh-1">Name:
+                                            <span class="text-black">{{cardDetails['name']}}</span>
+                                        </span>
+                                        <span>Expires:
+                                            <span class="text-black">{{cardDetails['exp_month']}}/{{cardDetails['exp_year']}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row margin-top-20">
+                                <div class="col-sm-6">
+                                    <mat-checkbox [(ngModel)]="useAnotherCard" [ngModelOptions]="{standalone: true}">Or use
+                                        another card</mat-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="margin-bottom-50" [hidden]="isCardExist && !useAnotherCard">
+                                <h3>Enter payment details</h3>
+                                <label>
+                                    <input name="cardholder-name" class="field is-empty" placeholder="Jane Doe" />
+                                    <span>
+                                        <span>Name</span>
+                                    </span>
+                                </label>
+                                <label>
+                                    <input class="field is-empty" name="cardholder-phone" type="tel" placeholder="(123) 456-7890" />
+                                    <span>
+                                        <span>Phone number</span>
+                                    </span>
+                                </label>
+                                <label>
+                                    <div id="card-element" class="field is-empty"></div>
+                                    <span>
+                                        <span>Credit or debit card number</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="terms-text">
+                        <div class="terms-title">Terms of Service</div>
+                        <p class="text-grey fs-15">By confirming this reservation you are agreeing to peerbuds additional
+                            Terms of Service, Student Release and Waiver, and the Cancellation Policy.</p>
+                    </div>
+                    <div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards || listAllCards.length < 0 ||  useAnotherCard">
+                        <i class="fa fa-lock"></i> Your payment information is secured by
+                        <a href="https://stripe.com">Stripe</a>
+                    </div>
+                    <div *ngIf="!loadingCountry">
+                        <div *ngIf="collection.price && collection.price!==0">
+                            <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard"
+                                [disabled]="savingData">{{totalPrice | convertCurrency: collection.currency
+                                |async}} - Confirm Payment
+                                <!--<img src="/assets/images/powered_by_stripe.svg" class="stripe-image"> -->
+                            </button>
+                            <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard"
+                                [disabled]="!cardDetails.id || savingData">{{totalPrice | convertCurrency:
+                                collection.currency |async}} - Confirm Payment
+                                <!--<img src="/assets/images/powered_by_stripe.svg" class="stripe-image">-->
+                            </button>
+                        </div>
+                        <button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center payButton" *ngIf="!collection.price || collection.price===0 ">FREE
+                            - Join {{collection.type | ucwords}}</button>
+                    </div>
+                    <div class="terms-text margin-top-20" *ngIf="collection.academicGyan">
+                        <div class="terms-title">This {{collection.type}} is powered by one0x Blockchain.</div>
+                        <!--<p class="text-grey fs-15">
+							In order to earn knowledge credits and crypto-currency rewards from this {{collection.type}} you will need to burn {{karma
+							| currency: ' ': ' ': '1.0-0'}} KARMA.
+							<br> If you do not have enough KARMA balance, you can still participate without receiving any one0x
+							backed rewards.
+						</p>-->
+                    </div>
+                    <div class="display-inline-block margin-top-10" *ngIf="savingData">
+                        <img src="{{loader}}" alt="loading" style="width:16px;" /> Processing Payment
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-3 col-sm-offset-1">
+                <div class="sidebar-right">
+                    <div class="sidebar-box">
+                        <div class="seperate-section padding-top-0">
+                            <div class="display-table">
+                                <div class="margin-bottom-10">
+                                    <img [src]="(collection.imageUrls && collection.imageUrls.length > 0) ? envVariable.apiUrl+collection.imageUrls[0] + '/300' : defaultImageUrl"
+                                        alt="image" />
+                                </div>
+                                <div class="fs-17">{{ collection.title | titlecase}}
+                                    <br>
+                                    <span class="fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type
+                                        }}
+                                    </span>
+                                    <br>
+                                    <span class="fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught
+                                        by {{collection.owners[0].profiles[0].first_name | titlecase}} {{collection.owners[0].profiles[0].last_name
+                                        | ucwords}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="seperate-section">
+                            <div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to
+                                {{ currentCalendar.endDate | date: 'EEE, MMM dd' }}</div>
+                            <div class="" *ngIf="collection.contents">{{collection.contents.length}} Activities</div>
+                            <!--<a href="#">See details</a>-->
+                        </div>
+                        <!--<div class="seperate-section">
+                            <div class="row">
+                                <div class="col-xs-5" matTooltip="The amount of KARMA to be burned for participating in this {{collection.type}}">
+                                    Karma required
+                                </div>
+                                <div class="col-xs-5 col-xs-offset-2" style="text-align: right;">
+                                    <i class="fas fa-fire"></i> {{karma | currency : ' ' : ' ' : '1.0-0'}} Karma
+                                </div>
+	                            <div class="col-xs-12 mat-h5 lightText margin-top-10">
+		                            You must burn these rewards to be eligible for earning Gyan from this {{collection.type}}.
+	                            </div>
+                            </div>
+                        </div>-->
+                        <!--<div class="seperate-section">
+                            <div class="row">
+                                <div class="col-xs-5">
+                                    Scholarship contribution
+                                </div>
+                                <div class="col-xs-5 col-xs-offset-2" style="text-align: right;">
+                                    <i class="fas fa-fire"></i> {{scholarshipAmount | currency : ' ' : ' ' : '1.0-0'}} Karma
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-5">
+                                    Your contribution
+                                </div>
+                                <div class="col-xs-5 col-xs-offset-2" style="text-align: right;">
+                                    <i class="fas fa-fire"></i> {{paybleKarma | currency : ' ' : ' ' : '1.0-0'}} Karma
+                                </div>
+                            </div>
+                        </div>-->
+                        <!--<div class="seperate-section" hidden *ngIf="scholarshipForm.controls['scholarships'].controls.length > 0">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="mat-subheading-1">
+                                        Burn Karma from your scholarships?
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <form [formGroup]="scholarshipForm">
+                                    <div formArrayName="scholarships">
+                                        <div class="col-xs-12" *ngFor="let scholarship of scholarshipForm.controls['scholarships'].controls;index as i">
+                                            <div class="scholarshipItemBox" [formGroup]="scholarship">
+                                                <mat-checkbox formControlName="selected">
+                                                    {{scholarship.value.title}}
+                                                    <br>
+                                                    <i class="fas fa-fire"></i> {{scholarship.value.id | karmaBalance: 'scholarship' | async | currency
+                                                    : ' ' : ' ' : '1.0-0'}} Karma
+                                                </mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="col-xs-12 mat-caption lightText margin-top-20">
+                                    <i class="fas fa-info"></i> The required Karma can be burned either from your wallet or from your scholarships.</div>
+                            </div>
+                        </div>-->
+                        <div class="seperate-section">
+                            <div class="margin-bottom-10">
+                                <span class="text-grey">{{collection.price | convertCurrency: collection.currency |async}}
+                                    x {{ guestCount }} Student</span>
+                                <span class="pull-right">{{collection.price * guestCount | convertCurrency: collection.currency
+                                    |async}}
+                                </span>
+                            </div>
+                            <div *ngIf="codefound" style="color:#33bd9e" class="margin-bottom-10 row">
+                                <div class="col-xs-6">
+                                    Discount Code applied {{codefound.description}}
+                                </div>
+                                <div class="col-xs-6">
+                                    <span class="pull-right fw-bold"> {{codefound.discountValue}}
+                                        <span *ngIf="codefound.discountType === 'percentage'">
+                                            %
+                                        </span>
+                                        <span *ngIf="codefound.discountType === 'absolute'">
+                                            {{codefound.discountCurrency}}
+                                        </span>
+                                        off
+                                    </span>
+                                </div>
+                            </div>
+                            <!--<a href="#" class="display-inline-block margin-bottom-10">Add coupon</a>-->
+                            <div class="margin-bottom-10">
+                                <span class="fw-bold">Total</span>
+                                <span class="pull-right fw-bold">{{totalPrice | convertCurrency: collection.currency |async}}</span>
+                            </div>
+                            <a [hidden]="applyPromoCode" class="clickable" (click)="togglePromo()">Apply Promo Code</a>
+                            <div class="row" *ngIf="collection.price && collection.price!==0 && applyPromoCode">
+                                <div class="col-xs-12">
+                                    <mat-form-field style="width:70%">
+                                        <input matInput placeholder="Enter Promocode" [formControl]="discountCode">
+                                    </mat-form-field>
+                                    <span class="pull-right" style="padding-top: 5%;">
+                                        <a *ngIf="!codefound" class="clickable" color="primary" (click)="applyPromo()">
+                                            Apply
+                                        </a>
+                                        <a class="clickable" (click)="removeCode()" *ngIf="codefound">Remove Code</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="seperate-section">
+                            <div class="fs-18 margin-bottom-10">Cancellation Policy</div>
+                            <div class="fs-14 text-grey">Get a
+                                <span class="text-black">full refund</span> if you cancel within {{collection.cancellationPolicy}}
+                                of purchase.
+                                <!--<br> Karma once burned on participation cannot be refunded.-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

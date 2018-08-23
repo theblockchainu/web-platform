@@ -1,0 +1,565 @@
+<!-- header start here -->
+<header>
+	<nav class="navbar navbar-expand-md navbar-dark">
+		<a class="navbar-brand" href="#">
+			<img src="/assets/images/peerbuds-logo.png" alt="peerbuds-logo">
+		</a>
+		<span class="example-spacer"></span>
+		<span class="options" style="position: relative; top: -15px;">
+			<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerTeachMenu">
+				Become a teacher
+			</button>
+			<!-- <button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']">
+				White Paper
+			</button> -->
+			<button mat-button class="headerButtons" (click)="gotoCredit()">
+				Earn Credit
+			</button>
+			<button mat-button class="headerButtons" (click)="openSignup()">
+				Sign up
+			</button>
+			<button mat-button class="headerButtons" (click)="openLogin()">
+				Log in
+			</button>
+		</span>
+	</nav>
+	<mat-menu #headerTeachMenu [overlapTrigger]="false">
+		<button mat-menu-item (click)="createExperience()">
+			Host an offline experience
+		</button>
+		<button mat-menu-item (click)="createClass()">
+			Create an online class
+		</button>
+		<button mat-menu-item (click)="createSession()">
+			Start a peer session
+		</button>
+	</mat-menu>
+</header>
+<!-- header end here -->
+<div class="index">
+	<section class="home-banner">
+		<div class="dark-gray-overlay"></div>
+		<div class="container">
+			<div class="content">
+				<h1 style="line-height: 3.2rem;">Find unique local &amp; online learning experiences
+					<br>all over the world.</h1>
+				<mat-form-field appearance="outline" color="accent" floatLabel="never" class="search-form search-home pb-block mat-elevation-z20">
+					<input #searchInputBar name="search" placeholder='Try "Blockchain or Hyperledger"' matInput [formControl]="myControl" [matAutocomplete]="auto">
+					<mat-autocomplete #auto="matAutocomplete">
+						<mat-option style="height: auto;" *ngIf="searching">
+							<span style="display: inline-block;margin-left: 43%;">
+								<ngx-loading [show]="true" style="position: absolute; top: 13px;"></ngx-loading>
+							</span>
+						</mat-option>
+						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)" style="height: auto;">
+							<div style="display: inline-block; vertical-align: middle;">
+								<img src="{{_searchService.getSearchOptionImage(option)}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
+								 (error)="_collectionService.imgErrorHandler($event)" />
+							</div>
+							<div style="display: inline-block; vertical-align: middle;">
+								<div>
+									{{_searchService.getSearchOptionText(option)}}
+								</div>
+								<div class="mat-h5 lightText" style="margin-top: -14px;">
+									{{option.data.type | uppercase}}
+								</div>
+							</div>
+						</mat-option>
+					</mat-autocomplete>
+				</mat-form-field>
+			</div>
+		</div>
+	</section>
+
+	<section class="explore-peerbuds spacing">
+		<div class="container">
+			<h2 class="section-title">Explore Peerbuds</h2>
+			<div class="homefeedContainer">
+				<nav mat-tab-nav-bar disableRipple class="noJustify home">
+					<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive"
+					 matTooltip="Classes are a way to learn any subject completely online with videos, projects & live sessions.">
+						<img src="/assets/images/class_icon2.jpg" alt="logo" style="height: 100%;">
+						<h3 class="margin-left-10">Classes</h3>
+					</a>
+					<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
+					 matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
+						<img src="/assets/images/experiences_icon.jpeg" alt="logo" style="height: 100%;">
+						<h3 class="margin-left-10">Experiences</h3>
+					</a>
+					<a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive"
+					 matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
+						<img src="/assets/images/communities_icon1.jpg" alt="logo" style="height: 100%;">
+						<h3>Communities</h3>
+					</a>
+					<a mat-tab-link [routerLink]="'/home/peers'" routerLinkActive #peerLink="routerLinkActive" [active]="peerLink.isActive" matTooltip="Peers are teachers around the world who can teach you something over a live video session.">
+						<img src="/assets/images/peers_icon1.jpg" alt="logo" style="height: 100%;">
+						<h3 class="margin-left-10">Peers</h3>
+					</a>
+				</nav>
+			</div>
+		</div>
+	</section>
+
+	<section class="introducing-experience spacing">
+		<div class="container">
+			<h2 class="section-title">Introducing Experiences </h2>
+			<div class="gradient-banner">
+				<div class="hero-banner-bg">
+					<div class="gray-gradient-overlay"></div>
+					<div class="d-table">
+						<div class="d-table-cell align-middle">
+							<div class="content">
+								<h3>Educational excursions &amp; activities designed and led by local peers</h3>
+								<div class="action-btn">
+									<a [routerLink]="'/home/experiences'">Explore Experiences</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-around-world spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Experiences around the world</h2>
+			<div class="loading-container" [hidden]="!loadingExperiences">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingExperiences" class="row feed-horizontal" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
+					There are no new active experiences to view right now. Browse from within your signed-up experiences
+					<a class="clickable" [routerLink]="['console','teaching','experiences']">here</a>.
+				</div>
+				<div *ngFor="let experience of experiences; let i = index;">
+					<app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
+				</div>
+			</div>
+			<div class="read-more mt-2 mat-body-2" *ngIf="experiences && experiences.length > 0">
+				<a [routerLink]="['home','experiences']">Show all ({{experiences.length}}+)</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-spotlight spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Experiences for your kind of learning</h2>
+			<div class="row small-margin">
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{subtype: 'workshop'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Workshops</span>
+							</div>
+							<img src="/assets/images/workshop-card.jpg" alt="Workshops">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Coming soon</span>
+							</p>
+							<h3 class="title">Workshops Experiences</h3>
+							<p>Experiences in the style of physical workshops that can be from a few hours to a few days.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{subtype: 'meetup'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Meetups</span>
+							</div>
+							<img src="/assets/images/meetup-card.jpg" alt="Meetups">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Coming soon</span>
+							</p>
+							<h3 class="title">Meetup Experiences</h3>
+							<p>Education related meetups for communities to get together and collaborate on common passions</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{subtype: 'hackathon'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Hackathons</span>
+							</div>
+							<img src="/assets/images/hackathon-card.jpg" alt="Hackathons">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Coming soon</span>
+							</p>
+							<h3 class="title">Hackathon Experiences</h3>
+							<p>Bootcamps and hackathons are more practical in-person experiences where you immerse yourself in finding practical
+								solutions to problems</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="unique-experience spacing">
+		<div class="container">
+			<h2 class="section-title  pb-0">Experiences in the spotlight</h2>
+			<div class="row">
+				<div class="col-12 col-sm-6">
+					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{topic: 'technology'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Technology</span>
+							</div>
+							<img src="/assets/images/technology-card.jpg" alt="landscape1">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>10+ experiences</span>
+							</p>
+							<p class="title mat-body-2">Get up to speed</p>
+							<p>Learn about technologies that are changing the world</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-sm-6">
+					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{topic: 'language'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Language</span>
+							</div>
+							<img src="/assets/images/language-card.jpg" alt="landscape2">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>10+ experiences</span>
+							</p>
+							<p class="title mat-body-2">Catch a new language</p>
+							<p>Pick from within our collection of languages you can learn in immersive experiences</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="one-0x mb-5 padding-bottom-30 padding-top-40">
+		<div class="container">
+			<div class="gradient-banner">
+				<div class="hero-banner-bg">
+					<div class="black-gradient-overlay"></div>
+					<div class="d-table row">
+						<div class="d-table-cell col-xs-12" style="display: flex;">
+							<div class="content white-text align-middle">
+								<div class="logo-image">
+									<img style="width: auto !important;" src="/assets/images/one0x-footer-logo.png" alt="one0x-footer-logo">
+								</div>
+								<h3>Tracking all your learning and digitizing it into certificates on the blockchain, making it instantly verifiable
+									by any employer</h3>
+								<div class="action-btn">
+									<a href="https://one0x.com/">Explore Compliance</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="classes-anywhere spacing">
+		<div class="container">
+			<h2 class="section-title">Introducing Classes</h2>
+			<div class="jumbo-image-box">
+				<div class="row">
+					<div class="col-xs-4 image align-top">
+						<div class="image-container">
+							<img src="/assets/images/classes-anywhere.jpg" alt="classes-anywhere" class="img-fluid">
+						</div>
+					</div>
+					<div class="col-xs-8 content align-middle">
+						<h3>Interactive online classes designed by experts</h3>
+						<div class="intro mb-3">Host your own class to earn extra income</div>
+						<a [routerLink]="'/home/classes'" class="theme-btn">Find out more</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-around-world top-rated-classes spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Top rated classes</h2>
+			<div class="loading-container" [hidden]="!loadingClasses">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingClasses" class="row feed-horizontal" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="classes === undefined || classes.length === 0">
+					There are no new active classes to view right now.
+				</div>
+				<div *ngFor="let class of classes; let i =index">
+					<app-class-card *ngIf="i < 5" [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>
+				</div>
+			</div>
+			<div class="read-more mt-2 mat-body-2" *ngIf="classes && classes.length > 0">
+				<a [routerLink]="'/home/classes'">Show all ({{classes.length}}+)</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-spotlight classes-spotlight spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Classes in the spotlight</h2>
+			<div class="row small-margin">
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card clickable" [routerLink]="'/home/classes'" [queryParams]="{topic: 'blockchain'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Blockchain</span>
+							</div>
+							<img src="/assets/images/blockchain-category.jpg" alt="Blockchain Classes">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Coming soon</span>
+							</p>
+							<h3 class="title">Blockchain Classes</h3>
+							<p>Learn from online webinars, live sessions and recorded videos about blockchain, crypto currencies and DLTs
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card clickable" [routerLink]="'/home/classes'" [queryParams]="{topic: 'uiux'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">UI/UX</span>
+							</div>
+							<img src="/assets/images/uiux-category.jpg" alt="UI Classes">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Coming soon</span>
+							</p>
+							<h3 class="title">UI/UX Classes</h3>
+							<p>Engage in interactive online sessions with experts to learn about digital design fundamentals in user interface and
+								user experience</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card clickable" [routerLink]="'/home/classes'" [queryParams]="{topic: 'ai'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Artificial Intelligence</span>
+							</div>
+							<img src="/assets/images/ai-category.jpg" alt="AI Classes">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Coming soon</span>
+							</p>
+							<h3 class="title">AI Classes</h3>
+							<p>From beginner classes for AI enthusiasts to advanced programs for senior developers, from software engineers to company
+								executives, everything you need to learn about AI</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="peer-sessions spacing">
+		<div class="container">
+			<h2 class="section-title">Introducing Peer Sessions</h2>
+			<div class="jumbo-image-box">
+				<div class="row">
+					<div class="col-xs-4 image align-top">
+						<div class="image-container">
+							<img src="/assets/images/pexels-photo-1181244.jpeg" alt="Peer sessions" class="img-fluid">
+						</div>
+					</div>
+					<div class="col-xs-8 content align-middle">
+						<h3>Learn online from your peers</h3>
+						<div class="intro mb-3">Earn extra income from teaching what you love</div>
+						<a [routerLink]="'/home/peers'" class="theme-btn">Learn more</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="peers-teaching spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Peers teaching their passion</h2>
+			<div class="loading-container" [hidden]="!loadingPeers">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingPeers" class="row feed-horizontal" style="padding: 0px 7px;">
+				<div *ngFor="let peer of peers; let i = index;">
+					<app-peer-card *ngIf="i < 6" [peer]="peer"></app-peer-card>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-spotlight super-teacher spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Super Peer Teachers</h2>
+			<div class="row small-margin">
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card clickable" [routerLink]="'/home/peers'" [queryParams]="{topic: 'coding'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Coding</span>
+							</div>
+							<img src="/assets/images/coding-card.jpg" alt="Peers teaching coding">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Coming soon</span>
+							</p>
+							<p class="para">Peers teaching Coding
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card clickable" [routerLink]="'/home/peers'" [queryParams]="{topic: 'design'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Design</span>
+							</div>
+							<img src="/assets/images/design-card.jpg" alt="Peers teaching Design">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Coming soon</span>
+							</p>
+							<p class="para">Peers teaching Design</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card clickable" [routerLink]="'/home/peers'" [queryParams]="{topic: 'cooking'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Cooking</span>
+							</div>
+							<img src="/assets/images/cooking-card.jpg" alt="Peers teaching cooking">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Coming soon</span>
+							</p>
+							<p class="para">Peers teaching Cooking</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="introducing-communities spacing">
+		<div class="container">
+			<h2 class="section-title">Introducing Communities</h2>
+			<div class="gradient-banner">
+				<div class="hero-banner-bg">
+					<div class="gray-gradient-overlay"></div>
+					<div class="d-table">
+						<div class="d-table-cell align-middle">
+							<div class="content">
+								<h3>Topic-specific communities for questions &amp; answers</h3>
+								<div class="action-btn">
+									<a [routerLink]="'/home/communities'">Explore Communities</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-spotlight trending-communities spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Trending Communities</h2>
+			<div class="row small-margin">
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card" [routerLink]="'/home/communities'" [queryParams]="{topic: 'blockchain'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Blockchain Developers</span>
+							</div>
+							<img src="/assets/images/blockchain-dev-card.jpg" alt="Blockchain developers">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Coming soon</span>
+							</p>
+							<h3 class="title">Blockchain Developers Community</h3>
+							<p>Join like minded peers with common interests in blockchain and related technologies
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card" [routerLink]="'/home/communities'" [queryParams]="{topic: 'uiux'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Videography</span>
+							</div>
+							<img src="/assets/images/videography-card.jpg" alt="Videography">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Coming soon</span>
+							</p>
+							<h3 class="title">Videography Community</h3>
+							<p>Communities with people asking questions on Videography</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card" [routerLink]="'/home/communities'" [queryParams]="{topic: 'ai'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Art</span>
+							</div>
+							<img src="/assets/images/art-card.jpg" alt="Art">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Coming soon</span>
+							</p>
+							<h3 class="title">Art Community</h3>
+							<p>Ask questions or learn from looking at answers from the Arts community</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-around-world communities spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Communities</h2>
+			<div class="loading-container" [hidden]="!loadingCommunities">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingCommunities" class="row feed-horizontal" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="communities === undefined || communities.length === 0">
+					There are no new active communities to view right now. Browse from within your signed-up communities
+					<a class="clickable">here</a>.
+				</div>
+				<div *ngFor="let community of communities; let i = index;">
+					<app-community-card *ngIf="i < 5" [cardsPerRow]="3" [community]="community" (refresh)="onCommunityRefresh($event)"></app-community-card>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+</div>

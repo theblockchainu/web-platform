@@ -1,0 +1,18 @@
+.notificationsRow {
+  background: none;
+  margin-left: -25px;
+  margin-right: -25px;
+  padding: 10px 0px;
+  border-bottom: 0.5px solid #f1f1f1;
+  cursor: pointer;
+}
+
+.notificationsRowUnread {
+  background: #f3f3f3;
+}
+
+.notificationsImage {
+  margin-left: 0px;
+  width: 45px;
+  height: 45px;
+}

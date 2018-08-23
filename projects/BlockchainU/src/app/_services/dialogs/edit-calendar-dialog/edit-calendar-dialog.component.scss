@@ -1,0 +1,328 @@
+.repeat-class-group {
+    display: inline-flex;
+    flex-direction: column;
+  }
+
+.repeat-class-button {
+    margin-left: 10px;
+}
+
+.flex-row {
+    flex-direction: row;
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+    display: flex;
+}
+
+.flex-body {
+    display: flex;
+}
+
+.spacer {
+    margin-right: 150px;
+}
+
+.calendar {
+    padding: 20px;
+}
+
+.flexContainer {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+}
+
+.prevNext {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.displayNone {
+    display: none;
+}
+
+.displayFlex {
+    display: flex;
+    align-items: center;
+}
+
+.displayBlock {
+    display: block;
+}
+.clickedDate .cal-day-badge {
+    float:left;
+    width: 8px !important;
+    height: 8px !important;
+    background-color: #F0951B !important;
+    display: block;
+    border-radius: 8px;
+    margin-right:10px;
+
+}
+
+.displayFlex.event {
+    margin-bottom:10px;
+    align-items: baseline;
+}
+
+div.event span:first-child {
+    margin-right:10px;
+    font-size: 1.17em;
+    font-weight: bold;
+}
+
+.valignMiddle {
+    vertical-align: -webkit-baseline-middle;
+}
+
+.margin-Top-50 {
+    margin-top: 50px;
+}
+
+.margin-bottom-20 {
+    margin-bottom: 20px;
+}
+
+.message-item {
+    margin-bottom: 25px;
+    margin-left: 40px;
+    position: relative;
+}
+
+.message-item .message-inner {
+    border-radius: 3px;
+    padding: 10px;
+    position: relative;
+}
+
+.message-item:before {
+    background:#ccc;
+    bottom: -30px;
+    box-shadow: none;
+    content: "";
+    height: 100%;
+    left: -30px;
+    position: absolute;
+    width: 1px;
+}
+
+.message-item:after {
+    background: #06d6a0;
+    border-radius: 50%;
+    box-shadow: none;
+    content: "\2714";
+    height: 18px;
+    left: -38px;
+    position: absolute;
+    top: 11px;
+    width: 18px;
+    font-size: 12px;
+    text-align: center;
+    color:#fff;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.message-item .message-head {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+}
+
+.message-item .message-head .avatar {
+    margin-right: 20px;
+}
+
+.message-item .message-head .user-detail {
+    overflow: hidden;
+}
+
+.message-item .message-head .user-detail h5 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.message-item .message-head .post-meta {
+    float: left;
+    padding: 0 15px 0 0;
+}
+
+.message-item .message-head .post-meta>div {
+    color: #333;
+    font-weight: bold;
+    text-align: right;
+}
+
+.post-meta>div {
+    color: #777;
+    font-size: 12px;
+    line-height: 22px;
+}
+
+.message-item .message-head .post-meta>div {
+    color: #333;
+    font-weight: bold;
+    text-align: right;
+}
+
+.post-meta>div {
+    color: #777;
+    font-size: 12px;
+    line-height: 22px;
+}
+
+// img {
+//     min-height: 40px;
+//     max-height: 40px;
+// }
+
+.full-width{
+    width: 100%;
+}
+
+.profile-thumb{
+    object-fit: cover;
+    width:30px;
+    height:30px;
+}
+
+.taughtby-thumb{
+    object-fit: cover;
+    width:50px;
+    height:50px;
+}
+
+.recommendation-thumb{
+    object-fit: cover;
+    max-height: 400px;
+    max-width: 300px;
+}
+
+.recommendation-card {
+    width: 300px;
+}
+
+.calendar {
+    padding: 20px;
+}
+
+.flexContainer {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+}
+
+.prevNext {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.itenary-media{
+    max-height:200px;
+}
+
+h4, h6 {
+    display: inline;
+}
+
+.review-thumb{
+    object-fit: cover;
+    width:50px;
+    height:50px;
+}
+
+.displayNone {
+    display: none;
+}
+
+.displayFlex {
+    display: flex;
+    align-items: center;
+}
+
+.displayBlock {
+    display: block;
+}
+
+.clickedDate .cal-day-badge {
+    float:left;
+    width: 8px !important;
+    height: 8px !important;
+    background-color: #F0951B !important;
+    display: block;
+    border-radius: 8px;
+    margin-right:10px;
+
+}
+
+.displayFlex.event {
+    margin-bottom:10px;
+    align-items: baseline;
+}
+
+div.event span:first-child {
+    margin-right:10px;
+    font-size: 1.17em;
+    font-weight: bold;
+}
+
+.pending-actions{
+    background-color: #F44336;
+    color: white;
+    padding: 20px 0px;
+    font-size: large;
+}
+
+.mat-select {
+    padding-top: 5px !important;
+}
+
+
+.right-border {
+    border-right: 1px solid #888686;
+}
+
+.content {
+    z-index: 1;
+}
+
+.content:after {
+    content: '';
+    clear: both;
+    display: block;
+}
+
+.wrapper {
+    position: absolute;
+    width: 100%
+}
+
+.wrapper > div {
+    height: 100%;
+}
+
+.rightContent {
+}
+
+.leftContent{
+}
+
+.button-bar{
+    padding-top: 15px;
+}

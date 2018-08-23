@@ -1,0 +1,66 @@
+// submission page styles
+.mat-dialog-content{
+    max-height: 80vh;    
+}
+.uploadContainer {
+  text-align: center;
+  vertical-align: middle;
+  border: 0.5px solid #cccccc;
+  border-radius: 1px;
+  width: 40%;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+md-hint{
+    &.mat-hint{
+        color:#999;
+    }
+}
+md-icon{
+    .mat-cloud-icon{
+        font-size:24px;
+    }
+}
+.hide{display:none;}
+
+.delete-image {
+    position:absolute;
+    height: 20px;
+    width: 20px;
+    color: #33bd9e;
+    cursor: pointer;
+    border: 1px solid #33bd9e;
+    background: white;
+    border-radius: 20px;
+    font-size: 18px;
+}
+
+.loading-container {
+    position: relative;
+    width: 50px;
+    margin: 20px 0px;
+    padding-bottom: 20px;
+}
+
+.pic:before {
+    display: inline-block;
+    content: "";
+    vertical-align: middle;
+  }
+  
+.pic img {
+max-width: 100%;
+max-height: 100%;
+}
+
+.pic .delete-image {
+top:-8px;
+right:6px;
+}
+
+.imageContainer {
+height: 100px;
+width: 200px;
+margin-bottom: 30px;
+margin-right: 20px;
+}

@@ -1,0 +1,32 @@
+<div class="row" style="margin-top: 20px;">
+	<div class="col-md-3">
+		<mat-list>
+			<mat-list-item [routerLink]="'/console/learning/all'" [class.bold]="getActiveTab() === 'all'">
+				View All
+			</mat-list-item>
+			<mat-list-item [routerLink]="'/console/learning/classes'" [class.bold]="getActiveTab() === 'classes'">
+				Classes
+			</mat-list-item>
+			<mat-list-item [routerLink]="'/console/learning/experiences'" [class.bold]="getActiveTab() === 'experiences'">
+				Experiences
+			</mat-list-item>
+			<mat-list-item [routerLink]="'/console/learning/sessions'" [class.bold]="getActiveTab() === 'sessions'">
+				Sessions
+			</mat-list-item>
+			<mat-list-item [routerLink]="'/console/learning/bookmarks'" [class.bold]="getActiveTab() === 'bookmarks'">
+				Bookmarks
+			</mat-list-item>
+			<mat-list-item [routerLink]="'/console/learning/story'" [class.bold]="getActiveTab() === 'story'">
+				Knowledge Stories
+			</mat-list-item>
+			<mat-list-item *ngIf="activeTab === 'story'">
+				<span matTooltip="Please wait for your account to be verified before creating a new knowledge story." [matTooltipDisabled]="accountVerified">
+					<button mat-raised-button (click)="generateKnowledgeStory()" [disabled]="!accountVerified" color="primary">New Knowledge Story</button>
+				</span>
+			</mat-list-item>
+		</mat-list>
+	</div>
+	<div class="col-md-9">
+		<router-outlet></router-outlet>
+	</div>
+</div>

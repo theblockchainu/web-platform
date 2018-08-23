@@ -1,0 +1,12 @@
+language: node_js
+sudo: false
+node_js:
+- '4'
+deploy:
+  provider: npm
+  email: scolville@mozilla.com
+  api_key:
+    secure: LAH/gwwkyD68uh6q5WV9ojYuE7erY2pzSPQ6KUpp7M66N+cRrJp7/6R4/0cWYxdR8uKr4h1OOuA6Ex1mLTQTpmxS9QYL6CfkdShQYOcB5rzw1aeoTAV8gfyB7z4qZMO/DiGUfrx7to2ShEq2ORdLtrWRA8DERZb1k+/AU5fbge4=
+  on:
+    tags: true
+    repo: muffinresearch/payment-icons

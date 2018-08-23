@@ -1,0 +1,41 @@
+<div class="border-calendar calendar">
+	<div class="flex flexContainer">
+		<div class="col-md-4">
+			<h3 class="calendarTitle">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+		</div>
+		
+		<span class="flex"></span>
+		
+		<div class="prevNext">
+			<button mat-button class="mat-icon-button" type="button" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+				<mat-icon class="" aria-hidden="true">chevron_left</mat-icon>
+			</button>
+			
+			<button mat-button class="mat-icon-button" type="button" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+				<mat-icon class="" aria-hidden="true">chevron_right</mat-icon>
+			</button>
+		</div>
+	</div>
+	
+	<div [ngSwitch]="view">
+		<mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [refresh]="refresh" (dayClicked)="dayClicked($event.day)">
+		</mwl-calendar-month-view>
+	</div>
+</div>
+<div [ngClass]="{'clickedDate' : true, 'displayNone' : !dateClicked, 'displayBlock': dateClicked}">
+	<div [ngClass]="{'displayFlex': dateClicked}">
+		<span class="cal-day-badge"></span>
+		<h4>{{ clickedDate | date:'EEE, MMM dd' }}</h4>
+	</div>
+	<div class="displayFlex event" *ngFor="let event of eventsForTheDay">
+		<span>{{ event.start | date:'hh:mm' }}</span>
+		<span>
+			<b>{{ event.start | date:'a' | lowercase}}</b>
+		</span>
+		<span class="flex"></span>
+		<span>{{ event.title }}</span>
+	</div>
+	<div class="prevNext margin-top-20">
+		<button mat-raised-button color="primary">View Details</button>
+	</div>
+</div>

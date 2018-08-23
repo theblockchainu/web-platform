@@ -1,0 +1,63 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="loading-container" [hidden]="!loadingUser">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+</div>
+<div *ngIf="!loadingUser">
+	<div class="row margin-top-20" *ngIf="userType !== 'public'">
+		<div class="col-md-1 col-xs-2">
+			<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
+		</div>
+		<div class="col-md-8 col-xs-8">
+			<div class="mat-title" style="margin-bottom: 0px; line-height: 50px;">
+				Share with the community
+			</div>
+		</div>
+		<div class="col-md-3 col-xs-2" style="text-align: right">
+			<mat-form-field [floatLabel]="'auto'" class="pb-block">
+				<mat-select [(value)]="linksFilter" placeholder="Sort">
+					<mat-option value="descending">Descending</mat-option>
+					<mat-option value="ascending">Ascending</mat-option>
+					<mat-option value="unsolved">Unsolved</mat-option>
+					<mat-option value="popular">Popular</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+	</div>
+	<div class="row" style="margin-top: -20px;" *ngIf="userType !== 'public'">
+		<div class="col-md-12">
+			<form [formGroup]="linksForm" (ngSubmit)="postLink()">
+				<mat-form-field [floatLabel]="'always'" class="full-width margin-top-10" style="font-size: 15px;"  >
+					<input matInput formControlName="text" placeholder="Type or paste your link here...">
+				</mat-form-field>
+				<button mat-raised-button color="primary" [disabled]="!linksForm.valid" class="pull-right">
+					<span *ngIf="!busyLink">Share</span>
+					<span *ngIf="busyLink"> </span>
+					<ngx-loading [show]="busyLink"></ngx-loading>
+				</button>
+			</form>
+		</div>
+	</div>
+	<div class="row margin-top-40">
+		<div class="loading-container" [hidden]="!busyLink">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+		<div class="col-md-12">
+			<div class="row lighterText" *ngIf="links !== undefined && links.length === 0">
+				<div class="col-md-12">
+					<div class="emptySectionText" >Be the first one to share a link on this community</div>
+				</div>
+			</div>
+			<div class="row feed-horizontal margin-top-30 margin-bottom-40" style="padding: 0px 7px;">
+				<div class="link-card" *ngFor="let link of links; let i =index">
+					<a href="{{link.mediaUrl}}" target="_blank">
+						{{link.mediaUrl}}
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

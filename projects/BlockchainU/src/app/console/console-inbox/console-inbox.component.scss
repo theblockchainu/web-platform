@@ -1,0 +1,184 @@
+input {
+	outline: none;
+}
+
+#demo-2 {
+    position: relative;
+}
+
+#demo-2 i {
+    position: absolute;
+}
+
+/* Demo 2 */
+#demo-2 input[type=search] {
+	width: 15px;
+	padding-left: 15px;
+	color: transparent;
+    cursor: pointer;
+    border: none;
+
+}
+#demo-2 input[type=search]:hover {
+	background-color: #fff;
+}
+#demo-2 input[type=search]:focus {
+	width: 130px;
+	padding-left: 22px;
+	color: #000;
+	background-color: #fff;
+    cursor: auto;
+    border: none;
+}
+#demo-2 input:-moz-placeholder {
+	color: transparent;
+}
+#demo-2 input::-webkit-input-placeholder {
+	color: transparent;
+}
+
+.border-box {
+    border: 1px solid #eeeeee;
+}
+
+.mat-select {
+    padding-top: 0px !important;
+}
+
+.headerChat {
+	height: 60px;
+	border-bottom: 1px solid #eeeeee;
+}
+
+.review-thumb {
+	width: 10%;
+}
+
+.pull-right.review-thumb {
+	padding-right: 0px;
+}
+
+.pull-right .circle-thumb {
+	margin-left: 0px;
+}
+
+.displayNone {
+	display: none;
+}
+
+.noBorderRight {
+	border-right: none !important;
+}
+
+.noBorderBottom {
+	border-bottom: none !important;
+}
+
+.noBorderLeft {
+	border-left: none !important;
+}
+
+.border-right {
+    border-right: 1px solid #eeeeee;
+}
+
+.backgroundColorGray {
+	background-color: #eeeeee;
+}
+
+.pull-left + .talk-bubble {
+	float: left;
+	background: none !important;
+    border: 1px solid #eeeeee;
+}
+
+.pull-right + .talk-bubble {
+	float: right;
+}
+
+.chatListItemContainer {
+	padding: 10px 0px;
+	border-bottom: 1px solid #eeeeee;
+}
+
+.pull-right + .talk-bubble.tri-right.left-top:after {
+	left: auto !important;
+	right: -10px !important;
+}
+
+.pull-right + .talk-bubble.tri-right.left-top:before{
+	content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 0;
+    left: auto;
+    right: -10px;
+    border: 12px solid;
+    border-color: #eeeeee transparent transparent transparent;
+}
+
+.pull-left + .talk-bubble.tri-right.left-top:before{
+	content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: -1px;
+    left: -11px;
+    right: auto;
+    border: 11px solid;
+    border-color: #eeeeee transparent transparent transparent;
+}
+
+.pull-left + .talk-bubble.tri-right.left-top:after {
+	content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -9px;
+    right: auto;
+    top: 0px;
+    bottom: auto;
+    border: 14px solid;
+    border-color: #fff transparent transparent transparent;
+}
+
+md-form-field textarea.mat-input-element {
+    resize: none !important;
+}
+
+.chatbox .mat-form-field-wrapper .mat-form-field-underline {
+    display: none !important;
+    background: none !important;
+}
+
+.chatBoxTimeLabel {
+	background: #33bd9e55;
+	padding: 5px 10px;
+	border-radius: 20px;
+	color: #000000;
+}
+
+.bold {
+	font-weight: 600;
+}
+
+.greenChip {
+	background: #33bd9e !important;
+	color: #ffffff !important;
+	padding: 3px 8px !important;
+}
+
+.noChatSelected {
+	margin-left: 38%;
+	margin-top: 25%;
+	color: #aaaaaa;
+}
+
+.teacherIndicator {
+	color: #2d9bff;
+	font-size: 15px;
+	position: relative;
+	margin-left: -22px;
+	top: -8px;
+}

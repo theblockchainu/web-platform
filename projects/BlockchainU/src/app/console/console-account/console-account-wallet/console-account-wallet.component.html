@@ -1,0 +1,68 @@
+<div class="row">
+	<div class="col-md-12">
+		<div *ngIf="loadingPeer" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+</div>
+<div *ngIf="!loadingPeer">
+	<div class="row">
+		<div class="col-xs-7">
+			<h1 style="padding-top: 2%">
+			<i class="fas fa-fire"></i>
+				<span *ngIf="peer.ethAddress"> {{peer.id | karmaBalance : 'peer' | async}} Karma</span>
+				<span *ngIf="!peer.ethAddress"> 0 Karma</span>
+			</h1>
+		</div>
+		<div class="col-xs-2">
+			<!--<button mat-button color="primary" class="mat-border-button">
+				Buy
+			</button>-->
+		</div>
+		<div class="col-xs-2">
+			<button mat-button color="primary" class="mat-border-button" *ngIf="!peer.ethAddress" (click)="fixWalletDialog()">
+				Create Wallet
+			</button>
+		</div>
+		<div class="col-xs-1" *ngIf="peer.ethAddress">
+			<button mat-icon-button (click)="toggleWalletId()">
+				<mat-icon *ngIf="!showWalletId">lock_outline</mat-icon>
+				<mat-icon *ngIf="showWalletId">lock_open</mat-icon>
+			</button>
+		</div>
+	</div>
+	<div class="row wallet-id center" *ngIf="showWalletId && !loadingPeer">
+		<div class="col-md-10 col-md-offset-1">
+			<span>Ethereum Public ID : {{peer.ethAddress}}</span>
+		</div>
+	</div>
+	<div class="row table-header">
+		<div class="col-xs-6">
+			Description
+		</div>
+		<div class="col-xs-3">
+			Credit
+		</div>
+		<div class="col-xs-3">
+			Debit
+		</div>
+	</div>
+	<div class="row table-data">
+		<div class="col-xs-12" *ngIf="!loadingPeer && peer && peer.token_transactions">
+			<div class="row" *ngFor="let transactions of peer.token_transactions">
+				<div class="col-xs-6">
+				
+				</div>
+				<div class="col-xs-3">
+				
+				</div>
+				<div class="col-xs-3">
+				
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12" *ngIf="loadingPeer || !peer || !peer.token_transactions || peer.token_transactions.length === 0">
+			You do not have any <i class="fas fa-fire"></i> Karma transactions yet
+		</div>
+	</div>
+</div>

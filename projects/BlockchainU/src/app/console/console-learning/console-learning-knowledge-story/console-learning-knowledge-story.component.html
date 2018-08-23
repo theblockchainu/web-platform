@@ -1,0 +1,117 @@
+<div class="row">
+	<div class="col-md-12">
+		<div *ngIf="!storiesYouRequested" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+	<div class="col-md-12 margin-top-30" *ngIf="storiesYouRequested">
+		<div style="display:inline;">
+			<h2>Peer knowledge stories</h2>
+		</div>
+		<div #noContentView *ngIf="storiesYouRequested.length === 0 " style="margin-top: 5%;margin-bottom: 5%;">
+			<div class="lightText">
+				When you request other peers to view their knowledge story in any topic, they'll appear here.
+			</div>
+		</div>
+		<div *ngIf="storiesYouRequested.length > 0">
+			<div class="row" style="margin-top:20px;">
+				<div class="col-xs-12 col-md-4" *ngFor="let story of storiesYouRequested">
+					<mat-card class="card">
+						<mat-card-content>
+							<br>
+							{{story.visibility | ucwords }} story of
+							<div *ngIf="story.protagonist[0] && story.protagonist[0].profiles[0]" class="margin-top-20">
+								<app-profile-popup [peer]="story.protagonist[0]"></app-profile-popup>
+								<br/>
+								{{story.protagonist[0].profiles[0].first_name | ucwords}} {{story.protagonist[0].profiles[0].last_name | ucwords}}
+							</div>
+							<div class="margin-top-20">
+								Approval status: <b>{{story.status | ucwords}}</b>
+							</div>
+							<div class="row margin-top-20" *ngIf="story.topics.length>0">
+								<div class="col-md-12">
+									Topics
+								</div>
+								<div class="col-xs-12" *ngFor="let topic of story.topics">
+									<b>{{topic.name | ucwords}}</b>
+								</div>
+							</div>
+							<div class="margin-top-20">
+								<a *ngIf="story.status==='approved'" [routerLink]="'/story/'+story.id" class="mat-button mat-border-button">
+									View Story
+								</a>
+							</div>
+						</mat-card-content>
+					</mat-card>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div *ngIf="!storiesOthersRequested" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+	<div class="col-md-12 margin-top-30" *ngIf="storiesOthersRequested">
+		<div style="display:inline;">
+			<h2>Your knowledge stories</h2>
+		</div>
+		<div #noContentView *ngIf="storiesOthersRequested.length === 0 " style="margin-top: 5%;margin-bottom: 5%;">
+			<div class="lightText">
+				When you share your knowledge stories with other peers, they appear here.
+			</div>
+		</div>
+		<div *ngIf="storiesOthersRequested.length > 0">
+			<div class="row" style="margin-top:20px;">
+				<div class="col-xs-12 col-md-4" *ngFor="let story of storiesOthersRequested">
+					<mat-card class="card">
+						<mat-card-content>
+							<br>
+							{{story.visibility | ucwords }} story requested by
+							<div *ngIf="story.peer[0] && story.peer[0].profiles[0]" class="margin-top-20">
+								<app-profile-popup [peer]="story.peer[0]"></app-profile-popup>
+								<br/>
+								{{story.peer[0].profiles[0].first_name | ucwords}} {{story.peer[0].profiles[0].last_name | ucwords}}
+							</div>
+							<div class="margin-top-20">
+								Approval status: <b>{{story.status | ucwords}}</b>
+							</div>
+							<div class="row margin-top-20" *ngIf="story.topics.length>0">
+								<div class="col-md-12">
+									Topics
+								</div>
+								<div class="col-xs-12" *ngFor="let topic of story.topics">
+									<b>{{topic.name | ucwords}}</b>
+								</div>
+							</div>
+							<div class="margin-top-20">
+								<a *ngIf="story.status==='approved'" [routerLink]="'/story/'+story.id" class="mat-button mat-border-button">
+									View Story
+								</a>
+							</div>
+							<div class="row" *ngIf="story.status==='pending'">
+								<div class="col-xs-6">
+									<button (click)="approve(story.id)" mat-button>Approve</button>
+								</div>
+								<div class="col-xs-6">
+									<button (click)="reject(story.id)" mat-button>Reject</button>
+								</div>
+							</div>
+						</mat-card-content>
+						<mat-menu #storyCardMenu>
+							<!-- <button (click)="leaveScholarship(story.id)" mat-menu-item>
+								Leave Scholarship
+							  </button> -->
+						</mat-menu>
+					</mat-card>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
+	</div>
+</div>

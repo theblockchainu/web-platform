@@ -1,0 +1,13 @@
+<div class="dialog-container">
+    <h1 mat-dialog-title>Delete {{data.type | titlecase}}</h1>
+    <div class="row">
+        <div class="col-md-12">
+            <p *ngIf="deleteable">Are you sure you want to delete community {{data.title |titlecase}}?</p>
+            <p *ngIf="!deleteable">Sorry but you cannot delete the collection as it already has members in it. Try canceling instead.</p>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <button *ngIf="deleteable" mat-button (click)="delete()" color="warn" tabindex="2">Ok</button>
+        <button mat-button [mat-dialog-close] tabindex="-1">Close</button>
+    </div>
+</div>

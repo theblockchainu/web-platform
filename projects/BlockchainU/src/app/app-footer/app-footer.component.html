@@ -1,0 +1,113 @@
+<!-- <footer *ngIf="!(isLoggedIn | async)">
+y  <div class="layout-row footer" layout="row" color="white">
+    <div layout="row" class="col-sm-8">
+      <a class="footer-btn footerButtons col-sm-2" mat-button routerLink="/philosophy"> About Us </a>
+      <a class="footer-btn footerButtons col-sm-2" mat-button routerLink="/contact-us">
+        Contact Us
+      </a>
+      <span class="center">
+        <a routerLink="/" class="brand col-sm-2" aria-label="Peerbuds Homepage">
+          <img src="/assets/images/pb_logo.png" alt="logo">
+        </a>
+      </span>
+      <a class="footer-btn footerButtons col-sm-2" mat-button routerLink="/privacy-policy">
+        Privacy Policy
+      </a>
+      <a class="footer-btn footerButtons col-sm-2" mat-button routerLink="/terms-of-service">
+        Terms Of Service
+      </a>
+    </div>
+  </div>
+</footer> -->
+
+<footer style="border-top: 1px solid #dbdbdb;">
+	<div class="row mat-body-1">
+		<div class="col-md-3 footerCurrencyContainer">
+			<mat-form-field>
+				<mat-select [(value)]="selectedCurrency" (valueChange)="updateCurrencyCookie()">
+					<mat-option [value]="'INR'"> INR </mat-option>
+					<mat-option [value]="'USD'"> USD </mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<div class="col-md-3">
+			<div class="row">
+				<div class="col-md-12 mat-body-2">
+					Peerbuds
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<ul>
+						<li><a class="sub-footer-link" [routerLink]="['/about']">About us</a></li>
+						<li><a class="sub-footer-link" [routerLink]="['/career']">Careers</a></li>
+						<li><a class="sub-footer-link" [routerLink]="['/press']">Press</a></li>
+						<li><a class="sub-footer-link" [routerLink]="['/policy']">Policies</a></li>
+						<li><a class="sub-footer-link" href="https://help.peerbuds.com">Help</a></li>
+						<li><a class="sub-footer-link" [routerLink]="['/contact-us']">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="row">
+				<div class="col-md-12 mat-body-2">
+					Discover
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<ul>
+						<li><a class="sub-footer-link" [routerLink]="['/trust']">Trust and Safety</a></li>
+						<li><a class="sub-footer-link" [routerLink]="['/digest/experiences']">Experiences</a></li>
+						<li><a class="sub-footer-link" [routerLink]="['/digest/classes']">Classes</a></li>
+						<li><a class="sub-footer-link" [routerLink]="['/digest/peers']">Peers</a></li>
+						<li><a class="sub-footer-link" [routerLink]="['/digest/communities']">Communities</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="row">
+				<div class="col-md-12 mat-body-2">
+					Teach
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<ul>
+						<li><a class="sub-footer-link" [routerLink]="['/digest/whyTeach']">Why Teach</a></li>
+						<li><a class="sub-footer-link" [routerLink]="['/digest/teachingBenefits']">Teaching</a></li>
+						<li><a class="sub-footer-link" [routerLink]="['/digest/responsibleTeaching']">Responsible Teaching</a></li>
+						<li><a class="sub-footer-link" href="https://help.peerbuds.com/hc/en-us/community/topics">Community Center</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+	<hr style="margin-left: -2%; width: 104%;">
+	<div class="row">
+		<div class="col-md-4 footerBottomLeft">
+			<img class="footerBrandImage" src="/assets/images/pb_logo.png" alt="logo">
+		</div>
+		<div class="col-md-4 footerBottomCenter">
+			<a class="footer-social-link" href="https://www.facebook.com/peerbuds"><i class="fa fa-facebook-square"></i></a>
+			<a class="footer-social-link" href="https://www.twitter.com/peerbuds"><i class="fa fa-twitter-square"></i></a>
+			<a class="footer-social-link" href="https://www.instagram.com/peerbuds"><i class="fa fa-instagram"></i></a>
+			<a class="footer-social-link" href="https://www.github.com/peerbuds"><i class="fa fa-github"></i></a>
+			<a class="footer-social-link" href="https://www.reddit.com/r/peerbuds"><i class="fa fa-reddit"></i></a>
+			<a class="footer-social-link" href="https://medium.com/peerbudsinc"><i class="fa fa-medium"></i></a>
+			<a class="footer-social-link" href="https://bitcointalk.org/index.php"><i class="fa fa-btc"></i></a>
+			<a class="footer-social-link" href="https://www.youtube.com/channel/UCu2wZg5_SDJJjlTXDI7OTcw"><i class="fa fa-youtube"></i></a>
+			<a class="footer-social-link" href="https://t.me/peerbuds"><i class="fa fa-telegram"></i></a>
+			<a class="footer-social-link" href="https://join.slack.com/t/peerbudsofficial/shared_invite/enQtMzMxODE5OTAxNjM4LWU0ZDNhYmU2ZTliNDBjOGE4ZDA0MTdhYWZlMWJjNGIyZTFlMWMyZjA5MjI0ZmU5Mjk2Njc5ZmNkNTAwYmM4NmM"><i class="fa fa-slack"></i></a>
+		</div>
+		<div class="col-md-4 footerBottomRight">
+			<a class="footer-link" href="/terms-of-service">Terms</a>
+			<a class="footer-link" href="/privacy-policy">Privacy</a>
+			<a class="footer-link" href="/sitemap.xml">Site Map</a>
+		</div>
+	</div>
+
+</footer>

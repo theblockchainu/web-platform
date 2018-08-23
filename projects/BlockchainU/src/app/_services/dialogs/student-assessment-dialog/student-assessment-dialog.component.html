@@ -1,0 +1,87 @@
+<div mat-dialog-content class="dialog-container">
+	<div class="row">
+		<div class="col-md-12 collectionContent">
+			<button disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+			</button>
+			<div class="mat-display-1" style="margin-bottom: 20px;">
+				Student Assessment
+			</div>
+		</div>
+	</div>
+	<hr>
+	<form [formGroup]="assessmentForm" class="margin-top-40 margin-bottom-40">
+		<div formArrayName="participants">
+			<div class="row mat-body-2">
+				<div class="col-xs-4">Student Name</div>
+				<div class="col-xs-4">Assessment Result</div>
+				<div class="col-xs-4">Summary</div>
+			</div>
+			<hr>
+			<div *ngFor="let participant of assessmentForm['controls']['participants']['controls'];index as i">
+				<div class="row margin-top-10" [formGroup]="participant">
+					<div class="col-xs-4">
+						<h3>
+							{{participant.value.name | ucwords}}
+						</h3>
+					</div>
+					<div class="col-xs-4">
+						<mat-form-field>
+							<mat-select formControlName="rule_obj" placeholder="Academic Assessment">
+								<mat-option *ngFor="let assessment_rule of data.assessment_models[0].assessment_rules" [value]="assessment_rule">
+									{{ assessment_rule.value }}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<div *ngFor="let assessment_na_rule of data.assessment_models[0].assessment_na_rules">
+							<div class="mat-caption lightText" *ngIf="assessment_na_rule.value === 'engagement'">
+								Assess community engagement
+							</div>
+							<mat-slider class="pb-block" *ngIf="assessment_na_rule.value === 'engagement'" thumbLabel tickInterval="1" min="1" max="100"
+							 formControlName="engagement_result"></mat-slider>
+							<div class="mat-caption lightText" *ngIf="assessment_na_rule.value === 'commitment'">
+								Assess student commitment
+							</div>
+							<mat-slider class="pb-block" *ngIf="assessment_na_rule.value === 'commitment'" thumbLabel tickInterval="1" min="1" max="100"
+							 formControlName="commitment_result"></mat-slider>
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="row" *ngIf="!participant.value.isAssessed">
+							<div class="col-sm-12">
+								+
+								<span *ngIf="participant.value.rule_obj">
+									{{getGyanForRule(participant['controls']['rule_obj'].value.gyan, data.academicGyan) }}
+								</span> Gyan from Academics
+							</div>
+						</div>
+						<div *ngIf="!participant.value.isAssessed">
+							<div class="row" *ngFor="let nonAcademicRule of data.assessment_models[0].assessment_na_rules">
+								<div class="col-sm-12" *ngIf="nonAcademicRule.value === 'engagement'">
+									+ {{getGyanForRule( participant['controls']['engagement_result'].value, getGyanForRule(nonAcademicRule.gyan, data.nonAcademicGyan))
+									}} Gyan from {{nonAcademicRule.value | titlecase}}
+								</div>
+								<div class="col-sm-12" *ngIf="nonAcademicRule.value === 'commitment'">
+									+ {{getGyanForRule( participant['controls']['commitment_result'].value, getGyanForRule(nonAcademicRule.gyan, data.nonAcademicGyan))
+									}} Gyan from {{nonAcademicRule.value | titlecase}}
+								</div>
+							</div>
+						</div>
+						<div class="row" *ngIf="participant.value.isAssessed">
+							<div class="col-sm-12">
+								This participant has already been assessed.
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+			</div>
+		</div>
+	</form>
+	<div class="row">
+		<div class="col-xs-12">
+			<button type="button" [disabled]="!assessmentForm.valid || !pendingParticipants" class="pull-right" (click)="submitForm()"
+			 mat-raised-button color="accent">Submit Assessment</button>
+		</div>
+	</div>
+</div>

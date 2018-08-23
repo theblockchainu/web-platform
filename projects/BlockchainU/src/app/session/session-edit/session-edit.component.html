@@ -1,0 +1,831 @@
+<div style="background: #fff; padding: 0px; min-height: 100vh;" [class.main-content]="!mobileQuery.matches" [class.mobile-main-content]="mobileQuery.matches">
+	<mat-toolbar color="white">
+		<span>
+			<a class="brand clickable" aria-label="Peerbuds Homepage" [routerLink]="['/home','homefeed']">
+				<img src="/assets/images/peerbuds-logo-color.png" alt="logo">
+			</a>
+		</span>
+		<div style="position: absolute;left: 24vw;width: 73vw !important">
+			<button *ngIf="mobileQuery.matches" class="side-nav-toggle-button" mat-icon-button (click)="snav.toggle()">
+				<mat-icon>menu</mat-icon>
+			</button>
+			<div class="pull-right" *ngIf="step!=1 && step !=6 && step !=12">
+				<button mat-button (click)="openSession()">
+					<span *ngIf="!busyPreview">Preview</span>
+					<ngx-loading [show]="busyPreview"></ngx-loading>
+				</button>
+				<button mat-button *ngIf="session.controls['status'].value !== 'active'" (click)="saveandexit()">
+					<span *ngIf="!busySave">Save &amp; Exit</span>
+					<span *ngIf="busySave"> </span>
+					<ngx-loading [show]="busySave"></ngx-loading>
+				</button>
+				<button mat-button *ngIf="session.controls['status'].value === 'active'" (click)="exit()">
+					<span>
+						Exit
+					</span>
+				</button>
+			</div>
+			<div class="pull-left">
+				<mat-chip-list>
+					<mat-chip style="margin-top: 5px;">
+						{{session.controls['status'].value | titlecase}}
+					</mat-chip>
+				</mat-chip-list>
+			</div>
+		</div>
+
+		<!-- <span class="pull-right">
+						<img *ngIf="!profile.picture_url" src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb">
+						<img *ngIf="profile.picture_url" src="{{envVariable.apiUrl + profile.picture_url + '/100'}}" alt="A" class="circle-thumb">
+					</span> -->
+	</mat-toolbar>
+	<mat-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: scroll">
+		<mat-sidenav #snav [mode]="mobileQuery.matches === true ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" [opened]="!mobileQuery.matches">
+			<app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
+		</mat-sidenav>
+		<!-- Page Content -->
+		<div class="navbar-page-content">
+			<!--Disclaimer-->
+			<div class="onboarding step-1" [hidden]="step!=1">
+				<div class="row">
+					<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<h2 class="title">Peerbuds Session Guidelines</h2>
+						<p class="subtitle">Peerbuds is a platform dedicated to connecting people who are forward thinking, passionate about education, and open-minded
+							in general. We're pretty sure that each individual who joins our community is a cool, high-caliber person with unique
+							talents and knowledge to share. That said, we'd like to establish just a few common-sense expectations so our platform
+							can continue to be as high quality as possible.
+						</p>
+						<ul class="guideline-points text-grey">
+							<li>Respect others and their differences. Not everyone on Peerbuds is going to have the same worldview, and that's actually
+								a good thing. It's how we can learn from each other. Keep all comments and observations fair, controlled and as positive
+								as possible.</li>
+							<li>Take your responsibilities seriously. Whether you sign up to learn or to teach (or both!), be sure to communicate
+								with all your peers as necessary and always be on time to events.</li>
+							<li>You can't go wrong with the "golden rule." Treat everyone you meet on Peerbuds with the same basic courtesy and friendliness
+								you'd like to be shown and you're pretty much good to go. Good vibes are infectious - everybody wins.
+							</li>
+						</ul>
+						<div class="margin-top-20">
+							<button mat-raised-button (click)="goto(2)" color="accent" class="pull-right">
+								<span *ngIf="!busyBasics">Continue</span>
+								<span *ngIf="busyBasics"> </span>
+								<ngx-loading [show]="busyBasics"></ngx-loading>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix">
+				<!-- Headline and description -->
+				<div class="onboarding step-2" [hidden]="step!=2">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">We are glad that you want to teach to other peers</h2>
+							<p class="subtitle">Lets begin by updating your profile. We have imported all details that were already updated in your profile.</p>
+							<br/>
+							<form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+								<div class="row">
+									<div class="col-sm-12 margin-bottom-30">
+										<div class="row">
+											<div class="col-sm-12">
+												<h3>Profile Credentials</h3>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<mat-form-field [floatLabel]="'auto'" class="pb-block" style="margin-bottom: 20px">
+													<input matInput #title formControlName="headline" maxlength="100" placeholder="Give a headline to your account">
+													<mat-hint align="start">{{ profileForm.controls['headline'].value.length}} characters added</mat-hint>
+													<mat-hint align="end">{{profileForm.controls['headline'].value.length}} / 100</mat-hint>
+												</mat-form-field>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<mat-form-field [floatLabel]="'auto'" class="pb-block" style="margin-bottom: 20px">
+													<input matInput #title formControlName="description" maxlength="2000" rows="1" matTextareaAutosize placeholder="And a short description about yourself">
+													<mat-hint align="start">{{profileForm.controls['description'].value.length}} characters added</mat-hint>
+													<mat-hint align="end">{{profileForm.controls['description'].value.length}} / 2000</mat-hint>
+												</mat-form-field>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div style="margin-top:60px;">
+									<button mat-button (click)=goto(1)>Back</button>
+									<span class="pull-right" matTooltip="A brief description about yourself is mandatory to continue" [matTooltipDisabled]="profileForm.controls['headline'].value.length !== 0 && profileForm.controls['description'].value.length !== 0  ">
+										<button mat-raised-button color="accent" type="Submit" [disabled]="profileForm.controls['headline'].value.length === 0 || profileForm.controls['description'].value.length === 0  ">
+											<span *ngIf="!busyHost">Continue</span>
+											<span *ngIf="busyHost"> </span>
+											<ngx-loading [show]="busyHost"></ngx-loading>
+										</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!--Profile photo & video-->
+				<div class="onboarding step-3" [hidden]="step!=3">
+					<div class="row">
+						<div style="margin-top:20px;" class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<div class="row" style="margin-right: 20px; margin-bottom: 20px;">
+								<p class="profilePhotoHeading">
+									Profile Photo
+								</p>
+
+								<div class="loading-container" [hidden]="!uploadingImage">
+									<ngx-loading [show]="true"></ngx-loading>
+								</div>
+								<p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)"
+								 maxFileSize="10000000" accept="image/*" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+									<ng-template pTemplate="toolbar">
+										<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
+									</ng-template>
+								</p-fileUpload>
+								<h5>Max File Size
+									<b>10MB</b>
+								</h5>
+								<!-- <div *ngFor="let pp of profile_picture_array"  class="profilePic"> -->
+								<div *ngIf="picture_url" class="profilePic delete">
+									<img class="uploaded_picture" src="{{envVariable.apiUrl + picture_url}}" width="150" style="border: 0.5px solid #ccc">
+									<mat-icon (click)="deleteFromContainer(picture_url, 'image')" class="delete-button">close</mat-icon>
+									<!-- <button mat-button class="setPP" (click)="setProfilePic(pp, 'image')">Set as profile pic</button> -->
+								</div>
+								<!-- </div> -->
+								<div class="lighterText mat-caption margin-top-20">
+									Clear frontal face is an important way for teachers and learners to know about each other.
+									<br> Its not much fun to teach a landscape. Please load a photo that clearly shows your face.
+								</div>
+
+								<hr>
+
+								<p class="profilePhotoHeading">
+									Profile Video
+								</p>
+								<div class="loading-container" [hidden]="!uploadingVideo">
+									<ngx-loading [show]="true"></ngx-loading>
+								</div>
+								<p-fileUpload auto="auto" *ngIf="!uploadingVideo" #fubauto name="video" customUpload="true" (uploadHandler)="uploadVideo($event)"
+								 maxFileSize="10000000" accept="video/*" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event)">
+									<ng-template pTemplate="toolbar">
+										<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 videos</div>
+									</ng-template>
+
+								</p-fileUpload>
+								<h5>Max File Size
+									<b>10MB</b>
+								</h5>
+
+								<div *ngIf="profile_video" class="profileVideo delete">
+									<video width="150" class="uploaded_picture" preload="metadata">
+										<source src="{{envVariable.apiUrl + profile_video}}"> Your browser does not support the video tag.
+									</video>
+									<mat-icon (click)="deleteFromContainer(profile_video, 'video')" class="delete-button">close</mat-icon>
+								</div>
+								<div class="darkText mat-body-1">
+									Tell the community a bit about yourself
+								</div>
+								<div class="lighterText mat-caption">
+									Start with your name and answer some of the following questions, or make up some of your own.
+
+									<ul>
+										<li>We love close-ups, but we suggest you sit at arm's length.</li>
+										<li>You've got 30 seconds so do your best to be concise.</li>
+										<li>Try to keep the light in front of you, not behind you.</li>
+										<li>Look into the camera to create that personal connection.</li>
+										<li>You'll get a chance to preview your video before it uploads.</li>
+
+									</ul>
+								</div>
+							</div>
+							<button mat-button (click)=goto(2)>Back</button>
+							<span class="pull-right" matTooltip="You must upload both a photo and a video to comtinue" [matTooltipDisabled]="picture_url || profile_video">
+								<button mat-raised-button color="accent" (click)="nextStep()" [disabled]="!picture_url && !profile_video">
+									<span *ngIf="!busyHost">Continue</span>
+									<span *ngIf="busyHost"> </span>
+									<ngx-loading [show]="busyHost"></ngx-loading>
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+				<!-- Location and languages -->
+				<div class="onboarding step-4" [hidden]="step!=4">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Tell us more about yourself</h2>
+							<p class="subtitle margin-bottom-30">Update your students on where you are located and what languages you can speak</p>
+							<ngxgeo-autocomplete class="geoLocation" required [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ngxgeo-autocomplete>
+							<div class="pb-block">
+								<agm-map [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"
+								 [usePanning]="true" [zoom]="14" [scrollwheel]="false" [disableDoubleClickZoom]="true" [zoomControl]="false" [streetViewControl]="false">
+									<agm-marker [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"></agm-marker>
+								</agm-map>
+							</div>
+							<h2 class="title margin-top-20">Add languages to your profile</h2>
+							<p class="subtitle margin-bottom-30">You'll write your description in this language and students will expect you to speak it during sessions</p>
+							<form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+								<div class="margin-top-20" formArrayName="other_languages" *ngFor="let control of profileForm.controls['other_languages']['controls']; let i=index">
+									<mat-form-field [floatLabel]="'auto'">
+										<input type="text" style="border-bottom: 0px;" placeholder="Select Language" matInput [formControlName]="i" [matAutocomplete]="auto">
+									</mat-form-field>
+									<mat-autocomplete #auto="matAutocomplete">
+										<mat-option *ngFor="let language of filteredOptions" [value]="language.name">
+											{{ language.name }}
+										</mat-option>
+									</mat-autocomplete>
+								</div>
+								<a (click)="addLanguageField()">+ Add more languages</a>
+								<div style="margin-top:100px;">
+									<button mat-button (click)=goto(3)>Back</button>
+									<span class="pull-right">
+										<button mat-raised-button color="accent" type="Submit">
+											<span *ngIf="!busyLanguage">Continue</span>
+											<span *ngIf="busyLanguage"> </span>
+											<ngx-loading [show]="busyLanguage"></ngx-loading>
+										</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- Resume -->
+				<div class="onboarding step-5" [hidden]="step!=5">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Highlight your credentials</h2>
+							<p class="subtitle">
+								Share your resume with learners to give them confidence on your teaching capabilities.
+							</p>
+							<br/>
+							<form [formGroup]="workForm" (ngSubmit)="saveWorkEducation()">
+								<div formArrayName="work" class="well well-lg">
+									<div class="mat-body-2" style="margin-bottom: 25px;">
+										Work Experience
+									</div>
+									<div *ngFor="let workObj of workForm.controls['work']['controls']; let i=index" [formGroupName]="i" class="margin-bottom-30">
+										<mat-form-field [floatLabel]="'auto'" style="margin-right:10px;">
+											<input matInput formControlName="position" type="text" style="border-bottom: 0px;" placeholder="Position">
+											<!-- <mat-error>This field is required</mat-error> -->
+										</mat-form-field>
+										<mat-form-field [floatLabel]="'auto'">
+											<input matInput formControlName="company" type="text" style="border-bottom: 0px;" placeholder="Company">
+											<!-- <mat-error>This field is required</mat-error> -->
+										</mat-form-field>
+										<br>
+										<mat-form-field [floatLabel]="'auto'" style="margin-right:10px;" [ngClass]="{'customWidth30': true}">
+											<input matInput formControlName="startDate" [matDatepicker]="startPicker" placeholder="Start Date">
+											<mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+											<mat-datepicker #startPicker></mat-datepicker>
+										</mat-form-field>
+										<!-- <mat-error>This field is required</mat-error> -->
+										<mat-form-field [floatLabel]="'auto'" style="margin-right:10px;" [ngClass]="{ 'customWidth30': true}">
+											<!--'disabled': disableEndDate,-->
+											<input matInput formControlName="endDate" [matDatepicker]="endPicker" placeholder="End Date">
+											<!--[ngClass]="{'disabled': disableEndDate}"-->
+											<mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+											<!--[ngClass]="{'disabled': disableEndDate}"-->
+											<mat-datepicker #endPicker></mat-datepicker>
+										</mat-form-field>
+										<mat-checkbox [hidden]="i>0" class="presentlyWorking" formControlName="presentlyWorking" (click)="toggleEndDate()">Presently working</mat-checkbox>
+										<i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deleteWork(i)" style="cursor: pointer;"></i>
+									</div>
+								</div>
+								<div style="margin-top:-5px;margin-bottom:5px; cursor: pointer" (click)="addWork()">
+									<a style="font-size: 12px">+ Add another work detail</a>
+								</div>
+								<div style="margin-bottom: 25px;" class="mat-body-2 margin-top-40">
+									Education
+								</div>
+								<div formArrayName="education">
+									<div *ngFor="let educationObj of workForm.controls['education']['controls']; let i = index" [formGroupName]="i" class="margin-bottom-30">
+										<mat-form-field [floatLabel]="'auto'" style="margin-right:10px;">
+											<input matInput formControlName="degree" type="text" style="border-bottom: 0px;" placeholder="Degree">
+											<!-- <mat-error>This field is required</mat-error> -->
+										</mat-form-field>
+										<mat-form-field [floatLabel]="'auto'" style="margin-right:10px;">
+											<input matInput formControlName="school" type="text" style="border-bottom: 0px;" placeholder="School / College">
+											<!-- <mat-error>This field is required</mat-error> -->
+										</mat-form-field>
+										<br>
+										<mat-form-field [floatLabel]="'auto'">
+											<mat-select placeholder="Start Year" formControlName="startYear" [ngClass]="{'customWidth30': true}">
+												<mat-option *ngFor="let syear of years" [value]="syear">{{syear}}</mat-option>
+											</mat-select>
+										</mat-form-field>
+										<mat-form-field [floatLabel]="'auto'">
+											<mat-select placeholder="End Year" formControlName="endYear" [ngClass]="{'customWidth30': true}">
+												<mat-option *ngFor="let eyear of years" [value]="eyear">{{eyear}}</mat-option>
+											</mat-select>
+										</mat-form-field>
+										<mat-checkbox [hidden]="i>0" class="presentlyWorking" formControlName="presentlyPursuing" (click)="disableEndYear()">Presently pursuing</mat-checkbox>
+										<i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deleteEducation(i)" style="cursor: pointer;"></i>
+									</div>
+								</div>
+								<button class="pull-right" mat-raised-button color="accent" type="Submit">
+									Continue
+								</button>
+							</form>
+							<div style="margin-top:-5px;margin-bottom:5px; cursor: pointer" (click)="addEducation()">
+								<a style="font-size: 12px">+ Add another education detail</a>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- Step 6 - Disclaimer -->
+				<div class="onboarding step-6" [hidden]="step!=6">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Update your profile sections that peers will see when booking sessions</h2>
+							<p class="subtitle">Write in a clear, straightforward and friendly way. We will give you tips on when to show off your personality and
+								be more descriptive.</p>
+							<button mat-raised-button color="accent" (click)="nextStep()">
+								Continue
+							</button>
+						</div>
+					</div>
+				</div>
+				<!-- step 7 - Topics Teaching  -->
+				<div class="onboarding step-7" [hidden]="step!=7">
+					<div class="row">
+						<div class="col-sm-12 margin-bottom-30">
+							<h2 class="title">What topics are you passionate about teaching?</h2>
+							<p class="subtitle">Learners can select only from within these topics when they book a peer session with you.</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<form [formGroup]="interest1" (ngSubmit)="submitInterests()">
+								<div class="row">
+									<div class="col-sm-12 margin-bottom-30">
+										<div class="row">
+											<div class="col-sm-12">
+												<app-multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
+												 [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic [maxSelection]=maxTopics
+												 [minSelection]="1"></app-multiselect-autocomplete>
+											</div>
+										</div>
+										<div class="row">
+											<span class="col-sm-4" style="font-size: 12px; color: #777">{{maxTopicMsg}}</span>
+										</div>
+									</div>
+								</div>
+								<div style="margin-top:60px;">
+									<button mat-button (click)=goto(6)>Back</button>
+									<span class="pull-right" matTooltip="Add at least one interest to continue" [matTooltipDisabled]="interests.length !== 0">
+										<button mat-raised-button color="accent" [disabled]="interests.length == 0">
+											<span *ngIf="!busyInterest">Continue</span>
+											<span *ngIf="busyInterest"> </span>
+											<ngx-loading [show]="busyInterest"></ngx-loading>
+										</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- step 8 Experience in topics-->
+				<div class="onboarding step-8" [hidden]="step!=8">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">What experience do you have in each of your selected topics?</h2>
+							<div class="margin-top-70">
+								<div class="row" *ngFor="let topic of relTopics">
+									<form #f="ngForm">
+										<div class="topic-name col-md-8">
+											<span class="col-md-9 padding-left-0 mat-body-2">{{topic.name |titlecase}}</span>
+										</div>
+										<i [ngClass]="{'mdi mdi-content-save mdiIcon darkColor pull-left':true, 'disabledSpan': (!f.form.controls.experience?.dirty && !f.form.controls.experience?.touched) }"
+										 (click)="updateChanges('teaching', topic)" style="cursor: pointer;"></i>
+										<i class="mdi mdi-close-circle mdiIcon darkColor pull-left" (click)="unfollowTopic('teaching', topic)" style="cursor: pointer;"></i>
+										<div class="topic-experience col-md-8">
+											<mat-form-field [floatLabel]="'always'" style="margin-bottom: 20px; width:100%" #experienceContainer>
+												<textarea matInput #experience name="experience" rows="1" matTextareaAutosize class="form-control" [(ngModel)]="topic.experience"
+												 placeholder="How much do you know this topic?" required></textarea>
+												<mat-error>This field is required</mat-error>
+												<mat-hint align="end">{{experience.value.length}} / 1000</mat-hint>
+											</mat-form-field>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="row" style="margin-top:100px;">
+								<button mat-button (click)=goto(7)>Back</button>
+								<span class="pull-right" matTooltip="Please fill all the details" [matTooltipDisabled]="true">
+									<button mat-raised-button color="accent" (click)="nextStep()">
+										Continue
+									</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Step 9 - Provisions -->
+				<div class="onboarding step-9" [hidden]="step!=9">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">What i'll provide? </h2>
+							<p class="subtitle">Let your peers know about specific items you would provide in your sessions. These could include things like software
+								licenses, or workstation or food etc.</p>
+							<form class="margin-top-50" [formGroup]="provisionForm" (ngSubmit)="saveProvision()">
+								<div formArrayName="provisions">
+									<div *ngFor="let provisionObj of provisionForm.controls['provisions']['controls']; let i=index" [formGroupName]="i" class="margin-bottom-10">
+										<mat-form-field [floatLabel]="'auto'">
+											<input matInput style="border-bottom: 0px;" formControlName="text" type="text" placeholder="Food or Laptop or Webstorm License">
+										</mat-form-field>
+									</div>
+								</div>
+								<a mat-button (click)="addProvisionField()" class="mat-border-button margin-top-20">+ Add an item</a>
+								<div style="margin-top:100px;">
+									<span class="pull-right">
+										<button mat-raised-button color="accent" type="submit">
+											Continue
+										</button>
+									</span>
+								</div>
+							</form>
+
+						</div>
+					</div>
+				</div>
+				<!-- step 10 Availability -->
+				<div class="onboarding step-10" [hidden]="step!=10">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Set your availability</h2>
+							<p class="subtitle margin-bottom-60">Select all those 60 minute time slots when you will be available to take sessions with other peers. You can always
+								keep adding more availability slots in the future.</p>
+							<!--<div class="margin-bottom-10">You can change the calendar click mode to either </div>
+							<mat-radio-group [(ngModel)]="calendarEvent">
+								<mat-radio-button value="add">Add new slot</mat-radio-button> &emsp;
+								<mat-radio-button value="delete">Delete existing slot</mat-radio-button>
+							</mat-radio-group>
+							<div class="margin-bottom-60"></div>-->
+							<p-schedule [events]="events" [eventOverlap]="false" [defaultView]="'agendaWeek'" [editable]="true" (onDayClick)="handleDayClick($event)"
+							 (onEventClick)="handleEventClick($event)" (onEventDrop)="updateEvent($event)" (onEventResize)="updateEvent($event)"
+							 [height]="500" [allDaySlot]="false" [slotDuration]="'01:00:00'" [nowIndicator]="true" [scrollTime]="nowTime"></p-schedule>
+
+							<div class="row margin-top-60">
+								<button class="pull-right" mat-raised-button color="accent" (click)="submitAvailability()">
+									Continue
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- step 11 - Price & Packages -->
+				<div class="onboarding step-11" [hidden]="step!=11">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<form [formGroup]="packageForm" (ngSubmit)="submitPackages()">
+								<h2 class="title">Set your pricing</h2>
+								<p class="subtitle">Setup a trial package and as many paid packages for your peer sessions. Learners can only select from within these
+									packages when booking.</p>
+								<h3 class="margin-top-50">Trial Package</h3>
+								<div class="trialPackageContainer" formGroupName="trialPackage">
+									<div class="title mat-subheading-2">Price</div>
+									<div class="row">
+										<div class="col-md-4">
+											<mat-checkbox formControlName="isFree">Free</mat-checkbox>&emsp;
+											<span class="lightText mat-h6" *ngIf="!packageForm.controls['trialPackage']['controls']['isFree'].value">--- OR ---</span>
+										</div>
+									</div>
+									<div class="row margin-left-0" *ngIf="!packageForm.controls['trialPackage']['controls']['isFree'].value">
+										<div class="col-md-2 padding-left-0">
+											<mat-form-field class="pb-block" [floatLabel]="'never'">
+												<span matPrefix>
+													{{0 | currency: packageForm.controls['trialPackage']['controls']['currency'].value : 'symbol' | slice:0:1}} &nbsp;
+												</span>
+												<input type="number" matInput #price formControlName="price" placeholder="0" min="1" required>
+											</mat-form-field>
+										</div>
+										<div class="col-md-2">
+											<mat-form-field class="pb-block" [floatLabel]="'never'">
+												<mat-select formControlName="currency" class="padding-top-0" placeholder="USD">
+													<mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
+												</mat-select>
+											</mat-form-field>
+										</div>
+									</div>
+									<div class="title mat-subheading-2">Hours
+										<mat-icon class="lightText" style="top: 7px;" [matTooltip]="'Select the length of your trial package and optionally put a price on it. Peers are more likely to book free trial packages.'">info_outline</mat-icon>
+									</div>
+									<div class="row margin-left-0">
+										<div class="col-sm-12 padding-left-0">
+											<mat-form-field [floatLabel]="'never'">
+												<mat-select formControlName="duration" placeholder="Set duration of trial package">
+													<mat-option *ngFor="let d of availableDurations" [value]="d.value">{{d.text}}</mat-option>
+												</mat-select>
+											</mat-form-field>
+										</div>
+									</div>
+									<div class="title mat-subheading-2">Cancellation Policy</div>
+									<div class="row margin-left-0">
+										<div class="col-sm-12 padding-left-0">
+											Students will get a full refund if they cancel within &nbsp;
+											<mat-form-field [floatLabel]="'never'" style="width: 15%;">
+												<mat-select formControlName="cancellationPolicy" placeholder="3 Days">
+													<mat-option *ngFor="let cp of cancellationPolicies" [value]="cp">{{cp}}</mat-option>
+												</mat-select>
+											</mat-form-field>
+											&nbsp; of signing up.
+										</div>
+									</div>
+								</div>
+								<h3 class="margin-top-50">Paid Packages</h3>
+								<div formArrayName="paidPackages">
+									<div class="paidPackageContainer" *ngFor="let formObj of packageForm.controls['paidPackages']['controls']; let i = index"
+									 [formGroupName]="i">
+										<div class="title mat-subheading-2">Price</div>
+										<i class="mdi mdi-close-circle mdiIcon darkColor pull-right alignDelete" (click)="deletePackage(i)" style="cursor: pointer;"></i>
+										<div class="row">
+											<div class="col-md-5">
+												<mat-checkbox formControlName="isFree">Free</mat-checkbox> &emsp;
+												<span class="lightText mat-h6" *ngIf="!packageForm.controls['paidPackages']['controls'][i]['controls']['isFree'].value">--- OR ---</span>
+											</div>
+										</div>
+										<div class="row margin-left-0" *ngIf="!packageForm.controls['paidPackages']['controls'][i]['controls']['isFree'].value">
+											<div class="col-md-2 padding-left-0">
+												<mat-form-field class="pb-block" [floatLabel]="'never'">
+													<span matPrefix>
+														{{0 | currency: packageForm.controls['paidPackages']['controls'][i]['controls']['currency'].value : 'symbol' | slice:0:1}}
+														&nbsp;
+													</span>
+													<input type="number" matInput #price formControlName="price" placeholder="0" min="1" required>
+												</mat-form-field>
+											</div>
+											<div class="col-md-2">
+												<mat-form-field class="pb-block" [floatLabel]="'never'">
+													<mat-select formControlName="currency" class="padding-top-0" placeholder="USD">
+														<mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
+													</mat-select>
+												</mat-form-field>
+											</div>
+										</div>
+										<div class="title mat-subheading-2">Hours
+											<mat-icon class="lightText" style="top: 7px;" [matTooltip]="'You can create paid session packages of different hours with custom pricing for your peers to select.'">info_outline</mat-icon>
+										</div>
+										<div class="row margin-left-0">
+											<div class="col-sm-12 padding-left-0">
+												<mat-form-field [floatLabel]="'never'">
+													<mat-select formControlName="duration" placeholder="Set duration of this package">
+														<mat-option *ngFor="let d of availableDurations" [value]="d.value">{{d.text}}</mat-option>
+													</mat-select>
+												</mat-form-field>
+											</div>
+										</div>
+										<div class="title mat-subheading-2">Cancellation Policy</div>
+										<div class="row margin-left-0">
+											<div class="col-sm-12 padding-left-0">
+												Students will get a full refund if they cancel within &nbsp;
+												<mat-form-field [floatLabel]="'never'" style="width: 15%;">
+													<mat-select formControlName="cancellationPolicy" placeholder="3 Days">
+														<mat-option *ngFor="let cp of cancellationPolicies" [value]="cp">{{cp}}</mat-option>
+													</mat-select>
+												</mat-form-field>
+												&nbsp; of signing up.
+											</div>
+										</div>
+										<span class="pull-right" matTooltip="Enter a price you wish to charge for this session and its cancellation policy">
+											<a (click)="deletePackage(i)"></a>
+										</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 margin-top-20">
+										<a (click)="addPackages()" class="clickable">+ Add new package</a>
+									</div>
+								</div>
+								<div style="margin-top:100px;">
+									<a mat-button (click)=goto(10)>Back</a>
+									<span class="pull-right">
+										<button mat-raised-button color="accent" type="Submit">Continue</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!--Step 12 - Preference Disclaimer -->
+				<div class="onboarding step-12" [hidden]="step!=12">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Setup your live session preferences</h2>
+							<p class="subtitle">Receive reservations in the most suitable manner and market your profile with a custom URL.</p>
+							<div style="margin-top:60px;">
+								<button class="pull-right" mat-raised-button color="accent" (click)="goto(13)">Continue</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--Step 13 - Preferences -->
+				<div class="onboarding step-13" [hidden]="step!=13">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">What works for you?</h2>
+							<p class="subtitle">
+								Do you want learners to book with you instantly or you want to approve requests?
+							</p>
+							<form class="margin-top-50" [formGroup]="preferencesForm" (ngSubmit)="savePreferences()">
+								<mat-radio-group formControlName="bookingProcess">
+									<mat-radio-button value="auto">Book Instantly</mat-radio-button>
+									<br/>
+									<mat-radio-button value="manual">Allow me to approve requests</mat-radio-button>
+								</mat-radio-group>
+								<button class="pull-right margin-top-100" mat-raised-button color="accent" type="submit">Continue</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!--Step 14 - Custom URL for profile -->
+				<div class="onboarding step-14" [hidden]="step!=14">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Custom Url</h2>
+							<div class="subtitle">Select custom URL for your page</div>
+							<form class="margin-top-50" [formGroup]="preferencesForm" (ngSubmit)="savePreferences()">
+								<mat-form-field [floatLabel]="'always'">
+									<input type="text" style="border-bottom: 0px;" matInput #price formControlName="customUrl">
+									<span matPrefix>peerbuds.com/</span>
+								</mat-form-field>
+								<button class="pull-right margin-top-100" mat-raised-button color="accent" type="submit">Continue</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!--Submit & Review-->
+				<div class="onboarding step-15" [hidden]="step!=15">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Review and submit</h2>
+							<div *ngIf="!isSubmitted">
+								<div style="margin-top:40px;">
+									<mat-checkbox value="val1" [(ngModel)]="selectedValues[0]">You meet our standards.</mat-checkbox>
+								</div>
+								<div style="margin-top:20px;">
+									<mat-checkbox value="val2" [(ngModel)]="selectedValues[1]">You agree to our terms and conditions.</mat-checkbox>
+								</div>
+								<span class="pull-right margin-top-50" matTooltip="You need to agree to Peerbuds community terms to submit this session for approval"
+								 [matTooltipDisabled]="selectedValues[0] && selectedValues[1]">
+									<button mat-raised-button color="accent" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
+										Submit for Review</button>
+								</span>
+							</div>
+							<div *ngIf="isSubmitted" style="margin-top: 70px;">
+								Your session has been submitted for review and is awaiting approval from Peerbuds team.
+								<br>
+								<br> We maintain highest possible standards for all content shared on Peerbuds platform.
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="onboarding step-16" [hidden]="step!=16">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Finishing Touches</h2>
+							<div class="subtitle">Add Finishing touches</div>
+							<!-- <form [formGroup]="paymentInfo "> -->
+							<div style="margin-top:10px; ">
+								<!--<button mat-raised-button>PayTM</button> &emsp;-->
+								<button color="accent" class="pull-right" (click)="nextStep()" mat-raised-button>
+									Continue
+								</button>
+								<!--<button mat-raised-button>Paypal</button> &emsp;-->
+							</div>
+							<!-- </form> -->
+						</div>
+					</div>
+				</div>
+				<div class="onboarding step-17" [hidden]="step!=17">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Do you want to provide your phone number to learners?</h2>
+							<div class="subtitle">Phone numbers make it easy for learners to reach out to you in case of urgent queries.</div>
+							<form [formGroup]="phoneDetails">
+								<div style="margin-top:50px;">
+									<mat-radio-group>
+										<mat-radio-button class="pb-block margin-bottom-20" name="phone" value="1" (click)="toggleChoice(1)" *ngIf="!isPhoneVerified">Yes</mat-radio-button>
+										<div *ngIf="selectedOption === 1 || isPhoneVerified" style="margin: 20px 0px 30px 0px;">
+											<mat-form-field [floatLabel]="'always'" style="margin: 20px 0px;">
+												<input type="tel" matInput #countryCode formControlName="countryCode" placeholder="Country Code" [readOnly]="true">
+											</mat-form-field>
+											<mat-form-field [floatLabel]="'auto'" class="pb-block" style="margin: 20px 0px;">
+												<input type="tel" matInput #phoneNo formControlName="phoneNo" placeholder="Phone number from profile" [readOnly]="true" disabled>
+												<mat-hint *ngIf="!isPhoneVerified">We will send the confirmation code on your mobile</mat-hint>
+												<mat-hint *ngIf="isPhoneVerified">Update your phone number from profile to change it for this session</mat-hint>
+											</mat-form-field>
+											<button mat-raised-button #sendOtpButton color="accent" (click)="submitPhoneNo($event.target, 'Sending code to phone...')"
+											 *ngIf="!isPhoneVerified">
+												Send Code as SMS
+											</button>
+											<button mat-raised-button #sendOtpButton color="accent" *ngIf="isPhoneVerified">
+												<mat-icon mat-prefix style="margin-top: -12px; margin-right: 5px; color: white;">check_circle</mat-icon> Phone Verified
+											</button>
+										</div>
+										<div *ngIf="otpSent && !isPhoneVerified" style="margin: 20px 0px 50px 0px;">
+											<p>Type the 4 digit verification code</p>
+											<mat-form-field [floatLabel]="'always'" class="pb-block inputOTP" style="margin: 20px 0px;">
+												<input type="text" style="border-bottom: 0px;" matInput #inputOTP formControlName="inputOTP" placeholder="Code">
+											</mat-form-field>
+											<button mat-raised-button color="accent" (click)="submitOTP()">Confirm Code</button>
+										</div>
+										<mat-radio-button class="pb-block margin-bottom-20" name="phone" value="0" (click)="toggleChoice(0)" *ngIf="!isPhoneVerified">No, thanks</mat-radio-button>
+									</mat-radio-group>
+								</div>
+								<span class="pull-right" matTooltip="Please verify your phone number to continue" [matTooltipDisabled]="selectedOption !==-1 || isPhoneVerified">
+									<button mat-raised-button (click)="takeToPayment()" color="accent" [disabled]="selectedOption ===-1 && !isPhoneVerified">
+										<span *ngIf="!busyPayment">Continue</span>
+										<span *ngIf="busyPayment"> </span>
+										<ngx-loading [show]="busyPayment"></ngx-loading>
+									</button>
+								</span>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="onboarding step-18" [hidden]="step!=18">
+					<div class="row">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<h2 class="title">Connect Payment Option</h2>
+							<div class="subtitle">Choose from available payout options or add a new one</div>
+							<div class="row loading-container" style="padding-top: 10px; padding-bottom: 10px;" *ngIf="payoutLoading">
+								<ngx-loading [show]="true"></ngx-loading>
+							</div>
+							<div class="margin-top-30" *ngIf="!payoutLoading && payoutAccounts && payoutAccounts.length > 0" style="padding-top: 5px; padding-bottom: 15px">
+								<span class="mat-body-2">
+									Connect existing account
+								</span>
+							</div>
+							<div class="row table" *ngIf="!payoutLoading && payoutAccounts && payoutAccounts.length > 0">
+								<div class="col-md-10">
+									<div class="row table-header">
+										<div class="col-md-3 ">
+											<b>Method</b>
+										</div>
+										<div class="col-md-3">
+											<b>Details</b>
+										</div>
+										<div class="col-md-3">
+											<b>Status</b>
+										</div>
+									</div>
+									<div class="row table-data">
+										<hr>
+										<div class="col-md-12">
+											<ng-container *ngIf="!addingAccount && payoutAccounts">
+												<form [formGroup]="paymentInfo">
+													<mat-radio-group formControlName="id">
+														<div class="row" *ngFor="let account of payoutAccounts" style="padding-top: 5px; padding-bottom: 5px">
+															<div class="col-md-3" [ngSwitch]="account.external_accounts.data[0].object">
+																<b *ngSwitchCase="'card'">Card</b>
+																<b *ngSwitchCase="'bank_account'">Bank Account</b>
+															</div>
+															<div class="col-md-3" [ngSwitch]="account.external_accounts.data[0].object">
+																<span *ngSwitchCase="'card'">**** **** **** {{account.external_accounts.data[0].last4}}</span>
+																<span *ngSwitchCase="'bank_account'">{{account.external_accounts.data[0].account_holder_name}}
+																	<br>{{account.external_accounts.data[0].bank_name}}
+																</span>
+															</div>
+															<div class="col-md-3">
+																<b *ngIf="account.external_accounts.data[0].status">{{account.external_accounts.data[0].status | titlecase}}</b>
+																<b *ngIf="!account.external_accounts.data[0].status">Ready</b>
+															</div>
+															<div class="col-md-3">
+																<mat-radio-button value="{{account.payoutaccount.id}}">
+																</mat-radio-button>
+															</div>
+														</div>
+													</mat-radio-group>
+												</form>
+
+											</ng-container>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="margin-top-30" style="padding-top: 5px; padding-bottom: 15px" *ngIf="!payoutLoading">
+								<span class="mat-body-2 clickable">
+									+ Add new payout account
+								</span>
+							</div>
+							<!-- <form [formGroup]="paymentInfo "> -->
+							<div style="margin-top:10px; " *ngIf="!payoutLoading">
+								<!--<button mat-raised-button>PayTM</button> &emsp;-->
+								<button mat-raised-button class="mat-border-button">
+									<a [href]="connectPaymentUrl">
+										<img src="../../../assets/images/stripe.png" style="width: 50px;" />
+									</a>
+								</button> &emsp;
+								<!--<button mat-raised-button>Paypal</button> &emsp;-->
+							</div>
+							<!-- </form> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</mat-sidenav-container>
+</div>

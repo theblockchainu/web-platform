@@ -1,0 +1,73 @@
+<div class="dialog-container">
+  <div class="mat-dialog-focus-trap"></div>
+  <div class="verification-section margin-top-20" id="content">
+    <div class="maincontent">
+      <div class="position-relative step-2" [hidden]="step!=2">
+        <form [formGroup]="peer">
+          <mat-dialog-content>
+            <div class="col-md-12">
+              <div class="verification-box drop-shadow">
+                <button class="mat-fab roundFab margin-bottom-40" type="button">
+                  <i class="fa fa-envelope-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+                </button>
+                <h2 class="headline">How can we reach you securely?</h2>
+                <p class="description1 margin-bottom-40">Please let us know how we can reach you by email.
+	                <br>To help keep your Peerbuds account secure, make sure only you can log into this email address.</p>
+                <mat-form-field [floatLabel]="'auto'" style="width:50% !important" class="pb-block margin-bottom-60 margin-top-20">
+                  <!-- <input type="text" formControlName="email" class="form-control display-inline-block email-address-input" /> -->
+                  <input type="email" matInput #email formControlName="email" placeholder="Email Address" [attr.disabled]="email ? true : null"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <div class="col-md-12 bottom-section clearfix">
+                <div class="pull-right">
+                  <!--<button mat-button style="margin-right:20px; color:#767676" (click)="redirectToOnboarding()">Skip</button>-->
+                  <span matTooltip="Invalid Email!" [matTooltipDisabled]="!peer.controls.email.invalid || !peer.controls.email.dirty && email.value.length !== 0">
+                    <button mat-raised-button color="accent" (click)="continue(3)" [disabled]="peer.controls['email'].invalid && peer.controls['email'].dirty || email.value.length == 0">Continue</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </mat-dialog-content>
+        </form>
+      </div>
+      <!-- OTP-->
+      <div class="position-relative step-3" [hidden]="step!=3">
+        <form [formGroup]="otp">
+          <mat-dialog-content>
+            <div class="col-md-12 position-relative">
+              <div class="verification-box drop-shadow">
+                <button class="mat-fab roundFab col-md-offset-5 margin-bottom-40" type="button">
+                  <i class="fa fa-key fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
+                </button>
+                <h2 class="headline">Enter the code sent to your email</h2>
+                <p class="description1 margin-bottom-40">We have sent to 6 digit code to {{email.value}}. Please enter this code or click the link in your email to
+                  verify your email address. Users on Peerbuds need to verify their email IDs to receive notifications and
+                  updates from the platform.</p>
+                <mat-form-field [floatLabel]="'always'" style="width:20% !important" class="pb-block margin-bottom-10">
+                  <input type="text" matInput #inputOTP formControlName="inputOTP" />
+                </mat-form-field>
+                <div>
+                  <p class="description1">
+                    <a (click)="resendOTP()" style="cursor: pointer;">Resend code?</a> Please wait at least 5 minutes before
+                    <br/> requesting another code or
+                    <a style="cursor: pointer;" (click)="continue(2)">change your email</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 position-relative">
+              <div class="pull-right">
+                <span matTooltip="Invalid OTP length!" [matTooltipDisabled]="inputOTP.value.length===6">
+                  <button mat-raised-button color="accent" (click)="verifyEmail()" [disabled]="inputOTP.value.length!=6">Verify Email</button>
+                </span>
+              </div>
+            </div>
+          </mat-dialog-content>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

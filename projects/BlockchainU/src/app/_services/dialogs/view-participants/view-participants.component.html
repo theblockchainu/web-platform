@@ -1,0 +1,44 @@
+<div mat-dialog-content class="dialog-container">
+	<div class="row">
+		<div class="col-md-12 collectionContent">
+			<button disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+			</button>
+			<div class="mat-display-1" style="margin-bottom: 20px;">
+				Participants ({{data.participants.length}})
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div *ngIf="data.participants.length === 0">
+		<span class="mat-caption">No students have signed-up for this experience yet.</span>
+	</div>
+	<div *ngIf="data.participants.length > 0">
+		<div class="row margin-bottom-20" *ngFor="let participant of data.participants">
+			<div *ngIf="participant.profiles">
+				<div class="col-md-1 vcenter">
+					<img src="{{envVariable.apiUrl+participant.profiles[0].picture_url}}/100" style="margin-left: 0px;" class="circle-thumb" alt="dp" (error)="_collectionService.imgErrorHandler($event)">
+				</div>
+				<div class="col-md-6 vcenter">
+					<b>{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name | ucwords }}</b>
+					<br/>
+					<span *ngIf="participant.profiles[0].headline">{{participant.profiles[0].headline | ucwords}}</span>
+				</div>
+				<div class="col-md-3 vcenter">
+					<mat-progress-bar [mode]="'determinate'" [value]="10">
+					</mat-progress-bar>
+				</div>
+				<div class="col-md-1 vcenter">
+					<button mat-icon-button [matMenuTriggerFor]="menu">
+						<mat-icon class="lightText">more_vert</mat-icon>
+					</button>
+					<mat-menu #menu="matMenu">
+						<button mat-menu-item (click)="messageParticipant(participant)" *ngIf="participant.id !== userId">Message</button>
+						<button mat-menu-item *ngIf="data.userType === 'teacher'" (click)="removeParticipant(participant.id)">Remove</button>
+						<button mat-menu-item *ngIf="participant.id !== userId" (click)="reportProfile(participant.id)">Report</button>
+					</mat-menu>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

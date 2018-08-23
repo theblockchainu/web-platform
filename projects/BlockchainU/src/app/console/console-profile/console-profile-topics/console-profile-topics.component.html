@@ -1,0 +1,75 @@
+<div class="row">
+	<div class="col-md-12">
+		<div *ngIf="loading" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+</div>
+<div class="row" *ngIf="!loading">
+	<div class="col-md-12">
+		<div class="row">
+			<div style="margin-top:20px;" class="col-md-12">
+				<div class="row consoleProfileTopicContainer">
+					<mat-tab-group disableRipple class="topics">
+						<mat-tab label="Topics Learning">
+							<div class="row" style="margin: 0px">
+								<div class="lighterText mat-caption margin-top-20 margin-bottom-20 col-md-9 padding-left-0">
+									Topics you are interested in learning are added to your account based on your learning history and manual selection. Topics
+									you learn about will be visible both here and on your public profile.
+								</div>
+							</div>
+							<div class="row" style="margin: 0px">
+								<button class="margin-bottom-20 pull-left clickable" (click)="openFollowTopicDialog('learning')" mat-raised-button>
+									<span style="color:#33bd9e">+ Add more topics</span>
+								</button>
+							</div>
+
+							<div class="review-section" *ngFor="let topic of topicsLearning">
+								<div class="topic-row">
+									<div class="col-md-9 col-xs-12 padding-left-0" style="padding-bottom: 10px">
+										<div class="topic-name pull-left mat-body-2">
+											<span>{{topic['name'] | titlecase}}</span>
+										</div>
+										<i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="unfollowTopic('learning', topic)" style="cursor: pointer;"></i>
+									</div>
+								</div>
+							</div>
+						</mat-tab>
+						<mat-tab label="Topics Teaching" style="min-width: min-content !important;">
+							<div class="row" style="margin: 0px">
+								<div class="lighterText mat-caption margin-top-20 margin-bottom-20 col-md-9 padding-left-0">
+									Topics you are interested in teaching are added to your account based on your learning history and manual selection. Topics
+									you teach about will be visible both here and on your public profile.
+								</div>
+							</div>
+							<div class="row" style="margin: 0px">
+								<button class="margin-bottom-20 pull-left clickable" (click)="openFollowTopicDialog('teaching')" mat-raised-button>
+									<span style="color:#33bd9e">+ Add more topics</span>
+								</button>
+							</div>
+							<div class="review-section" *ngFor="let topic of topicsTeaching">
+								<form #f="ngForm">
+									<div class="topic-name col-md-8 col-xs-10 padding-left-0">
+										<span class="col-md-9 padding-left-0 mat-body-2">{{topic.name |titlecase}}</span>
+									</div>
+									<i [ngClass]="{'mdi mdi-content-save mdiIcon darkColor pull-left alignDelete':true, 'disabledSpan': (!f.form.controls.experience?.dirty && !f.form.controls.experience?.touched) }"
+									 (click)="updateChanges('teaching', topic)" style="cursor: pointer;"></i>
+									<i class="mdi mdi-close-circle mdiIcon darkColor pull-left alignDelete" (click)="unfollowTopic('teaching', topic)" style="cursor: pointer;"></i>
+
+									<div class="topic-experience col-md-8 col-xs-12 padding-left-0">
+										<mat-form-field [floatLabel]="'always'" style="margin-bottom: 20px; width:100%" #experienceContainer>
+											<textarea matInput #experience name="experience" rows="1" matTextareaAutosize class="form-control" [(ngModel)]="topic.experience"
+											 placeholder="How much do you know this topic?" required></textarea>
+											<mat-error>This field is required</mat-error>
+											<mat-hint align="end">{{experience.value.length}} / 1000</mat-hint>
+										</mat-form-field>
+									</div>
+								</form>
+							</div>
+						</mat-tab>
+					</mat-tab-group>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,117 @@
+<div mat-dialog-content class="dialog-container">
+	<div class="row">
+		<div class="col-md-12">
+			<button mat-button class="mat-icon-button dialog-close-button" type="button" (click)="closeSelectCohort()">
+				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+			</button>
+			<div>
+				<div class="mat-display-1" *ngIf="mode === 'chooseDate' && userType === 'teacher'">Select a cohort to view specific details</div>
+				<div class="mat-display-1" *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When do you want to attend this {{collectionType}}?</div>
+				<div class="mat-display-1" *ngIf="mode === 'editDelete'">Existing {{collectionType}} cohorts</div>
+			</div>
+			<div *ngIf="mode === 'editDelete'" class="col-md-2 pull-left" style="padding-top:6px">
+				<button mat-raised-button class="mat-raised-button" (click)="closeSelectCohort()" color="primary">Done</button>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="row" *ngIf="filteredItineraries.length === 0">
+		<div class="col-md-12 margin-top-60 margin-left-40">
+			<mat-icon style="position: relative; top: 5px;">info</mat-icon>
+			There are no upcoming cohorts for this {{collectionType}}.
+		</div>
+	</div>
+	<p-accordion *ngIf="filteredItineraries.length > 0" (onOpen)="onTabOpen($event)" (onClose)="onTabClose($event)">
+		<p-accordionTab *ngFor="let itenaryObj of filteredItineraries; let i=index" tabindex="-1">
+			<p-header>
+				<div>
+					<div class="row">
+						<div class="col-md-7">
+							<div class="col-md-12">
+								<div class="margin-top-20 margin-bottom-20">
+									<span [ngClass]="{'mat-body-2': true, 'deleteText': itenaryObj.calendar.status === 'cancelled' }">
+										{{itenaryObj.calendar.startDate | date:'EEE, MMM d'}} to {{itenaryObj.calendar.endDate | date:'EEE, MMM d'}}
+									</span>
+									<br>
+									<span [ngClass]="{'mat-caption': true, 'deleteText': itenaryObj.calendar.status === 'cancelled' }">
+										{{itenaryObj.participantCount}} participants
+									</span>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<h5 *ngIf="i!==selectedIndex">
+									<b>View Schedule</b>
+								</h5>
+								<h5 *ngIf="i===selectedIndex">
+									<b>Hide Schedule</b>
+								</h5>
+							</div>
+						</div>
+						<div class="col-md-5">
+							<br>
+							<br>
+							<div class="col-md-12">
+								<button *ngIf="mode === 'chooseDate' && userId !== undefined && userId.length > 5" mat-button (click)="selectCohort(itenaryObj.calendar.id)" class="pb-block mat-border-button" [disabled]="(this.data.maxSeats - itenaryObj.participantCount <= 0 || accountApproved === 'false')" matTooltip="Please wait for your account to be approved before signing up." [matTooltipDisabled]="accountApproved === 'true'">
+									<div>Select this cohort</div>
+									<div class="mat-h5 lightText">{{this.data.maxSeats - itenaryObj.participantCount}} seats remaining</div>
+								</button>
+								<button *ngIf="mode === 'chooseDate' && (userId === undefined || userId.length <= 5)" mat-button (click)="selectCohort(itenaryObj.calendar.id)" class="pb-block mat-border-button" matTooltip="Sign up to join for this cohort.">
+									<div>Sign up</div>
+									<div class="mat-h5 lightText">{{this.data.maxSeats - itenaryObj.participantCount}} seats remaining</div>
+								</button>
+								<span matTooltip="This cohort has a participant, so it cannot be deleted." [matTooltipDisabled]="itenaryObj.participantCount <= 0">
+									<button type="button" *ngIf="mode === 'editDelete'" mat-button color="warn" (click)="deleteCohort($event, itenaryObj.calendar.id)"
+									        [disabled]="itenaryObj.participantCount > 0" class="pb-block mat-border-button">Delete this cohort</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</p-header>
+			<div class="accordianContent">
+				<div class="row">
+					<div class="col-md-12" *ngFor="let itenary of itenaryObj.itenary">
+						<div class="col-md-12 mat-body-2" style="margin: 10px 0px 3px 0px;">
+							{{itenary.startDate | date:'EE, MMM d'}}
+						</div>
+						<div class="col-md-12" *ngFor="let content of itenary.contents">
+							<div *ngIf="content.type === 'online' || content.type === 'in-person'" style="margin: 3px 0px 10px 0px;">
+								<div class="mat-caption lightText">
+									{{content.type | ucwords}} activity
+								</div>
+								<div>
+								   {{ content.title | titlecase}}
+								</div>
+								<div class="mat-caption">
+									{{content.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.schedules[content.schedules.length-1].endTime | extractTime:'h:mm a'}}
+								</div>
+							</div>
+							<div *ngIf="content.type === 'project'" style="margin: 3px 0px 10px 0px;">
+								<div class="mat-caption lightText">
+									{{content.type | ucwords}} activity
+								</div>
+								<div>
+								   {{ content.title | titlecase}}
+								</div>
+								<div class="mat-caption">
+									Entries open until {{calculateDate(itenary.startDate, content.schedules[content.schedules.length-1].endDay) | extractTime:'Do MMM'}}
+								</div>
+							</div>
+							<div *ngIf="content.type === 'video'" style="margin: 3px 0px 10px 0px;">
+								<div class="mat-caption lightText">
+									{{content.type | ucwords}} activity
+								</div>
+							    <div>
+								   {{ content.title | titlecase}}
+							    </div>
+								<div class="mat-caption">
+									Available all day
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</p-accordionTab>
+	</p-accordion>
+</div>

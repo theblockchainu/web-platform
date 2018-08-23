@@ -1,0 +1,39 @@
+<div mat-dialog-content class="dialog-container">
+	<div class="row">
+		<div class="col-md-12">
+			<button disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+			</button>
+			<div class="mat-display-1" style="margin-bottom: 30px;">Share {{data.type | titlecase}}</div>
+			<div class="lightText mat-caption">How would you like to share this {{data.type}}? Select from amongst the multiple options.</div>
+		</div>
+	</div>
+	<hr>
+	<div class="row margin-top-40 margin-bottom-40">
+		<div class="col-md-12 share_buttons">
+			<button color="secondary" [ngxClipboard]="urlInput" (cbOnSuccess)="onCopySuccess()" mat-fab>
+				<mat-icon>content_copy</mat-icon>
+			</button>
+			<button color="secondary" (click)="onEmailClicked()" mat-fab>
+				<i class="fa fa-envelope-o" aria-hidden="true"></i>
+			</button>
+			<button color="primary" (click)="onFBClicked()" mat-fab>
+				<i class="fa fa-facebook" aria-hidden="true"></i>
+			</button>
+			<a color="primary" href="{{tweetUrl}}" mat-fab>
+				<i class="fa fa-twitter" style="position: relative; top: 10px;" aria-hidden="true">
+				</i>
+			</a>
+			<button color="primary" (click)="onLinkedInClicked()" mat-fab>
+				<i class="fa fa-linkedin" aria-hidden="true"></i>
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<mat-form-field [floatLabel]="'always'"   class="pb-block" style="font-size: 20px;">
+				<input #urlInput matInput [readOnly]="true" value="{{generatedUrl}}" />
+			</mat-form-field>
+		</div>
+	</div>
+</div>

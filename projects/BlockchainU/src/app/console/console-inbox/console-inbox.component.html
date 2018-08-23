@@ -1,0 +1,133 @@
+<div class="loading-container" style="width:60%" [hidden]="!loadingMessages">
+	<ngx-loading [show]="true"></ngx-loading>
+</div>
+<div class="row border-box margin-top-20 margin-left-0 margin-right-0" *ngIf="!loadingMessages">
+	<div class="col-md-3 leftCol padding-left-0 padding-right-0 border-right">
+		<div class="headerChat col-md-12" style="padding-top:12px;padding-bottom:5px">
+            <span>
+				<span class="col-md-2" id="demo-2">
+					<i class="material-icons" style="line-height:35px;vertical-align:middle">search</i>
+					<input type="search" placeholder="" name="searchbox">
+				</span>
+				<mat-form-field [floatLabel]="'always'">
+					<mat-select class="col-md-8" style="margin-left:5px" [(value)]="selected" (ngModelChange)="getSelectedCollection()">
+						<mat-option value="all">All Messages ({{tempJoinedRooms.length}})</mat-option>
+						<mat-option value="experience">Experiences ({{experienceCollection.length}})</mat-option>
+						<mat-option value="peer">Peers ({{experienceCollection.length}})</mat-option>
+						<!--<mat-option value="class">Classes ({{classCollection.length}})</mat-option>-->
+					</mat-select>
+				</mat-form-field>
+            </span>
+		</div>
+		<div class="col-md-12" style="max-height: 66vh; min-height: 66vh; overflow-y: scroll;">
+			<!--List of Rooms shown as chats -->
+			<div *ngFor="let room of tempJoinedRooms;let i = index" (click)="enterRoom(room)">
+				<div class="row chatListItemContainer clickable" [ngClass]="{'backgroundColorGray': selectedRoom && room.id === selectedRoom.id}">
+					<div [ngClass]="{'col-md-12' : true, 'padding-left-0': true}">
+                        <div class="col-md-2 padding-right-0" *ngIf="room.collection && room.collection.length > 0" style="margin-left: 10px">
+                            <img src="{{ envVariable.apiUrl + room.collection[0].imageUrls + '/100'}}" alt=" " class="circle-thumb" (error)="_collectionService.imgErrorHandler($event)">
+                        </div>
+						<div class="col-md-2 padding-right-0" *ngIf="room.type === 'peer'"  style="margin-left: 10px">
+							<img src="{{ envVariable.apiUrl + room.participatingPeerImage + '/100'}}" alt=" " class="circle-thumb" (error)="_collectionService.userImgErrorHandler($event)">
+                        </div>
+						<div class="col-md-7 padding-left-10 padding-right-0 mat-body-2">
+                            <div>{{ room.name | ucwords | shorten: 18 : '...' }}</div>
+							<div *ngIf="room.messages && room.messages.length > 0" [ngClass]="{'mat-caption': true, 'lightText': room.messages[room.messages.length - 1].read, 'bold': !room.messages[room.messages.length - 1].read}">
+								{{room.messages[room.messages.length - 1].text | shorten: 19 : '...' | titlecase}}
+							</div>
+                        </div>
+						<div class="col-md-2 padding-left-0 padding-right-0 lightText pull-right" style="text-align: right">
+							<div class="mat-h6 margin-bottom-0" *ngIf="room.messages && room.messages.length > 0">{{ room.messages[room.messages.length - 1].leftColLatestMsgTime }}</div>
+							<!--<div class="clickable margin-top-10">
+								<a color="secondary" [matMenuTriggerFor]="showSettingsMenu" style="text-align: right; padding: 0px;">
+									<mat-icon style="color:grey;font-size:15px">settings</mat-icon>
+								</a>
+							</div>-->
+							<mat-chip-list class="pull-right" *ngIf="room.unread">
+								<mat-chip class="greenChip">{{room.unreadCount}}</mat-chip>
+							</mat-chip-list>
+						</div>
+						<mat-menu #showSettingsMenu>
+							<button mat-menu-item>
+								Mute
+							</button>
+							<button mat-menu-item>
+								Archive
+							</button>
+							<button mat-menu-item>
+								Delete
+							</button>
+							<button mat-menu-item>
+								Mark as unread
+							</button>
+							<button mat-menu-item>
+								Flag
+							</button>
+						</mat-menu>
+						<!--date-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-9 padding-left-0 padding-right-0">
+		<div *ngIf="selectedRoom">
+			<div>
+				<div [ngClass]="{'headerChat': true, 'center': true}" style="padding-top:5px;padding-bottom:10px">
+					<div class="mat-body-2 clickable" *ngIf="selectedRoom.type === 'group'" (click)="viewAllParticipants()">{{selectedRoom.participantTextHeader}} {{selectedRoom.participantTextHeaderSub}}</div>
+					<div class="mat-body-2" *ngIf="selectedRoom.type === 'peer'">{{selectedRoom.participantTextHeader}} {{selectedRoom.participantTextHeaderSub}}</div>
+					<div class="pull-right" style="position: relative; top: -10px; right: 20px; display: none;">
+						<a color="secondary" style="padding-top:10px;padding-right:10px">
+                            <mat-icon style="color:grey;font-size:20px">videocam</mat-icon>
+                        </a>
+                        <a color="secondary" style="padding-top:10px;">
+                            <mat-icon style="color:grey;font-size:20px">phone</mat-icon>
+                        </a>
+                    </div>
+					<div class="mat-caption clickable" *ngIf="selectedRoom.collection && selectedRoom.collection.length > 0" (click)="_collectionService.viewExperience(selectedRoom.collection[0])">View {{selectedRoom.collection[0].type | titlecase }}</div>
+					<div class="mat-caption" *ngIf="selectedRoom.type === 'peer'">Private Conversation</div>
+				</div>
+				<div class="center padding-top-20" #scrollMe *ngIf="selectedRoom.messages && selectedRoom.messages.length > 0" style="max-height: 54vh; min-height: 54vh; overflow-y: scroll;">
+					<div #messageContainer *ngFor="let message of selectedRoom.messages;let i=index" class="col-md-12">
+						<div style="width: fit-content; margin-left: auto; margin-right: auto;" class="mat-h6 lightText chatBoxTimeLabel margin-top-20" *ngIf="i==0">
+							{{message.createdAtLocal}}
+						</div>
+						<div style="width: fit-content; margin-left: auto; margin-right: auto;" class="mat-h6 lightText chatBoxTimeLabel margin-top-20" *ngIf="i > 0 && selectedRoom.messages[i].createdAtLocal && selectedRoom.messages[i].createdAtLocal !== selectedRoom.messages[i-1].createdAtLocal">
+							{{message.createdAtLocal}}
+						</div>
+						<div *ngIf="message.type==='system' || message.peer === undefined || message.peer.length === 0" class="center margin-top-10 mat-caption lightText">
+							<i class="fa fa-sign-in" aria-hidden="true" style="padding-right:10px"></i>{{message.text}}
+						</div>
+						<div *ngIf="message.type==='user' && message.peer !== undefined && message.peer.length !== 0" class="mat-caption">
+                            <div (click)="_profileService.viewProfile(message.peer[0])" [ngClass]="{'col-md-1': true, 'clickable': true, 'review-thumb': true, 'pull-left': message.peer && message.peer.length > 0 && message.peer[0].id !== userId, 'pull-right': message.peer && message.peer.length > 0 && message.peer[0].id === userId}">
+                                <img src="{{ envVariable.apiUrl + message.peer[0].profiles[0].picture_url + '/100'}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
+	                            <mat-icon *ngIf="selectedRoom.collection && selectedRoom.collection.length > 0 && message.peer && message.peer.length > 0 && message.peer[0].id === selectedRoom.collection[0].owners[0].id" class="teacherIndicator">radio_button_checked</mat-icon>
+                            </div>
+							<div class="talk-bubble tri-right left-top round margin-bottom-20" style="margin-top:3px">
+                                <div class="talktext">{{message.text}}</div>
+                            </div>
+						</div>
+					</div>
+				</div>
+				<div>
+					<div class="col-md-11 chatbox" style="margin-left: 30px">
+						<mat-form-field [floatLabel]="'never'" style="width:100%">
+							<textarea #chatInputBox matInput [(ngModel)]="message" rows="1" (keyup.enter)="postMsg($event, selectedRoom.id)" placeholder="Message @{{selectedRoom.name | ucwords}}"></textarea>
+						</mat-form-field>
+					</div>
+					<div class="pull-right margin-top-10 margin-bottom-10"> <!--Post Msgs-->
+						<span class="mat-h5 lightText" style="margin-right: 41px;">Press enter to quickly send your message</span>
+						<!--<button color="primary" mat-raised-button (click)="postMsg(selectedRoom.id)" style="margin-right:41px">Send Message</button>-->
+					</div>
+				</div>
+			</div>
+		</div>
+		<div *ngIf="!selectedRoom" class="noChatSelected">
+			Select a chat room to view its messages
+		</div>
+	</div>
+</div>
+
+<audio #messageNotification>
+	<source src='../../assets/audio/messageNotification.ogg' type="audio/ogg">
+</audio>

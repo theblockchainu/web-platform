@@ -1,0 +1,30 @@
+<div mat-dialog-content class="dialog-container">
+  <div class="row">
+    <div class="col-md-12 collectionContent">
+      <button disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+        <mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+      </button>
+      <div class="mat-display-1" style="margin-bottom: 20px;">
+        Project entries ({{data.content.submissions.length}})
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="margin-bottom-60">
+    <div class="row" *ngFor="let submission of data.content.submissions; let i=index;">
+      <div class="col-sm-3" *ngIf="data.userType !== 'public'" (click)="viewSubmission(submission.id)" style="cursor: pointer">
+        <img class="img-responsive" src="{{ submission.picture_url ? envVariable.apiUrl+submission.picture_url.split(',')[0] : noImage }}" alt="image" height="117" (error)="imgErrorHandler($event)" />
+        <div class="submission-title">{{ submission.name | ucfirst | shorten : 14 : '...' }}</div>
+        <div class="submission-owner" *ngIf="submission.peer && submission.peer.length>0">
+          <img class="circle-thumb" src="{{ submission.peer[0].profiles[0].picture_url ? envVariable.apiUrl+submission.peer[0].profiles[0].picture_url : defaultProfileUrl }}" alt="thumb" style="margin-left: 0px; width: 20px; height: 20px;" (error)="imgErrorHandler($event)" />
+          <span class="owner-name">{{ submission.peer[0].profiles[0].first_name }} {{ submission.peer[0].profiles[0].last_name }}</span>
+        </div>
+        <div class="submission-likes">
+          <i class="fa fa-thumbs-o-up"></i>
+          <span *ngIf="submission.upvotes !== undefined">{{submission.upvotes.length}}</span>
+          <span *ngIf="submission.upvotes === undefined">0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

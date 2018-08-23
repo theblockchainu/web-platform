@@ -1,0 +1,18 @@
+<div class="dialog-container" mat-dialog-content>
+  <div class="mat-display-1">{{data.type | titlecase}} Submitted for Review</div>
+  <div style="display:inline-block">
+    <div style="margin-top: 50px; margin-bottom: 40px;font-size:16px;">
+      Your {{data.type}} has been submitted for review.
+      <br>
+      <br> Our team will review your content and we will update you through email and SMS once your {{data.type}} is approved
+      and ready to go live on Peerbuds.
+      <br/>
+      <br/>
+      <span *ngIf="data.type === 'class'">You can set repeat {{data.type}}es once your {{data.type}} is approved.</span>
+      <span *ngIf="data.type !== 'class'">You can set repeat {{data.type}}s once your {{data.type}} is approved.</span>
+    </div>
+  </div>
+  <mat-dialog-actions class="col-md-offset-5 col-md-4">
+    <button mat-raised-button (click)="closeDialog()" color="primary">Dismiss</button>
+  </mat-dialog-actions>
+</div>

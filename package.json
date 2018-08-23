@@ -96,6 +96,9 @@
 	  "@types/jasminewd2": "^2.0.3"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "~0.7.0",
   
+    "@angular/compiler-cli": "^6.1.0",
+    "typescript": "~2.7.2"
   }
 }

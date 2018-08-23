@@ -1,0 +1,42 @@
+.arrow {
+    position: absolute;
+    width: 57px;
+    height: 26px;
+    cursor: pointer;
+}
+
+.arrow-left{
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+}
+.arrow-right {
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.text {
+    font-size: 17px;
+    font-style: italic;
+    font-weight: 400;
+    text-align: justify;
+    color: #979797;
+}
+
+.testimonial-image{
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+}
+
+.circle-thumb{
+    width: 64px;
+    height: 64px;
+}
+
+.carousel-component{
+    margin-top: 40px;    
+}

@@ -1,0 +1,150 @@
+<div class="row margin-top-30">
+	<div class="col-xs-12">
+		<div class="row">
+			<div class="col-xs-12">
+				<div style="display:inline;">
+					<h2>Accreditation Created</h2>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 margin-top-20">
+				<div *ngIf="!loadedCreatedAccreditations" class="loading-container">
+					<ngx-loading [show]="true"></ngx-loading>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12" *ngIf="loadedCreatedAccreditations">
+				<div #noContentView *ngIf=" !accreditationsCreatedArray || accreditationsCreatedArray.length === 0" style="margin-top: 5%;margin-bottom: 5%">
+					<div class="lightText">
+						You have not created any accreditation
+					</div>
+				</div>
+				<div *ngIf="accreditationsCreatedArray && accreditationsCreatedArray.length > 0">
+					<div class="row">
+						<div>
+							<div style="margin-top:20px;" class="col-md-12">
+								<div class="row">
+									<div *ngFor="let accreditation of accreditationsCreatedArray" class="col-md-4" style="margin-top: 20px;">
+										<ng-template #topicName>{{accreditation.topics[0].name | titlecase}}</ng-template>
+										<ng-template #noTopicText>No Topics</ng-template>
+										<mat-card class="upcoming-card">
+											<mat-card-content>
+												<div style="text-align: right">
+													<div class="pull-right">
+														<a mat-icon-button [matMenuTriggerFor]="ongoingCardMenu" style="text-align: right; padding: 0px">
+															<mat-icon>more_vert</mat-icon>
+														</a>
+													</div>
+												</div>
+												<div class="collectionParticipantImageCarousel">
+													<span *ngFor="let participant of accreditation.subscribedBy; let i=index">
+														<div *ngIf="i<7" class="image-inline">
+															<app-profile-popup style="margin-left: -15px;" [peer]="participant"></app-profile-popup>
+														</div>
+													</span>
+													<div class="image-inline" *ngIf="accreditation.subscribedBy.length === 0">
+														<img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+													</div>
+												</div>
+												<div class="accreditationTitle mat-body-2 clickable" [routerLink]="'/accreditation/'+accreditation.id">{{ accreditation.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+												<div class="accreditationTitle mat-body-3 clickable">{{ accreditation.description | shorten:30 :'...'}} </div>
+												<div class="participantCount">
+													<span>{{accreditation.subscribedBy.length}} Subscribers </span>
+												</div>
+												<div class="collectionSubtitle clickable">
+													<span *ngIf="accreditation.topics.length > 0; then topicName else noTopicText"></span>
+												</div>
+											</mat-card-content>
+											<mat-menu #ongoingCardMenu>
+												<button mat-menu-item (click)="cancelAccreditation(accreditation.id)">
+													Cancel
+												</button>
+											</mat-menu>
+										</mat-card>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<br>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div style="display:inline;">
+					<h2>Accreditation Subscribed</h2>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 margin-top-20">
+				<div *ngIf="!loadedSubscribedAccreditations" class="loading-container">
+					<ngx-loading [show]="true"></ngx-loading>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12" *ngIf="loadedSubscribedAccreditations">
+				<div #noContentView *ngIf="!accreditationsSubscribedArray || accreditationsSubscribedArray.length === 0" style="margin-top: 5%;margin-bottom: 5%">
+					<div class="lightText">
+						You have not subscribed to any accreditation
+					</div>
+				</div>
+				<div *ngIf="accreditationsSubscribedArray.length > 0">
+					<div class="row">
+						<div>
+							<div style="margin-top:20px;" class="col-md-12">
+								<div class="row">
+									<div *ngFor="let accreditation of accreditationsSubscribedArray" class="col-md-4" style="margin-top: 20px;">
+										<ng-template #topicName>{{accreditation.topics[0].name | titlecase}}</ng-template>
+										<ng-template #noTopicText>No Topics</ng-template>
+										<mat-card class="upcoming-card">
+											<mat-card-content>
+												<div style="text-align: right">
+													<div class="pull-right">
+														<a mat-icon-button [matMenuTriggerFor]="ongoingCardMenu" style="text-align: right; padding: 0px">
+															<mat-icon>more_vert</mat-icon>
+														</a>
+													</div>
+												</div>
+												<div class="collectionParticipantImageCarousel">
+													<span *ngFor="let participant of accreditation.subscribedBy; let i=index">
+														<div *ngIf="i<7" class="image-inline">
+															<app-profile-popup style="margin-left: -15px;" [peer]="participant"></app-profile-popup>
+														</div>
+													</span>
+													<div class="image-inline" *ngIf="accreditation.subscribedBy.length === 0">
+														<img src="/assets/images/user-placeholder.jpg" alt=" " class="circle-thumb" (error)="consoleTeachingComponent.imgErrorHandler($event)">
+													</div>
+												</div>
+												<div class="accreditationTitle mat-body-2 clickable" [routerLink]="'/accreditation/'+accreditation.id">{{ accreditation.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+												<div class="accreditationTitle mat-body-3 clickable">{{ accreditation.description | shorten:30 :'...'}} </div>
+												<div class="participantCount">
+													<span>{{accreditation.subscribedBy.length}} Subscribers </span>
+												</div>
+												<div class="collectionSubtitle clickable">
+													<span *ngIf="accreditation.topics.length > 0; then topicName else noTopicText"></span>
+												</div>
+											</mat-card-content>
+											<mat-menu #ongoingCardMenu>
+												<button mat-menu-item (click)="leaveAccreditation(accreditation.id)">
+													Cancel
+												</button>
+											</mat-menu>
+										</mat-card>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<br>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

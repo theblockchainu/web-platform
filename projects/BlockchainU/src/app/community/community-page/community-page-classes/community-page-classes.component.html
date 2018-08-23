@@ -1,0 +1,33 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="loading-container" [hidden]="!loadingClasses">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
+</div>
+<div class="row" *ngIf="!loadingClasses">
+	<div class="col-md-12">
+		<div class="row margin-top-20" *ngIf="userType !== 'public'">
+			<div class="col-md-12">
+				<div class="mat-body-2">Add your class</div>
+			</div>
+		</div>
+		<div class="row" *ngIf="userType !== 'public'">
+			<div class="col-md-11 col-xs-10">
+				<mat-form-field [floatLabel]="'never'" class="pb-block classSelector margin-top-20">
+					<mat-select #selectedClass placeholder="Select from your existing classes"  [disableRipple]="true">
+						<mat-option *ngFor="let class of ownedClasses" [value]="class.id">{{class.title | ucwords}}</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="col-md-1 col-xs-2" style="top: 42px;">
+				<mat-icon class="clickable" style="color: #33bd9e;" (click)="addClass(selectedClass.value)">check_circle</mat-icon>
+			</div>
+		</div>
+		<div class="row feed-horizontal margin-top-30 margin-bottom-40" style="padding: 0px 7px;">
+			<div *ngFor="let class of classes; let i =index">
+				<app-class-card [class]="class" (refresh)="onClassRefresh($event)" [cardsPerRow]="3"></app-class-card>
+			</div>
+		</div>
+	</div>
+</div>

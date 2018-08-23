@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <span class="mat-subheading-2">FAQs</span>
+      </div>
+    </div>
+
+    <div class="row carousel-component">
+      <div class="col-md-12">
+        <ngu-carousel [inputs]="carouselBanner">
+          <ngu-item NguCarouselItem class="bannerStyle" *ngFor="let testimonial of testimonialArray">
+            <div class="row">
+              <div class="col-md-10 col-md-offset-1">
+                <p class="author center">{{testimonial.title}}</p>
+              </div>
+	            <div class="col-md-10 col-md-offset-1">
+		            <p class="text text-center">"{{testimonial.review}}"</p>
+	            </div>
+            </div>
+          </ngu-item>
+          <img NguCarouselPrev src="/assets/images/images_landing/arrow-left.png" class="arrow arrow-left" />
+          <img NguCarouselNext src="/assets/images/images_landing/arrow-right.png" class="arrow arrow-right" />
+        </ngu-carousel>
+      </div>
+    </div>
+  </div>
+</div>
