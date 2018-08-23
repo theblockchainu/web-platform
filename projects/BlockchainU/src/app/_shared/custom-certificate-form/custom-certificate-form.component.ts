@@ -23,7 +23,7 @@ export class CustomCertificateFormComponent implements OnInit {
 	public fieldsArray: Array<FormGroup>;
 	public expandedPanelIndex: number;
 	public availableVariables: Array<VariableObject>;
-	public qrcode = '/assets/images/peerbuds-qr.png';
+	public qrcode = '/assets/images/blockchainu-qr.png';
 	public expiryDate: FormControl;
 	public today: Date;
 	public formData: any;
@@ -315,7 +315,7 @@ export class CustomCertificateFormComponent implements OnInit {
 				expiryDate: this.expiryDate.value
 			});
 			this.busySavingData = false;
-			this.qrcode = '/assets/images/peerbuds-qr.png';
+			this.qrcode = '/assets/images/blockchainu-qr.png';
 		});
 	}
 

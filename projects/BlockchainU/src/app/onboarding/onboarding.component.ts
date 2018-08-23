@@ -110,18 +110,18 @@ export class OnboardingComponent implements OnInit {
 	}
 
 	private setTags() {
-		this.titleService.setTitle('Welcome to peerbuds...');
+		this.titleService.setTitle('Welcome to The Blockchain University...');
 		this.metaService.updateTag({
 			property: 'og:title',
 			content: 'The Blockchain University Onboarding'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
-			content: 'peerbuds.com'
+			content: 'theblockchainu.com'
 		});
 		this.metaService.updateTag({
 			property: 'og:image',
-			content: 'https://peerbuds.com/pb_logo_square.png'
+			content: 'https://theblockchainu.com/bu_logo_square.png'
 		});
 		this.metaService.updateTag({
 			property: 'og:url',

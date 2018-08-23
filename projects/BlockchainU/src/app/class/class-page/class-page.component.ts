@@ -627,7 +627,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
-			content: 'peerbuds.com'
+			content: 'theblockchainu.com'
 		});
 		if (this.class.imageUrls) {
 			this.metaService.updateTag({

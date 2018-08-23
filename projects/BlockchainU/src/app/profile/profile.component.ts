@@ -400,7 +400,7 @@ export class ProfileComponent implements OnInit {
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
-			content: 'peerbuds.com'
+			content: 'theblockchainu.com'
 		});
 		this.metaService.updateTag({
 			property: 'og:image',

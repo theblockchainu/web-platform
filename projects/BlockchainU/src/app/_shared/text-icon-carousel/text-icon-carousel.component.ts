@@ -16,7 +16,7 @@ export class TextIconCarouselComponent implements OnInit {
 	ngOnInit() {
 		this.testimonialArray = [{
 			pic_url: '/assets/images/images_landing/testimonial1.png',
-			review: 'Your peerbuds account tracks everything you have ever learned in units called Gyan. Each Gyan represents the lowest level of learning possible in any particular subject. ',
+			review: 'Your Blockchain University account tracks everything you have ever learned in units called Gyan. Each Gyan represents the lowest level of learning possible in any particular subject. ',
 			title: 'WHAT IS GYAN?'
 		}, {
 			pic_url: '/assets/images/images_landing/testimonial2.png',

@@ -90,7 +90,7 @@ import {isPlatformBrowser} from '@angular/common';
 		PrivatebetaComponent
 	],
 	imports: [
-		BrowserModule.withServerTransition({ appId: 'peerbuds2.0' }),
+		BrowserModule.withServerTransition({ appId: 'BlockchainU' }),
 		AppRoutingModule,
 		TransferHttpCacheModule,
 		CoreModule,

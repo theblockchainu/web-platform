@@ -113,11 +113,11 @@ export class InviteComponent implements OnInit {
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
-			content: 'peerbuds.com'
+			content: 'theblockchainu.com'
 		});
 		this.metaService.updateTag({
 			property: 'og:image',
-			content: 'https://peerbuds.com/pb_logo_square.png'
+			content: 'https://theblockchainu.com/bu_logo_square.png'
 		});
 		this.metaService.updateTag({
 			property: 'og:url',

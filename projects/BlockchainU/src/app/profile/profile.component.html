@@ -125,7 +125,7 @@
 							<span *ngIf="profileObj.description.length >140 && profileObj.description.length <= maxLength" (click)="showAll(profileObj.description.length)"
 							 style="color:#33bd9e">show less</span>
 						</p>
-						<p *ngIf="!profileObj.description">Joined peerbuds on {{profileObj.createdAt | date:'dd MMM yyyy'}}
+						<p *ngIf="!profileObj.description">Joined Blockchain University on {{profileObj.createdAt | date:'dd MMM yyyy'}}
 							<a [routerLink]="['/','console','profile','edit']" *ngIf="cookieUserId === urluserId">. Add a description to your profile?</a>
 						</p>
 					</div>

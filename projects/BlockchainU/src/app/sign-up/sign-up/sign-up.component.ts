@@ -85,15 +85,15 @@ export class SignUpComponent implements OnInit {
 		this.titleService.setTitle('Sign-up | The Blockchain University');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Sign up for peerbuds.com'
+			content: 'Sign up for theblockchainu.com'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
-			content: 'peerbuds.com'
+			content: 'theblockchainu.com'
 		});
 		this.metaService.updateTag({
 			property: 'og:image',
-			content: 'https://peerbuds.com/pb_logo_square.png'
+			content: 'https://theblockchainu.com/bu_logo_square.png'
 		});
 		this.metaService.updateTag({
 			property: 'og:url',

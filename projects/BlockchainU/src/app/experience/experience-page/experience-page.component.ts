@@ -658,7 +658,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
-			content: 'peerbuds.com'
+			content: 'theblockchainu.com'
 		});
 		if (this.experience.imageUrls) {
 			this.metaService.updateTag({
@@ -1856,7 +1856,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				this.certificateHTML = res.certificateHTML;
 				this.certificateDomHTML.changes.subscribe(elem => {
 					const image = elem['first'].nativeElement.children[0].children[0].children[1].children[0];
-					image.src = '/assets/images/peerbuds-qr.png';
+					image.src = '/assets/images/theblockchainu-qr.png';
 				});
 			}
 			this.loadingCertificate = false;

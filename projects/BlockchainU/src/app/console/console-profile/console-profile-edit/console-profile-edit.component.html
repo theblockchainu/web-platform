@@ -76,7 +76,7 @@
 							<mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-20 margin-top-10">
 								<input matInput formControlName="email" type="email" placeholder="Email Address" required>
 								<mat-error>This field is required</mat-error>
-								<mat-hint align="start">We wonʼt share your private email address with other peerbuds users.</mat-hint>
+								<mat-hint align="start">We wonʼt share your private email address with other Blockchain University users.</mat-hint>
 								<!--Learn more.-->
 							</mat-form-field>
 							<div formArrayName="phone_numbers" class="margin-top-40">
@@ -105,7 +105,7 @@
 								<a [ngClass]="{'disabled': profileForm.controls['phone_numbers'].controls.length >= 2}" style="font-size: 12px" (click)="addPhoneControl()">+ Add Secondary Phone</a>
 							</div>
 							<mat-hint class="hint" align="start">
-								This is only shared once you have a confirmed booking with another peerbuds user. This is how we can all get in touch.
+								This is only shared once you have a confirmed booking with another Blockchain University user. This is how we can all get in touch.
 							</mat-hint>
 							<br>
 							<mat-form-field [floatLabel]="'always'" placeholder="never" class="pb-block margin-top-30 max-height-40">
@@ -144,7 +144,7 @@
 								<mat-error>This field is required</mat-error>
 								<mat-hint align="start" class="col-md-10 padding-left-0">The Blockchain University is built on relationships. Help other people get to know you. Tell them about the things you like: What
 									are 5 things you canʼt live without? Share your favorite travel destinations, books, movies, shows, music, food.
-									Tell them what itʼs like to have you as a learner or teacher: Whatʼs your style of learning? Of peerbuds teaching?
+									Tell them what itʼs like to have you as a learner or teacher: Whatʼs your style of learning? Of Blockchain University teaching?
 									Tell them about you: Do you have a life motto?</mat-hint>
 								<mat-hint class="hint" align="end">{{description.value.length}} / 2000</mat-hint>
 							</mat-form-field>
@@ -235,7 +235,7 @@
 								<app-generic-multiselect-autocomplete [list]="languages" [preSelectedItems]="profileForm.controls['other_languages'].value"
 								 (selectedOutput)="selected($event)" (removedOutput)="removed($event)"></app-generic-multiselect-autocomplete>
 							</div>
-							<mat-hint class="hint" align="start">Add any languages that others can use to speak with you on peerbuds.</mat-hint>
+							<mat-hint class="hint" align="start">Add any languages that others can use to speak with you on Blockchain University.</mat-hint>
 
 							<mat-form-field [floatLabel]="'always'" style="margin-bottom: 20px" class="pb-block margin-top-20" style="padding-top:0px;">
 								<input matInput formControlName="vat_number" type="text" placeholder="VAT Number">
