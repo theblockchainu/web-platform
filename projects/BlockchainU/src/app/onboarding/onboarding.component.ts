@@ -113,7 +113,7 @@ export class OnboardingComponent implements OnInit {
 		this.titleService.setTitle('Welcome to peerbuds...');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds Onboarding'
+			content: 'The Blockchain University Onboarding'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

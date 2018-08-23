@@ -29,7 +29,7 @@ export class WhitepaperComponent implements OnInit {
 		this.titleService.setTitle('White Paper');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds White Paper'
+			content: 'The Blockchain University White Paper'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

@@ -1609,7 +1609,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				object: {
 					'og:url': environment.clientUrl + this.router.url, // your url to share
 					'og:title': this.experience.title,
-					'og:site_name': 'Peerbuds',
+					'og:site_name': 'The Blockchain University',
 					'og:description': this.experience.description,
 					'og:image': environment.apiUrl + this.experience.imageUrls[0],
 					'og:image:width': '250',

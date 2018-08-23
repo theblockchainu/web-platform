@@ -129,7 +129,7 @@ export class SholarshipPageComponent implements OnInit {
 				object: {
 					'og:url': environment.clientUrl + this.router.url, // your url to share
 					'og:title': this.scholarship.title,
-					'og:site_name': 'Peerbuds',
+					'og:site_name': 'The Blockchain University',
 					'og:description': this.scholarship.description
 				}
 			})

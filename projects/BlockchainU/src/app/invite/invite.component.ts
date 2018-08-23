@@ -109,7 +109,7 @@ export class InviteComponent implements OnInit {
 		this.titleService.setTitle('Invite friends');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Build your Knowledge Story - Join Peerbuds!'
+			content: 'Build your Knowledge Story - Join The Blockchain University!'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

@@ -135,7 +135,7 @@ export class UploadDocsComponent implements OnInit {
 		this.titleService.setTitle('Verification');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds Verification'
+			content: 'The Blockchain University Verification'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

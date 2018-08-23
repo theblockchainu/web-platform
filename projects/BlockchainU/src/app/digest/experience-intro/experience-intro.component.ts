@@ -82,7 +82,7 @@ export class ExperienceIntroComponent implements OnInit {
 		this.titleService.setTitle('Experiencees');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds Experiencees'
+			content: 'The Blockchain University Experiencees'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

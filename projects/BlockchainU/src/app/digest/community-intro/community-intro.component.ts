@@ -24,7 +24,7 @@ export class CommunityIntroComponent implements OnInit {
 		this.titleService.setTitle('Communities');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds Communities'
+			content: 'The Blockchain University Communities'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

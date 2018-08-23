@@ -415,7 +415,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 				object: {
 					'og:url': environment.clientUrl + this.router.url, // your url to share
 					'og:title': this.community.title,
-					'og:site_name': 'Peerbuds',
+					'og:site_name': 'The Blockchain University',
 					'og:description': this.community.description,
 					'og:image': environment.apiUrl + this.community.imageUrls[0],
 					'og:image:width': '250',

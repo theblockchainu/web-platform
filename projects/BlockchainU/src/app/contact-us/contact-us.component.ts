@@ -57,7 +57,7 @@ export class ContactComponent implements OnInit {
 		this.titleService.setTitle('Contact Us');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds Contact Information'
+			content: 'The Blockchain University Contact Information'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

@@ -79,10 +79,10 @@ export class HomefeedComponent implements OnInit {
 	}
 
 	private setTags() {
-		this.titleService.setTitle('Peerbuds - Immersive & Incentivized Education');
+		this.titleService.setTitle('The Blockchain University - Immersive & Incentivized Education');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Explore Peerbuds'
+			content: 'Explore The Blockchain University'
 		});
 
 		this.metaService.updateTag({

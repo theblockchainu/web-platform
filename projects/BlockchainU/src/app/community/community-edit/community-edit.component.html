@@ -36,8 +36,8 @@
       <div class="onboarding step-1" [hidden]="step!=1">
         <div class="row">
           <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <h2 class="title">Peerbuds Community Guidelines</h2>
-            <p class="subtitle">We value the quality of content taught on Peerbuds platform and expect all community hosts to follow strict guidelines
+            <h2 class="title">The Blockchain University Community Guidelines</h2>
+            <p class="subtitle">We value the quality of content taught on The Blockchain University platform and expect all community hosts to follow strict guidelines
               towards their content.
             </p>
             <ol class="guideline-points text-grey">
@@ -460,16 +460,16 @@
                 <div style="margin-top:20px;">
                   <mat-checkbox value="val2" [(ngModel)]="selectedValues[1]">You agree to our terms and conditions.</mat-checkbox>
                 </div>
-                <span class="pull-right" matTooltip="You need to agree to Peerbuds community terms to submit this community for approval"
+                <span class="pull-right" matTooltip="You need to agree to The Blockchain University community terms to submit this community for approval"
                   [matTooltipDisabled]="selectedValues[0] && selectedValues[1]">
                   <button mat-raised-button color="accent" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
                     Submit for Review</button>
                 </span>
               </div>
               <div *ngIf="isSubmitted" style="margin-top: 70px;">
-                Your community has been submitted for review and is awaiting approval from Peerbuds team.
+                Your community has been submitted for review and is awaiting approval from The Blockchain University team.
                 <br>
-                <br> We maintain highest possible standards for all content shared on Peerbuds platform.
+                <br> We maintain highest possible standards for all content shared on The Blockchain University platform.
               </div>
             </div>
           </div>

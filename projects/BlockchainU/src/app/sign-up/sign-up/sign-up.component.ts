@@ -82,7 +82,7 @@ export class SignUpComponent implements OnInit {
 	}
 
 	private setTags() {
-		this.titleService.setTitle('Sign-up | Peerbuds');
+		this.titleService.setTitle('Sign-up | The Blockchain University');
 		this.metaService.updateTag({
 			property: 'og:title',
 			content: 'Sign up for peerbuds.com'

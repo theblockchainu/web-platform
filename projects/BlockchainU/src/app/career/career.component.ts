@@ -24,7 +24,7 @@ export class CareerComponent implements OnInit {
 		this.titleService.setTitle('Careers');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Careers at Peerbuds'
+			content: 'Careers at The Blockchain University'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

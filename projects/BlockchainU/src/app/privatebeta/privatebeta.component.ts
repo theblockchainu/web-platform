@@ -24,7 +24,7 @@ export class PrivatebetaComponent implements OnInit {
 		this.titleService.setTitle('Private Beta');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds Private Beta'
+			content: 'The Blockchain University Private Beta'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

@@ -24,7 +24,7 @@ export class AboutUsComponent implements OnInit {
 		this.titleService.setTitle('About Us');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'About Peerbuds'
+			content: 'About The Blockchain University'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

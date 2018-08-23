@@ -28,7 +28,7 @@ export class ShortreadComponent implements OnInit {
 		this.titleService.setTitle('Short Read');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds Short Read'
+			content: 'The Blockchain University Short Read'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

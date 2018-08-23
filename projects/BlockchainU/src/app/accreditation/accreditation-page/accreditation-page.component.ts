@@ -161,7 +161,7 @@ export class AccreditationPageComponent implements OnInit {
         object: {
           'og:url': environment.clientUrl + this.router.url, // your url to share
           'og:title': this.accreditation.title,
-          'og:site_name': 'Peerbuds',
+          'og:site_name': 'The Blockchain University',
           'og:description': this.accreditation.description
         }
       })

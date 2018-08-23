@@ -97,11 +97,11 @@ export class HomeComponent implements OnInit {
 		this.titleService.setTitle('Hello ' + username + '!');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Welcome to Peerbuds'
+			content: 'Welcome to The Blockchain University'
 		});
 		this.metaService.updateTag({
 			property: 'og:description',
-			content: 'Peerbuds is the world\'s first blockchain powered education platform focused around interactive and community based learning'
+			content: 'The Blockchain University is the world\'s first blockchain powered education platform focused around interactive and community based learning'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

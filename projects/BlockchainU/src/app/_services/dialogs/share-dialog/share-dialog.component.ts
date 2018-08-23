@@ -35,10 +35,10 @@ export class ShareDialogComponent implements OnInit {
 			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Knowledge Story&summary=See my knowledge story on ' + this.generatedUrl;
 		} else if (data.type === 'certificate') {
 			this.tweetUrl = 'https://twitter.com/intent/tweet?text=Take a look at my certificate for ' + this.data.title + '&url=' + this.generatedUrl;
-			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Take a look at my certificate for ' + this.data.title + '&source=Peerbuds';
+			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Take a look at my certificate for ' + this.data.title + '&source=TheBlockchainUniversity';
 		} else {
 			this.tweetUrl = 'https://twitter.com/intent/tweet?text=Join me for ' + this.data.title + '&url=' + this.generatedUrl;
-			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Join me for ' + this.data.title + '&summary=' + this.data.headline + '&source=Peerbuds';
+			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Join me for ' + this.data.title + '&summary=' + this.data.headline + '&source=TheBlockchainUniversity';
 		}
 	}
 
@@ -69,7 +69,7 @@ export class ShareDialogComponent implements OnInit {
 				object: {
 					'og:url': this.generatedUrl, // your url to share
 					'og:title': (this.data.type === 'story') ? 'Knowledge story of ' + this.data.title : 'Join me for ' + this.data.title,
-					'og:site_name': 'Peerbuds',
+					'og:site_name': 'The Blockchain University',
 					'og:image': this.data.image,
 					'og:description': (this.data.type === 'story') ? 'View my knowledge story at ' + this.generatedUrl : this.data.headline,
 				}

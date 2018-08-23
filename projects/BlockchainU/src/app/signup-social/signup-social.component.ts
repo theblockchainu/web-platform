@@ -75,7 +75,7 @@ export class SignupSocialComponent implements OnInit {
 		this.titleService.setTitle('Onboarding');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds Onboarding'
+			content: 'The Blockchain University Onboarding'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

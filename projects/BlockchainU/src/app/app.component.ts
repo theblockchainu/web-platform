@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.setTitle('Peerbuds - Immersive & Incentivized Education');
+		this.setTitle('The Blockchain University - Immersive & Incentivized Education');
 		this.loading = this._spinnerService.getSpinnerState();
 		this.router.events.subscribe((event: RouterEvent) => {
 			this.showHeader = true;

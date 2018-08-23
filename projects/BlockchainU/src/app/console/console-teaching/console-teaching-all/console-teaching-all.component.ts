@@ -269,7 +269,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
 		} else {
 			const body = {
 				type: 'session',
-				title: (this.profile) ? this.profile.first_name + ' ' + this.profile.last_name : 'Peerbuds User'
+				title: (this.profile) ? this.profile.first_name + ' ' + this.profile.last_name : 'The Blockchain University User'
 			};
 			this._collectionService.postCollectionWithData(this.userId, body).subscribe((sessionObject: any) => {
 				this.router.navigate(['session', sessionObject.id, 'edit', 1]);

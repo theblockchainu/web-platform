@@ -1495,7 +1495,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				object: {
 					'og:url': environment.clientUrl + this.router.url, // your url to share
 					'og:title': this.class.title,
-					'og:site_name': 'Peerbuds',
+					'og:site_name': 'The Blockchain University',
 					'og:description': this.class.description,
 					'og:image': environment.apiUrl + this.class.imageUrls[0],
 					'og:image:width': '250',

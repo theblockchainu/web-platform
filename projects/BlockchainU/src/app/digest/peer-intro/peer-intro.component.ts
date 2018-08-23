@@ -70,7 +70,7 @@ export class PeerIntroComponent implements OnInit {
 		this.titleService.setTitle('Sessions');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Peerbuds Sessions'
+			content: 'The Blockchain University Sessions'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
