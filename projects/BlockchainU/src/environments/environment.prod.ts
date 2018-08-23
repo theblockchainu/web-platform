@@ -8,7 +8,7 @@ export const environment = {
   apiUrl: 'https://theblockchainu.com:3000',
   searchUrl: 'https://theblockchainu.com:4000',
   clientUrl: 'https://theblockchainu.com',
-  one0xUrl: 'https://protocol.theblockchainu.com/v1',
+  one0xUrl: 'https://protocol.peerbuds.com/v1',
   uniqueDeveloperCode: 'dev',
   stripeClientId: 'ca_AlhagrA2ZiFcVY4JdezzWre4sjxAmat8',
   stripePublishableKey: 'pk_live_ENfRpF7KnjQPBrDxBxcDeoii',
