@@ -50,7 +50,7 @@ export class AuthenticationService {
 	login(email: string, password: string, rememberMe: boolean): any {
 		const body = `{"email":"${email}","password":"${password}","rememberMe":${rememberMe}}`;
 		return this.http
-			.post(environment.apiUrl + '/auth/blockchainu/local', body, this._requestHeaderService.options)
+			.post(environment.apiUrl + '/auth/local', body, this._requestHeaderService.options)
 			.pipe(
 				map((response: any) => {
 					console.log(response);

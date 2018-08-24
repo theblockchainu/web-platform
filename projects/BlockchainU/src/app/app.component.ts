@@ -49,18 +49,10 @@ export class AppComponent implements OnInit {
 			this.showFooter = true;
 			if (this.cookieService.isBrowser) {
 				this.navigationInterceptor(event);
-				this.triggerAnalytics(event);
 			}
 			this.modifyHeader(this.router.url);
 			this.modifyFooter(this.router.url);
 		});
-	}
-
-	public triggerAnalytics(event) {
-		if (event instanceof NavigationEnd) {
-			(<any>window).ga('set', 'page', event.urlAfterRedirects);
-			(<any>window).ga('send', 'pageview');
-		}
 	}
 
 	modifyFooter(url) {
