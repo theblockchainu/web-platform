@@ -110,7 +110,7 @@ export class CertificateVerificationComponent implements OnInit {
 		return new BehaviorSubject(this.hashData());
 	}
 
-	fethBlockchainHash() {
+	fetchBlockchainHash() {
 		return this.certificateService.getBlockchainHash(this.data.collection.id, this.data.recipient.ethAddress);
 	}
 
@@ -188,7 +188,7 @@ export class CertificateVerificationComponent implements OnInit {
 					} else {
 						formValidated = false;
 					}
-					return this.fethBlockchainHash();
+					return this.fetchBlockchainHash();
 				}), flatMap((res: any) => {
 					console.log('Fetch Hash processed');
 					this.verificationSteps[0].steps[2].processed = true;

@@ -212,7 +212,7 @@ export class InviteComponent implements OnInit {
 		if (hasIdentity) {
 			this.router.navigate(['invite', '2']);
 		} else {
-			location.href = environment.apiUrl + '/auth/blockchainu/facebook?returnTo=invite/2';
+			location.href = environment.apiUrl + '/auth/facebook?returnTo=invite/2';
 		}
 	}
 
@@ -226,7 +226,7 @@ export class InviteComponent implements OnInit {
 		if (hasIdentity) {
 			this.router.navigate(['invite', '2']);
 		} else {
-			location.href = environment.apiUrl + '/auth/blockchainu/linkedin?returnTo=invite/2';
+			location.href = environment.apiUrl + '/auth/linkedin?returnTo=invite/2';
 		}
 	}
 
