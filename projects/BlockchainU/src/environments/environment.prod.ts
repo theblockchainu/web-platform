@@ -5,7 +5,7 @@ export const environment = {
   production: true,
   hmr: false,
   host: 'theblockchainu.com',
-  apiUrl: 'https://theblockchainu.com:6000',
+  apiUrl: 'https://theblockchainu.com:3002',
   searchUrl: 'https://peerbuds.com:4000',
   clientUrl: 'https://theblockchainu.com',
   one0xUrl: 'https://one0x.com/v1',
