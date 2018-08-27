@@ -63,9 +63,6 @@ export class AppComponent implements OnInit {
 			|| /^\/class\/.*\/edit\/./.test(url)
 			|| /^\/experience\/.*\/edit\/./.test(url)
 			|| /^\/session\/.*\/edit\/./.test(url));
-		if (url === '/') {
-			this.showFooter = false;
-		}
 	}
 
 	modifyHeader(url) {
