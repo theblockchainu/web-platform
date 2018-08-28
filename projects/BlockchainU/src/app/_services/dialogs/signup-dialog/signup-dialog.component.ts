@@ -1,15 +1,16 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthenticationService } from '../../authentication/authentication.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProfileService } from '../../profile/profile.service';
-import { Meta, Title } from '@angular/platform-browser';
-import { environment } from '../../../../environments/environment';
-import { RequestHeaderService } from '../../requestHeader/request-header.service';
-import { SocialSharingService } from '../../social-sharing/social-sharing.service';
-import { SocketService } from '../../socket/socket.service';
-import { LoginComponentDialog } from '../login-dialog/login-dialog.component';
+import {MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog} from '@angular/material';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AuthenticationService} from '../../authentication/authentication.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ProfileService} from '../../profile/profile.service';
+import {Meta, Title} from '@angular/platform-browser';
+import {environment} from '../../../../environments/environment';
+import {RequestHeaderService} from '../../requestHeader/request-header.service';
+import {SocialSharingService} from '../../social-sharing/social-sharing.service';
+import {SocketService} from '../../socket/socket.service';
+import {LoginComponentDialog} from '../login-dialog/login-dialog.component';
+declare var fbq: any;
 @Component({
 	selector: 'app-signup-dialog',
 	templateUrl: './signup-dialog.component.html',
@@ -106,10 +107,22 @@ export class SignupComponentDialogComponent implements OnInit {
 					this._MatSnackBar.open(res.reason, 'Close', { duration: 5000 });
 					this.loading = false;
 				} else {
+					console.log('FB EVENTS: Complete Registration');
+					fbq('track', 'CompleteRegistration', {
+						currency: 'USD',
+						value: 1.0,
+						status: 'approved'
+					});
 					this.signIn();
 				}
 			}, err => {
 				console.log(err);
+				console.log('FB EVENTS: Complete Registration');
+				fbq('track', 'CompleteRegistration', {
+					currency: 'USD',
+					value: 1.0,
+					status: 'approved'
+				});
 				this.signIn();
 			});
 		} else {

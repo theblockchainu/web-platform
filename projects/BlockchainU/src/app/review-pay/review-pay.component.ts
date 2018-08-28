@@ -13,6 +13,7 @@ import { sha512 } from 'js-sha512';
 import { DialogsService } from '../_services/dialogs/dialog.service';
 import { MatSnackBar } from '@angular/material';
 declare var Stripe: any;
+declare var fbq: any;
 
 @Component({
     selector: 'app-review-pay',
@@ -145,6 +146,15 @@ export class ReviewPayComponent implements OnInit {
                     });
                 });
                 this.card.mount('#card-element');
+				// FB Event Trigger
+                fbq('track', 'InitiateCheckout', {
+					currency: 'USD',
+					value: 0.0,
+					content_type: 'product',
+					content_ids: [this.collectionId],
+					content_name: this.collection.title,
+					content_category: this.collection.type
+				});
             }
         });
         this.profileService.getPeer(this.userId).subscribe((peer: any) => {
@@ -263,6 +273,13 @@ export class ReviewPayComponent implements OnInit {
                         this.createSourceData.token = result.token.id;
                         this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: any) => {
                             if (res) {
+								// FB Event Trigger
+								fbq('track', 'AddPaymentInfo', {
+									currency: 'USD',
+									value: 0.0,
+									content_ids: [this.collectionId],
+									content_category: this.collection.type
+								});
                                 // console.log(JSON.stringify(res ));
                                 this.createChargeData.source = res.id;
                                 this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: any) => {
@@ -348,6 +365,15 @@ export class ReviewPayComponent implements OnInit {
     }
 
     public joinCollection() {
+		// FB Event Trigger
+		fbq('track', 'Purchase', {
+			currency: this.collection.currency,
+			value: this.totalPrice,
+			content_type: 'product',
+			content_ids: [this.collectionId],
+			content_name: this.collection.title,
+			content_category: this.collection.type
+		});
         this._collectionService.addParticipant(this.collectionId, this.userId, this.collectionCalendarId, this.selectedScholarship).subscribe((response: any) => {
             if (this.codefound && this.codefound.id.length > 5) {
                 this.profileService.linkPromoCode(this.userId, this.codefound.id).subscribe(
