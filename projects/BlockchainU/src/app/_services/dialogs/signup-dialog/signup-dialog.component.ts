@@ -10,6 +10,7 @@ import {RequestHeaderService} from '../../requestHeader/request-header.service';
 import {SocialSharingService} from '../../social-sharing/social-sharing.service';
 import {SocketService} from '../../socket/socket.service';
 import {LoginComponentDialog} from '../login-dialog/login-dialog.component';
+declare var fbq: any;
 @Component({
 	selector: 'app-signup-dialog',
 	templateUrl: './signup-dialog.component.html',
@@ -106,10 +107,22 @@ export class SignupComponentDialogComponent implements OnInit {
 					this._MatSnackBar.open(res.reason, 'Close', { duration: 5000 });
 					this.loading = false;
 				} else {
+					console.log('FB EVENTS: Complete Registration');
+					fbq('track', 'CompleteRegistration', {
+						currency: 'USD',
+						value: 1.0,
+						status: 'approved'
+					});
 					this.signIn();
 				}
 			}, err => {
 				console.log(err);
+				console.log('FB EVENTS: Complete Registration');
+				fbq('track', 'CompleteRegistration', {
+					currency: 'USD',
+					value: 1.0,
+					status: 'approved'
+				});
 				this.signIn();
 			});
 		} else {

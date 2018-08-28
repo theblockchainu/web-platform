@@ -165,7 +165,7 @@
             "assets": [
               "projects/BlockchainU/src/assets",
               "projects/BlockchainU/src/favicon.png",
-              "projects/BlockchainU/src/pb_logo_square.png",
+              "projects/BlockchainU/src/bu_logo_square.png",
               "projects/BlockchainU/src/sitemap.xml"
             ],
             "styles": [
