@@ -275,7 +275,9 @@ export class ReviewPayComponent implements OnInit {
                                         this.savingData = false;
                                     }
                                 }, (err: any) => {
-                                    this.message = 'Payment unsuccessful. Reason: ' + err.error.message;
+                                    console.log(err);
+                                    this.message = 'Payment unsuccessful. Reason: ' + err.error.error.message;
+                                    this.matSnackBar.open('Payment unsuccessful. Reason: ' + err.error.error.message, 'close', { duration: 5000 });
                                     this.savingData = false;
                                 });
                             } else {
@@ -284,16 +286,19 @@ export class ReviewPayComponent implements OnInit {
                             }
                         }, (error => {
                             console.log(error);
+                            this.matSnackBar.open('Error: ' + error.error.error.message, 'close', { duration: 5000 });
                             this.message = 'Error: ' + error.statusText;
                             this.savingData = false;
                         }));
                     } else {
                         console.log(result.error);
+                        this.matSnackBar.open('Error: ' + result.error.error.message, 'close', { duration: 5000 });
                         this.message = result.error;
                         this.savingData = false;
                     }
                 }).catch((error) => {
                     console.log(error);
+                    this.matSnackBar.open('Error: ' + error.error.error.message, 'close', { duration: 5000 });
                     this.message = error;
                     this.savingData = false;
                 });
