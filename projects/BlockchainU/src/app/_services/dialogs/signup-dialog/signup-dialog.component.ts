@@ -1,22 +1,22 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog} from '@angular/material';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthenticationService} from '../../authentication/authentication.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ProfileService} from '../../profile/profile.service';
-import {Meta, Title} from '@angular/platform-browser';
-import {environment} from '../../../../environments/environment';
-import {RequestHeaderService} from '../../requestHeader/request-header.service';
-import {SocialSharingService} from '../../social-sharing/social-sharing.service';
-import {SocketService} from '../../socket/socket.service';
-import {LoginComponentDialog} from '../login-dialog/login-dialog.component';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog } from '@angular/material';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthenticationService } from '../../authentication/authentication.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProfileService } from '../../profile/profile.service';
+import { Meta, Title } from '@angular/platform-browser';
+import { environment } from '../../../../environments/environment';
+import { RequestHeaderService } from '../../requestHeader/request-header.service';
+import { SocialSharingService } from '../../social-sharing/social-sharing.service';
+import { SocketService } from '../../socket/socket.service';
+import { LoginComponentDialog } from '../login-dialog/login-dialog.component';
 @Component({
 	selector: 'app-signup-dialog',
 	templateUrl: './signup-dialog.component.html',
 	styleUrls: ['./signup-dialog.component.scss']
 })
 export class SignupComponentDialogComponent implements OnInit {
-	
+
 	public startDate = new Date(1994, 0, 1);
 	public signupForm: FormGroup;
 	public hide = true;
@@ -26,7 +26,7 @@ export class SignupComponentDialogComponent implements OnInit {
 	public loading = false;
 	invite: any;
 	public invitor;
-	
+
 	constructor(
 		public dialogRef: MatDialogRef<SignupComponentDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -45,9 +45,9 @@ export class SignupComponentDialogComponent implements OnInit {
 	) {
 		this.envVariable = environment;
 	}
-	
+
 	ngOnInit() {
-		
+
 		this.signupForm = this._fb.group({
 			first_name: ['', Validators.required],
 			last_name: ['', Validators.required],
@@ -55,7 +55,7 @@ export class SignupComponentDialogComponent implements OnInit {
 			password: ['', Validators.required],
 			birthdate: [null]
 		});
-		
+
 		this.activatedRoute.params.subscribe(params => {
 			if (params['invitationId']) {
 				this.invitationId = params['invitationId'];
@@ -63,7 +63,7 @@ export class SignupComponentDialogComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	private getInvitee() {
 		const filter = {
 			'include': ['contacts', { 'peers': 'profiles' }]
@@ -82,11 +82,11 @@ export class SignupComponentDialogComponent implements OnInit {
 			});
 		});
 	}
-	
+
 	signupEmail() {
 		this.emailRegister = true;
 	}
-	
+
 	submitForm() {
 		this.loading = true;
 		console.log(this.signupForm);
@@ -100,7 +100,7 @@ export class SignupComponentDialogComponent implements OnInit {
 				registerObject.dobYear = birthdate.getFullYear();
 				console.log(registerObject);
 			}
-			
+
 			this._AuthenticationService.signup(registerObject).subscribe((res: any) => {
 				if (res.status === 'failed') {
 					this._MatSnackBar.open(res.reason, 'Close', { duration: 5000 });
@@ -116,7 +116,7 @@ export class SignupComponentDialogComponent implements OnInit {
 			this.loading = false;
 		}
 	}
-	
+
 	signIn() {
 		const userId = this._AuthenticationService.getCookie('userId');
 		if (userId.length > 5) {
@@ -131,16 +131,16 @@ export class SignupComponentDialogComponent implements OnInit {
 			this._MatSnackBar.open('An error occurred', 'close', { duration: 3000 });
 		}
 	}
-	
+
 	public openLogin() {
 		this.dialog.open(LoginComponentDialog, {
 			panelClass: 'responsive-dialog'
 		});
 		this.dialogRef.close();
 	}
-	
+
 	public back() {
 		this.emailRegister = false;
 	}
-	
+
 }

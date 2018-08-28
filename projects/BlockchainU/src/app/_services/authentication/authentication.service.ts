@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { SocketService } from '../socket/socket.service';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, take } from 'rxjs/operators';
 
 @Injectable()
@@ -138,7 +138,11 @@ export class AuthenticationService {
 	 * signup
 	 */
 	public signup(body: any) {
-		return this.http.post(environment.apiUrl + '/signup', body, this._requestHeaderService.options);
+		const enco = new HttpHeaders()
+			.set('Content-Type', 'application/json');
+		return this.http.post(environment.apiUrl + '/signup', body, {
+			headers: enco, withCredentials: true
+		});
 	}
 
 }
