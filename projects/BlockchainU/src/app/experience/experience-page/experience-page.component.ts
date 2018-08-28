@@ -147,6 +147,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public result;
 	public lat;
 	public lng;
+	public mainLocation;
 
 	public comments: Array<any>;
 	private today = moment();
@@ -555,6 +556,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 							&& contentObj.locations[0].map_lng !== undefined) {
 							this.lat = parseFloat(contentObj.locations[0].map_lat);
 							this.lng = parseFloat(contentObj.locations[0].map_lng);
+							this.mainLocation = contentObj.locations[0].location_name + ', ' + contentObj.locations[0].street_address + ', ' + contentObj.locations[0].city;
 						}
 					});
 					// Scan through all the start-day-groups of contents

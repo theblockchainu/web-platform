@@ -37,11 +37,11 @@
 }
 .invert-google{
 	padding: 4px 20px;
-	background-color: #dd4a38;
+    color: #3c3b3b !important;
 }
+
 .invert-google:hover, .invert-google:active {
-	background-color: #ffffff;
-	color: #dd4a38;
+    background-color: #b9b9b9;
 }
 .circle-icon1 {
 	padding:4px 7px 4px 7px;
@@ -59,3 +59,9 @@
 	width: 100%;
 }
 
+.google-logo{
+    width: 20px;
+    top: -4px;
+    position: relative;
+    left: -7px;
+}

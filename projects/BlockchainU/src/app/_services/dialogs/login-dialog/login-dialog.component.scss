@@ -76,12 +76,13 @@
 }
 .invert-google{
 	padding: 4px 20px;
-    background-color: #dd4a38;
+    color: #3c3b3b;
 }
+
 .invert-google:hover, .invert-google:active {
-    background-color: #ffffff;
-    color: #dd4a38;
+    background-color: #b9b9b9;
 }
+
 .alert{
     text-align: left;
     color: #ff0000;
@@ -90,6 +91,13 @@
 .dialog-container {
 	padding: 20px 50px !important;
 	min-width: 390px;
+}
+
+.google-logo{
+    width: 20px;
+    top: -4px;
+    position: relative;
+    left: -7px;
 }
 
 /* Extra small devices (phones, 600px and down) */
