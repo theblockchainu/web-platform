@@ -9,7 +9,6 @@ import { environment } from '../../environments/environment';
 import { ScholarshipService } from '../_services/scholarship/scholarship.service';
 import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
-import { sha512 } from 'js-sha512';
 import { DialogsService } from '../_services/dialogs/dialog.service';
 import { MatSnackBar } from '@angular/material';
 declare var Stripe: any;

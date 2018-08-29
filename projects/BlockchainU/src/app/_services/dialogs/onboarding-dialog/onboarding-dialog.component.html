@@ -10,10 +10,11 @@
 								<img src="/assets/images/bu_white.png" alt="The Blockchain University-logo" style="width: 40px;">
 								<h1 class="mat-title title-explore text-center margin-top-20">Welcome to The Blockchain University</h1>
 								<div class="text-white margin-top-40">Teachers and students on The Blockchain University are real people with real knowledge. That's
-									why you'll have to confirm a few, quick details to activate your account.</div>
+									why you'll have to confirm a few, quick details to confirm your account.</div>
 								<div class="checkbox margin-top-50">
-									<button mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" (click)="continue(1)">Next
+									<button *ngIf="!userIdentities || userIdentities.length === 0" mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" (click)="continue(1)">Next
 										- 2 steps left</button>
+									<button *ngIf="userIdentities && userIdentities.length > 0" mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" (click)="continue(1)">Next - 3 steps left</button>
 								</div>
 							</div>
 						</div>
@@ -26,7 +27,7 @@
 				<div class="col-md-12 center">
 					<div class="verification-box drop-shadow">
 						<h2 class="headline">Set a password</h2>
-						<p class="description1 margin-bottom-10">This is so we can create a wallet on the one0x blockchain.</p>
+						<p class="description1 margin-bottom-10">This is so we can create a new crypto wallet for you</p>
 						<mat-form-field class="pb-block margin-top-20" [floatLabel]="'auto'">
 							<input type="password" matInput formControlName="password" placeholder="Password" />
 						</mat-form-field>
@@ -47,8 +48,8 @@
 					</div>
 				</div>
 				<div class="col-sm-12 center margin-top-20">
-					<a class="mat-h5" href="javascript:void(0)" (click)="skipOnboarding()">
-						I'll do this later
+					<a class="mat-h5" href="javascript:void(0)">
+						This step is mandatory
 					</a>
 				</div>
 			</form>
