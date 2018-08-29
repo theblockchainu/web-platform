@@ -1,5 +1,5 @@
 import { BrowserModule, Meta, Title } from '@angular/platform-browser';
-import {APP_ID, Inject, NgModule, PLATFORM_ID} from '@angular/core';
+import {APP_ID, ErrorHandler, Inject, NgModule, PLATFORM_ID} from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 import { GlobalErrorHandlerComponent } from './error-handler/globalerrorhandler';
@@ -47,7 +47,7 @@ import { TransferHttpCacheModule } from '@nguniversal/common';
 import {isPlatformBrowser} from '@angular/common';
 
 
-/*Raven
+Raven
 	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
 	.install();
 
@@ -59,7 +59,7 @@ export class RavenErrorHandler implements ErrorHandler {
 	handleError(err: any): void {
 		Raven.captureException(err);
 	}
-}*/
+}
 
 
 @NgModule({
@@ -124,10 +124,10 @@ export class RavenErrorHandler implements ErrorHandler {
 	providers: [
 		CookieService,
 		UcWordsPipe,
-		/*{
+		{
 		 	provide: ErrorHandler,
 		 	useClass: RavenErrorHandler
-		},*/
+		},
 		Title,
 		Meta
 	],

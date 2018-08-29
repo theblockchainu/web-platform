@@ -288,8 +288,8 @@ export class ReviewPayComponent implements OnInit {
             const email = this.student.email;
             const subject = 'New Pay at Venue request received for ' + this.collection.title;
             let studentPhoneNumber = 'Not available';
-            if (this.student.phone_numbers && this.student.phone_numbers.length > 0) {
-            	studentPhoneNumber = this.student.phone_numbers[0].country_code + this.student.phone_numbers[0].subscriber_number;
+            if (this.student.profiles[0].phone_numbers && this.student.profiles[0].phone_numbers.length > 0) {
+            	studentPhoneNumber = this.student.profiles[0].phone_numbers[0].country_code + this.student.profiles[0].phone_numbers[0].subscriber_number;
 			}
             const message =
                 `
