@@ -51,10 +51,16 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div *ngIf="!loadingCountry" [hidden]="true" class="margin-top-20 margin-bottom-40">
-		                <button mat-button mat-raised-button (click)="initiatePayuPayment()">Proceed with payment</button>
-                    </div> -->
-                    <div *ngIf="!loadingCountry" [hidden]="collection.price===0">
+	                <div class="row">
+		                <div class="col-md-12 mat-h3">
+			                Pay Now
+		                </div>
+	                </div>
+	                <!--Load CC Avenue Iframe-->
+	                <div *ngIf="!loadingCountry && ccavenueReady" [hidden]="userCountry !== 'IN' || payAtVenue === true" class="margin-top-20 margin-bottom-10" [innerHTML]="ccavenueIframe">
+                    </div>
+	                <!--Load Stripe Payment Form-->
+                    <div *ngIf="!loadingCountry" [hidden]="collection.price===0 || userCountry === 'IN'">
                         <div class="margin-bottom-50" *ngIf="isCardExist">
                             <h3>Select payment method</h3>
                             <div class="row margin-top-50">
@@ -86,13 +92,6 @@
                                         another card</mat-checkbox>
                                 </div>
                             </div>
-                            <div *ngIf="collection.type==='experience'" class="row margin-top-20">
-                                <div class="col-sm-6">
-                                    <mat-checkbox [(ngModel)]="payAtVenue" [ngModelOptions]="{standalone: true}">Or Pay at
-                                        Venue
-                                    </mat-checkbox>
-                                </div>
-                            </div>
                         </div>
                         <div>
                             <div class="margin-bottom-50" [hidden]="(payAtVenue || isCardExist) && !useAnotherCard">
@@ -118,45 +117,55 @@
                             </div>
                         </div>
                     </div>
-                    <div class="terms-text">
-                        <div class="terms-title">Terms of Service</div>
-                        <p class="text-grey fs-15">By confirming this reservation you are agreeing to The Blockchain University
-                            additional Terms of Service, Student Release and Waiver, and the Cancellation Policy.</p>
-                    </div>
-                    <div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards || listAllCards.length < 0 ||  useAnotherCard">
-                        <i class="fa fa-lock"></i> Your payment information is secured by
-                        <a href="https://stripe.com">Stripe</a>
-                    </div>
-                    <div *ngIf="!loadingCountry">
+	                <div *ngIf="collection.type==='experience'" class="row margin-top-20 margin-bottom-40">
+		                <div class="col-sm-12">
+			                <mat-checkbox [(ngModel)]="payAtVenue" [ngModelOptions]="{standalone: true}">Or Pay at Venue
+			                </mat-checkbox>
+		                </div>
+		                <div class="col-sm-12 mat-caption margin-top-10">
+			                <ul>
+				                <li>
+					                You can sign-up and pay for this experience at the venue by paying using cash or your credit/debit card.
+				                </li>
+				                <li>
+					                Participation in this experience is subject to availability of seats on the first day of this experience.
+				                </li>
+			                </ul>
+		                </div>
+	                </div>
+                    <div *ngIf="!loadingCountry && (userCountry !== 'IN' || payAtVenue)">
                         <div *ngIf="collection.price && collection.price!==0">
-                            <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard"
+                            <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="(!listAllCards || listAllCards.length <= 0 || useAnotherCard) && !payAtVenue"
                                 [disabled]="savingData">{{totalPrice | convertCurrency: collection.currency
                                 |async}} - Confirm Payment
-                                <!--<img src="/assets/images/powered_by_stripe.svg" class="stripe-image"> -->
                             </button>
                             <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard && !payAtVenue"
                                 [disabled]="!cardDetails.id || savingData">{{totalPrice | convertCurrency:
                                 collection.currency |async}} - Confirm Payment
-                                <!--<img src="/assets/images/powered_by_stripe.svg" class="stripe-image">-->
                             </button>
-                            <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="payAtVenue">{{totalPrice
-                                | convertCurrency: collection.currency |async}} - Confirm to pay at venue </button>
+                            <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="payAtVenue" [disabled]="savingData">I confirm to pay {{totalPrice
+                                | convertCurrency: collection.currency |async}} at venue </button>
                         </div>
                         <button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center payButton" *ngIf="!collection.price || collection.price===0 ">FREE
                             - Join {{collection.type | ucwords}}</button>
                     </div>
+	                <div class="display-inline-block margin-top-10 margin-bottom-10" *ngIf="savingData">
+		                <img src="{{loader}}" alt="loading" style="width:16px;" /> Processing Payment
+	                </div>
+	                <hr>
+	                <div class="terms-text margin-top-30">
+		                <div class="terms-title">Terms of Service</div>
+		                <p class="text-grey fs-15">By confirming this reservation you are agreeing to The Blockchain University
+		                                           additional <a [routerLink]="'/terms-of-service'">Terms of Service</a> and the <a [routerLink]="'/policy'">Cancellation Policy</a>.</p>
+	                </div>
+	                <div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards || listAllCards.length < 0 ||  useAnotherCard">
+		                <i class="fa fa-lock"></i> Your payment information is secured by
+		                <a href="https://stripe.com">Stripe</a>
+	                </div>
                     <div class="terms-text margin-top-20" *ngIf="collection.academicGyan">
-                        <div class="terms-title">This {{collection.type}} is powered by one0x Blockchain.</div>
-                        <!--<p class="text-grey fs-15">
-							In order to earn knowledge credits and crypto-currency rewards from this {{collection.type}} you will need to burn {{karma
-							| currency: ' ': ' ': '1.0-0'}} KARMA.
-							<br> If you do not have enough KARMA balance, you can still participate without receiving any one0x
-							backed rewards.
-						</p>-->
+                        <div class="terms-title">Your participation in this {{collection.type}} is eligible for a <a href="https://one0x.com">one0x</a> backed Smart Certificate on the Blockchain.</div>
                     </div>
-                    <div class="display-inline-block margin-top-10" *ngIf="savingData">
-                        <img src="{{loader}}" alt="loading" style="width:16px;" /> Processing Payment
-                    </div>
+                    
                 </form>
             </div>
             <div class="col-sm-3 col-sm-offset-1">

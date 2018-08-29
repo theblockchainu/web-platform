@@ -8,7 +8,7 @@ import { CollectionService } from '../_services/collection/collection.service';
 import { environment } from '../../environments/environment';
 import { ScholarshipService } from '../_services/scholarship/scholarship.service';
 import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
-import { Meta, Title } from '@angular/platform-browser';
+import {DomSanitizer, Meta, Title} from '@angular/platform-browser';
 import { DialogsService } from '../_services/dialogs/dialog.service';
 import { MatSnackBar } from '@angular/material';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
@@ -65,6 +65,11 @@ export class ReviewPayComponent implements OnInit {
     public totalPrice: number;
     public codefound: any;
     public applyPromoCode = false;
+    public ccavenueReady = false;
+    public ccavenueMerchantId;
+    public ccavenueAccessCode;
+    public ccavenueEncRequest;
+    public ccavenueIframe;
 
     constructor(
         private _cookieUtilsService: CookieUtilsService,
@@ -79,7 +84,8 @@ export class ReviewPayComponent implements OnInit {
         private metaService: Meta,
         private _fb: FormBuilder,
         private matSnackBar: MatSnackBar,
-        private _authenticationService: AuthenticationService
+        private _authenticationService: AuthenticationService,
+		private sanitizer: DomSanitizer
     ) {
         this.envVariable = environment;
         this.activatedRoute.params.subscribe(params => {
@@ -87,6 +93,8 @@ export class ReviewPayComponent implements OnInit {
             this.collectionCalendarId = params['calendarId'];
         });
         this.userId = _cookieUtilsService.getValue('userId');
+        this.ccavenueAccessCode = environment.ccavenueAccessCode;
+        this.ccavenueMerchantId = environment.ccavenueMerchantId;
     }
 
     ngOnInit() {
@@ -128,6 +136,7 @@ export class ReviewPayComponent implements OnInit {
                 this.createChargeData.currency = collectionData.currency;
                 this.createChargeData.description = collectionData.description;
                 this.collection = collectionData;
+                this.getCCAvenueEncData();
                 this.getkarma(collectionData.academicGyan + collectionData.nonAcademicGyan);
                 this.setCurrentCalendar();
                 this.calculateTotalHours();
@@ -222,6 +231,29 @@ export class ReviewPayComponent implements OnInit {
             this.loadingCountry = false;
         });
     }
+    
+    private getCCAvenueEncData() {
+    	this.ccavenueReady = false;
+		// Get CC Avenue encrypted data if payment is being made in India
+		if (this.userCountry === 'IN') {
+			const body = {
+				merchant_id: this.ccavenueMerchantId,
+				order_id: this.collection.id,
+				currency: this.collection.currency,
+				amount: this.collection.price,
+				redirect_url: 'https://theblockchainu.com:3002/api/ccavenueResponse',
+				cancel_url: 'https://theblockchainu.com:3002/api/ccavenueResponse',
+				integration_type: 'iframe_normal',
+				language: 'en'
+			};
+			this.paymentService.getCCAvenueEncryptedRequest(body).subscribe(res => {
+				this.ccavenueEncRequest = res;
+				console.log('<iframe  width="482" height="500" scrolling="No" frameborder="0"  id="paymentFrame" src="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=' + this.ccavenueMerchantId + '&encRequest=' + this.ccavenueEncRequest + '&access_code=' + this.ccavenueAccessCode + '"></iframe>');
+				this.ccavenueIframe = this.sanitizer.bypassSecurityTrustHtml('<iframe  width="482" height="500" scrolling="No" frameborder="0"  id="paymentFrame" src="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=' + this.ccavenueMerchantId + '&encRequest=' + this.ccavenueEncRequest + '&access_code=' + this.ccavenueAccessCode + '"></iframe>');
+				this.ccavenueReady = true;
+			});
+		}
+	}
 
     private setTags() {
         this.titleService.setTitle('Review & Pay');
@@ -254,20 +286,22 @@ export class ReviewPayComponent implements OnInit {
             const first_name = this.student.profiles[0].first_name;
             const last_name = this.student.profiles[0].last_name;
             const email = this.student.email;
-            const subject = 'New Pay at venue request recieved for ' + this.collection.title;
+            const subject = 'New Pay at Venue request received for ' + this.collection.title;
+            let studentPhoneNumber = 'Not available';
+            if (this.student.phone_numbers && this.student.phone_numbers.length > 0) {
+            	studentPhoneNumber = this.student.phone_numbers[0].country_code + this.student.phone_numbers[0].subscriber_number;
+			}
             const message =
                 `
-                Hi,
-                A new request recieved for {{collection.title}} for the cohort starting at
-                {{ currentCalendar.startDate | date: 'EEE, MMM dd'}}.
-                You can respond via email at {{student.email}}  or via phone on {{student.phone_numbers[0].country_code + student.phone_numbers[0].subscriber_number}}.
-
-                Cheers,
-                Peerbuds Admin
+                Pay At Venue: Request received for joining ` + this.collection.title + ` starting on
+                ` + this.currentCalendar.startDate + `.
+                You can respond via email at ` + this.student.email + `  or via phone on: ` +  studentPhoneNumber + `.
             `;
             this._authenticationService.createGuestContacts(first_name, last_name, email, subject, message)
                 .subscribe(res => {
-                    this.matSnackBar.open('Thank you. We have recorded your request. We will get back to you shortly.', 'Close', { duration: 5000 });
+                    this.matSnackBar.open('Your request to pay at the venue has been received. We\'ll get back to you once it has been approved.', 'Close', { duration: 5000 });
+                    this.savingData = false;
+                    this.router.navigate([this.collection.type, this.collectionId]);
                 }, err => {
                     this.matSnackBar.open('Error in sending mail', 'Close', { duration: 3000 });
                 });
