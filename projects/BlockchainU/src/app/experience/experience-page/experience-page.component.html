@@ -245,6 +245,9 @@
 										</h3>
 									</div>
 									<div class="col-xs-8 margin-top-8">
+										<div *ngIf="mainLocation !== undefined" class="margin-bottom-20">
+											{{mainLocation}}
+										</div>
 										<agm-map *ngIf="lat !== undefined && lng !== undefined" [latitude]="lat" [longitude]="lng" [mapDraggable]="false" [scrollwheel]="false"
 										 [usePanning]="true" [zoomControl]="false" [zoom]="14" [streetViewControl]="false">
 											<agm-circle [latitude]="lat" [longitude]="lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'" [strokeOpacity]="0.9"></agm-circle>

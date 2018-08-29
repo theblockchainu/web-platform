@@ -44,6 +44,7 @@ import { AssessmentService } from '../../_services/assessment/assessment.service
 import { UcWordsPipe } from 'ngx-pipes';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 declare var FB: any;
+declare var fbq: any;
 
 const colors: any = {
 	red: {
@@ -146,6 +147,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public result;
 	public lat;
 	public lng;
+	public mainLocation;
 
 	public comments: Array<any>;
 	private today = moment();
@@ -522,6 +524,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 					this.inviteLink = environment.clientUrl + '/experience/' + this.experience.id;
 					this.setTags();
 					this.setCurrentCalendar();
+					fbq('track', 'ContentView', {
+						currency: 'USD',
+						value: 0.0,
+						content_type: 'product',
+						content_ids: [this.experienceId]
+					});
 					this.itenariesObj = {};
 					this.itenaryArray = [];
 					// Scan through all contents and group them under their respective start days.
@@ -548,6 +556,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 							&& contentObj.locations[0].map_lng !== undefined) {
 							this.lat = parseFloat(contentObj.locations[0].map_lat);
 							this.lng = parseFloat(contentObj.locations[0].map_lng);
+							this.mainLocation = contentObj.locations[0].location_name + ', ' + contentObj.locations[0].street_address + ', ' + contentObj.locations[0].city;
 						}
 					});
 					// Scan through all the start-day-groups of contents
@@ -639,6 +648,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value;
 		this._authenticationService.createGuestContacts(first_name, last_name, email, subject, message)
 			.subscribe(res => {
+				fbq('track', 'Lead', {
+					currency: 'USD',
+					value: 1.0,
+					content_name: this.experience.title,
+					content_category: this.experience.type
+				});
 				this.contactUsForm.reset();
 				this.snackBar.open('Thanks for your interest we will get back to you shortly', 'Close', { duration: 3000 });
 			}, err => {
@@ -669,6 +684,30 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.metaService.updateTag({
 			property: 'og:url',
 			content: environment.clientUrl + this.router.url
+		});
+		this.metaService.addTag({
+			property: 'product:brand',
+			content: 'The Blockchain U'
+		});
+		this.metaService.addTag({
+			property: 'product:availability',
+			content: 'in stock'
+		});
+		this.metaService.addTag({
+			property: 'product:condition',
+			content: 'new'
+		});
+		this.metaService.addTag({
+			property: 'product:price:amount',
+			content: this.experience.price
+		});
+		this.metaService.addTag({
+			property: 'product:price:currency',
+			content: this.experience.currency
+		});
+		this.metaService.addTag({
+			property: 'product:retailer_item_id',
+			content: this.experience.id
 		});
 	}
 
@@ -931,6 +970,15 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				if (err) {
 					console.log(err);
 				} else {
+					// FB Event Trigger
+					fbq('track', 'AddToWishlist', {
+						currency: 'USD',
+						value: 0.0,
+						content_ids: [this.experienceId],
+						content_name: this.experience.title,
+						content_category: this.experience.type,
+						content_type: 'product'
+					});
 					this.snackBar.open('Bookmarked', 'Close', {
 						duration: 5000
 					});

@@ -44,6 +44,7 @@ import { UcWordsPipe } from 'ngx-pipes';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 
 declare var FB: any;
+declare var fbq: any;
 
 const colors: any = {
 	red: {
@@ -517,6 +518,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					this.setCurrentCalendar();
 					this.itenariesObj = {};
 					this.itenaryArray = [];
+					fbq('track', 'ContentView', {
+						currency: 'USD',
+						value: 0.0,
+						content_type: 'product',
+						content_ids: [this.classId]
+					});
 					// Scan through all contents and group them under their respective start days.
 					// Also scan through all contents and check if the user has made submission for a project.
 					this.class.contents.forEach(contentObj => {
@@ -922,6 +929,15 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				if (err) {
 					console.log(err);
 				} else {
+					// FB Event Trigger
+					fbq('track', 'AddToWishlist', {
+						currency: 'USD',
+						value: 0.0,
+						content_ids: [this.classId],
+						content_name: this.class.title,
+						content_category: this.class.type,
+						content_type: 'product'
+					});
 					this.snackBar.open('Bookmarked', 'Close', {
 						duration: 5000
 					});
@@ -1780,6 +1796,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value;
 		this._authenticationService.createGuestContacts(first_name, last_name, email, subject, message)
 			.subscribe(res => {
+				fbq('track', 'Lead', {
+					currency: 'USD',
+					value: 1.0,
+					content_name: this.class.title,
+					content_category: this.class.type
+				});
 				this.contactUsForm.reset();
 				this.snackBar.open('Thanks for your interest we will get back to you shortly', 'Close', { duration: 3000 });
 			}, err => {
