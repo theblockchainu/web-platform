@@ -259,9 +259,9 @@ export class ReviewPayComponent implements OnInit {
             const message =
                 `
                 Hi,
-                A new request recieved for {{collection.title}} for the cohort starting at
-                {{ currentCalendar.startDate | date: 'EEE, MMM dd'}}.
-                You can respond via email at {{student.email}}  or via phone on {{student.phone_numbers[0].country_code + student.phone_numbers[0].subscriber_number}}.
+                A new request recieved for ` + this.collection.title + ` for the cohort starting at
+                ` + this.currentCalendar.startDate + `.
+                You can respond via email at ` + this.student.email + `  or via phone on ` + this.student.profiles[0].phone_numbers[0].country_code + this.student.profiles[0].phone_numbers[0].subscriber_number + `
 
                 Cheers,
                 Peerbuds Admin
@@ -269,6 +269,7 @@ export class ReviewPayComponent implements OnInit {
             this._authenticationService.createGuestContacts(first_name, last_name, email, subject, message)
                 .subscribe(res => {
                     this.matSnackBar.open('Thank you. We have recorded your request. We will get back to you shortly.', 'Close', { duration: 5000 });
+                    this.savingData = false;
                 }, err => {
                     this.matSnackBar.open('Error in sending mail', 'Close', { duration: 3000 });
                 });

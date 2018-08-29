@@ -43,6 +43,7 @@ import { SocketService } from '../../_services/socket/socket.service';
 import { AssessmentService } from '../../_services/assessment/assessment.service';
 import { UcWordsPipe } from 'ngx-pipes';
 import { CertificateService } from '../../_services/certificate/certificate.service';
+import { ProfileService } from '../../_services/profile/profile.service';
 declare var FB: any;
 declare var fbq: any;
 
@@ -227,7 +228,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		private metaService: Meta,
 		private _assessmentService: AssessmentService,
 		private ucwords: UcWordsPipe,
-		private certificateService: CertificateService
+		private certificateService: CertificateService,
+		private _profileService: ProfileService
 		// private location: Location
 	) {
 		this.envVariable = environment;
@@ -866,16 +868,35 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			collectionCalendarId: this.calendarId,
 		});
 
-		this.contactUsForm = this._fb.group(
-			{
-				first_name: ['', Validators.required],
-				last_name: ['', Validators.required],
-				email: ['', Validators.requiredTrue],
-				subject: [''],
-				message: ['', Validators.required],
-				phone: ['']
+		const filter = {
+			'include': [{ 'profiles': ['phone_numbers'] }]
+		};
+
+		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
+			if (res) {
+				this.contactUsForm = this._fb.group(
+					{
+						first_name: [res.profiles[0].first_name, Validators.required],
+						last_name: [res.profiles[0].last_name, Validators.required],
+						email: [res.email, Validators.requiredTrue],
+						subject: [''],
+						message: ['', Validators.required],
+						phone: [(res.profiles[0].phone_numbers[0]) ? res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '']
+					}
+				);
+			} else {
+				this.contactUsForm = this._fb.group(
+					{
+						first_name: ['', Validators.required],
+						last_name: ['', Validators.required],
+						email: ['', Validators.requiredTrue],
+						subject: [''],
+						message: ['', Validators.required],
+						phone: ['']
+					}
+				);
 			}
-		);
+		});
 	}
 
 	gotoEdit() {
@@ -1570,7 +1591,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						this.loggedInUser = responseObj;
 					}
 				}
-				if (isCurrentUserParticipant) {
+				if (isCurrentUserParticipant && currentUserParticipatingCalendar) {
 					this.router.navigate(['experience', this.experienceId, 'calendar', currentUserParticipatingCalendar]);
 				}
 				this.loadingParticipants = false;
