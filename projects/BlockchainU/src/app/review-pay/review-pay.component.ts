@@ -12,6 +12,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { sha512 } from 'js-sha512';
 import { DialogsService } from '../_services/dialogs/dialog.service';
 import { MatSnackBar } from '@angular/material';
+import { AuthenticationService } from '../_services/authentication/authentication.service';
 declare var Stripe: any;
 
 @Component({
@@ -48,6 +49,7 @@ export class ReviewPayComponent implements OnInit {
     public hourMapping:
         { [k: string]: string } = { '=0': 'Less than an hour', '=1': 'One hour', 'other': '# hours' };
     public useAnotherCard = false;
+    public payAtVenue = false;
     public loadingCards = true;
     karma: number;
     availableScholarships = [];
@@ -63,6 +65,7 @@ export class ReviewPayComponent implements OnInit {
     public totalPrice: number;
     public codefound: any;
     public applyPromoCode = false;
+
     constructor(
         private _cookieUtilsService: CookieUtilsService,
         private activatedRoute: ActivatedRoute,
@@ -75,7 +78,8 @@ export class ReviewPayComponent implements OnInit {
         private titleService: Title,
         private metaService: Meta,
         private _fb: FormBuilder,
-        private matSnackBar: MatSnackBar
+        private matSnackBar: MatSnackBar,
+        private _authenticationService: AuthenticationService
     ) {
         this.envVariable = environment;
         this.activatedRoute.params.subscribe(params => {
@@ -236,78 +240,103 @@ export class ReviewPayComponent implements OnInit {
         this.savingData = true;
         this.createChargeData.amount = this.totalPrice * 100;
         e.preventDefault();
-        if (this.collection.price > 0) {
-            if (this.isCardExist === true && !this.useAnotherCard) {
-                // console.log('card exist');
-                this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: any) => {
-                    if (resp) {
-                        this.message = 'Payment successful. Redirecting...';
-                        this.savingData = false;
-                        this.joinCollection();
-                    } else {
-                        this.message = 'Payment unsuccessful. Please try again using another card or wait a few minutes.';
-                        this.savingData = false;
-                    }
-                }, (err: any) => {
-                    this.message = 'Payment unsuccessful. Reason: ' + err.error.message;
-                    this.savingData = false;
+        if (this.payAtVenue) {
+
+            const first_name = this.student.profiles[0].first_name;
+            const last_name = this.student.profiles[0].last_name;
+            const email = this.student.email;
+            const subject = 'New Pay at venue request recieved for ' + this.collection.title;
+            const message =
+                `
+                Hi,
+                A new request recieved for {{collection.title}} for the cohort starting at
+                {{ currentCalendar.startDate | date: 'EEE, MMM dd'}}.
+                You can respond via email at {{student.email}}  or via phone on {{student.phone_numbers[0].country_code + student.phone_numbers[0].subscriber_number}}.
+
+                Cheers,
+                Peerbuds Admin
+            `;
+            this._authenticationService.createGuestContacts(first_name, last_name, email, subject, message)
+                .subscribe(res => {
+                    this.matSnackBar.open('Thank you. We have recorded your request. We will get back to you shortly.', 'Close', { duration: 5000 });
+                }, err => {
+                    this.matSnackBar.open('Error in sending mail', 'Close', { duration: 3000 });
                 });
-            } else {
-                const form = document.querySelector('form');
-                const extraDetails = {
-                    name: form.querySelector('input[name=cardholder-name]')['value'],
-                    phone: form.querySelector('input[name=cardholder-phone]')['value'],
-                };
-                this.stripe.createToken(this.card, extraDetails).then((result: any) => {
-                    if (result.token) {
-                        this.createSourceData.token = result.token.id;
-                        this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: any) => {
-                            if (res) {
-                                // console.log(JSON.stringify(res ));
-                                this.createChargeData.source = res.id;
-                                this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: any) => {
-                                    if (resp) {
-                                        this.message = 'Payment successful. Redirecting...';
-                                        this.savingData = false;
-                                        this.joinCollection();
-                                    } else {
-                                        this.message = 'Error occurred. Please try again.';
-                                        this.savingData = false;
-                                    }
-                                }, (err: any) => {
-                                    console.log(err);
-                                    this.message = 'Payment unsuccessful. Reason: ' + err.error.error.message;
-                                    this.matSnackBar.open('Payment unsuccessful. Reason: ' + err.error.error.message, 'close', { duration: 5000 });
-                                    this.savingData = false;
-                                });
-                            } else {
-                                this.message = 'Error occurred. Please try again.';
-                                this.savingData = false;
-                            }
-                        }, (error => {
-                            console.log(error);
-                            this.matSnackBar.open('Error: ' + error.error.error.message, 'close', { duration: 5000 });
-                            this.message = 'Error: ' + error.statusText;
-                            this.savingData = false;
-                        }));
-                    } else {
-                        console.log(result.error);
-                        this.matSnackBar.open('Error: ' + result.error.error.message, 'close', { duration: 5000 });
-                        this.message = result.error;
-                        this.savingData = false;
-                    }
-                }).catch((error) => {
-                    console.log(error);
-                    this.matSnackBar.open('Error: ' + error.error.error.message, 'close', { duration: 5000 });
-                    this.message = error;
-                    this.savingData = false;
-                });
-            }
         } else {
-            this.message = 'Signing up and redirecting...';
-            this.joinCollection();
-            this.savingData = false;
+            if (this.collection.price > 0) {
+                if (this.isCardExist === true && !this.useAnotherCard) {
+                    // console.log('card exist');
+                    this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: any) => {
+                        if (resp) {
+                            this.message = 'Payment successful. Redirecting...';
+                            this.savingData = false;
+                            this.joinCollection();
+                        } else {
+                            this.message = 'Payment unsuccessful. Please try again using another card or wait a few minutes.';
+                            this.savingData = false;
+                        }
+                    }, (err: any) => {
+                        this.message = 'Payment unsuccessful. Reason: ' + err.error.message;
+                        this.savingData = false;
+                    });
+                } else {
+                    const form = document.querySelector('form');
+                    const extraDetails = {
+                        name: form.querySelector('input[name=cardholder-name]')['value'],
+                        phone: form.querySelector('input[name=cardholder-phone]')['value'],
+                    };
+                    this.stripe.createToken(this.card, extraDetails).then((result: any) => {
+                        if (result.token) {
+                            this.createSourceData.token = result.token.id;
+                            this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: any) => {
+                                if (res) {
+                                    // console.log(JSON.stringify(res ));
+                                    this.createChargeData.source = res.id;
+                                    this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: any) => {
+                                        if (resp) {
+                                            this.message = 'Payment successful. Redirecting...';
+                                            this.savingData = false;
+                                            this.joinCollection();
+                                        } else {
+                                            this.message = 'Error occurred. Please try again.';
+                                            this.savingData = false;
+                                        }
+                                    }, (err: any) => {
+                                        console.log(err);
+                                        this.message = 'Payment unsuccessful. Reason: ' + err.error.error.message;
+                                        this.matSnackBar.open('Payment unsuccessful. Reason: ' + err.error.error.message, 'close', { duration: 5000 });
+                                        this.savingData = false;
+                                    });
+                                } else {
+                                    this.message = 'Error occurred. Please try again.';
+                                    this.savingData = false;
+                                }
+                            }, (error => {
+                                console.log(error);
+                                this.matSnackBar.open('Error: ' + error.error.error.message, 'close', { duration: 5000 });
+                                this.message = 'Error: ' + error.statusText;
+                                this.savingData = false;
+                            }));
+                        } else {
+                            console.log(result.error);
+                            this.matSnackBar.open('Error: ' + result.error.error.message, 'close', { duration: 5000 });
+                            this.message = result.error;
+                            this.savingData = false;
+                        }
+                    }).catch((error) => {
+                        console.log(error);
+                        this.matSnackBar.open('Error: ' + error.error.error.message, 'close', { duration: 5000 });
+                        this.message = error;
+                        this.savingData = false;
+                    });
+                }
+            } else {
+                this.message = 'Signing up and redirecting...';
+                this.joinCollection();
+                this.savingData = false;
+            }
         }
+
     }
 
     getcardDetails(event) {
