@@ -2,10 +2,10 @@
 <header>
 	<nav class="navbar navbar-expand-md navbar-dark">
 		<a class="navbar-brand" href="#">
-			<img src="/assets/images/bu_white.png" alt="blockchainu-logo">
+			<img src="/assets/images/BU logo_07.png" alt="blockchainu-logo">
 		</a>
 		<span class="example-spacer"></span>
-		<span class="options" style="position: relative; top: -15px;">
+		<span class="options">
 			<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerTeachMenu">
 				Become a teacher
 			</button>
@@ -40,8 +40,12 @@
 	<section class="home-banner">
 		<div class="dark-gray-overlay"></div>
 		<div class="container">
-			<div class="content">
-				<h1 style="line-height: 3.2rem;">Building the web 3.0 community through quality education for developers, entrepreneurs and enterprises</h1>
+			<div class="content center">
+				<h1 style="line-height: 3.2rem;">YOUR HOME FOR BLOCKCHAIN
+				</h1>
+				<h2>
+					The world’s leading blockchain developer community
+				</h2>
 				<!--<mat-form-field appearance="outline" color="accent" floatLabel="never" class="search-form search-home pb-block mat-elevation-z20">
 					<input #searchInputBar name="search" placeholder='Try "Blockchain or Hyperledger"' matInput [formControl]="myControl" [matAutocomplete]="auto">
 					<mat-autocomplete #auto="matAutocomplete">
@@ -75,24 +79,24 @@
 			<h2 class="section-title">Explore The Blockchain University</h2>
 			<div class="homefeedContainer">
 				<nav mat-tab-nav-bar disableRipple class="noJustify home">
-					<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive"
-					 matTooltip="Classes are a way to learn any subject completely online with videos, projects & live sessions.">
-						<img src="/assets/images/class_icon2.jpg" alt="logo" style="height: 100%;">
-						<h3 class="margin-left-10">Classes</h3>
-					</a>
 					<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
 					 matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
-						<img src="/assets/images/experiences_icon.jpeg" alt="logo" style="height: 100%;">
+						<img src="/assets/images/experience_thumb.jpg" alt="logo" style="height: 100%;">
 						<h3 class="margin-left-10">Experiences</h3>
 					</a>
 					<a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive"
 					 matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
-						<img src="/assets/images/communities_icon1.jpg" alt="logo" style="height: 100%;">
+						<img src="/assets/images/community_thumb.jpg" alt="logo" style="height: 100%;">
 						<h3>Communities</h3>
 					</a>
 					<a mat-tab-link [routerLink]="'/home/peers'" routerLinkActive #peerLink="routerLinkActive" [active]="peerLink.isActive" matTooltip="Peers are teachers around the world who can teach you something over a live video session.">
-						<img src="/assets/images/peers_icon1.jpg" alt="logo" style="height: 100%;">
+						<img src="/assets/images/peer_thumb.jpg" alt="logo" style="height: 100%;">
 						<h3 class="margin-left-10">Peers</h3>
+					</a>
+					<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive"
+					 matTooltip="Classes are a way to learn any subject completely online with videos, projects & live sessions.">
+						<img src="/assets/images/classes_thumb.jpg" alt="logo" style="height: 100%;">
+						<h3 class="margin-left-10">Classes</h3>
 					</a>
 				</nav>
 			</div>
@@ -101,14 +105,14 @@
 
 	<section class="introducing-experience spacing">
 		<div class="container">
-			<h2 class="section-title">Introducing Experiences </h2>
+			<h2 class="section-title">Introducing In-Person Experiences </h2>
 			<div class="gradient-banner">
 				<div class="hero-banner-bg">
 					<div class="gray-gradient-overlay"></div>
 					<div class="d-table">
 						<div class="d-table-cell align-middle">
 							<div class="content">
-								<h3>Educational excursions &amp; activities designed and led by local peers</h3>
+								<h3>Educational bootcamps, workshops &amp; hackathons designed and led by local experts.</h3>
 								<div class="action-btn">
 									<a [routerLink]="'/home/experiences'">Explore Experiences</a>
 								</div>
@@ -359,8 +363,8 @@
 								<span>Explore Now</span>
 							</p>
 							<h3 class="title">Corda Classes</h3>
-							<p>From beginner classes for Corda enthusiasts to advanced programs for senior developers, from software engineers to company
-								executives, everything you need to learn about the decentralized technology</p>
+							<p>From beginner classes for Corda enthusiasts to advanced programs for senior developers, from software engineers
+								to company executives, everything you need to learn about the decentralized technology</p>
 						</div>
 					</div>
 				</div>
