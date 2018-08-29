@@ -240,7 +240,7 @@ export class ReviewPayComponent implements OnInit {
 				merchant_id: this.ccavenueMerchantId,
 				order_id: this.collection.id,
 				currency: this.collection.currency,
-				amount: this.collection.price,
+				amount: '' + parseFloat(this.collection.price),
 				redirect_url: 'https://theblockchainu.com:3002/api/ccavenueResponse',
 				cancel_url: 'https://theblockchainu.com:3002/api/ccavenueResponse',
 				integration_type: 'iframe_normal',
@@ -248,8 +248,8 @@ export class ReviewPayComponent implements OnInit {
 			};
 			this.paymentService.getCCAvenueEncryptedRequest(body).subscribe(res => {
 				this.ccavenueEncRequest = res;
-				console.log('<iframe  width="482" height="500" scrolling="No" frameborder="0"  id="paymentFrame" src="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=' + this.ccavenueMerchantId + '&encRequest=' + this.ccavenueEncRequest + '&access_code=' + this.ccavenueAccessCode + '"></iframe>');
-				this.ccavenueIframe = this.sanitizer.bypassSecurityTrustHtml('<iframe  width="482" height="500" scrolling="No" frameborder="0"  id="paymentFrame" src="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=' + this.ccavenueMerchantId + '&encRequest=' + this.ccavenueEncRequest + '&access_code=' + this.ccavenueAccessCode + '"></iframe>');
+				console.log(this.ccavenueEncRequest);
+				this.ccavenueIframe = this.sanitizer.bypassSecurityTrustHtml(this.ccavenueEncRequest);
 				this.ccavenueReady = true;
 			});
 		}
