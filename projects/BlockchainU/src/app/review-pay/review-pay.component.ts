@@ -223,7 +223,7 @@ export class ReviewPayComponent implements OnInit {
     private getUserCountry() {
         this.loadingCountry = true;
         this.paymentService.getUserCountry().subscribe(res => {
-            this.userCountry = res['countryCode'];
+            this.userCountry = res['country'];
             console.log(this.userCountry);
             this.loadingCountry = false;
         }, err => {

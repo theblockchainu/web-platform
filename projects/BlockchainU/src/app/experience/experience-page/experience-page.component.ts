@@ -871,6 +871,17 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		const filter = {
 			'include': [{ 'profiles': ['phone_numbers'] }]
 		};
+		
+		this.contactUsForm = this._fb.group(
+			{
+				first_name: ['', Validators.required],
+				last_name: ['', Validators.required],
+				email: ['', Validators.requiredTrue],
+				subject: [''],
+				message: ['', Validators.required],
+				phone: ['']
+			}
+		);
 
 		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
 			if (res) {
@@ -881,7 +892,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						email: [res.email, Validators.requiredTrue],
 						subject: [''],
 						message: ['', Validators.required],
-						phone: [(res.profiles[0].phone_numbers[0]) ? res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '']
+						phone: [(res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0) ? res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '']
 					}
 				);
 			} else {
