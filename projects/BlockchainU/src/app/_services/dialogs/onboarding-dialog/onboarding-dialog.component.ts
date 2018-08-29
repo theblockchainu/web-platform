@@ -375,7 +375,7 @@ export class OnboardingDialogComponent implements OnInit {
 	private getUserCountry() {
 		this.loadingCountry = true;
 		this.paymentService.getUserCountry().subscribe(res => {
-			this.userCountry = res['countryCode'];
+			this.userCountry = res['country'];
 			this.phoneForm.controls.countryCode.patchValue(res['country']);
 			console.log(res);
 			this.loadingCountry = false;

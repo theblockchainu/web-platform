@@ -168,7 +168,7 @@ export class PaymentService {
 	}
 
 	public getUserCountry() {
-		return this.http.get('http://ip-api.com/json');
+		return this.http.get('https://ipapi.co/json');
 	}
 	
 	public getCCAvenueEncryptedRequest(body) {
