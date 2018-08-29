@@ -13,6 +13,8 @@ export const environment = {
     uniqueDeveloperCode: 'aakash',
     stripeClientId: 'ca_AlhauL6d5gJ66yM3RaXBHIwt0R8qeb9q',
     stripePublishableKey: 'pk_test_i9RmJ8HN4UygSzCchZMEGgwn',
-    karmaRate: 1000
+    karmaRate: 1000,
+	ccavenueAccessCode: 'AVVD79FH99BY37DVYB',
+	ccavenueMerchantId: '188304'
 };
 

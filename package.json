@@ -22,7 +22,9 @@
     "build-low-mem": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --prod",
     "build-low-mem-server": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng run peerbuds2.0:server",
     "webpack-low-mem:server": "node --max_old_space_size=8192 node_modules/webpack/bin/webpack.js --config webpack.server.config.js --progress --colors",
-    "build-blockchainu-low-mem": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build BlockchainU --prod"
+    "build-blockchainu-low-mem": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build BlockchainU --prod",
+	  "bundle-report": "webpack-bundle-analyzer dist/stats.json",
+	  "blockchainu-bundle-report": "webpack-bundle-analyzer dist/BlockchainU/browser/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -100,6 +102,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.7.0",
     "@angular/compiler-cli": "^6.1.0",
-    "typescript": "~2.7.2"
+    "typescript": "~2.9.2",
+    "webpack-bundle-analyzer": "^2.13.1"
   }
 }

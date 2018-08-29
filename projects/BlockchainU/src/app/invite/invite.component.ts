@@ -63,6 +63,7 @@ export class InviteComponent implements OnInit {
 		this.mobileQuery.addListener(this._mobileQueryListener);
 		this.userId = this.cookieUtilsService.getValue('userId');
 		this.currentPath = this.router.url.slice(1);
+		this.showOnboardingDialog();
 		this.setTags();
 		this.getContacts();
 		this.setupForm();
@@ -122,6 +123,20 @@ export class InviteComponent implements OnInit {
 		this.metaService.updateTag({
 			property: 'og:url',
 			content: environment.clientUrl + this.router.url
+		});
+	}
+	
+	showOnboardingDialog() {
+		this._profileService.getPeer(this.userId).subscribe((peer: any) => {
+			if (peer) {
+				this.emailVerified = peer.emailVerified;
+				
+				if (!this.emailVerified) {
+					this._dialogsService.openOnboardingDialog().subscribe((result: any) => {
+						// do nothing
+					});
+				}
+			}
 		});
 	}
 

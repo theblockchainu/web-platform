@@ -170,5 +170,9 @@ export class PaymentService {
 	public getUserCountry() {
 		return this.http.get('http://ip-api.com/json');
 	}
+	
+	public getCCAvenueEncryptedRequest(body) {
+		return this.http.post(environment.apiUrl + '/api/transactions/ccavenueencryptdata', body, this._requestHeaderService.options);
+	}
 
 }

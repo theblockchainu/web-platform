@@ -41,7 +41,6 @@ import { WhitepaperComponent } from './whitepaper/whitepaper.component';
 import { KnowledgeeconomyComponent } from './knowledgeeconomy/knowledgeeconomy.component';
 import { ShortreadComponent } from './shortread/shortread.component';
 import { PrivatebetaComponent } from './privatebeta/privatebeta.component';
-// import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { LandingPageModule } from './landing-page/landing-page.module';
 import { SharedModule } from './_shared/_shared.module';
 import { TransferHttpCacheModule } from '@nguniversal/common';
