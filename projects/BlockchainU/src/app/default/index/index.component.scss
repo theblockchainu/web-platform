@@ -27,6 +27,13 @@
 	font-size: 14px;
 	font-weight: 600;
 	color: #fff !important;
+	height: 100% !important;
+    vertical-align: middle !important;
+    box-sizing: border-box !important;
+	border-bottom: 2px solid transparent !important;
+}
+.headerButtons:hover{
+	border-bottom: 2px solid white !important;
 }
 .container-fluid{
 	padding-right: 20px;
@@ -76,7 +83,7 @@
 	text-transform: uppercase;
 }
 .navbar .options{
-	align-self: flex-end;
+	// align-self: flex-end;
 }
 
 .fixed-header{
@@ -158,7 +165,7 @@ header .navbar-brand{
 	line-height: 76px;
 }
 header .navbar-brand img{
-	width: 45px;
+	width: 140px;
 }
 header .right-links{
 	justify-content: flex-end;
@@ -195,6 +202,14 @@ header .right-links a.nav-link:hover{
 }
 .home-banner .content h1{
 	font-size: 40px;
+	color: #fff;
+	font-family: 'CircularSemiBold', sans-serif;
+	margin-bottom: 30px;
+}
+
+
+
+.home-banner .content h2{
 	color: #fff;
 	font-family: 'CircularSemiBold', sans-serif;
 	margin-bottom: 30px;
