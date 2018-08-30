@@ -57,8 +57,8 @@
 		                </div>
 	                </div>
 	                <!--Load CC Avenue Iframe-->
-	                <div *ngIf="!loadingCountry && ccavenueReady" [hidden]="userCountry !== 'IN' || payAtVenue === true" class="margin-top-20 margin-bottom-10" [innerHTML]="ccavenueIframe">
-                    </div>
+	                <div [hidden]="loadingCountry || !ccavenueReady || userCountry !== 'IN' || payAtVenue === true" class="margin-top-20 margin-bottom-10" [innerHTML]="ccavenueIframe" (window:message)="handleMessage($event)">
+	                </div>
 	                <!--Load Stripe Payment Form-->
                     <div *ngIf="!loadingCountry" [hidden]="collection.price===0 || userCountry === 'IN'">
                         <div class="margin-bottom-50" *ngIf="isCardExist">
