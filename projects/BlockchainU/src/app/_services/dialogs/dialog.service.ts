@@ -143,7 +143,7 @@ export class DialogsService {
         return dialogRef9.afterClosed();
     }
 
-    public openOnboardingDialog(isSkippable? = true) {
+    public openOnboardingDialog(isSkippable?: boolean) {
         let dialogRef: MatDialogRef<OnboardingDialogComponent>;
 
         dialogRef = this.dialog.open(OnboardingDialogComponent, {

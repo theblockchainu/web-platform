@@ -137,7 +137,7 @@ export class InviteComponent implements OnInit {
 				this.userIdentities = peer.identities;
 				this.userCredentials = peer.credentials;
 				if (!this.emailVerified && this.selectedIndex === 1) {
-					this._dialogsService.openOnboardingDialog().subscribe((result: any) => {
+					this._dialogsService.openOnboardingDialog(true).subscribe((result: any) => {
 						// do nothing
 					});
 				}
