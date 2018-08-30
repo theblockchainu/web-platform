@@ -701,6 +701,10 @@ export class ReviewPayComponent implements OnInit {
     	if (this.paymentStatus !== undefined) {
     		this.savingData = true;
 			this.ccavenueReady = false;
+			if (this.userId === undefined || this.userId === null || this.userId.length < 5) {
+				this.userId = this._cookieUtilsService.getValue('userId');
+				console.log('Refreshed USER ID: ' + this.userId);
+			}
 			if (this.paymentStatus === 'Success') {
 				console.log('Payment success. Joining collection and redirecting.');
 				this.message = 'Payment successful. Redirecting...';
