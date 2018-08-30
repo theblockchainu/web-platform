@@ -58,6 +58,7 @@
 	                </div>
 	                <!--Load CC Avenue Iframe-->
 	                <div [hidden]="loadingCountry || !ccavenueReady || userCountry !== 'IN' || payAtVenue === true" class="margin-top-20 margin-bottom-10" [innerHTML]="ccavenueIframe" (window:message)="handleMessage($event)">
+		                <iframe #paymentframe height="600px" width="100%"></iframe>
 	                </div>
 	                <!--Load Stripe Payment Form-->
                     <div *ngIf="!loadingCountry" [hidden]="collection.price===0 || userCountry === 'IN'">
