@@ -67,7 +67,7 @@ export class ConsoleTeachingExperienceComponent implements OnInit {
 		this._profileService.getPeerData(this.userId).subscribe(res => {
 			this.emailVerified = res.emailVerified;
 			if (!this.emailVerified) {
-				this._dialogService.openOnboardingDialog().subscribe();
+				this._dialogService.openOnboardingDialog(true).subscribe();
 			}
 		});
 
