@@ -892,7 +892,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						email: [res.email, Validators.requiredTrue],
 						subject: [''],
 						message: ['', Validators.required],
-						phone: [(res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0) ? res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '']
+						phone: [(res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0) ? '+' + res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '']
 					}
 				);
 			} else {
