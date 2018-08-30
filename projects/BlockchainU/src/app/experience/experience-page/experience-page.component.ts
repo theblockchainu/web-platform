@@ -884,7 +884,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		);
 
 		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
-			if (res) {
+			if (res && res.profiles && res.profiles.length > 0) {
+				const userPhone = res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0 ? '+' + res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : ''
 				this.contactUsForm = this._fb.group(
 					{
 						first_name: [res.profiles[0].first_name, Validators.required],
@@ -892,7 +893,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						email: [res.email, Validators.requiredTrue],
 						subject: [''],
 						message: ['', Validators.required],
-						phone: [(res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0) ? '+' + res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '']
+						phone: [userPhone]
 					}
 				);
 			} else {

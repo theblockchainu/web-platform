@@ -12,9 +12,9 @@
 								<div class="text-white margin-top-40">Teachers and students on The Blockchain University are real people with real knowledge. That's
 									why you'll have to confirm a few, quick details to confirm your account.</div>
 								<div class="checkbox margin-top-50">
-									<button *ngIf="!userIdentities || userIdentities.length === 0" mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" (click)="continue(1)">Next
+									<button *ngIf="!userIdentities || userIdentities.length === 0 || hasPassword" mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" (click)="continue(1)">Next
 										- 2 steps left</button>
-									<button *ngIf="userIdentities && userIdentities.length > 0" mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" (click)="continue(1)">Next - 3 steps left</button>
+									<button *ngIf="userIdentities && userIdentities.length > 0 && !hasPassword" mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" (click)="continue(1)">Next - 3 steps left</button>
 								</div>
 							</div>
 						</div>
@@ -87,7 +87,10 @@
 					</div>
 				</div>
 				<div class="col-sm-12 center margin-top-20">
-					<a class="mat-h5" href="javascript:void(0)" (click)="skipOnboarding()">
+					<a class="mat-h5" href="javascript:void(0)" *ngIf="!data.isSkippable">
+						This step is mandatory
+					</a>
+					<a class="mat-h5" href="javascript:void(0)" (click)="skipOnboarding()" *ngIf="data.isSkippable">
 						I'll do this later
 					</a>
 				</div>
@@ -127,7 +130,10 @@
 					</div>
 				</div>
 				<div class="col-sm-12 center margin-top-20">
-					<a class="mat-h5" href="javascript:void(0)" (click)="skipOnboarding()">
+					<a class="mat-h5" href="javascript:void(0)" *ngIf="!data.isSkippable">
+						This step is mandatory
+					</a>
+					<a class="mat-h5" href="javascript:void(0)" (click)="skipOnboarding()" *ngIf="data.isSkippable">
 						I'll do this later
 					</a>
 				</div>
@@ -196,7 +202,10 @@
 					</div>
 				</div>
 				<div class="col-sm-12 center margin-top-20">
-					<a class="mat-h5" href="javascript:void(0)" (click)="skipOnboarding()">
+					<a class="mat-h5" href="javascript:void(0)" *ngIf="!data.isSkippable">
+						This step is mandatory
+					</a>
+					<a class="mat-h5" href="javascript:void(0)" (click)="skipOnboarding()" *ngIf="data.isSkippable">
 						I'll do this later
 					</a>
 				</div>

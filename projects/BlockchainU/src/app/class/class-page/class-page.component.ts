@@ -1782,7 +1782,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	private sortAssessmentRules() {
-		if (this.class.assessment_models && this.class.assessment_models.length > 0) {
+		if (this.class.assessment_models && this.class.assessment_models.length > 0 && this.class.assessment_models[0].assessment_rules) {
 			const assessmentRulesUnsorted = <Array<any>>this.class.assessment_models[0].assessment_rules;
 			this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
 				if (a.value > b.value) {

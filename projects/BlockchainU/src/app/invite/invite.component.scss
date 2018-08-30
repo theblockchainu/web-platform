@@ -29,13 +29,15 @@
 }
 
 .search-content{
-    height: 47vh;
+    height: auto;
+	max-height: 47vh;
     overflow-y: scroll;
     overflow-x: hidden;
 }
 
 .stepper-container{
-	height: 60vh;
+	height: auto;
+	max-height: 60vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
