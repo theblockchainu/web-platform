@@ -241,8 +241,8 @@ export class ReviewPayComponent implements OnInit {
 				order_id: this.collection.id,
 				currency: this.collection.currency,
 				amount: '' + parseFloat(this.collection.price),
-				redirect_url: 'https://theblockchainu.com:3002/api/ccavenueResponse',
-				cancel_url: 'https://theblockchainu.com:3002/api/ccavenueResponse',
+				redirect_url: 'https://theblockchainu.com:3002/api/transactions/ccavenueResponse',
+				cancel_url: 'https://theblockchainu.com:3002/api/transactions/ccavenueResponse',
 				integration_type: 'iframe_normal',
 				language: 'en'
 			};
