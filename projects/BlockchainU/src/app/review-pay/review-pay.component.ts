@@ -252,6 +252,7 @@ export class ReviewPayComponent implements OnInit {
 				cancel_url: 'https://theblockchainu.com:3002/api/transactions/ccavenueResponse',
 				integration_type: 'iframe_normal',
 				language: 'en',
+				customer_identifier: this.student.email,
 				billing_name: this.student.profiles[0].first_name + ' ' + this.student.profiles[0].last_name,
 				billing_address: this.student.profiles[0].location_string,
 				billing_city: 'Mumbai',
