@@ -39,7 +39,7 @@ export class ConsoleProfilePhotosComponent implements OnInit {
 
 	ngOnInit() {
 		this.loadingMediaPage = true;
-		this._profileService.getProfile(this.userId).subscribe((profiles) => {
+		this._profileService.getProfileData(this.userId).subscribe((profiles) => {
 			this.picture_url = profiles[0].picture_url;
 			this.profile_video = profiles[0].profile_video;
 			this.loadingMediaPage = false;

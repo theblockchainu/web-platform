@@ -22,19 +22,6 @@ export class ProfileService {
 		this.envVariable = environment;
 	}
 
-	public getPeer(id) {
-		const peer = {};
-		if (id) {
-			const options = `{"where": "","order": "","limit": "",
-      "include": [{"profiles":["work","education","phone_numbers"]}, "topicsLearning","topicsTeaching",
-      {"collections":{"reviews": {"peer": "profiles"}}},
-      {"ownedCollections":[{"reviews":{"peer":"profiles"}},
-      "calendars",{"contents":"schedules"}]},"communities","identities"]}`;
-			return this.http.get(environment.apiUrl + '/api/peers/' + id + '?filter=' + options, this._requestHeaderService.options)
-				;
-		}
-	}
-
 	public getProfile(userId) {
 		const profile = {};
 		if (userId) {
@@ -373,6 +360,11 @@ export class ProfileService {
 					cb(err);
 				});
 		}
+	}
+	
+	public addBillingAddress(userId, profileId, billingAddress: any) {
+		return this.http
+				.post(environment.apiUrl + '/api/profiles/' + profileId + '/billingaddress', this.sanitize(billingAddress), this._requestHeaderService.options);
 	}
 
 	/**

@@ -228,7 +228,7 @@ export class BookSessionComponent implements OnInit {
 	 * getPeerDetails
 	 */
 	public getPeerDetails() {
-		this.profileService.getPeer(this.userId).subscribe((peer: any) => {
+		this.profileService.getPeerData(this.userId).subscribe((peer: any) => {
 			if (peer) {
 				this.createSourceData.email = peer.email;
 				this.createChargeData.customer = peer.stripeCustId;

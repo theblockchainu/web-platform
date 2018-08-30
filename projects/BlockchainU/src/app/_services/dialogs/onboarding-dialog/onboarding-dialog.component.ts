@@ -47,6 +47,9 @@ export class OnboardingDialogComponent implements OnInit {
 	public filteredCountryCodes: Observable<CountryCode[]>;
 	public userIdentities: Array<any>;
 	public passwordForm: FormGroup;
+	public hasPassword = false;
+	public hasPhoneVerified = false;
+	public hasEmailVerified = false;
 
 	constructor(
 		public dialogRef: MatDialogRef<OnboardingDialogComponent>,
@@ -147,7 +150,14 @@ export class OnboardingDialogComponent implements OnInit {
 
 	private getUserProfile() {
 		this._profileService.getPeerData(this.userId).subscribe(res => {
+			if (res && res.ethAddress && res.ethAddress.length > 0) {
+				this.hasPassword = true;
+			}
+			if (res && res.emailVerified) {
+				this.hasEmailVerified = true;
+			}
 			if (res && res.phoneVerified) {
+				this.hasPhoneVerified = true;
 				this.sendEmailOTP(4);
 			}
 		});
@@ -168,8 +178,12 @@ export class OnboardingDialogComponent implements OnInit {
 			this.step = p;
 		} else {
 			if (p === 1) {
-				if (this.userIdentities.length > 0) {
+				if (this.userIdentities.length > 0 && !this.hasPassword) {
 					this.step = 6;
+				} else if (this.hasPhoneVerified && !this.hasEmailVerified) {
+					this.step = 4;
+				} else if (this.hasPhoneVerified && this.hasEmailVerified) {
+					this.step = 5;
 				} else {
 					this.step = 1;
 				}
@@ -376,7 +390,7 @@ export class OnboardingDialogComponent implements OnInit {
 		this.loadingCountry = true;
 		this.paymentService.getUserCountry().subscribe(res => {
 			this.userCountry = res['country'];
-			this.phoneForm.controls.countryCode.patchValue(res['country']);
+			this.phoneForm.controls.countryCode.patchValue(res['country_name']);
 			console.log(res);
 			this.loadingCountry = false;
 		}, err => {

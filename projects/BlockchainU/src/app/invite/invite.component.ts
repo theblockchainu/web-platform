@@ -16,6 +16,7 @@ declare let FB: any;
 	styleUrls: ['./invite.component.scss']
 })
 export class InviteComponent implements OnInit {
+	
 	initialised = false;
 	provider: string;
 	public mobileQuery: MediaQueryList;
@@ -127,11 +128,15 @@ export class InviteComponent implements OnInit {
 	}
 	
 	showOnboardingDialog() {
-		this._profileService.getPeer(this.userId).subscribe((peer: any) => {
+		const filter = {
+			include: ['identities', 'credentials']
+		};
+		this._profileService.getPeerData(this.userId, filter).subscribe((peer: any) => {
 			if (peer) {
 				this.emailVerified = peer.emailVerified;
-				
-				if (!this.emailVerified) {
+				this.userIdentities = peer.identities;
+				this.userCredentials = peer.credentials;
+				if (!this.emailVerified && this.selectedIndex === 1) {
 					this._dialogsService.openOnboardingDialog().subscribe((result: any) => {
 						// do nothing
 					});
@@ -213,7 +218,7 @@ export class InviteComponent implements OnInit {
 		if (hasIdentity) {
 			this.router.navigate(['invite', '2']);
 		} else {
-			location.href = environment.apiUrl + '/auth/blockchain/google?returnTo=invite/2';
+			location.href = environment.apiUrl + '/auth/google?returnTo=invite/2';
 		}
 	}
 
