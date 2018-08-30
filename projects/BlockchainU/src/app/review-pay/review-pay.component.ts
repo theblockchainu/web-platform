@@ -236,15 +236,27 @@ export class ReviewPayComponent implements OnInit {
     	this.ccavenueReady = false;
 		// Get CC Avenue encrypted data if payment is being made in India
 		if (this.userCountry === 'IN') {
+			let studentPhoneNumber = '9999999999';
+			if (this.student.profiles[0].phone_numbers && this.student.profiles[0].phone_numbers.length > 0) {
+				studentPhoneNumber = this.student.profiles[0].phone_numbers[0].subscriber_number;
+			}
 			const body = {
 				merchant_id: this.ccavenueMerchantId,
-				order_id: this.collection.id,
+				order_id: Date.now(),
 				currency: this.collection.currency,
 				amount: '' + parseFloat(this.collection.price),
 				redirect_url: 'https://theblockchainu.com:3002/api/transactions/ccavenueResponse',
 				cancel_url: 'https://theblockchainu.com:3002/api/transactions/ccavenueResponse',
 				integration_type: 'iframe_normal',
-				language: 'en'
+				language: 'en',
+				billing_name: this.student.profiles[0].first_name + ' ' + this.student.profiles[0].last_name,
+				billing_address: this.student.profiles[0].location_string,
+				billing_city: 'Mumbai',
+				billing_state: 'Maharashtra',
+				billing_zip: '410206',
+				billing_country: 'India',
+				billing_tel: studentPhoneNumber,
+				billing_email: this.student.email
 			};
 			this.paymentService.getCCAvenueEncryptedRequest(body).subscribe(res => {
 				this.ccavenueEncRequest = res;
