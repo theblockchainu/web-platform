@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { ProfileService } from '../_services/profile/profile.service';
@@ -26,6 +26,7 @@ export class ReviewPayComponent implements OnInit {
     public elements: any;
     public card: any;
     @ViewChild('cardForm', { read: ElementRef }) cardForm: ElementRef;
+	@ViewChild('paymentframe', { read: ElementRef }) paymentFrame: ElementRef;
     public userId;
     public emailVerified;
     public collectionId;
@@ -85,7 +86,8 @@ export class ReviewPayComponent implements OnInit {
         private _fb: FormBuilder,
         private matSnackBar: MatSnackBar,
         private _authenticationService: AuthenticationService,
-		private sanitizer: DomSanitizer
+		private sanitizer: DomSanitizer,
+		private renderer: Renderer2
     ) {
         this.envVariable = environment;
         this.activatedRoute.params.subscribe(params => {
@@ -637,4 +639,12 @@ export class ReviewPayComponent implements OnInit {
     togglePromo() {
         this.applyPromoCode = true;
     }
+    
+    public handleMessage(e) {
+    	console.log('Handling message event: ' + JSON.stringify(e.data));
+    	if (this.paymentFrame && e.data['newHeight'] !== undefined) {
+    		console.log('Found paymentframe. Editing CSS');
+			document.getElementById('paymentFrame').setAttribute('height', e.data['newHeight'] + 'px');
+		}
+	}
 }
