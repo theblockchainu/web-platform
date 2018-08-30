@@ -136,7 +136,6 @@ export class ReviewPayComponent implements OnInit {
                 this.createChargeData.currency = collectionData.currency;
                 this.createChargeData.description = collectionData.description;
                 this.collection = collectionData;
-                this.getCCAvenueEncData();
                 this.getkarma(collectionData.academicGyan + collectionData.nonAcademicGyan);
                 this.setCurrentCalendar();
                 this.calculateTotalHours();
@@ -178,12 +177,14 @@ export class ReviewPayComponent implements OnInit {
                 this.custId = peer.stripeCustId;
                 this.burnAddress = peer.ethAddress;
                 console.log(this.custId);
-
+			
                 if (!this.emailVerified) {
                     this._dialogsService.openOnboardingDialog().subscribe((result: any) => {
                         // do nothing
                     });
                 }
+	
+				this.getCCAvenueEncData();
 
                 // get all cards
                 this.paymentService.listAllCards(this.userId, this.custId).subscribe((cards: any) => {
