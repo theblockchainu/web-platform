@@ -1832,6 +1832,13 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			});
 	}
 
+	public addParticipant() {
+		this.dialogsService.addParticipant(this.classId, this.calendarId).subscribe(res => {
+			if (res) {
+				this.initializePage();
+			}
+		});
+	}
 
 }
 

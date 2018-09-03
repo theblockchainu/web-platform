@@ -133,6 +133,8 @@
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length > 0" (click)="cancelClass()">Cancel
 									Class
 								</button>
+								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined" (click)=" addParticipant()">Add participant
+								</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length === 0" (click)=" deleteCohort()">Delete
 									Cohort
 								</button>

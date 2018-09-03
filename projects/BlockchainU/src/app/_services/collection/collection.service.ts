@@ -559,7 +559,7 @@ export class CollectionService {
 	/**
 	 * addParticipant
 	 collectionID:string,userId:string,calendarId:string   */
-	public addParticipant(collectionId: string, userId: string, calendarId: string, scholarshipId: string) {
+	public addParticipant(collectionId: string, userId: string, calendarId: string, scholarshipId?: string) {
 		const body = {
 			'calendarId': calendarId,
 			'scholarshipId': scholarshipId

@@ -70,6 +70,7 @@ import { SocialSharingService } from '../social-sharing/social-sharing.service';
 import { OnboardingDialogComponent } from './onboarding-dialog/onboarding-dialog.component';
 import { AddPromoCodeDialogComponent } from './add-promo-code-dialog/add-promo-code-dialog.component';
 import { ViewPromocodeDialogComponent } from './view-promocode-dialog/view-promocode-dialog.component';
+import { AddParticipantDialogComponent } from './add-participant-dialog/add-participant-dialog.component';
 
 @NgModule({
 	imports: [
@@ -118,7 +119,8 @@ import { ViewPromocodeDialogComponent } from './view-promocode-dialog/view-promo
 		TermsAndConditionsDialogComponent,
 		OnboardingDialogComponent,
 		AddPromoCodeDialogComponent,
-		ViewPromocodeDialogComponent
+		ViewPromocodeDialogComponent,
+		AddParticipantDialogComponent
 	],
 	providers: [
 		DialogsService,
@@ -142,7 +144,7 @@ import { ViewPromocodeDialogComponent } from './view-promocode-dialog/view-promo
 		ScholarshipDialogComponent, GenerateKnowledgeStoryComponent, RequestKnowledgeStoryComponent, ConfirmPasswordDialogComponent,
 		AddViewerDialogComponent, GyanPromptComponent, AddCommunityDialogComponent, CreateAccreditationDialogComponent, SelectFieldDialogComponent,
 		CertificateVerificationComponent, TermsAndConditionsDialogComponent, CollectionStandardsDialogComponent, OnboardingDialogComponent, AddPromoCodeDialogComponent,
-		ViewPromocodeDialogComponent
+		ViewPromocodeDialogComponent, AddParticipantDialogComponent
 	],
 })
 export class DialogsModule { }
