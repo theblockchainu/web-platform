@@ -300,7 +300,7 @@ export class ReviewPayComponent implements OnInit {
 				merchant_id: this.ccavenueMerchantId,
 				order_id: Date.now(),
 				currency: this.collection.currency,
-				amount: '' + parseFloat(this.collection.price),
+				amount: '' + this.totalPrice,
 				redirect_url: environment.apiUrl + '/api/transactions/ccavenueResponse',
 				cancel_url: environment.apiUrl + '/api/transactions/ccavenueResponse',
 				integration_type: 'iframe_normal',
@@ -376,7 +376,7 @@ export class ReviewPayComponent implements OnInit {
                     this.matSnackBar.open('Error in sending mail', 'Close', { duration: 3000 });
                 });
         } else {
-            if (this.collection.price > 0) {
+            if (this.totalPrice > 0) {
                 if (this.isCardExist === true && !this.useAnotherCard) {
                     // console.log('card exist');
                     this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: any) => {
@@ -646,7 +646,7 @@ export class ReviewPayComponent implements OnInit {
                         if (moment().isBetween(moment(codefound.validFrom), moment(codefound.validTo))) {
                             this.updatePrice(codefound);
                         } else {
-                            this.matSnackBar.open('Promocode expired', 'Close', { duration: 3000 });
+                            this.matSnackBar.open('Promo code expired', 'Close', { duration: 3000 });
                         }
                     } else {
                         this.matSnackBar.open('You are not allowed to use this code!', 'Close', { duration: 3000 });
@@ -655,7 +655,7 @@ export class ReviewPayComponent implements OnInit {
                     if (moment().isBetween(moment(codefound.validFrom), moment(codefound.validTo))) {
                         this.updatePrice(codefound);
                     } else {
-                        this.matSnackBar.open('Promocode expired', 'Close', { duration: 3000 });
+                        this.matSnackBar.open('Promo code expired', 'Close', { duration: 3000 });
                     }
                 }
 
@@ -668,7 +668,7 @@ export class ReviewPayComponent implements OnInit {
     }
 
     updatePrice(codefound) {
-        this.matSnackBar.open('Promocode successfully applied!', 'Close', { duration: 3000 });
+        this.matSnackBar.open('Promo code successfully applied!', 'Close', { duration: 3000 });
         if (codefound.discountType === 'percentage') {
             this.totalPrice = this.collection.price - (this.collection.price * codefound.discountValue / 100);
         } else if (codefound.discountType === 'absolute') {
@@ -676,6 +676,7 @@ export class ReviewPayComponent implements OnInit {
                 this.totalPrice = this.collection.price - convertedAmount.amount;
             });
         }
+        this.loadCCAvenueForm();
         this.codefound = codefound;
         this.discountCode.disable();
     }

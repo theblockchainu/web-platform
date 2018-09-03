@@ -1,6 +1,8 @@
 .homeContainer {
 	margin-top: 2%;
 	margin-bottom: 0%;
+	margin-left: 12%;
+	width: 76%;
 }
 
 .community-thumb{
@@ -61,6 +63,13 @@
 	}
 }
 
+.more-actions{
+	background-color: #eeeeee;
+	color: #333;
+	padding: 12px 0px;
+	font-size: 14px;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	.community-thumb{
@@ -82,11 +91,9 @@
 	.communityFeed {
 		padding-top: 0px;
 	}
-}
 
-.more-actions{
-	background-color: #eeeeee;
-	color: #333;
-	padding: 12px 0px;
-	font-size: 14px;
+	.homeContainer {
+		margin-left: inherit;
+		width: inherit;
+	}
 }

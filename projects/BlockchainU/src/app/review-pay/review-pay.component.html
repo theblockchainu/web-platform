@@ -94,11 +94,11 @@
 						</div>
 					</div>
 					<!--Load CC Avenue Payment Iframe-->
-					<div [hidden]="loadingCountry || collection.price===0 || !ccavenueReady || userCountry !== 'IN' || payAtVenue === true || !isBillingAddressAvailable" class="margin-top-20 margin-bottom-10" [innerHTML]="ccavenueIframe" (window:message)="handleMessage($event)">
+					<div [hidden]="loadingCountry || totalPrice===0 || !ccavenueReady || userCountry !== 'IN' || payAtVenue === true || !isBillingAddressAvailable" class="margin-top-20 margin-bottom-10" [innerHTML]="ccavenueIframe" (window:message)="handleMessage($event)">
 						<iframe #paymentframe height="600px" width="100%"></iframe>
 					</div>
 					<!--Load Stripe Payment Form-->
-					<div *ngIf="!loadingCountry" [hidden]="collection.price===0 || userCountry === 'IN'">
+					<div *ngIf="!loadingCountry" [hidden]="totalPrice===0 || userCountry === 'IN'">
 						<div class="margin-bottom-50" *ngIf="isCardExist">
 							<h3>Select payment method</h3>
 							<div class="row margin-top-50">
@@ -173,8 +173,8 @@
 						</div>
 					</div>
 					<!--Action buttons-->
-					<div *ngIf="!loadingCountry && (userCountry !== 'IN' || payAtVenue)">
-						<div *ngIf="collection.price && collection.price!==0">
+					<div *ngIf="!loadingCountry || payAtVenue">
+						<div *ngIf="totalPrice && totalPrice!==0 && userCountry !== 'IN'">
 							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="(!listAllCards || listAllCards.length <= 0 || useAnotherCard) && !payAtVenue"
 							        [disabled]="savingData">{{totalPrice | convertCurrency: collection.currency |async}} - Confirm Payment
 							</button>
@@ -183,7 +183,7 @@
 							</button>
 							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="payAtVenue" [disabled]="savingData">I confirm to pay {{totalPrice | convertCurrency: collection.currency |async}} at venue </button>
 						</div>
-						<button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center payButton" *ngIf="!collection.price || collection.price===0 ">FREE - Join {{collection.type | ucwords}}</button>
+						<button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center payButton" *ngIf="!totalPrice || totalPrice===0 ">FREE - Join {{collection.type | ucwords}}</button>
 					</div>
 					<!--Saving data progressbar-->
 					<div class="display-inline-block margin-top-10 margin-bottom-10" *ngIf="savingData">
