@@ -9,6 +9,9 @@
 		<loc>https://theblockchainu.com/</loc>
 	</url>
 	<url>
+		<loc>https://theblockchainu.com/home/homefeed</loc>
+	</url>
+	<url>
 		<loc>https://theblockchainu.com/home/peers</loc>
 	</url>
 	<url>
@@ -39,9 +42,6 @@
 		<loc>https://theblockchainu.com/policy</loc>
 	</url>
 	<url>
-		<loc>https://help.theblockchainu.com</loc>
-	</url>
-	<url>
 		<loc>https://theblockchainu.com/contact-us</loc>
 	</url>
 	<url>
@@ -60,15 +60,6 @@
 		<loc>https://theblockchainu.com/digest/communities</loc>
 	</url>
 	<url>
-		<loc>https://theblockchainu.com/digest/whyTeach</loc>
-	</url>
-	<url>
-		<loc>https://theblockchainu.com/digest/teachingBenefits</loc>
-	</url>
-	<url>
-		<loc>https://theblockchainu.com/digest/responsibleTeaching</loc>
-	</url>
-	<url>
 		<loc>https://theblockchainu.com/terms-of-service</loc>
 	</url>
 	<url>
@@ -78,21 +69,24 @@
 		<loc>https://theblockchainu.com/sitemap.xml</loc>
 	</url>
 	<url>
-		<loc>https://theblockchainu.com/whitepaper</loc>
+		<loc>https://theblockchainu.com/experience/c1fc0c63-e000-4824-a041-4abe78dede4d</loc>
 	</url>
 	<url>
-		<loc>https://theblockchainu.com/shortread</loc>
+		<loc>https://theblockchainu.com/class/cb8b0687-f69b-4944-a75f-a55786b446fd</loc>
 	</url>
 	<url>
-		<loc>https://theblockchainu.com/tokenflow</loc>
+		<loc>https://theblockchainu.com/community/8df2ca2b-3be2-4ae9-a69e-2aa3c13bf2f0</loc>
 	</url>
 	<url>
-		<loc>https://theblockchainu.com/privatebeta</loc>
+		<loc>https://theblockchainu.com/community/f7519d07-6535-4661-8ffd-712a1de55c3a</loc>
 	</url>
 	<url>
-		<loc>https://theblockchainu.com/knowledgeeconomy</loc>
+		<loc>https://theblockchainu.com/community/5d0f8178-afec-427f-a934-793063f0d175</loc>
 	</url>
 	<url>
-		<loc>http://blog.theblockchainu.com</loc>
+		<loc>https://theblockchainu.com/community/ddf26cff-24e0-4d95-aeb9-76741a1f5ab4</loc>
+	</url>
+	<url>
+		<loc>https://theblockchainu.com/community/ee0fa478-fa78-4ff9-b5f9-3c43c1080f59</loc>
 	</url>
 </urlset>
