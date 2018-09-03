@@ -59,7 +59,7 @@ import { CancelCohortDialogComponent } from './cancel-cohort-dialog/cancel-cohor
 import { OnboardingDialogComponent } from './onboarding-dialog/onboarding-dialog.component';
 import { AddPromoCodeDialogComponent } from './add-promo-code-dialog/add-promo-code-dialog.component';
 import { ViewPromocodeDialogComponent } from './view-promocode-dialog/view-promocode-dialog.component';
-
+import { AddParticipantDialogComponent } from './add-participant-dialog/add-participant-dialog.component';
 @Injectable()
 export class DialogsService {
 
@@ -150,9 +150,9 @@ export class DialogsService {
             panelClass: 'responsive-dialog',
             width: '30vw',
             disableClose: true,
-			data: {
-            	isSkippable: isSkippable
-			}
+            data: {
+                isSkippable: isSkippable
+            }
         });
         return dialogRef.afterClosed();
     }
@@ -681,6 +681,17 @@ export class DialogsService {
     public viewPromoCodeDialog(collectionId: string) {
         const dialogRef = this.dialog.open(ViewPromocodeDialogComponent, {
             data: collectionId,
+            panelClass: 'responsive-dialog',
+            width: '55vw',
+            height: '80vh'
+        });
+
+        return dialogRef.afterClosed();
+    }
+
+    public addParticipant(collectionId: string, calendarId: string) {
+        const dialogRef = this.dialog.open(AddParticipantDialogComponent, {
+            data: { collectionId: collectionId, calendarId: calendarId },
             panelClass: 'responsive-dialog',
             width: '55vw',
             height: '80vh'

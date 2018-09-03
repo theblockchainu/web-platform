@@ -871,7 +871,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		const filter = {
 			'include': [{ 'profiles': ['phone_numbers'] }]
 		};
-		
+
 		this.contactUsForm = this._fb.group(
 			{
 				first_name: ['', Validators.required],
@@ -885,7 +885,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 
 		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
 			if (res && res.profiles && res.profiles.length > 0) {
-				const userPhone = res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0 ? '+' + res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : ''
+				const userPhone = res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0 ? '+'
+					+ res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '';
 				this.contactUsForm = this._fb.group(
 					{
 						first_name: [res.profiles[0].first_name, Validators.required],
@@ -1944,9 +1945,16 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		});
 	}
 
-
 	public getGyanForRule(gyanPercent, totalGyan) {
 		return Math.floor((gyanPercent / 100) * totalGyan);
+	}
+
+	public addParticipant() {
+		this.dialogsService.addParticipant(this.experienceId, this.calendarId).subscribe(res => {
+			if (res) {
+				this.initializePage();
+			}
+		});
 	}
 
 }

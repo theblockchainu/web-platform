@@ -1,0 +1,46 @@
+<div class="dialog-container">
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>Add Participant</h1>
+    </div>
+  </div>
+  <div class="row" style="min-height: 40vh;">
+    <div class="col-xs-12">
+      <mat-form-field class="pb-block">
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let peer of selectedPeers" [selectable]="true" [removable]="true" (remove)="removePeer(peer)">
+            {{peer.name}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="Select peers this story is visible to" #peerInput [ngModel]="searchField" (ngModelChange)="onSearch($event)"
+            [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputAddOnBlur]="true" />
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of searchOptions" [value]="" (click)="onSearchOptionClicked(option)">
+            <span>
+              <img src="{{envVariable.apiUrl+option.profiles[0].picture_url}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
+                (error)="_collectionService.imgErrorHandler($event)" />
+            </span>
+            <span>
+              {{option.profiles[0].first_name + ' ' + option.profiles[0].last_name }}
+            </span>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <mat-form-field class="pb-block">
+        <input matInput placeholder="Enter participant ID" [(ngModel)]="peerId">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <button (click)="addParticipant()" mat-raised-button>
+        Add participant
+      </button>
+    </div>
+  </div>
+</div>
