@@ -1,6 +1,8 @@
 .homeContainer {
 	margin-top: 2%;
 	margin-bottom: 0%;
+	margin-left: 12%;
+	width: 76%;
 }
 
 .experiencesFeed a{
@@ -39,7 +41,7 @@
 
 .recommendation-thumb{
     object-fit: cover;
-    height: 290px;
+    height: 270px;
     width: 100%;
     position: relative;
 }
@@ -119,5 +121,10 @@
 
 	.experiencesFeed {
 		padding-top: 0px;
+	}
+
+	.homeContainer {
+		margin-left: inherit;
+		width: inherit;
 	}
 }
