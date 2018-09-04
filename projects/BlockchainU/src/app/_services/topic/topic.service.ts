@@ -18,8 +18,15 @@ export class TopicService {
 	}
 
 	public getTopics(query?: any): Observable<any> {
+		// if (query) {
+		// 	query.where = { 'origin': 'theblockchainu' };
+		// 	console.log(query);
+		// }
 		return this.http.get(environment.apiUrl + '/api/topics?filter=' + JSON.stringify(query), this.requestHeaderService.options)
-			.pipe(map(res => res || []));
+			.pipe(map(res => {
+				console.log(res);
+				return res || [];
+			}));
 	}
 
 	public requestNewTopic(topic: string): Observable<any> {
@@ -61,7 +68,8 @@ export class TopicService {
 	public addNewTopic(topicName: string) {
 		const body = {
 			'name': topicName,
-			'type': 'user'
+			'type': 'user',
+			'origin': 'theblockchainu'
 		};
 		return this.http.post(environment.apiUrl + '/api/topics', body, this.requestHeaderService.options);
 	}

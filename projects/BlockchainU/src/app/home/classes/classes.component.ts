@@ -210,14 +210,36 @@ export class ClassesComponent implements OnInit {
 	}
 
 	fetchTopics(): Observable<Array<any>> {
-		const query = {
-			order: 'name ASC'
-		};
+		let query;
+		if (this.showArchived) {
+			query = {
+				order: 'name ASC',
+			};
+		} else {
+			query = {
+				order: 'name ASC',
+				'include': [
+					{
+						'relation': 'collections',
+						'scope': {
+							'where': { 'type': 'class', 'status': 'active' }
+						}
+					}
+				],
+			};
+		}
+
 		return this._topicService.getTopics(query).pipe(map(
 			(response: any) => {
 				const availableTopics = [];
 				response.forEach(topic => {
-					availableTopics.push({ 'topic': topic, 'checked': false });
+					if (this.showArchived) {
+						availableTopics.push({ 'topic': topic, 'checked': false });
+					} else {
+						if (topic.collections.length > 0) {
+							availableTopics.push({ 'topic': topic, 'checked': false });
+						}
+					}
 				});
 				return availableTopics;
 			}, (err) => {
