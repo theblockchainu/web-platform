@@ -62,6 +62,7 @@ export class PeersComponent implements OnInit {
 	}
 
 	private fetchData() {
+		this.loading = true;
 		this.fetchTopics();
 		this.setTags();
 	}
@@ -88,6 +89,7 @@ export class PeersComponent implements OnInit {
 	}
 
 	fetchPeers() {
+		this.loading = true;
 
 		this.selectedTopics = [];
 		for (const topicObj of this.availableTopics) {
@@ -140,6 +142,7 @@ export class PeersComponent implements OnInit {
 										}
 									},
 									'reviewsAboutYou',
+									'wallet',
 									'profiles',
 									'topicsTeaching'
 								]
@@ -151,15 +154,14 @@ export class PeersComponent implements OnInit {
 				'limit': 50,
 			};
 		}
-
-		this.loading = true;
+		
 		this._topicService.getTopics(query)
 			.subscribe(
 				(response: any) => {
 					const peers = [];
 					response.forEach(topic => {
 						topic.peersTeaching.forEach(peer => {
-							if (peer.id !== this.userId && peer.ownedCollections && peer.ownedCollections.length > 0) {
+							if (peer.id !== this.userId && peer.ownedCollections && peer.ownedCollections.length > 0 && peer.topicsTeaching) {
 								peer.rating = this._collectionService.calculateRating(peer.reviewsAboutYou);
 								const topics = [];
 								peer.topicsTeaching.forEach(topicObj => {
@@ -172,6 +174,21 @@ export class PeersComponent implements OnInit {
 									peer.topics = topics;
 								}
 								peers.push(peer);
+							} else {
+								peer.rating = this._collectionService.calculateRating(peer.reviewsAboutYou);
+								const topics = [];
+								if (peer.topicsTeaching) {
+									peer.topicsTeaching.forEach(topicObj => {
+										topics.push(this.titlecasepipe.transform(topicObj.name));
+									});
+								}
+								if (topics.length > 0) {
+									peer.topics = topics;
+								} else {
+									topics.push('No topics selected');
+									peer.topics = topics;
+								}
+								peers.push(peer);
 							}
 						});
 					});
@@ -179,6 +196,7 @@ export class PeersComponent implements OnInit {
 					this.peersbackup = _.cloneDeep(this.peers);
 					this.loading = false;
 				}, (err) => {
+					this.loading = false;
 					console.log(err);
 				}
 			);
@@ -201,7 +219,6 @@ export class PeersComponent implements OnInit {
 				}
 			)
 		).subscribe(response => {
-			this.loading = false;
 			this.availableTopics = response;
 			this.topicsBackup = _.cloneDeep(response);
 			this.fetchPeers();

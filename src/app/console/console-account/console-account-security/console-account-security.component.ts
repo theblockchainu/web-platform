@@ -34,9 +34,9 @@ export class ConsoleAccountSecurityComponent implements OnInit {
   ngOnInit() {
     this.changePasswordForm = this._fb.group(
       {
-        old_password: ['', Validators.requiredTrue],
-        new_password: ['', Validators.requiredTrue],
-        confirm_password: ['', Validators.requiredTrue]
+        old_password: ['', Validators.required],
+        new_password: ['', Validators.required],
+        confirm_password: ['', Validators.required]
       }
     );
   }

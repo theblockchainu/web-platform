@@ -831,7 +831,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			{
 				first_name: ['', Validators.required],
 				last_name: ['', Validators.required],
-				email: ['', Validators.requiredTrue],
+				email: ['', Validators.required],
 				subject: [''],
 				message: ['', Validators.required],
 				phone: ['']

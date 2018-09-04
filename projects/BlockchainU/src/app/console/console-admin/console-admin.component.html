@@ -81,7 +81,7 @@
 											<div class="clickable" (click)="_profileService.viewProfile(collection.owners[0])">{{collection.owners[0].profiles[0].first_name}} {{collection.owners[0].profiles[0].last_name}}</div>
 											<div>
 												<span *ngFor="let topic of collection.owners[0].topicsTeaching">
-													{{topic}},&nbsp;
+													{{topic.name}},&nbsp;
 												</span>
 											</div>
 											<div class="mat-caption">
@@ -95,7 +95,7 @@
 										</mat-menu>
 										<mat-card-footer class="cardFooter" style="line-height: 30px">
 											<button mat-button (click)="approveClass(collection)">Approve</button>
-											<button mat-button (click)="rejectClass(collection)">Approve</button>
+											<button mat-button (click)="rejectClass(collection)">Reject</button>
 										</mat-card-footer>
 									</mat-card>
 								</div>

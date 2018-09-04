@@ -206,7 +206,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.interest1 = new FormGroup({});
 
 		this.newTopic = this._fb.group({
-			topicName: ['', Validators.requiredTrue]
+			topicName: ['', Validators.required]
 		});
 
 		this.experience = this._fb.group({

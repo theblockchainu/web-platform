@@ -37,8 +37,6 @@ import * as _ from 'lodash';
 import { Meta, Title } from '@angular/platform-browser';
 import { UcWordsPipe } from 'ngx-pipes';
 
-declare var FB: any;
-
 
 @Component({
 	selector: 'app-community-page',
@@ -84,6 +82,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	public questions: Array<any>;
 	private today = moment();
 	public toOpenDialogName;
+	public inviteLink = '';
 	objectKeys = Object.keys;
 
 	public loadingQuestions: boolean;
@@ -248,6 +247,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 				.subscribe(res => {
 					console.log(res);
 					this.community = res;
+					this.inviteLink = environment.clientUrl + '/community/' + this.community.id;
 				},
 					err => console.log('error'),
 					() => {
@@ -353,14 +353,18 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	 * saveBookmark
 	 */
 	public saveBookmark() {
-		if (!this.hasBookmarked) {
-			this._communityService.saveBookmark(this.communityId, (err, response) => {
-				if (err) {
-					console.log(err);
-				} else {
-					this.getBookmarks();
-				}
-			});
+		if (this.userId && this.userId.length > 5) {
+			if (!this.hasBookmarked) {
+				this._communityService.saveBookmark(this.communityId, (err, response) => {
+					if (err) {
+						console.log(err);
+					} else {
+						this.getBookmarks();
+					}
+				});
+			}
+		} else {
+			this.dialogsService.openSignup('/community/' + this.communityId + '/questions');
 		}
 	}
 
@@ -372,17 +376,21 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	}
 
 	public joinCommunity() {
-		this._communityService.addParticipant(this.communityId, this.userId, (err: any, response: any) => {
-			if (err) {
-				console.log(err);
-			} else {
-				this.initializePage();
-				this.snackBar.open('Thanks for joining the community. Ask questions or share your' +
-					' find partners for your learning journey.', 'Close', {
+		if (this.userId && this.userId.length > 5 && this.userType === 'public') {
+			this._communityService.addParticipant(this.communityId, this.userId, (err: any, response: any) => {
+				if (err) {
+					console.log(err);
+				} else {
+					this.initializePage();
+					this.snackBar.open('Thanks for joining the community. Ask questions or share your' +
+						' find partners for your learning journey.', 'Close', {
 						duration: 5000
 					});
-			}
-		});
+				}
+			});
+		} else {
+			this.dialogsService.openSignup('/community/' + this.community.id);
+		}
 	}
 
 
@@ -407,37 +415,14 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 		);
 	}
 
-	public shareOnFb() {
-		FB.ui({
-			method: 'share_open_graph',
-			action_type: 'og.shares',
-			action_properties: JSON.stringify({
-				object: {
-					'og:url': environment.clientUrl + this.router.url, // your url to share
-					'og:title': this.community.title,
-					'og:site_name': 'The Blockchain University',
-					'og:description': this.community.description,
-					'og:image': environment.apiUrl + this.community.imageUrls[0],
-					'og:image:width': '250',
-					'og:image:height': '257'
-				}
-			})
-		}, function (response) {
-			// Debug response (optional)
-			console.log(response);
-		});
-	}
-
-	public shareOnTwitter() {
-		// TODO twitter sharing code
-	}
-
 	public openVerificationPage() {
 		this.router.navigate(['console', 'profile', 'verification']);
 	}
 
 	public openLoginPage() {
-		this.router.navigate(['login']);
+		this.dialogsService.openLogin().subscribe(res => {
+			// do nothing
+		});
 	}
 
 	public openProfilePage(peerId) {
@@ -445,7 +430,9 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	}
 
 	public openInviteFriendsDialog() {
-		this.dialogsService.inviteFriends(this.community);
+		const community = _.cloneDeep(this.community);
+		community.type = 'community';
+		this.dialogsService.inviteFriends(community);
 	}
 
 	scrollToQuestions() {

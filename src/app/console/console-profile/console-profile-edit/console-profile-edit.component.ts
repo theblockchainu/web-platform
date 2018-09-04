@@ -90,7 +90,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 		this.loadingProfile = true;
 		this.profileForm = this._fb.group(
 			{
-				first_name: ['', Validators.requiredTrue],
+				first_name: ['', Validators.required],
 				last_name: '',
 				headline: '',
 				preferred_language: '',
@@ -256,8 +256,8 @@ export class ConsoleProfileEditComponent implements OnInit {
 				profiles[0].emergency_contacts.forEach(ecObj => {
 					ec_Array.push(
 						this._fb.group({
-							country_code: [ecObj.country_code, Validators.requiredTrue],
-							subscriber_number: [ecObj.subscriber_number, Validators.requiredTrue]
+							country_code: [ecObj.country_code, Validators.required],
+							subscriber_number: [ecObj.subscriber_number, Validators.required]
 						})
 					);
 				});
@@ -272,8 +272,8 @@ export class ConsoleProfileEditComponent implements OnInit {
 					}
 					ph_Array.push(
 						this._fb.group({
-							country_code: [phObj.country_code, Validators.requiredTrue],
-							subscriber_number: [phObj.subscriber_number, Validators.requiredTrue],
+							country_code: [phObj.country_code, Validators.required],
+							subscriber_number: [phObj.subscriber_number, Validators.required],
 							isPrimary: [isPrimary]
 						})
 					);
@@ -285,10 +285,10 @@ export class ConsoleProfileEditComponent implements OnInit {
 				profiles[0].work.forEach(workObj => {
 					workArray.push(
 						this._fb.group({
-							position: [workObj.position, Validators.requiredTrue],
-							company: [workObj.company, Validators.requiredTrue],
-							startDate: [moment(workObj.startDate).local().toDate(), Validators.requiredTrue],
-							endDate: [workObj.endDate ? moment(workObj.endDate).local().toDate() : null, Validators.requiredTrue],
+							position: [workObj.position, Validators.required],
+							company: [workObj.company, Validators.required],
+							startDate: [moment(workObj.startDate).local().toDate(), Validators.required],
+							endDate: [workObj.endDate ? moment(workObj.endDate).local().toDate() : null, Validators.required],
 							presentlyWorking: [workObj.presentlyWorking]
 						})
 					);
@@ -314,10 +314,10 @@ export class ConsoleProfileEditComponent implements OnInit {
 
 	private initializeWorkForm(): FormGroup {
 		return this._fb.group({
-			position: ['', Validators.requiredTrue],
-			company: ['', Validators.requiredTrue],
-			startDate: [null, Validators.requiredTrue],
-			endDate: [null, Validators.requiredTrue],
+			position: ['', Validators.required],
+			company: ['', Validators.required],
+			startDate: [null, Validators.required],
+			endDate: [null, Validators.required],
 			presentlyWorking: false
 		});
 	}

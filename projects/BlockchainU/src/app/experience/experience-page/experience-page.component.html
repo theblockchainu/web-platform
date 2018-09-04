@@ -1041,7 +1041,7 @@
 									</div>
 									<div class="col-xs-4" style="padding-top: 9px;">
 										<span>
-											<button mat-raised-button (click)="selectJoiningDates()" color="primary">See Dates</button>
+											<button mat-raised-button (click)="selectJoiningDates()" color="primary">Apply Now</button>
 										</span>
 										<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this experience">
 											<button mat-raised-button color="primary" [disabled]="true">See Dates</button>
@@ -1051,12 +1051,12 @@
 							</div>
 						</div>
 						<hr class="margin-top-10 margin-bottom-10">
-						<div class="row padding-top-20 padding-bottom-20">
+						<div class="row padding-top-20 padding-bottom-20" *ngIf="userType === 'public'">
 							<div class="col-xs-12">
-								<h3>Want to know more?</h3>
+								<h2>Want to know more?</h2>
 								<div class="lightText">Drop us a message and we'll get back immediately.</div>
 							</div>
-							<div class="col-xs-12 margin-top-10">
+							<div class="col-xs-12 margin-top-30">
 								<form [formGroup]="contactUsForm">
 									<div class="row">
 										<div class="col-xs-12">
@@ -1085,7 +1085,7 @@
 											</mat-form-field>
 										</div>
 										<div class="col-xs-6">
-											<button mat-button color="primary" class="mat-border-button pb-block" type="submit" (click)="createGuestContacts()" style="float: right;">
+											<button mat-button color="primary" class="mat-border-button pb-block" type="submit" (click)="createGuestContacts()" style="float: right;" [disabled]="!contactUsForm.valid">
 												<span>Submit</span>
 											</button>
 										</div>
@@ -1093,7 +1093,7 @@
 								</form>
 							</div>
 						</div>
-						<hr class="margin-top-10 margin-bottom-10">
+						<hr class="margin-top-10 margin-bottom-10" *ngIf="userType === 'public'">
 						<div class="row" style="color: #777777">
 							<div class="col-xs-4" style="cursor: pointer;">
 								<a (click)="openInviteFriendsDialog()">Invite friends</a>
@@ -1187,7 +1187,7 @@
 		</div>
 		<div class="col-xs-4" style="padding-top: 9px;">
 			<span>
-				<button mat-raised-button (click)="selectJoiningDates()" color="primary">See Dates</button>
+				<button mat-raised-button (click)="selectJoiningDates()" color="primary">Apply Now</button>
 			</span>
 			<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this experience">
 				<button mat-raised-button color="primary" [disabled]="true">See Dates</button>

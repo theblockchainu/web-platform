@@ -206,7 +206,7 @@ export class SessionEditComponent implements OnInit {
 		});
 
 		this.newTopic = this._fb.group({
-			topicName: ['', Validators.requiredTrue]
+			topicName: ['', Validators.required]
 		});
 
 		this.paymentInfo = this._fb.group({
@@ -391,10 +391,10 @@ export class SessionEditComponent implements OnInit {
 				profiles[0].work.forEach(workObj => {
 					workArray.push(
 						this._fb.group({
-							position: [workObj.position, Validators.requiredTrue],
-							company: [workObj.company, Validators.requiredTrue],
-							startDate: [moment(workObj.startDate).local().toDate(), Validators.requiredTrue],
-							endDate: [workObj.endDate ? moment(workObj.endDate).local().toDate() : null, Validators.requiredTrue],
+							position: [workObj.position, Validators.required],
+							company: [workObj.company, Validators.required],
+							startDate: [moment(workObj.startDate).local().toDate(), Validators.required],
+							endDate: [workObj.endDate ? moment(workObj.endDate).local().toDate() : null, Validators.required],
 							presentlyWorking: [workObj.presentlyWorking]
 						})
 					);
@@ -1054,10 +1054,10 @@ export class SessionEditComponent implements OnInit {
 
 	private initializeWorkForm(): FormGroup {
 		return this._fb.group({
-			position: ['', Validators.requiredTrue],
-			company: ['', Validators.requiredTrue],
-			startDate: [null, Validators.requiredTrue],
-			endDate: [null, Validators.requiredTrue],
+			position: ['', Validators.required],
+			company: ['', Validators.required],
+			startDate: [null, Validators.required],
+			endDate: [null, Validators.required],
 			presentlyWorking: false
 		});
 	}

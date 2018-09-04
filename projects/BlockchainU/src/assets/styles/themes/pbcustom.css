@@ -1251,6 +1251,10 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 	background-color: #ffb;
 }
 
+.search-form .mat-form-field-label {
+	color: #777777 !important;
+}
+
 .search-form {
 	margin: 0 0.7rem;
 	flex-grow: 1; /* <-- THE SECRET SAUCE! */

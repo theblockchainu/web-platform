@@ -34,10 +34,10 @@
 						</h3>
 					</div>
 					<div class="col-md-6 mat-caption" style="padding-left: 0px;">
-						<a class="clickable" (click)="generateKnowledgeStoryDialog()" *ngIf="cookieUserId === urluserId">
+						<a class="clickable" (click)="generateKnowledgeStoryDialog()" *ngIf="cookieUserId && cookieUserId === urluserId">
 							New Knowledge Story
 						</a>
-						<a class="clickable" (click)="requestKnowledgeStory()" *ngIf="cookieUserId !== urluserId">
+						<a class="clickable" (click)="requestKnowledgeStory()" *ngIf="cookieUserId && cookieUserId !== urluserId">
 							Request Knowledge Story
 						</a>
 					</div>

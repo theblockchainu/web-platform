@@ -301,22 +301,22 @@
 								</div>
 								<div formArrayName="education">
 									<div *ngFor="let educationObj of workForm.controls['education']['controls']; let i = index" [formGroupName]="i" class="margin-bottom-30">
-										<mat-form-field [floatLabel]="'auto'" style="margin-right:10px;">
+										<mat-form-field [floatLabel]="'auto'" style="margin-right:10px;" [ngClass]="{'customWidth30': true}">
 											<input matInput formControlName="degree" type="text" style="border-bottom: 0px;" placeholder="Degree">
 											<!-- <mat-error>This field is required</mat-error> -->
 										</mat-form-field>
-										<mat-form-field [floatLabel]="'auto'" style="margin-right:10px;">
+										<mat-form-field [floatLabel]="'auto'" style="margin-right:10px;" [ngClass]="{'customWidth30': true}">
 											<input matInput formControlName="school" type="text" style="border-bottom: 0px;" placeholder="School / College">
 											<!-- <mat-error>This field is required</mat-error> -->
 										</mat-form-field>
 										<br>
-										<mat-form-field [floatLabel]="'auto'">
-											<mat-select placeholder="Start Year" formControlName="startYear" [ngClass]="{'customWidth30': true}">
+										<mat-form-field [floatLabel]="'auto'" [ngClass]="{'customWidth30': true}">
+											<mat-select placeholder="Start Year" formControlName="startYear">
 												<mat-option *ngFor="let syear of years" [value]="syear">{{syear}}</mat-option>
 											</mat-select>
 										</mat-form-field>
-										<mat-form-field [floatLabel]="'auto'">
-											<mat-select placeholder="End Year" formControlName="endYear" [ngClass]="{'customWidth30': true}">
+										<mat-form-field [floatLabel]="'auto'" [ngClass]="{'customWidth30': true}">
+											<mat-select placeholder="End Year" formControlName="endYear">
 												<mat-option *ngFor="let eyear of years" [value]="eyear">{{eyear}}</mat-option>
 											</mat-select>
 										</mat-form-field>
@@ -342,7 +342,7 @@
 							<h2 class="title">Update your profile sections that peers will see when booking sessions</h2>
 							<p class="subtitle">Write in a clear, straightforward and friendly way. We will give you tips on when to show off your personality and
 								be more descriptive.</p>
-							<button mat-raised-button color="accent" (click)="nextStep()">
+							<button mat-raised-button color="accent" (click)="nextStep()" class="margin-top-50">
 								Continue
 							</button>
 						</div>

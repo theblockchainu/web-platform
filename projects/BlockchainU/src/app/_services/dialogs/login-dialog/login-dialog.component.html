@@ -48,7 +48,7 @@
 						<mat-checkbox formControlName="rememberMe" [checked]="'false'" (change)="toggle()"> Remember me </mat-checkbox>
 					</div>
 					<div class="margin-bottom-20">
-						<button mat-raised-button class="loginbtn btn-width-large vertical-bottom" type="submit" (click)="login()">
+						<button mat-raised-button class="loginbtn btn-width-large vertical-bottom" type="submit" (click)="login()" [disabled]="loadingHttp">
 							<span class="txtcolor">Log in</span>
 						</button>
 						<br>

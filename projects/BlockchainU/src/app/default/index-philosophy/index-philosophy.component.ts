@@ -26,7 +26,7 @@ export class IndexPhilComponent implements OnInit {
 
   ngOnInit() {
     this.notifyForm = this._fb.group(
-      { email: ['', Validators.requiredTrue] }
+      { email: ['', Validators.required] }
     );
   }
 
