@@ -1311,43 +1311,45 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			(response: any) => {
 				for (const responseObj of response) {
 					responseObj.collections.forEach(collection => {
-						let experienceLocation = 'Unknown location';
-						let lat = 37.5293864;
-						let lng = -122.008471;
-						if (collection.status === 'active') {
-							if (collection.contents) {
-								collection.contents.forEach(content => {
-									if (content.locations && content.locations.length > 0
-										&& content.locations[0].city !== undefined
-										&& content.locations[0].city.length > 0
-										&& content.locations[0].map_lat !== undefined
-										&& content.locations[0].map_lat.length > 0) {
-										experienceLocation = content.locations[0].city;
-										lat = parseFloat(content.locations[0].map_lat);
-										lng = parseFloat(content.locations[0].map_lng);
-									}
-								});
-								collection.location = experienceLocation;
-								collection.lat = lat;
-								collection.lng = lng;
-							}
-							if (collection.owners && collection.owners[0].reviewsAboutYou) {
-								collection.rating = this._collectionService
-									.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
-								collection.ratingCount = this._collectionService
-									.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
-							}
-							let hasActiveCalendar = false;
-							if (collection.calendars) {
-								collection.calendars.forEach(calendar => {
-									if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
-										hasActiveCalendar = true;
-										return;
-									}
-								});
-							}
-							if (hasActiveCalendar) {
-								this.recommendations.collections.push(collection);
+						if (collection.id !== this.experienceId) {
+							let experienceLocation = 'Unknown location';
+							let lat = 37.5293864;
+							let lng = -122.008471;
+							if (collection.status === 'active') {
+								if (collection.contents) {
+									collection.contents.forEach(content => {
+										if (content.locations && content.locations.length > 0
+											&& content.locations[0].city !== undefined
+											&& content.locations[0].city.length > 0
+											&& content.locations[0].map_lat !== undefined
+											&& content.locations[0].map_lat.length > 0) {
+											experienceLocation = content.locations[0].city;
+											lat = parseFloat(content.locations[0].map_lat);
+											lng = parseFloat(content.locations[0].map_lng);
+										}
+									});
+									collection.location = experienceLocation;
+									collection.lat = lat;
+									collection.lng = lng;
+								}
+								if (collection.owners && collection.owners[0].reviewsAboutYou) {
+									collection.rating = this._collectionService
+										.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+									collection.ratingCount = this._collectionService
+										.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
+								}
+								let hasActiveCalendar = false;
+								if (collection.calendars) {
+									collection.calendars.forEach(calendar => {
+										if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
+											hasActiveCalendar = true;
+											return;
+										}
+									});
+								}
+								if (hasActiveCalendar) {
+									this.recommendations.collections.push(collection);
+								}
 							}
 						}
 					});
