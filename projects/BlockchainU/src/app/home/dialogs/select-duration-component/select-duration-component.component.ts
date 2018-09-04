@@ -16,6 +16,7 @@ export class SelectDurationComponentComponent implements OnInit {
 
 
   ngOnInit() {
+    console.log(this.data);
     this.dialogRef.backdropClick().subscribe(() => {
       this.dialogRef.close(this.data);
     });
