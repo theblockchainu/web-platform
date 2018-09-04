@@ -40,6 +40,15 @@
 										</mat-select>
 									</mat-form-field>
 								</div>
+								<div class="margin-right-10" style="float: left;">
+									<mat-form-field class="filterFormField" [floatLabel]="'never'">
+										<mat-select placeholder="Subtype" formControlName="subtype" multiple>
+											<mat-option *ngFor="let subtype of availableSubtypes" [value]="subtype">
+												{{subtype}}
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
 							</form>
 						</div>
 					</div>

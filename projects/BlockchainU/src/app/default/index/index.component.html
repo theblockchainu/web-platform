@@ -138,7 +138,7 @@
 					<app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
 				</div>
 			</div>
-			<div class="read-more mt-2 mat-body-2" *ngIf="experiences && experiences.length > 0">
+			<div class="read-more mt-2 mat-body-2" *ngIf="experiences && experiences.length > 5">
 				<a [routerLink]="['home','experiences']">Show all ({{experiences.length}}+)</a>
 			</div>
 		</div>
@@ -305,7 +305,7 @@
 					<app-class-card *ngIf="i < 5" [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>
 				</div>
 			</div>
-			<div class="read-more mt-2 mat-body-2" *ngIf="classes && classes.length > 0">
+			<div class="read-more mt-2 mat-body-2" *ngIf="classes && classes.length > 5">
 				<a [routerLink]="'/home/classes'">Show all ({{classes.length}}+)</a>
 			</div>
 		</div>
