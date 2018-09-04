@@ -4,15 +4,17 @@
 			<mat-icon *ngIf="!(class.bookmarks && class.bookmarks[0] && class.bookmarks[0].peer && class.bookmarks[0].peer[0] && class.bookmarks[0].peer[0].id===userId)">
 				bookmark</mat-icon>
 			<mat-icon *ngIf="class.bookmarks && class.bookmarks[0] && class.bookmarks[0].peer && class.bookmarks[0].peer[0] && class.bookmarks[0].peer[0].id===userId"
-			          color="primary">bookmark</mat-icon>
+			 color="primary">bookmark</mat-icon>
 		</button>
-		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('class',class.id,class.title, class.description, class.headline, envVariable.apiUrl + class.imageUrls[0])" matTooltip="Share">
+		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('class',class.id,class.title, class.description, class.headline, envVariable.apiUrl + class.imageUrls[0])"
+		 matTooltip="Share">
 			<mat-icon>share</mat-icon>
 		</button>
 	</span>
 	<a [routerLink]="'/class/'+class.id">
 		<div class="">
-			<div class="recommendation-thumb" (mouseenter)="onMouseEnter(class)" (mouseleave)="onMouseLeave(class)" *ngIf="class.imageUrls && class.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + class.imageUrls[0] + '/300' + '), url(../../assets/images/collection-placeholder.jpg)', 'background-size': 'cover'}">
+			<div class="recommendation-thumb" (mouseenter)="onMouseEnter(class)" (mouseleave)="onMouseLeave(class)" *ngIf="class.imageUrls && class.imageUrls.length>0"
+			 [ngStyle]="{'background': 'url(' + envVariable.apiUrl + class.imageUrls[0] + '/300' + '), url(../../assets/images/collection-placeholder.jpg)', 'background-size': 'cover'}">
 				<!--<div class="recommendation-price" [ngClass]="{'hidden': class.cardInFocus}">
 					<span class="mat-body-2">{{class.price | convertCurrency: class.currency |async}}</span>
 				</div>-->
