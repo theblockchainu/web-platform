@@ -212,7 +212,6 @@ export class ExperiencesComponent implements OnInit {
 		this.loading = true;
 		this.fetchTopics().subscribe(
 			response => {
-				this.loading = false;
 				this.availableTopics = response;
 				this.topicsBackup = _.cloneDeep(response);
 				this.fetchExperiences();
@@ -242,6 +241,7 @@ export class ExperiencesComponent implements OnInit {
 	}
 
 	fetchExperiences(): void {
+		this.loading = true;
 		let query;
 		this.selectedTopics = [];
 		for (const topicObj of this.availableTopics) {
@@ -333,7 +333,9 @@ export class ExperiencesComponent implements OnInit {
 							}
 						});
 					}
+					this.loading = false;
 				}, (err) => {
+					this.loading = false;
 					console.log(err);
 				}
 			);

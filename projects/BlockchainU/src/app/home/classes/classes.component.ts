@@ -200,7 +200,6 @@ export class ClassesComponent implements OnInit {
 		this.loading = true;
 		this.fetchTopics().subscribe(
 			response => {
-				this.loading = false;
 				this.availableTopics = response;
 				this.topicsBackup = _.cloneDeep(response);
 				this.fetchClasses();
@@ -228,6 +227,7 @@ export class ClassesComponent implements OnInit {
 	}
 
 	fetchClasses(): void {
+		this.loading = true;
 		let query;
 		this.selectedTopics = [];
 		for (const topicObj of this.availableTopics) {
@@ -297,7 +297,9 @@ export class ClassesComponent implements OnInit {
 							}
 						});
 					}
+					this.loading = false;
 				}, (err) => {
+					this.loading = false;
 					console.log(err);
 				}
 			);

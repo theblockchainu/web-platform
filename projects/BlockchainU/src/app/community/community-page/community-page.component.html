@@ -4,12 +4,12 @@
 			<ngx-loading [show]="true"></ngx-loading>
 		</div>
 		<div *ngIf="community">
-			<div class="row more-actions center" *ngIf="userType === 'public'">
+			<!--<div class="row more-actions center" *ngIf="userType === 'public'">
 				<div class="col-md-10 col-md-offset-1">
 					<span>Cannot find a community you were looking for?
 						<a class="clickable" (click)="dialogsService.requestCommunityDialog()">Let us know</a> and we'll do our best to create one for you</span>
 				</div>
-			</div>
+			</div>-->
 			<div class="row pending-actions" *ngIf="community.status === 'cancelled' && userType==='owner' ">
 				<div class="col-md-10 col-md-offset-1">
 					<span>This community has been cancelled by one of the owners</span>
@@ -25,7 +25,7 @@
 					<span>This is a preview. Submit your community to get it approved</span>
 				</div>
 			</div>
-			<div class="row pending-actions center" *ngIf="(userType === 'public' && userId !== undefined && accountApproved !== 'true')">
+			<div class="row pending-actions center" *ngIf="(userType === 'public' && userId !== undefined && userId.length > 5 && accountApproved !== 'true')">
 				<div class="col-md-10 col-md-offset-1">
 					<span>Your account is still under review. You can sign-up for this community after you are approved.
 						<a href="javascript:void(0);" (click)="openVerificationPage()">Check verification status</a>
@@ -44,12 +44,12 @@
 					<div class="row community-content">
 						<div class="col-md-7 col-xs-12 left-content">
 							<!--COVER IMAGE-->
-							<div class="row coverImage">
+							<div class="row coverImage" *ngIf="userType === 'public'">
 								<div class="col-md-12">
 									<ngu-carousel [inputs]="carouselBanner">
 										<ngu-item NguCarouselItem class="bannerStyle" *ngFor="let imageUrl of carouselImages">
 											<div class="row">
-												<div class="col-md-12" [ngStyle]="{'background': 'url(' + imageUrl  + '/500' + '), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}"
+												<div class="col-md-12" [ngStyle]="{'background': 'url(' + imageUrl  + '/500' + '), url(../../assets/images/community-banner-bg.jpg)', 'background-size': 'cover'}"
 												 [ngClass]="'community-banner'">
 												</div>
 											</div>
@@ -64,7 +64,7 @@
 								{{community.title | ucwords}}
 							</div>
 							<!--DESCRIPTION SECTION-->
-							<div class="row Description">
+							<div class="row Description" *ngIf="userType === 'public'">
 								<div class="col-md-12" style="text-align: justify;">
 									{{community.description | ucfirst}}
 								</div>
@@ -72,8 +72,9 @@
 							<!--TOPICS SECTION-->
 							<div class="row Topics margin-top-20 margin-bottom-40">
 								<div class="col-md-12">
+									<i class="fa fa-tag lightText"></i>&nbsp;&nbsp;&nbsp;
 									<mat-chip-list style="display: inline-block;">
-										<mat-chip class="square" *ngFor="let topic of topicFix"> {{topic.name | ucwords}}
+										<mat-chip *ngFor="let topic of topicFix"> {{topic.name | ucwords}}
 										</mat-chip>
 									</mat-chip-list>
 									<!--<mat-icon class="clickable" color="primary" style="margin-left: 20px; top: 5px;">edit</mat-icon>-->
@@ -117,11 +118,11 @@
 								<a mat-tab-link [routerLink]="['questions']" [active]="activeTab === 'questions'" style="padding-left: 0px !important; min-width: min-content !important;">
 									Q & A
 								</a>
-								<a mat-tab-link [routerLink]="['classes']" [active]="activeTab === 'classes'" style="min-width: min-content !important;">
-									Classes
-								</a>
 								<a mat-tab-link [routerLink]="['experiences']" [active]="activeTab === 'experiences'" style="min-width: min-content !important;">
 									Experiences
+								</a>
+								<a mat-tab-link [routerLink]="['classes']" [active]="activeTab === 'classes'" style="min-width: min-content !important;">
+									Classes
 								</a>
 								<a mat-tab-link [routerLink]="['links']" [active]="activeTab === 'links'" style="min-width: min-content !important;">
 									Shared links
@@ -140,8 +141,8 @@
 							<!--ACTION BUTTONS-->
 							<div class="row hide-small" style="margin-top: 15px; text-align: right;" *ngIf="userType === 'public'">
 								<div class="col-md-12">
-									<span matTooltip="Please wait for your account to be approved before joining this community" [matTooltipDisabled]="accountApproved === 'true'">
-										<button mat-raised-button class="pb-block" color="primary" [disabled]="accountApproved !== 'true'" (click)="joinCommunity()">Join Community</button>
+									<span>
+										<button mat-raised-button class="pb-block" color="primary" (click)="joinCommunity()">Join Community</button>
 									</span>
 									<hr>
 								</div>
@@ -233,10 +234,16 @@
 									<span *ngIf="!hasBookmarked">Bookmark</span>
 									<span *ngIf="hasBookmarked">Saved</span>
 								</div>
-								<div class="col-xs-4" style="cursor: pointer;">
-									Share&nbsp;
-									<i class="fa fa-facebook-square clickable" aria-hidden="true" style="font-size: 1rem;" (click)="shareOnFb()"></i>
-									<i class="fa fa-twitter-square clickable" aria-hidden="true" style="font-size: 1rem;" (click)="shareOnTwitter()"></i>
+								<div class="col-xs-4" style="text-align: right; font-size: 18px;">
+									<a shareButton="facebook" href="javascript:;" [url]="inviteLink">
+										<i class="fab fa-facebook-square"></i>
+									</a>&nbsp;
+									<a shareButton="linkedin" href="javascript:;" [url]="inviteLink">
+										<i class="fab fa-linkedin"></i>
+									</a>&nbsp;
+									<a shareButton="twitter" href="javascript:;" [url]="inviteLink">
+										<i class="fab fa-twitter-square"></i>
+									</a>
 								</div>
 							</div>
 						</div>
@@ -248,11 +255,9 @@
 	<div class="bottomButton">
 		<div class="row" style="text-align: left;" *ngIf="userType === 'public'">
 			<div class="col-md-12">
-				<span matTooltip="Please wait for your account to be approved before joining this community" [matTooltipDisabled]="accountApproved === 'true'">
-					<button mat-raised-button [disabled]="accountApproved !== 'true'" class="pb-block" color="primary" (click)="joinCommunity()"
-					 *ngIf="userType === 'public'">Join Community</button>
+				<span>
+					<button mat-raised-button class="pb-block" color="primary" (click)="joinCommunity()">Join Community</button>
 				</span>
-				<hr>
 			</div>
 		</div>
 		<div class="row" style="text-align: left" *ngIf="userType==='owner' || userType==='participant'">

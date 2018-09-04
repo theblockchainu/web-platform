@@ -98,7 +98,6 @@ export class CommunitiesComponent implements OnInit {
         this.loading = true;
         this.fetchTopics().subscribe(
             response => {
-                this.loading = false;
                 this.availableTopics = response;
                 this.topicsBackup = _.cloneDeep(response);
                 this.fetchCommunities();
@@ -128,6 +127,7 @@ export class CommunitiesComponent implements OnInit {
     }
 
     fetchCommunities(): void {
+    	this.loading = true;
         let query;
         this.selectedTopics = [];
         for (const topicObj of this.availableTopics) {
@@ -207,7 +207,9 @@ export class CommunitiesComponent implements OnInit {
                     if (!this.initialized) {
                         this.initialized = true;
                     }
+					this.loading = false;
                 }, (err) => {
+					this.loading = false;
                     console.log(err);
                 }
             );

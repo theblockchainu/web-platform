@@ -6,7 +6,7 @@
 	</div>
 </div>
 <div *ngIf="!loadingUser">
-	<div class="row margin-top-20" *ngIf="userType !== 'public'">
+	<div class="row margin-top-20">
 		<div class="col-md-1 col-xs-2">
 			<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
 		</div>
@@ -26,15 +26,15 @@
 			</mat-form-field>
 		</div>
 	</div>
-	<div class="row" style="margin-top: -20px;" *ngIf="userType !== 'public'">
+	<div class="row" style="margin-top: -20px;">
 		<div class="col-md-12">
-			<form [formGroup]="questionForm" (ngSubmit)="postQuestion()" autocomplete="off">
-				<mat-form-field [floatLabel]="'auto'" class="full-width margin-top-10" style="font-size: 15px;">
+			<form [formGroup]="questionForm" autocomplete="off">
+				<mat-form-field [floatLabel]="'never'" class="full-width margin-top-10" style="font-size: 15px;">
 					<input matInput formControlName="text" placeholder="Start your question with 'What', 'How', or 'Why', etc" required>
 				</mat-form-field>
 				<div class="row">
-					<div class="col-md-6 col-xs-3 mat-caption">
-						<span *ngIf="questionKarmaBurn > 0">
+					<div class="col-md-9 col-xs-7 mat-caption">
+						<!--<span *ngIf="questionKarmaBurn > 0">
 							<span *ngIf="gyanBalance > 0">
 								You would need to burn a total of
 								<i class="fa fa-fire"></i> {{questionKarmaBurn}} Karma
@@ -43,15 +43,15 @@
 								Your scholarship would need to burn a total of
 								<i class="fa fa-fire"></i> {{questionKarmaBurn}} Karma
 							</span>
-						</span>
+						</span>-->
 					</div>
-					<div class="col-md-3 col-xs-4">
+					<div class="col-md-3 col-xs-4" [hidden]="true">
 						<mat-form-field [floatLabel]="'auto'" class="pull-right full-width">
-							<input matInput type="number" formControlName="gyan" placeholder="Gyan Value">
+							<input matInput type="number" formControlName="gyan" placeholder="Gyan Bounty">
 						</mat-form-field>
 					</div>
 					<div class="col-md-3 col-xs-5">
-						<button mat-raised-button color="primary" [disabled]="!questionForm.valid" class="pull-right">
+						<button mat-raised-button color="primary" [disabled]="!questionForm.valid" class="pull-right" (click)="postQuestion()">
 							<span *ngIf="!busyQuestion">Post question</span>
 							<span *ngIf="busyQuestion"> </span>
 							<ngx-loading [show]="busyQuestion"></ngx-loading>
@@ -67,9 +67,10 @@
 			<ngx-loading [show]="true"></ngx-loading>
 		</div>
 		<div class="col-md-12">
-			<div class="row lighterText" *ngIf="questions !== undefined && questions.length === 0">
+			<div class="row mat-caption" *ngIf="questions !== undefined && questions.length === 0">
 				<div class="col-md-12">
-					<div class="emptySectionText">Be the first one to ask a question on this community</div>
+					<div class="community-border-box" *ngIf="userType === 'participant'">Be the first one to ask a question on this community</div>
+					<div class="community-border-box clickable primaryColor" *ngIf="userType === 'public'">Have a question? Join this community now!</div>
 				</div>
 			</div>
 			<div class="row margin-top-10" *ngFor="let question of questions">
@@ -101,11 +102,16 @@
 								</div>
 							</div>
 							<div class="">
-								<span class="mat-caption">Asked {{question.createdAt |extractTime:'MMM Do'}}</span>
+								<span class="mat-caption">
+									Asked {{question.createdAt |extractTime:'MMM Do'}}
+									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;">fiber_manual_record</mat-icon>
+									<span *ngIf="question.answers">{{question.answers.length}} Answers</span>
+									<span *ngIf="!question.answers">0 Answers</span>
+								</span>
 							</div>
 						</div>
 					</div>
-					<div style="margin-top: 20px;" *ngIf="userType !== 'public'">
+					<div style="margin-top: 20px;">
 						<a *ngIf="question.peer[0].id !== userId && question.open" href="javascript:void(0);" class="answerButton" (click)="createAnswerForm(question)">
 							<b>Answer</b>
 						</a>
@@ -139,7 +145,7 @@
 						<form [formGroup]="answerForm" (ngSubmit)="postAnswer(question)">
 							<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
 							<mat-form-field [floatLabel]="'auto'" class="answerFormField">
-								<textarea matInput matTextareaAutosize #answerText maxlength="1000" rows="1" formControlName="text" placeholder="Answer the above question"
+								<textarea matInput matTextareaAutosize #answerText maxlength="5000" rows="1" formControlName="text" placeholder="Answer the above question"
 								 cdkAutosizeTextarea="true"></textarea>
 								<mat-hint align="end" *ngIf="answerText.value.length < 50">At least {{50 - answerText.value.length}} more characters</mat-hint>
 							</mat-form-field>
@@ -162,7 +168,7 @@
 									<mat-hint align="end">{{description1.value.length}} / 2000</mat-hint>
 								</mat-form-field>
 								<div style="text-align: right">
-									<button [disabled]="!commentForm.valid" mat-raised-button color="primary">
+									<button [disabled]="!commentForm.valid" mat-raised-button color="primary" class="margin-top-20">
 										<span *ngIf="!busyComment">Comment</span>
 										<ngx-loading [show]="busyComment"></ngx-loading>
 									</button>
@@ -218,7 +224,7 @@
 											<input matInput type="text" #description2 maxlength="2000" formControlName="description" placeholder="Reply to above comment...">
 											<mat-hint align="end">{{description2.value.length}} / 2000</mat-hint>
 										</mat-form-field>
-										<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary">
+										<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right margin-top-20" color="primary">
 											<span *ngIf="!busyReply">Post</span>
 											<ngx-loading [show]="busyReply"></ngx-loading>
 										</button>
@@ -308,18 +314,18 @@
 									</div>
 								</div>
 								<div class="mat-body-1 pre-wrapped">{{answer.text | ucfirst}}</div>
-								<div style="margin-top: 20px;" *ngIf="userType !== 'public'">
+								<div style="margin-top: 20px;">
 									<a class="clickable acceptButton" *ngIf="question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept && question.open"
 									 (click)="acceptAnswer(question, answer)">
 										<span>
-											<i class="fa fa-check-circle-o"></i>
+											<i class="fa fa-check-circle-o"></i>&nbsp;&nbsp;&nbsp;
 											<b>Accept</b>
 										</span>
 									</a>
 									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept && question.open">fiber_manual_record</mat-icon>
 									<a class="clickable acceptButton" *ngIf="answer.accept">
 										<span>
-											<i class="fa fa-check-circle"></i>
+											<i class="fa fa-check-circle"></i>&nbsp;&nbsp;&nbsp;
 											<b>Accepted</b>&nbsp;&nbsp;&nbsp;
 											<span style="font-size: 10px;">+ {{question.gyan}} GYAN</span>
 										</span>
@@ -356,7 +362,7 @@
 											<mat-hint align="end">{{description3.value.length}} / 2000</mat-hint>
 										</mat-form-field>
 										<div style="text-align: right">
-											<button [disabled]="!commentForm.valid" mat-raised-button color="primary">
+											<button [disabled]="!commentForm.valid" mat-raised-button color="primary" class="margin-top-20">
 												<span *ngIf="!busyComment">Comment</span>
 												<ngx-loading [show]="busyComment"></ngx-loading>
 											</button>
@@ -413,7 +419,7 @@
 													<input matInput type="text" #description4 maxlength="2000" formControlName="description" placeholder="Reply to above comment...">
 													<mat-hint align="end">{{description4.value.length}} / 2000</mat-hint>
 												</mat-form-field>
-												<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary">
+												<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right margin-top-20" color="primary">
 													<span *ngIf="!busyReply">Post</span>
 													<ngx-loading [show]="busyReply"></ngx-loading>
 												</button>
@@ -468,8 +474,11 @@
 							</div>
 						</div>
 						<div class="row" *ngIf="question.answers === undefined || question.answers.length === 0">
-							<div class="col-md-12 emptySectionText" style="margin-bottom: -10px;">
+							<div class="col-md-12 emptySectionText" style="margin-bottom: -10px;" *ngIf="question.peer[0].id !== userId">
 								Be the first one to answer this question!
+							</div>
+							<div class="col-md-12 emptySectionText" style="margin-bottom: -10px;" *ngIf="question.peer[0].id === userId">
+								Awaiting answers from other users.
 							</div>
 						</div>
 					</div>

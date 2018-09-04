@@ -819,8 +819,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				this.contactUsForm = this._fb.group(
 					{
 						first_name: [res.profiles[0].first_name, Validators.required],
-						last_name: [res.profiles[0].last_name, Validators.required],
-						email: [res.email, Validators.requiredTrue],
+						email: [res.email, Validators.required],
 						subject: [''],
 						message: ['', Validators.required],
 						phone: [(res.profiles[0].phone_numbers[0]) ? res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '']
@@ -830,8 +829,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				this.contactUsForm = this._fb.group(
 					{
 						first_name: ['', Validators.required],
-						last_name: ['', Validators.required],
-						email: ['', Validators.requiredTrue],
+						email: ['', Validators.required],
 						subject: [''],
 						message: ['', Validators.required],
 						phone: ['']
@@ -1818,11 +1816,10 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		console.log('Submitting request');
 
 		const first_name = this.contactUsForm.controls['first_name'].value;
-		const last_name = this.contactUsForm.controls['last_name'].value;
 		const email = this.contactUsForm.controls['email'].value;
 		const subject = 'Class: ' + this.class.title;
 		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value;
-		this._authenticationService.createGuestContacts(first_name, last_name, email, subject, message)
+		this._authenticationService.createGuestContacts(first_name, '', email, subject, message)
 			.subscribe(res => {
 				fbq('track', 'Lead', {
 					currency: 'USD',

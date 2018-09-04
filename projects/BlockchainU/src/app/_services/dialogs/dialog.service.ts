@@ -100,7 +100,7 @@ export class DialogsService {
 
         dialogRef5 = this.dialog.open(VerifyIdDialogComponent, {
             panelClass: 'responsive-dialog', width: '60vw',
-            height: '100vh'
+            height: '90vh'
         });
         return dialogRef5.afterClosed();
     }
@@ -534,7 +534,7 @@ export class DialogsService {
             {
                 panelClass: 'responsive-dialog',
                 width: '55vw',
-                height: '75vh',
+                height: '80vh',
             }
         );
         dialogRef5.componentInstance.searchUrl = inputs.searchTopicURL;

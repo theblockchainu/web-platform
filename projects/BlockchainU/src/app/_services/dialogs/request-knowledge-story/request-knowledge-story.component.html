@@ -6,13 +6,31 @@
 					<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 				</button>
 				<div class="mat-display-1" style="margin-bottom: 20px;">
-					Request knowledge story
+					Ask for private knowledge story
+				</div>
+				<div class="mat-caption">
+					Knowledge Story is like a <b>Smart Resume</b>.
+					<br><br>
+					Every Gyan point this user received has become a part of their knowledge story.
+					<br>
+					To get a sense of this user's knowledge, you can:
+					<ul>
+						<li>View available public stories shared by the user (if any)</li>
+						<li>Request for a private story on specific topics</li>
+					</ul>
 				</div>
 			</div>
 		</div>
 		<hr>
-		<div class="row margin-top-60">
+		<div class="row margin-top-30">
 			<div class="col-md-12">
+				<div class="margin-bottom-20 mat-body-2">
+					<b>
+						Hi,
+						<br>
+						Can you please share a private knowledge story with me on the following topics?
+					</b>
+				</div>
 				<span class="ui-autocomplete ui-widget ui-autocomplete-multiple multiselectBox">
 					<ul class="ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all" style="padding-left: 0.0em">
 						<li class="ui-autocomplete-input-token col-sm-12">
@@ -53,13 +71,15 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<div mat-dialog-actions>
 		<div class="row margin-top-40">
 			<div class="col-md-12">
-				<button (click)="submitTopics()" class="pull-right" mat-raised-button color="accent">
-					Submit
-				</button>
+				<div class="row">
+					<div class="col-md-12">
+						<button (click)="submitTopics()" class="pull-right" mat-raised-button color="primary" [disabled]="!selected || selected.length <= 0">
+							Send Request
+						</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

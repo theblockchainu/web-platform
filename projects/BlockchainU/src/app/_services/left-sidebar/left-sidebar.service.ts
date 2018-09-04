@@ -129,27 +129,25 @@ export class LeftSidebarService {
     public updateSessionMenu(sidebarMenuItems, dataToUpdate: SessionConfigObject) {
         let completedSections = 0;
         if (dataToUpdate.profileObject) {
-            if (dataToUpdate.profileObject.headline && dataToUpdate.profileObject.description) {
-                sidebarMenuItems[0].submenu[1].complete = true;
+            if (dataToUpdate.profileObject.headline && dataToUpdate.profileObject.headline.length > 0 && dataToUpdate.profileObject.description && dataToUpdate.profileObject.description.length > 0) {
+                sidebarMenuItems[0].submenu[0].complete = true;
                 completedSections++;
             }
 
             if (dataToUpdate.profileObject.picture_url) {
-                sidebarMenuItems[0].submenu[2].complete = true;
+                sidebarMenuItems[0].submenu[1].complete = true;
                 completedSections++;
             }
 
             if (dataToUpdate.profileObject.location_lat && dataToUpdate.profileObject.other_languages
                 && dataToUpdate.profileObject.other_languages.length > 0) {
-                sidebarMenuItems[0].submenu[3].complete = true;
+                sidebarMenuItems[0].submenu[2].complete = true;
                 completedSections++;
             }
-
-
         }
 
         if (dataToUpdate.educationObject && dataToUpdate.educationObject.length > 0) {
-            sidebarMenuItems[0].submenu[4].complete = true;
+            sidebarMenuItems[0].submenu[3].complete = true;
         }
 
         if (dataToUpdate.topicsObject) {
