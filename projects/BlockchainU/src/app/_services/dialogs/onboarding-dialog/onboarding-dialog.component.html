@@ -9,12 +9,13 @@
 							<div class="text-center">
 								<img src="/assets/images/bu_white.png" alt="The Blockchain University-logo" style="width: 40px;">
 								<h1 class="mat-title title-explore text-center margin-top-20">Welcome to The Blockchain University</h1>
-								<div class="text-white margin-top-40">Teachers and students on The Blockchain University are real people with real knowledge. That's
-									why you'll have to confirm a few, quick details to confirm your account.</div>
+								<div class="text-white margin-top-40">Teachers and students on The Blockchain University are real people with real
+									knowledge. That's why you'll have to confirm a few, quick details to confirm your account.</div>
 								<div class="checkbox margin-top-50">
-									<button *ngIf="!userIdentities || userIdentities.length === 0 || hasPassword" mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" (click)="continue(1)">Next
-										- 2 steps left</button>
-									<button *ngIf="userIdentities && userIdentities.length > 0 && !hasPassword" mat-raised-button class="customBtn mat-elevation-z6 clickable" type="button" color="accent" (click)="continue(1)">Next - 3 steps left</button>
+									<button *ngIf="!userIdentities || userIdentities.length === 0 || hasPassword" mat-raised-button class="customBtn mat-elevation-z6 clickable"
+									 type="button" color="accent" (click)="continue(1)">Next - 2 steps left</button>
+									<button *ngIf="userIdentities && userIdentities.length > 0 && !hasPassword" mat-raised-button class="customBtn mat-elevation-z6 clickable"
+									 type="button" color="accent" (click)="continue(1)">Next - 3 steps left</button>
 								</div>
 							</div>
 						</div>
@@ -148,8 +149,8 @@
 							<i class="fa fa-envelope-o fa-3x" style="color:#FF5B5F" aria-hidden="true"></i>
 						</button>
 						<h2 class="headline">Verify your email address</h2>
-						<p class="description1 margin-bottom-40">Please let us know how can we reach you by email. To help keep your Blockchain University
-							account secure, make sure only you can log into this email address.</p>
+						<p class="description1 margin-bottom-40">Please let us know how can we reach you by email. To help keep your Blockchain
+							University account secure, make sure only you can log into this email address.</p>
 						<mat-form-field [floatLabel]="'auto'" style="width:50% !important" class="pb-block margin-bottom-60 margin-top-20">
 							<input type="email" matInput #email formControlName="email" placeholder="Email Address" />
 						</mat-form-field>
@@ -186,6 +187,7 @@
 							<p class="mat-h6 lightText">
 								<a (click)="resendEmailOTP()" style="cursor: pointer;">Resend code</a>. Please wait at least 5 minutes before
 								<br/> requesting another code.
+								<a *ngIf="userIdentities && userIdentities.length>0" (click)="step=3" class="clickable">Change Email</a>
 							</p>
 						</div>
 					</div>
