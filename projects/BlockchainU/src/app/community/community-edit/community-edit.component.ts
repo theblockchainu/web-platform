@@ -171,7 +171,7 @@ export class CommunityEditComponent implements OnInit {
     this.interest1 = new FormGroup({});
 
     this.newTopic = this._fb.group({
-      topicName: ['', Validators.requiredTrue]
+      topicName: ['', Validators.required]
     });
 
     this.community = this._fb.group({

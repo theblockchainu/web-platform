@@ -44,21 +44,22 @@
 								</mat-select>
 							</mat-form-field>
 							<br>
+							<br>
 							<mat-form-field [floatLabel]="'always'" style="width: 30%">
 								<mat-select placeholder="Birth Month" style="margin-right:10px;" formControlName="dobMonth">
 									<!-- <mat-option *ngFor="let month of months;let i = index" [value]="i+1">{{month}}</mat-option> -->
-									<mat-option value="01">January</mat-option>
-									<mat-option value="02">February</mat-option>
-									<mat-option value="03">March</mat-option>
-									<mat-option value="04">April</mat-option>
-									<mat-option value="05">May</mat-option>
-									<mat-option value="06">June</mat-option>
-									<mat-option value="07">July</mat-option>
-									<mat-option value="08">August</mat-option>
-									<mat-option value="09">September</mat-option>
-									<mat-option value="10">October</mat-option>
-									<mat-option value="11">November</mat-option>
-									<mat-option value="12">December</mat-option>
+									<mat-option [value]="1">January</mat-option>
+									<mat-option [value]="2">February</mat-option>
+									<mat-option [value]="3">March</mat-option>
+									<mat-option [value]="4">April</mat-option>
+									<mat-option [value]="5">May</mat-option>
+									<mat-option [value]="6">June</mat-option>
+									<mat-option [value]="7">July</mat-option>
+									<mat-option [value]="8">August</mat-option>
+									<mat-option [value]="9">September</mat-option>
+									<mat-option [value]="10">October</mat-option>
+									<mat-option [value]="11">November</mat-option>
+									<mat-option [value]="12">December</mat-option>
 								</mat-select>
 							</mat-form-field>
 							<mat-form-field [floatLabel]="'always'" style="width: 30%">
@@ -107,6 +108,17 @@
 							<mat-hint class="hint" align="start">
 								This is only shared once you have a confirmed booking with another Blockchain University user. This is how we can all get in touch.
 							</mat-hint>
+							<mat-form-field [floatLabel]="'always'" class="pb-block margin-top-30" style="margin-bottom: 20px">
+								<textarea matInput #description maxlength="2000" formControlName="description" rows="1" matTextareaAutosize placeholder="Describe yourself"
+								          required></textarea>
+								<mat-error>This field is required</mat-error>
+								<mat-hint align="start" class="col-md-10 padding-left-0">The Blockchain University is built on relationships. Help other people get to know you. Tell them about the things you like: What
+								                                                         are 5 things you canʼt live without? Share your favorite travel destinations, books, movies, shows, music, food.
+								                                                         Tell them what itʼs like to have you as a learner or teacher: Whatʼs your style of learning? Of Blockchain University teaching?
+								                                                         Tell them about you: Do you have a life motto?</mat-hint>
+								<mat-hint class="hint" align="end">{{description.value.length}} / 2000</mat-hint>
+							</mat-form-field>
+							<br>
 							<br>
 							<mat-form-field [floatLabel]="'always'" placeholder="never" class="pb-block margin-top-30 max-height-40">
 								<input type="text" placeholder="Preferred Language" matInput formControlName="preferred_language" [matAutocomplete]="auto">
@@ -138,16 +150,6 @@
 									<agm-marker [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"></agm-marker>
 								</agm-map>
 							</div>
-							<mat-form-field [floatLabel]="'always'" class="pb-block margin-top-30" style="margin-bottom: 20px">
-								<textarea matInput #description maxlength="2000" formControlName="description" rows="1" matTextareaAutosize placeholder="Describe yourself"
-								 required></textarea>
-								<mat-error>This field is required</mat-error>
-								<mat-hint align="start" class="col-md-10 padding-left-0">The Blockchain University is built on relationships. Help other people get to know you. Tell them about the things you like: What
-									are 5 things you canʼt live without? Share your favorite travel destinations, books, movies, shows, music, food.
-									Tell them what itʼs like to have you as a learner or teacher: Whatʼs your style of learning? Of Blockchain University teaching?
-									Tell them about you: Do you have a life motto?</mat-hint>
-								<mat-hint class="hint" align="end">{{description.value.length}} / 2000</mat-hint>
-							</mat-form-field>
 
 							<div class="mat-subheading-2 margin-top-90" style="color:#767676">
 								Additional Details

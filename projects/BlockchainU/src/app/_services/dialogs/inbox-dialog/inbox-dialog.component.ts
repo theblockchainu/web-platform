@@ -103,8 +103,11 @@ export class InboxDialogComponent implements OnInit {
 		this.router.navigate(['console', 'inbox']);
 		this.dialogRef.close();
 	}
-
-
+	
+	public goToNotifications() {
+		this.router.navigate(['console', 'account', 'notifications']);
+		this.dialogRef.close();
+	}
 
 
 	private getNotifications() {

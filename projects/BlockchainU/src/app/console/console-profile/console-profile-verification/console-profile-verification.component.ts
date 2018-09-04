@@ -60,13 +60,13 @@ export class ConsoleProfileVerificationComponent implements OnInit {
 	}
 
 	public openEmailVerify() {
-		this.dialogsService.openEmailVerify().subscribe(res => {
+		this.dialogsService.openOnboardingDialog(true).subscribe(res => {
 			this.getProfile();
 		});
 	}
 
 	public openPhoneVerify() {
-		this.dialogsService.openPhoneVerify().subscribe(res => {
+		this.dialogsService.openOnboardingDialog(true).subscribe(res => {
 			this.getProfile();
 		});
 	}

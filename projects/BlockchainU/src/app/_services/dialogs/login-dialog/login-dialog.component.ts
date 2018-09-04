@@ -69,6 +69,7 @@ export class LoginComponentDialog implements OnInit {
 	}
 
 	public login() {
+		this.loadingHttp = true;
 		this.email = this.loginForm.controls['email'].value;
 		this.passWord = this.loginForm.controls['password'].value;
 		this.rememberMe = this.loginForm.controls['rememberMe'].value;
@@ -76,8 +77,10 @@ export class LoginComponentDialog implements OnInit {
 			.subscribe(
 				(data) => {
 					this.dialogRef.close(true);
+					this.loadingHttp = false;
 				},
 				(error) => {
+					this.loadingHttp = false;
 					if (error.status === 401 || error._body === '"authentication error"') {
 						this.alertService.error(error._body);
 						this.showError = true;

@@ -270,7 +270,6 @@ export class ConsoleAdminComponent implements OnInit {
 		}, err => {
 			this.snackBar.open('Error', 'close', { duration: 5000 });
 		});
-
 	}
 
 	public createCommunity() {
@@ -283,7 +282,7 @@ export class ConsoleAdminComponent implements OnInit {
 		})).subscribe(res => {
 			console.log(res);
 			this.fetchScholarShips();
-			this.snackBar.open('Scholarship created', 'close', { duration: 5000 });
+			this.snackBar.open('Community created', 'close', { duration: 5000 });
 		}, err => {
 			this.snackBar.open('Error', 'close', { duration: 5000 });
 		});

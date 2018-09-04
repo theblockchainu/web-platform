@@ -3,6 +3,9 @@
 	<div class="container-fluid reviewPayContainer">
 		<div class="row">
 			<div class="col-md-offset-1 col-sm-6">
+				<div class="mat-caption margin-bottom-20">
+					<a [routerLink]="['/', collection.type, collection.id]"><i class="fa fa-arrow-left"></i>  Return to {{collection.type}} page</a>
+				</div>
 				<div class="title">Review and pay</div>
 				<div class="seperate-section margin-bottom-20">
 					<div class="fw-bold margin-bottom-10">Student requirements / prerequisites</div>
@@ -192,14 +195,14 @@
 					<hr>
 					<div class="terms-text margin-top-30">
 						<div class="terms-title">Terms of Service</div>
-						<p class="text-grey fs-15">By confirming this reservation you are agreeing to The Blockchain University additional <a [routerLink]="'/terms-of-service'">Terms of Service</a> and the <a [routerLink]="'/policy'">Cancellation Policy</a>.</p>
+						<p class="text-grey fs-15">By confirming this reservation you are agreeing to The Blockchain University additional <a [routerLink]="'/terms-of-service'" target="_blank">Terms of Service</a> and the <a [routerLink]="'/policy'" target="_blank">Cancellation Policy</a>.</p>
 					</div>
 					<div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards || listAllCards.length < 0 ||  useAnotherCard">
 						<i class="fa fa-lock"></i> Your payment information is secured by
-						<a href="https://stripe.com">Stripe</a>
+						<a href="https://stripe.com" target="_blank">Stripe</a>
 					</div>
 					<div class="terms-text margin-top-20" *ngIf="collection.academicGyan">
-						<div class="terms-title">Your participation in this {{collection.type}} is eligible for a <a href="https://one0x.com">one0x</a> backed Smart Certificate on the Blockchain.</div>
+						<div class="terms-title">Your participation in this {{collection.type}} is eligible for a <a href="https://one0x.com" target="_blank">one0x</a> backed Smart Certificate on the Blockchain.</div>
 					</div>
 				
 				</form>
@@ -213,7 +216,7 @@
 									<img [src]="(collection.imageUrls && collection.imageUrls.length > 0) ? envVariable.apiUrl+collection.imageUrls[0] + '/300' : defaultImageUrl"
 									     alt="image" />
 								</div>
-								<div class="fs-17">{{ collection.title | titlecase}}
+								<div class="fs-17 clickable" [routerLink]="['/', collection.type, collection.id]">{{ collection.title | titlecase}}
 									<br>
 									<span class="fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type
 									                              }}

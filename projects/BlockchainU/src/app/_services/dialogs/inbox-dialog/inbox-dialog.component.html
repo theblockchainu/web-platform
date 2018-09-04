@@ -1,7 +1,7 @@
 <div class="inbox-dialog-container">
 	<div class="row margin-left-0 margin-right-0 padding-bottom-10 padding-top-10" style="border-bottom: 1px solid #eeeeee;">
 		<div class="col-md-12">
-			<span class="mat-body-2 clickable">
+			<span class="mat-body-2 clickable" (click)="goToInbox()">
 				Inbox
 			</span>
 			<a class="clickable pull-right" (click)="goToInbox()">View all</a>
@@ -41,7 +41,7 @@
 	</div>
 
 	<div class="row margin-left-0 margin-right-0 padding-bottom-10 padding-top-10" style="border-bottom: 1px solid #eeeeee;border-top: 1px solid #eeeeee;">
-		<div class="col-md-12" (click)="goToInbox()">
+		<div class="col-md-12" (click)="goToNotifications()">
 			<span class="mat-body-2 clickable">
 				Notifications
 			</span>
