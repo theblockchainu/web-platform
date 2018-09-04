@@ -19,7 +19,6 @@
 			<img (click)="openProfilePage(data.collection.owners[0].id)" *ngIf="data.collection.owners[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ data.collection.owners[0].profiles[0].picture_url}}"
 			 class="clickable circle-thumb margin-top-5" alt="dp" style="width: 70px; height: 70px;">
 		</div>
-
 	</div>
 	<hr>
 	<div class="mat-dialog-focus-trap"></div>
@@ -55,9 +54,13 @@
 							<source src="{{envVariable.apiUrl+data.content.imageUrl}}" type="video/mp4">
 						</video>
 					</vg-player>
-					<video width="100%" height="auto" *ngIf="userType === 'public'" style="max-height: 300px;" preload="metadata">
-						<source src="{{envVariable.apiUrl+data.content.imageUrl}}">
-					</video>
+					<div class="video-container clickable" (click)="login()" *ngIf="userType === 'public'">
+						<video width="100%" height="auto" style="max-height: 300px;" preload="metadata">
+							<source src="{{envVariable.apiUrl+data.content.imageUrl}}">
+						</video>
+						<mat-icon class="centered-icon">play_circle_outline
+						</mat-icon>
+					</div>
 				</div>
 			</div>
 			<div *ngIf="!data.content.imageUrl">
