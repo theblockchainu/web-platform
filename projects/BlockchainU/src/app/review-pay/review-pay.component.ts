@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { ProfileService } from '../_services/profile/profile.service';
@@ -7,8 +7,8 @@ import { PaymentService } from '../_services/payment/payment.service';
 import { CollectionService } from '../_services/collection/collection.service';
 import { environment } from '../../environments/environment';
 import { ScholarshipService } from '../_services/scholarship/scholarship.service';
-import {FormGroup, FormBuilder, FormArray, FormControl, Validators} from '@angular/forms';
-import {DomSanitizer, Meta, Title} from '@angular/platform-browser';
+import { FormGroup, FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
+import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import { DialogsService } from '../_services/dialogs/dialog.service';
 import { MatSnackBar } from '@angular/material';
 import { AuthenticationService } from '../_services/authentication/authentication.service';
@@ -26,7 +26,7 @@ export class ReviewPayComponent implements OnInit {
     public elements: any;
     public card: any;
     @ViewChild('cardForm', { read: ElementRef }) cardForm: ElementRef;
-	@ViewChild('paymentframe', { read: ElementRef }) paymentFrame: ElementRef;
+    @ViewChild('paymentframe', { read: ElementRef }) paymentFrame: ElementRef;
     public userId;
     public emailVerified;
     public collectionId;
@@ -76,7 +76,8 @@ export class ReviewPayComponent implements OnInit {
     public failureMessage;
     public addressForm: FormGroup;
     public isBillingAddressAvailable = false;
-    
+    public maxLength = 140;
+
 
     constructor(
         private _cookieUtilsService: CookieUtilsService,
@@ -92,23 +93,23 @@ export class ReviewPayComponent implements OnInit {
         private _fb: FormBuilder,
         private matSnackBar: MatSnackBar,
         private _authenticationService: AuthenticationService,
-		private sanitizer: DomSanitizer,
-		private renderer: Renderer2
+        private sanitizer: DomSanitizer,
+        private renderer: Renderer2
     ) {
         this.envVariable = environment;
         this.activatedRoute.params.subscribe(params => {
             this.collectionId = params['collectionId'];
             this.collectionCalendarId = params['calendarId'];
         });
-		this.activatedRoute.queryParams.subscribe(params => {
-			if (params['paymentStatus']) {
-				this.paymentStatus = params['paymentStatus'];
-				this.statusMessage = params['statusMessage'];
-				this.failureMessage = params['failureMessage'];
-				console.log('Payment status: ' + this.paymentStatus);
-				this.actOnPaymentStatus();
-			}
-		});
+        this.activatedRoute.queryParams.subscribe(params => {
+            if (params['paymentStatus']) {
+                this.paymentStatus = params['paymentStatus'];
+                this.statusMessage = params['statusMessage'];
+                this.failureMessage = params['failureMessage'];
+                console.log('Payment status: ' + this.paymentStatus);
+                this.actOnPaymentStatus();
+            }
+        });
         this.userId = _cookieUtilsService.getValue('userId');
         this.ccavenueAccessCode = environment.ccavenueAccessCode;
         this.ccavenueMerchantId = environment.ccavenueMerchantId;
@@ -119,147 +120,147 @@ export class ReviewPayComponent implements OnInit {
         this.setupForms();
         this.getUserCountry();
         this.stripe = Stripe(environment.stripePublishableKey);
-        
-		this.initializeStripeElements();
+
+        this.initializeStripeElements();
         this.loadCollectionData();
         this.fetchScholarships();
         this.scholarshipAmount = 0;
     }
-    
+
     private initializeStripeElements() {
-		const elements = this.stripe.elements();
-		this.card = elements.create('card', {
-			iconStyle: 'solid',
-			style: {
-				base: {
-					iconColor: '#8898AA',
-					color: 'rgb(48, 48, 48)',
-					lineHeight: '36px',
-					fontWeight: 300,
-					fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-					fontSize: '19px',
-				
-					'::placeholder': {
-						color: '#8898AA',
-					},
-				},
-				invalid: {
-					iconColor: '#e85746',
-					color: '#e85746',
-				}
-			},
-			classes: {
-				focus: 'is-focused',
-				empty: 'is-empty',
-			},
-		});
-	}
-    
+        const elements = this.stripe.elements();
+        this.card = elements.create('card', {
+            iconStyle: 'solid',
+            style: {
+                base: {
+                    iconColor: '#8898AA',
+                    color: 'rgb(48, 48, 48)',
+                    lineHeight: '36px',
+                    fontWeight: 300,
+                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    fontSize: '19px',
+
+                    '::placeholder': {
+                        color: '#8898AA',
+                    },
+                },
+                invalid: {
+                    iconColor: '#e85746',
+                    color: '#e85746',
+                }
+            },
+            classes: {
+                focus: 'is-focused',
+                empty: 'is-empty',
+            },
+        });
+    }
+
     private loadCollectionData() {
-		this.paymentService.getCollectionDetails(this.collectionId).subscribe((collectionData: any) => {
-			if (collectionData) {
-				console.log(collectionData);
-				this.createChargeData.amount = (collectionData.price) * 100;
-				this.totalPrice = collectionData.price;
-				this.createChargeData.currency = collectionData.currency;
-				this.createChargeData.description = collectionData.description;
-				this.collection = collectionData;
-				this.loadStudentData();
-				this.getkarma(collectionData.academicGyan + collectionData.nonAcademicGyan);
-				this.setCurrentCalendar();
-				this.calculateTotalHours();
-				this.sortAssessmentRules();
-				const inputs = document.querySelectorAll('input.field');
-				Array.prototype.forEach.call(inputs, function (input) {
-					input.addEventListener('focus', function () {
-						input.classList.add('is-focused');
-					});
-					input.addEventListener('blur', function () {
-						input.classList.remove('is-focused');
-					});
-					input.addEventListener('keyup', function () {
-						if (input.value.length === 0) {
-							input.classList.add('is-empty');
-						} else {
-							input.classList.remove('is-empty');
-						}
-					});
-				});
-				this.card.mount('#card-element');
-				// FB Event Trigger
-				fbq('track', 'InitiateCheckout', {
-					currency: 'USD',
-					value: 0.0,
-					content_type: 'product',
-					content_ids: [this.collectionId],
-					content_name: this.collection.title,
-					content_category: this.collection.type
-				});
-			}
-		});
-	}
-    
+        this.paymentService.getCollectionDetails(this.collectionId).subscribe((collectionData: any) => {
+            if (collectionData) {
+                console.log(collectionData);
+                this.createChargeData.amount = (collectionData.price) * 100;
+                this.totalPrice = collectionData.price;
+                this.createChargeData.currency = collectionData.currency;
+                this.createChargeData.description = collectionData.description;
+                this.collection = collectionData;
+                this.loadStudentData();
+                this.getkarma(collectionData.academicGyan + collectionData.nonAcademicGyan);
+                this.setCurrentCalendar();
+                this.calculateTotalHours();
+                this.sortAssessmentRules();
+                const inputs = document.querySelectorAll('input.field');
+                Array.prototype.forEach.call(inputs, function (input) {
+                    input.addEventListener('focus', function () {
+                        input.classList.add('is-focused');
+                    });
+                    input.addEventListener('blur', function () {
+                        input.classList.remove('is-focused');
+                    });
+                    input.addEventListener('keyup', function () {
+                        if (input.value.length === 0) {
+                            input.classList.add('is-empty');
+                        } else {
+                            input.classList.remove('is-empty');
+                        }
+                    });
+                });
+                this.card.mount('#card-element');
+                // FB Event Trigger
+                fbq('track', 'InitiateCheckout', {
+                    currency: 'USD',
+                    value: 0.0,
+                    content_type: 'product',
+                    content_ids: [this.collectionId],
+                    content_name: this.collection.title,
+                    content_category: this.collection.type
+                });
+            }
+        });
+    }
+
     private loadStudentData() {
-		const filter = {
-			include: {
-				profiles: ['phone_numbers', 'billingaddress']
-			}
-		};
-		this.profileService.getPeerData(this.userId, filter).subscribe((peer: any) => {
-			if (peer) {
-				this.student = peer;
-				this.emailVerified = peer.emailVerified;
-				this.createSourceData.email = peer.email;
-				this.createChargeData.customer = peer.stripeCustId;
-				this.custId = peer.stripeCustId;
-				this.burnAddress = peer.ethAddress;
-				console.log(this.custId);
-			
-				if (!this.emailVerified) {
-					this._dialogsService.openOnboardingDialog(false).subscribe((result: any) => {
-						// do nothing
-					});
-				}
-				
-				if (this.student.profiles[0].billingaddress && this.student.profiles[0].billingaddress.length > 0) {
-					this.addressForm.controls.billing_address.patchValue(this.student.profiles[0].billingaddress[0].billing_address);
-					this.addressForm.controls.billing_city.patchValue(this.student.profiles[0].billingaddress[0].billing_city);
-					this.addressForm.controls.billing_state.patchValue(this.student.profiles[0].billingaddress[0].billing_state);
-					this.addressForm.controls.billing_zip.patchValue(this.student.profiles[0].billingaddress[0].billing_zip);
-					this.isBillingAddressAvailable = true;
-				}
-				if (this.paymentStatus !== undefined && this.paymentStatus !== null && !this.paymentStatus) {
-					this.actOnPaymentStatus();
-				} else {
-					this.loadCCAvenueForm();
-				}
-			
-				// get all cards
-				this.paymentService.listAllCards(this.userId, this.custId).subscribe((cards: any) => {
-					this.loadingCards = false;
-					if (cards) {
-						this.listAllCards = cards.data;
-						console.log('listAllCards: ' + JSON.stringify(this.listAllCards));
-					
-						if (this.listAllCards && this.listAllCards.length > 0) {
-							this.isCardExist = true;
-						}
-					}
-				});
-			}
-		
-		});
-	}
-    
+        const filter = {
+            include: {
+                profiles: ['phone_numbers', 'billingaddress']
+            }
+        };
+        this.profileService.getPeerData(this.userId, filter).subscribe((peer: any) => {
+            if (peer) {
+                this.student = peer;
+                this.emailVerified = peer.emailVerified;
+                this.createSourceData.email = peer.email;
+                this.createChargeData.customer = peer.stripeCustId;
+                this.custId = peer.stripeCustId;
+                this.burnAddress = peer.ethAddress;
+                console.log(this.custId);
+
+                if (!this.emailVerified) {
+                    this._dialogsService.openOnboardingDialog(false).subscribe((result: any) => {
+                        // do nothing
+                    });
+                }
+
+                if (this.student.profiles[0].billingaddress && this.student.profiles[0].billingaddress.length > 0) {
+                    this.addressForm.controls.billing_address.patchValue(this.student.profiles[0].billingaddress[0].billing_address);
+                    this.addressForm.controls.billing_city.patchValue(this.student.profiles[0].billingaddress[0].billing_city);
+                    this.addressForm.controls.billing_state.patchValue(this.student.profiles[0].billingaddress[0].billing_state);
+                    this.addressForm.controls.billing_zip.patchValue(this.student.profiles[0].billingaddress[0].billing_zip);
+                    this.isBillingAddressAvailable = true;
+                }
+                if (this.paymentStatus !== undefined && this.paymentStatus !== null && !this.paymentStatus) {
+                    this.actOnPaymentStatus();
+                } else {
+                    this.loadCCAvenueForm();
+                }
+
+                // get all cards
+                this.paymentService.listAllCards(this.userId, this.custId).subscribe((cards: any) => {
+                    this.loadingCards = false;
+                    if (cards) {
+                        this.listAllCards = cards.data;
+                        console.log('listAllCards: ' + JSON.stringify(this.listAllCards));
+
+                        if (this.listAllCards && this.listAllCards.length > 0) {
+                            this.isCardExist = true;
+                        }
+                    }
+                });
+            }
+
+        });
+    }
+
     private setupForms() {
-    	this.addressForm = this._fb.group({
-			billing_address: ['', Validators.required],
-			billing_city: ['', Validators.required],
-			billing_state: ['', Validators.required],
-			billing_zip: ['', Validators.required]
-		});
-		this.discountCode = this._fb.control([]);
-	}
+        this.addressForm = this._fb.group({
+            billing_address: ['', Validators.required],
+            billing_city: ['', Validators.required],
+            billing_state: ['', Validators.required],
+            billing_zip: ['', Validators.required]
+        });
+        this.discountCode = this._fb.control([]);
+    }
 
     private sortAssessmentRules() {
         if (this.collection.assessment_models && this.collection.assessment_models.length > 0) {
@@ -287,43 +288,43 @@ export class ReviewPayComponent implements OnInit {
             this.loadingCountry = false;
         });
     }
-    
+
     private loadCCAvenueForm() {
-    	this.ccavenueReady = false;
-		// Get CC Avenue encrypted data if payment is being made in India
-		if (this.userCountry === 'IN' && this.paymentStatus === undefined && this.isBillingAddressAvailable) {
-			let studentPhoneNumber = '9999999999';
-			if (this.student.profiles[0].phone_numbers && this.student.profiles[0].phone_numbers.length > 0) {
-				studentPhoneNumber = this.student.profiles[0].phone_numbers[0].subscriber_number;
-			}
-			const body = {
-				merchant_id: this.ccavenueMerchantId,
-				order_id: Date.now(),
-				currency: this.collection.currency,
-				amount: '' + this.totalPrice,
-				redirect_url: environment.apiUrl + '/api/transactions/ccavenueResponse',
-				cancel_url: environment.apiUrl + '/api/transactions/ccavenueResponse',
-				integration_type: 'iframe_normal',
-				language: 'en',
-				customer_identifier: this.student.email,
-				billing_name: this.student.profiles[0].first_name + ' ' + this.student.profiles[0].last_name,
-				billing_address: this.addressForm.value.billing_address,
-				billing_city: this.addressForm.value.billing_city,
-				billing_state: this.addressForm.value.billing_state,
-				billing_zip: this.addressForm.value.billing_zip,
-				billing_country: 'India',
-				billing_tel: studentPhoneNumber,
-				billing_email: this.student.email,
-				merchant_param1: '/review-pay/collection/' + this.collection.id + '/' + this.collectionCalendarId
-			};
-			this.paymentService.getCCAvenueEncryptedRequest(body).subscribe(res => {
-				this.ccavenueEncRequest = res;
-				console.log(this.ccavenueEncRequest);
-				this.ccavenueIframe = this.sanitizer.bypassSecurityTrustHtml(this.ccavenueEncRequest);
-				this.ccavenueReady = true;
-			});
-		}
-	}
+        this.ccavenueReady = false;
+        // Get CC Avenue encrypted data if payment is being made in India
+        if (this.userCountry === 'IN' && this.paymentStatus === undefined && this.isBillingAddressAvailable) {
+            let studentPhoneNumber = '9999999999';
+            if (this.student.profiles[0].phone_numbers && this.student.profiles[0].phone_numbers.length > 0) {
+                studentPhoneNumber = this.student.profiles[0].phone_numbers[0].subscriber_number;
+            }
+            const body = {
+                merchant_id: this.ccavenueMerchantId,
+                order_id: Date.now(),
+                currency: this.collection.currency,
+                amount: '' + this.totalPrice,
+                redirect_url: environment.apiUrl + '/api/transactions/ccavenueResponse',
+                cancel_url: environment.apiUrl + '/api/transactions/ccavenueResponse',
+                integration_type: 'iframe_normal',
+                language: 'en',
+                customer_identifier: this.student.email,
+                billing_name: this.student.profiles[0].first_name + ' ' + this.student.profiles[0].last_name,
+                billing_address: this.addressForm.value.billing_address,
+                billing_city: this.addressForm.value.billing_city,
+                billing_state: this.addressForm.value.billing_state,
+                billing_zip: this.addressForm.value.billing_zip,
+                billing_country: 'India',
+                billing_tel: studentPhoneNumber,
+                billing_email: this.student.email,
+                merchant_param1: '/review-pay/collection/' + this.collection.id + '/' + this.collectionCalendarId
+            };
+            this.paymentService.getCCAvenueEncryptedRequest(body).subscribe(res => {
+                this.ccavenueEncRequest = res;
+                console.log(this.ccavenueEncRequest);
+                this.ccavenueIframe = this.sanitizer.bypassSecurityTrustHtml(this.ccavenueEncRequest);
+                this.ccavenueReady = true;
+            });
+        }
+    }
 
     private setTags() {
         this.titleService.setTitle('Review & Pay');
@@ -359,13 +360,13 @@ export class ReviewPayComponent implements OnInit {
             const subject = 'New Pay at Venue request received for ' + this.collection.title;
             let studentPhoneNumber = 'Not available';
             if (this.student.profiles[0].phone_numbers && this.student.profiles[0].phone_numbers.length > 0) {
-            	studentPhoneNumber = this.student.profiles[0].phone_numbers[0].country_code + this.student.profiles[0].phone_numbers[0].subscriber_number;
-			}
+                studentPhoneNumber = this.student.profiles[0].phone_numbers[0].country_code + this.student.profiles[0].phone_numbers[0].subscriber_number;
+            }
             const message =
                 `
                 Pay At Venue: Request received for joining ` + this.collection.title + ` starting on
                 ` + this.currentCalendar.startDate + `.
-                You can respond via email at ` + this.student.email + `  or via phone on: ` +  studentPhoneNumber + `.
+                You can respond via email at ` + this.student.email + `  or via phone on: ` + studentPhoneNumber + `.
             `;
             this._authenticationService.createGuestContacts(first_name, last_name, email, subject, message)
                 .subscribe(res => {
@@ -573,9 +574,9 @@ export class ReviewPayComponent implements OnInit {
             });
             this.calculateScholarship();
         });
-        
+
     }
-    
+
     private calculateScholarship() {
         this.scholarshipAmount = 0;
         this.selectedScholarship = 'NA';
@@ -691,54 +692,63 @@ export class ReviewPayComponent implements OnInit {
     togglePromo() {
         this.applyPromoCode = true;
     }
-    
+
     public handleMessage(e) {
-    	if (this.paymentFrame && e.data['newHeight'] !== undefined) {
-			document.getElementById('paymentFrame').setAttribute('height', e.data['newHeight'] + 'px');
-		}
-	}
-	
-	private actOnPaymentStatus() {
-    	if (this.paymentStatus !== undefined) {
-    		this.savingData = true;
-			this.ccavenueReady = false;
-			if (this.userId === undefined || this.userId === null || this.userId.length < 5) {
-				this.userId = this._cookieUtilsService.getValue('userId');
-				console.log('Refreshed USER ID: ' + this.userId);
-			}
-			if (this.paymentStatus === 'Success') {
-				console.log('Payment success. Joining collection and redirecting.');
-				this.message = 'Payment successful. Redirecting...';
-				this.savingData = false;
-				this.joinCollection();
-			} else {
-				console.log('Payment unsuccessful.');
-				const message = this.statusMessage && this.statusMessage.length > 0 && this.statusMessage !== 'null' ? this.statusMessage : 'An error occurred.';
-				this.matSnackBar.open(message, 'Retry')
-					.onAction().subscribe(res => {
-					this.router.navigate(['review-pay', 'collection', this.collectionId, this.collectionCalendarId]);
-					this.paymentStatus =  undefined;
-					this.savingData = false;
-					this.loadCCAvenueForm();
-				});
-			}
-		}
-	}
-	
-	public saveBillingAddress() {
-    	this.savingData = true;
-    	this.profileService.addBillingAddress(this.userId, this.student.profiles[0].id, this.addressForm.value).subscribe(res => {
-    		if (res) {
-				this.isBillingAddressAvailable = true;
-    			this.loadCCAvenueForm();
-			} else {
-    			this.isBillingAddressAvailable = false;
-			}
-			this.savingData = false;
-		}, err => {
-    		this.savingData = false;
-    		this.isBillingAddressAvailable = false;
-    		this.matSnackBar.open('Could not save billing address. Try again later.', 'OK', {duration: 5000});
-		});
-	}
+        if (this.paymentFrame && e.data['newHeight'] !== undefined) {
+            document.getElementById('paymentFrame').setAttribute('height', e.data['newHeight'] + 'px');
+        }
+    }
+
+    private actOnPaymentStatus() {
+        if (this.paymentStatus !== undefined) {
+            this.savingData = true;
+            this.ccavenueReady = false;
+            if (this.userId === undefined || this.userId === null || this.userId.length < 5) {
+                this.userId = this._cookieUtilsService.getValue('userId');
+                console.log('Refreshed USER ID: ' + this.userId);
+            }
+            if (this.paymentStatus === 'Success') {
+                console.log('Payment success. Joining collection and redirecting.');
+                this.message = 'Payment successful. Redirecting...';
+                this.savingData = false;
+                this.joinCollection();
+            } else {
+                console.log('Payment unsuccessful.');
+                const message = this.statusMessage && this.statusMessage.length > 0 && this.statusMessage !== 'null' ? this.statusMessage : 'An error occurred.';
+                this.matSnackBar.open(message, 'Retry')
+                    .onAction().subscribe(res => {
+                        this.router.navigate(['review-pay', 'collection', this.collectionId, this.collectionCalendarId]);
+                        this.paymentStatus = undefined;
+                        this.savingData = false;
+                        this.loadCCAvenueForm();
+                    });
+            }
+        }
+    }
+
+    public saveBillingAddress() {
+        this.savingData = true;
+        this.profileService.addBillingAddress(this.userId, this.student.profiles[0].id, this.addressForm.value).subscribe(res => {
+            if (res) {
+                this.isBillingAddressAvailable = true;
+                this.loadCCAvenueForm();
+            } else {
+                this.isBillingAddressAvailable = false;
+            }
+            this.savingData = false;
+        }, err => {
+            this.savingData = false;
+            this.isBillingAddressAvailable = false;
+            this.matSnackBar.open('Could not save billing address. Try again later.', 'OK', { duration: 5000 });
+        });
+    }
+
+    public toggleNotesLength() {
+        if (this.collection.notes.length > this.maxLength) {
+            this.maxLength = this.collection.notes.length;
+        } else {
+            this.maxLength = 140;
+        }
+
+    }
 }

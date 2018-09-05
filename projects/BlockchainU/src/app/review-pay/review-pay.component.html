@@ -4,7 +4,9 @@
 		<div class="row">
 			<div class="col-md-offset-1 col-sm-6">
 				<div class="mat-caption margin-bottom-20">
-					<a [routerLink]="['/', collection.type, collection.id]"><i class="fa fa-arrow-left"></i>  Return to {{collection.type}} page</a>
+					<a [routerLink]="['/', collection.type, collection.id]"><i class="fa fa-arrow-left"></i> Return to {{collection.type}}
+						page
+					</a>
 				</div>
 				<div class="title">Review and pay</div>
 				<div class="seperate-section margin-bottom-20">
@@ -12,16 +14,23 @@
 					<div class="text-grey" *ngIf="collection.difficultyLevel && collection.difficultyLevel.length > 0">
 						<b>This {{collection.type}} is of {{collection.difficultyLevel}} level.</b>
 					</div>
-					<div class="text-grey margin-top-10 pre-wrapped" *ngIf="collection.notes && collection.notes.length > 0">{{collection.notes | ucfirst}}</div>
-					<div class="text-grey margin-top-10" *ngIf="!collection.notes">There are no additional requirements to
-					                                                               be aware of at this point</div>
+					<div class="text-grey margin-top-10 pre-wrapped" *ngIf="collection.notes && collection.notes.length > 0">{{collection.notes
+						| ucfirst | shorten: maxLength : '... '}}
+						<span *ngIf="collection.notes && collection.notes.length > maxLength" (click)="toggleNotesLength()" style="color:#33bd9e"
+						 class="clickable">read more</span>
+						<span *ngIf="collection.notes && collection.notes.length > 140 && collection.notes.length <= maxLength" (click)="toggleNotesLength()"
+						 style="color:#33bd9e" class="clickable">show less</span>
+					</div>
+					<div class="text-grey margin-top-10" *ngIf="!collection.notes">There are no additional requirements to be aware of at
+						this point</div>
 				</div>
 				<div class="loading-container" [hidden]="!loadingCards">
 					<ngx-loading [show]="true"></ngx-loading>
 				</div>
 				<form [hidden]="loadingCards">
 					<div class="payment-message margin-top-20 margin-bottom-20 mat-body-2">{{message}}</div>
-					<div class="assessment seperate-section row margin-bottom-50 padding-bottom-40" *ngIf="collection.assessment_models && collection.assessment_models.length>0" [hidden]="true">
+					<div class="assessment seperate-section row margin-bottom-50 padding-bottom-40" *ngIf="collection.assessment_models && collection.assessment_models.length>0"
+					 [hidden]="true">
 						<div class="col-sm-12 margin-top-20">
 							<div class="fw-bold margin-bottom-10">Assessment Rules</div>
 							<span>Your teacher will assess your academic performance in
@@ -61,7 +70,8 @@
 								<div class="row">
 									<div class="col-md-12">
 										<mat-form-field [floatLabel]="'auto'" class="pb-block margin-bottom-20">
-											<textarea matInput rows="1" formControlName="billing_address" #headline maxlength="100" type="text" placeholder="Billing Address" required></textarea>
+											<textarea matInput rows="1" formControlName="billing_address" #headline maxlength="100" type="text" placeholder="Billing Address"
+											 required></textarea>
 											<mat-error>This field is required</mat-error>
 											<mat-hint align="start">Like 4200 Hunter Place, Fremont, CA</mat-hint>
 											<mat-hint align="end">{{addressForm.value.billing_address.length}} / 200</mat-hint>
@@ -90,14 +100,16 @@
 								</div>
 								<div class="row margin-top-20">
 									<div class="col-md-12">
-										<button type="submit" class="pb-block" mat-raised-button color="primary" [disabled]="savingData || !addressForm.valid">Continue to payment</button>
+										<button type="submit" class="pb-block" mat-raised-button color="primary" [disabled]="savingData || !addressForm.valid">Continue
+											to payment</button>
 									</div>
 								</div>
 							</form>
 						</div>
 					</div>
 					<!--Load CC Avenue Payment Iframe-->
-					<div [hidden]="loadingCountry || totalPrice===0 || !ccavenueReady || userCountry !== 'IN' || payAtVenue === true || !isBillingAddressAvailable" class="margin-top-20 margin-bottom-10" [innerHTML]="ccavenueIframe" (window:message)="handleMessage($event)">
+					<div [hidden]="loadingCountry || totalPrice===0 || !ccavenueReady || userCountry !== 'IN' || payAtVenue === true || !isBillingAddressAvailable"
+					 class="margin-top-20 margin-bottom-10" [innerHTML]="ccavenueIframe" (window:message)="handleMessage($event)">
 						<iframe #paymentframe height="600px" width="100%"></iframe>
 					</div>
 					<!--Load Stripe Payment Form-->
@@ -108,8 +120,9 @@
 								<div class="col-sm-6">
 									<mat-form-field [floatLabel]="'always'">
 										<mat-select placeholder="Select card" (change)="getcardDetails($event)">
-											<mat-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand
-											                                                                  }} {{card.object}} ending with {{card.last4}}</mat-option>
+											<mat-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand }} {{card.object}} ending with
+												{{card.last4}}
+											</mat-option>
 										</mat-select>
 									</mat-form-field>
 								</div>
@@ -129,8 +142,7 @@
 							</div>
 							<div class="row margin-top-20">
 								<div class="col-sm-6">
-									<mat-checkbox [(ngModel)]="useAnotherCard" [ngModelOptions]="{standalone: true}">Or use
-									                                                                                 another card</mat-checkbox>
+									<mat-checkbox [(ngModel)]="useAnotherCard" [ngModelOptions]="{standalone: true}">Or use another card</mat-checkbox>
 								</div>
 							</div>
 						</div>
@@ -179,14 +191,18 @@
 					<div *ngIf="!loadingCountry || payAtVenue">
 						<div *ngIf="totalPrice && totalPrice!==0 && userCountry !== 'IN'">
 							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="(!listAllCards || listAllCards.length <= 0 || useAnotherCard) && !payAtVenue"
-							        [disabled]="savingData">{{totalPrice | convertCurrency: collection.currency |async}} - Confirm Payment
+							 [disabled]="savingData">{{totalPrice | convertCurrency: collection.currency |async}} - Confirm Payment
 							</button>
 							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard && !payAtVenue"
-							        [disabled]="!cardDetails.id || savingData">{{totalPrice | convertCurrency:collection.currency |async}} - Confirm Payment
+							 [disabled]="!cardDetails.id || savingData">{{totalPrice | convertCurrency:collection.currency |async}} - Confirm
+								Payment
 							</button>
-							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="payAtVenue" [disabled]="savingData">I confirm to pay {{totalPrice | convertCurrency: collection.currency |async}} at venue </button>
+							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="payAtVenue"
+							 [disabled]="savingData">I confirm to pay {{totalPrice | convertCurrency: collection.currency |async}} at venue
+							</button>
 						</div>
-						<button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center payButton" *ngIf="!totalPrice || totalPrice===0 ">FREE - Join {{collection.type | ucwords}}</button>
+						<button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center payButton" *ngIf="!totalPrice || totalPrice===0 ">FREE
+							- Join {{collection.type | ucwords}}</button>
 					</div>
 					<!--Saving data progressbar-->
 					<div class="display-inline-block margin-top-10 margin-bottom-10" *ngIf="savingData">
@@ -195,16 +211,20 @@
 					<hr>
 					<div class="terms-text margin-top-30">
 						<div class="terms-title">Terms of Service</div>
-						<p class="text-grey fs-15">By confirming this reservation you are agreeing to The Blockchain University additional <a [routerLink]="'/terms-of-service'" target="_blank">Terms of Service</a> and the <a [routerLink]="'/policy'" target="_blank">Cancellation Policy</a>.</p>
+						<p class="text-grey fs-15">By confirming this reservation you are agreeing to The Blockchain University additional
+							<a [routerLink]="'/terms-of-service'" target="_blank">Terms of Service</a> and the <a [routerLink]="'/policy'" target="_blank">Cancellation
+								Policy
+							</a>.</p>
 					</div>
 					<div class="text-grey small margin-top-10 margin-bottom-20" *ngIf="!listAllCards || listAllCards.length < 0 ||  useAnotherCard">
 						<i class="fa fa-lock"></i> Your payment information is secured by
 						<a href="https://stripe.com" target="_blank">Stripe</a>
 					</div>
 					<div class="terms-text margin-top-20" *ngIf="collection.academicGyan">
-						<div class="terms-title">Your participation in this {{collection.type}} is eligible for a <a href="https://one0x.com" target="_blank">one0x</a> backed Smart Certificate on the Blockchain.</div>
+						<div class="terms-title">Your participation in this {{collection.type}} is eligible for a <a href="https://one0x.com"
+							 target="_blank">one0x</a> backed Smart Certificate on the Blockchain.</div>
 					</div>
-				
+
 				</form>
 			</div>
 			<div class="col-sm-3 col-sm-offset-1">
@@ -214,23 +234,21 @@
 							<div class="display-table">
 								<div class="margin-bottom-10">
 									<img [src]="(collection.imageUrls && collection.imageUrls.length > 0) ? envVariable.apiUrl+collection.imageUrls[0] + '/300' : defaultImageUrl"
-									     alt="image" />
+									 alt="image" />
 								</div>
 								<div class="fs-17 clickable" [routerLink]="['/', collection.type, collection.id]">{{ collection.title | titlecase}}
 									<br>
-									<span class="fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type
-									                              }}
+									<span class="fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type }}
 									</span>
 									<br>
-									<span class="fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught
-									                                                                                        by {{collection.owners[0].profiles[0].first_name | titlecase}} {{collection.owners[0].profiles[0].last_name
-									                                                                                        | ucwords}}</span>
+									<span class="fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by {{collection.owners[0].profiles[0].first_name
+										| titlecase}} {{collection.owners[0].profiles[0].last_name | ucwords}}</span>
 								</div>
 							</div>
 						</div>
 						<div class="seperate-section">
-							<div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to
-							                                      {{ currentCalendar.endDate | date: 'EEE, MMM dd' }}</div>
+							<div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate
+								| date: 'EEE, MMM dd' }}</div>
 							<div class="" *ngIf="collection.contents">{{collection.contents.length}} Activities</div>
 							<!--<a href="#">See details</a>-->
 						</div>
@@ -294,10 +312,8 @@
 						</div>-->
 						<div class="seperate-section">
 							<div class="margin-bottom-10">
-								<span class="text-grey">{{collection.price | convertCurrency: collection.currency |async}}
-								                        x {{ guestCount }} Student</span>
-								<span class="pull-right">{{collection.price * guestCount | convertCurrency: collection.currency
-								                         |async}}
+								<span class="text-grey">{{collection.price | convertCurrency: collection.currency |async}} x {{ guestCount }} Student</span>
+								<span class="pull-right">{{collection.price * guestCount | convertCurrency: collection.currency |async}}
 								</span>
 							</div>
 							<div *ngIf="codefound" style="color:#33bd9e" class="margin-bottom-10 row">
@@ -312,7 +328,7 @@
 										<span *ngIf="codefound.discountType === 'absolute'">
 											{{codefound.discountCurrency}}
 										</span>
-									                                  off
+										off
 									</span>
 								</div>
 							</div>
@@ -339,9 +355,8 @@
 						<div class="seperate-section">
 							<div class="fs-18 margin-bottom-10">Cancellation Policy</div>
 							<div class="fs-14 text-grey">Get a
-								<span class="text-black">full refund</span> if you cancel within {{collection.cancellationPolicy}}
-							                             of purchase.
-							                             <!--<br> Karma once burned on participation cannot be refunded.-->
+								<span class="text-black">full refund</span> if you cancel within {{collection.cancellationPolicy}} of purchase.
+								<!--<br> Karma once burned on participation cannot be refunded.-->
 							</div>
 						</div>
 					</div>

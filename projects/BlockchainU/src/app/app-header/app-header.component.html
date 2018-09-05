@@ -56,15 +56,15 @@
 					<mat-icon style="top: 4px; font-size: 15px;">add</mat-icon>
 					Configure Online Sessions
 				</button>-->
-				<button mat-button class="headerButtons" *ngIf="!(isLoggedIn | async) || !isTeacher" [matMenuTriggerFor]="headerTeachMenu">
+				<!-- <button mat-button class="headerButtons" *ngIf="!(isLoggedIn | async) || !isTeacher" [matMenuTriggerFor]="headerTeachMenu">
 					<span class="hide-small">
-						Become a Teacher
+						Become a Teach
 					</span>
 					<mat-icon class="show-small-inline">add_circle_outline</mat-icon>
-				</button>
+				</button> -->
 				<button mat-button class="headerButtons" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async) && isAccountApproved && isTeacher">
 					<span class="hide-small">
-						Teacher
+						Teach
 					</span>
 					<mat-icon class="show-small-inline">add_circle_outline</mat-icon>
 				</button>

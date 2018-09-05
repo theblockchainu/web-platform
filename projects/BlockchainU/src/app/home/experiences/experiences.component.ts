@@ -15,7 +15,7 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { environment } from '../../../environments/environment';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 @Component({
 	selector: 'app-experiences',
@@ -63,6 +63,7 @@ export class ExperiencesComponent implements OnInit {
 	public levelList: Array<any>;
 	public ratingList: Array<number>;
 	public showArchived: boolean;
+	public availableSubtypes: Array<string>;
 
 	constructor(
 		public _collectionService: CollectionService,
@@ -75,7 +76,8 @@ export class ExperiencesComponent implements OnInit {
 		private _fb: FormBuilder,
 		private titleService: Title,
 		private metaService: Meta,
-		private router: Router
+		private router: Router,
+		private activatedRoute: ActivatedRoute
 	) {
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
@@ -111,7 +113,8 @@ export class ExperiencesComponent implements OnInit {
 			language: [],
 			location: [],
 			difficultyLevel: [],
-			rating: []
+			rating: [],
+			subtype: []
 		});
 
 		this.filterForm.valueChanges.subscribe(res => {
@@ -127,6 +130,7 @@ export class ExperiencesComponent implements OnInit {
 			let durationBool = false;
 			let levelBool = false;
 			let ratingBool = false;
+			let subtypeBool = false;
 
 			if (this.filterForm.value.language && this.filterForm.value.language.length > 0) {
 				for (let i = 0; (i < this.filterForm.value.language.length && !languageBool); i++) {
@@ -161,6 +165,21 @@ export class ExperiencesComponent implements OnInit {
 				levelBool = true;
 			}
 
+			if (this.filterForm.value.subtype && this.filterForm.value.subtype.length > 0) {
+				for (let i = 0; (i < this.filterForm.value.subtype.length && !subtypeBool); i++) {
+					const subtype = this.filterForm.value.subtype[i];
+					console.log(subtype);
+					console.log(val.subCategory);
+
+					if (val.subCategory === subtype) {
+						subtypeBool = true;
+					}
+				}
+			} else {
+				subtypeBool = true;
+			}
+
+
 			if (this.filterForm.value.rating && this.filterForm.value.rating.length > 0) {
 				console.log(this.filterForm.value.rating);
 				for (let i = 0; (i < this.filterForm.value.rating.length && !ratingBool); i++) {
@@ -185,7 +204,7 @@ export class ExperiencesComponent implements OnInit {
 				durationBool = true;
 			}
 
-			return languageBool && locationBool && priceBool && durationBool && levelBool && ratingBool;
+			return languageBool && locationBool && priceBool && durationBool && levelBool && ratingBool && subtypeBool;
 		});
 	}
 
@@ -203,15 +222,36 @@ export class ExperiencesComponent implements OnInit {
 	}
 
 	fetchTopics(): Observable<Array<any>> {
-		const query = {
-			order: 'name ASC'
-		};
+		let query;
+		if (this.showArchived) {
+			query = {
+				order: 'name ASC',
+			};
+		} else {
+			query = {
+				order: 'name ASC',
+				'include': [
+					{
+						'relation': 'collections',
+						'scope': {
+							'where': { 'type': 'experience', 'status': 'active' }
+						}
+					}
+				]
+			};
+		}
 		return this._topicService.getTopics(query).pipe(
 			map(
 				(response: any) => {
 					const availableTopics = [];
 					response.forEach(topic => {
-						availableTopics.push({ 'topic': topic, 'checked': false });
+						if (this.showArchived) {
+							availableTopics.push({ 'topic': topic, 'checked': false });
+						} else {
+							if (topic.collections.length > 0) {
+								availableTopics.push({ 'topic': topic, 'checked': false });
+							}
+						}
 					});
 					return availableTopics;
 				}, (err) => {
@@ -304,6 +344,15 @@ export class ExperiencesComponent implements OnInit {
 						console.log(this.experiences);
 						this.setFilterData();
 						this.initialized = true;
+						this.activatedRoute.queryParams.forEach(param => {
+							for (const property in param) {
+								if (param.hasOwnProperty(property)) {
+									if (this.filterForm.contains(property)) {
+										this.filterForm.controls[property].patchValue([param[property]]);
+									}
+								}
+							}
+						});
 					}
 					this.loading = false;
 				}, (err) => {
@@ -318,6 +367,7 @@ export class ExperiencesComponent implements OnInit {
 		this.locationList = [];
 		this.levelList = [];
 		this.ratingList = [5, 4, 3, 2, 1, 0];
+		this.availableSubtypes = ['workshop', 'meetup', 'hackathon', 'bootcamp'];
 		let maxPrice = 0;
 		const minPrice = 0;
 

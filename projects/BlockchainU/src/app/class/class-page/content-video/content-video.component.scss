@@ -32,3 +32,17 @@
     vertical-align: middle;
     line-height: 85px;
 }
+
+.video-container{
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.centered-icon{
+    position: absolute;
+    font-size: 10vh;
+    top: 45%;
+    left: 45%;
+    transform: translate(-45%, -45%);
+}

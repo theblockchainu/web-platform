@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { VgAPI } from 'videogular2/core';
 import { ContentService } from '../../../_services/content/content.service';
-
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
 @Component({
 	selector: 'app-content-video',
 	templateUrl: './content-video.component.html',
@@ -40,7 +40,8 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 		private _socketService: SocketService,
 		private router: Router,
 		// private deviceService: DeviceDetectorService,
-		private contentService: ContentService
+		private contentService: ContentService,
+		private dialogsService: DialogsService
 	) {
 		this.envVariable = environment;
 		this.userType = data.userType;
@@ -235,4 +236,11 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 		this.router.navigate(['profile', peerId]);
 	}
 
+	public login() {
+		this.dialogsService.openLogin().subscribe(res => {
+			if (res) {
+				this.dialogRef.close('login');
+			}
+		});
+	}
 }

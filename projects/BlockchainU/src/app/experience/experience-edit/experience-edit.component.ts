@@ -962,6 +962,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		this.totalDuration = totalLength;
 		this.totalGyan = totalLength;
 		this.experience.controls['academicGyan'].patchValue(totalLength);
+		this.experience.controls['totalHours'].patchValue(totalLength);
 	}
 
 	private calendarIsValid(step) {

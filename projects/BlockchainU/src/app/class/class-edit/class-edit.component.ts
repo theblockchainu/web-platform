@@ -934,6 +934,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.totalDuration = totalLength / 60;
 		this.totalGyan = totalLength / 60;
 		this.class.controls['academicGyan'].patchValue(totalLength);
+		this.class.controls['totalHours'].patchValue(this.totalDuration);
 	}
 
 	private calendarIsValid(step) {

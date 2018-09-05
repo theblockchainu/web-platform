@@ -1097,6 +1097,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						width: '45vw',
 						height: '100vh'
 					});
+					dialogRef.afterClosed().subscribe(res => {
+						if (res === 'login') {
+							this.initializeClass();
+						}
+					});
 					break;
 				}
 			case 'project':

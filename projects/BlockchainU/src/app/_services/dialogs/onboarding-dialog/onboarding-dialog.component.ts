@@ -102,7 +102,7 @@ export class OnboardingDialogComponent implements OnInit {
 			.subscribe((res: any) => {
 				if (res.email && res.email.length > 0) {
 					this.emailForm.controls.email.setValue(res.email);
-					this.emailForm.controls.email.disable();
+					// this.emailForm.controls.email.disable();
 				}
 			});
 		this.countryCodes = [];
@@ -132,9 +132,9 @@ export class OnboardingDialogComponent implements OnInit {
 			confirmPassword: ['', Validators.required],
 
 		});
+		this.getIdentities();
 		this.getUserProfile();
 		this.getUserCountry();
-		this.getIdentities();
 	}
 
 
@@ -143,7 +143,7 @@ export class OnboardingDialogComponent implements OnInit {
 		const filter = {
 			include: ['identities']
 		};
-		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
+		return this._profileService.getPeerData(this.userId, filter).subscribe(res => {
 			this.userIdentities = res.identities;
 		});
 	}
@@ -158,7 +158,11 @@ export class OnboardingDialogComponent implements OnInit {
 			}
 			if (res && res.phoneVerified) {
 				this.hasPhoneVerified = true;
-				this.sendEmailOTP(4);
+				if (this.userIdentities && this.userIdentities.length > 0) {
+					this.step = 3;
+				} else {
+					this.sendEmailOTP(4);
+				}
 			}
 		});
 	}
@@ -295,8 +299,8 @@ export class OnboardingDialogComponent implements OnInit {
 	updatePeer() {
 		this._profileService
 			.updatePeer(this.userId, {
-				'verificationIdUrl': this.peer.controls['verificationIdUrl'].value,
-				'email': this.peer.controls['email'].value
+				// 'verificationIdUrl': this.peer.controls['verificationIdUrl'].value,
+				'email': this.emailForm.controls.email.value
 			})
 			.subscribe((response: any) => {
 				console.log('File Saved Successfully');
@@ -310,6 +314,7 @@ export class OnboardingDialogComponent implements OnInit {
 		this.httpLoading = true;
 		this._profileService.confirmEmail(this.userId, '' + this.emailOtp.controls['inputOTP'].value)
 			.subscribe((res: any) => {
+				this.updatePeer();
 				this.httpLoading = false;
 				this.success = res;
 				this.step = nextStep;
@@ -320,7 +325,6 @@ export class OnboardingDialogComponent implements OnInit {
 					if (err.status === 400) {
 						this.emailOtpError = 'The code you entered does not match our records. Did you enter the most recent one?';
 					}
-
 				}
 			);
 	}
@@ -331,7 +335,11 @@ export class OnboardingDialogComponent implements OnInit {
 			.subscribe((res: any) => {
 				this.httpLoading = false;
 				this.success = res;
-				this.sendEmailOTP(nextStep + 1);
+				if (this.userIdentities.length > 0) {
+					this.step = 3;
+				} else {
+					this.sendEmailOTP(nextStep + 1);
+				}
 			},
 				(err) => {
 					console.log(err);

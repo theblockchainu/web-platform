@@ -33,26 +33,33 @@ export class ExperienceCardComponent implements OnInit {
 	}
 
 	public toggleExperienceBookmark(experience) {
-		if (!(experience.bookmarks && experience.bookmarks[0]
-			&& experience.bookmarks[0].peer && experience.bookmarks[0].peer[0]
-			&& experience.bookmarks[0].peer[0].id === this.userId)) {
-			this._collectionService.saveBookmark(experience.id, (err, response) => {
-				// FB Event Trigger
-				fbq('track', 'AddToWishlist', {
-					currency: 'USD',
-					value: 0.0,
-					content_ids: [experience.id],
-					content_name: experience.title,
-					content_category: experience.type,
-					content_type: 'product'
+
+		if (this.userId) {
+			if (!(experience.bookmarks && experience.bookmarks[0]
+				&& experience.bookmarks[0].peer && experience.bookmarks[0].peer[0]
+				&& experience.bookmarks[0].peer[0].id === this.userId)) {
+				this._collectionService.saveBookmark(experience.id, (err, response) => {
+					// FB Event Trigger
+					fbq('track', 'AddToWishlist', {
+						currency: 'USD',
+						value: 0.0,
+						content_ids: [experience.id],
+						content_name: experience.title,
+						content_category: experience.type,
+						content_type: 'product'
+					});
+					this.refresh.emit(true);
 				});
-				this.refresh.emit(true);
-			});
+			} else {
+				this._collectionService.removeBookmark(experience.bookmarks[0].id, (err, response) => {
+					this.refresh.emit(true);
+				});
+			}
 		} else {
-			this._collectionService.removeBookmark(experience.bookmarks[0].id, (err, response) => {
-				this.refresh.emit(true);
-			});
+			this._dialogsService.openLogin();
 		}
+
+
 	}
 
 	public onMouseEnter(experience) {

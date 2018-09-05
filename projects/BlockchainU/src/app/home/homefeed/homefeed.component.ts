@@ -215,7 +215,7 @@ export class HomefeedComponent implements OnInit {
 					}
 				}
 			],
-			'order': 'createdAt desc'
+			'order': 'createdAt desc',
 		};
 		this.loadingClasses = true;
 		this._topicService.getTopics(query).subscribe(
