@@ -191,7 +191,7 @@
 						<div class="row Topics margin-top-20" *ngIf="userType === 'public'">
 							<div class="col-xs-8 col-xs-offset-4">
 								<mat-chip-list>
-									<mat-chip class="square" *ngFor="let topic of topicFix"> {{topic.name | titlecase}} </mat-chip>
+									<mat-chip *ngFor="let topic of topicFix" disabled> {{topic.name | titlecase}} </mat-chip>
 								</mat-chip-list>
 							</div>
 						</div>
