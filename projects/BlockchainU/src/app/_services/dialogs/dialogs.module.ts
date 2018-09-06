@@ -71,6 +71,7 @@ import { OnboardingDialogComponent } from './onboarding-dialog/onboarding-dialog
 import { AddPromoCodeDialogComponent } from './add-promo-code-dialog/add-promo-code-dialog.component';
 import { ViewPromocodeDialogComponent } from './view-promocode-dialog/view-promocode-dialog.component';
 import { AddParticipantDialogComponent } from './add-participant-dialog/add-participant-dialog.component';
+import { ConfirmDeleteAccountComponent } from './confirm-delete-account/confirm-delete-account.component';
 
 @NgModule({
 	imports: [
@@ -120,7 +121,8 @@ import { AddParticipantDialogComponent } from './add-participant-dialog/add-part
 		OnboardingDialogComponent,
 		AddPromoCodeDialogComponent,
 		ViewPromocodeDialogComponent,
-		AddParticipantDialogComponent
+		AddParticipantDialogComponent,
+		ConfirmDeleteAccountComponent
 	],
 	providers: [
 		DialogsService,
@@ -144,7 +146,7 @@ import { AddParticipantDialogComponent } from './add-participant-dialog/add-part
 		ScholarshipDialogComponent, GenerateKnowledgeStoryComponent, RequestKnowledgeStoryComponent, ConfirmPasswordDialogComponent,
 		AddViewerDialogComponent, GyanPromptComponent, AddCommunityDialogComponent, CreateAccreditationDialogComponent, SelectFieldDialogComponent,
 		CertificateVerificationComponent, TermsAndConditionsDialogComponent, CollectionStandardsDialogComponent, OnboardingDialogComponent, AddPromoCodeDialogComponent,
-		ViewPromocodeDialogComponent, AddParticipantDialogComponent
+		ViewPromocodeDialogComponent, AddParticipantDialogComponent, ConfirmDeleteAccountComponent
 	],
 })
 export class DialogsModule { }
