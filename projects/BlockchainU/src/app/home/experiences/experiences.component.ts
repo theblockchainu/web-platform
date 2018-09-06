@@ -181,10 +181,10 @@ export class ExperiencesComponent implements OnInit {
 
 
 			if (this.filterForm.value.rating && this.filterForm.value.rating.length > 0) {
-				console.log(this.filterForm.value.rating);
 				for (let i = 0; (i < this.filterForm.value.rating.length && !ratingBool); i++) {
 					const rating = this.filterForm.value.rating[i];
-					if (val.rating === rating) {
+					console.log(val);
+					if (val.rating === rating || (rating === 0)) {
 						ratingBool = true;
 					}
 				}
