@@ -55,6 +55,8 @@
     "angular-calendar": "^0.25.2",
     "angularx-qrcode": "^1.2.2",
     "core-js": "^2.5.7",
+    "express": "^4.16.3",
+    "fullcalendar": "^4.0.0-alpha",
     "hammerjs": "^2.0.8",
     "js-sha256": "^0.9.0",
     "js-sha512": "^0.8.0",
@@ -75,18 +77,20 @@
     "ts-node": "^7.0.0",
     "twilio-video": "^1.13.1",
     "videogular2": "^6.3.0",
-    "zone.js": "^0.8.26",
-    "@angular-devkit/build-angular": "^0.7.2",
+    "zone.js": "^0.8.26"
+  },
+  "devDependencies": {
     "@angular/cli": "^6.1.2",
     "@angular/compiler-cli": "^6.1.2",
     "@angular/language-service": "^6.1.2",
+    "@types/jasmine": "^2.8.8",
+    "@types/jasminewd2": "^2.0.3",
     "@types/node": "^10.5.7",
     "codelyzer": "^4.4.3",
-    "express": "^4.16.3",
-    "http-server": "^0.11.1",
     "tslint": "^5.11.0",
-    "webpack-cli": "^3.1.0",
+    "http-server": "^0.11.1",
     "typescript": "2.9.2",
+    "webpack-cli": "^3.1.0",
     "protractor": "^5.4.0",
     "raven-js": "^3.26.4",
     "karma": "^2.0.5",
@@ -96,13 +100,7 @@
     "karma-jasmine-html-reporter": "^1.2.0",
     "jasmine-core": "^3.1.0",
     "jasmine-spec-reporter": "~4.2.1",
-    "@types/jasmine": "^2.8.8",
-    "@types/jasminewd2": "^2.0.3"
-  },
-  "devDependencies": {
     "@angular-devkit/build-angular": "~0.7.0",
-    "@angular/compiler-cli": "^6.1.0",
-    "typescript": "~2.9.2",
     "webpack-bundle-analyzer": "^2.13.1"
   }
 }

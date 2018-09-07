@@ -60,6 +60,7 @@ import { OnboardingDialogComponent } from './onboarding-dialog/onboarding-dialog
 import { AddPromoCodeDialogComponent } from './add-promo-code-dialog/add-promo-code-dialog.component';
 import { ViewPromocodeDialogComponent } from './view-promocode-dialog/view-promocode-dialog.component';
 import { AddParticipantDialogComponent } from './add-participant-dialog/add-participant-dialog.component';
+import { ConfirmDeleteAccountComponent } from './confirm-delete-account/confirm-delete-account.component';
 @Injectable()
 export class DialogsService {
 
@@ -699,4 +700,15 @@ export class DialogsService {
 
         return dialogRef.afterClosed();
     }
+
+    public confirmDeleteAccount(userId: string) {
+        const dialogRef = this.dialog.open(ConfirmDeleteAccountComponent, {
+            data: userId,
+            panelClass: 'responsive-dialog',
+            width: '30vw',
+            height: '40vh'
+        });
+        return dialogRef.afterClosed();
+    }
+
 }

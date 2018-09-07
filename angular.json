@@ -169,13 +169,17 @@
               "projects/BlockchainU/src/sitemap.xml"
             ],
             "styles": [
-              "node_modules/videogular2/fonts/videogular.css",
+              "node_modules/fullcalendar/dist/fullcalendar.min.css",
               "node_modules/primeicons/primeicons.css",
+              "node_modules/videogular2/fonts/videogular.css",
               "node_modules/primeng/resources/themes/omega/theme.css",
-              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeng/resources/primeng.min.css", 
               "projects/BlockchainU/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/moment/moment.js",
+              "node_modules/fullcalendar/dist/fullcalendar.min.js"
+            ]
           },
           "configurations": {
             "production": {

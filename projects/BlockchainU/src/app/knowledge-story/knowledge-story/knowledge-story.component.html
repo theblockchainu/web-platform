@@ -42,7 +42,7 @@
 						</div>
 						<div class="col-xs-12 margin-top-10" *ngIf="!globalStory">
 							<mat-chip-list style="display: inline-block;">
-								<mat-chip class="square" *ngFor="let topic of knowledgeStory.topics"> {{topic.name | ucwords}}
+								<mat-chip *ngFor="let topic of knowledgeStory.topics"> {{topic.name | ucwords}}
 								</mat-chip>
 							</mat-chip-list>
 							<div class="mat-caption lightText margin-top-10 margin-bottom-10" *ngIf="!knowledgeStory.topics || knowledgeStory.topics.length === 0">
