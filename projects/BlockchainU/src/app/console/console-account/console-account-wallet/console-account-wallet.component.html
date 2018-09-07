@@ -10,8 +10,8 @@
 		<div class="col-xs-7">
 			<h1 style="padding-top: 2%">
 			<i class="fas fa-fire"></i>
-				<span *ngIf="peer.ethAddress"> {{peer.id | karmaBalance : 'peer' | async}} Karma</span>
-				<span *ngIf="!peer.ethAddress"> 0 Karma</span>
+				<span *ngIf="peer.ethAddress && peer.ethAddress.substring(0, 2) === '0x'"> {{peer.id | karmaBalance : 'peer' | async}} Karma</span>
+				<span *ngIf="!peer.ethAddress || peer.ethAddress.substring(0, 2) !== '0x'"> 0 Karma</span>
 			</h1>
 		</div>
 		<div class="col-xs-2">
@@ -20,11 +20,11 @@
 			</button>-->
 		</div>
 		<div class="col-xs-2">
-			<button mat-button color="primary" class="mat-border-button" *ngIf="!peer.ethAddress" (click)="fixWalletDialog()">
+			<button mat-button color="primary" class="mat-border-button" *ngIf="!peer.ethAddress || peer.ethAddress.substring(0, 2) !== '0x'" (click)="fixWalletDialog()">
 				Create Wallet
 			</button>
 		</div>
-		<div class="col-xs-1" *ngIf="peer.ethAddress">
+		<div class="col-xs-1" *ngIf="peer.ethAddress && peer.ethAddress.substring(0, 2) === '0x'">
 			<button mat-icon-button (click)="toggleWalletId()">
 				<mat-icon *ngIf="!showWalletId">lock_outline</mat-icon>
 				<mat-icon *ngIf="showWalletId">lock_open</mat-icon>

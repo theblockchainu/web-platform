@@ -150,7 +150,7 @@ export class OnboardingDialogComponent implements OnInit {
 
 	private getUserProfile() {
 		this._profileService.getPeerData(this.userId).subscribe(res => {
-			if (res && res.ethAddress && res.ethAddress.length > 0) {
+			if (res && res.ethAddress && res.ethAddress.length > 0 && res.ethAddress.substring(0, 2) === '0x') {
 				this.hasPassword = true;
 			}
 			if (res && res.emailVerified) {

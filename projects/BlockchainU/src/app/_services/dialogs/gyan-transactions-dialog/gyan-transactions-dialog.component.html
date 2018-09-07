@@ -15,7 +15,7 @@
 			<app-profile-popup [peer]="data.peer[0]"></app-profile-popup>
 		</div>
 		<div class="col-xs-10">
-			<h2 *ngIf="data.peer[0].ethAddress">
+			<h2 *ngIf="data.peer[0].ethAddress && data.peer[0].ethAddress.substring(0, 2) === '0x'">
 				<i class="fab fa-ethereum">
 				</i>
 				 {{data.peer[0].id | gyanBalance : 'fixed' | async}} Gyan

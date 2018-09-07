@@ -27,7 +27,7 @@
 						<a [routerLink]="['/console', 'learning', 'story']" style="color: #FF6D71;"><mat-icon>book</mat-icon></a>
 					</div>-->
 				</div>
-				<div class="row padding-bottom-20" *ngIf="profileObj.peer[0].ethAddress">
+				<div class="row padding-bottom-20" *ngIf="profileObj.peer[0].ethAddress && profileObj.peer[0].ethAddress.substring(0, 2) === '0x'">
 					<div class="col-md-6" style="padding-left: 0px; color: #33bd9e;">
 						<h3>
 							<i class="fab fa-ethereum"></i> {{profileObj.peer[0].id | gyanBalance : 'fixed' | async}} GYAN
