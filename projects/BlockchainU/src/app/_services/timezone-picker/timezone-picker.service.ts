@@ -17,4 +17,8 @@ export class TimezonePickerService {
 		return this.http.get(environment.apiUrl + '/api/timezones?filter=' + filter, this.requestHeaderService.options);
 	}
 
+	public postAvailableTimezones() {
+		return this.http.post(environment.apiUrl + '/api/timezones/add-timezones', {}, this.requestHeaderService.options);
+	}
+
 }
