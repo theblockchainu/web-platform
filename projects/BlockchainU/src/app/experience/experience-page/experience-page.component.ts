@@ -102,19 +102,45 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public totalDuration: string;
 	public calendarId: string;
 	public userRating: number;
-	public newUserRating = 0;
+	public newUserRating: number;
 	public liveCohort;
-	public isViewTimeHidden = true;
-	public busyDiscussion = false;
-	public busyReview = false;
-	public busyReply = false;
-	public initialLoad = true;
+	public isViewTimeHidden: boolean;
+
+
+	public busyDiscussion: boolean;
+	public busyReview: boolean;
+	public busyReply: boolean;
+	public initialLoad: boolean;
+	public isReadonly: boolean;
+	public noOfReviews: number;
+	private initialised: boolean;
+	public hasBookmarked: boolean;
+	public defaultProfileUrl: string;
+	public noWrapSlides: boolean;
+	public peerHasSubmission: boolean;
+	public isRatingReceived: boolean;
+	public maxLength: number;
+	public bookmarking: boolean;
+	public recommendations: any;
+	private today: any;
+	public checkingEthereum: boolean;
+	public isOnEthereum: boolean;
+	public view: string;
+	public dateClicked: boolean;
+	public viewDate: Date;
+	refresh: Subject<any>;
+	events: CalendarEvent[];
+	activeDayIsOpen: boolean;
+	public loadingSimilarExperiences: boolean;
+	public loadingComments: boolean;
+	public loadingParticipants: boolean;
+	public loadingExperience: boolean;
+	public loadingReviews: boolean;
+	public accountApproved: string;
+	public inviteLink: string;
+
 	public loggedInUser;
-	public isReadonly = true;
-	public noOfReviews = 3;
-	private initialised = false;
 	public bookmark;
-	public hasBookmarked = false;
 	public replyingToCommentId: string;
 	public itenaryArray: Array<any>;
 	public experience: any;
@@ -126,35 +152,21 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public allItenaries: Array<any>;
 	public itenariesObj: any;
 	public reviews: Array<any>;
-	public defaultProfileUrl = '/assets/images/avatar.png';
-	public noWrapSlides = true;
-	public peerHasSubmission = false;
 	public contentHasSubmission: any;
 	public participants: Array<any>;
 	public peerRsvps: Array<any>;
 	public allParticipants: Array<any>;
-	public isRatingReceived = false;
-	public maxLength = 140;
 	public editReviewForm: FormGroup;
-	public bookmarking = false;
 	public editCommentForm: FormGroup;
 	public editReplyForm: FormGroup;
-
 	public replyForm: FormGroup;
 	public reviewForm: FormGroup;
-	public recommendations = {
-		collections: []
-	};
 	public result;
 	public lat;
 	public lng;
 	public mainLocation;
-
 	public comments: Array<any>;
-	private today = moment();
-
 	// Calendar Start
-	public dateClicked = false;
 	public clickedDate;
 	public clickedCohort;
 	public clickedCohortId;
@@ -162,11 +174,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public clickedCohortEndDate;
 	public eventsForTheDay: any;
 	public toOpenDialogName;
-	public checkingEthereum = true;
-	public isOnEthereum = false;
-	objectKeys = Object.keys;
 
-	public view = 'month';
+	public objectKeys = Object.keys;
+
 
 	public activityMapping:
 		{ [k: string]: string } = { '=0': 'No activity', '=1': 'One activity', 'other': '# activities' };
@@ -183,26 +193,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public discussionMapping:
 		{ [k: string]: string } = { '=0': 'No Comments', '=1': 'One comment', 'other': '# comments' };
 
-	public viewDate: Date = new Date();
-
-	refresh: Subject<any> = new Subject();
-
-	events: CalendarEvent[] = [
-	];
-
-
 	public carouselImages: Array<string>;
-
-	activeDayIsOpen = true;
-	public loadingSimilarExperiences = true;
-	public loadingComments = true;
-	public loadingParticipants = true;
-	public loadingExperience = true;
-	public loadingReviews = true;
-	public accountApproved = 'false';
 	public carouselBanner: any;
 	public startedView;
-	public inviteLink = '';
 	public previewAs: string;
 
 	certificateHTML: string;
@@ -236,6 +229,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		this._authenticationService.isLoginSubject.subscribe(res => {
+			console.log('Initializing Page');
+			this.initializePage();
+		});
 		this.initializePage();
 	}
 
@@ -253,6 +250,42 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	initializePage() {
+		this.newUserRating = 0;
+		this.isViewTimeHidden = true;
+		this.busyDiscussion = false;
+		this.busyReview = false;
+		this.busyReply = false;
+		this.initialLoad = true;
+		this.isReadonly = true;
+		this.noOfReviews = 3;
+		this.initialised = false;
+		this.hasBookmarked = false;
+		this.defaultProfileUrl = '/assets/images/avatar.png';
+		this.noWrapSlides = true;
+		this.peerHasSubmission = false;
+		this.isRatingReceived = false;
+		this.maxLength = 140;
+		this.bookmarking = false;
+		this.recommendations = {
+			collections: []
+		};
+		this.today = moment();
+		this.checkingEthereum = true;
+		this.isOnEthereum = false;
+		this.view = 'month';
+		this.dateClicked = false;
+		this.viewDate = new Date();
+		this.refresh = new Subject();
+		this.events = [
+		];
+		this.activeDayIsOpen = true;
+		this.loadingSimilarExperiences = true;
+		this.loadingComments = true;
+		this.loadingParticipants = true;
+		this.loadingExperience = true;
+		this.loadingReviews = true;
+		this.accountApproved = 'false';
+		this.inviteLink = '';
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.experienceId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
 				location.reload();

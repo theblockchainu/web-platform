@@ -36,7 +36,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Meta, Title } from '@angular/platform-browser';
 import { UcWordsPipe } from 'ngx-pipes';
-
+import { AuthenticationService } from '../../_services/authentication/authentication.service';
 
 @Component({
 	selector: 'app-community-page',
@@ -80,11 +80,8 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	public answerForm: FormGroup;
 	public result;
 	public questions: Array<any>;
-	private today = moment();
 	public toOpenDialogName;
-	public inviteLink = '';
-	objectKeys = Object.keys;
-
+	public inviteLink: string;
 	public loadingQuestions: boolean;
 	public loadingParticipants: boolean;
 	public loadingCommunity: boolean;
@@ -107,6 +104,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	public viewDate: Date;
 	refresh: Subject<any>;
 	events: CalendarEvent[];
+	objectKeys = Object.keys;
 
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -125,7 +123,8 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 		private titleService: Title,
 		private metaService: Meta,
 		private ucwords: UcWordsPipe,
-		private snackBar: MatSnackBar
+		private snackBar: MatSnackBar,
+		private authenticationService: AuthenticationService
 	) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
@@ -138,10 +137,15 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	}
 
 	ngOnInit() {
+		this.authenticationService.isLoginSubject.subscribe(res => {
+			console.log('Initializing Page');
+			this.initializePage();
+		});
 		this.initializePage();
 	}
 
 	private initializePage() {
+		this.inviteLink = '';
 		this.initializeVariables();
 		this.initializeCommunity();
 		this.searchControl.valueChanges.subscribe((value) => {
@@ -384,8 +388,8 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 					this.initializePage();
 					this.snackBar.open('Thanks for joining the community. Ask questions or share your' +
 						' find partners for your learning journey.', 'Close', {
-						duration: 5000
-					});
+							duration: 5000
+						});
 				}
 			});
 		} else {
