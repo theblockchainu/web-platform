@@ -92,8 +92,10 @@
 											<!-- <mat-error [hidden]="profileForm.controls['phone_numbers'].controls[i].controls.country_code.valid">This field is required</mat-error> -->
 										</mat-form-field>
 										<mat-form-field [floatLabel]="'auto'" class="customWidthNumber">
-											<input *ngIf="i==0" matInput formControlName="subscriber_number" type="number" placeholder="Primary Phone" required>
-											<input *ngIf="i > 0" matInput formControlName="subscriber_number" type="number" placeholder="Secondary Phone" required>
+											<input *ngIf="i==0" matInput formControlName="subscriber_number" type="number" placeholder="Primary Phone"
+											 required>
+											<input *ngIf="i > 0" matInput formControlName="subscriber_number" type="number" placeholder="Secondary Phone"
+											 required>
 											<!-- <mat-error [hidden]="profileForm.controls['phone_numbers'].controls[i].controls.subscriber_number.valid">This field is required</mat-error> -->
 										</mat-form-field>
 									</div>
@@ -101,27 +103,33 @@
 									 style="cursor: pointer;"></i>
 								</div>
 							</div>
-							<br/>
+							<br />
 							<div style="margin-top:-5px;margin-bottom:5px; cursor: pointer">
-								<a [ngClass]="{'disabled': profileForm.controls['phone_numbers'].controls.length >= 2}" style="font-size: 12px" (click)="addPhoneControl()">+ Add Secondary Phone</a>
+								<a [ngClass]="{'disabled': profileForm.controls['phone_numbers'].controls.length >= 2}" style="font-size: 12px"
+								 (click)="addPhoneControl()">+ Add Secondary Phone</a>
 							</div>
 							<mat-hint class="hint" align="start">
-								This is only shared once you have a confirmed booking with another Blockchain University user. This is how we can all get in touch.
+								This is only shared once you have a confirmed booking with another Blockchain University user. This is how we
+								can all get in touch.
 							</mat-hint>
 							<mat-form-field [floatLabel]="'always'" class="pb-block margin-top-30" style="margin-bottom: 20px">
-								<textarea matInput #description maxlength="2000" formControlName="description" rows="1" matTextareaAutosize placeholder="Describe yourself"
-								          required></textarea>
+								<textarea matInput #description maxlength="2000" formControlName="description" rows="1" matTextareaAutosize
+								 placeholder="Describe yourself" required></textarea>
 								<mat-error>This field is required</mat-error>
-								<mat-hint align="start" class="col-md-10 padding-left-0">The Blockchain University is built on relationships. Help other people get to know you. Tell them about the things you like: What
-								                                                         are 5 things you canʼt live without? Share your favorite travel destinations, books, movies, shows, music, food.
-								                                                         Tell them what itʼs like to have you as a learner or teacher: Whatʼs your style of learning? Of Blockchain University teaching?
-								                                                         Tell them about you: Do you have a life motto?</mat-hint>
+								<mat-hint align="start" class="col-md-10 padding-left-0">The Blockchain University is built on relationships.
+									Help other people get to know you. Tell them about the things you like: What
+									are 5 things you canʼt live without? Share your favorite travel destinations, books, movies, shows, music,
+									food.
+									Tell them what itʼs like to have you as a learner or teacher: Whatʼs your style of learning? Of Blockchain
+									University teaching?
+									Tell them about you: Do you have a life motto?</mat-hint>
 								<mat-hint class="hint" align="end">{{description.value.length}} / 2000</mat-hint>
 							</mat-form-field>
 							<br>
 							<br>
 							<mat-form-field [floatLabel]="'always'" placeholder="never" class="pb-block margin-top-30 max-height-40">
-								<input type="text" placeholder="Preferred Language" matInput formControlName="preferred_language" [matAutocomplete]="auto">
+								<input type="text" placeholder="Preferred Language" matInput formControlName="preferred_language"
+								 [matAutocomplete]="auto">
 								<mat-autocomplete #auto="matAutocomplete">
 									<mat-option *ngFor="let language of filteredOptions" [value]="language.name">
 										{{ language.name }}
@@ -146,7 +154,8 @@
 							<ngxgeo-autocomplete class="geoLocation" required [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ngxgeo-autocomplete>
 							<div class="pb-block">
 								<agm-map [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"
-								 [usePanning]="true" [zoom]="14" [scrollwheel]="false" [disableDoubleClickZoom]="true" [zoomControl]="false" [streetViewControl]="false">
+								 [usePanning]="true" [zoom]="14" [scrollwheel]="false" [disableDoubleClickZoom]="true" [zoomControl]="false"
+								 [streetViewControl]="false">
 									<agm-marker [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"></agm-marker>
 								</agm-map>
 							</div>
@@ -174,7 +183,8 @@
 										<mat-datepicker #startPicker></mat-datepicker>
 									</mat-form-field>
 									<!-- <mat-error>This field is required</mat-error> -->
-									<mat-form-field [floatLabel]="'always'" style="margin-right:10px;" [ngClass]="{ 'customWidth30': i == 0, 'customWidth33': i > 0}">
+									<mat-form-field *ngIf="!workObj.value.presentlyWorking" [floatLabel]="'always'" style="margin-right:10px;"
+									 [ngClass]="{ 'customWidth30': i == 0, 'customWidth33': i > 0}">
 										<!--'disabled': disableEndDate,-->
 										<input matInput formControlName="endDate" [matDatepicker]="endPicker" placeholder="End Date">
 										<!--[ngClass]="{'disabled': disableEndDate}"-->
@@ -182,7 +192,8 @@
 										<!--[ngClass]="{'disabled': disableEndDate}"-->
 										<mat-datepicker #endPicker></mat-datepicker>
 									</mat-form-field>
-									<mat-checkbox [hidden]="i>0" class="presentlyWorking" formControlName="presentlyWorking" (click)="toggleEndDate()">Presently working</mat-checkbox>
+									<mat-checkbox [hidden]="i>0" class="presentlyWorking" formControlName="presentlyWorking" (click)="toggleEndDate()">Presently
+										working</mat-checkbox>
 									<i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deleteWork(i)" style="cursor: pointer;"></i>
 								</div>
 							</div>
@@ -193,7 +204,8 @@
 								Education
 							</div>
 							<div formArrayName="education">
-								<div *ngFor="let educationObj of profileForm.controls['education'].controls; let i = index" [formGroupName]="i" class="margin-bottom-10">
+								<div *ngFor="let educationObj of profileForm.controls['education'].controls; let i = index" [formGroupName]="i"
+								 class="margin-bottom-10">
 									<mat-form-field [floatLabel]="'always'" style="margin-right:10px;">
 										<input matInput formControlName="degree" type="text" placeholder="Degree">
 										<!-- <mat-error>This field is required</mat-error> -->
@@ -202,19 +214,19 @@
 										<input matInput formControlName="school" type="text" placeholder="School / College">
 										<!-- <mat-error>This field is required</mat-error> -->
 									</mat-form-field>
-									<mat-form-field [floatLabel]="'always'">
-										<mat-select placeholder="Start Year" style="margin-right:10px;" formControlName="startYear" [ngClass]="{'customWidth30': i == 0, 'customWidth33': i > 0}">
+									<mat-form-field [floatLabel]="'always'" style="padding-right: 10px;">
+										<mat-select placeholder="Start Year" style="margin-right:10px;" formControlName="startYear">
 											<mat-option *ngFor="let syear of years" [value]="syear">{{syear}}</mat-option>
 										</mat-select>
 									</mat-form-field>
-									<mat-form-field [floatLabel]="'always'">
-										<mat-select placeholder="End Year" style="margin-right:10px;" formControlName="endYear" [ngClass]="{'customWidth30': i == 0, 'customWidth33': i > 0}">
+									<mat-form-field *ngIf="!educationObj.value.presentlyPursuing" [floatLabel]="'always'" style="padding-right: 10px;">
+										<mat-select placeholder="End Year" style="margin-right:10px;" formControlName="endYear">
 											<!--'disabled': disableEndYearBool,-->
 											<mat-option *ngFor="let eyear of years" [value]="eyear">{{eyear}}</mat-option>
 										</mat-select>
 									</mat-form-field>
-									<mat-checkbox [hidden]="i>0" class="presentlyWorking" formControlName="presentlyPursuing" (click)="disableEndYear()">Presently pursuing</mat-checkbox>
-
+									<mat-checkbox [hidden]="i>0" class="presentlyWorking" formControlName="presentlyPursuing" (click)="disableEndYear()">Presently
+										pursuing</mat-checkbox>
 									<i class="mdi mdi-close-circle mdiIcon pull-right darkColor" (click)="deleteEducation(i)" style="cursor: pointer;"></i>
 								</div>
 							</div>
@@ -237,20 +249,24 @@
 								<app-generic-multiselect-autocomplete [list]="languages" [preSelectedItems]="profileForm.controls['other_languages'].value"
 								 (selectedOutput)="selected($event)" (removedOutput)="removed($event)"></app-generic-multiselect-autocomplete>
 							</div>
-							<mat-hint class="hint" align="start">Add any languages that others can use to speak with you on Blockchain University.</mat-hint>
+							<mat-hint class="hint" align="start">Add any languages that others can use to speak with you on Blockchain
+								University.</mat-hint>
 
 							<mat-form-field [floatLabel]="'always'" style="margin-bottom: 20px" class="pb-block margin-top-20" style="padding-top:0px;">
 								<input matInput formControlName="vat_number" type="text" placeholder="VAT Number">
 								<mat-error>This field is required</mat-error>
-								<mat-hint align="start">For European Union users or users in other countries for which VAT applies, VAT will be assessed on our Service Fees.
-									If you live in a country where we need to charge VAT, you will not be charged VAT if you enter a valid VAT ID Number.
+								<mat-hint align="start">For European Union users or users in other countries for which VAT applies, VAT will be
+									assessed on our Service Fees.
+									If you live in a country where we need to charge VAT, you will not be charged VAT if you enter a valid VAT ID
+									Number.
 									Visit VAT FAQs »</mat-hint>
 							</mat-form-field>
 
 
 							<div formArrayName="emergency_contacts" class="margin-top-40">
 								<p style="color:#767676;font-weight:400">Emergency Contact</p>
-								<div *ngFor="let emergency_contact_number of profileForm.controls['emergency_contacts'].controls; let i = index;" class="row">
+								<div *ngFor="let emergency_contact_number of profileForm.controls['emergency_contacts'].controls; let i = index;"
+								 class="row">
 
 									<div [formGroupName]="i" class="col-md-11">
 										<mat-form-field [floatLabel]="'always'" class="customWidthCode">
@@ -260,10 +276,12 @@
 											<input matInput formControlName="subscriber_number" type="tel" required>
 										</mat-form-field>
 									</div>
-									<i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="deleteEmergencyContact(i)" style="cursor: pointer;"></i>
+									<i class="mdi mdi-close-circle mdiIcon pull-right darkColor alignDelete" (click)="deleteEmergencyContact(i)"
+									 style="cursor: pointer;"></i>
 
 								</div>
-								<mat-hint class="hint" align="start">Give our Customer Experience team a trusted contact we can alert in an urgent situation.</mat-hint>
+								<mat-hint class="hint" align="start">Give our Customer Experience team a trusted contact we can alert in an
+									urgent situation.</mat-hint>
 
 							</div>
 
