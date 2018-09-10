@@ -10,7 +10,7 @@ import {environment} from '../../environments/environment';
 })
 export class WhitepaperComponent implements OnInit {
 	
-	pdfSrc = '../assets/files/peerbudsWhitepaper.pdf';
+	pdfSrc = '../assets/files/whitepaper.pdf';
 	public envVariable;
 	constructor(
 		private titleService: Title,
@@ -29,7 +29,7 @@ export class WhitepaperComponent implements OnInit {
 		this.titleService.setTitle('White Paper');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'The Blockchain University White Paper'
+			content: 'one0x White Paper'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

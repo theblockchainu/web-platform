@@ -45,6 +45,7 @@ import { LandingPageModule } from './landing-page/landing-page.module';
 import { SharedModule } from './_shared/_shared.module';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 import {isPlatformBrowser} from '@angular/common';
+import {PdfViewerModule} from 'ng2-pdf-viewer';
 
 
 // Raven
@@ -109,7 +110,7 @@ import {isPlatformBrowser} from '@angular/common';
 		MatTooltipModule,
 		MatListModule,
 		MatBadgeModule,
-		// PdfViewerModule,
+		PdfViewerModule,
 		LoadingModule.forRoot({
 			animationType: ANIMATION_TYPES.threeBounce,
 			backdropBackgroundColour: 'rgba(0,0,0,0)',
