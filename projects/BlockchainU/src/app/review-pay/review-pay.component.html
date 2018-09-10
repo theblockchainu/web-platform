@@ -4,7 +4,8 @@
 		<div class="row">
 			<div class="col-md-offset-1 col-sm-6">
 				<div class="mat-caption margin-bottom-20">
-					<a [routerLink]="['/', collection.type, collection.id]"><i class="fa fa-arrow-left"></i> Return to {{collection.type}}
+					<a [routerLink]="['/', collection.type, collection.id]"><i class="fa fa-arrow-left"></i> Return to
+						{{collection.type}}
 						page
 					</a>
 				</div>
@@ -14,14 +15,15 @@
 					<div class="text-grey" *ngIf="collection.difficultyLevel && collection.difficultyLevel.length > 0">
 						<b>This {{collection.type}} is of {{collection.difficultyLevel}} level.</b>
 					</div>
-					<div class="text-grey margin-top-10 pre-wrapped" *ngIf="collection.notes && collection.notes.length > 0">{{collection.notes
-						| ucfirst | shorten: maxLength : '... '}}
+					<div class="text-grey margin-top-10 pre-wrapped" *ngIf="collection.notes && collection.notes.length > 0">
+						<div [innerHTML]="collection.notes | shorten: maxLength : '... ' | linkify "></div>
 						<span *ngIf="collection.notes && collection.notes.length > maxLength" (click)="toggleNotesLength()" style="color:#33bd9e"
 						 class="clickable">read more</span>
 						<span *ngIf="collection.notes && collection.notes.length > 140 && collection.notes.length <= maxLength" (click)="toggleNotesLength()"
 						 style="color:#33bd9e" class="clickable">show less</span>
 					</div>
-					<div class="text-grey margin-top-10" *ngIf="!collection.notes">There are no additional requirements to be aware of at
+					<div class="text-grey margin-top-10" *ngIf="!collection.notes">There are no additional requirements to be aware of
+						at
 						this point</div>
 				</div>
 				<div class="loading-container" [hidden]="!loadingCards">
@@ -70,8 +72,8 @@
 								<div class="row">
 									<div class="col-md-12">
 										<mat-form-field [floatLabel]="'auto'" class="pb-block margin-bottom-20">
-											<textarea matInput rows="1" formControlName="billing_address" #headline maxlength="100" type="text" placeholder="Billing Address"
-											 required></textarea>
+											<textarea matInput rows="1" formControlName="billing_address" #headline maxlength="100" type="text"
+											 placeholder="Billing Address" required></textarea>
 											<mat-error>This field is required</mat-error>
 											<mat-hint align="start">Like 4200 Hunter Place, Fremont, CA</mat-hint>
 											<mat-hint align="end">{{addressForm.value.billing_address.length}} / 200</mat-hint>
@@ -120,7 +122,8 @@
 								<div class="col-sm-6">
 									<mat-form-field [floatLabel]="'always'">
 										<mat-select placeholder="Select card" (change)="getcardDetails($event)">
-											<mat-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand }} {{card.object}} ending with
+											<mat-option value="{{card.id}}" *ngFor="let card of listAllCards">{{ card.brand }} {{card.object}} ending
+												with
 												{{card.last4}}
 											</mat-option>
 										</mat-select>
@@ -190,18 +193,22 @@
 					<!--Action buttons-->
 					<div *ngIf="!loadingCountry || payAtVenue">
 						<div *ngIf="totalPrice && totalPrice!==0 && userCountry !== 'IN'">
-							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="(!listAllCards || listAllCards.length <= 0 || useAnotherCard) && !payAtVenue"
-							 [disabled]="savingData">{{totalPrice | convertCurrency: collection.currency |async}} - Confirm Payment
+							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton"
+							 *ngIf="(!listAllCards || listAllCards.length <= 0 || useAnotherCard) && !payAtVenue" [disabled]="savingData">{{totalPrice
+								| convertCurrency: collection.currency |async}} - Confirm Payment
 							</button>
-							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard && !payAtVenue"
-							 [disabled]="!cardDetails.id || savingData">{{totalPrice | convertCurrency:collection.currency |async}} - Confirm
+							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton"
+							 *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard && !payAtVenue" [disabled]="!cardDetails.id || savingData">{{totalPrice
+								| convertCurrency:collection.currency |async}} - Confirm
 								Payment
 							</button>
-							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="payAtVenue"
-							 [disabled]="savingData">I confirm to pay {{totalPrice | convertCurrency: collection.currency |async}} at venue
+							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton"
+							 *ngIf="payAtVenue" [disabled]="savingData">I confirm to pay {{totalPrice | convertCurrency: collection.currency
+								|async}} at venue
 							</button>
 						</div>
-						<button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center payButton" *ngIf="!totalPrice || totalPrice===0 ">FREE
+						<button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center payButton"
+						 *ngIf="!totalPrice || totalPrice===0 ">FREE
 							- Join {{collection.type | ucwords}}</button>
 					</div>
 					<!--Saving data progressbar-->
@@ -211,8 +218,10 @@
 					<hr>
 					<div class="terms-text margin-top-30">
 						<div class="terms-title">Terms of Service</div>
-						<p class="text-grey fs-15">By confirming this reservation you are agreeing to The Blockchain University additional
-							<a [routerLink]="'/terms-of-service'" target="_blank">Terms of Service</a> and the <a [routerLink]="'/policy'" target="_blank">Cancellation
+						<p class="text-grey fs-15">By confirming this reservation you are agreeing to The Blockchain University
+							additional
+							<a [routerLink]="'/terms-of-service'" target="_blank">Terms of Service</a> and the <a [routerLink]="'/policy'"
+							 target="_blank">Cancellation
 								Policy
 							</a>.</p>
 					</div>
@@ -236,18 +245,21 @@
 									<img [src]="(collection.imageUrls && collection.imageUrls.length > 0) ? envVariable.apiUrl+collection.imageUrls[0] + '/300' : defaultImageUrl"
 									 alt="image" />
 								</div>
-								<div class="fs-17 clickable" [routerLink]="['/', collection.type, collection.id]">{{ collection.title | titlecase}}
+								<div class="fs-17 clickable" [routerLink]="['/', collection.type, collection.id]">{{ collection.title |
+									titlecase}}
 									<br>
 									<span class="fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type }}
 									</span>
 									<br>
-									<span class="fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by {{collection.owners[0].profiles[0].first_name
+									<span class="fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by
+										{{collection.owners[0].profiles[0].first_name
 										| titlecase}} {{collection.owners[0].profiles[0].last_name | ucwords}}</span>
 								</div>
 							</div>
 						</div>
 						<div class="seperate-section">
-							<div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{ currentCalendar.endDate
+							<div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{
+								currentCalendar.endDate
 								| date: 'EEE, MMM dd' }}</div>
 							<div class="" *ngIf="collection.contents">{{collection.contents.length}} Activities</div>
 							<!--<a href="#">See details</a>-->
@@ -312,7 +324,8 @@
 						</div>-->
 						<div class="seperate-section">
 							<div class="margin-bottom-10">
-								<span class="text-grey">{{collection.price | convertCurrency: collection.currency |async}} x {{ guestCount }} Student</span>
+								<span class="text-grey">{{collection.price | convertCurrency: collection.currency |async}} x {{ guestCount }}
+									Student</span>
 								<span class="pull-right">{{collection.price * guestCount | convertCurrency: collection.currency |async}}
 								</span>
 							</div>

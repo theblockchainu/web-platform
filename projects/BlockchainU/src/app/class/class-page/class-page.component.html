@@ -265,7 +265,7 @@
 									</div>
 									<div class="col-xs-8 margin-top-8">
 										{{class.difficultyLevel}} level
-										<p class="mat-caption pre-wrapped">{{class.notes}}</p>
+										<div class="mat-caption pre-wrapped" [innerHTML]="class.notes | linkify "></div>
 									</div>
 								</div>
 								<div class="row margin-top-10">
@@ -405,7 +405,7 @@
 											<div class="margin-bottom-10">
 												<b>Announcement on {{comment.createdAt | extractTime: 'Do MMM, YYYY'}}</b>
 											</div>
-											<div>{{comment.description}}</div>
+											<div [innerHTML]="comment.description| linkify "></div>
 										</div>
 									</div>
 								</div>
@@ -438,7 +438,9 @@
 														<span>Edit</span>
 													</button>
 												</mat-menu>
-												<div class="mat-body-1 pre-wrapped">{{comment.description}}</div>
+												<div class="mat-body-1 pre-wrapped">
+													<div [innerHTML]=" comment.description| linkify "></div>
+												</div>
 												<div style="margin-top: 10px;" class="" *ngIf="comment.peer.length>0">
 													<div class="clickable commentProfilePic">
 														<img (click)="openProfilePage(comment.peer[0].id)" *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/user-placeholder.jpg"
@@ -526,7 +528,9 @@
 																</div>
 															</div>
 															<div style="width: 90%; display: inline-block;">
-																<div class="mat-body-1">{{reply.description}}</div>
+																<div class="mat-body-1">
+																	<div [innerHTML]="reply.description | linkify "></div>
+																</div>
 																<div class="" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
 																	<div class="clickable" style="float: left; margin-left: 15px;">
 																		<img (click)="openProfilePage(reply.peer[0].id)" *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/user-placeholder.jpg"
@@ -718,7 +722,7 @@
 											</div>
 											<div class="col-xs-8 margin-top-8">
 												{{class.difficultyLevel | titlecase}}
-												<p class="mat-caption pre-wrapped">{{class.notes}}</p>
+												<div class="mat-caption pre-wrapped" [innerHTML]="class.notes| linkify "></div>
 											</div>
 										</div>
 										<div class="row margin-top-20">

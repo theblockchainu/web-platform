@@ -93,6 +93,7 @@ import { CertificateService } from '../_services/certificate/certificate.service
 import { SafePipe } from './safe-pipe/safe.pipe';
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { PromocodeService } from '../_services/promocode/promocode.service';
+import { LinkifyPipe } from './linkify-pipe/linkify.pipe';
 
 @NgModule({
     imports: [
@@ -150,7 +151,8 @@ import { PromocodeService } from '../_services/promocode/promocode.service';
         ClassCardComponent,
         CustomCertificateFormComponent,
         SafePipe,
-        UploadFileComponent
+        UploadFileComponent,
+        LinkifyPipe
     ],
     providers: [
         CollectionService,
@@ -253,7 +255,8 @@ import { PromocodeService } from '../_services/promocode/promocode.service';
         CustomCertificateFormComponent,
         SafePipe,
         UploadFileComponent,
-        SpinnerModule
+        SpinnerModule,
+        LinkifyPipe
     ]
 })
 export class SharedModule {

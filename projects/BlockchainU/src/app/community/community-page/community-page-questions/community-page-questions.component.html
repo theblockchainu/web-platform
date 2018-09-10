@@ -30,7 +30,8 @@
 		<div class="col-md-12">
 			<form [formGroup]="questionForm" autocomplete="off">
 				<mat-form-field [floatLabel]="'never'" class="full-width margin-top-10" style="font-size: 15px;">
-					<input matInput formControlName="text" placeholder="Start your question with 'What', 'How', or 'Why', etc" required>
+					<input matInput formControlName="text" placeholder="Start your question with 'What', 'How', or 'Why', etc"
+					 required>
 				</mat-form-field>
 				<div class="row">
 					<div class="col-md-9 col-xs-7 mat-caption">
@@ -69,8 +70,10 @@
 		<div class="col-md-12">
 			<div class="row mat-caption" *ngIf="questions !== undefined && questions.length === 0">
 				<div class="col-md-12">
-					<div class="community-border-box" *ngIf="userType === 'participant'">Be the first one to ask a question on this community</div>
-					<div class="community-border-box clickable primaryColor" *ngIf="userType === 'public'">Have a question? Join this community now!</div>
+					<div class="community-border-box" *ngIf="userType === 'participant'">Be the first one to ask a question on this
+						community</div>
+					<div class="community-border-box clickable primaryColor" *ngIf="userType === 'public'">Have a question? Join this
+						community now!</div>
 				</div>
 			</div>
 			<div class="row margin-top-10" *ngFor="let question of questions">
@@ -85,7 +88,7 @@
 						</button>
 					</mat-menu>
 					<div class="mat-title margin-bottom-10">
-						{{question.text | ucfirst}}?
+						<div [innerHTML]="question.text | linkify "></div>
 						<span class="mat-h5 mat-border-button gyanBubble" *ngIf="question.gyan" matTooltip="{{question.gyan}} Gyan for the right answer.">
 							<!--<div style="position: relative; top: 5px;"><i class="fab fa-ethereum"></i>&nbsp; {{question.gyan}} GYAN</div>-->
 							<div style="font-size: 11px;">{{question.gyan | convertCurrency : 'GYAN' | async}} USD</div>
@@ -98,7 +101,8 @@
 						<div style="display: inline-block; margin-left: 5px;">
 							<div>
 								<div>
-									<span class="clickable mat-body-2" style="margin-bottom: 5px;" (click)="_profileService.viewProfile(question.peer[0])">{{question.peer[0].profiles[0].first_name | ucwords}} {{question.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
+									<span class="clickable mat-body-2" style="margin-bottom: 5px;" (click)="_profileService.viewProfile(question.peer[0])">{{question.peer[0].profiles[0].first_name
+										| ucwords}} {{question.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 								</div>
 							</div>
 							<div class="">
@@ -112,7 +116,8 @@
 						</div>
 					</div>
 					<div style="margin-top: 20px;">
-						<a *ngIf="question.peer[0].id !== userId && question.open" href="javascript:void(0);" class="answerButton" (click)="createAnswerForm(question)">
+						<a *ngIf="question.peer[0].id !== userId && question.open" href="javascript:void(0);" class="answerButton"
+						 (click)="createAnswerForm(question)">
 							<b>Answer</b>
 						</a>
 						<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer[0].id !== userId && question.open">fiber_manual_record</mat-icon>
@@ -147,7 +152,8 @@
 							<mat-form-field [floatLabel]="'auto'" class="answerFormField">
 								<textarea matInput matTextareaAutosize #answerText maxlength="5000" rows="1" formControlName="text" placeholder="Answer the above question"
 								 cdkAutosizeTextarea="true"></textarea>
-								<mat-hint align="end" *ngIf="answerText.value.length < 50">At least {{50 - answerText.value.length}} more characters</mat-hint>
+								<mat-hint align="end" *ngIf="answerText.value.length < 50">At least {{50 - answerText.value.length}} more
+									characters</mat-hint>
 							</mat-form-field>
 							<div style="text-align: right;">
 								<button [disabled]="!answerForm.valid" mat-raised-button color="primary">
@@ -197,7 +203,9 @@
 										<span>Delete</span>
 									</button>
 								</mat-menu>
-								<div class="mat-body-1 pre-wrapped">{{comment.description | ucfirst}}</div>
+								<div class="mat-body-1 pre-wrapped">
+									<div [innerHTML]="comment.description| linkify "></div>
+								</div>
 								<div style="margin-top: 10px;" class="" *ngIf="comment.peer.length>0">
 									<div class="clickable" style="float: left;">
 										<app-profile-popup [peer]="comment.peer[0]"></app-profile-popup>
@@ -205,7 +213,8 @@
 									<div style="display: inline-block; margin-left: 5px;">
 										<div>
 											<div>
-												<span class="mat-body-2 clickable" (click)="_profileService.viewProfile(comment.peer[0])">{{comment.peer[0].profiles[0].first_name | ucwords}} {{comment.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
+												<span class="mat-body-2 clickable" (click)="_profileService.viewProfile(comment.peer[0])">{{comment.peer[0].profiles[0].first_name
+													| ucwords}} {{comment.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 											</div>
 										</div>
 										<div class="">
@@ -215,9 +224,11 @@
 								</div>
 								<div style="margin-top: 10px;" *ngIf="!(replyForm && replyingToCommentId===comment.id)">
 									<a href="javascript:void(0);" (click)="createReplyForm(comment)">
-										<mat-icon style="top: 5px;">reply</mat-icon> Reply</a>
+										<mat-icon style="top: 5px;">reply</mat-icon> Reply
+									</a>
 								</div>
-								<div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -15px;">
+								<div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id"
+								 style="margin-left: -15px;">
 									<form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
 										<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
 										<mat-form-field [floatLabel]="'auto'" style="margin-left: 15px; width: 85%;">
@@ -255,7 +266,9 @@
 											</div>
 										</div>
 										<div style="width: 90%;">
-											<div class="mat-body-1">{{reply.description | ucfirst}}</div>
+											<div class="mat-body-1">
+												<div [innerHTML]=" reply.description | linkify "></div>
+											</div>
 											<div class="" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
 												<div class="clickable" style="float: left;">
 													<app-profile-popup [peer]="reply.peer[0]"></app-profile-popup>
@@ -263,7 +276,8 @@
 												<div style="display: inline-block; margin-left: 5px;">
 													<div>
 														<div>
-															<span class="clickable mat-body-2" (click)="_profileService.viewProfile(reply.peer[0])">{{reply.peer[0].profiles[0].first_name | ucwords}} {{reply.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
+															<span class="clickable mat-body-2" (click)="_profileService.viewProfile(reply.peer[0])">{{reply.peer[0].profiles[0].first_name
+																| ucwords}} {{reply.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 														</div>
 													</div>
 													<div class="">
@@ -304,16 +318,20 @@
 									<div style="display: inline-block; margin-left: 5px;">
 										<div>
 											<div>
-												<span class="mat-body-2 clickable" (click)="_profileService.viewProfile(answer.peer[0])">{{answer.peer[0].profiles[0].first_name | ucwords}} {{answer.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
+												<span class="mat-body-2 clickable" (click)="_profileService.viewProfile(answer.peer[0])">{{answer.peer[0].profiles[0].first_name
+													| ucwords}} {{answer.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 											</div>
 										</div>
 										<div class="">
 											<span class="mat-caption">Answered {{answer.createdAt |extractTime:'MMM Do'}}
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;">fiber_manual_record</mat-icon> {{(answer.upvotes) ? answer.upvotes.length : '0'}} upvotes</span>
+												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;">fiber_manual_record</mat-icon>
+												{{(answer.upvotes) ? answer.upvotes.length : '0'}} upvotes</span>
 										</div>
 									</div>
 								</div>
-								<div class="mat-body-1 pre-wrapped">{{answer.text | ucfirst}}</div>
+								<div class="mat-body-1 pre-wrapped">
+									<div [innerHTML]="answer.text | linkify "></div>
+								</div>
 								<div style="margin-top: 20px;">
 									<a class="clickable acceptButton" *ngIf="question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept && question.open"
 									 (click)="acceptAnswer(question, answer)">
@@ -392,7 +410,9 @@
 												<span>Delete</span>
 											</button>
 										</mat-menu>
-										<div class="mat-body-1 pre-wrapped">{{comment.description | ucfirst}}</div>
+										<div class="mat-body-1 pre-wrapped">
+											<div [innerHTML]="comment.description| linkify "></div>
+										</div>
 										<div style="margin-top: 10px;" class="" *ngIf="comment.peer.length>0">
 											<div class="clickable" style="float: left;">
 												<app-profile-popup [peer]="comment.peer[0]"></app-profile-popup>
@@ -400,7 +420,8 @@
 											<div style="display: inline-block; margin-left: 5px;">
 												<div>
 													<div>
-														<span class="mat-body-2 clickable" (click)="_profileService.viewProfile(comment.peer[0])">{{comment.peer[0].profiles[0].first_name | ucwords}} {{comment.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
+														<span class="mat-body-2 clickable" (click)="_profileService.viewProfile(comment.peer[0])">{{comment.peer[0].profiles[0].first_name
+															| ucwords}} {{comment.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 													</div>
 												</div>
 												<div class="">
@@ -410,9 +431,11 @@
 										</div>
 										<div style="margin-top: 10px;" *ngIf="!(replyForm && replyingToCommentId===comment.id)">
 											<a href="javascript:void(0);" (click)="createReplyForm(comment)">
-												<mat-icon style="top: 5px;">reply</mat-icon> Reply</a>
+												<mat-icon style="top: 5px;">reply</mat-icon> Reply
+											</a>
 										</div>
-										<div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -15px;">
+										<div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id"
+										 style="margin-left: -15px;">
 											<form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
 												<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
 												<mat-form-field [floatLabel]="'auto'" style="margin-left: 15px; width: 85%;">
@@ -450,7 +473,9 @@
 													</div>
 												</div>
 												<div style="width: 90%;">
-													<div class="mat-body-1">{{reply.description | ucfirst}}</div>
+													<div class="mat-body-1">
+														<div [innerHTML]=" reply.description| linkify "></div>
+													</div>
 													<div class="" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
 														<div class="clickable" style="float: left;">
 															<app-profile-popup [peer]="reply.peer[0]"></app-profile-popup>
@@ -458,7 +483,8 @@
 														<div style="display: inline-block; margin-left: 5px;">
 															<div>
 																<div>
-																	<span class="clickable mat-body-2" (click)="_profileService.viewProfile(reply.peer[0])">{{reply.peer[0].profiles[0].first_name | ucwords}} {{reply.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
+																	<span class="clickable mat-body-2" (click)="_profileService.viewProfile(reply.peer[0])">{{reply.peer[0].profiles[0].first_name
+																		| ucwords}} {{reply.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 																</div>
 															</div>
 															<div class="">
