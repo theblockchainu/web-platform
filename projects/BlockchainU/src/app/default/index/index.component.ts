@@ -451,6 +451,23 @@ export class IndexComponent implements OnInit {
 						if (this.peers.length <= 6) {
 							this.peers.push(responseObj);
 						}
+					} else {
+						responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
+						const topics = [];
+						if (responseObj.topicsTeaching) {
+							responseObj.topicsTeaching.forEach(topicObj => {
+								topics.push(this.titlecasepipe.transform(topicObj.name));
+							});
+						}
+						if (topics.length > 0) {
+							responseObj.topics = topics;
+						} else {
+							topics.push('No topics selected');
+							responseObj.topics = topics;
+						}
+						if (this.peers.length <= 6) {
+							this.peers.push(responseObj);
+						}
 					}
 				}
 			}
