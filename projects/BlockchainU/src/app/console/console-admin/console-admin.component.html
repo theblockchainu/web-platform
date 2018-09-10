@@ -29,19 +29,21 @@
 													</a>
 												</div>
 											</div>
-											<br/>
+											<br />
 											<div class="mat-body-2 collectionTitle">
 												{{collection.type | ucfirst}}
 											</div>
 											<div class="cohortDate" style="padding-top: 10px" *ngIf="collection.calendars && collection.calendars[0]">
-												<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
+												<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate
+													|extractTime:'Do
 													MMM' }}</span>
 											</div>
 											<div class="cohortDate" style="padding-top: 10px" *ngIf="!collection.calendars || !collection.calendars[0]">
 												<span>No dates selected</span>
 											</div>
 											<br>
-											<div class="clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+											<div class="clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No
+												Title' | titlecase | shorten:20 :'...'}} </div>
 											<div class="mat-caption">
 												{{collection.submittedAt | extractTime : 'Do MMM, YYYY'}}
 											</div>
@@ -73,12 +75,13 @@
 													</a>
 												</div>
 											</div>
-											<br/>
+											<br />
 											<div class="mat-body-2 collectionTitle clickable">
 												Peer {{collection.type | ucfirst}}
 											</div>
 											<br>
-											<div class="clickable" (click)="_profileService.viewProfile(collection.owners[0])">{{collection.owners[0].profiles[0].first_name}} {{collection.owners[0].profiles[0].last_name}}</div>
+											<div class="clickable" (click)="_profileService.viewProfile(collection.owners[0])">{{collection.owners[0].profiles[0].first_name}}
+												{{collection.owners[0].profiles[0].last_name}}</div>
 											<div>
 												<span *ngFor="let topic of collection.owners[0].topicsTeaching">
 													{{topic.name}},&nbsp;
@@ -142,7 +145,8 @@
 												</div>
 											</div>
 											<br>
-											<div class="collectionTitle clickable" [routerLink]="['/profile/'+peer.id]">{{ peer.profiles[0].first_name + ' ' + peer.profiles[0].last_name || 'No name' | ucwords }} </div>
+											<div class="collectionTitle clickable" [routerLink]="['/profile/'+peer.id]">{{ peer.profiles[0].first_name +
+												' ' + peer.profiles[0].last_name || 'No name' | ucwords }} </div>
 											<br>
 											<br>
 											<div>
@@ -159,7 +163,8 @@
 												<i *ngIf="peer.google" class="fa fa-google"></i>
 											</div>
 											<div class="mat-body-2">
-												<a href="{{envVariable.apiUrl + peer.verificationIdUrl}}" target="_blank" *ngIf="peer.verificationIdUrl !== undefined">View ID</a>
+												<a href="{{envVariable.apiUrl + peer.verificationIdUrl}}" target="_blank" *ngIf="peer.verificationIdUrl !== undefined">View
+													ID</a>
 												<span *ngIf="peer.verificationIdUrl === undefined">No ID submitted</span>
 											</div>
 											<div class="mat-caption">
@@ -215,7 +220,8 @@
 								<!-- ID Column -->
 								<ng-container matColumnDef="createdAt">
 									<mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
-									<mat-cell *matCellDef="let element"> {{element.createdAt || '01-01-1900 00:00:00' | extractTime : 'Do MMM'}} </mat-cell>
+									<mat-cell *matCellDef="let element"> {{element.createdAt || '01-01-1900 00:00:00' | extractTime : 'Do MMM'}}
+									</mat-cell>
 								</ng-container>
 
 								<!-- Email Column -->
@@ -328,7 +334,8 @@
 								<mat-card style="text-align: center; padding: 20px;">
 									<mat-card-content>
 										<br>
-										<div class="collectionTitle clickable" [routerLink]="'/scholarship/'+scholarship.id">{{ scholarship.title | ucwords }} </div>
+										<div class="collectionTitle clickable" [routerLink]="'/scholarship/'+scholarship.id">{{ scholarship.title |
+											ucwords }} </div>
 										<div class="mat-caption">{{scholarship.type | ucwords}}</div>
 										<br>
 										<br> Fund Balance
@@ -401,6 +408,16 @@
 			</mat-card-header>
 			<mat-card-actions>
 				<button (click)="addCountries()" mat-button>Add</button>
+			</mat-card-actions>
+		</mat-card>
+	</div>
+	<div class="col-md-3">
+		<mat-card>
+			<mat-card-header>
+				<mat-card-title>Add Timezones</mat-card-title>
+			</mat-card-header>
+			<mat-card-actions>
+				<button (click)="addTimezone()" mat-button>Add</button>
 			</mat-card-actions>
 		</mat-card>
 	</div>

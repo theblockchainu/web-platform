@@ -102,19 +102,19 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public totalDuration: string;
 	public calendarId: string;
 	public userRating: number;
-	public newUserRating = 0;
+	public newUserRating: number;
 	public liveCohort;
-	public isViewTimeHidden = true;
-	public busyDiscussion = false;
-	public busyReview = false;
-	public busyReply = false;
-	public initialLoad = true;
+	public isViewTimeHidden: boolean;
+	public busyDiscussion: boolean;
+	public busyReview: boolean;
+	public busyReply: boolean;
+	public initialLoad: boolean;
 	public loggedInUser;
-	public isReadonly = true;
-	public noOfReviews = 3;
-	private initialised = false;
+	public isReadonly: boolean;
+	public noOfReviews: number;
+	private initialised: boolean;
 	public bookmark;
-	public hasBookmarked = false;
+	public hasBookmarked: boolean;
 	public replyingToCommentId: string;
 	public itenaryArray: Array<any>;
 	public class: any;
@@ -126,33 +126,29 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public allItenaries: Array<any>;
 	public itenariesObj: any;
 	public reviews: Array<any>;
-	public defaultProfileUrl = '/assets/images/avatar.png';
-	public noWrapSlides = true;
-	public peerHasSubmission = false;
+	public defaultProfileUrl: string;
+	public noWrapSlides: boolean;
+	public peerHasSubmission: boolean;
 	public contentHasSubmission: any;
 	public participants: Array<any>;
 	public allParticipants: Array<any>;
-	public isRatingReceived = false;
-	public maxLength = 140;
+	public isRatingReceived: boolean;
+	public maxLength: number;
 	public editReviewForm: FormGroup;
-	public bookmarking = false;
+	public bookmarking: boolean;
 	public editCommentForm: FormGroup;
 	public editReplyForm: FormGroup;
 	certificateHTML: string;
 	loadingCertificate: boolean;
-
 	public replyForm: FormGroup;
 	public reviewForm: FormGroup;
-	public recommendations = {
-		collections: []
-	};
+	public recommendations: any;
 	public result;
-
 	public comments: Array<any>;
-	private today = moment();
+	private today: any;
 
 	// Calendar Start
-	public dateClicked = false;
+	public dateClicked: boolean;
 	public clickedDate;
 	public clickedCohort;
 	public clickedCohortId;
@@ -160,13 +156,10 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public clickedCohortEndDate;
 	public eventsForTheDay: any;
 	public toOpenDialogName;
-	public checkingEthereum = true;
-	public isOnEthereum = false;
-	objectKeys = Object.keys;
+	public checkingEthereum: boolean;
+	public isOnEthereum: boolean;
 	public previewAs: string;
-
-	public view = 'month';
-
+	public view: string;
 	public activityMapping:
 		{ [k: string]: string } = { '=0': 'No activity', '=1': 'One activity', 'other': '# activities' };
 	public hourMapping:
@@ -181,29 +174,24 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		{ [k: string]: string } = { '=0': 'Less than a day', '=1': 'One day', 'other': '# days' };
 	public discussionMapping:
 		{ [k: string]: string } = { '=0': 'No Comments', '=1': 'One comment', 'other': '# comments' };
-
-	public viewDate: Date = new Date();
-
-	refresh: Subject<any> = new Subject();
-
-	events: CalendarEvent[] = [
-	];
-
-
+	public viewDate: Date;
+	refresh: Subject<any>;
+	public events: any;
 	public carouselImages: Array<string>;
-
-	activeDayIsOpen = true;
-	public loadingSimilarClasses = true;
-	public loadingComments = true;
-	public loadingParticipants = true;
-	public loadingClass = true;
-	public loadingReviews = true;
-	public accountApproved = 'false';
+	activeDayIsOpen: boolean;
+	public loadingSimilarClasses: boolean;
+	public loadingComments: boolean;
+	public loadingParticipants: boolean;
+	public loadingClass: boolean;
+	public loadingReviews: boolean;
+	public accountApproved: any;
 	public carouselBanner: any;
 	public startedView;
-	public inviteLink = '';
+	public inviteLink: string;
 	public assessmentRules: Array<any>;
 	public contactUsForm: FormGroup;
+
+	objectKeys = Object.keys;
 
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -230,6 +218,10 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		this._authenticationService.isLoginSubject.subscribe(res => {
+			console.log('Initializing Page');
+			this.initializePage();
+		});
 		this.initializePage();
 	}
 
@@ -242,12 +234,47 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this._socketService.sendEndView(this.startedView);
 			this._socketService.listenForViewEnded().subscribe(endedView => {
 				delete this.startedView;
-				console.log(endedView);
 			});
 		}
 	}
 
 	initializePage() {
+		this.newUserRating = 0;
+		this.isViewTimeHidden = true;
+		this.busyDiscussion = false;
+		this.busyReview = false;
+		this.busyReply = false;
+		this.initialLoad = true;
+		this.isReadonly = true;
+		this.noOfReviews = 3;
+		this.initialised = false;
+		this.hasBookmarked = false;
+		this.defaultProfileUrl = '/assets/images/avatar.png';
+		this.noWrapSlides = true;
+		this.peerHasSubmission = false;
+		this.isRatingReceived = false;
+		this.maxLength = 140;
+		this.bookmarking = false;
+		this.recommendations = {
+			collections: []
+		};
+		this.dateClicked = false;
+		this.checkingEthereum = true;
+		this.today = moment();
+		this.isOnEthereum = false;
+		this.view = 'month';
+		this.viewDate = new Date();
+		this.refresh = new Subject();
+		this.events = [];
+		this.activeDayIsOpen = true;
+		this.loadingSimilarClasses = true;
+		this.loadingComments = true;
+		this.loadingParticipants = true;
+		this.accountApproved = 'false';
+		this.inviteLink = '';
+		this.loadingClass = true;
+		this.loadingReviews = true;
+
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.classId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
 				location.reload();
@@ -263,12 +290,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
-		console.log('userId is ' + this.userId);
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
 
 		this.initialised = true;
-		this.initializeClass();
 		this.initializeForms();
+		this.initializeClass();
 		this.initialLoad = false;
 		this.eventsForTheDay = {};
 		this.carouselBanner = {
@@ -415,7 +441,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						startDate: eventDate,
 						contents: contentObj
 					};
-					console.log(itenary);
 					calendarItenary.push(itenary);
 				}
 			}
@@ -511,7 +536,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				});
 			this._collectionService.getCollectionDetail(this.classId, query)
 				.subscribe(res => {
-					console.log(res);
 					this.class = res;
 					this.inviteLink = environment.clientUrl + '/class/' + this.class.id;
 					this.setTags();
@@ -543,7 +567,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 							});
 						}
 					});
-					console.log(this.itenariesObj);
 					// Scan through all the start-day-groups of contents
 					// Calculate the calendar start and end date of each content group
 					// Sort the contents inside a group based on their start times
@@ -671,7 +694,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this._socketService.sendStartView(view);
 		this._socketService.listenForViewStarted().subscribe(startedView => {
 			this.startedView = startedView;
-			console.log(startedView);
 		});
 	}
 
@@ -699,7 +721,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			if (err) {
 				console.log(err);
 			} else {
-				console.log(response);
 				const currentPeerReviews = [];
 				const otherPeerReviews = [];
 				response.forEach(review => {
@@ -710,7 +731,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					}
 				});
 				this.reviews = currentPeerReviews.concat(otherPeerReviews);
-				console.log(this.reviews);
 				this.userRating = this._collectionService.calculateRating(this.reviews);
 				this.loadingReviews = false;
 			}
@@ -739,11 +759,9 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			if (err) {
 				console.log(err);
 			} else {
-				console.log(response);
 				this.hasBookmarked = false;
 				response.forEach(bookmark => {
 					if (bookmark.peer[0].id === this.userId) {
-						console.log('user bookmarked');
 						this.hasBookmarked = true;
 						this.bookmark = bookmark;
 					}
@@ -796,6 +814,15 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	private initializeForms() {
+		this.contactUsForm = this._fb.group(
+			{
+				first_name: ['', Validators.required],
+				email: ['', Validators.required],
+				subject: [''],
+				message: ['', Validators.required],
+				phone: ['']
+			}
+		);
 		this.chatForm = this._fb.group({
 			description: ['', Validators.required],
 			isAnnouncement: [false]
@@ -813,28 +840,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		};
 
 		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
-			console.log(res);
-
-			if (res) {
-				this.contactUsForm = this._fb.group(
-					{
-						first_name: [res.profiles[0].first_name, Validators.required],
-						email: [res.email, Validators.required],
-						subject: [''],
-						message: ['', Validators.required],
-						phone: [(res.profiles[0].phone_numbers[0]) ? res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '']
-					}
-				);
-			} else {
-				this.contactUsForm = this._fb.group(
-					{
-						first_name: ['', Validators.required],
-						email: ['', Validators.required],
-						subject: [''],
-						message: ['', Validators.required],
-						phone: ['']
-					}
-				);
+			if (res && res.profiles && res.profiles.length > 0) {
+				this.contactUsForm.patchValue({
+					first_name: res.profiles[0].first_name,
+					email: res.email,
+					phone: (res.profiles[0].phone_numbers[0]) ? res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : ''
+				});
 			}
 		});
 
@@ -1569,9 +1580,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						thisUserView.push(view);
 						const startTime = moment(view.startTime);
 						const endTime = moment(view.endTime);
-						console.log(endTime.toString());
 						const thisViewTime = endTime.diff(startTime);
-						console.log(thisViewTime);
 						totalUserViewTime += thisViewTime;
 					}
 				});
@@ -1693,7 +1702,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	public editReply(reply: any) {
-		console.log(reply);
 		this.editReplyForm = this._fb.group({
 			description: reply.description,
 			id: reply.id
@@ -1750,7 +1758,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					}
 				});
 				this._assessmentService.submitAssessment(assessmentArray).subscribe((result: any) => {
-					console.log(result);
 					this.snackBar.open('Your assessment has been submitted. Students will be informed over email.', 'Ok', { duration: 5000 });
 					this._authenticationService.isLoginSubject.next(true);
 				});
@@ -1771,7 +1778,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 
 	public openMessageDialog(peer) {
 		this.dialogsService.messageParticipant(peer).subscribe((result: any) => {
-			// console.log(result);
 		});
 	}
 

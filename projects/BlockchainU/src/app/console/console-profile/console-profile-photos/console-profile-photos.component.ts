@@ -5,7 +5,8 @@ import { ProfileService } from '../../../_services/profile/profile.service';
 import { MediaUploaderService } from '../../../_services/mediaUploader/media-uploader.service';
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import { environment } from '../../../../environments/environment';
-
+import { pipe } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 declare var moment: any;
 
 @Component({
@@ -68,19 +69,21 @@ export class ConsoleProfilePhotosComponent implements OnInit {
 	uploadImage(event) {
 		this.uploadingImage = true;
 		for (const file of event.files) {
-			this.mediaUploader.upload(file).subscribe((response: any) => {
-				this.picture_url = response.url;
-				this._profileService.updateProfile(this.userId, {
-					'picture_url': response.url
-				}).subscribe((res: any) => {
+			this.mediaUploader
+				.upload(file)
+				.pipe(
+					flatMap((response: any) => {
+						this.picture_url = response.url;
+						return this._profileService.updateProfile(this.userId, {
+							'picture_url': response.url
+						});
+					})
+				).subscribe((res: any) => {
 					this.picture_url = res.picture_url;
 					this.uploadingImage = false;
 				}, err => {
 					console.log(err);
 				});
-			}, err => {
-				console.log(err);
-			});
 		}
 	}
 

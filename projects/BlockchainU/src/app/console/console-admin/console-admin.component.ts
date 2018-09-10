@@ -12,6 +12,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { TopicService } from '../../_services/topic/topic.service';
 import { LanguagePickerService } from '../../_services/languagepicker/languagepicker.service';
 import { CountryPickerService } from '../../_services/countrypicker/countrypicker.service';
+import { TimezonePickerService } from '../../_services/timezone-picker/timezone-picker.service';
 import { flatMap } from 'rxjs/operators';
 declare var moment: any;
 
@@ -52,7 +53,8 @@ export class ConsoleAdminComponent implements OnInit {
 		private _fb: FormBuilder,
 		private _topicService: TopicService,
 		private _LanguagePickerService: LanguagePickerService,
-		private countryPickerService: CountryPickerService
+		private countryPickerService: CountryPickerService,
+		private timezonePickerService: TimezonePickerService
 	) {
 		this.envVariable = environment;
 		activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
@@ -336,9 +338,18 @@ export class ConsoleAdminComponent implements OnInit {
 			});
 		});
 	}
+
 	addCountries() {
 		this.countryPickerService.postInbuiltCountries().subscribe(res => {
-			this.snackBar.open('posted successfully', 'close', { duration: 3000 });
+			this.snackBar.open('Posted successfully', 'close', { duration: 3000 });
+		}, err => {
+			this.snackBar.open('Error', 'close', { duration: 3000 });
+		});
+	}
+
+	addTimezone() {
+		this.timezonePickerService.postAvailableTimezones().subscribe(res => {
+			this.snackBar.open('Posted successfully', 'close', { duration: 3000 });
 		}, err => {
 			this.snackBar.open('Error', 'close', { duration: 3000 });
 		});

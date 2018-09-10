@@ -30,7 +30,7 @@
 							<div class="col-md-12">
 								<div class="margin-top-20 margin-bottom-20">
 									<span [ngClass]="{'mat-body-2': true, 'deleteText': itenaryObj.calendar.status === 'cancelled' }">
-										{{itenaryObj.calendar.startDate | date:'EEE, MMM d'}} to {{itenaryObj.calendar.endDate | date:'EEE, MMM d'}}
+										{{itenaryObj.calendar.startDate | date:'EEE, MMM d yyyy'}} to {{itenaryObj.calendar.endDate | date:'EEE, MMM d yyyy'}}
 									</span>
 									<br>
 									<span [ngClass]="{'mat-caption': true, 'deleteText': itenaryObj.calendar.status === 'cancelled' }">
