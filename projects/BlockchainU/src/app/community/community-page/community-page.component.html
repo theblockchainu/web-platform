@@ -116,14 +116,14 @@
 							<!--TABS-->
 							<nav mat-tab-nav-bar disableRipple>
 								<a mat-tab-link [routerLink]="['questions']" [active]="activeTab === 'questions'" style="padding-left: 0px !important; min-width: min-content !important;">
-									Q & A
+									Questions
 								</a>
-								<a mat-tab-link [routerLink]="['experiences']" [active]="activeTab === 'experiences'" style="min-width: min-content !important;">
+								<!--<a mat-tab-link [routerLink]="['experiences']" [active]="activeTab === 'experiences'" style="min-width: min-content !important;">
 									Experiences
 								</a>
 								<a mat-tab-link [routerLink]="['classes']" [active]="activeTab === 'classes'" style="min-width: min-content !important;">
 									Classes
-								</a>
+								</a>-->
 								<a mat-tab-link [routerLink]="['links']" [active]="activeTab === 'links'" style="min-width: min-content !important;">
 									Shared links
 								</a>
@@ -231,7 +231,7 @@
 								<div class="col-xs-4 clickable" (click)="saveBookmark()" style="cursor: pointer;">
 									<mat-icon [ngClass]="{'hasBookmarked': hasBookmarked}" style="font-size: 1rem; top: 2px;">bookmark
 									</mat-icon>
-									<span *ngIf="!hasBookmarked">Bookmark</span>
+									<span *ngIf="!hasBookmarked">Save</span>
 									<span *ngIf="hasBookmarked">Saved</span>
 								</div>
 								<div class="col-xs-4" style="text-align: right; font-size: 18px;">

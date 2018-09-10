@@ -45,7 +45,7 @@
 		</div>
 		<div class="row pending-actions center" *ngIf="class.status === 'active' && calendarId === undefined && !hasUpcomingCohort()">
 			<div class="col-md-10 col-md-offset-1">
-				<span>There are no upcoming cohorts scheduled for this class!
+				<span>This online class was run in the past but has no upcoming batches.
 					<a href="javascript:void(0);" *ngIf="userType === 'teacher'" (click)="editCalendar()">Schedule one now?</a>
 				</span>
 			</div>
@@ -75,7 +75,7 @@
 		<div class="row margin-top-40">
 			<div class="col-md-10 col-md-offset-1">
 				<div class="row class-header">
-					<div class="col-md-8">
+					<div class="col-md-7">
 						<div class="row">
 							<div class="col-md-12">
 								<a class="clickable margin-bottom-10" *ngIf="calendarId && userType !== 'participant'" (click)="backToCollection(class)">
@@ -90,7 +90,7 @@
 											<i class="fa fa-plus lightText" style="font-size: 14px;"></i>
 										</span>
 										</p>
-										<div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px;">
+										<div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px; margin-bottom: 10px;">
 											<span *ngIf="currentCalendar">
 												<b>{{currentCalendar.startDate | date:'d MMM'}} to {{currentCalendar.endDate| date:'d MMM'}}</b>
 												&nbsp;&nbsp;&nbsp;
@@ -104,9 +104,11 @@
 												| i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;
 											</span>
 											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
+												<br/>
 												<mat-icon style="top: 5px;">date_range</mat-icon> Change cohort
 											</a>
 											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()">
+												<br/>
 												<mat-icon style="top: 5px;">date_range</mat-icon> Select cohort to view participants
 											</a>
 										</div>
@@ -119,7 +121,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-5">
 						<div class="row" style="margin-top: 15px; text-align: right" *ngIf="userType==='teacher' || userType==='participant'">
 							<div class="col-xs-12 button-row">
 								<button mat-button class="mat-border-button" (click)="openGroupChat()">Group Chat</button>
@@ -413,8 +415,8 @@
 								<div class="row margin-top-10" *ngFor="let comment of comments">
 									<div *ngIf="comment.isAnnouncement === false">
 										<div class="col-xs-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
-											<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
-											<mat-icon *ngIf="hasUpvoted(comment.upvotes)">arrow_drop_up</mat-icon>
+											<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer; font-size: 38px; left: -7px;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
+											<mat-icon *ngIf="hasUpvoted(comment.upvotes)" style="font-size: 38px; left: -7px;">arrow_drop_up</mat-icon>
 											<div class="commentUpvoteCount">
 												{{comment.upvotes.length}}
 											</div>
@@ -472,7 +474,7 @@
 															<input matInput type="text" #description2 maxlength="2000" formControlName="description" placeholder="Reply to above comment...">
 															<mat-hint align="end">{{description2.value.length}} / 2000</mat-hint>
 														</mat-form-field>
-														<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary">
+														<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right margin-top-20" color="primary">
 															<span *ngIf="!busyReply">Post</span>
 															<ngx-loading [show]="busyReply"></ngx-loading>
 														</button>
@@ -518,8 +520,8 @@
 															</mat-menu>
 															<div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px;"
 															 [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
-																<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
-																<mat-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</mat-icon>
+																<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer; font-size: 38px; left: -7px;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
+																<mat-icon *ngIf="hasUpvoted(reply.upvotes)" style="font-size: 38px; left: -7px;">arrow_drop_up</mat-icon>
 																<div>
 																	<span *ngIf="reply.upvotes !== undefined">{{reply.upvotes.length}}</span>
 																	<span *ngIf="reply.upvotes === undefined">0</span>
@@ -739,7 +741,7 @@
 
 					<!--RIGHT SIDEBAR-->
 					<div class="col-md-4 col-md-offset-1 right-content">
-						<div *ngIf="(userType==='teacher' || userType==='participant')">
+						<div *ngIf="userType==='participant'">
 							<h3 class="margin-bottom-20">Taught By</h3>
 							<div class="row">
 								<div class="col-xs-7">
@@ -858,14 +860,13 @@
 								</div>
 							</div>
 						</div>
-						<div *ngIf="userType==='teacher' && class.isApproved && certificateHTML !== undefined">
+						<div *ngIf="userType==='teacher' && class.isApproved && certificateHTML !== undefined && certificateHTML.length > 10">
 							<hr class="margin-top-30 margin-bottom-30">
 							<div>
 								<h3 style="display: inline-block;">Certificate</h3>
-								<!-- <span (click)="editCalendar()" class="pull-right clickable" style="cursor: pointer;">
-										<mat-icon style="font-size: 1rem; top: 15px;">edit</mat-icon>
-									</span> -->
-								<!-- <br> -->
+								<div class="margin-top-20">
+									You will receive this Smart Certificate immediately on completing this class.
+								</div>
 								<div class="row padding-top-20">
 									<div class="col-xs-12">
 										<ngx-loading [show]="loadingCertificate"></ngx-loading>
@@ -873,6 +874,9 @@
 											<div [innerHTML]="certificateHTML | safe: 'html'"></div>
 										</mat-card>
 									</div>
+								</div>
+								<div class="margin-top-20 mat-caption lightText">
+									This certificate is issued on the blockchain & can be instantly verified by anyone.
 								</div>
 							</div>
 							<br>
@@ -889,9 +893,9 @@
 									<div class="col-xs-4">
 										For {{assessment_rule.value | titlecase}}
 									</div>
-									<div class="col-xs-6">
+									<div class="col-xs-8">
 										student gets &nbsp;
-										<i class="fab fa-ethereum"></i>
+										<i class="fab fa-ethereum"></i>&nbsp;
 										<b>{{getGyanForRule(assessment_rule.gyan, class.academicGyan)}} Gyan</b>
 									</div>
 								</div>
@@ -1089,7 +1093,7 @@
 								<ngx-loading [show]="bookmarking"></ngx-loading>
 								<span [hidden]="bookmarking">
 									<mat-icon [ngClass]="{'hasBookmarked': hasBookmarked}" style="font-size: 1rem; top: 2px;">bookmark</mat-icon>
-									<span *ngIf="!hasBookmarked">Bookmark</span>
+									<span *ngIf="!hasBookmarked">Save</span>
 									<span *ngIf="hasBookmarked">Saved</span>
 								</span>
 							</div>

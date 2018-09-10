@@ -96,7 +96,7 @@
 						<mat-hint align="end">{{description1.value.length}} / 2000</mat-hint>
 					</mat-form-field>
 					<span matTooltip="Invalid input!" [matTooltipDisabled]="chatForm.valid">
-						<button mat-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right" tabindex="-1">Post</button>
+						<button mat-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right margin-top-20" tabindex="-1">Post</button>
 					</span>
 				</form>
 			</div>
@@ -110,8 +110,8 @@
 				<div class="row margin-top-10" *ngFor="let comment of comments; let i=index;">
 					<div>
 						<div class="col-md-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
-							<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
-							<mat-icon *ngIf="hasUpvoted(comment.upvotes)">arrow_drop_up</mat-icon>
+							<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer; font-size: 38px; left: -10px;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
+							<mat-icon *ngIf="hasUpvoted(comment.upvotes)" style="font-size: 38px; left: -10px;">arrow_drop_up</mat-icon>
 							<div>
 								{{comment.upvotes.length}}
 							</div>
@@ -162,7 +162,7 @@
 										<mat-hint align="end">{{description2.value.length}} / 2000</mat-hint>
 									</mat-form-field>
 									<span matTooltip="Invalid input!" [matTooltipDisabled]="replyForm.valid">
-										<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary" tabindex="-1">Post</button>
+										<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right margin-top-20" color="primary" tabindex="-1">Post</button>
 									</span>
 								</form>
 							</div>
@@ -184,8 +184,8 @@
 									</mat-menu>
 									<div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px;"
 									 [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
-										<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
-										<mat-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</mat-icon>
+										<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer; font-size: 38px; left: -10px;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
+										<mat-icon *ngIf="hasUpvoted(reply.upvotes)" style="cursor: pointer; font-size: 38px; left: -10px;">arrow_drop_up</mat-icon>
 										<div>
 											<span *ngIf="reply.upvotes !== undefined">{{reply.upvotes.length}}</span>
 											<span *ngIf="reply.upvotes === undefined">0</span>
