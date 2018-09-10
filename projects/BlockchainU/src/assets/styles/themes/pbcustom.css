@@ -13,7 +13,7 @@ html {
 body {
 	margin: 0;
 	font-size: 1rem;
-	color: rgba(0,0,0,0.87);
+	color: rgba(0,0,0,0.80);
 }
 
 footer {
@@ -142,7 +142,7 @@ mat-icon {
 /* Material Classes Starts*/
 
 .mat-caption, .mat-display-1, .mat-display-2, .mat-display-3, .mat-display-4 {
-	color: rgba(0,0,0,0.75);
+	color: rgba(0,0,0,0.70);
 }
 
 .mat-form-field {
@@ -168,13 +168,13 @@ mat-sidenav {
 }
 
 mat-sidenav a {
-	color: rgba(0,0,0,0.75);
+	color: rgba(0,0,0,0.70);
 	cursor: pointer;
 }
 
 mat-sidenav a:hover {
 	text-decoration: none;
-	color: rgba(0,0,0,0.75);
+	color: rgba(0,0,0,0.70);
 }
 
 .scroll-box::-webkit-scrollbar {
@@ -208,7 +208,7 @@ mat-sidenav a:hover {
 
 .mat-nav-list a {
 	font-weight: 300;
-	color: rgba(0,0,0,0.75) !important;
+	color: rgba(0,0,0,0.70) !important;
 }
 
 mat-subheader {
@@ -234,12 +234,13 @@ mat-subheader {
 }
 
 .mat-tab-link {
-	color: rgba(0,0,0,0.87) !important;
+	color: rgba(0,0,0,0.80) !important;
 	opacity: 1 !important;
 }
 
 .mat-border-button {
-	border: 0.5px solid #ccc !important;
+	border: 2px solid #464646 !important;
+	border-radius: 4px;
 }
 
 .mat-border-button.mat-primary {
@@ -259,20 +260,15 @@ mat-subheader {
     font-size: 16px !important;
     line-height: 22px !important;
     letter-spacing: normal !important;
-    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
-    text-transform: undefined !important;
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
-    font-weight: 800 !important;
-    border-width: 2px !important;
-    border-style: solid !important;
-    padding-left: 24px !important;
-    padding-right: 24px !important;
-    min-width: 77.66563145999496px !important;
+    font-family: Cereal,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+    text-transform: none !important;
+	font-weight: 800 !important;
+	padding: 12px 24px !important;
+	min-width: 77.66563145999496px !important;
     box-shadow: none !important;
     background: transparent !important;
-    border-color: #33bd9e !important;
-    color: #33bd9e !important;
+	border: 2px solid #33bd9e !important;
+	color: #33bd9e !important;
 }
 
 .mat-button.mat-primary[disabled]{
@@ -280,11 +276,11 @@ mat-subheader {
     color: rgba(0, 0, 0, 0.26) !important;
 }
 .mat-border-button.mat-button.mat-warn {
-	border: 0.5px solid #ff393e !important;
+	border: 2px solid #ff393e !important;
 }
 
 .mat-border-button.mat-button.mat-warn[disabled] {
-	border: 0.5px solid #ccc !important;
+	border: 2px solid #ccc !important;
 }
 
 .mat-menu-item {
@@ -330,7 +326,7 @@ mat-subheader {
 }
 
 .mat-content {
-	color: rgba(0,0,0,0.87);
+	color: rgba(0,0,0,0.80);
 	background-color: rgb(255,255,255);
 	display: block;
 	position: relative;
