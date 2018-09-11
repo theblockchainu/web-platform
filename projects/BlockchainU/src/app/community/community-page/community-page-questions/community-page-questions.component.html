@@ -76,7 +76,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="mat-title">
-						Available Questions ({{questions.length}})
+						Available Questions ({{questions ? questions.length : '0'}})
 					</div>
 					<hr>
 				</div>
@@ -193,8 +193,8 @@
 						</div>
 						<div class="row questionCommentsBox" *ngFor="let comment of question.comments">
 							<div class="col-xs-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
-								<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
-								<mat-icon *ngIf="hasUpvoted(comment.upvotes)">arrow_drop_up</mat-icon>
+								<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer; font-size: 38px; left: -7px;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
+								<mat-icon *ngIf="hasUpvoted(comment.upvotes)" style="font-size: 38px; left: -7px;">arrow_drop_up</mat-icon>
 								<div>
 									{{(comment.upvotes) ? comment.upvotes.length : '0'}}
 								</div>
@@ -263,8 +263,8 @@
 										</mat-menu>
 										<div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px; float: left;"
 										 [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
-											<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
-											<mat-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</mat-icon>
+											<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer; font-size: 38px; left: -7px;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
+											<mat-icon *ngIf="hasUpvoted(reply.upvotes)" style="font-size: 38px; left: -7px;">arrow_drop_up</mat-icon>
 											<div>
 												<span *ngIf="reply.upvotes !== undefined">{{reply.upvotes.length}}</span>
 												<span *ngIf="reply.upvotes === undefined">0</span>
@@ -388,8 +388,8 @@
 								<!--LIST OF COMMENTS FOR ANSWER-->
 								<div class="row margin-top-20 commentsBox" *ngFor="let comment of answer.comments">
 									<div class="col-xs-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
-										<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
-										<mat-icon *ngIf="hasUpvoted(comment.upvotes)">arrow_drop_up</mat-icon>
+										<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer; font-size: 38px; left: -7px;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
+										<mat-icon *ngIf="hasUpvoted(comment.upvotes)" style="font-size: 38px; left: -7px;" >arrow_drop_up</mat-icon>
 										<div>
 											{{(comment.upvotes) ? comment.upvotes.length : '0'}}
 										</div>
@@ -458,8 +458,8 @@
 												</mat-menu>
 												<div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px; float: left;"
 												 [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
-													<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
-													<mat-icon *ngIf="hasUpvoted(reply.upvotes)">arrow_drop_up</mat-icon>
+													<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer; font-size: 38px; left: -7px;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
+													<mat-icon *ngIf="hasUpvoted(reply.upvotes)" style="font-size: 38px; left: -7px;">arrow_drop_up</mat-icon>
 													<div>
 														<span *ngIf="reply.upvotes !== undefined">{{reply.upvotes.length}}</span>
 														<span *ngIf="reply.upvotes === undefined">0</span>
