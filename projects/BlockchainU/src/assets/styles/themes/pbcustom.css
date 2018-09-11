@@ -2021,6 +2021,10 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	display: inline-block;
 }
 
+td-markdown pre {
+	background-color: #f5f5f5;
+}
+
 /* Extra small devices (phones, 600px and down) */
 
 @media only screen and (max-width: 600px) {

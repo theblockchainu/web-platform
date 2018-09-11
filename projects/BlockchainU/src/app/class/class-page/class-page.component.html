@@ -184,7 +184,11 @@
 										<span>{{getContentCount('online') | i18nPlural : onlineSessionMapping}}</span>
 									</div>
 								</div>
-								<div *ngIf="userType==='public'" class="margin-top-20 pre-wrapped"> {{class.description}} </div>
+								<div *ngIf="userType==='public'" class="margin-top-20 pre-wrapped">
+									<td-markdown>
+										{{class.description}}
+									</td-markdown>
+								</div>
 							</div>
 						</div>
 						<div class="row Progress margin-top-20" *ngIf="calendarId !== undefined && (userType === 'teacher' || userType === 'participant')">

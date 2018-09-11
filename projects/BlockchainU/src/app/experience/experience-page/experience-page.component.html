@@ -183,7 +183,11 @@
 										<span>{{getContentCount('in-person') | i18nPlural : inPersonSessionMapping}}</span>
 									</div>
 								</div>
-								<div *ngIf="userType==='public'" class="margin-top-20 pre-wrapped"> {{experience.description}} </div>
+								<div *ngIf="userType==='public'" class="margin-top-20 pre-wrapped">
+									<td-markdown>
+										{{experience.description}}
+									</td-markdown>
+								</div>
 							</div>
 						</div>
 						<div class="row Progress margin-top-20" *ngIf="calendarId !== undefined && (userType === 'teacher' || userType === 'participant')">

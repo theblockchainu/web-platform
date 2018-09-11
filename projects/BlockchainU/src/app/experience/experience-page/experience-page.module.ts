@@ -13,6 +13,7 @@ import { VgControlsModule } from 'videogular2/controls';
 import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
 import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
+import { CovalentMarkdownModule } from '@covalent/markdown';
 
 @NgModule({
 	imports: [
@@ -30,9 +31,9 @@ import { ContentInpersonComponent } from './content-inperson/content-inperson.co
 		VgCoreModule,
 		VgControlsModule,
 		VgOverlayPlayModule,
-		VgBufferingModule
+		VgBufferingModule,
+		CovalentMarkdownModule
 	],
-
 	declarations: [ExperiencePageComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
 	bootstrap: [ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
 	providers: [ProjectSubmissionService]
