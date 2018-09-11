@@ -138,7 +138,7 @@
 										<mat-card-content>
 											<div [innerHTML]="parseCertificate(certificate.stringifiedJSON).displayHtml | safe : 'html'"></div>
 											<div class="certificateCardFooter">
-												<button mat-button mat-raised-button (click)="openCertificate(certificate.id)">Verify with
+												<button mat-button (click)="openCertificate(certificate.id)">Verify with
 													<img style="width: 75px; margin-left: 10px;" src="assets/images/one0x.png" alt="logo">
 												</button>
 											</div>
@@ -169,6 +169,9 @@
 									<span class="mat-h5 lightText">
 										{{transaction.updatedAt | date : 'h:mm a, dd MMM y'}}
 									</span>
+								</div>
+								<div class="col-md-12 lightText mat-caption" *ngIf="!blockTransactions || blockTransactions.length === 0">
+									You do not have any Gyan updates at this time.
 								</div>
 							</div>
 						</div>

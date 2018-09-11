@@ -76,6 +76,14 @@
 						community now!</div>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="mat-title">
+						Available Questions ({{questions.length}})
+					</div>
+					<hr>
+				</div>
+			</div>
 			<div class="row margin-top-10" *ngFor="let question of questions">
 				<div class="col-md-12">
 					<button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuQuestion" style="float: right; margin-right: 15px; margin-top: 15px;">
@@ -181,7 +189,15 @@
 								</div>
 							</form>
 						</div>
-						<div class="row margin-top-20 questionCommentsBox" *ngFor="let comment of question.comments">
+						<div class="row" *ngIf="question && question.comments && question.comments.length > 0">
+							<div class="col-md-10 col-md-offset-1 margin-top-30 padding-left-40">
+								<div class="mat-body-2">
+									Available Comments ({{question.comments.length}})
+								</div>
+								<hr>
+							</div>
+						</div>
+						<div class="row questionCommentsBox" *ngFor="let comment of question.comments">
 							<div class="col-xs-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
 								<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
 								<mat-icon *ngIf="hasUpvoted(comment.upvotes)">arrow_drop_up</mat-icon>

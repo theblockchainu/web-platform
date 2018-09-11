@@ -5,8 +5,39 @@
 @import "/assets/css/support";
 // Plus imports for other components in your app.
 
+@font-face {
+	font-family: 'Cereal';
+	font-weight: 400;
+	src: url('/assets/fonts/cereal/AirbnbCereal-Book.ttf');
+}
+@font-face {
+	font-family: 'Cereal';
+	font-weight: 500;
+	src: url('/assets/fonts/cereal/AirbnbCereal-Medium.ttf');
+}
+@font-face {
+	font-family: 'Cereal';
+	font-weight: 700;
+	src:  url('/assets/fonts/cereal/AirbnbCereal-Bold.ttf');
+}
+@font-face {
+	font-family: 'Cereal';
+	font-weight: 900;
+	src:  url('/assets/fonts/cereal/AirbnbCereal-ExtraBold.ttf');
+}
+@font-face {
+	font-family: 'Cereal';
+	font-weight: 800;
+	src:  url('/assets/fonts/cereal/AirbnbCereal-Black.ttf');
+}
+@font-face {
+	font-family: 'Cereal';
+	font-weight: 300;
+	src:  url('/assets/fonts/cereal/AirbnbCereal-Light.ttf');
+}
+
 $custom-typography: mat-typography-config(
-	$font-family: Lato,
+	$font-family: Cereal,
 		/*$display-4: mat-typography-level(45px, 40px, 700),
         $headline: mat-typography-level(45px, 40px, 700),
         $title: mat-typography-level(28px, 31px, 700),
@@ -15,18 +46,18 @@ $custom-typography: mat-typography-config(
         $body-1: mat-typography-level(14px, 19px, 300),
         $caption: mat-typography-level(12px, 18px, 300),
         $button: mat-typography-level(14px, 31px, 400)*/
-	$display-4: mat-typography-level(8.615rem, 8.846rem, 100),
-	$display-3: mat-typography-level(4.308rem, 4.615rem, 300),
-	$display-2: mat-typography-level(3.462rem, 3.692rem, 300),
+	$display-4: mat-typography-level(8.615rem, 8.846rem, 300),
+	$display-3: mat-typography-level(4.308rem, 4.615rem, 400),
+	$display-2: mat-typography-level(3.462rem, 3.692rem, 400),
 	$display-1: mat-typography-level(2.615rem, 3.077rem, 900),
-	$headline: mat-typography-level(1.846rem, 2.462rem, 300),
+	$headline: mat-typography-level(1.846rem, 2.462rem, 400),
 	$title: mat-typography-level(1.538rem, 2.154rem, 400),
-	$subheading-2: mat-typography-level(1.154rem, 2.154rem, 400),
-	$subheading-1: mat-typography-level(1.154rem, 1.846rem, 300),
+	$subheading-2: mat-typography-level(1.154rem, 2.154rem, 700),
+	$subheading-1: mat-typography-level(1.154rem, 1.846rem, 400),
 	$body-2: mat-typography-level(1rem, 1.846rem, 700),
-	$body-1: mat-typography-level(1rem, 1.538rem, 300),
+	$body-1: mat-typography-level(1rem, 1.538rem, 400),
 	$caption: mat-typography-level(0.923rem, 1.538rem, 300),
-	$button: mat-typography-level(1.077rem, 1.538rem, 400)
+	$button: mat-typography-level(1.077rem, 1.538rem, 500)
 );
 
 // Include the common styles for Angular Material. We include this here so that you only

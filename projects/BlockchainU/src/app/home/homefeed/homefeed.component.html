@@ -59,68 +59,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="row class-feed">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-md-5">
-							<div class="mat-display-1 clickable" [routerLink]="'/home/classes'">Classes</div>
-						</div>
-						<div class="col-md-2 pull-right" style="text-align: right">
-							<a [routerLink]="'/home/classes'">
-								<span class="mat-body-1">
-									See all
-									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
-								</span>
-							</a>
-						</div>
-					</div>
-					<div class="loading-container" [hidden]="!loadingClasses">
-						<ngx-loading [show]="true"></ngx-loading>
-					</div>
-					<div *ngIf="!loadingClasses" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
-						<div class="noDataContainer" *ngIf="classes === undefined || classes.length === 0">
-							There are no new active classes to view right now. Browse from within your signed-up classes <a class="clickable">here</a>.
-						</div>
-						<div *ngFor="let class of classes; let i =index">
-							<app-class-card [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row experience-feed">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-md-5">
-							<div class="mat-display-1 clickable" [routerLink]="'/home/experiences'">Experiences</div>
-						</div>
-						<div class="col-md-2 pull-right" style="text-align: right">
-							<a [routerLink]="'/home/experiences'">
-								<span class="mat-body-1">
-									See all
-									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
-								</span>
-							</a>
-						</div>
-					</div>
-					<div class="loading-container" [hidden]="!loadingExperiences">
-						<ngx-loading [show]="true"></ngx-loading>
-					</div>
-					<div *ngIf="!loadingExperiences" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
-						<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
-							There are no new active experiences to view right now. Browse from within your signed-up experiences
-							<a class="clickable">here</a>.
-						</div>
-						<div *ngFor="let experience of experiences; let i = index;">
-							<app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
-						</div>
-					</div>
-				</div>
-			</div>
 			<div class="row community-feed">
 				<div class="col-md-12">
 					<div class="row">
-						<div class="col-md-5">
-							<div class="mat-display-1 clickable" [routerLink]="'/home/communities'">Communities</div>
+						<div class="col-md-8">
+							<div class="mat-display-1 clickable" [routerLink]="'/home/communities'">Ask Questions in Communities</div>
 						</div>
 						<div class="col-md-2 pull-right" style="text-align: right">
 							<a [routerLink]="'/home/communities'">
@@ -145,11 +88,68 @@
 					</div>
 				</div>
 			</div>
+			<div class="row experience-feed">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8">
+							<div class="mat-display-1 clickable" [routerLink]="'/home/experiences'">In-person Experiences</div>
+						</div>
+						<div class="col-md-2 pull-right" style="text-align: right">
+							<a [routerLink]="'/home/experiences'">
+								<span class="mat-body-1">
+									See all
+									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loadingExperiences">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loadingExperiences" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
+							There are no new active experiences to view right now. Browse from within your signed-up experiences
+							<a class="clickable">here</a>.
+						</div>
+						<div *ngFor="let experience of experiences; let i = index;">
+							<app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row class-feed">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8">
+							<div class="mat-display-1 clickable" [routerLink]="'/home/classes'">Online Classes</div>
+						</div>
+						<div class="col-md-2 pull-right" style="text-align: right">
+							<a [routerLink]="'/home/classes'">
+								<span class="mat-body-1">
+									See all
+									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loadingClasses">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loadingClasses" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="classes === undefined || classes.length === 0">
+							There are no new active classes to view right now. Browse from within your signed-up classes <a class="clickable">here</a>.
+						</div>
+						<div *ngFor="let class of classes; let i =index">
+							<app-class-card [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="row peer-feed margin-bottom-40">
 				<div class="col-md-12">
 					<div class="row">
-						<div class="col-md-5">
-							<div class="mat-display-1 clickable" [routerLink]="'/home/peers'">Peers</div>
+						<div class="col-md-8">
+							<div class="mat-display-1 clickable" [routerLink]="'/home/peers'">Live Sessions with Peers</div>
 						</div>
 						<div class="col-md-2 pull-right" style="text-align: right">
 							<a [routerLink]="'/home/peers'">
