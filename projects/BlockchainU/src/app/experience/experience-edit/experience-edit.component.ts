@@ -153,6 +153,9 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	availableDefaultAssessments: Array<AssessmentTypeData>;
 	availableSubtypes: Array<SubTypeInterface>;
 	uploadProgress: number;
+	public editorOptions: any = {
+		'hideIcons': ['FullScreen']
+	};
 	// TypeScript public modifiers
 	constructor(
 		public router: Router,

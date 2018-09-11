@@ -148,7 +148,10 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	defaultAssesment: any;
 	availableDefaultAssessments: Array<AssessmentTypeData>;
 	availableSubtypes: Array<SubTypeInterface>;
-
+	public editorOptions: any = {
+		'hideIcons': ['FullScreen']
+	};
+	
 	// TypeScript public modifiers
 	constructor(
 		public router: Router,

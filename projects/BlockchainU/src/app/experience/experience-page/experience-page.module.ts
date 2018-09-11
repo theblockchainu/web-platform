@@ -30,7 +30,7 @@ import { ContentInpersonComponent } from './content-inperson/content-inperson.co
 		VgCoreModule,
 		VgControlsModule,
 		VgOverlayPlayModule,
-		VgBufferingModule,
+		VgBufferingModule
 	],
 
 	declarations: [ExperiencePageComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],

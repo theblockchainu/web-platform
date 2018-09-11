@@ -94,6 +94,7 @@ import { SafePipe } from './safe-pipe/safe.pipe';
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { PromocodeService } from '../_services/promocode/promocode.service';
 import { LinkifyPipe } from './linkify-pipe/linkify.pipe';
+import { LMarkdownEditorModule } from 'ngx-markdown-editor';
 
 @NgModule({
     imports: [
@@ -256,7 +257,8 @@ import { LinkifyPipe } from './linkify-pipe/linkify.pipe';
         SafePipe,
         UploadFileComponent,
         SpinnerModule,
-        LinkifyPipe
+        LinkifyPipe,
+        LMarkdownEditorModule
     ]
 })
 export class SharedModule {
