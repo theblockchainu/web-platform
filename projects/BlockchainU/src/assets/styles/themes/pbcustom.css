@@ -13,7 +13,7 @@ html {
 body {
 	margin: 0;
 	font-size: 1rem;
-	color: rgba(0,0,0,0.80);
+	color: rgba(0, 0, 0, 0.80);
 }
 
 footer {
@@ -41,7 +41,7 @@ img {
 }
 
 .clickable {
-	cursor:  pointer !important;
+	cursor: pointer !important;
 }
 
 :focus {
@@ -59,6 +59,7 @@ img {
 }
 
 /* Scroll Bar custom Starts*/
+
 /* .scrollbar {
     background-color: #F5F5F5;
     float: left;
@@ -103,35 +104,31 @@ img {
 	background-color: #000000;
 } */
 
-
 /* Scroll Bar custom Ends */
 
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
+input:focus, select:focus, textarea:focus, button:focus {
 	outline: none;
 }
+
 #style-1::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
-	box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+	-webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
+	box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
 	background-color: #F5F5F5;
 }
-#style-3::-webkit-scrollbar-track
-{
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+
+#style-3::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 	background-color: #F5F5F5;
 }
-#style-3::-webkit-scrollbar
-{
+
+#style-3::-webkit-scrollbar {
 	width: 6px;
 	background-color: #F5F5F5;
 }
-#style-3::-webkit-scrollbar-thumb
-{
+
+#style-3::-webkit-scrollbar-thumb {
 	background-color: #000000;
 }
-
 
 /* Scroll Bar custom Ends */
 
@@ -142,7 +139,7 @@ mat-icon {
 /* Material Classes Starts*/
 
 .mat-caption, .mat-display-1, .mat-display-2, .mat-display-3, .mat-display-4 {
-	color: rgba(0,0,0,0.70);
+	color: rgba(0, 0, 0, 0.70);
 }
 
 .mat-form-field {
@@ -168,25 +165,26 @@ mat-sidenav {
 }
 
 mat-sidenav a {
-	color: rgba(0,0,0,0.70);
+	color: rgba(0, 0, 0, 0.70);
 	cursor: pointer;
 }
 
 mat-sidenav a:hover {
 	text-decoration: none;
-	color: rgba(0,0,0,0.70);
+	color: rgba(0, 0, 0, 0.70);
 }
 
 .scroll-box::-webkit-scrollbar {
 	width: .4em;
 }
-.scroll-box::-webkit-scrollbar,
-.scroll-box::-webkit-scrollbar-thumb {
-	overflow:visible;
+
+.scroll-box::-webkit-scrollbar, .scroll-box::-webkit-scrollbar-thumb {
+	overflow: visible;
 	border-radius: 4px;
 }
+
 .scroll-box::-webkit-scrollbar-thumb {
-	background: rgba(0,0,0,.2);
+	background: rgba(0, 0, 0, .2);
 }
 
 .ui-spinner {
@@ -208,7 +206,7 @@ mat-sidenav a:hover {
 
 .mat-nav-list a {
 	font-weight: 300;
-	color: rgba(0,0,0,0.70) !important;
+	color: rgba(0, 0, 0, 0.70) !important;
 }
 
 mat-subheader {
@@ -234,7 +232,7 @@ mat-subheader {
 }
 
 .mat-tab-link {
-	color: rgba(0,0,0,0.80) !important;
+	color: rgba(0, 0, 0, 0.80) !important;
 	opacity: 1 !important;
 }
 
@@ -244,37 +242,38 @@ mat-subheader {
 }
 
 .mat-border-button.mat-primary {
-    margin: 0px !important;
-    position: relative !important;
-    text-align: center !important;
-    text-decoration: none !important;
-    -webkit-transition-property: background, border-color, color !important;
-    -moz-transition-property: background, border-color, color !important;
-    transition-property: background, border-color, color !important;
-    -webkit-transition-duration: 0.2s !important;
-    transition-duration: 0.2s !important;
-    -webkit-transition-timing-function: ease-out !important;
-    transition-timing-function: ease-out !important;
-    width: auto !important;
-    border-radius: 4px !important;
-    font-size: 16px !important;
-    line-height: 22px !important;
-    letter-spacing: normal !important;
-    font-family: Cereal,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
-    text-transform: none !important;
+	margin: 0px !important;
+	position: relative !important;
+	text-align: center !important;
+	text-decoration: none !important;
+	-webkit-transition-property: background, border-color, color !important;
+	-moz-transition-property: background, border-color, color !important;
+	transition-property: background, border-color, color !important;
+	-webkit-transition-duration: 0.2s !important;
+	transition-duration: 0.2s !important;
+	-webkit-transition-timing-function: ease-out !important;
+	transition-timing-function: ease-out !important;
+	width: auto !important;
+	border-radius: 4px !important;
+	font-size: 16px !important;
+	line-height: 22px !important;
+	letter-spacing: normal !important;
+	font-family: Cereal, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif !important;
+	text-transform: none !important;
 	font-weight: 800 !important;
 	padding: 12px 24px !important;
 	min-width: 77.66563145999496px !important;
-    box-shadow: none !important;
-    background: transparent !important;
+	box-shadow: none !important;
+	background: transparent !important;
 	border: 2px solid #33bd9e !important;
 	color: #33bd9e !important;
 }
 
-.mat-button.mat-primary[disabled]{
+.mat-button.mat-primary[disabled] {
 	border-color: rgba(0, 0, 0, 0.26) !important;
-    color: rgba(0, 0, 0, 0.26) !important;
+	color: rgba(0, 0, 0, 0.26) !important;
 }
+
 .mat-border-button.mat-button.mat-warn {
 	border: 2px solid #ff393e !important;
 }
@@ -326,15 +325,15 @@ mat-subheader {
 }
 
 .mat-content {
-	color: rgba(0,0,0,0.80);
-	background-color: rgb(255,255,255);
+	color: rgba(0, 0, 0, 0.80);
+	background-color: rgb(255, 255, 255);
 	display: block;
 	position: relative;
 	overflow: auto;
 }
 
 .mat-titles p.text-muted {
-	color:grey;
+	color: grey;
 	margin-top: 0px;
 }
 
@@ -346,7 +345,7 @@ mat-subheader {
 	font-size: 14px !important;
 }
 
-.mat-button.mat-raised.mat-twitter,.mat-button.mat-raised.mat-twitter:focus,.mat-button.mat-raised.mat-twitter:hover {
+.mat-button.mat-raised.mat-twitter, .mat-button.mat-raised.mat-twitter:focus, .mat-button.mat-raised.mat-twitter:hover {
 	color: #fff;
 	background: #00c7f7;
 	border-color: #00c7f7
@@ -357,114 +356,114 @@ mat-subheader {
 	background-color: #fff
 }
 
-.mat-facebook:focus,.mat-facebook:hover{
+.mat-facebook:focus, .mat-facebook:hover {
 	color: #fff!important;
 	background: #335397 !important;
 	border-color: #335397 !important
 }
 
-.mat-google-plus,.mat-gplus{
+.mat-google-plus, .mat-gplus {
 	color: #000!important;
 	background-color: #fff
 }
 
-.mat-google-plus:focus,.mat-google-plus:hover,.mat-gplus:focus,.mat-gplus:hover {
+.mat-google-plus:focus, .mat-google-plus:hover, .mat-gplus:focus, .mat-gplus:hover {
 	color: #fff!important;
 	background: #dd4a38 !important;
 	border-color: #dd4a38 !important
 }
 
-.mat-button.mat-raised.mat-instagram,.mat-button.mat-raised.mat-instagram:focus,.mat-button.mat-raised.mat-instagram:hover {
+.mat-button.mat-raised.mat-instagram, .mat-button.mat-raised.mat-instagram:focus, .mat-button.mat-raised.mat-instagram:hover {
 	color: #fff;
 	background: #82685a;
 	border-color: #82685a
 }
 
-.mat-button.mat-raised.mat-vimeo,.mat-button.mat-raised.mat-vimeo:focus,.mat-button.mat-raised.mat-vimeo:hover {
+.mat-button.mat-raised.mat-vimeo, .mat-button.mat-raised.mat-vimeo:focus, .mat-button.mat-raised.mat-vimeo:hover {
 	color: #fff;
 	background: #63879c;
 	border-color: #63879c
 }
 
-.mat-button.mat-raised.mat-flickr,.mat-button.mat-raised.mat-flickr:focus,.mat-button.mat-raised.mat-flickr:hover {
+.mat-button.mat-raised.mat-flickr, .mat-button.mat-raised.mat-flickr:focus, .mat-button.mat-raised.mat-flickr:hover {
 	color: #fff;
 	background: #0061db;
 	border-color: #0061db
 }
 
-.mat-button.mat-raised.mat-github,.mat-button.mat-raised.mat-github:focus,.mat-button.mat-raised.mat-github:hover {
+.mat-button.mat-raised.mat-github, .mat-button.mat-raised.mat-github:focus, .mat-button.mat-raised.mat-github:hover {
 	color: #fff;
 	background: #3b3b3b;
 	border-color: #3b3b3b
 }
 
-.mat-button.mat-raised.mat-pinterest,.mat-button.mat-raised.mat-pinterest:focus,.mat-button.mat-raised.mat-pinterest:hover {
+.mat-button.mat-raised.mat-pinterest, .mat-button.mat-raised.mat-pinterest:focus, .mat-button.mat-raised.mat-pinterest:hover {
 	color: #fff;
 	background: #bc2725;
 	border-color: #bc2725
 }
 
-.mat-button.mat-raised.mat-tumblr,.mat-button.mat-raised.mat-tumblr:focus,.mat-button.mat-raised.mat-tumblr:hover {
+.mat-button.mat-raised.mat-tumblr, .mat-button.mat-raised.mat-tumblr:focus, .mat-button.mat-raised.mat-tumblr:hover {
 	color: #fff;
 	background: #586980;
 	border-color: #586980
 }
 
-.mat-button.mat-raised.mat-linkedin,.mat-button.mat-raised.mat-linkedin:focus,.mat-button.mat-raised.mat-linkedin:hover {
+.mat-button.mat-raised.mat-linkedin, .mat-button.mat-raised.mat-linkedin:focus, .mat-button.mat-raised.mat-linkedin:hover {
 	color: #fff;
 	background: #018faf;
 	border-color: #018faf
 }
 
-.mat-button.mat-raised.mat-dribble,.mat-button.mat-raised.mat-dribble:focus,.mat-button.mat-raised.mat-dribble:hover {
+.mat-button.mat-raised.mat-dribble, .mat-button.mat-raised.mat-dribble:focus, .mat-button.mat-raised.mat-dribble:hover {
 	color: #fff;
 	background: #ea73a0;
 	border-color: #ea73a0;
 }
 
-.mat-button.mat-raised.mat-stumbleupon,.mat-button.mat-raised.mat-stumbleupon:focus,.mat-button.mat-raised.mat-stumbleupon:hover {
+.mat-button.mat-raised.mat-stumbleupon, .mat-button.mat-raised.mat-stumbleupon:focus, .mat-button.mat-raised.mat-stumbleupon:hover {
 	color: #fff;
 	background: #ea4b24;
 	border-color: #ea4b24
 }
 
-.mat-button.mat-raised.mat-lastfm,.mat-button.mat-raised.mat-lastfm:focus,.mat-button.mat-raised.mat-lastfm:hover {
+.mat-button.mat-raised.mat-lastfm, .mat-button.mat-raised.mat-lastfm:focus, .mat-button.mat-raised.mat-lastfm:hover {
 	color: #fff;
 	background: #b80638;
 	border-color: #b80638
 }
 
-.mat-button.mat-raised.mat-evernote,.mat-button.mat-raised.mat-evernote:focus,.mat-button.mat-raised.mat-evernote:hover {
+.mat-button.mat-raised.mat-evernote, .mat-button.mat-raised.mat-evernote:focus, .mat-button.mat-raised.mat-evernote:hover {
 	color: #fff;
 	background: #3bab27;
 	border-color: #3bab27
 }
 
-.mat-button.mat-raised.mat-skype,.mat-button.mat-raised.mat-skype:focus,.mat-button.mat-raised.mat-skype:hover {
+.mat-button.mat-raised.mat-skype, .mat-button.mat-raised.mat-skype:focus, .mat-button.mat-raised.mat-skype:hover {
 	color: #fff;
 	background: #12A5F4;
 	border-color: #12A5F4
 }
 
-.mat-button.mat-raised.mat-soundcloud,.mat-button.mat-raised.mat-soundcloud:focus,.mat-button.mat-raised.mat-soundcloud:hover {
+.mat-button.mat-raised.mat-soundcloud, .mat-button.mat-raised.mat-soundcloud:focus, .mat-button.mat-raised.mat-soundcloud:hover {
 	color: #fff;
 	background: #06f;
 	border-color: #06f
 }
 
-.mat-button.mat-raised.mat-behance,.mat-button.mat-raised.mat-behance:focus,.mat-button.mat-raised.mat-behance:hover {
+.mat-button.mat-raised.mat-behance, .mat-button.mat-raised.mat-behance:focus, .mat-button.mat-raised.mat-behance:hover {
 	color: #fff;
 	background: #b80638;
 	border-color: #b80638
 }
 
-.mat-button.mat-raised.mat-rss,.mat-button.mat-raised.mat-rss:focus,.mat-button.mat-raised.mat-rss:hover {
+.mat-button.mat-raised.mat-rss, .mat-button.mat-raised.mat-rss:focus, .mat-button.mat-raised.mat-rss:hover {
 	color: #fff;
 	background: #f79638;
 	border-color: #f79638
 }
 
-.mat-button.mat-raised.mat-youtube,.mat-button.mat-raised.mat-youtube:focus,.mat-button.mat-raised.mat-youtube:hover {
+.mat-button.mat-raised.mat-youtube, .mat-button.mat-raised.mat-youtube:focus, .mat-button.mat-raised.mat-youtube:hover {
 	color: #fff;
 	background: #cc181e;
 	border-color: #cc181e
@@ -486,36 +485,47 @@ mat-subheader {
 	background-color: rgba(0, 0, 0, 0.12) !important;
 	color: rgba(0, 0, 0, 0.38) !important;
 }
+
 /* Material Classes Ends */
 
 /* Custom Margins Starts */
+
 .margin-top-10 {
 	margin-top: 10px !important;
 }
+
 .margin-top-20 {
 	margin-top: 20px !important;
 }
+
 .margin-top-30 {
 	margin-top: 30px !important;
 }
+
 .margin-top-40 {
 	margin-top: 40px !important;
 }
+
 .margin-top-50 {
 	margin-top: 50px !important;
 }
+
 .margin-top-60 {
 	margin-top: 60px !important;
 }
+
 .margin-top-70 {
 	margin-top: 70px !important;
 }
+
 .margin-top-80 {
 	margin-top: 80px !important;
 }
+
 .margin-top-90 {
 	margin-top: 90px !important;
 }
+
 .margin-top-100 {
 	margin-top: 100px !important;
 }
@@ -539,30 +549,39 @@ mat-subheader {
 .margin-bottom-10 {
 	margin-bottom: 10px !important;
 }
+
 .margin-bottom-20 {
 	margin-bottom: 20px !important;
 }
+
 .margin-bottom-30 {
 	margin-bottom: 30px !important;
 }
+
 .margin-bottom-40 {
 	margin-bottom: 40px !important;
 }
+
 .margin-bottom-50 {
 	margin-bottom: 50px !important;
 }
+
 .margin-bottom-60 {
 	margin-bottom: 60px !important;
 }
+
 .margin-bottom-70 {
 	margin-bottom: 70px !important;
 }
+
 .margin-bottom-80 {
 	margin-bottom: 80px !important;
 }
+
 .margin-bottom-90 {
 	margin-bottom: 90px !important;
 }
+
 .margin-bottom-100 {
 	margin-bottom: 100px !important;
 }
@@ -582,6 +601,7 @@ mat-subheader {
 .margin-left-10pc {
 	margin-left: 10%;
 }
+
 /* Custom Margins Ends */
 
 .padding-top-0 {
@@ -605,11 +625,12 @@ mat-subheader {
 }
 
 /* Calendar Starts */
+
 .border-calendar {
 	border: 1px solid #eee;
 }
 
-h3.calendarTitle  {
+h3.calendarTitle {
 	font-weight: 400 !important;
 }
 
@@ -684,7 +705,7 @@ h3.calendarTitle  {
 	margin-left: 10px;
 }
 
-.dateStyles label.mat-input-placeholder, .timeInput label.mat-input-placeholder  {
+.dateStyles label.mat-input-placeholder, .timeInput label.mat-input-placeholder {
 	font-size: 16px !important;
 }
 
@@ -701,9 +722,8 @@ h3.calendarTitle  {
 }
 
 .cal-month-view .cal-day-cell.cal-in-month.cal-has-events .cal-cell-top {
-	border-bottom: 1.5px solid rgba(0,0,0,0.27);
+	border-bottom: 1.5px solid rgba(0, 0, 0, 0.27);
 }
-
 
 .customEventClass {
 	width: 10px;
@@ -717,14 +737,15 @@ h3.calendarTitle  {
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 	background-color: rgb(227, 188, 8);
 }
+
 /* Calendar Ends */
 
 /* Bootstrap Starts */
-.ui-accordion .ui-accordion-header{
-	background:rgba(255, 255, 255, 0.00) !important;
+
+.ui-accordion .ui-accordion-header {
+	background: rgba(255, 255, 255, 0.00) !important;
 	border-bottom: 0.5px solid #eeeeee !important;
 	border-top: 0px !important;
-
 }
 
 .ui-accordion-toggle-icon {
@@ -735,7 +756,7 @@ h3.calendarTitle  {
 	background: #ffffff !important;
 }
 
-.ui-accordion .ui-accordion-header .fa-caret-right,.ui-accordion .ui-accordion-header .fa-caret-down{
+.ui-accordion .ui-accordion-header .fa-caret-right, .ui-accordion .ui-accordion-header .fa-caret-down {
 	display: none !important;
 }
 
@@ -793,10 +814,11 @@ h3.calendarTitle  {
 .ui-accordion {
 	border-bottom: 0.5px solid #eee !important;
 }
+
 /* Bootstrap Ends */
 
-
 /* General Classes */
+
 .flex {
 	flex: 1;
 }
@@ -826,7 +848,7 @@ h3.calendarTitle  {
 }
 
 .bold {
-	font-weight:400;
+	font-weight: 400;
 }
 
 .lightText {
@@ -846,7 +868,7 @@ h3.calendarTitle  {
 	width: 100% !important;
 }
 
-.circle-thumb img, .circle-thumb{
+.circle-thumb img, .circle-thumb {
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
@@ -855,7 +877,7 @@ h3.calendarTitle  {
 	border: 3px solid #ffffff;
 }
 
-.circle-thumb-overlap, .circle-thumb-overlap img{
+.circle-thumb-overlap, .circle-thumb-overlap img {
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
@@ -868,7 +890,6 @@ h3.calendarTitle  {
 	border-radius: 50%;
 	display: inline-block;
 	border: 3px solid #ffffff;
-
 }
 
 .image-inline {
@@ -883,7 +904,7 @@ h3.calendarTitle  {
 	display: block;
 }
 
-.full-width{
+.full-width {
 	width: 100% !important;
 }
 
@@ -902,7 +923,6 @@ h3.calendarTitle  {
 	width: auto;
 }
 
-
 .message-item:before {
 	bottom: 0px !important;
 	height: 100% !important;
@@ -918,14 +938,14 @@ h3.calendarTitle  {
 	position: relative
 }
 
-.profile-header h2,.profile-header h4,.profile-header p {
+.profile-header h2, .profile-header h4, .profile-header p {
 	color: #fff
 }
 
 .profile-header:before {
 	content: "";
 	position: absolute;
-	background: rgba(0,0,0,.2);
+	background: rgba(0, 0, 0, .2);
 	width: 100%;
 	height: 100%;
 	left: 0;
@@ -948,7 +968,7 @@ h3.calendarTitle  {
 	-ms-border-radius: 100%;
 	-o-border-radius: 100%;
 	border-radius: 100%;
-	box-shadow: 0 0 0 6px rgba(0,0,0,.2)
+	box-shadow: 0 0 0 6px rgba(0, 0, 0, .2)
 }
 
 .profile-sub-header {
@@ -972,7 +992,7 @@ h3.calendarTitle  {
 .signin-header:before {
 	content: "";
 	position: absolute;
-	background: rgba(0,0,0,.2);
+	background: rgba(0, 0, 0, .2);
 	width: 100%;
 	height: 100%;
 	left: 0;
@@ -1033,11 +1053,11 @@ h3.calendarTitle  {
 .page-contact .contact-info-container {
 	margin: 0 -15px 50px;
 	background-color: #fff;
-	-webkit-box-shadow: 0 0 5px rgba(0,0,0,.1);
-	-moz-box-shadow: 0 0 5px rgba(0,0,0,.1);
-	-ms-box-shadow: 0 0 5px rgba(0,0,0,.1);
-	-o-box-shadow: 0 0 5px rgba(0,0,0,.1);
-	box-shadow: 0 0 5px rgba(0,0,0,.1)
+	-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .1);
+	-moz-box-shadow: 0 0 5px rgba(0, 0, 0, .1);
+	-ms-box-shadow: 0 0 5px rgba(0, 0, 0, .1);
+	-o-box-shadow: 0 0 5px rgba(0, 0, 0, .1);
+	box-shadow: 0 0 5px rgba(0, 0, 0, .1)
 }
 
 .page-contact .contact-info-container>ul {
@@ -1057,12 +1077,11 @@ h3.calendarTitle  {
 
 @media (min-width: 992px) {
 	.page-contact .contact-info-container>ul li {
-		display:inline-block;
+		display: inline-block;
 		padding: 30px 20px;
 		border-top: 0;
 		border-right: 1px solid #e9e9e9
 	}
-
 	.page-contact .contact-info-container>ul li:first-child {
 		border-left: 1px solid #e9e9e9
 	}
@@ -1099,7 +1118,7 @@ h3.calendarTitle  {
 .page-err-header:before {
 	content: "";
 	position: absolute;
-	background: rgba(0,0,0,.2);
+	background: rgba(0, 0, 0, .2);
 	width: 100%;
 	height: 100%;
 	left: 0;
@@ -1154,15 +1173,14 @@ h3.calendarTitle  {
 	padding-right: 5px;
 	margin-left: 5px;
 	min-width: min-content !important;
-	margin-right: 12px ;
-	font-size: 1rem  !important;
-	font-weight: 400  !important;
+	margin-right: 12px;
+	font-size: 1rem !important;
+	font-weight: 400 !important;
 }
 
 .home .mat-ink-bar {
 	display: none !important;
 }
-
 
 .rightLinks {
 	font-size: 16px !important;
@@ -1195,6 +1213,7 @@ h3.calendarTitle  {
 }
 
 /* Onboarding Starts */
+
 .onboarding .mat-select-placeholder {
 	font-size: 1rem !important;
 	margin-bottom: 10px;
@@ -1227,9 +1246,10 @@ mat-input-container.mail-bg .mat-form-field-underline {
 mat-input-container.mail-bg .mat-input-subscript-wrapper {
 	display: none !important;
 }
+
 /* Landing Page Ends */
 
-.footerButtons .mat-button-focus-overlay, .collectionContent .mat-button-focus-overlay, .topics-section .mat-button-focus-overlay{
+.footerButtons .mat-button-focus-overlay, .collectionContent .mat-button-focus-overlay, .topics-section .mat-button-focus-overlay {
 	background: none;
 }
 
@@ -1241,6 +1261,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 }
 
 /* Search */
+
 .search-box {
 	width: 100%;
 	padding: .4rem;
@@ -1253,17 +1274,18 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .search-form {
 	margin: 0 0.7rem;
-	flex-grow: 1; /* <-- THE SECRET SAUCE! */
+	flex-grow: 1;
+	/* <-- THE SECRET SAUCE! */
 	min-width: 18rem;
 	font-size: 14px;
 }
 
-.search-form .mat-form-field-underline{
+.search-form .mat-form-field-underline {
 	display: none !important;
 }
 
 .search-home .mat-form-field-wrapper {
-    padding-bottom: 0em !important;
+	padding-bottom: 0em !important;
 }
 
 .search-form .mat-input-container {
@@ -1278,7 +1300,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 
 .loading-container {
 	position: relative;
-	width:30px;
+	width: 30px;
 	margin: 40px 0px 100px 0px;
 }
 
@@ -1287,6 +1309,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 }
 
 /* Geolocation */
+
 .geoLocation {
 	display: block !important;
 	margin-bottom: 90px !important;
@@ -1296,7 +1319,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 .geoLocation .custom-autocomplete__input input {
 	padding: 0px !important;
 	border: none !important;
-	border-bottom: 1px solid rgba(0,0,0,0.42)!important;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.42)!important;
 	height: 30px !important;
 	font-size: 1rem !important;
 	font-weight: normal !important;
@@ -1319,7 +1342,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 	font-weight: 400 !important;
 }
 
-.presentlyWorking .mat-checkbox-inner-container{
+.presentlyWorking .mat-checkbox-inner-container {
 	height: 15px !important;
 	width: 15px !important;
 	margin-right: 5px !important;
@@ -1336,6 +1359,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 .other_languages .ui-autocomplete-input-token input {
 	max-width: 250px;
 }
+
 /* Dialogs*/
 
 .dialog-close-button {
@@ -1364,7 +1388,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 	max-width: none;
 	width: 100vw;
 	height: 100vh;
-	background:#1d1d1d;
+	background: #1d1d1d;
 }
 
 .topics .mat-tab-label {
@@ -1375,7 +1399,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 	padding-left: 1.1em !important;
 }
 
-.editCalendar p-accordion{
+.editCalendar p-accordion {
 	max-width: 50% !important;
 }
 
@@ -1410,7 +1434,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 	border-radius: 3px !important;
 }
 
-.noJustify .mat-tab-label{
+.noJustify .mat-tab-label {
 	justify-content: left !important;
 	padding-left: 5px !important;
 	padding-right: 5px !important;
@@ -1433,14 +1457,12 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 	text-align: justify;
 }
 
-
-
-mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-datepicker-toggle.disableMD .mat-icon-button{
+mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-datepicker-toggle.disableMD .mat-icon-button {
 	pointer-events: none !important;
-	color:grey !important;
+	color: grey !important;
 }
 
-.teacherStreamImage{
+.teacherStreamImage {
 	position: relative;
 	top: 23%;
 	left: 46%;
@@ -1448,7 +1470,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	height: 150px;
 }
 
-.sessionTeacherName{
+.sessionTeacherName {
 	position: relative;
 	z-index: 2;
 	left: 36%;
@@ -1460,29 +1482,29 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	padding: 7px;
 }
 
-.buttonBar{
+.buttonBar {
 	position: relative;
 	top: 64%;
 	left: 1%;
 	width: min-content;
 	z-index: 1001;
 }
-.buttonBar .session_actions{
+
+.buttonBar .session_actions {
 	padding-top: 5px;
 	padding-bottom: 5px;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
-
-.mainStream{
+.mainStream {
 	position: absolute;
 	height: 100%;
 	width: 100%;
 	padding: 1%;
 }
 
-.mainStream video{
+.mainStream video {
 	z-index: 0;
 	height: 96vh;
 	position: relative;
@@ -1491,7 +1513,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	transform: scaleX(-1);
 }
 
-.localStream{
+.localStream {
 	display: inline-block;
 	width: 17%;
 	height: 100%;
@@ -1502,16 +1524,15 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	padding: 0.5em !important;
 }
 
-
-.video-popup .mat-dialog-container{
+.video-popup .mat-dialog-container {
 	padding: 0px !important;
 }
 
-.class-content carousel-pins{
+.class-content carousel-pins {
 	display: none;
 }
 
-.bottomBar{
+.bottomBar {
 	position: relative;
 	top: 44%;
 	left: 5%;
@@ -1520,17 +1541,17 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	z-index: 1;
 }
 
-.participant-box{
+.participant-box {
 	background: rgba(0, 0, 0, 0.623)
 }
 
-.localStream .participant-box{
+.localStream .participant-box {
 	width: 17%;
 	height: 79%;
 	position: absolute;
 }
 
-.localStream img{
+.localStream img {
 	top: 6%;
 	position: relative;
 	left: 35%;
@@ -1538,7 +1559,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	height: 100px;
 }
 
-.localStream .studentName{
+.localStream .studentName {
 	position: relative;
 	top: 51%;
 	z-index: 2;
@@ -1549,8 +1570,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	left: 5%;
 }
 
-
-.localStream video{
+.localStream video {
 	border-style: solid;
 	border-color: white;
 	height: 129px !important;
@@ -1560,7 +1580,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	left: 0%;
 }
 
-.otherStream .participant-box{
+.otherStream .participant-box {
 	width: 18%;
 	height: 100%;
 }
@@ -1569,7 +1589,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	display: none;
 }
 
-.otherStream img{
+.otherStream img {
 	position: relative;
 	left: 35%;
 	top: 7%;
@@ -1577,7 +1597,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	height: 100px;
 }
 
-.otherStream{
+.otherStream {
 	display: inline-flex;
 	height: 90%;
 	position: relative;
@@ -1586,7 +1606,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	width: 79%;
 }
 
-.otherStream video{
+.otherStream video {
 	position: relative;
 	left: 2%;
 	z-index: 1;
@@ -1594,7 +1614,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	height: 125px !important;
 }
 
-.otherStream .studentName{
+.otherStream .studentName {
 	position: relative;
 	top: 52%;
 	left: 3%;
@@ -1606,17 +1626,16 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	padding: 1px;
 }
 
-
 /*Teacher Stream*/
 
-.otherStreamTeacher .participant-box{
+.otherStreamTeacher .participant-box {
 	width: 18%;
 	height: 85%;
 	top: 1%;
 	position: relative;
 }
 
-.otherStreamTeacher img{
+.otherStreamTeacher img {
 	position: relative;
 	left: 35%;
 	top: 7%;
@@ -1624,7 +1643,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	height: 100px;
 }
 
-.otherStreamTeacher{
+.otherStreamTeacher {
 	display: inline-flex;
 	height: 90%;
 	position: relative;
@@ -1634,7 +1653,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	left: 3%;
 }
 
-.otherStreamTeacher video{
+.otherStreamTeacher video {
 	position: relative;
 	left: 0%;
 	z-index: 1;
@@ -1642,7 +1661,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	height: 125px !important;
 }
 
-.otherStreamTeacher .studentName{
+.otherStreamTeacher .studentName {
 	position: relative;
 	top: 52%;
 	left: 3%;
@@ -1654,26 +1673,29 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	padding: 1px;
 }
 
-.teacher-box{
+.teacher-box {
 	position: relative;
 	top: -47%;
 	height: 100%;
 	width: 100%;
 }
 
-.share-panel{
+.share-panel {
 	position: absolute;
 	color: white;
 	z-index: 1;
 	display: none;
 	width: 18%;
 }
+
 .recommendation-card:hover .share-panel {
 	display: inline-grid;
 }
 
 /* Chat Bubble */
+
 /* CSS talk bubble */
+
 .talk-bubble {
 	/* margin: 40px; */
 	display: inline-block;
@@ -1682,9 +1704,11 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	height: auto;
 	background-color: #eeeeee;
 }
+
 /* .border {
     border: 8px solid #666;
 } */
+
 .round {
 	border-radius: 2px;
 	-webkit-border-radius: 2px;
@@ -1693,7 +1717,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 
 /* Right triangle placed top left flush. */
 
-.tri-right.left-top:after{
+.tri-right.left-top:after {
 	content: ' ';
 	position: absolute;
 	width: 0;
@@ -1707,13 +1731,15 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 }
 
 /* talk bubble contents */
-.talktext{
+
+.talktext {
 	padding: 1em;
 	text-align: left;
 	line-height: 1.5em;
 	white-space: pre-wrap;
 }
-.talktext h6{
+
+.talktext h6 {
 	/* remove webkit p margins */
 	-webkit-margin-before: 0em;
 	-webkit-margin-after: 0em;
@@ -1722,13 +1748,14 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 /* Chat Bubble Ends */
 
 .chatbox {
-	overflow-y: auto; /* show scrollbar only when text overflows vertically */
+	overflow-y: auto;
+	/* show scrollbar only when text overflows vertically */
 	position: relative;
 	border: 1px solid #dbdbdb;
 	border-radius: 2px;
 }
 
-.chatbox > p {
+.chatbox>p {
 	position: absolute;
 	bottom: 0;
 }
@@ -1750,19 +1777,19 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	border-top: 4px solid transparent !important;
 }
 
-.topic-bar button{
-	color: rgba(0,0,0,0.8) !important;
+.topic-bar button {
+	color: rgba(0, 0, 0, 0.8) !important;
 	justify-content: left !important;
 	padding-left: 0px !important;
 	padding-right: 5px !important;
 	width: 277px !important;
 	height: 72px !important;
-	font-size: 1rem  !important;
-	font-weight: 600  !important;
+	font-size: 1rem !important;
+	font-weight: 600 !important;
 	background-color: transparent !important;
-	border: 1px solid rgba(0,0,0,0.1) !important;
+	border: 1px solid rgba(0, 0, 0, 0.1) !important;
 	border-radius: 3px !important;
-	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.06) !important;
+	box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.06) !important;
 	margin: 15px 0px 4px 0px !important;
 	overflow: hidden !important;
 	text-align: left !important;
@@ -1788,7 +1815,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 .noDataContainer {
 	margin-left: 10px;
 	font-size: 1.2rem;
-	color:#aaaaaa;
+	color: #aaaaaa;
 }
 
 .fc-today {
@@ -1799,7 +1826,6 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	border-radius: 0px !important;
 }
 
-
 .profile-page .mat-ink-bar {
 	height: 3px !important;
 }
@@ -1807,7 +1833,6 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 .profile-page .mat-tab-header {
 	border-bottom: 3px solid #eeeeee !important;
 }
-
 
 .filterRow .mat-form-field-underline {
 	background: none !important;
@@ -1819,7 +1844,6 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	-webkit-border-radius: 2px !important;
 	-moz-border-radius: 2px !important;
 	border-radius: 2px !important;
-
 }
 
 .filterRow .mat-form-field-infix {
@@ -1829,8 +1853,6 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 .filterFormField {
 	width: 150px !important;
 }
-
-
 
 .headerChat .mat-form-field-underline {
 	background: none !important;
@@ -1879,7 +1901,7 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	text-align: center;
 }
 
-.navbar-page-content{
+.navbar-page-content {
 	background: #fff;
 	padding: 80px 50px 25px 100px;
 	max-height: 100vh;
@@ -1887,18 +1909,18 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	overflow-y: auto;
 }
 
-
-.stripe-image{
-    width: max-content;
+.stripe-image {
+	width: max-content;
 }
 
-.hide-header .mat-horizontal-stepper-header-container{
+.hide-header .mat-horizontal-stepper-header-container {
 	display: none !important;
 }
 
 .welcome-feed-accordian .mat-expansion-panel-header {
 	border-bottom: 1px solid #dfdfdf !important;
 }
+
 .welcome-feed-accordian .mat-expansion-panel-header-title {
 	font-size: 1.4rem;
 	font-weight: 500;
@@ -1958,32 +1980,32 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 }
 
 .certificate .mat-drawer-backdrop.mat-drawer-shown {
-    background-color: transparent;
+	background-color: transparent;
 }
 
-.certificate .mat-drawer-content{
+.certificate .mat-drawer-content {
 	overflow: hidden;
 }
 
-.home-banner .mat-form-field-label{
-    left: 8% !important;
-    top: 41% !important;
-    font-size: 17px !important;
+.home-banner .mat-form-field-label {
+	left: 8% !important;
+	top: 41% !important;
+	font-size: 17px !important;
 }
 
-.ui-rating-icon{
+.ui-rating-icon {
 	color: #33bd9e;
 }
 
-.checkbox_label{
+.checkbox_label {
 	padding-left: 2%;
 }
 
-.ui-button-icon-left{
+.ui-button-icon-left {
 	position: inherit !important;
 }
 
-.noScrollY .mat-dialog-container{
+.noScrollY .mat-dialog-container {
 	overflow-y: hidden;
 }
 
@@ -1991,12 +2013,20 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	overflow-x: scroll !important;
 }
 
+.tool-bar .btn-group {
+	display: inline-block;
+}
+
+td-markdown pre {
+	background-color: #f5f5f5;
+}
+
 /* Extra small devices (phones, 600px and down) */
+
 @media only screen and (max-width: 600px) {
 	.circle-thumb {
 		margin-left: 0;
 	}
-
 	.filterRow {
 		margin-top: 15px;
 		margin-left: 0;
@@ -2008,7 +2038,6 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 		background: #fff !important;
 		z-index: 2;
 	}
-
 	.mobile-margin-bottom-20 {
 		margin-bottom: 20px;
 	}
@@ -2028,30 +2057,24 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	.show-small {
 		display: block !important;
 	}
-
 	.show-small-inline {
 		display: inline-block !important;
 	}
 	.show-small-inline .headerButtons {
 		flex: 1;
 	}
-
 	.main-content {
 		padding-top: 100px !important;
 	}
-
 	.show-small .headerButtons {
 		flex: 1;
 	}
-
 	.show-small-inline-flex {
 		display: inline-flex;
 	}
-
 	.search-form .mat-input-container {
 		display: inline-block;
 	}
-
 	.search-form {
 		margin: 0 2rem;
 		width: 85%;
@@ -2069,40 +2092,33 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 		height: auto !important;
 		transition: height 0.2s !important;
 	}
-
-	.center-small{
+	.center-small {
 		text-align: center;
 	}
-
-	.responsive-dialog{
+	.responsive-dialog {
 		max-width: 90% !important;
 		width: 100% !important;
 		max-height: 90% !important;
 		padding-top: 20px;
 		padding-bottom: 20px;
 	}
-
-	.responsive-fixed-position{
+	.responsive-fixed-position {
 		margin-left: 5vw !important;
 		margin-top: 10vw !important;
 	}
 	.footerCurrencyContainer {
 		text-align: left;
 	}
-
-	.navbar-page-content{
+	.navbar-page-content {
 		padding: 5% !important;
 	}
-
-	.date-select{
+	.date-select {
 		margin-top: 0px !important;
 		padding: 0px 0px !important;
 	}
-
 	.dateStyles .mat-form-field-infix {
 		width: 140px !important;
 	}
-
 	.mobile-main-content {
 		min-height: 90vh;
 		overflow-y: auto;
@@ -2112,7 +2128,6 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	.consoleContainer .mat-tab-nav-bar .mat-tab-links {
 		width: max-content;
 	}
-
 	.bottomButton {
 		display: block;
 		position: fixed;
@@ -2126,19 +2141,15 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 		text-align: center;
 		z-index: 1000;
 	}
-
 	footer {
 		margin-bottom: 90px;
 	}
-
 	.mat-form-field {
 		width: 100% !important;
 	}
-
-	.home-banner .mat-form-field-label{
+	.home-banner .mat-form-field-label {
 		left: 17% !important;
 		top: 45% !important;
 		font-size: 17px !important;
 	}
-
 }
