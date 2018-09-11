@@ -370,8 +370,8 @@
 									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
-									<span class="pull-right" matTooltip="Describe your class in detail to continue" [matTooltipDisabled]="description.value.length !== 0">
-										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="description.value.length == 0 || busySavingData">
+									<span class="pull-right" matTooltip="Describe your class in detail to continue" [matTooltipDisabled]="class.value.description && class.value.description.length !== 0">
+										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="(class.value.description && class.value.description.length == 0) || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
 												<ngx-loading [show]="busySavingData"></ngx-loading>
