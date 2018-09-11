@@ -148,6 +148,9 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	defaultAssesment: any;
 	availableDefaultAssessments: Array<AssessmentTypeData>;
 	availableSubtypes: Array<SubTypeInterface>;
+	public editorOptions: any = {
+		'hideIcons': ['FullScreen']
+	};
 
 	// TypeScript public modifiers
 	constructor(
@@ -920,13 +923,10 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 						endMoment = moment('01-02-1990 ' + contentObj.schedule.endTime);
 					}
 					contentLength = endMoment.diff(startMoment, 'minutes');
-					console.log('videoLength ' + parseInt(contentLength, 10));
 					totalLength += parseInt(contentLength, 10);
 				} else if (contentObj.type === 'video' && contentObj.videoLength) {
-					console.log('videoLength:' + contentObj.videoLength);
 					this.totalVideoDuration += contentObj.videoLength;
 					const contentLength = contentObj.videoLength / 60;
-					console.log(contentLength);
 					totalLength += Math.round(contentLength);
 				}
 			});

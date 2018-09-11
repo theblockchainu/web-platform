@@ -1,4 +1,5 @@
-<div style="background: #fff; padding: 0px; min-height: 100vh;" [class.main-content]="!mobileQuery.matches" [class.mobile-main-content]="mobileQuery.matches">
+<div style="background: #fff; padding: 0px; min-height: 100vh;" [class.main-content]="!mobileQuery.matches"
+ [class.mobile-main-content]="mobileQuery.matches">
 	<mat-toolbar color="white">
 		<span>
 			<a class="brand clickable" aria-label="The Blockchain University Homepage" [routerLink]="['/home','homefeed']">
@@ -58,19 +59,27 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">The Blockchain University Class Guidelines</h2>
-							<p class="subtitle">The Blockchain University is a platform dedicated to connecting people who are forward thinking, passionate about
-								education, and open-minded in general. We're pretty sure that each individual who joins our community is a cool,
-								high-caliber person with unique talents and knowledge to share. That said, we'd like to establish just a few common-sense
+							<p class="subtitle">The Blockchain University is a platform dedicated to connecting people who are forward
+								thinking, passionate about
+								education, and open-minded in general. We're pretty sure that each individual who joins our community is a
+								cool,
+								high-caliber person with unique talents and knowledge to share. That said, we'd like to establish just a few
+								common-sense
 								expectations so our platform can continue to be as high quality as possible.
 							</p>
 							<ul class="guideline-points text-grey">
-								<li>Respect others and their differences. Not everyone on The Blockchain University is going to have the same worldview, and that's
-									actually a good thing. It's how we can learn from each other. Keep all comments and observations fair, controlled
+								<li>Respect others and their differences. Not everyone on The Blockchain University is going to have the same
+									worldview, and that's
+									actually a good thing. It's how we can learn from each other. Keep all comments and observations fair,
+									controlled
 									and as positive as possible.</li>
-								<li>Take your responsibilities seriously. Whether you sign up to learn or to teach (or both!), be sure to communicate
+								<li>Take your responsibilities seriously. Whether you sign up to learn or to teach (or both!), be sure to
+									communicate
 									with all your peers as necessary and always be on time to events.</li>
-								<li>You can't go wrong with the "golden rule." Treat everyone you meet on The Blockchain University with the same basic courtesy and
-									friendliness you'd like to be shown and you're pretty much good to go. Good vibes are infectious - everybody wins.
+								<li>You can't go wrong with the "golden rule." Treat everyone you meet on The Blockchain University with the
+									same basic courtesy and
+									friendliness you'd like to be shown and you're pretty much good to go. Good vibes are infectious - everybody
+									wins.
 								</li>
 							</ul>
 							<div class="margin-top-20">
@@ -87,7 +96,7 @@
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">What type of class is this?</h2>
 							<p class="subtitle">Select what kind of class is this</p>
-							<br/>
+							<br />
 							<form [formGroup]="class" (ngSubmit)="submitClass()">
 								<div class="row padding-bottom-50">
 									<div class="col-xs-4">
@@ -125,15 +134,15 @@
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">What topics does this class cover?</h2>
 							<p class="subtitle">Select topics that this class covers</p>
-							<br/>
+							<br />
 							<form [formGroup]="interest1" (ngSubmit)="submitInterests()">
 								<div class="row">
 									<div class="col-sm-12 margin-bottom-30">
 										<div class="row">
 											<div class="col-sm-12">
-												<app-multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
-												 [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic [maxSelection]=maxTopics
-												 [minSelection]="1"></app-multiselect-autocomplete>
+												<app-multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)"
+												 [preSelectedTopics]=interests [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
+												 [maxSelection]=maxTopics [minSelection]="1"></app-multiselect-autocomplete>
 											</div>
 										</div>
 										<div class="row">
@@ -198,14 +207,15 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Which language will you teach in?</h2>
-							<p class="subtitle">You will write your descriptions and present your class in this language. Guests will be notified
+							<p class="subtitle">You will write your descriptions and present your class in this language. Guests will be
+								notified
 								of this in your class description.</p>
-							<br/>
+							<br />
 							<form [formGroup]="class" (ngSubmit)="submitClass()">
 								<div class="row margin-top-10">
 									<mat-form-field [floatLabel]="'always'" class="col-md-4">
-										<input type="text" name="other_languages" style="border-bottom: 0px;" placeholder="Select Language" matInput formControlName="selectedLanguage"
-										 [matAutocomplete]="auto">
+										<input type="text" name="other_languages" style="border-bottom: 0px;" placeholder="Select Language" matInput
+										 formControlName="selectedLanguage" [matAutocomplete]="auto">
 										<mat-autocomplete #auto="matAutocomplete">
 											<mat-option *ngFor="let l of filteredLanguageOptions | async" [value]="l" (click)="languageChange(l)">{{l}}</mat-option>
 										</mat-autocomplete>
@@ -239,7 +249,8 @@
 								<div class="row margin-top-30" style="margin-top: 30px;">
 									<div class="col-sm-12">
 										<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
-											<textarea matInput #aboutHost maxlength="1000" rows="1" matTextareaAutosize formControlName="aboutHost" placeholder="Put in your background information"></textarea>
+											<textarea matInput #aboutHost maxlength="1000" rows="1" matTextareaAutosize formControlName="aboutHost"
+											 placeholder="Put in your background information"></textarea>
 											<mat-hint align="end">{{aboutHost.value.length}} / 1000</mat-hint>
 										</mat-form-field>
 									</div>
@@ -251,7 +262,8 @@
 									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
-									<span class="pull-right" matTooltip="A brief description about yourself is mandatory to continue" [matTooltipDisabled]="aboutHost.value.length !== 0">
+									<span class="pull-right" matTooltip="A brief description about yourself is mandatory to continue"
+									 [matTooltipDisabled]="aboutHost.value.length !== 0">
 										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="aboutHost.value.length == 0 || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
@@ -269,10 +281,11 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Create the page learners will see</h2>
-							<p class="subtitle" style="color: #333333;">Write in a clear, straightforward and friendly way. We'll prompt you on
+							<p class="subtitle" style="color: #333333;">Write in a clear, straightforward and friendly way. We'll prompt you
+								on
 								when to show off your personality and be more descriptive.
 							</p>
-							<br/>
+							<br />
 							<div style="margin-top:60px;">
 								<button mat-raised-button type="button" (click)="back()" color="primary" class="mat-border-button">
 									Back
@@ -296,7 +309,7 @@
 											<p class="subtitle">
 												Make it short and sweet
 											</p>
-											<br/>
+											<br />
 											<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
 												<input matInput #title formControlName="title" maxlength="100" placeholder="Enter Name">
 												<mat-hint align="start">{{100 - title.value.length}} more characters allowed</mat-hint>
@@ -309,9 +322,9 @@
 											<h2 class="title">Headline</h2>
 											<p class="subtitle">
 												Clearly describe your class in one short, catchy sentence.
-												<br/> Start with a verb that tells peers what they will do.
+												<br /> Start with a verb that tells peers what they will do.
 											</p>
-											<br/>
+											<br />
 											<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
 												<input matInput #headline formControlName="headline" maxlength="100" placeholder="Write headline">
 												<mat-hint align="start">{{100 - headline.value.length}} more characters allowed</mat-hint>
@@ -346,18 +359,19 @@
 									<div class="col-sm-12 margin-bottom-30">
 										<h2 class="title">What’s the class about?</h2>
 										<p class="subtitle">Give a detailed description to learners of what they will do in this class</p>
-										<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
+										<!-- <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
 											<textarea matInput #description maxlength="2000" rows="1" matTextareaAutosize formControlName="description" placeholder="What we'll do in this class?"></textarea>
 											<mat-hint align="end">{{description.value.length}} / 2000</mat-hint>
-										</mat-form-field>
+										</mat-form-field> -->
+										<md-editor [options]="editorOptions" formControlName="description" [height]="'360px'" maxlength="2000"></md-editor>
 									</div>
 								</div>
 								<div style="margin-top:60px;">
 									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
-									<span class="pull-right" matTooltip="Describe your class in detail to continue" [matTooltipDisabled]="description.value.length !== 0">
-										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="description.value.length == 0 || busySavingData">
+									<span class="pull-right" matTooltip="Describe your class in detail to continue" [matTooltipDisabled]="class.value.description && class.value.description.length !== 0">
+										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="(class.value.description && class.value.description.length == 0) || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
 												<ngx-loading [show]="busySavingData"></ngx-loading>
@@ -460,8 +474,8 @@
 								<div class="row padding-top-20">
 									<div class="col-md-8">
 										<div c lass="stepHeader margin-top-20">Upload an image for your cover</div>
-										<p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true" (uploadHandler)="uploadImage($event)"
-										 maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
+										<p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true"
+										 (uploadHandler)="uploadImage($event)" maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
 											<ng-template pTemplate="toolbar">
 												<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
 											</ng-template>
@@ -508,7 +522,8 @@
 											</button>
 											<span class="pull-right">
 												<span matTooltip="An image is mandatory to continue" [matTooltipDisabled]="urlForImages.length !== 0">
-													<button mat-button color="primary" class="mat-border-button" [disabled]="urlForImages.length === 0 || busySavingData" type="Submit">
+													<button mat-button color="primary" class="mat-border-button" [disabled]="urlForImages.length === 0 || busySavingData"
+													 type="Submit">
 														<span *ngIf="!busySavingData">Next</span>
 														<span>
 															<ngx-loading [show]="busySavingData"></ngx-loading>
@@ -536,7 +551,8 @@
 							<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 								<h2 class="title">How will you grade your students?</h2>
 								<p class="subtitle">
-									You can select one of the sample grading systems from above or you can create a custom system by adding new rule.
+									You can select one of the sample grading systems from above or you can create a custom system by adding new
+									rule.
 								</p>
 								<h3 class="margin-top-40">Select your grading pattern</h3>
 								<div class="row padding-top-10" *ngIf="!assessmentForm.value.style || (assessmentForm.value.style && assessmentForm.value.style.length>0)">
@@ -571,7 +587,8 @@
 										</div>
 									</div>
 									<div formArrayName="rules">
-										<div *ngFor="let ruleForm of assessmentForm.controls['rules']['controls']; let i = index" [formGroupName]="i" class="row margin-top-20">
+										<div *ngFor="let ruleForm of assessmentForm.controls['rules']['controls']; let i = index" [formGroupName]="i"
+										 class="row margin-top-20">
 											<div class="col-xs-4">
 												<mat-form-field class="pb-block">
 													<input matInput formControlName="value" required>
@@ -600,12 +617,14 @@
 										</div>
 									</div>
 								</span>
-								<h3 class="margin-top-40">Students are assessed for attending every activity and participating in class discussions</h3>
+								<h3 class="margin-top-40">Students are assessed for attending every activity and participating in class
+									discussions</h3>
 								<p class="subtitle">
 									How important is class participation vs attendance?
 								</p>
 								<div formArrayName="nARules">
-									<div *ngFor="let ruleForm of assessmentForm.controls['nARules']['controls']; let i = index" [formGroupName]="i" class="row">
+									<div *ngFor="let ruleForm of assessmentForm.controls['nARules']['controls']; let i = index" [formGroupName]="i"
+									 class="row">
 										<!-- <div class="col-xs-4">
 											<span style="line-height: 4">
 												{{ruleForm.value.value | titlecase}}
@@ -672,9 +691,9 @@
 												it free</mat-checkbox>
 										</div>
 									</div>
-									<br/>
+									<br />
 									<div class="lightText mat-caption" *ngIf="!freeClass">OR</div>
-									<br/>
+									<br />
 									<div class="row margin-left-0" *ngIf="!freeClass">
 										<div class="col-md-4 col-xs-2 padding-top-10">
 											{{0 | currency: class.controls['currency'].value : 'symbol' | slice:0:1}} &nbsp;
@@ -751,7 +770,8 @@
 						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
 							<h2 class="title">Add content to your Class</h2>
 							<form [formGroup]="class">
-								<p class="subtitle">Create a detailed timeline of your class and add content for every event in your itinerary. Learners
+								<p class="subtitle">Create a detailed timeline of your class and add content for every event in your itinerary.
+									Learners
 									will see this before they sign up for your class.</p>
 								<div style="margin-top:60px;">
 									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
@@ -770,7 +790,8 @@
 							<h2 class="title">Set your default timeline
 							</h2>
 							<p class="subtitle">
-								Create a default timeline for your class and add activities to it. Later on, you can create as many cohorts with specific
+								Create a default timeline for your class and add activities to it. Later on, you can create as many cohorts
+								with specific
 								start dates.
 							</p>
 							<form [formGroup]="timeline" (ngSubmit)="submitClassTimeline()" novalidate>
@@ -778,16 +799,16 @@
 									<div class="row" style="margin: 30px 0px 15px -15px;">
 										<div class="col-xs-6">
 											<mat-form-field [floatLabel]="'auto'" class="dateStyles">
-												<input matInput [matDatepicker]="startDatePicker" [min]="currentDate" placeholder="Start date" formControlName="startDate"
-												 (click)="startDatePicker.open()" disabled>
+												<input matInput [matDatepicker]="startDatePicker" [min]="currentDate" placeholder="Start date"
+												 formControlName="startDate" (click)="startDatePicker.open()" disabled>
 												<mat-datepicker-toggle matSuffix [for]="startDatePicker" class="svgStyle {{activeClass}}"></mat-datepicker-toggle>
 												<mat-datepicker touchUi="true" #startDatePicker disabled="false"></mat-datepicker>
 											</mat-form-field>
 										</div>
 										<div class="col-xs-6">
 											<mat-form-field [floatLabel]="'auto'" class="dateStyles">
-												<input matInput [matDatepicker]="endDatePicker" [min]="timeline.controls['calendar'].value.startDate" placeholder="End date"
-												 formControlName="endDate" (click)="endDatePicker.open()" disabled>
+												<input matInput [matDatepicker]="endDatePicker" [min]="timeline.controls['calendar'].value.startDate"
+												 placeholder="End date" formControlName="endDate" (click)="endDatePicker.open()" disabled>
 												<mat-datepicker-toggle matSuffix [for]="endDatePicker" class="svgStyle"></mat-datepicker-toggle>
 												<mat-datepicker touchUi="true" #endDatePicker disabled="false"></mat-datepicker>
 											</mat-form-field>
@@ -797,7 +818,8 @@
 								<div formGroupName="calendar" *ngIf="(timeline.controls['calendar'].value.startDate && timeline.controls['calendar'].value.endDate) && !datesEditable">
 									<div class="row" style="margin: 30px 0px 15px 0;">
 										<div class="col-md-12 selected-dates">
-											{{timeline.controls['calendar'].value.startDate | date: 'dd MMM'}} - {{timeline.controls['calendar'].value.endDate | date:'dd
+											{{timeline.controls['calendar'].value.startDate | date: 'dd MMM'}} -
+											{{timeline.controls['calendar'].value.endDate | date:'dd
 											MMM'}} &emsp;
 											<mat-icon color="accent">
 												date_range
@@ -851,7 +873,8 @@
 										<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 											Back
 										</button>
-										<span class="pull-right" matTooltip="You need to agree to The Blockchain University community terms to submit this class for approval" [matTooltipDisabled]="selectedValues[0] && selectedValues[1]">
+										<span class="pull-right" matTooltip="You need to agree to The Blockchain University community terms to submit this class for approval"
+										 [matTooltipDisabled]="selectedValues[0] && selectedValues[1]">
 											<button mat-button color="primary" class="mat-border-button" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
 												Submit for Review</button>
 										</span>
@@ -880,15 +903,18 @@
 												<input type="tel" matInput #countryCode formControlName="countryCode" placeholder="Country Code" [readOnly]="true">
 											</mat-form-field>
 											<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin: 20px 0px;">
-												<input type="tel" matInput #phoneNo formControlName="phoneNo" placeholder="Phone number from profile" [readOnly]="true">
+												<input type="tel" matInput #phoneNo formControlName="phoneNo" placeholder="Phone number from profile"
+												 [readOnly]="true">
 												<mat-hint *ngIf="!isPhoneVerified">We will send the confirmation code on your mobile</mat-hint>
 												<mat-hint *ngIf="isPhoneVerified">Update your phone number from profile to change it for this class</mat-hint>
 											</mat-form-field>
-											<button mat-raised-button #sendOtpButton color="accent" (click)="submitPhoneNo($event.target, 'Sending OTP...')" *ngIf="!isPhoneVerified">
+											<button mat-raised-button #sendOtpButton color="accent" (click)="submitPhoneNo($event.target, 'Sending OTP...')"
+											 *ngIf="!isPhoneVerified">
 												Send Code as SMS
 											</button>
 											<button mat-raised-button #sendOtpButton color="accent" *ngIf="isPhoneVerified">
-												<mat-icon mat-prefix style="margin-top: -12px; margin-right: 5px; color: white;">check_circle</mat-icon> Phone
+												<mat-icon mat-prefix style="margin-top: -12px; margin-right: 5px; color: white;">check_circle</mat-icon>
+												Phone
 												Verified
 											</button>
 										</div>
@@ -959,7 +985,8 @@
 																	<br>{{account.external_accounts.data[0].bank_name}} </span>
 															</div>
 															<div class="col-md-3">
-																<b *ngIf="account.external_accounts.data[0].status">{{account.external_accounts.data[0].status | titlecase}}</b>
+																<b *ngIf="account.external_accounts.data[0].status">{{account.external_accounts.data[0].status |
+																	titlecase}}</b>
 																<b *ngIf="!account.external_accounts.data[0].status">Ready</b>
 															</div>
 															<div class="col-md-3">
