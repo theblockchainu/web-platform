@@ -28,7 +28,7 @@
 					<span *ngIf="!busySave">Save &amp; Exit</span>
 					<ngx-loading [show]="busySave"></ngx-loading>
 				</button>
-				<button mat-button [routerLink]="'/class/'+classId" [queryParams]="{mode: 'preview'}">
+				<button mat-button [routerLink]="'/class/'+classId" [queryParams]="{previewAs: 'public'}">
 					<span>
 						Preview
 					</span>

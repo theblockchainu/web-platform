@@ -269,6 +269,10 @@ mat-subheader {
 	color: #33bd9e !important;
 }
 
+.mat-menu-panel {
+	max-width: 400px !important;
+}
+
 .mat-button.mat-primary[disabled] {
 	border-color: rgba(0, 0, 0, 0.26) !important;
 	color: rgba(0, 0, 0, 0.26) !important;

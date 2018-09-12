@@ -12,9 +12,9 @@
 			 <button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']">
 				White Paper
 			</button>
-			<!--<button mat-button class="headerButtons" (click)="gotoCredit()">
+			<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="creditMenu">
 				Earn Credit
-			</button>-->
+			</button>
 			<button mat-button class="headerButtons" (click)="openSignup()">
 				Sign up
 			</button>
@@ -23,6 +23,28 @@
 			</button>
 		</span>
 	</nav>
+	<mat-menu #creditMenu [overlapTrigger]="false">
+		<span mat-menu-item style="height: auto; line-height: 26px; white-space: pre-wrap; padding: 15px;">
+			<div class="col-xs-4">
+				<i class="fab fa-ethereum"></i> GYAN
+			</div>
+			<div class="col-xs-8 mat-body">
+				is your knowledge score. Users with more GYAN have higher reputations.
+			</div>
+		</span>
+		<span mat-menu-item style="height: auto; line-height: 26px; white-space: pre-wrap;">
+			<div class="col-xs-4">
+				<i class="fa fa-fire"></i> KARMA
+			</div>
+			<div class="col-xs-8 mat-body">
+				is our coin. You get KARMA coins as rewards based on your GYAN rank and you can use them to pay for activities.
+			</div>
+		</span>
+		<hr>
+		<span mat-menu-item disableRipple="true" style="text-align:center!important; height: auto; margin-top: -15px;">
+			<button color="primary" mat-button class="mat-border-button" (click)="gotoCredit()">Invite & Earn</button>
+		</span>
+	</mat-menu>
 	<mat-menu #headerTeachMenu [overlapTrigger]="false">
 		<button mat-menu-item (click)="createExperience()">
 			Host an offline experience

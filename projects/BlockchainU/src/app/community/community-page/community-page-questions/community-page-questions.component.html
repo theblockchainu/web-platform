@@ -96,7 +96,7 @@
 						</button>
 					</mat-menu>
 					<div class="mat-title margin-bottom-10">
-						<div [innerHTML]="question.text | linkify "></div>
+						<div style="display: inline-block;" [innerHTML]="question.text | linkify "></div>
 						<span class="mat-h5 mat-border-button gyanBubble" *ngIf="question.gyan" matTooltip="{{question.gyan}} Gyan for the right answer.">
 							<!--<div style="position: relative; top: 5px;"><i class="fab fa-ethereum"></i>&nbsp; {{question.gyan}} GYAN</div>-->
 							<div style="font-size: 11px;">{{question.gyan | convertCurrency : 'GYAN' | async}} USD</div>

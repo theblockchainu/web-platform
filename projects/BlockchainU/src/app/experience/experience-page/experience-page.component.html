@@ -185,7 +185,22 @@
 										<span>{{getContentCount('in-person') | i18nPlural : inPersonSessionMapping}}</span>
 									</div>
 								</div>
-								<div *ngIf="userType==='public'" class="margin-top-20 pre-wrapped">
+							</div>
+						</div>
+						<!--TOPICS SECTION-->
+						<div class="row Topics margin-top-20" *ngIf="userType === 'public'">
+							<div class="col-xs-8 col-xs-offset-4">
+								<mat-chip-list>
+									<mat-chip *ngFor="let topic of topicFix" disabled> {{topic.name | titlecase}} </mat-chip>
+								</mat-chip-list>
+							</div>
+						</div>
+						<div *ngIf="userType==='public'" class="row Description margin-top-20 pre-wrapped">
+							<div class="col-xs-4">
+								<h3 *ngIf="userType === 'public'">Experience overview</h3>
+							</div>
+							<div class="col-xs-8">
+								<div>
 									<td-markdown>
 										{{experience.description}}
 									</td-markdown>
@@ -205,14 +220,6 @@
 								<div *ngIf="userType==='teacher'" style="margin-top: 5px;">As your students complete any activity, their
 									progress
 									and updates will show up here.</div>
-							</div>
-						</div>
-						<!--TOPICS SECTION-->
-						<div class="row Topics margin-top-20" *ngIf="userType === 'public'">
-							<div class="col-xs-8 col-xs-offset-4">
-								<mat-chip-list>
-									<mat-chip *ngFor="let topic of topicFix" disabled> {{topic.name | titlecase}} </mat-chip>
-								</mat-chip-list>
 							</div>
 						</div>
 						<hr *ngIf="calendarId !== undefined || userType === 'public'">
