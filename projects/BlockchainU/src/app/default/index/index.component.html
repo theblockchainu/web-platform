@@ -9,12 +9,12 @@
 			<!-- <button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerTeachMenu">
 				Become a teacher
 			</button> -->
-			<!-- <button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']">
+			 <button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']">
 				White Paper
-			</button> -->
-			<!--<button mat-button class="headerButtons" (click)="gotoCredit()">
+			</button>
+			<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="creditMenu">
 				Earn Credit
-			</button>-->
+			</button>
 			<button mat-button class="headerButtons" (click)="openSignup()">
 				Sign up
 			</button>
@@ -23,6 +23,28 @@
 			</button>
 		</span>
 	</nav>
+	<mat-menu #creditMenu [overlapTrigger]="false">
+		<span mat-menu-item style="height: auto; line-height: 26px; white-space: pre-wrap; padding: 15px;">
+			<div class="col-xs-4">
+				<i class="fab fa-ethereum"></i> GYAN
+			</div>
+			<div class="col-xs-8 mat-body">
+				is your knowledge score. Users with more GYAN have higher reputations.
+			</div>
+		</span>
+		<span mat-menu-item style="height: auto; line-height: 26px; white-space: pre-wrap;">
+			<div class="col-xs-4">
+				<i class="fa fa-fire"></i> KARMA
+			</div>
+			<div class="col-xs-8 mat-body">
+				is our coin. You get KARMA coins as rewards based on your GYAN rank and you can use them to pay for activities.
+			</div>
+		</span>
+		<hr>
+		<span mat-menu-item disableRipple="true" style="text-align:center!important; height: auto; margin-top: -15px;">
+			<button color="primary" mat-button class="mat-border-button" (click)="gotoCredit()">Invite & Earn</button>
+		</span>
+	</mat-menu>
 	<mat-menu #headerTeachMenu [overlapTrigger]="false">
 		<button mat-menu-item (click)="createExperience()">
 			Host an offline experience
@@ -64,7 +86,7 @@
 									{{_searchService.getSearchOptionText(option)}}
 								</div>
 								<div class="mat-h5 lightText" style="margin-top: -14px;">
-									{{option.data.type | uppercase}}
+									{{_searchService.getSearchOptionType(option) | uppercase}}
 								</div>
 							</div>
 						</mat-option>
@@ -99,6 +121,44 @@
 						<h3 class="margin-left-10">Classes</h3>
 					</a>
 				</nav>
+			</div>
+		</div>
+	</section>
+	
+	<section class="introducing-communities spacing">
+		<div class="container">
+			<h2 class="section-title">Introducing Communities</h2>
+			<div class="gradient-banner">
+				<div class="hero-banner-bg">
+					<div class="gray-gradient-overlay"></div>
+					<div class="d-table">
+						<div class="d-table-cell align-middle">
+							<div class="content">
+								<h3>Topic-specific communities for questions &amp; answers</h3>
+								<div class="action-btn">
+									<a [routerLink]="'/home/communities'">Explore Communities</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<section class="experience-around-world communities spacing margin-bottom-50">
+		<div class="container">
+			<h2 class="section-title pb-0">Trending Communities</h2>
+			<div class="loading-container" [hidden]="!loadingCommunities">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingCommunities" class="row feed-horizontal" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="communities === undefined || communities.length === 0">
+					There are no new active communities to view right now.
+				</div>
+				<div *ngFor="let community of communities; let i = index;">
+					<app-community-card *ngIf="i < 3" [cardsPerRow]="3" [community]="community" (refresh)="onCommunityRefresh($event)"></app-community-card>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -466,27 +526,6 @@
 		</div>
 	</section>
 
-	<section class="introducing-communities spacing">
-		<div class="container">
-			<h2 class="section-title">Introducing Communities</h2>
-			<div class="gradient-banner">
-				<div class="hero-banner-bg">
-					<div class="gray-gradient-overlay"></div>
-					<div class="d-table">
-						<div class="d-table-cell align-middle">
-							<div class="content">
-								<h3>Topic-specific communities for questions &amp; answers</h3>
-								<div class="action-btn">
-									<a [routerLink]="'/home/communities'">Explore Communities</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
 	<!-- <section class="experience-spotlight trending-communities spacing">
 		<div class="container">
 			<h2 class="section-title pb-0">Trending Communities</h2>
@@ -546,23 +585,5 @@
 			</div>
 		</div>
 	</section> -->
-
-	<section class="experience-around-world communities spacing margin-bottom-50">
-		<div class="container">
-			<h2 class="section-title pb-0">Trending Communities</h2>
-			<div class="loading-container" [hidden]="!loadingCommunities">
-				<ngx-loading [show]="true"></ngx-loading>
-			</div>
-			<div *ngIf="!loadingCommunities" class="row feed-horizontal" style="padding: 0px 7px;">
-				<div class="noDataContainer" *ngIf="communities === undefined || communities.length === 0">
-					There are no new active communities to view right now.
-				</div>
-				<div *ngFor="let community of communities; let i = index;">
-					<app-community-card *ngIf="i < 3" [cardsPerRow]="3" [community]="community" (refresh)="onCommunityRefresh($event)"></app-community-card>
-				</div>
-			</div>
-		</div>
-	</section>
-
-
+	
 </div>

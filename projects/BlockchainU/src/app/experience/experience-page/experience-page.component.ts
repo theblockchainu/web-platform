@@ -645,28 +645,33 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				},
 					err => console.log('error'),
 					() => {
-						this.initializeUserType();
-						this.calculateTotalHours();
-						this.fixTopics();
-						this.getReviews();
-						this.getRecommendations();
-						this.getParticipants();
-						this.getDiscussions();
-						this.getBookmarks();
-						this.setUpCarousel();
-						if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
-							this.itenaryArray.forEach(itinerary => {
-								itinerary.contents.forEach(content => {
-									if (content.id === this.toOpenDialogName) {
-										this.openDialog(content, itinerary.startDate, itinerary.endDate);
-									}
+						if (this.experience && this.experience.owners && this.experience.owners.length > 0) {
+							this.initializeUserType();
+							this.calculateTotalHours();
+							this.fixTopics();
+							this.getReviews();
+							this.getRecommendations();
+							this.getParticipants();
+							this.getDiscussions();
+							this.getBookmarks();
+							this.setUpCarousel();
+							if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
+								this.itenaryArray.forEach(itinerary => {
+									itinerary.contents.forEach(content => {
+										if (content.id === this.toOpenDialogName) {
+											this.openDialog(content, itinerary.startDate, itinerary.endDate);
+										}
+									});
 								});
-							});
-						} else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
-							const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
-							snackBarRef.onAction().subscribe();
+							} else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
+								const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
+								snackBarRef.onAction().subscribe();
+							}
+							this.recordStartView();
+						} else {
+							this.snackBar.open('This in-person experience has either been deleted or flagged.', 'OK', {duration: 5000});
+							this.router.navigate(['home', 'experiences']);
 						}
-						this.recordStartView();
 					});
 		} else {
 			console.log('NO COLLECTION');

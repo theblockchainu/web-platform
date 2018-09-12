@@ -118,20 +118,20 @@ export class SearchService {
             case 'collection':
                 switch (option.data.type) {
                     case 'class':
-                        return 'Class : ';
+                        return 'Online Class';
                     case 'experience':
-                        return 'Experience : ';
+                        return 'In-person Experience';
                     default:
-                        return 'Collection : ';
+                        return 'Collection';
                 }
             case 'topic':
-                return 'Topic : ';
+                return 'Topic';
             case 'community':
-                return 'Community: ';
+                return 'Community';
             case 'question':
-                return 'Question: ';
+                return 'Question';
             case 'peer':
-                return 'Peer : ';
+                return 'User';
             default:
                 return;
         }

@@ -28,7 +28,7 @@
 									{{_searchService.getSearchOptionText(option)}}
 								</div>
 								<div class="mat-h5 lightText" style="margin-top: -14px;">
-									{{option.data.type | uppercase}}
+									{{_searchService.getSearchOptionType(option) | uppercase}}
 								</div>
 							</div>
 						</mat-option>
@@ -94,6 +94,9 @@
 				<div style="display: inline-block;" *ngIf="(isLoggedIn | async) && isAccountApproved">
 					<mat-icon style="padding-left: 10px;" class="notifDot" *ngIf="hasNewMessage || hasNewNotification">fiber_manual_record</mat-icon>
 				</div>
+				<button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']" *ngIf="!(isLoggedIn | async)">
+					White Paper
+				</button>
 				<button mat-button class="headerButtons" [matMenuTriggerFor]="creditMenu">
 					<span class="hide-small">
 						Earn Credit
@@ -114,9 +117,6 @@
 						Blog
 					</button>
 				</a> -->
-				<!--<button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']" *ngIf="!(isLoggedIn | async)">
-					White Paper
-				</button>-->
 				<!--<button mat-button class="headerButtons" [routerLink]="['/home/homefeed']" *ngIf="!(isLoggedIn | async)">
 					Explore
 				</button>-->
@@ -189,9 +189,25 @@
 
 <mat-menu #creditMenu [overlapTrigger]="false">
 	<span mat-menu-item *ngIf="isAccountApproved && (!profile.peer[0].ethAddress || profile.peer[0].ethAddress.substring(0, 2) !== '0x' ) && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
-		Setup Karma Wallet
+		Setup Knowledge Wallet
 		<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
-			on one0x Blockchain
+			powered by one0x
+		</div>
+	</span>
+	<span mat-menu-item style="height: auto; line-height: 26px; white-space: pre-wrap; padding: 15px;">
+		<div class="col-xs-4">
+			<i class="fab fa-ethereum"></i> GYAN
+		</div>
+		<div class="col-xs-8 mat-body">
+			is your knowledge score. Users with more GYAN have higher reputations.
+		</div>
+	</span>
+	<span mat-menu-item style="height: auto; line-height: 26px; white-space: pre-wrap;">
+		<div class="col-xs-4">
+			<i class="fa fa-fire"></i> KARMA
+		</div>
+		<div class="col-xs-8 mat-body">
+			is our coin. You get KARMA coins as rewards based on your GYAN rank and you can use them to pay for activities.
 		</div>
 	</span>
 	<span mat-menu-item *ngIf="isAccountApproved && profile.peer[0].ethAddress && profile.peer[0].ethAddress.substring(0, 2) === '0x' && isLoggedIn | async" [routerLink]="['story', 'me']">

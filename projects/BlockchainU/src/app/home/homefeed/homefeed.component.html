@@ -2,20 +2,20 @@
 	<div class="col-md-10 col-md-offset-1 homeContainer">
 		<div class="homefeedContainer">
 			<div class="mat-display-1" style="margin-bottom: 5px;">
-				Explore The Blockchain University
+				Explore
 			</div>
 			<nav mat-tab-nav-bar disableRipple class="noJustify home">
-				<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive" matTooltip="Classes are a way to learn any subject completely online with videos, projects & live sessions.">
-					<img src="/assets/images/class_icon2.jpg" alt="logo" style="height: 100%;">
-					<h3 class="margin-left-10">Classes</h3>
+				<a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive" matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
+					<img src="/assets/images/communities_icon1.jpg" alt="logo" style="height: 100%;">
+					<h3>Communities</h3>
 				</a>
 				<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive" matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
 					<img src="/assets/images/experiences_icon.jpeg" alt="logo" style="height: 100%;">
 					<h3 class="margin-left-10">Experiences</h3>
 				</a>
-				<a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive" matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
-					<img src="/assets/images/communities_icon1.jpg" alt="logo" style="height: 100%;">
-					<h3>Communities</h3>
+				<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive" matTooltip="Classes are a way to learn any subject completely online with videos, projects & live sessions.">
+					<img src="/assets/images/class_icon2.jpg" alt="logo" style="height: 100%;">
+					<h3 class="margin-left-10">Classes</h3>
 				</a>
 				<a mat-tab-link [routerLink]="'/home/peers'" routerLinkActive #peerLink="routerLinkActive" [active]="peerLink.isActive" matTooltip="Peers are teachers around the world who can teach you something over a live video session.">
 					<img src="/assets/images/peers_icon1.jpg" alt="logo" style="height: 100%;">
@@ -24,7 +24,7 @@
 			</nav>
 		</div>
 		<div class="feed homefeed">
-			<div class="row continue-learning-feed" *ngIf="userId !== undefined && userId.length > 5 && (loadingContinueLearning || ongoingArray.length > 0)">
+			<div class="row continue-learning-feed" *ngIf="userId !== undefined && userId.length > 5 && ongoingArray.length > 0">
 				<div class="col-md-12">
 					<div class="row">
 						<div class="col-md-5">
