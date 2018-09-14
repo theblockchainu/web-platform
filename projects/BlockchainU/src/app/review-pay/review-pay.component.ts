@@ -516,11 +516,19 @@ export class ReviewPayComponent implements OnInit {
             if (this.codefound && this.codefound.id.length > 5) {
                 this.profileService.linkPromoCode(this.userId, this.codefound.id).subscribe(
                     res => {
-                        this.router.navigate([this.collection.type, this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+                        if (this.collectionCalendarId) {
+                            this.router.navigate([this.collection.type, this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+                        } else {
+                            this.router.navigate([this.collection.type, this.collectionId, 'paymentSuccess']);
+                        }
                     }
                 );
             } else {
-                this.router.navigate([this.collection.type, this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+                if (this.collectionCalendarId) {
+                    this.router.navigate([this.collection.type, this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+                } else {
+                    this.router.navigate([this.collection.type, this.collectionId, 'paymentSuccess']);
+                }
             }
         }, err => {
             console.log(err);

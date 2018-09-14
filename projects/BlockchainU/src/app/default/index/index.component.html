@@ -9,7 +9,7 @@
 			<!-- <button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerTeachMenu">
 				Become a teacher
 			</button> -->
-			 <button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']">
+			<button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']">
 				White Paper
 			</button>
 			<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="creditMenu">
@@ -69,7 +69,8 @@
 					The world’s leading blockchain developer community
 				</h2>
 				<mat-form-field appearance="outline" color="accent" floatLabel="never" class="search-form search-home pb-block mat-elevation-z20">
-					<input #searchInputBar name="search" placeholder='Try "Blockchain or Hyperledger"' matInput [formControl]="myControl" [matAutocomplete]="auto">
+					<input #searchInputBar name="search" placeholder='Try "Blockchain or Hyperledger"' matInput [formControl]="myControl"
+					 [matAutocomplete]="auto">
 					<mat-autocomplete #auto="matAutocomplete">
 						<mat-option style="height: auto;" *ngIf="searching">
 							<span style="display: inline-block;margin-left: 43%;">
@@ -111,9 +112,9 @@
 						<img src="/assets/images/community_thumb.jpg" alt="logo" style="height: 100%;">
 						<h3>Communities</h3>
 					</a>
-					<a mat-tab-link [routerLink]="'/home/peers'" routerLinkActive #peerLink="routerLinkActive" [active]="peerLink.isActive" matTooltip="Peers are teachers around the world who can teach you something over a live video session.">
+					<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive">
 						<img src="/assets/images/peer_thumb.jpg" alt="logo" style="height: 100%;">
-						<h3 class="margin-left-10">Peers</h3>
+						<h3 class="margin-left-10">Guides</h3>
 					</a>
 					<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive"
 					 matTooltip="Classes are a way to learn any subject completely online with videos, projects & live sessions.">
@@ -124,7 +125,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<section class="introducing-communities spacing">
 		<div class="container">
 			<h2 class="section-title">Introducing Communities</h2>
@@ -145,7 +146,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<section class="experience-around-world communities spacing margin-bottom-50">
 		<div class="container">
 			<h2 class="section-title pb-0">Trending Communities</h2>
@@ -256,7 +257,8 @@
 								<span>Explore Now</span>
 							</p>
 							<h3 class="title">Hackathon Experiences</h3>
-							<p>Bootcamps and hackathons are more practical in-person experiences where you immerse yourself in finding practical
+							<p>Bootcamps and hackathons are more practical in-person experiences where you immerse yourself in finding
+								practical
 								solutions to problems</p>
 						</div>
 					</div>
@@ -318,7 +320,8 @@
 								<div class="logo-image">
 									<img style="width: auto !important;" src="/assets/images/one0x-footer-logo.png" alt="one0x-footer-logo">
 								</div>
-								<h3>Tracking all your learning and digitizing it into certificates on the blockchain, making it instantly verifiable
+								<h3>Tracking all your learning and digitizing it into certificates on the blockchain, making it instantly
+									verifiable
 									by any employer</h3>
 								<div class="action-btn">
 									<a href="https://one0x.com/">Explore Compliance</a>
@@ -327,6 +330,27 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<section class="guide-around-world spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Guides to study</h2>
+			<div class="loading-container" [hidden]="!loadingGuides">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingGuides" class="row feed-horizontal" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="guides === undefined || guides.length === 0">
+					There are no new active guides to view right now.
+				</div>
+				<div *ngFor="let guide of guides; let i = index;">
+					<app-guide-card *ngIf="i < 5" [guide]="guide" (refresh)="onGuideRefresh($event)"></app-guide-card>
+				</div>
+			</div>
+			<div class="read-more mt-2 mat-body-2" *ngIf="guides && guides.length > 5">
+				<a [routerLink]="['home','guides']">Show all ({{guides.length}}+)</a>
 			</div>
 		</div>
 	</section>
@@ -423,7 +447,8 @@
 								<span>Explore Now</span>
 							</p>
 							<h3 class="title">Corda Classes</h3>
-							<p>From beginner classes for Corda enthusiasts to advanced programs for senior developers, from software engineers
+							<p>From beginner classes for Corda enthusiasts to advanced programs for senior developers, from software
+								engineers
 								to company executives, everything you need to learn about the decentralized technology</p>
 						</div>
 					</div>
@@ -585,5 +610,5 @@
 			</div>
 		</div>
 	</section> -->
-	
+
 </div>

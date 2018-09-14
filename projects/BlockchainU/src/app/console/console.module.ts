@@ -43,6 +43,7 @@ import { ConsoleAccountWalletComponent } from './console-account/console-account
 import { ConsoleAccountScholarshipsComponent } from './console-account/console-account-scholarships/console-account-scholarships.component';
 import { ConsoleLearningKnowledgeStoryComponent } from './console-learning/console-learning-knowledge-story/console-learning-knowledge-story.component';
 import { ConsoleTeachingAccreditationComponent } from './console-teaching/console-teaching-accreditation/console-teaching-accreditation.component';
+import { ConsoleTeachingGuideComponent } from './console-teaching/console-teaching-guide/console-teaching-guide.component';
 
 @NgModule({
 	imports: [
@@ -98,7 +99,8 @@ import { ConsoleTeachingAccreditationComponent } from './console-teaching/consol
 		ConsoleAccountWalletComponent,
 		ConsoleAccountScholarshipsComponent,
 		ConsoleLearningKnowledgeStoryComponent,
-		ConsoleTeachingAccreditationComponent
+		ConsoleTeachingAccreditationComponent,
+		ConsoleTeachingGuideComponent
 	],
 	providers: [TimezonePickerService],
 	bootstrap: [CohortDetailDialogComponent]

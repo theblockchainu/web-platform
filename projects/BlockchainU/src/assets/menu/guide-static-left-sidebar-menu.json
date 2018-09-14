@@ -1,0 +1,165 @@
+[
+  {
+    "title": "The Basics",
+    "active": true,
+    "step": 1,
+    "submenu": [
+      {
+        "title": "Type",
+        "step": 2,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Topics",
+        "step": 3,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Language",
+        "step": 4,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "About The Host",
+        "step": 5,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      }
+    ],
+    "visible": true,
+    "locked": false
+  },
+  {
+    "title": "Experience Page",
+    "active": false,
+    "step": 6,
+    "submenu": [
+      {
+        "title": "Title",
+        "step": 7,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Description",
+        "step": 8,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Peer Requirements",
+        "step": 9,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Group Size",
+        "step": 10,
+        "active": false,
+        "visible": false,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Photos",
+        "step": 11,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Certification",
+        "step": 12,
+        "active": false,
+        "visible": false,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Assessment",
+        "step": 13,
+        "active": false,
+        "visible": false,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Price",
+        "step": 14,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      }
+    ],
+    "visible": true,
+    "locked": false
+  },
+  {
+    "title": "Experience Timeline",
+    "active": false,
+    "step": 15,
+    "submenu": [
+      {
+        "title": "Select Dates",
+        "step": 16,
+        "active": false,
+        "visible": false,
+        "locked": false,
+        "complete": false
+      }
+    ],
+    "visible": false,
+    "locked": false
+  },
+  {
+    "title": "Review & Submit",
+    "active": false,
+    "step": 17,
+    "visible": true,
+    "locked": false
+  },
+  {
+    "title": "Finishing Touches",
+    "active": false,
+    "visible": false,
+    "step": 18,
+    "submenu": [
+      {
+        "title": "Phone Number",
+        "step": 18,
+        "active": false,
+        "visible": false,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Payments",
+        "step": 19,
+        "active": false,
+        "visible": false,
+        "locked": false,
+        "complete": false
+      }
+    ],
+    "locked": false
+  }
+]

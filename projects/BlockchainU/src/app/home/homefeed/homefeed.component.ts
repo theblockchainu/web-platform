@@ -33,11 +33,13 @@ import { TitleCasePipe } from '@angular/common';
 export class HomefeedComponent implements OnInit {
 	public classes: Array<any>;
 	public experiences: Array<any>;
+	public guides: Array<any>;
 	public communities: Array<any>;
 	public userId;
 	public peers: Array<any>;
 	public loadingClasses = false;
 	public loadingExperiences = false;
+	public loadingGuides = false;
 	public loadingCommunities = false;
 	public loadingPeers = false;
 	public loadingContinueLearning = false;
@@ -70,14 +72,23 @@ export class HomefeedComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.initialisePage();
+	}
+
+	private initialisePage() {
+		this.ongoingArray = [];
+		this.upcomingArray = [];
+		this.liveClassesObject = {};
+		this.upcomingClassesObject = {};
+		this.now = new Date();
 		this.fetchContinueLearning();
 		this.fetchClasses();
 		this.fetchExperiences();
+		this.fetchGuides();
 		this.fetchPeers();
 		this.fetchCommunities();
 		this.setTags();
 	}
-
 	private setTags() {
 		this.titleService.setTitle('The Blockchain University - World largest community of Blockchain Certified Professionals');
 		this.metaService.updateTag({
@@ -109,12 +120,7 @@ export class HomefeedComponent implements OnInit {
 				if (err) {
 					console.log(err);
 				} else {
-					this.ongoingArray = [];
-					this.upcomingArray = [];
-					this.liveClassesObject = {};
-					this.upcomingClassesObject = {};
 					this.createOutput(result);
-					this.now = new Date();
 					this.loadingContinueLearning = false;
 				}
 			});
@@ -256,7 +262,7 @@ export class HomefeedComponent implements OnInit {
 		);
 	}
 
-	fetchExperiences() {
+	private fetchExperiences() {
 		const query = {
 			'include': [
 				{
@@ -325,6 +331,76 @@ export class HomefeedComponent implements OnInit {
 				this.experiences = _.orderBy(this.experiences, ['createdAt'], ['desc']);
 				this.experiences = _.chunk(this.experiences, 5)[0];
 
+			}, (err) => {
+				console.log(err);
+			}
+		);
+	}
+
+	private fetchGuides() {
+		const query = {
+			'include': [
+				{
+					'relation': 'collections', 'scope': {
+						'include':
+							[{ 'owners': ['reviewsAboutYou', 'profiles'] },
+								'participants',
+								'calendars', { 'bookmarks': 'peer' }
+							], 'where': { 'type': 'guide' }
+					}
+				}
+			],
+			'order': 'createdAt desc'
+		};
+		this.loadingGuides = true;
+		this._topicService.getTopics(query).subscribe(
+			(response: any) => {
+				this.guides = [];
+				for (const responseObj of response) {
+					responseObj.collections.forEach(collection => {
+						// let experienceLocation = 'Unknown location';
+						// let lat = 37.5293864;
+						// let lng = -122.008471;
+						if (collection.status === 'active') {
+							// if (collection.contents) {
+							// 	collection.contents.forEach(content => {
+							// 		if (content.locations && content.locations.length > 0
+							// 			&& content.locations[0].city !== undefined
+							// 			&& content.locations[0].city.length > 0
+							// 			&& content.locations[0].map_lat !== undefined
+							// 			&& content.locations[0].map_lat.length > 0) {
+							// 			experienceLocation = content.locations[0].city;
+							// 			lat = parseFloat(content.locations[0].map_lat);
+							// 			lng = parseFloat(content.locations[0].map_lng);
+							// 		}
+							// 	});
+							// 	collection.location = experienceLocation;
+							// 	collection.lat = lat;
+							// 	collection.lng = lng;
+							// }
+							if (collection.owners && collection.owners[0].reviewsAboutYou) {
+								collection.rating = this._collectionService
+									.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+								collection.ratingCount = this._collectionService
+									.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
+							}
+							// let hasActiveCalendar = false;
+							// if (collection.calendars) {
+							// 	collection.calendars.forEach(calendar => {
+							// 		if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
+							// 			hasActiveCalendar = true;
+							// 			return;
+							// 		}
+							// 	});
+							// }
+							this.guides.push(collection);
+						}
+					});
+				}
+				this.guides = _.uniqBy(this.guides, 'id');
+				this.guides = _.orderBy(this.guides, ['createdAt'], ['desc']);
+				this.guides = _.chunk(this.guides, 5)[0];
+				this.loadingGuides = false;
 			}, (err) => {
 				console.log(err);
 			}
@@ -485,6 +561,12 @@ export class HomefeedComponent implements OnInit {
 	public onExperienceRefresh(event) {
 		if (event) {
 			this.fetchExperiences();
+		}
+	}
+
+	public onGuideRefresh(event) {
+		if (event) {
+			this.fetchGuides();
 		}
 	}
 

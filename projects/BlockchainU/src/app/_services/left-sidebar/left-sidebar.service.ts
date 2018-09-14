@@ -29,6 +29,8 @@ export class LeftSidebarService {
     }
 
     public updateSideMenu(collection, sidebarMenuItems) {
+        console.log(collection);
+        console.log(sidebarMenuItems);
         let completedSections = 0;
         if (collection.status === 'draft') {
             sidebarMenuItems[4].visible = false;

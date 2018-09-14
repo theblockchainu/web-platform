@@ -2013,9 +2013,9 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	overflow-y: hidden;
 }
 
-.mat-tab-nav-bar {
+/* .mat-tab-nav-bar {
 	overflow-x: scroll !important;
-}
+} */
 
 .tool-bar .btn-group {
 	display: inline-block;
