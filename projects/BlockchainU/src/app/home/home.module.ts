@@ -14,7 +14,7 @@ import { SelectTopicsComponent } from './dialogs/select-topics/select-topics.com
 import { SelectPriceComponent } from './dialogs/select-price/select-price.component';
 import { CommunitiesComponent } from './communities/communities.component';
 import { SelectDurationComponentComponent } from './dialogs/select-duration-component/select-duration-component.component';
-
+import { GuidesComponent } from './guides/guides.component';
 @NgModule({
 	imports: [
 		CommonModule,
@@ -31,7 +31,8 @@ import { SelectDurationComponentComponent } from './dialogs/select-duration-comp
 		SelectTopicsComponent,
 		SelectPriceComponent,
 		CommunitiesComponent,
-		SelectDurationComponentComponent
+		SelectDurationComponentComponent,
+		GuidesComponent
 	],
 	providers: [],
 	bootstrap: [SelectTopicsComponent, SelectPriceComponent, SelectDurationComponentComponent]

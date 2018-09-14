@@ -3,11 +3,6 @@
 		<ngx-loading [show]="true"></ngx-loading>
 	</div>
 	<div *ngIf="guide" class="guidePageContainer">
-		<div class="row pending-actions" *ngIf="guide.status === 'cancelled' && userType==='teacher' ">
-			<div class="col-md-10 col-md-offset-1 center">
-				<span>This guide has been cancelled by the teacher</span>
-			</div>
-		</div>
 		<div class="row pending-actions center" *ngIf="guide.status === 'submitted' && userType==='teacher' ">
 			<div class="col-md-10 col-md-offset-1">
 				<span>This guide is pending approval from Blockchain University team</span>
@@ -19,42 +14,6 @@
 					<b>{{previewAs | titlecase}}</b>
 					. Submit your guide to get it approved.
 					<a href="javascript:void(0);" (click)="_collectionService.openEditCollection(guide)">Continue editing?</a>
-				</span>
-			</div>
-		</div>
-		<div class="row pending-actions center" *ngIf="(calendarId !== undefined && guide.status === 'active' && !hasCohortEnded())">
-			<!--<div class="row pending-actions center" *ngIf="(calendarId !== undefined && guide.status === 'active')">-->
-			<div class="col-md-10 col-md-offset-1">
-				<span>This cohort has ended. You can still add a review and participate in discussions</span>
-			</div>
-		</div>
-		<div class="row pending-actions center" *ngIf="(guide && guide.assessment_models && guide.assessment_models.length>0 && guide.assessment_models[0].type && userType === guide.assessment_models[0].type.toLowerCase())">
-			<div class="col-md-10 col-md-offset-1">
-				<span>
-					<a href="javascript:void(0);" (click)="openAssessmentDialog()">Assess your student's performance now.</a>
-				</span>
-			</div>
-		</div>
-		<div class="row upcoming-actions center" *ngIf="(guide.status === 'active' && calendarId === undefined && hasLiveCohort() && userType === 'teacher')">
-			<div class="col-md-10 col-md-offset-1">
-				<span>The cohort of
-					<b>{{liveCohort.startDate | date: 'MMM, dd'}} to {{liveCohort.endDate | date: 'MMM, dd'}}</b> is currently
-					underway.
-					<a href="javascript:void(0);" (click)="viewDetails(liveCohort.id)">View details</a>
-				</span>
-			</div>
-		</div>
-		<div class="row pending-actions center" *ngIf="guide.status === 'active' && calendarId === undefined && !hasUpcomingCohort()">
-			<div class="col-md-10 col-md-offset-1">
-				<span>This in-person guide was run in the past but has no upcoming batches.
-					<a href="javascript:void(0);" *ngIf="userType === 'teacher'" (click)="editCalendar()">Schedule one now?</a>
-				</span>
-			</div>
-		</div>
-		<div class="row pending-actions center" *ngIf="calendarId !== undefined && currentCalendar !== undefined && currentCalendar.status === 'cancelled'">
-			<div class="col-md-10 col-md-offset-1">
-				<span>This cohort was cancelled by the teacher.
-					<a href="javascript:void(0);" (click)="selectJoiningDates()">View other cohorts?</a>
 				</span>
 			</div>
 		</div>
@@ -75,351 +34,96 @@
 
 		<div class="row margin-top-40">
 			<div class="col-md-10 col-md-offset-1">
-				<div class="row guide-header">
-					<div class="col-md-7">
-						<div class="row">
-							<div class="col-md-12">
-								<a class="clickable margin-bottom-10" *ngIf="calendarId && userType !== 'participant'" (click)="backToCollection(guide)">
-									< Back to guide page </a> <p class="mat-display-1" style="margin-bottom: 20px !important;">{{guide.title
-										| titlecase}}
-										<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
-										<span *ngIf="!checkingEthereum && isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant">&emsp;
-											<i class="fa fa-globe lightText" style="color: #ff6d71; font-size: 14px;"></i>
-										</span>
-										<span *ngIf="!checkingEthereum && !isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="Add to one0x Blockchain"
-										 (click)="addToEthereum()" class="clickable">&emsp;
-											<i class="fa fa-plus lightText" style="font-size: 14px;"></i>
-										</span>
-										</p>
-										<div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px; margin-bottom: 10px;">
-											<span *ngIf="currentCalendar">
-												<b>{{currentCalendar.startDate | date:'d MMM'}} to {{currentCalendar.endDate| date:'d MMM'}}</b>
-												&nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
-											</span>
-											<span> {{totalDuration | i18nPlural : hourMapping}} {{guide.type}} &nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{guide.contents.length
-												| i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
-											<span *ngIf="userType==='teacher'">
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{guide.calendars.length
-												| i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;
-											</span>
-											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
-												<br />
-												<mat-icon style="top: 5px;">date_range</mat-icon> Change cohort
-											</a>
-											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()">
-												<br />
-												<mat-icon style="top: 5px;">date_range</mat-icon> Select cohort to view participants
-											</a>
-										</div>
-										<div *ngIf="userType==='public'" style="margin-top: -12px;">
-											<span>{{itenaryArray.length | i18nPlural : dayMapping}} / {{totalDuration | i18nPlural : hourMapping}}
-												&nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{guide.contents.length
-												| i18nPlural : activityMapping}}</span>
-										</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-5">
-						<div class="row" style="margin-top: 15px; text-align: right" *ngIf="userType==='teacher' || userType==='participant'">
-							<div class="col-xs-12 button-row">
-								<button mat-button class="mat-border-button" (click)="openGroupChat()">Group Chat</button>
-								<button mat-button class="mat-border-button" *ngIf="userType ==='participant' || userType === 'teacher'"
-								 (click)="scrollToDiscussion()">Discussion</button>
-								<button mat-button class="mat-border-button" *ngIf="userType==='teacher'" (click)="gotoEdit()">Edit</button>
-								<mat-icon *ngIf="guide.status !== 'cancelled'" [matMenuTriggerFor]="menu" style="cursor: pointer;top: 5px; color: #ccc;">more_vert</mat-icon>
-							</div>
-							<mat-menu #menu="matMenu">
-								<button mat-menu-item *ngIf="userType==='participant' && currentCalendar !== undefined && isCancelable()"
-								 (click)="dropOutGuide()">Cancel
-									Participation
-								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length === 0"
-								 (click)="deleteGuide()">Delete
-									Guide
-								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length > 0"
-								 (click)="cancelGuide()">Cancel
-									Guide
-								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length === 0"
-								 (click)=" deleteCohort()">Delete
-									Cohort
-								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined" (click)=" addParticipant()">Add
-									participant
-								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length >= 0 && currentCalendar.status !== 'cancelled'"
-								 (click)=" cancelCohort()">Cancel Cohort</button>
-							</mat-menu>
-						</div>
-					</div>
-				</div>
-				<hr *ngIf="userType !== 'public'" class="expHeaderHrParticipant">
-				<hr *ngIf="userType === 'public'" class="expHeaderHrPublic">
 				<div class="row guide-content">
-					<div class="col-md-7 left-content">
-						<!--ABOUT SECTION-->
-						<div class="row About" *ngIf="calendarId === undefined && (userType === 'public')">
-							<div class="col-xs-4">
-								<h3 *ngIf="userType === 'public'">What we'll do</h3>
-							</div>
-							<div class="col-xs-8">
-								<div class="row" *ngIf="userType === 'public'">
+					<div class="col-md-6 left-content">
+						<div class="row guide-header">
+							<div class="col-md-12">
+								<div class="row">
 									<div class="col-md-12">
-										<mat-icon style="top: 7px; margin-right: 15px;">schedule</mat-icon>&emsp;
-										<span>{{totalDuration | i18nPlural : hourMapping}} total</span>
-									</div>
-									<div class="col-md-12 margin-top-10">
-										<mat-icon style="top: 7px; margin-right: 15px;">mic</mat-icon>&emsp;
-										<span>Offered in {{guide.language[0]}}</span>
-									</div>
-									<div class="col-md-12 margin-top-10">
-										<mat-icon style="top: 7px; margin-right: 15px;">dvr</mat-icon>&emsp;
-										<span>{{getContentCount('project') | i18nPlural : projectMapping}}</span>
-									</div>
-									<div class="col-md-12 margin-top-10">
-										<mat-icon style="top: 7px; margin-right: 15px;">map</mat-icon>&emsp;
-										<span>{{getContentCount('in-person') | i18nPlural : inPersonSessionMapping}}</span>
+										<div class="row" style="margin-top: 15px;" *ngIf="userType==='teacher' || userType==='participant'">
+											<div class="col-xs-12 button-row">
+												<button mat-button class="mat-border-button" (click)="openGroupChat()">Group Chat</button>
+												<button mat-button class="mat-border-button" *ngIf="userType ==='participant' || userType === 'teacher'"
+												 (click)="scrollToDiscussion()">Discussion</button>
+												<button mat-button class="mat-border-button" *ngIf="userType==='teacher'" (click)="gotoEdit()">Edit</button>
+												<mat-icon *ngIf="guide.status !== 'cancelled'" [matMenuTriggerFor]="menu" style="cursor: pointer;top: 5px; color: #ccc;">more_vert</mat-icon>
+											</div>
+											<mat-menu #menu="matMenu">
+												<button mat-menu-item *ngIf="userType==='participant'" (click)="dropOutGuide()">Cancel
+													Participation
+												</button>
+												<button mat-menu-item *ngIf="userType==='teacher' && allParticipants.length === 0" (click)="deleteGuide()">Delete
+													Guide
+												</button>
+												<button mat-menu-item *ngIf="userType==='teacher' && allParticipants.length > 0" (click)="cancelGuide()">Cancel
+													Guide
+												</button>
+												<button mat-menu-item *ngIf="userType==='teacher'" (click)=" addParticipant()">Add
+													participant
+												</button>
+
+											</mat-menu>
+										</div>
 									</div>
 								</div>
-								<div *ngIf="userType==='public'" class="margin-top-20 pre-wrapped">
-									<td-markdown>
-										{{guide.description}}
-									</td-markdown>
+								<div class="row padding-top-20">
+									<div class="col-md-7">
+										<div class="clickable" style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
+											<app-profile-popup [peer]="guide.owners[0]"></app-profile-popup>
+										</div>
+										<div style="display: inline-block; margin-left: 10px;">
+											<div class="row">
+												<div class="col-md-12 clickable" (click)="openProfilePage(guide.owners[0].id)">
+													<span *ngIf="guide.owners[0].profiles[0].first_name !== undefined">
+														{{guide.owners[0].profiles[0].first_name | titlecase }}
+														{{guide.owners[0].profiles[0].last_name | titlecase }}
+													</span>
+													<span *ngIf="guide.owners[0].profiles[0].first_name === undefined">
+														John Doe
+													</span>
+												</div>
+												<div class="col-md-12 mat-h5" *ngIf="guide.owners[0].profiles[0].headline">
+													{{guide.owners[0].profiles[0].headline}}
+												</div>
+												<div class="col-md-12 mat-h5" *ngIf="!guide.owners[0].profiles[0].headline">
+													New user
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<p class="mat-display-1" style="margin-bottom: 20px !important;">{{guide.title
+											| titlecase}}
+										</p>
+
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="row Progress margin-top-20" *ngIf="calendarId !== undefined && (userType === 'teacher' || userType === 'participant')">
-							<div class="col-xs-4">
-								<h3 *ngIf="userType==='participant' && loggedInUser !== undefined">Welcome back,
-									{{loggedInUser.profiles[0].first_name}}</h3>
-								<h3 *ngIf="userType==='teacher'">Welcome back, {{guide.owners[0].profiles[0].first_name}}</h3>
-							</div>
-							<div class="col-xs-8">
-								<div *ngIf="userType==='participant'" style="margin-top: 5px;">As you complete any activity, your progress and
-									updates
-									will show up here.</div>
-								<div *ngIf="userType==='teacher'" style="margin-top: 5px;">As your students complete any activity, their
-									progress
-									and updates will show up here.</div>
+						<hr>
+						<!--ABOUT SECTION-->
+						<div class="row About">
+							<div class="col-xs-12">
+								<td-markdown>
+									{{guide.description}}
+								</td-markdown>
 							</div>
 						</div>
-						<!--TOPICS SECTION-->
-						<div class="row Topics margin-top-20" *ngIf="userType === 'public'">
-							<div class="col-xs-8 col-xs-offset-4">
+						<hr>
+						<!--TODO: Description of guide-->
+						<div class="row Description">
+							<div class="col-xs-12">
 								<mat-chip-list>
 									<mat-chip *ngFor="let topic of topicFix" disabled> {{topic.name | titlecase}} </mat-chip>
 								</mat-chip-list>
 							</div>
 						</div>
-						<hr *ngIf="calendarId !== undefined || userType === 'public'">
-						<!--TODO: Description of guide-->
-						<div class="row Description" *ngIf="userType==='public'">
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-xs-4">
-										<h3>Taught by</h3>
-									</div>
-									<div class="col-xs-8">
-										<div class="row">
-											<div class="col-md-12">
-												<div class="clickable" style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
-													<app-profile-popup [peer]="guide.owners[0]"></app-profile-popup>
-												</div>
-												<div style="display: inline-block; margin-left: 10px;">
-													<div class="row">
-														<div class="col-md-12 clickable" (click)="openProfilePage(guide.owners[0].id)">
-															<span *ngIf="guide.owners[0].profiles[0].first_name !== undefined">
-																{{guide.owners[0].profiles[0].first_name | titlecase }}
-																{{guide.owners[0].profiles[0].last_name | titlecase }}
-															</span>
-															<span *ngIf="guide.owners[0].profiles[0].first_name === undefined">
-																John Doe
-															</span>
-														</div>
-														<div class="col-md-12 mat-h5" *ngIf="guide.owners[0].profiles[0].headline">
-															{{guide.owners[0].profiles[0].headline}}
-														</div>
-														<div class="col-md-12 mat-h5" *ngIf="!guide.owners[0].profiles[0].headline">
-															New user
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-12">
-												<p class="pre-wrapped">{{guide.aboutHost}}</p>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<hr *ngIf="userType==='public'">
-						<div class="row" *ngIf="userType === 'public'">
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-xs-4">
-										<h3>
-											Location
-										</h3>
-									</div>
-									<div class="col-xs-8 margin-top-8">
-										<div *ngIf="mainLocation !== undefined" class="margin-bottom-20">
-											{{mainLocation}}
-										</div>
-										<agm-map *ngIf="lat !== undefined && lng !== undefined" [latitude]="lat" [longitude]="lng" [mapDraggable]="false"
-										 [scrollwheel]="false" [usePanning]="true" [zoomControl]="false" [zoom]="14" [streetViewControl]="false">
-											<agm-circle [latitude]="lat" [longitude]="lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'"
-											 [strokeOpacity]="0.9"></agm-circle>
-										</agm-map>
-										<p *ngIf="lat === undefined || lng === undefined">No valid location co-ordinates recorded for this
-											guide.
-											Please contact the teacher or The Blockchain University support.</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<hr *ngIf="userType==='public'">
-						<div class="row" *ngIf="userType === 'public'">
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-xs-4">
-										<h3>
-											Need to know
-										</h3>
-									</div>
-									<div class="col-xs-8 margin-top-8">
-										<b>{{guide.difficultyLevel}} level</b>
-										<div class="mat-caption pre-wrapped" [innerHTML]="guide.notes| linkify"></div>
-									</div>
-								</div>
-								<div class=" row margin-top-10">
-									<div class="col-xs-4">
-										<h3>Cancellation policy</h3>
-									</div>
-									<div class="col-xs-8 margin-top-10">
-										<p>Get a full refund if you cancel within {{guide.cancellationPolicy}} of signing up.</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<hr *ngIf="userType === 'public'">
-						<!--TIMELINE-->
-						<div class="row Itenary">
-							<div class="featurette" id="about">
-								<div class="col-md-12">
-									<div class="mat-h3 margin-bottom-20">
-										Itinerary
-									</div>
-									<div class="qa-message-list" id="wallmessages">
-										<div [ngClass]="{'message-item-wrapper' : oneDay(), 'message-item-wrapper-one-day': !oneDay()}" *ngFor="let itenary of itenaryArray">
-											<div [ngClass]="{'message-item': oneDay() , 'message-item-ticked': hasDatePassed(itenary.startDate)}">
-												<div class="message-inner">
-													<div class="qa-message-content">
-														<div style="top: -5px; position: relative;">
-															<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined">
-																{{itenary.startDate
-																| date:'EEEE, d MMMM'}} </div>
-															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length > 1">{{add1ToIndex(itenary.startDay)}}</div>
-															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate
-																| date:'EEEE, d MMMM'}}</div>
-														</div>
-														<div (mouseover)="showViewTime(content)" (mouseout)="hideViewTime(content)" [ngClass]="{'row':true, 'timelineRowItem': true, 'timeRowItemProgress': content.views !== undefined && content.views.length > 0 && userType === 'participant'}"
-														 *ngFor="let content of itenary.contents">
-															<div class="viewTime" *ngIf="content.totalUserViewTime !== undefined" [hidden]="content.isViewTimeHidden">
-																{{content.totalUserViewTime}}
-															</div>
-															<a style="cursor:pointer;color:rgba(0,0,0,0.87)" (click)="openDialog(content, itenary.startDate, itenary.endDate)">
-																<div class="col-md-5">
-																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media"
-																	 src="{{envVariable.apiUrl+content.imageUrl + '/300'}}" (error)="_collectionService.imgErrorHandler($event)">
-																	<video #videoContent width="100%" height="auto" *ngIf="content.type==='video'" class="itenary-media"
-																	 preload="metadata" poster="../../../assets/images/placeholder-image.jpg">
-																		<source src="{{envVariable.apiUrl+content.imageUrl}}">
-																	</video>
-																</div>
-															</a>
-															<div class="col-md-7">
-																<a style="cursor:pointer;color:rgba(0,0,0,0.87)" (click)="openDialog(content, itenary.startDate, itenary.endDate)">
-																	<div class="row">
-																		<div class="col-md-12">
-																			<h3> {{content.title | titlecase}}</h3>
-																			<div>
-																				<span class="mat-caption" *ngIf="content.schedules[0].startTime !== undefined && content.type === 'in-person'">
-																					{{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date:
-																					'h:mm a'}} &nbsp;&nbsp;&nbsp;
-																					<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
-																				</span>
-																				{{_collectionService.getContentTypeFullName(content.type) | titlecase}}
-																			</div>
-																			<div *ngIf="content.type === 'in-person' && content.locations !== undefined && content.locations.length > 0 && (userType === 'participant' || userType === 'teacher')">
-																				<div>
-																					<mat-icon style="top: 2px; font-size: 15px; width: 15px;">place</mat-icon>
-																					<span *ngIf="content.locations[0].apt_suite && content.locations[0].apt_suite.length > 0">{{content.locations[0].apt_suite
-																						+ ' ' | ucwords}}</span>
-																					{{content.locations[0].street_address && content.locations[0].street_address.trim().length > 0?
-																					content.locations[0].street_address
-																					: '' | ucwords}}{{content.locations[0].city && content.locations[0].city.trim().length > 0? ', '
-																					+ content.locations[0].city
-																					: '' | ucwords}}
-																				</div>
-																				<div>
-																					{{content.locations[0].state && content.locations[0].state.length > 0 ?
-																					content.locations[0].state : '' | ucwords}}{{content.locations[0].zip
-																					&& content.locations[0].zip.length > 0 ? ' ' + content.locations[0].zip : '' |
-																					ucwords}}{{content.locations[0].country
-																					&& content.locations[0].country.length > 0 ? ', ' + content.locations[0].country : '' |
-																					ucwords}}
-																				</div>
-																			</div>
-																		</div>
-																		<div *ngIf="userType === 'public' || content.type === 'project'" class="col-md-12 margin-top-10 textJustify">
-																			<span class="pre-wrapped">{{content.description | shorten: 115 : '...'}}</span>
-																		</div>
-																	</div>
-																</a>
-																<div class="row margin-top-10" *ngIf="content.type==='in-person' && ( userType==='participant' || userType === 'teacher')">
-																	<div class="col-md-12">
-																		<a mat-button *ngIf="!content.hasRSVPd && userType==='participant' && !hasDatePassed(content.schedules[0].startTime)"
-																		 class="mat-border-button" (click)="rsvpContent(content.id)">RSVP</a>
-																		<a mat-button *ngIf="content.hasRSVPd || userType === 'teacher'" class="mat-border-button" (click)="viewRSVPs(content, userType)">View
-																			RSVPs
-																		</a>
-																		<a mat-button *ngIf="content.hasRSVPd && userType === 'participant' && !hasDatePassed(content.schedules[0].startTime)"
-																		 class="mat-border-button" (click)="cancelRSVP(content)">Cancel RSVP</a>
-																		<a mat-button *ngIf="userType==='participant' && isLive(content) && content.hasRSVPd && calendarId"
-																		 class="mat-border-button" (click)="getDirections(content)">Get directions</a>
-																		<button mat-button class="mat-border-button margin-top-10" *ngIf="userType==='participant' && !isLive(content) && content.hasRSVPd  && calendarId"
-																		 [disabled]="true">{{content.timetoSession}}</button>
-																	</div>
-																</div>
-																<div class="row margin-top-10">
-																	<div class="col-md-12" *ngIf="userType !=='participant' && userType !== 'teacher'">
-																		<a href="javascript:void(0);" (click)="openDialog(content, itenary.startDate, itenary.endDate)">See
-																			details</a>
-																	</div>
-																</div>
-															</div>
-															<!-- </div> -->
-															<br>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+						<hr>
 						<div id="discussionTarget" #discussionTarget></div>
-						<hr class="margin-top-80 margin-bottom-40">
 						<!--DISCUSSION THREAD-->
-						<div class="row Discussion" *ngIf="userType==='teacher' || userType==='participant'">
+						<div class="row Discussion">
 							<div class="col-md-12 margin-bottom-20">
 								<h3 *ngIf="comments !== undefined">Discussion ({{comments.length}})</h3>
 								<h3 *ngIf="comments === undefined">Discussion (0)</h3>
@@ -637,7 +341,7 @@
 								</div>
 							</div>
 						</div>
-						<hr *ngIf="(userType==='teacher' || userType==='participant') && comments !== undefined && comments.length === 0">
+						<!-- <hr *ngIf="(userType==='teacher' || userType==='participant') && comments !== undefined && comments.length === 0"> -->
 						<!--REVIEWS-->
 						<div class="loading-container" [hidden]="!loadingReviews && !initialLoad">
 							<ngx-loading [show]="true"></ngx-loading>
@@ -770,39 +474,10 @@
 								</div>
 							</div>
 						</div>
-						<hr class="margin-top-40" *ngIf="reviews !== undefined">
-						<!--REQUIREMENTS-->
-						<div class="row Eligibility margin-top-40" *ngIf="userType==='teacher' || userType === 'participant'">
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-12">
-										<div class="row">
-											<div class="col-xs-4">
-												<h3>Need to know</h3>
-											</div>
-											<div class="col-xs-8 margin-top-8">
-												<b>{{guide.difficultyLevel | titlecase}}</b>
-												<div class="mat-caption pre-wrapped" [innerHTML]="guide.notes | linkify "></div>
-											</div>
-										</div>
-										<div class="row margin-top-20">
-											<div class="col-xs-4">
-												<h3>Cancellation policy</h3>
-											</div>
-											<div class="col-xs-8 margin-top-10">
-												<p>Get a full refund if you cancel within {{guide.cancellationPolicy}} of signing up.</p>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="margin-top-70"></div>
-						<!--<hr class="margin-top-70" *ngIf="userType==='teacher' || userType === 'participant'">-->
 					</div>
 
 					<!--RIGHT SIDEBAR-->
-					<div class="col-md-4 col-md-offset-1 right-content">
+					<div class="col-md-5 col-md-offset-1 right-content">
 						<div *ngIf="userType==='participant'">
 							<h3 class="margin-bottom-20">Taught By</h3>
 							<div class="row">
@@ -847,47 +522,14 @@
 							</div>
 							<hr class="margin-top-10 margin-bottom-10">
 						</div>
-						<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined">
+						<div *ngIf="(userType==='teacher' || userType==='participant')">
 							<h3 class="margin-bottom-20">Participants</h3>
 							<div>
 								<div class="loading-container" [hidden]="!loadingParticipants">
 									<ngx-loading [show]="true"></ngx-loading>
 								</div>
-								<div>
-									<div class="row" *ngIf="participants.length === 0">
-										<div class="col-md-12">
-											<div class="clickable emptySectionText" (click)="openInviteFriendsDialog()">Invite peers to this cohort?</div>
-										</div>
-									</div>
-								</div>
-								<div *ngFor="let participant of participants; let i=index">
-									<div class="row" *ngIf="participant.profiles && i<4">
-										<div class="col-md-2 vcenter clickable">
-											<app-profile-popup [peer]="participant"></app-profile-popup>
-										</div>
-										<div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
-											{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}
-											<br>
-											<span *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="mat-caption lightText">{{participant.profiles[0].headline}}</span>
-										</div>
-									</div>
-								</div>
-								<div>
-									<div class="row">
-										<div class="col-md-12 margin-top-20 margin-bottom-40">
-											<a (click)="viewParticipants()" style="cursor: pointer;" *ngIf="participants.length > 0"> View all
-												participants
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId === undefined">
-							<h3 class="margin-bottom-20">Participants</h3>
-							<div>
-								<div class="loading-container" [hidden]="!loadingParticipants">
-									<ngx-loading [show]="true"></ngx-loading>
+								<div *ngIf="allParticipants.length<1">
+									No participants yet
 								</div>
 								<div *ngFor="let participant of allParticipants; let i=index">
 									<div class="row" *ngIf="participant.profiles && i<4">
@@ -909,132 +551,10 @@
 										</div>
 									</div>
 								</div>
-								<div>
-									<div class="row">
-										<div class="col-md-12">
-											<div class="emptySectionText">
-												Select one guide cohort to view participants signed up for that batch.
-												<br>
-												<br>
-												<button mat-button class="mat-border-button" (click)="changeDates()">Select cohort</button>
-											</div>
-										</div>
-									</div>
-								</div>
 							</div>
+							<hr>
 						</div>
-						<div *ngIf="guide.isApproved && certificateHTML !== undefined && certificateHTML.length > 10">
-							<hr class="margin-top-30 margin-bottom-30">
-							<div>
-								<h3 style="display: inline-block;">Smart Certificate</h3>
-								<div class="margin-top-20">
-									You will receive this Smart Certificate immediately on completing this guide.
-								</div>
-								<!-- <br> -->
-								<div class="row padding-top-20">
-									<div class="col-xs-12">
-										<ngx-loading [show]="loadingCertificate"></ngx-loading>
-										<div class="mat-border-button">
-											<div #certificateDomHTML [innerHTML]="certificateHTML | safe: 'html'"></div>
-										</div>
-									</div>
-								</div>
-								<div class="margin-top-20 mat-caption lightText">
-									This certificate is issued on the blockchain & can be instantly verified by anyone.
-								</div>
-							</div>
-							<br>
-						</div>
-						<div *ngIf="userType==='teacher' && guide.isApproved && assessmentRules !== undefined">
-							<hr class="margin-top-30 margin-bottom-30">
-							<div>
-								<h3 style="display: inline-block;">Assessment Rules</h3>
-								<!-- <span (click)="editCalendar()" class="pull-right clickable" style="cursor: pointer;">
-										<mat-icon style="font-size: 1rem; top: 15px;">edit</mat-icon>
-									</span> -->
-								<!-- <br> -->
-								<div class="row padding-top-20" *ngFor="let assessment_rule of assessmentRules">
-									<div class="col-xs-4">
-										For {{assessment_rule.value | titlecase}}
-									</div>
-									<div class="col-xs-8">
-										student gets &nbsp;
-										<i class="fab fa-ethereum"></i> &nbsp;
-										<b>{{getGyanForRule(assessment_rule.gyan, guide.academicGyan)}} Gyan</b>
-									</div>
-								</div>
-							</div>
-							<br>
-						</div>
-						<div *ngIf="userType==='teacher' && guide.isApproved">
-							<hr class="margin-top-30 margin-bottom-30">
-							<div>
-								<h3 style="display: inline-block;">Guide Batches</h3>
-								<span (click)="editCalendar()" class="pull-right clickable" style="cursor: pointer;">
-									<mat-icon style="font-size: 1rem; top: 15px;">edit</mat-icon>
-								</span>
-								<br>
-								<span class="text-muted h6">{{guide.calendars.length}} Cohorts</span>
-							</div>
-							<br>
-							<div class="border-calendar calendar">
-								<div class="flex flexContainer" style="margin-bottom:10px">
-									<div class="col-md-8">
-										<h3 class="calendarTitle">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
-									</div>
-									<span class="flex"></span>
-									<div class="prevNext" style="margin-top: -5px">
-										<button mat-button class="mat-icon-button" type="button" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
-											<mat-icon class="" aria-hidden="true">chevron_left</mat-icon>
-										</button>
-										<button mat-button class="mat-icon-button" type="button" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
-											<mat-icon class="" aria-hidden="true">chevron_right</mat-icon>
-										</button>
-									</div>
-								</div>
-								<div [ngSwitch]="view">
-									<mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
-									 (dayClicked)="dayClicked($event.day)">
-									</mwl-calendar-month-view>
-								</div>
-							</div>
-							<div [ngClass]="{'clickedDate' : true, 'displayNone' : !dateClicked, 'displayBlock': dateClicked}">
-								<div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
-									<span class="cal-day-badge"></span>
-									<span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate |
-										date:'d
-										MMM' }})
-									</span>
-								</div>
-								<div class="margin-top-10 margin-bottom-10">
-									<span>{{clickedDate | date:'EEEE, MMM d'}}</span>
-								</div>
-								<div *ngIf="objectKeys(eventsForTheDay).length === 0">
-									<div class="displayFlex event">
-										<span>No events on this date</span>
-									</div>
-									<div class="margin-top-20 margin-bottom-20">
-										<button mat-button (click)="viewDetails(clickedCohortId)" class="mat-border-button">View details of
-											{{clickedCohort}}</button>
-									</div>
-								</div>
-								<div *ngFor="let key of objectKeys(eventsForTheDay);">
-									<div class="displayFlex event clickable" *ngFor="let event of eventsForTheDay[key]" (click)="openEventDialog(clickedCohortId, event.id)"
-									 style="cursor: pointer;">
-										<span>{{ event.start | date:'hh:mm' }}</span>
-										<span>
-											<b>{{ event.start | date:'a' | lowercase}}</b>
-										</span>
-										&emsp;
-										<span>{{ parseTitle(event.title)[0] | titlecase }}</span>
-									</div>
-									<div class="margin-top-20 margin-bottom-20">
-										<button mat-button (click)="viewDetails(key)" class="mat-border-button">View details of {{clickedCohort}}</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row" *ngIf="userType==='public'" style="margin-top: -85px;">
+						<div class="row">
 							<div class="col-md-12">
 								<!--COVER IMAGE-->
 								<div class="row">
@@ -1055,7 +575,7 @@
 									</div>
 								</div>
 								<!--HEADLINE-->
-								<div class="row">
+								<div class="row padding-top-20">
 									<div class="col-md-12">
 										<h3>
 											{{guide.headline | titlecase}}
@@ -1064,7 +584,7 @@
 								</div>
 								<hr style="margin-bottom: 10px;">
 								<!--PRICE SECTION-->
-								<div class="row">
+								<div class="row" *ngIf="userType === 'public'">
 									<div class="col-xs-8">
 										<div class="row">
 											<div class="col-md-12">
@@ -1080,10 +600,10 @@
 												<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
 											</div>
 											<div class="col-md-12">
-												<span matTooltip="Earn up to {{guide.academicGyan + guide.nonAcademicGyan}} Gyan from this guide" style="font-weight: 700; vertical-align: middle;">
+												<!-- <span matTooltip="Earn up to {{guide.academicGyan + guide.nonAcademicGyan}} Gyan from this guide" style="font-weight: 700; vertical-align: middle;">
 													Earn
 													<i class="fab fa-ethereum lightText"></i> {{guide.academicGyan + guide.nonAcademicGyan}}
-												</span>
+												</span> -->
 												<!--<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
 												<span matTooltip="KARMA required to be burned for participation" style="font-weight: 700; vertical-align: middle;">
 													<i class="fas fa-fire lightText"></i> {{(guide.academicGyan + guide.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async | shortNumber}}
@@ -1097,7 +617,7 @@
 									</div>
 									<div class="col-xs-4" style="padding-top: 9px;">
 										<span>
-											<button mat-raised-button (click)="selectJoiningDates()" color="primary">Apply Now</button>
+											<button mat-raised-button (click)="signUp()" color="primary">Sign Up</button>
 										</span>
 										<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this guide">
 											<button mat-raised-button color="primary" [disabled]="true">See Dates</button>
@@ -1106,7 +626,31 @@
 								</div>
 							</div>
 						</div>
-						<hr class="margin-top-10 margin-bottom-10">
+						<div class="row margin-top-20" *ngIf="userType === 'public'">
+							<hr class="margin-top-10 margin-bottom-10">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-xs-4">
+										<h3>
+											Need to know
+										</h3>
+									</div>
+									<div class="col-xs-8 margin-top-8">
+										<b>{{guide.difficultyLevel}} level</b>
+										<div class="mat-caption pre-wrapped" [innerHTML]="guide.notes| linkify"></div>
+									</div>
+								</div>
+								<div class=" row margin-top-10">
+									<div class="col-xs-4">
+										<h3>Cancellation policy</h3>
+									</div>
+									<div class="col-xs-8 margin-top-10">
+										<p>Get a full refund if you cancel within {{guide.cancellationPolicy}} of signing up.</p>
+									</div>
+								</div>
+								<hr class="margin-top-10 margin-bottom-10">
+							</div>
+						</div>
 						<div class="row padding-top-20 padding-bottom-20" *ngIf="userType === 'public'">
 							<div class="col-xs-12">
 								<h2>Want to know more?</h2>
@@ -1206,7 +750,7 @@
 						</div>
 						<div *ngIf="!loadingSimilarGuides" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;">
 							<div *ngFor="let guide of recommendations.collections; let i = index;">
-								<app-experience-card *ngIf="i < 5" [experience]="guide" (refresh)="onGuideRefresh($event)"></app-experience-card>
+								<app-guide-card *ngIf="i < 5" [guide]="guide" (refresh)="onGuideRefresh($event)"></app-guide-card>
 							</div>
 						</div>
 					</div>
@@ -1246,7 +790,7 @@
 		</div>
 		<div class="col-xs-4" style="padding-top: 9px;">
 			<span>
-				<button mat-raised-button (click)="selectJoiningDates()" color="primary">Apply Now</button>
+				<button mat-raised-button (click)="signUp()" color="primary">Sign Up</button>
 			</span>
 			<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this guide">
 				<button mat-raised-button color="primary" [disabled]="true">See Dates</button>

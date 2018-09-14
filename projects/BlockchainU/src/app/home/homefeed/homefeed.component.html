@@ -5,21 +5,24 @@
 				Explore
 			</div>
 			<nav mat-tab-nav-bar disableRipple class="noJustify home">
-				<a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive" matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
+				<a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive"
+				 matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
 					<img src="/assets/images/communities_icon1.jpg" alt="logo" style="height: 100%;">
 					<h3>Communities</h3>
 				</a>
-				<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive" matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
+				<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
+				 matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
 					<img src="/assets/images/experiences_icon.jpeg" alt="logo" style="height: 100%;">
 					<h3 class="margin-left-10">Experiences</h3>
 				</a>
-				<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive" matTooltip="Classes are a way to learn any subject completely online with videos, projects & live sessions.">
+				<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive"
+				 matTooltip="Classes are a way to learn any subject completely online with videos, projects & live sessions.">
 					<img src="/assets/images/class_icon2.jpg" alt="logo" style="height: 100%;">
 					<h3 class="margin-left-10">Classes</h3>
 				</a>
-				<a mat-tab-link [routerLink]="'/home/peers'" routerLinkActive #peerLink="routerLinkActive" [active]="peerLink.isActive" matTooltip="Peers are teachers around the world who can teach you something over a live video session.">
+				<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive">
 					<img src="/assets/images/peers_icon1.jpg" alt="logo" style="height: 100%;">
-					<h3 class="margin-left-10">Peers</h3>
+					<h3 class="margin-left-10">Guides</h3>
 				</a>
 			</nav>
 		</div>
@@ -47,12 +50,14 @@
 							<a *ngIf="i<3" [routerLink]="'/' + collection.type + '/'+collection.id+'/calendar/' + getLearnerCalendar(collection).id + '/' + getLearnerUpcomingEvent(collection).id">
 								<div class="">
 									<img class="continueLearning-thumb" src="{{envVariable.apiUrl+getLearnerUpcomingEvent(collection).imageUrl + '/500'}}"
-									     alt="collectionImg" (error)="_collectionService.imgErrorHandler($event)">
+									 alt="collectionImg" (error)="_collectionService.imgErrorHandler($event)">
 								</div>
-								<div class="mat-body-2" style="margin-top: 0px;">{{collection.type | titlecase}} : {{collection.title | titlecase}}
+								<div class="mat-body-2" style="margin-top: 0px;">{{collection.type | titlecase}} : {{collection.title |
+									titlecase}}
 								</div>
-								<div style="margin-top: 0px;">Recent {{getLearnerUpcomingEvent(collection).type}} {{getLearnerUpcomingEvent(collection).fillerWord}}:
-								                              {{getLearnerUpcomingEvent(collection).title | shorten: 70 : '...' | titlecase}}
+								<div style="margin-top: 0px;">Recent {{getLearnerUpcomingEvent(collection).type}}
+									{{getLearnerUpcomingEvent(collection).fillerWord}}:
+									{{getLearnerUpcomingEvent(collection).title | shorten: 70 : '...' | titlecase}}
 								</div>
 							</a>
 						</div>
@@ -84,6 +89,35 @@
 						</div>
 						<div *ngFor="let community of communities; let i = index;">
 							<app-community-card *ngIf="i < 3" [community]="community" [cardsPerRow]="3" (refresh)="onCommunityRefresh($event)"></app-community-card>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row experience-feed">
+				<div class="col-md-12">
+					<div class="row" [routerLink]="'/home/guides'">
+						<div class="col-md-8">
+							<div class="mat-display-1 clickable">Guides</div>
+						</div>
+						<div class="col-md-2 pull-right" style="text-align: right">
+							<a>
+								<span class="mat-body-1">
+									See all
+									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loadingGuides">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loadingGuides" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="guides === undefined || guides.length === 0">
+							There are no new guides to view right now.
+							<a class="clickable">here</a>.
+						</div>
+						<div *ngFor="let guide of guides; let i = index;">
+							<app-guide-card *ngIf="i < 5" [guide]="guide" (refresh)="onGuideRefresh($event)"></app-guide-card>
 						</div>
 					</div>
 				</div>

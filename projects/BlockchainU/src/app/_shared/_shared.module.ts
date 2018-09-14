@@ -95,6 +95,7 @@ import { UploadFileComponent } from './upload-file/upload-file.component';
 import { PromocodeService } from '../_services/promocode/promocode.service';
 import { LinkifyPipe } from './linkify-pipe/linkify.pipe';
 import { LMarkdownEditorModule } from 'ngx-markdown-editor';
+import { GuideCardComponent } from './guide-card/guide-card.component';
 
 @NgModule({
     imports: [
@@ -153,7 +154,8 @@ import { LMarkdownEditorModule } from 'ngx-markdown-editor';
         CustomCertificateFormComponent,
         SafePipe,
         UploadFileComponent,
-        LinkifyPipe
+        LinkifyPipe,
+        GuideCardComponent
     ],
     providers: [
         CollectionService,
@@ -258,7 +260,8 @@ import { LMarkdownEditorModule } from 'ngx-markdown-editor';
         UploadFileComponent,
         SpinnerModule,
         LinkifyPipe,
-        LMarkdownEditorModule
+        LMarkdownEditorModule,
+        GuideCardComponent
     ]
 })
 export class SharedModule {

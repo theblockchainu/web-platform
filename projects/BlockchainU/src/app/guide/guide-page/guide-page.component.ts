@@ -11,7 +11,6 @@ import { ContentService } from '../../_services/content/content.service';
 import { CommentService } from '../../_services/comment/comment.service';
 import { ContentVideoComponent } from './content-video/content-video.component';
 import { ContentProjectComponent } from './content-project/content-project.component';
-import { ShowRSVPPopupComponent } from './show-rsvp-participants-dialog/show-rsvp-dialog.component';
 import {
 	startOfDay,
 	endOfDay,
@@ -100,7 +99,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	public userId;
 	public userType: string;
 	public totalDuration: string;
-	public calendarId: string;
 	public userRating: number;
 	public newUserRating: number;
 	public liveCohort;
@@ -142,19 +140,15 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	public loggedInUser;
 	public bookmark;
 	public replyingToCommentId: string;
-	public itenaryArray: Array<any>;
 	public guide: any;
-	public currentCalendar: any;
 	public chatForm: FormGroup;
 	public modalContent: any;
 	public topicFix: any;
 	public messagingParticipant: any;
 	public allItenaries: Array<any>;
-	public itenariesObj: any;
 	public reviews: Array<any>;
 	public contentHasSubmission: any;
 	public participants: Array<any>;
-	public peerRsvps: Array<any>;
 	public allParticipants: Array<any>;
 	public editReviewForm: FormGroup;
 	public editCommentForm: FormGroup;
@@ -287,11 +281,10 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.accountApproved = 'false';
 		this.inviteLink = '';
 		this.activatedRoute.params.subscribe(params => {
-			if (this.initialised && (this.guideId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
+			if (this.initialised && (this.guideId !== params['collectionId'])) {
 				location.reload();
 			}
 			this.guideId = params['collectionId'];
-			this.calendarId = params['calendarId'];
 			this.toOpenDialogName = params['dialogName'];
 		});
 		this.activatedRoute.queryParams.subscribe(params => {
@@ -409,12 +402,12 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 						console.log('ownerId:' + owner.id + ' userId:' + this.userId);
 
 						this.userType = 'teacher';
-						this.getCertificatetemplate();
+						// this.getCertificatetemplate();
 						this.sortAssessmentRules();
 						break;
 					}
 				}
-				if (!this.userType && this.currentCalendar) {
+				if (!this.userType) {
 					for (const participant of this.guide.participants) {
 						if (participant.id === this.userId) {
 							this.userType = 'participant';
@@ -424,100 +417,10 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				}
 				if (!this.userType) {
 					this.userType = 'public';
-					if (this.calendarId) {
-						this.router.navigate(['guide', this.guideId]);
-					}
 				}
 			}
-			if (this.userType === 'public' || this.userType === 'teacher') {
-				this.initializeAllItenaries();
-			}
-
 			this.loadingGuide = false;
-
 		}
-	}
-
-	private initializeAllItenaries() {
-		this.events = [];
-		const sortedCalendar = this.sort(this.guide.calendars, 'startDate', 'endDate');
-		this.viewDate = new Date(sortedCalendar[sortedCalendar.length - 1].endDate);
-		console.log('viewDate' + this.viewDate);
-		console.log(this.guide.calendars);
-
-		sortedCalendar.forEach((calendar, index) => {
-			const calendarItenary = [];
-			for (const key in this.itenariesObj) {
-				if (this.itenariesObj.hasOwnProperty(key)) {
-					const eventDate = this._collectionService.calculateDate(calendar.startDate, key);
-					this.itenariesObj[key].sort(function (a, b) {
-						return parseFloat(a.schedules[0].startTime) - parseFloat(b.schedules[0].startTime);
-					});
-					const contentObj = this.processContent(key);
-					const itenary = {
-						startDay: key,
-						startDate: eventDate,
-						contents: contentObj
-					};
-					calendarItenary.push(itenary);
-				}
-			}
-			this.allItenaries.push(
-				{
-					calendar: calendar,
-					itenary: calendarItenary
-				});
-			index++;
-			this.events.push({
-				title: 'Cohort ' + index + ':' + calendar.id + ':cohort:',
-				color: colors.red,
-				start: moment.utc(calendar.startDate, 'YYYY-MM-DD HH:mm:ss').local().toDate(),
-				end: moment.utc(calendar.endDate, 'YYYY-MM-DD HH:mm:ss').local().toDate(),
-				cssClass: 'guideCohortCalendar'
-			});
-		});
-		for (const indvIterinary of this.allItenaries) {
-			const calendarId = indvIterinary.calendar.id;
-			for (const iterinary of indvIterinary.itenary) {
-				const startDate = moment(iterinary.startDate).format('YYYY-MM-DD');
-				for (let i = 0; i < iterinary.contents.length; i++) {
-					const schedule = iterinary.contents[i].schedules;
-					const startTime = moment.utc(schedule[0].startTime).local().format('HH:mm:ss');
-					const endTime = moment.utc(schedule[0].endTime).local().format('HH:mm:ss');
-					this.events.push({
-						title: iterinary.contents[i].title + ':' + calendarId + ':content:' + iterinary.contents[i].id,
-						color: colors.red,
-						start: moment(startDate + ' ' + startTime, 'YYYY-MM-DD HH:mm:ss').toDate(),
-						end: moment(startDate + ' ' + endTime, 'YYYY-MM-DD HH:mm:ss').toDate(),
-						cssClass: 'customEventClass'
-					});
-				}
-			}
-		}
-		this.refreshView();
-	}
-
-	private processContent(key) {
-		const contentObj = this.itenariesObj[key];
-		const self = this;
-		if (contentObj) {
-			contentObj.forEach(content => {
-				content.hasRSVPd = false;
-				if (content.rsvps) {
-					content.rsvps.forEach(rsvp => {
-						if (rsvp.peer) {
-							const peer = _.find(rsvp.peer, function (o) { return o.id === self.userId; });
-							if (peer) {
-								content.hasRSVPd = true;
-								content.rsvpId = rsvp.id;
-								return;
-							}
-						}
-					});
-				}
-			});
-		}
-		return contentObj;
 	}
 
 	private initializeGuide() {
@@ -527,21 +430,11 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		const query = {
 			'include': [
 				'topics',
-				'calendars',
 				'views',
 				{ 'participants': [{ 'profiles': ['work'] }] },
 				{ 'owners': [{ 'profiles': ['work'] }] },
-				{
-					'contents': ['locations', 'schedules', { 'rsvps': 'peer' },
-						{ 'views': 'peer' }, {
-							'submissions': [{ 'upvotes': 'peer' },
-							{ 'peer': 'profiles' }]
-						}]
-				},
-				'rooms',
-				{ 'assessment_models': [{ 'assessment_na_rules': { 'assessment_result': 'assessees' } }, { 'assessment_rules': { 'assessment_result': 'assessees' } }] }
-			],
-			'relInclude': 'calendarId'
+				'rooms'
+			]
 		};
 
 		if (this.guideId) {
@@ -558,95 +451,16 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 					this.guide = res;
 					this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
 					this.setTags();
-					this.setCurrentCalendar();
 					fbq('track', 'ContentView', {
 						currency: 'USD',
 						value: 0.0,
 						content_type: 'product',
 						content_ids: [this.guideId]
 					});
-					this.itenariesObj = {};
-					this.itenaryArray = [];
-					// Scan through all contents and group them under their respective start days.
-					// Also scan through all contents and check if the user has made submission for a project.
-					this.guide.contents.forEach(contentObj => {
-						if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
-							this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
-						} else {
-							this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
-						}
-
-						if (contentObj.submissions && contentObj.submissions.length > 0) {
-							contentObj.submissions.forEach(submission => {
-								if (submission.peer) {
-									if (this.userId === submission.peer[0].id) {
-										this.peerHasSubmission = true;
-									}
-								}
-							});
-						}
-
-						if (contentObj.locations && contentObj.locations.length > 0
-							&& contentObj.locations[0].map_lat !== undefined
-							&& contentObj.locations[0].map_lng !== undefined) {
-							this.lat = parseFloat(contentObj.locations[0].map_lat);
-							this.lng = parseFloat(contentObj.locations[0].map_lng);
-							this.mainLocation = contentObj.locations[0].location_name + ', ' + contentObj.locations[0].street_address + ', ' + contentObj.locations[0].city;
-						}
-					});
-					// Scan through all the start-day-groups of contents
-					// Calculate the calendar start and end date of each content group
-					// Sort the contents inside a group based on their start times
-					// Format the start time and end time of each of the individual content in that group
-					// Calculate the viewing metrics of each individual content
-					// Set hasRSVPd toggle on each of the content
-					// Create an object for the content group with properties: startDay, startDate, endDate and array of contents.
-					// Add content group to itinerary array
-					for (const key in this.itenariesObj) {
-						if (this.itenariesObj.hasOwnProperty(key)) {
-							let startDate, endDate;
-							if (this.currentCalendar) {
-								startDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
-								endDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
-							} else {
-								startDate = this._collectionService.calculateDate(this.guide.calendars[0].startDate, key);
-								endDate = this._collectionService.calculateDate(this.guide.calendars[0].startDate, key);
-							}
-							console.log('Sorting----------------');
-
-							this.itenariesObj[key].sort(function (a, b) {
-								return moment(a.schedules[0].startTime).diff(moment(b.schedules[0].startTime));
-							});
-							console.log('Sorted----------------');
-
-							this.itenariesObj[key].forEach(content => {
-								if (content.schedules[0].startTime !== undefined) {
-									content.schedules[0].startTime = startDate.format().toString().split('T')[0] +
-										'T' + content.schedules[0].startTime.split('T')[1];
-									content.schedules[0].endTime = startDate.format().toString().split('T')[0] +
-										'T' + content.schedules[0].endTime.split('T')[1];
-								}
-							});
-							this.setContentViews(this.itenariesObj[key]);
-							const contentObj = this.processContent(key);
-							const itenary = {
-								startDay: key,
-								startDate: startDate,
-								endDate: endDate,
-								contents: contentObj
-							};
-							this.itenaryArray.push(itenary);
-						}
-					}
-					// Sort itinerary array in ascending order of content group start days.
-					this.itenaryArray.sort(function (a, b) {
-						return parseFloat(a.startDay) - parseFloat(b.startDay);
-					});
 				},
 					err => console.log('error'),
 					() => {
 						this.initializeUserType();
-						this.calculateTotalHours();
 						this.fixTopics();
 						this.getReviews();
 						this.getRecommendations();
@@ -654,17 +468,10 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 						this.getDiscussions();
 						this.getBookmarks();
 						this.setUpCarousel();
-						if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
-							this.itenaryArray.forEach(itinerary => {
-								itinerary.contents.forEach(content => {
-									if (content.id === this.toOpenDialogName) {
-										this.openDialog(content, itinerary.startDate, itinerary.endDate);
-									}
-								});
-							});
-						} else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
+						if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
 							const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
 							snackBarRef.onAction().subscribe();
+							this.router.navigate(['guide', this.guideId]);
 						}
 						this.recordStartView();
 					});
@@ -773,24 +580,13 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 
 	private getReviews() {
 		this.loadingReviews = true;
-		let query = {};
-		if (this.calendarId) {
-			query = {
-				'include': [
-					{
-						'peer': ['profiles']
-					}],
-				'where': { 'and': [{ 'collectionId': this.guideId }, { 'collectionCalendarId': this.calendarId }] }
-			};
-		} else {
-			query = {
-				'include': [
-					{
-						'peer': ['profiles']
-					}],
-				'where': { 'collectionId': this.guideId }
-			};
-		}
+		const query = {
+			'include': [
+				{
+					'peer': ['profiles']
+				}],
+			'where': { 'collectionId': this.guideId }
+		};
 		this._collectionService.getReviews(this.guide.owners[0].id, query, (err, response) => {
 			if (err) {
 				console.log(err);
@@ -896,8 +692,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 			description: ['', Validators.required],
 			like: '',
 			score: '',
-			collectionId: this.guideId,
-			collectionCalendarId: this.calendarId,
+			collectionId: this.guideId
 		});
 
 		const filter = {
@@ -943,21 +738,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 
 	gotoEdit() {
 		this.router.navigate(['guide', this.guideId, 'edit', this.guide.stage ? this.guide.stage : '1']);
-	}
-
-	public setCurrentCalendar() {
-		if (this.calendarId) {
-			const calendarIndex = this.guide.calendars.findIndex(calendar => {
-				return calendar.id === this.calendarId;
-			});
-			if (calendarIndex > -1) {
-				this.currentCalendar = this.guide.calendars[calendarIndex];
-			} else {
-				console.log('Calendar instance not found');
-			}
-		} else {
-			console.log('Calendar id not found');
-		}
 	}
 
 	/**
@@ -1011,16 +791,25 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	 * postComment
 	 */
 	public postComment() {
-		this.busyDiscussion = true;
-		this._collectionService.postComments(this.guideId, this.chatForm.value, (err, response) => {
-			if (err) {
-				console.log(err);
-			} else {
-				this.chatForm.reset();
-				this.busyDiscussion = false;
-				this.getDiscussions();
-			}
-		});
+		if (this.userId) {
+			this.busyDiscussion = true;
+			this._collectionService.postComments(this.guideId, this.chatForm.value, (err, response) => {
+				if (err) {
+					console.log(err);
+				} else {
+					this.chatForm.reset();
+					this.busyDiscussion = false;
+					this.getDiscussions();
+				}
+			});
+		} else {
+			this.dialogsService.openLogin().subscribe(res => {
+				if (res) {
+					this.initializePage();
+				}
+			});
+		}
+
 	}
 
 	/**
@@ -1064,107 +853,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	/**
-	 * calculateTotalHours
-	 */
-	public calculateTotalHours() {
-		let totalLength = 0;
-		this.guide.contents.forEach(content => {
-			if (content.type === 'in-person') {
-				const startMoment = moment(content.schedules[0].startTime);
-				const endMoment = moment(content.schedules[0].endTime);
-				const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
-				totalLength += parseInt(contentLength, 10);
-			} else if (content.type === 'video') {
-
-			}
-		});
-		this.totalDuration = totalLength.toString();
-	}
-
-	/**
-	 * isLive
-	 */
-	public isLive(content: any) {
-		const startMoment = moment(this.currentCalendar.startDate);
-		startMoment.add(content.schedules[0].startDay, 'day');
-		const endMoment = startMoment.clone();
-		endMoment.add(content.schedules[0].endDay, 'day');
-		const currentMoment = moment();
-
-		const startTime = moment(content.schedules[0].startTime);
-		const endTime = moment(content.schedules[0].endTime);
-
-		startMoment.hours(startTime.hours());
-		startMoment.minutes(startTime.minutes());
-
-		endMoment.hours(endTime.hours());
-		endMoment.minutes(endTime.minutes());
-
-		if (currentMoment.isBetween(startMoment, endMoment)) {
-			content.isLive = true;
-			return true;
-		} else {
-			this.timetoSession(content);
-			return false;
-		}
-	}
-
-	public hasRSVPd(content) {
-		// TODO: check if the user has RSVPd for this content
-		console.log('called');
-	}
-
-	rsvpContent(contentId) {
-		this._contentService.createRSVP(contentId, this.calendarId)
-			.subscribe((response: any) => {
-				this.initializeGuide();
-			});
-	}
-
-	cancelRSVP(content) {
-		this._contentService.deleteRSVP(content.rsvpId)
-			.subscribe((response: any) => {
-				this.initializeGuide();
-			});
-	}
-
-	public viewRSVPs(content, userType) {
-		let attendies = this.allParticipants;
-		if (content.rsvps) {
-			content.rsvps.forEach(rsvp => {
-				if (rsvp.peer) {
-					const peer = rsvp.peer[0];
-					const peerFound = _.find(attendies, function (o) { return o.id === peer.id; });
-					if (peerFound) {
-						peerFound.hasRSVPd = true;
-						peerFound.rsvpId = rsvp.id;
-						peerFound.isPresent = rsvp.isPresent;
-						return;
-					}
-				}
-			});
-		}
-		attendies = _.filter(attendies, function (o) { return o.hasRSVPd; });
-		// TODO: view all RSVPs for this content
-		const dialogRef = this.dialog.open(ShowRSVPPopupComponent, {
-			data: {
-				userType: userType,
-				contentId: content.id,
-				attendies: attendies,
-				guide: this.guideId
-			},
-			panelClass: 'responsive-dialog',
-			width: '45vw',
-			height: '90vh'
-		});
-
-		dialogRef.afterClosed().subscribe((result: any) => {
-			if (result) {
-				location.reload();
-			}
-		});
-	}
 
 	public getDirections(content) {
 		// TODO: get directions to this content location
@@ -1192,24 +880,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	public cancelCohort() {
-		this.dialogsService.cancelCohortDialog(this.calendarId).subscribe((res: any) => {
-			if (res) {
-				this.initializePage();
-			}
-		}, err => {
-			console.log(err);
-		});
-	}
-
-	public deleteCohort() {
-		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res: any) => {
-			if (res) {
-				this.initializePage();
-			}
-		});
-	}
-
 	viewParticipants() {
 		this.dialogsService.viewParticipantstDialog(
 			this.participants,
@@ -1221,104 +891,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.dialogsService.viewParticipantstDialog(this.allParticipants, this.guideId).subscribe();
 	}
 
-	/**
-	 * openDialog
-	 content:any   */
-	public openDialog(content: any, startDate, endDate) {
-		this.modalContent = content;
-		switch (content.type) {
-			case 'in-person':
-				{
-					const dialogRef = this.dialog.open(ContentInpersonComponent, {
-						data: {
-							content: content,
-							startDate: startDate,
-							endDate: endDate,
-							userType: this.userType,
-							collectionId: this.guideId,
-							collection: this.guide,
-							calendarId: this.calendarId,
-							participants: this.participants
-						},
-						panelClass: 'responsive-dialog',
-						width: '45vw',
-						height: '100vh'
-					});
-					break;
-				}
-			case 'video':
-				{
-					const dialogRef = this.dialog.open(ContentVideoComponent, {
-						data: {
-							content: content,
-							startDate: startDate,
-							endDate: endDate,
-							userType: this.userType,
-							collectionId: this.guideId,
-							collection: this.guide,
-							calendarId: this.calendarId
-						},
-						panelClass: 'responsive-dialog',
-						width: '45vw',
-						height: '100vh'
-					});
-					break;
-				}
-			case 'project':
-				{
-					const dialogRef = this.dialog.open(ContentProjectComponent, {
-						data: {
-							content: content,
-							startDate: startDate,
-							endDate: endDate,
-							userType: this.userType,
-							peerHasSubmission: this.peerHasSubmission,
-							collectionId: this.guideId,
-							collection: this.guide,
-							calendarId: this.calendarId
-						},
-						panelClass: 'responsive-dialog',
-						width: '45vw',
-						height: '100vh'
-					});
-					dialogRef.afterClosed().subscribe(res => {
-						if (res) {
-							this.initializePage();
-						}
-					});
-					break;
-				}
-			default:
-				break;
-		}
-
-	}
-
-	/**
-	 * timetoSession
-	 content:any   */
-	public timetoSession(content: any) {
-		const startMoment = moment(this.currentCalendar.startDate);
-		startMoment.add(content.schedules[0].startDay, 'day');
-		const endMoment = startMoment.clone();
-		endMoment.add(content.schedules[0].endDay, 'day');
-		const currentMoment = moment();
-
-		const startTime = moment(content.schedules[0].startTime);
-		const endTime = moment(content.schedules[0].endTime);
-
-		startMoment.hours(startTime.hours());
-		startMoment.minutes(startTime.minutes());
-
-		endMoment.hours(endTime.hours());
-		endMoment.minutes(endTime.minutes());
-
-		if (startMoment.diff(currentMoment, 'minutes') < 0) {
-			content.timetoSession = 'Ended ' + endMoment.fromNow();
-		} else {
-			content.timetoSession = 'We will remind you ' + startMoment.fromNow();
-		}
-	}
 
 	/**
 	 * getRecommendations
@@ -1396,20 +968,24 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	/**
 	 * selectJoiningDates
 	 */
-	public selectJoiningDates() {
+	// public selectJoiningDates() {
 
-		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.guide.type, this.guide.maxSpots, this.accountApproved, this.userId)
-			.subscribe((result: any) => {
-				if (result) {
-					if (this.userId) {
-						this.router.navigate(['review-pay', 'collection', this.guideId, result]);
-					} else {
-						// this.router.navigate(['sign-up']);
-						const returnTo = 'review-pay/collection/' + this.guideId + '/' + result;
-						this.openSignup(returnTo);
-					}
-				}
-			});
+	// 	this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.guide.type, this.guide.maxSpots, this.accountApproved, this.userId)
+	// 		.subscribe((result: any) => {
+	// 			if (result) {
+	// 				if (this.userId) {
+	// 					this.router.navigate(['review-pay', 'collection', this.guideId, result]);
+	// 				} else {
+	// 					// this.router.navigate(['sign-up']);
+	// 					const returnTo = 'review-pay/collection/' + this.guideId + '/' + result;
+	// 					this.openSignup(returnTo);
+	// 				}
+	// 			}
+	// 		});
+	// }
+
+	public signUp() {
+		this.router.navigate(['review-pay', 'collection', this.guideId]);
 	}
 
 	public openSignup(returnTo) {
@@ -1617,27 +1193,9 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 			'relInclude': 'calendarId',
 			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections']
 		};
-		let isCurrentUserParticipant = false;
-		let currentUserParticipatingCalendar = '';
 		this._collectionService.getParticipants(this.guideId, query).subscribe(
 			(response: any) => {
 				this.allParticipants = response;
-				for (const responseObj of response) {
-					if (this.calendarId && this.calendarId === responseObj.calendarId) {
-						this.participants.push(responseObj);
-					}
-					if (this.calendarId === undefined && responseObj.id === this.userId) {
-						// current user is a participant of this guide
-						isCurrentUserParticipant = true;
-						currentUserParticipatingCalendar = responseObj.calendarId;
-					}
-					if (responseObj.id === this.userId) {
-						this.loggedInUser = responseObj;
-					}
-				}
-				if (isCurrentUserParticipant && currentUserParticipatingCalendar) {
-					this.router.navigate(['guide', this.guideId, 'calendar', currentUserParticipatingCalendar]);
-				}
 				this.loadingParticipants = false;
 			}, (err) => {
 				console.log(err);
@@ -1677,12 +1235,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 
 	public isMyReview(review) {
 		return review.peer[0].id === this.userId;
-	}
-
-	public hasCohortEnded() {
-		const cohortEndDate = moment(this.currentCalendar.endDate);
-		const currentDate = moment();
-		return cohortEndDate.diff(currentDate) > 0;
 	}
 
 	public hasLiveCohort() {
@@ -1735,12 +1287,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 
 	public shareOnTwitter() {
 		// TODO twitter sharing code
-	}
-
-	public hasDatePassed(date) {
-		const eventDate = moment(date);
-		const currentDate = moment();
-		return (this.calendarId !== undefined && eventDate.diff(currentDate, 'seconds') < 0) && this.oneDay();
 	}
 
 	public setContentViews(contents) {
@@ -1864,12 +1410,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	public isCancelable() {
-		if (this.currentCalendar) {
-			return moment(this.currentCalendar.endDate) > this.today;
-		}
-	}
-
 	public openGroupChat() {
 		if (this.guide.rooms && this.guide.rooms.length > 0) {
 			this.router.navigate(['console', 'inbox', this.guide.rooms[0].id]);
@@ -1878,49 +1418,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				duration: 5000
 			});
 		}
-	}
-
-	public openAssessmentDialog() {
-		this.dialogsService.studentAssessmentDialog(
-			{
-				'participants': this.participants,
-				'assessment_models': this.guide.assessment_models,
-				'academicGyan': this.guide.academicGyan,
-				'nonAcademicGyan': this.guide.nonAcademicGyan
-			}
-		).subscribe(dialogSelection => {
-			let assessmentEngagementRule, assessmentCommitmentRule;
-			if (dialogSelection) {
-				this.guide.assessment_models[0].assessment_na_rules.forEach(assessment_na_rule => {
-					if (assessment_na_rule.value === 'engagement') {
-						assessmentEngagementRule = assessment_na_rule;
-					} else if (assessment_na_rule.value === 'commitment') {
-						assessmentCommitmentRule = assessment_na_rule;
-					}
-				});
-				const assessmentArray: Array<AssessmentResult> = [];
-				dialogSelection.participants.forEach(participant => {
-					if (participant.rule_obj && participant.rule_obj.id) {
-						assessmentArray.push({
-							assesserId: this.userId,
-							assesseeId: participant.id,
-							calendarId: this.calendarId,
-							assessmentRuleId: participant.rule_obj.id,
-							assessmentEngagementRuleId: assessmentEngagementRule.id,
-							assessmentCommitmentRuleId: assessmentCommitmentRule.id,
-							assessmentEngagementResult: participant.engagement_result,
-							assessmentCommitmentResult: participant.commitment_result
-						});
-					}
-				});
-				this._assessmentService.submitAssessment(assessmentArray).subscribe((result: any) => {
-					console.log(result);
-					this.initializeGuide();
-					this.snackBar.open('Your assessment has been submitted. Students will be informed over email.', 'Ok', { duration: 5000 });
-					// this._authenticationService.isLoginSubject.next(true);
-				});
-			}
-		});
 	}
 
 	public onGuideRefresh(event) {
@@ -1962,26 +1459,12 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-
-	private getCertificatetemplate() {
-		this.certificateService.getCertificateTemplate(this.guideId).subscribe((res: any) => {
-			if (res !== null && res !== undefined) {
-				this.certificateHTML = res.certificateHTML;
-				this.certificateDomHTML.changes.subscribe(elem => {
-					const image = elem['first'].nativeElement.children[0].children[0].children[1].children[0];
-					image.src = '/assets/images/theblockchainu-qr.png';
-				});
-			}
-			this.loadingCertificate = false;
-		});
-	}
-
 	public getGyanForRule(gyanPercent, totalGyan) {
 		return Math.floor((gyanPercent / 100) * totalGyan);
 	}
 
 	public addParticipant() {
-		this.dialogsService.addParticipant(this.guideId, this.calendarId).subscribe(res => {
+		this.dialogsService.addParticipant(this.guideId).subscribe(res => {
 			if (res) {
 				this.initializePage();
 			}

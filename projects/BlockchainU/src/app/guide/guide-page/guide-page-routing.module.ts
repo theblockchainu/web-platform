@@ -9,12 +9,7 @@ const routes: Routes = [
     component: GuidePageComponent
   },
   {
-    path: 'calendar/:calendarId',
-    component: GuidePageComponent,
-    canActivateChild: [AuthGuardService]
-  },
-  {
-    path: 'calendar/:calendarId/:dialogName',
+    path: ':dialogName',
     component: GuidePageComponent,
     canActivateChild: [AuthGuardService]
   }
