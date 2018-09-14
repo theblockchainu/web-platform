@@ -210,31 +210,31 @@
 			is our coin. You get KARMA coins as rewards based on your GYAN rank and you can use them to pay for activities.
 		</div>
 	</span>
+	<hr *ngIf="isAccountApproved && profile.peer[0].ethAddress && profile.peer[0].ethAddress.substring(0, 2) === '0x' && isLoggedIn | async">
 	<span mat-menu-item *ngIf="isAccountApproved && profile.peer[0].ethAddress && profile.peer[0].ethAddress.substring(0, 2) === '0x' && isLoggedIn | async" [routerLink]="['story', 'me']">
-		<div style="display: inline-block; margin-right: 30px;">
-			GYAN
+		<div class="col-xs-4">
+			<i class="fab fa-ethereum"></i> GYAN
 		</div>
-		<div class="pull-right header-progress-bar">
+		<div class="col-xs-8 mat-body" style="margin-top: 12px;">
 			{{profile.peer[0].id | gyanBalance : 'fixed' | async}} &nbsp; &nbsp;
-			<div style="font-size: 0.7rem">&#40;+ {{profile.peer[0].id | gyanBalance: 'floating' | async}} NEW&#41;
-			</div>
+			<span style="font-size: 0.7rem">&#40;+ {{profile.peer[0].id | gyanBalance: 'floating' | async}} NEW&#41;
+			</span>
 		</div>
 	</span>
 	<span mat-menu-item *ngIf="isAccountApproved && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
-		<div style="display: inline-block; margin-right: 30px;">
-			KARMA
+		<div class="col-xs-4">
+			<i class="fa fa-fire"></i> KARMA
 		</div>
-		<div class="pull-right header-progress-bar">
-
+		<div class="col-xs-8 mat-body" style="margin-top: 12px;">
 			{{profile.peer[0].id | karmaBalance : 'peer' | async | currency : ' ' : ' ' : '1.0-0'}} &nbsp; &nbsp;
-			<div style="font-size: 0.7rem">
+			<span style="font-size: 0.7rem">
 				&#40;{{profile.peer[0].id | karmaBalance : 'peer': 'USD' | async | currency: 'USD'}} USD&#41;
-			</div>
+			</span>
 		</div>
 	</span>
 	<hr>
 	<span mat-menu-item disableRipple="true" style="text-align:center!important; height: auto; margin-top: -15px;">
-		<button color="primary" [routerLink]="['invite', '1']" mat-button class="mat-border-button">Invite & Earn</button>
+		<button color="primary" [routerLink]="['invite', '1']" mat-button class="mat-border-button">Invite & Earn KARMA</button>
 	</span>
 </mat-menu>
 

@@ -48,7 +48,7 @@ import {isPlatformBrowser} from '@angular/common';
 import {PdfViewerModule} from 'ng2-pdf-viewer';
 
 
-Raven
+/*Raven
 	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
 	.install();
 
@@ -60,7 +60,7 @@ export class RavenErrorHandler implements ErrorHandler {
 	handleError(err: any): void {
 		Raven.captureException(err);
 	}
-}
+}*/
 
 
 @NgModule({
@@ -125,10 +125,10 @@ export class RavenErrorHandler implements ErrorHandler {
 	providers: [
 		CookieService,
 		UcWordsPipe,
-		{
+		/*{
 			provide: ErrorHandler,
 			useClass: RavenErrorHandler
-		},
+		},*/
 		Title,
 		Meta
 	],
