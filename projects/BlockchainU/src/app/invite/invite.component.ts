@@ -9,6 +9,7 @@ import { FormControl } from '@angular/forms';
 import { MatStepper, MatSnackBar } from '@angular/material';
 import { ProfileService } from '../_services/profile/profile.service';
 import { DialogsService } from '../_services/dialogs/dialog.service';
+import {CollectionService} from '../_services/collection/collection.service';
 declare let FB: any;
 @Component({
 	selector: 'app-invite',
@@ -48,7 +49,8 @@ export class InviteComponent implements OnInit {
 		private cookieUtilsService: CookieUtilsService,
 		private matSnackBar: MatSnackBar,
 		private _profileService: ProfileService,
-		private _cookieUtilsService: CookieUtilsService
+		private _cookieUtilsService: CookieUtilsService,
+		public _collectionService: CollectionService
 	) {
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
@@ -159,7 +161,7 @@ export class InviteComponent implements OnInit {
 			}
 		});
 		this.socialSharingService.inviteContacts(this.userId, selectedPeers).subscribe(res => {
-			this.router.navigate(['onboarding', '1']);
+			this.router.navigate(['home', 'homefeed']);
 
 			this.matSnackBar.open('Your invitation has been sent to all selected contacts.', 'Close', { duration: 3000 });
 		}, err => {

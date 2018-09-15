@@ -108,21 +108,24 @@ export class SignupComponentDialogComponent implements OnInit {
 					this.loading = false;
 				} else {
 					console.log('FB EVENTS: Complete Registration');
+					if (fbq !== undefined) {
+						fbq('track', 'CompleteRegistration', {
+							currency: 'USD',
+							value: 1.0,
+							status: 'approved'
+						});
+					}
+					this.signIn();
+				}
+			}, err => {
+				console.log(err);
+				if (fbq !== undefined) {
 					fbq('track', 'CompleteRegistration', {
 						currency: 'USD',
 						value: 1.0,
 						status: 'approved'
 					});
-					this.signIn();
 				}
-			}, err => {
-				console.log(err);
-				console.log('FB EVENTS: Complete Registration');
-				fbq('track', 'CompleteRegistration', {
-					currency: 'USD',
-					value: 1.0,
-					status: 'approved'
-				});
 				this.signIn();
 			});
 		} else {

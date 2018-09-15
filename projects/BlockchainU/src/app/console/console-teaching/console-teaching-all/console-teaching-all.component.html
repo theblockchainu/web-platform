@@ -25,7 +25,7 @@
 						<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createExperience()" class="pb-block clickable card-button"
 						 style="background: url('/assets/images/experiences_icon.jpeg');	">
 							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
-								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create an Experience</span>
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create an Experience </span>
 								&emsp;
 								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
 								<br/>
@@ -39,11 +39,25 @@
 						<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createClass()" class="pb-block clickable card-button"
 						 style="background: url('/assets/images/class_icon2.jpg');">
 							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
-								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Class</span>
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Class </span>
 								&emsp;
 								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
 								<br/>
 								<span class="mat-caption lightText">Create an online course</span>
+							</div>
+						</button>
+					</span>
+				</div>
+				<div class="col-md-4 padding-top-20">
+					<span matTooltip="Your Account is pending approval from Blockchain University team." [matTooltipDisabled]="accountVerified">
+						<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createExperience()" class="pb-block clickable card-button"
+						        style="background: url('/assets/images/peers_icon1.jpg');	">
+							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Guide </span>
+								&emsp;
+								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
+								<br/>
+								<span class="mat-caption lightText">Create a learning guide</span>
 							</div>
 						</button>
 					</span>
@@ -77,7 +91,7 @@
 						<button mat-button mat-raised-button [disabled]="!accountVerified" [routerLink]="'/console/account/scholarships'" class="pb-block clickable card-button"
 						 style="background: url('/assets/images/scholarship_img.jpg');">
 							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
-								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Scholarship</span>
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Scholarship </span>
 								&emsp;
 								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
 								<br/>
@@ -91,7 +105,7 @@
 						<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createAccreditation()" class="pb-block clickable card-button"
 						 style="background: url('/assets/images/accreditation_img.jpg');">
 							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
-								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create an Accreditation</span>
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create an Accreditation </span>
 								&emsp;
 								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
 								<br/>

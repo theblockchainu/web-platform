@@ -11,10 +11,12 @@ import {environment} from '../../../environments/environment';
 export class ProfilePopupComponent implements OnInit {
 	
 	@Input() peer: any;
+	@Input() size: string;
 	@ViewChild('profilePic') profilePic;
 	
 	private dialogref: MatDialogRef<any>;
 	public envVariable;
+	public cssSize = 'small';
 	
 	constructor(
 		public dialog: MatDialog,
@@ -25,6 +27,11 @@ export class ProfilePopupComponent implements OnInit {
 	}
 	
 	ngOnInit() {
+		if (this.size && this.size.length > 2) {
+			this.cssSize = this.size;
+		} else {
+			this.cssSize = 'small';
+		}
 	}
 	
 	openProfileDialog(event): void {
@@ -36,7 +43,7 @@ export class ProfilePopupComponent implements OnInit {
 			panelClass: 'responsive-fixed-position',
 			position: {
 				left: (event.x + 20) + 'px',
-				top: (event.y - 220) + 'px'
+				top: (event.y - 120) + 'px'
 			}
 		};
 		this.dialogref = this._dialogsService.openProfilePopup(config);
@@ -49,6 +56,10 @@ export class ProfilePopupComponent implements OnInit {
 	public openProfile() {
 		this.dialogref.close();
 		this._router.navigateByUrl('/profile/' + this.peer.id);
+	}
+	
+	public isSizeSmall() {
+		return this.cssSize === 'small';
 	}
 	
 }
