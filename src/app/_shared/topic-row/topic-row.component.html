@@ -5,13 +5,20 @@
 		</button>
 	</span>
 	<div class="topic-bar" [ngStyle]="transformStyle">
-		<div class="topic-div" *ngFor="let topicObj of availableTopics;let i =index" id="topic{{i}}">
-			<button mat-button class="mat-border-button" #topicButton (click)="topicClicked(i)">
-				<div class="mat-button-table">
-					<img src="{{envVariable.apiUrl + topicObj.topic.imageUrl + '/100'}}" alt="logo" (error)="_collectionService.imgErrorHandler($event)">
-					<h3>{{topicObj.topic.name | titlecase}}</h3>
-				</div>
-			</button>
+		<div *ngIf="availableTopics && availableTopics.length > 0" >
+			<div class="topic-div" *ngFor="let topicObj of availableTopics;let i =index" id="topic{{i}}">
+				<button mat-button class="mat-border-button" #topicButton (click)="topicClicked(i)">
+					<div class="mat-button-table">
+						<img src="{{envVariable.apiUrl + topicObj.topic.imageUrl + '/100'}}" alt="logo" (error)="_collectionService.imgErrorHandler($event)">
+						<h3>{{topicObj.topic.name | titlecase}}</h3>
+					</div>
+				</button>
+			</div>
+		</div>
+		<div *ngIf="!availableTopics || availableTopics.length === 0" >
+			<div class="noDataContainer">
+				There are no new active guides to view right now.
+			</div>
 		</div>
 	</div>
 	<span class="floating-button-right">

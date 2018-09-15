@@ -149,7 +149,7 @@
 																	<mat-checkbox [(ngModel)]="contact.selected" (ngModelChange)="count($event)"></mat-checkbox>
 																</div>
 																<div class="col-xs-1">
-																	<img src="{{contact.imageUrl}}">
+																	<img src="{{contact.imageUrl}}" (error)="_collectionService.userImgErrorHandler($event)">
 																</div>
 																<div class="col-xs-5">
 																	{{contact.name}}
@@ -174,7 +174,7 @@
 																	<mat-checkbox [(ngModel)]="contact.selected" (ngModelChange)="count($event)"></mat-checkbox>
 																</div>
 																<div class="col-xs-1">
-																	<img src="{{contact.imageUrl}}">
+																	<img src="{{contact.imageUrl}}" (error)="_collectionService.userImgErrorHandler($event)">
 																</div>
 																<div class="col-xs-5">
 																	{{contact.name}}
@@ -221,7 +221,7 @@
 											<mat-card style="margin: 0 18px;">
 												<div class="row">
 													<div class="col-xs-1">
-														<img src="{{contact.imageUrl}}">
+														<img src="{{contact.imageUrl}}" (error)="_collectionService.userImgErrorHandler($event)">
 													</div>
 													<div class="col-xs-5">
 														{{contact.name}}

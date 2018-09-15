@@ -60,7 +60,7 @@
 						</div>
 					</div>
 					<div class="mat-display-1" style="margin-bottom: 5px !important; margin-top: 34px;">
-						Explore The Blockchain University
+						Available topics
 					</div>
 					<app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
 					<div class="row">
@@ -90,8 +90,7 @@
 					</div>
 					<div *ngIf="!loading" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;">
 						<div class="noDataContainer" *ngIf="guides === undefined || guides.length === 0">
-							There are no new active guides to view right now. Browse from within your signed-up guides
-							<a class="clickable">here</a>.
+							There are no active guides to view right now.
 						</div>
 						<div *ngFor="let guide of guides;">
 							<app-guide-card [guide]="guide" (refresh)="onGuideRefresh($event)">

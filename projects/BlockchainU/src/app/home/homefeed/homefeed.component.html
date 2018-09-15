@@ -10,6 +10,10 @@
 					<img src="/assets/images/communities_icon1.jpg" alt="logo" style="height: 100%;">
 					<h3>Communities</h3>
 				</a>
+				<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive">
+					<img src="/assets/images/peers_icon1.jpg" alt="logo" style="height: 100%;">
+					<h3 class="margin-left-10">Guides</h3>
+				</a>
 				<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
 				 matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
 					<img src="/assets/images/experiences_icon.jpeg" alt="logo" style="height: 100%;">
@@ -20,14 +24,10 @@
 					<img src="/assets/images/class_icon2.jpg" alt="logo" style="height: 100%;">
 					<h3 class="margin-left-10">Classes</h3>
 				</a>
-				<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive">
-					<img src="/assets/images/peers_icon1.jpg" alt="logo" style="height: 100%;">
-					<h3 class="margin-left-10">Guides</h3>
-				</a>
 			</nav>
 		</div>
 		<div class="feed homefeed">
-			<div class="row continue-learning-feed" *ngIf="userId !== undefined && userId.length > 5 && ongoingArray.length > 0">
+			<div class="row continue-learning-feed" *ngIf="userId !== undefined && userId.length > 5 && ongoingArray !== undefined && ongoingArray.length > 0">
 				<div class="col-md-12">
 					<div class="row">
 						<div class="col-md-5">
@@ -97,7 +97,7 @@
 				<div class="col-md-12">
 					<div class="row" [routerLink]="'/home/guides'">
 						<div class="col-md-8">
-							<div class="mat-display-1 clickable">Guides</div>
+							<div class="mat-display-1 clickable">Learning Guides</div>
 						</div>
 						<div class="col-md-2 pull-right" style="text-align: right">
 							<a>
@@ -114,7 +114,6 @@
 					<div *ngIf="!loadingGuides" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
 						<div class="noDataContainer" *ngIf="guides === undefined || guides.length === 0">
 							There are no new guides to view right now.
-							<a class="clickable">here</a>.
 						</div>
 						<div *ngFor="let guide of guides; let i = index;">
 							<app-guide-card *ngIf="i < 5" [guide]="guide" (refresh)="onGuideRefresh($event)"></app-guide-card>
@@ -183,7 +182,7 @@
 				<div class="col-md-12">
 					<div class="row">
 						<div class="col-md-8">
-							<div class="mat-display-1 clickable" [routerLink]="'/home/peers'">Live Sessions with Peers</div>
+							<div class="mat-display-1 clickable" [routerLink]="'/home/peers'">Live Session with Experts</div>
 						</div>
 						<div class="col-md-2 pull-right" style="text-align: right">
 							<a [routerLink]="'/home/peers'">

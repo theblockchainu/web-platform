@@ -63,6 +63,7 @@ export class AppComponent implements OnInit {
 			|| /^\/class\/.*\/edit\/./.test(url)
 			|| /^\/experience\/.*\/edit\/./.test(url)
 			|| /^\/guide\/.*\/edit\/./.test(url)
+			|| /^\/guide\/.*./.test(url)
 			|| /^\/session\/.*\/edit\/./.test(url));
 	}
 

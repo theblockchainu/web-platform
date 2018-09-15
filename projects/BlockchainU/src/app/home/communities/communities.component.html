@@ -11,11 +11,11 @@
 		                </div>
 		            </div>
 		            <div class="mat-display-1" style="margin-bottom: 5px !important; margin-top: 34px;">
-		                Explore The Blockchain University
+			            Available topics
 		            </div>
 		            <app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
 		            <div class="mat-display-1" style="margin-bottom: 25px !important;">
-		                Communities
+		                Q&A Communities
 		                <span class="mat-display-1" *ngIf="selectedTopics && availableTopics && selectedTopics.length !== availableTopics.length">
 		                    in
 		                    <span *ngFor="let topicObj of selectedTopics;let i=index">
@@ -31,8 +31,7 @@
 		            </div>
 		            <div class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
 		                <div class="noDataContainer" *ngIf="communities === undefined || communities.length === 0">
-		                    There are no new active communities to view right now. Browse from within your signed-up communities
-		                    <a class="clickable">here</a>.
+		                    There are no new active communities to view right now.
 		                </div>
 		                <div *ngFor="let community of communities;">
 		                    <app-community-card [community]="community" [cardsPerRow]="3" (refresh)="onCommunityRefresh($event)"></app-community-card>

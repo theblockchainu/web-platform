@@ -42,18 +42,18 @@
 		</span>
 		<hr>
 		<span mat-menu-item disableRipple="true" style="text-align:center!important; height: auto; margin-top: -15px;">
-			<button color="primary" mat-button class="mat-border-button" (click)="gotoCredit()">Invite & Earn</button>
+			<button color="primary" mat-button class="mat-border-button" (click)="gotoCredit()">Invite & Earn KARMA</button>
 		</span>
 	</mat-menu>
 	<mat-menu #headerTeachMenu [overlapTrigger]="false">
 		<button mat-menu-item (click)="createExperience()">
-			Host an offline experience
+			Host an in-person experience
 		</button>
 		<button mat-menu-item (click)="createClass()">
 			Create an online class
 		</button>
 		<button mat-menu-item (click)="createSession()">
-			Start a peer session
+			Become a blockchain expert
 		</button>
 	</mat-menu>
 </header>
@@ -73,7 +73,7 @@
 					 [matAutocomplete]="auto">
 					<mat-autocomplete #auto="matAutocomplete">
 						<mat-option style="height: auto;" *ngIf="searching">
-							<span style="display: inline-block;margin-left: 43%;">
+							<span style="display: inline-block;margin-left: 3%;">
 								<ngx-loading [show]="true" style="position: absolute; top: 13px;"></ngx-loading>
 							</span>
 						</mat-option>
@@ -102,19 +102,19 @@
 			<h2 class="section-title">Explore The Blockchain University</h2>
 			<div class="homefeedContainer">
 				<nav mat-tab-nav-bar disableRipple class="noJustify home">
-					<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
-					 matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
-						<img src="/assets/images/experience_thumb.jpg" alt="logo" style="height: 100%;">
-						<h3 class="margin-left-10">Experiences</h3>
-					</a>
 					<a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive"
-					 matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
+					   matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
 						<img src="/assets/images/community_thumb.jpg" alt="logo" style="height: 100%;">
 						<h3>Communities</h3>
 					</a>
 					<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive">
 						<img src="/assets/images/peer_thumb.jpg" alt="logo" style="height: 100%;">
 						<h3 class="margin-left-10">Guides</h3>
+					</a>
+					<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
+					 matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
+						<img src="/assets/images/experience_thumb.jpg" alt="logo" style="height: 100%;">
+						<h3 class="margin-left-10">Experiences</h3>
 					</a>
 					<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive"
 					 matTooltip="Classes are a way to learn any subject completely online with videos, projects & live sessions.">
@@ -147,7 +147,7 @@
 		</div>
 	</section>
 
-	<section class="experience-around-world communities spacing margin-bottom-50">
+	<section class="experience-around-world communities spacing">
 		<div class="container">
 			<h2 class="section-title pb-0">Trending Communities</h2>
 			<div class="loading-container" [hidden]="!loadingCommunities">
@@ -159,6 +159,51 @@
 				</div>
 				<div *ngFor="let community of communities; let i = index;">
 					<app-community-card *ngIf="i < 3" [cardsPerRow]="3" [community]="community" (refresh)="onCommunityRefresh($event)"></app-community-card>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<section class="guide-around-world spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Introducing Learning Guides with Live Labs </h2>
+			<div class="loading-container" [hidden]="!loadingGuides">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingGuides" class="row feed-horizontal" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="guides === undefined || guides.length === 0">
+					There are no new active guides to view right now.
+				</div>
+				<div *ngFor="let guide of guides; let i = index;">
+					<app-guide-card *ngIf="i < 5" [guide]="guide" (refresh)="onGuideRefresh($event)"></app-guide-card>
+				</div>
+			</div>
+			<div class="read-more mt-2 mat-body-2" *ngIf="guides && guides.length > 5">
+				<a [routerLink]="['home','guides']">Show all ({{guides.length}}+)</a>
+			</div>
+		</div>
+	</section>
+	
+	<section class="one-0x mb-5 padding-bottom-30 padding-top-40">
+		<div class="container">
+			<div class="gradient-banner">
+				<div class="hero-banner-bg">
+					<div class="black-gradient-overlay"></div>
+					<div class="d-table row">
+						<div class="d-table-cell col-xs-12" style="display: flex;">
+							<div class="content white-text align-middle">
+								<div class="logo-image">
+									<img style="width: auto !important;" src="/assets/images/one0x-footer-logo.png" alt="one0x-footer-logo">
+								</div>
+								<h3>Tracking all your learning and digitizing it into certificates on the blockchain, making it instantly
+								    verifiable
+								    by any employer</h3>
+								<div class="action-btn">
+									<a href="https://one0x.com/">Explore Compliance</a>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -309,52 +354,6 @@
 		</div>
 	</section>
 
-	<section class="one-0x mb-5 padding-bottom-30 padding-top-40">
-		<div class="container">
-			<div class="gradient-banner">
-				<div class="hero-banner-bg">
-					<div class="black-gradient-overlay"></div>
-					<div class="d-table row">
-						<div class="d-table-cell col-xs-12" style="display: flex;">
-							<div class="content white-text align-middle">
-								<div class="logo-image">
-									<img style="width: auto !important;" src="/assets/images/one0x-footer-logo.png" alt="one0x-footer-logo">
-								</div>
-								<h3>Tracking all your learning and digitizing it into certificates on the blockchain, making it instantly
-									verifiable
-									by any employer</h3>
-								<div class="action-btn">
-									<a href="https://one0x.com/">Explore Compliance</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-
-	<section class="guide-around-world spacing">
-		<div class="container">
-			<h2 class="section-title pb-0">Guides to study</h2>
-			<div class="loading-container" [hidden]="!loadingGuides">
-				<ngx-loading [show]="true"></ngx-loading>
-			</div>
-			<div *ngIf="!loadingGuides" class="row feed-horizontal" style="padding: 0px 7px;">
-				<div class="noDataContainer" *ngIf="guides === undefined || guides.length === 0">
-					There are no new active guides to view right now.
-				</div>
-				<div *ngFor="let guide of guides; let i = index;">
-					<app-guide-card *ngIf="i < 5" [guide]="guide" (refresh)="onGuideRefresh($event)"></app-guide-card>
-				</div>
-			</div>
-			<div class="read-more mt-2 mat-body-2" *ngIf="guides && guides.length > 5">
-				<a [routerLink]="['home','guides']">Show all ({{guides.length}}+)</a>
-			</div>
-		</div>
-	</section>
-
 	<section class="classes-anywhere spacing">
 		<div class="container">
 			<h2 class="section-title">Introducing Classes</h2>
@@ -459,16 +458,16 @@
 
 	<section class="peer-sessions spacing">
 		<div class="container">
-			<h2 class="section-title">Introducing Peer Sessions</h2>
+			<h2 class="section-title">Introducing Expert Sessions</h2>
 			<div class="jumbo-image-box">
 				<div class="row">
 					<div class="col-xs-4 image align-top">
 						<div class="image-container">
-							<img src="/assets/images/pexels-photo-1181244.jpeg" alt="Peer sessions" class="img-fluid">
+							<img src="/assets/images/pexels-photo-1181244.jpeg" alt="Expert sessions" class="img-fluid">
 						</div>
 					</div>
 					<div class="col-xs-8 content align-middle">
-						<h3>Learn online from your peers</h3>
+						<h3>Learn online from experts</h3>
 						<div class="intro mb-3">Earn extra income from teaching what you love</div>
 						<a [routerLink]="'/home/peers'" class="theme-btn">Learn more</a>
 					</div>
@@ -479,13 +478,13 @@
 
 	<section class="peers-teaching spacing">
 		<div class="container">
-			<h2 class="section-title pb-0">Peers teaching their passion</h2>
+			<h2 class="section-title pb-0">Blockchain experts teaching live</h2>
 			<div class="loading-container" [hidden]="!loadingPeers">
 				<ngx-loading [show]="true"></ngx-loading>
 			</div>
 			<div *ngIf="!loadingPeers" class="row feed-horizontal" style="padding: 0px 7px;">
 				<div class="noDataContainer" *ngIf="peers === undefined || peers.length === 0">
-					There are no new active peers to view right now.
+					There are no new available experts to view right now.
 				</div>
 				<div *ngFor="let peer of peers; let i = index;">
 					<app-peer-card *ngIf="i < 6" [peer]="peer"></app-peer-card>
@@ -494,9 +493,9 @@
 		</div>
 	</section>
 
-	<section class="experience-spotlight super-teacher spacing">
+	<section class="experience-spotlight super-teacher spacing margin-bottom-50">
 		<div class="container">
-			<h2 class="section-title pb-0">Super Peer Teachers</h2>
+			<h2 class="section-title pb-0">Featured Blockchain Experts</h2>
 			<div class="row small-margin">
 				<div class="col-12 col-md-4 small-padding">
 					<div class="custom-card clickable" [routerLink]="'/home/peers'" [queryParams]="{topic: 'solidity'}">
@@ -504,13 +503,13 @@
 							<div class="card-image-content text-center">
 								<span class="image-heading">Solidity</span>
 							</div>
-							<img src="/assets/images/coding-card.jpg" alt="Peers teaching solidity">
+							<img src="/assets/images/coding-card.jpg" alt="Experts teaching solidity">
 						</div>
 						<div class="card-content">
 							<p class="tags text-uppercase">
 								<span>Explore Now</span>
 							</p>
-							<p class="para">Peers teaching Solidity
+							<p class="para">Experts teaching Solidity
 							</p>
 						</div>
 					</div>
@@ -521,13 +520,13 @@
 							<div class="card-image-content text-center">
 								<span class="image-heading">Corda</span>
 							</div>
-							<img src="/assets/images/design-card.jpg" alt="Peers teaching Corda">
+							<img src="/assets/images/design-card.jpg" alt="Experts teaching Corda">
 						</div>
 						<div class="card-content">
 							<p class="tags text-uppercase">
 								<span>Explore Now</span>
 							</p>
-							<p class="para">Peers teaching Corda</p>
+							<p class="para">Experts teaching Corda</p>
 						</div>
 					</div>
 				</div>
@@ -537,13 +536,13 @@
 							<div class="card-image-content text-center">
 								<span class="image-heading">Distributed Ledgers</span>
 							</div>
-							<img src="/assets/images/cooking-card.jpg" alt="Peers teaching distributed ledgers">
+							<img src="/assets/images/cooking-card.jpg" alt="Experts teaching distributed ledgers">
 						</div>
 						<div class="card-content">
 							<p class="tags text-uppercase">
 								<span>Explore Now</span>
 							</p>
-							<p class="para">Peers teaching Distributed Ledgers</p>
+							<p class="para">Experts teaching Distributed Ledgers</p>
 						</div>
 					</div>
 				</div>

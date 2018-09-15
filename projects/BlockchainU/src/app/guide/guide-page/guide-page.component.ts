@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, OnDestroy, ViewChildren, ElementRef, QueryList } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
-import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar } from '@angular/material';
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Title, Meta } from '@angular/platform-browser';
@@ -9,8 +9,6 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { CollectionService } from '../../_services/collection/collection.service';
 import { ContentService } from '../../_services/content/content.service';
 import { CommentService } from '../../_services/comment/comment.service';
-import { ContentVideoComponent } from './content-video/content-video.component';
-import { ContentProjectComponent } from './content-project/content-project.component';
 import {
 	startOfDay,
 	endOfDay,
@@ -34,7 +32,6 @@ import {
 import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { TopicService } from '../../_services/topic/topic.service';
-import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { environment } from '../../../environments/environment';
@@ -451,12 +448,14 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 					this.guide = res;
 					this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
 					this.setTags();
-					fbq('track', 'ContentView', {
-						currency: 'USD',
-						value: 0.0,
-						content_type: 'product',
-						content_ids: [this.guideId]
-					});
+					if (fbq !== undefined) {
+						fbq('track', 'ContentView', {
+							currency: 'USD',
+							value: 0.0,
+							content_type: 'product',
+							content_ids: [this.guideId]
+						});
+					}
 				},
 					err => console.log('error'),
 					() => {
@@ -489,12 +488,14 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value;
 		this._authenticationService.createGuestContacts(first_name, '', email, subject, message)
 			.subscribe(res => {
-				fbq('track', 'Lead', {
-					currency: 'USD',
-					value: 1.0,
-					content_name: this.guide.title,
-					content_category: this.guide.type
-				});
+				if (fbq !== undefined) {
+					fbq('track', 'Lead', {
+						currency: 'USD',
+						value: 1.0,
+						content_name: this.guide.title,
+						content_category: this.guide.type
+					});
+				}
 				this.contactUsForm.reset();
 				this.snackBar.open('Thanks for your interest we will get back to you shortly', 'Close', { duration: 3000 });
 			}, err => {
@@ -769,7 +770,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	public dropOutGuide() {
 		this.dialogsService.openExitCollection(this.guideId, this.userId).subscribe((response: any) => {
 			if (response) {
-				this.router.navigate(['guide', this.guideId]);
+				this.initializePage();
 			}
 		});
 	}
@@ -823,14 +824,16 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 					console.log(err);
 				} else {
 					// FB Event Trigger
-					fbq('track', 'AddToWishlist', {
-						currency: 'USD',
-						value: 0.0,
-						content_ids: [this.guideId],
-						content_name: this.guide.title,
-						content_category: this.guide.type,
-						content_type: 'product'
-					});
+					if (fbq !== undefined) {
+						fbq('track', 'AddToWishlist', {
+							currency: 'USD',
+							value: 0.0,
+							content_ids: [this.guideId],
+							content_name: this.guide.title,
+							content_category: this.guide.type,
+							content_type: 'product'
+						});
+					}
 					this.snackBar.open('Bookmarked', 'Close', {
 						duration: 5000
 					});
@@ -965,27 +968,12 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	/**
-	 * selectJoiningDates
-	 */
-	// public selectJoiningDates() {
-
-	// 	this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.guide.type, this.guide.maxSpots, this.accountApproved, this.userId)
-	// 		.subscribe((result: any) => {
-	// 			if (result) {
-	// 				if (this.userId) {
-	// 					this.router.navigate(['review-pay', 'collection', this.guideId, result]);
-	// 				} else {
-	// 					// this.router.navigate(['sign-up']);
-	// 					const returnTo = 'review-pay/collection/' + this.guideId + '/' + result;
-	// 					this.openSignup(returnTo);
-	// 				}
-	// 			}
-	// 		});
-	// }
-
 	public signUp() {
-		this.router.navigate(['review-pay', 'collection', this.guideId]);
+		if (this.userId && this.userId.length > 5) {
+			this.router.navigate(['review-pay', 'collection', this.guideId]);
+		} else {
+			this.openSignup('/review-pay/collection/' + this.guideId);
+		}
 	}
 
 	public openSignup(returnTo) {
