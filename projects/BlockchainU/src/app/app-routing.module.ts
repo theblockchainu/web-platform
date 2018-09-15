@@ -193,6 +193,10 @@ const routes: Routes = [
 		loadChildren: './invite/invite.module#InviteModule'
 	},
 	{
+		path: 'question',
+		loadChildren: './question-page/question-page.module#QuestionPageModule'
+	},
+	{
 		path: 'access-denied',
 		component: AccessDeniedComponent
 	},
