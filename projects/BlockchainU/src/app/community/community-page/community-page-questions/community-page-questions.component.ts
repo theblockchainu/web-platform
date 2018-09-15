@@ -10,7 +10,7 @@ import { CommentService } from '../../../_services/comment/comment.service';
 import { MatSnackBar } from '@angular/material';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { AuthenticationService } from '../../../_services/authentication/authentication.service';
-import {DialogsService} from "../../../_services/dialogs/dialog.service";
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
 
 @Component({
     selector: 'app-community-page-questions',
@@ -174,38 +174,38 @@ export class CommunityPageQuestionsComponent implements OnInit {
      * post question
      */
     public postQuestion() {
-    	if (this.userId && this.userId.length > 5 && this.userType !== 'public') {
-			if (this.questionForm.valid && (this.questionForm.controls['gyan'].value <= this.gyanBalance || this.questionForm.controls['gyan'].disabled)) {
-				// If user has a scholarship, make sure the scholarship is used for karma burn.
-				if (this.loggedInUser.scholarships_joined && this.loggedInUser.scholarships_joined.length > 0) {
-					this.questionForm.controls['scholarshipId'].patchValue(this.loggedInUser.scholarships_joined[0].id);
-				}
-				// If gyan balance is 0, make the gyan amount 1.
-				if (this.gyanBalance === 0) {
-					this.questionForm.controls['gyan'].patchValue(1);
-					this.questionForm.value['gyan'] = 1;
-				}
-				this.busyQuestion = true;
-				this._communityService.postQuestion(this.communityId, this.questionForm.value).subscribe((result: any) => {
-						this._authService.isLoginSubject.next(true);
-						this.questionForm.reset();
-						this.busyQuestion = false;
-						this.getQuestions();
-					},
-					err => {
-						console.log(err);
-					});
-			} else {
-				this.snackBar.open('Check if you have enough gyan balance in your account for this question.', 'Ok', { duration: 5000 });
-			}
-		} else if (this.userId && this.userId.length > 5 && this.userType === 'public') {
-    		this.snackBar.open('Please join this community before posting any questions.', 'Join Now', {duration: 5000})
-				.onAction().subscribe(res => {
-				
-			});
-		} else {
-    		this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
-		}
+        if (this.userId && this.userId.length > 5 && this.userType !== 'public') {
+            if (this.questionForm.valid && (this.questionForm.controls['gyan'].value <= this.gyanBalance || this.questionForm.controls['gyan'].disabled)) {
+                // If user has a scholarship, make sure the scholarship is used for karma burn.
+                if (this.loggedInUser.scholarships_joined && this.loggedInUser.scholarships_joined.length > 0) {
+                    this.questionForm.controls['scholarshipId'].patchValue(this.loggedInUser.scholarships_joined[0].id);
+                }
+                // If gyan balance is 0, make the gyan amount 1.
+                if (this.gyanBalance === 0) {
+                    this.questionForm.controls['gyan'].patchValue(1);
+                    this.questionForm.value['gyan'] = 1;
+                }
+                this.busyQuestion = true;
+                this._communityService.postQuestion(this.communityId, this.questionForm.value).subscribe((result: any) => {
+                    this._authService.isLoginSubject.next(true);
+                    this.questionForm.reset();
+                    this.busyQuestion = false;
+                    this.getQuestions();
+                },
+                    err => {
+                        console.log(err);
+                    });
+            } else {
+                this.snackBar.open('Check if you have enough gyan balance in your account for this question.', 'Ok', { duration: 5000 });
+            }
+        } else if (this.userId && this.userId.length > 5 && this.userType === 'public') {
+            this.snackBar.open('Please join this community before posting any questions.', 'Join Now', { duration: 5000 })
+                .onAction().subscribe(res => {
+
+                });
+        } else {
+            this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+        }
     }
 
     /**
@@ -222,78 +222,78 @@ export class CommunityPageQuestionsComponent implements OnInit {
     }
 
     public addQuestionUpvote(question: any) {
-		if (this.userId && this.userId.length > 5) {
-			this._questionsService.addQuestionUpvote(question.id, {}).subscribe(
-				response => {
-					if (question.upvotes !== undefined) {
-						question.upvotes.push(response);
-					} else {
-						question.upvotes = [];
-						question.upvotes.push(response);
-					}
-				}, err => {
-					console.log(err);
-				}
-			);
-		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
-		}
+        if (this.userId && this.userId.length > 5) {
+            this._questionsService.addQuestionUpvote(question.id, {}).subscribe(
+                response => {
+                    if (question.upvotes !== undefined) {
+                        question.upvotes.push(response);
+                    } else {
+                        question.upvotes = [];
+                        question.upvotes.push(response);
+                    }
+                }, err => {
+                    console.log(err);
+                }
+            );
+        } else {
+            this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+        }
     }
 
     public createAnswerForm(question: any) {
-    	if (this.userId && this.userId.length > 5 && this.userType !== 'public') {
-			this.answeringToQuestionId = question.id;
-			this.answerForm = this._fb.group({
-				text: ''
-			});
-		} else {
-    		this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
-		}
+        if (this.userId && this.userId.length > 5 && this.userType !== 'public') {
+            this.answeringToQuestionId = question.id;
+            this.answerForm = this._fb.group({
+                text: ''
+            });
+        } else {
+            this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+        }
     }
 
     public createAnswerCommentForm(answer: any) {
-		if (this.userId && this.userId.length > 5 && this.userType !== 'public') {
-			this.commentingToAnswerId = answer.id;
-			this.commentForm = this._fb.group({
-				description: '',
-				isAnnouncement: false
-			});
-		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
-		}
+        if (this.userId && this.userId.length > 5 && this.userType !== 'public') {
+            this.commentingToAnswerId = answer.id;
+            this.commentForm = this._fb.group({
+                description: '',
+                isAnnouncement: false
+            });
+        } else {
+            this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+        }
     }
 
     public createQuestionCommentForm(question: any) {
-		if (this.userId && this.userId.length > 5 && this.userType !== 'public') {
-			this.commentingToQuestionId = question.id;
-			this.commentForm = this._fb.group({
-				description: '',
-				isAnnouncement: false
-			});
-		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
-		}
+        if (this.userId && this.userId.length > 5 && this.userType !== 'public') {
+            this.commentingToQuestionId = question.id;
+            this.commentForm = this._fb.group({
+                description: '',
+                isAnnouncement: false
+            });
+        } else {
+            this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+        }
     }
 
     /**
      * post answer
      */
     public postAnswer(question: any) {
-		if (this.userId && this.userId.length > 5 && this.userType !== 'public') {
-			this.busyAnswer = true;
-			this._questionsService.answerToQuestion(question.id, this.answerForm.value).subscribe(
-				response => {
-					this.busyAnswer = false;
-					this.getQuestions();
-					delete this.answerForm;
-				}, err => {
-					this.busyAnswer = false;
-					console.log(err);
-				}
-			);
-		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
-		}
+        if (this.userId && this.userId.length > 5 && this.userType !== 'public') {
+            this.busyAnswer = true;
+            this._questionsService.answerToQuestion(question.id, this.answerForm.value).subscribe(
+                response => {
+                    this.busyAnswer = false;
+                    this.getQuestions();
+                    delete this.answerForm;
+                }, err => {
+                    this.busyAnswer = false;
+                    console.log(err);
+                }
+            );
+        } else {
+            this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+        }
     }
 
 	/**
@@ -367,22 +367,22 @@ export class CommunityPageQuestionsComponent implements OnInit {
      * @param answer
      */
     addAnswerUpvote(answer: any) {
-		if (this.userId && this.userId.length > 5) {
-			this._questionsService.addAnswerUpvote(answer.id, {}).subscribe(
-				response => {
-					if (answer.upvotes !== undefined) {
-						answer.upvotes.push(response);
-					} else {
-						answer.upvotes = [];
-						answer.upvotes.push(response);
-					}
-				}, err => {
-					console.log(err);
-				}
-			);
-		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
-		}
+        if (this.userId && this.userId.length > 5) {
+            this._questionsService.addAnswerUpvote(answer.id, {}).subscribe(
+                response => {
+                    if (answer.upvotes !== undefined) {
+                        answer.upvotes.push(response);
+                    } else {
+                        answer.upvotes = [];
+                        answer.upvotes.push(response);
+                    }
+                }, err => {
+                    console.log(err);
+                }
+            );
+        } else {
+            this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+        }
     }
 
     public hasUpvoted(upvotes) {
@@ -422,41 +422,41 @@ export class CommunityPageQuestionsComponent implements OnInit {
     }
 
     public addCommentUpvote(comment: any) {
-		if (this.userId && this.userId.length > 5) {
-			this._commentService.addCommentUpvote(comment.id, {}).subscribe(
-				response => {
-					if (comment.upvotes !== undefined) {
-						comment.upvotes.push(response);
-					} else {
-						comment.upvotes = [];
-						comment.upvotes.push(response);
-					}
-				}, err => {
-					console.log(err);
-				}
-			);
-		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
-		}
+        if (this.userId && this.userId.length > 5) {
+            this._commentService.addCommentUpvote(comment.id, {}).subscribe(
+                response => {
+                    if (comment.upvotes !== undefined) {
+                        comment.upvotes.push(response);
+                    } else {
+                        comment.upvotes = [];
+                        comment.upvotes.push(response);
+                    }
+                }, err => {
+                    console.log(err);
+                }
+            );
+        } else {
+            this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+        }
     }
 
     public addReplyUpvote(reply: any) {
-		if (this.userId && this.userId.length > 5) {
-			this._commentService.addReplyUpvote(reply.id, {}).subscribe(
-				response => {
-					if (reply.upvotes !== undefined) {
-						reply.upvotes.push(response);
-					} else {
-						reply.upvotes = [];
-						reply.upvotes.push(response);
-					}
-				}, err => {
-					console.log(err);
-				}
-			);
-		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
-		}
+        if (this.userId && this.userId.length > 5) {
+            this._commentService.addReplyUpvote(reply.id, {}).subscribe(
+                response => {
+                    if (reply.upvotes !== undefined) {
+                        reply.upvotes.push(response);
+                    } else {
+                        reply.upvotes = [];
+                        reply.upvotes.push(response);
+                    }
+                }, err => {
+                    console.log(err);
+                }
+            );
+        } else {
+            this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+        }
     }
 
     public isMyComment(comment) {
@@ -514,20 +514,20 @@ export class CommunityPageQuestionsComponent implements OnInit {
     }
 
     public addFollower(question) {
-		if (this.userId && this.userId.length > 5) {
-			if (!this.isFollowing(question.followers)) {
-				this._questionsService.addFollower(question.id, this.userId).subscribe(res => {
-					if (question.followers !== undefined) {
-						question.followers.push(this.loggedInUser);
-					} else {
-						question.followers = [];
-						question.followers.push(this.loggedInUser);
-					}
-				});
-			}
-		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
-		}
+        if (this.userId && this.userId.length > 5) {
+            if (!this.isFollowing(question.followers)) {
+                this._questionsService.addFollower(question.id, this.userId).subscribe(res => {
+                    if (question.followers !== undefined) {
+                        question.followers.push(this.loggedInUser);
+                    } else {
+                        question.followers = [];
+                        question.followers.push(this.loggedInUser);
+                    }
+                });
+            }
+        } else {
+            this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+        }
     }
 
 }
