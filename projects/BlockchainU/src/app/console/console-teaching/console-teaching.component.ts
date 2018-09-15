@@ -88,6 +88,12 @@ export class ConsoleTeachingComponent implements OnInit {
         });
     }
 
+    public createGuide() {
+        this._collectionService.postCollection(this.userId, 'guide').subscribe((guideeObject: any) => {
+            this.router.navigate(['guide', guideeObject.id, 'edit', 1]);
+        });
+    }
+
     /**
      * createSessions
      */

@@ -10,6 +10,10 @@ const routes: Routes = [
     path: 'collection/:collectionId/:calendarId',
     component: ReviewPayComponent
   },
+  {
+    path: 'collection/:collectionId',
+    component: ReviewPayComponent
+  },
 ];
 
 @NgModule({

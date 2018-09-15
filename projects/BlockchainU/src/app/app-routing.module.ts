@@ -141,6 +141,10 @@ const routes: Routes = [
 		loadChildren: './session/session.module#SessionModule'
 	},
 	{
+		path: 'guide',
+		loadChildren: './guide/guide.module#GuideModule'
+	},
+	{
 		path: 'community',
 		loadChildren: './community/community.module#CommunityModule'
 	},
@@ -203,7 +207,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-	imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})],
+	imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],
 	exports: [RouterModule],
 	providers: [LoginComponentDialog]
 })

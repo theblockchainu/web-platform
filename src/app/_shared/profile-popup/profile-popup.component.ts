@@ -11,10 +11,12 @@ import {environment} from '../../../environments/environment';
 export class ProfilePopupComponent implements OnInit {
 	
 	@Input() peer: any;
+	@Input() size: string;
 	@ViewChild('profilePic') profilePic;
 	
 	private dialogref: MatDialogRef<any>;
 	public envVariable;
+	public cssSize = 'small';
 	
 	constructor(
 		public dialog: MatDialog,
@@ -22,6 +24,9 @@ export class ProfilePopupComponent implements OnInit {
 		private _router: Router
 	) {
 		this.envVariable = environment;
+		if (this.size) {
+			this.cssSize = this.size;
+		}
 	}
 	
 	ngOnInit() {

@@ -690,7 +690,7 @@ export class DialogsService {
         return dialogRef.afterClosed();
     }
 
-    public addParticipant(collectionId: string, calendarId: string) {
+    public addParticipant(collectionId: string, calendarId?: string) {
         const dialogRef = this.dialog.open(AddParticipantDialogComponent, {
             data: { collectionId: collectionId, calendarId: calendarId },
             panelClass: 'responsive-dialog',

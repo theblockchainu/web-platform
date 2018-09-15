@@ -188,14 +188,16 @@ export class ReviewPayComponent implements OnInit {
                 });
                 this.card.mount('#card-element');
                 // FB Event Trigger
-                fbq('track', 'InitiateCheckout', {
-                    currency: 'USD',
-                    value: 0.0,
-                    content_type: 'product',
-                    content_ids: [this.collectionId],
-                    content_name: this.collection.title,
-                    content_category: this.collection.type
-                });
+				if (fbq !== undefined) {
+					fbq('track', 'InitiateCheckout', {
+						currency: 'USD',
+						value: 0.0,
+						content_type: 'product',
+						content_ids: [this.collectionId],
+						content_name: this.collection.title,
+						content_category: this.collection.type
+					});
+				}
             }
         });
     }
@@ -263,7 +265,7 @@ export class ReviewPayComponent implements OnInit {
     }
 
     private sortAssessmentRules() {
-        if (this.collection.assessment_models && this.collection.assessment_models.length > 0) {
+        if (this.collection.assessment_models && this.collection.assessment_models.length > 0 && this.collection.assessment_models[0].assessment_rules) {
             const assessmentRulesUnsorted = <Array<any>>this.collection.assessment_models[0].assessment_rules;
             this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
                 if (a.value > b.value) {
@@ -404,13 +406,14 @@ export class ReviewPayComponent implements OnInit {
                             this.createSourceData.token = result.token.id;
                             this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: any) => {
                                 if (res) {
-
-                                    fbq('track', 'AddPaymentInfo', {
-                                        currency: 'USD',
-                                        value: 0.0,
-                                        content_ids: [this.collectionId],
-                                        content_category: this.collection.type
-                                    });
+									if (fbq !== undefined) {
+										fbq('track', 'AddPaymentInfo', {
+											currency: 'USD',
+											value: 0.0,
+											content_ids: [this.collectionId],
+											content_category: this.collection.type
+										});
+									}
                                     // console.log(JSON.stringify(res ));
                                     this.createChargeData.source = res.id;
                                     this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: any) => {
@@ -504,23 +507,33 @@ export class ReviewPayComponent implements OnInit {
 
     public joinCollection() {
         // FB Event Trigger
-        fbq('track', 'Purchase', {
-            currency: this.collection.currency,
-            value: this.totalPrice,
-            content_type: 'product',
-            content_ids: [this.collectionId],
-            content_name: this.collection.title,
-            content_category: this.collection.type
-        });
+		if (fbq !== undefined) {
+			fbq('track', 'Purchase', {
+				currency: this.collection.currency,
+				value: this.totalPrice,
+				content_type: 'product',
+				content_ids: [this.collectionId],
+				content_name: this.collection.title,
+				content_category: this.collection.type
+			});
+		}
         this._collectionService.addParticipant(this.collectionId, this.userId, this.collectionCalendarId, this.selectedScholarship).subscribe((response: any) => {
             if (this.codefound && this.codefound.id.length > 5) {
                 this.profileService.linkPromoCode(this.userId, this.codefound.id).subscribe(
                     res => {
-                        this.router.navigate([this.collection.type, this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+                        if (this.collectionCalendarId) {
+                            this.router.navigate([this.collection.type, this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+                        } else {
+                            this.router.navigate([this.collection.type, this.collectionId, 'paymentSuccess']);
+                        }
                     }
                 );
             } else {
-                this.router.navigate([this.collection.type, this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+                if (this.collectionCalendarId) {
+                    this.router.navigate([this.collection.type, this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+                } else {
+                    this.router.navigate([this.collection.type, this.collectionId, 'paymentSuccess']);
+                }
             }
         }, err => {
             console.log(err);

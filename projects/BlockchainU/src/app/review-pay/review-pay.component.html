@@ -65,8 +65,8 @@
 						</div>
 					</div>
 					<!--CC Avenue Billing address form-->
-					<div class="row">
-						<div class="col-md-12 margin-top-10" [hidden]="isBillingAddressAvailable">
+					<div class="row" [hidden]="loadingCountry || totalPrice===0 || userCountry !== 'IN' || payAtVenue === true || isBillingAddressAvailable">
+						<div class="col-md-12 margin-top-10">
 							<div class="title margin-bottom-20">Let's start with your billing address</div>
 							<form [formGroup]="addressForm" (ngSubmit)="saveBillingAddress()" class="margin-bottom-20">
 								<div class="row">
@@ -257,11 +257,9 @@
 								</div>
 							</div>
 						</div>
-						<div class="seperate-section">
-							<div class="" *ngIf="currentCalendar">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{
-								currentCalendar.endDate
-								| date: 'EEE, MMM dd' }}</div>
-							<div class="" *ngIf="collection.contents">{{collection.contents.length}} Activities</div>
+						<div class="seperate-section" *ngIf="currentCalendar && currentCalendar.length > 0">
+							<div class="" *ngIf="currentCalendar && currentCalendar.length > 0">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{currentCalendar.endDate | date: 'EEE, MMM dd' }}</div>
+							<div class="" *ngIf="collection.contents && collection.contents.length > 0">{{collection.contents.length}} Activities</div>
 							<!--<a href="#">See details</a>-->
 						</div>
 						<!--<div class="seperate-section">
@@ -331,7 +329,7 @@
 							</div>
 							<div *ngIf="codefound" style="color:#33bd9e" class="margin-bottom-10 row">
 								<div class="col-xs-6">
-									Discount Code applied {{codefound.description}}
+									Discount code applied : {{codefound.description}}
 								</div>
 								<div class="col-xs-6">
 									<span class="pull-right fw-bold"> {{codefound.discountValue}}

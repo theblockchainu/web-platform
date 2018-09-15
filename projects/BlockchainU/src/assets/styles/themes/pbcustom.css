@@ -36,6 +36,10 @@ img {
 	width: 100%;
 }
 
+strong {
+	font-weight: 700 !important;
+}
+
 .primaryColor {
 	color: #33bd9e;
 }
@@ -875,6 +879,15 @@ h3.calendarTitle {
 .circle-thumb img, .circle-thumb {
 	width: 40px;
 	height: 40px;
+	border-radius: 50%;
+	margin-left: -15px;
+	display: inline-block;
+	border: 3px solid #ffffff;
+}
+
+.circle-thumb-large img, .circle-thumb-large {
+	width: 60px;
+	height: 60px;
 	border-radius: 50%;
 	margin-left: -15px;
 	display: inline-block;
@@ -2013,9 +2026,9 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	overflow-y: hidden;
 }
 
-.mat-tab-nav-bar {
+/* .mat-tab-nav-bar {
 	overflow-x: scroll !important;
-}
+} */
 
 .tool-bar .btn-group {
 	display: inline-block;
@@ -2023,6 +2036,59 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 
 td-markdown pre {
 	background-color: #f5f5f5;
+}
+
+/**
+MD-Editor Styling
+ */
+
+.md-editor-container .tool-bar {
+	background-color: #ffffff !important;
+	border: 0px !important;
+	margin-bottom: 20px !important;
+}
+
+.md-editor-container {
+	border: 0px !important;
+}
+
+.md-editor-container .preview-panel {
+	padding-left: 30px !important;
+}
+
+.md-editor-container .md-footer {
+	background-color: #fff !important;
+}
+
+.ace-tm .ace_gutter {
+	background: #ffffff !important;
+}
+
+.md-editor-container .tool-bar .btn-group {
+	padding: 10px 15px 10px 0px !important;
+}
+
+.md-editor-container .tool-bar .btn {
+	background: #fff !important;
+	border: 1px solid #eeeeee !important;
+	height: 40px !important;
+	width: 40px !important;
+}
+
+.ace-tm .ace_gutter-active-line {
+	background-color: #ffffff !important;
+}
+
+.ace-tm .ace_marker-layer .ace_active-line {
+	 background: #fff !important;
+}
+
+.md-editor-container .tool-bar .btn-group > .btn:first-child::before {
+	background-color: #fff !important;
+}
+
+.ace-tm .ace_print-margin {
+	background: #fff !important;
 }
 
 /* Extra small devices (phones, 600px and down) */
