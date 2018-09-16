@@ -410,10 +410,10 @@ export class QuestionCardComponent implements OnInit {
 			if (!this.isFollowing(question.followers)) {
 				this._questionsService.addFollower(question.id, this.userId).subscribe(res => {
 					if (question.followers !== undefined) {
-						question.followers.push(this.loggedInUser);
+						question.followers.push(res);
 					} else {
 						question.followers = [];
-						question.followers.push(this.loggedInUser);
+						question.followers.push(res);
 					}
 				});
 			}
