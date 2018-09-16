@@ -11,12 +11,12 @@
 		</button>
 	</span>
 	<a [routerLink]="'/community/'+community.id">
-		<div class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + community.imageUrls[0] + '/300' + '), url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
+		<div class="community-thumb" *ngIf="community.imageUrls && community.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + community.imageUrls[0] + '/300' + '), url(../../assets/images/community-banner-bg.jpg)', 'background-size': 'cover'}">
 		</div>
 		<div style="margin-bottom: -18px;">
 			<h3 class="mat-body-2">{{community.title | ucwords}}</h3>
 		</div>
-		<div class="recommendation-thumb" *ngIf="!community.imageUrls || community.imageUrls.length<=0" [ngStyle]="{'background': 'url(../../assets/images/no-image.jpg)', 'background-size': 'cover'}">
+		<div class="recommendation-thumb" *ngIf="!community.imageUrls || community.imageUrls.length<=0" [ngStyle]="{'background': 'url(../../assets/images/community-banner-bg.jpg)', 'background-size': 'cover'}">
 			<div>
 				<h3>{{community.title | ucwords}}</h3>
 			</div>

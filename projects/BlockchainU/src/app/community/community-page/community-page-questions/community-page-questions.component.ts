@@ -104,13 +104,18 @@ export class CommunityPageQuestionsComponent implements OnInit {
     }
 
     public getGyanBalance() {
-        this._profileService.getGyanBalance(this.userId, 'fixed').subscribe((res: any) => {
-            this.gyanBalance = parseInt(res, 10);
-
-            if (this.gyanBalance === 0) {
-                this.questionForm.controls['gyan'].disable();
-            }
-        });
+    	if (this.userId && this.userId.length > 5) {
+			this._profileService.getGyanBalance(this.userId, 'fixed').subscribe((res: any) => {
+				this.gyanBalance = parseInt(res, 10);
+			
+				if (this.gyanBalance === 0) {
+					this.questionForm.controls['gyan'].disable();
+				}
+			});
+		} else {
+    		this.gyanBalance = 0;
+			this.questionForm.controls['gyan'].disable();
+		}
     }
 
     public getQuestions() {

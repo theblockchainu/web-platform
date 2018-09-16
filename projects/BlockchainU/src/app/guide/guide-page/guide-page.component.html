@@ -115,7 +115,7 @@
 						<!--COVER IMAGE-->
 						<div class="row">
 							<div class="col-md-12">
-								<div style="width: 100%; height: auto;" *ngIf="carouselImages">
+								<div style="width: 100%; height: auto; margin-bottom: 30px;" *ngIf="carouselImages">
 									<ngu-carousel [inputs]="carouselBanner">
 										<ngu-item NguCarouselItem class="bannerStyle" *ngFor="let imageUrl of carouselImages">
 											<div class="row">
@@ -592,7 +592,7 @@
 					</div>
 
 					<!--RIGHT SIDEBAR-->
-					<div class="col-md-5 col-md-offset-1 right-content right-content-sticky">
+					<div class="col-md-5 col-md-offset-1 right-content right-content-sticky hide-small">
 						<!--CORESTACK LAB-->
 						<div *ngIf="userType==='participant' || userType === 'teacher'">
 							<div class="row">
@@ -820,7 +820,7 @@
 		</div>
 		<div class="col-xs-4" style="padding-top: 9px;">
 			<span>
-				<button mat-raised-button (click)="signUp()" color="primary">Sign Up</button>
+				<button mat-raised-button (click)="signUp()" color="primary">Start Lab</button>
 			</span>
 			<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this guide">
 				<button mat-raised-button color="primary" [disabled]="true">See Dates</button>

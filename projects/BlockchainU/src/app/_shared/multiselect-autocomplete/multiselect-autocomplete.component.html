@@ -33,13 +33,13 @@
 	<ul *ngFor="let item of filteredList" style="list-style:none" class="padding-left-0">
 
 		<li class="captitalise topic" *ngIf="!item.inSelect" (click)="select(item)">
-			<img src="{{envVariable.apiUrl+ item.imageUrl}}/100" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
+			<img src="{{envVariable.apiUrl+ item.imageUrl}}/100" class="topic-bg" (error)="_collectionService.topicImgErrorHandler($event)">
 			<span style="margin-left:20px">{{item.name}}</span>
 			<mat-icon class="pull-right" style="top: 1.1em; right: 0.6em; color: #cccccc;">check_circle</mat-icon>
 		</li>
 
 		<li class="captitalise topic" *ngIf="item.inSelect">
-			<img src="{{envVariable.apiUrl+ item.imageUrl}}/100" class="topic-bg" (error)="_collectionService.imgErrorHandler($event)">
+			<img src="{{envVariable.apiUrl+ item.imageUrl}}/100" class="topic-bg" (error)="_collectionService.topicImgErrorHandler($event)">
 			<span style="margin-left:20px">{{item.name}}</span>
 			<mat-icon [color]="'primary'" class="pull-right" style="top: 1.1em; right: 0.6em;">check_circle</mat-icon>
 		</li>

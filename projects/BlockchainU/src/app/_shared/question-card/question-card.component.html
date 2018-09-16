@@ -1,0 +1,117 @@
+<div [ngClass]="{'question-card': true, 'card-width-5': cardsPerRow === 5, 'card-width-4': cardsPerRow === 4, 'card-width-3': cardsPerRow === 3, 'card-width-2': cardsPerRow === 2, 'card-width-1': cardsPerRow === 1}">
+	<div class="row padding-top-20 padding-bottom-20">
+		<div class="col-xs-12">
+			<div class="row questionCardBox">
+				<div class="mat-title  margin-bottom-10 clickable" (click)="openQuestionPage()">
+					<div style="display: inline-block;" [innerHTML]="question.text | ucfirst | linkify "></div>
+				</div>
+				<div *ngIf="question.peer.length>0">
+					<div class="clickable" style="float: left; ">
+						<app-profile-popup [peer]="question.peer[0]"></app-profile-popup>
+					</div>
+					<div style="display: inline-block; margin-left: 5px;">
+						<div>
+							<div>
+								<span class="clickable mat-body-2" style="margin-bottom: 5px;" (click)="_profileService.viewProfile(question.peer[0])">{{question.peer[0].profiles[0].first_name | ucwords}} {{question.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
+							</div>
+						</div>
+						<div class="userInfoLine">
+							<span class="mat-caption">
+								Asked {{question.createdAt |extractTime:'MMM Do'}}
+								<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;">fiber_manual_record</mat-icon>
+								<span *ngIf="question.answers">{{question.answers.length}} Answers</span>
+								<span *ngIf="!question.answers">0 Answers</span>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div style="margin-top: 20px;" class="mat-caption lightText">
+					<a *ngIf="question.peer[0].id !== userId && question.open" href="javascript:void(0);" class="answerButton"
+					   (click)="openQuestionPage()">
+						<b>Answer</b>
+					</a>
+					<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer[0].id !== userId && question.open">fiber_manual_record</mat-icon>
+					<a *ngIf="!hasUpvoted(question.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(question.upvotes)}"
+					   (click)="addQuestionUpvote(question)">
+						<b>Upvote
+							<mat-chip class="square smallSquare" *ngIf="question.upvotes">{{question.upvotes.length}}</mat-chip>
+						</b>
+					</a>
+					<a *ngIf="hasUpvoted(question.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(question.upvotes)}">
+						<b>Upvote
+							<mat-chip class="square smallSquare" *ngIf="question.upvotes">{{question.upvotes.length}}</mat-chip>
+						</b>
+					</a>
+					<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;margin-left: 12px;">fiber_manual_record</mat-icon>
+					<a class="clickable followButton" [ngClass]="{'hasFollowed': !!isFollowing(question.followers)}" (click)="addFollower(question)">
+						<b>Follow
+							<mat-chip class="square smallSquare" *ngIf="question.followers">{{question.followers.length}}</mat-chip>
+						</b>
+					</a>
+				</div>
+				<!--LIST OF ANSWERS FOR QUESTION-->
+				<div class="col-md-12 answersBox margin-top-20">
+					<div *ngFor="let answer of question.answers; let i = index;">
+						<div class="row answerRow" *ngIf="i < 1">
+							<div>
+								<div class="margin-bottom-10" *ngIf="answer.peer && answer.peer.length>0">
+									<div style="display: inline-block; margin-left: 5px;">
+										<div>
+											<div>
+												<span class="mat-body-2 clickable" (click)="_profileService.viewProfile(answer.peer[0])">{{answer.peer[0].profiles[0].first_name | ucwords}} {{answer.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
+											</div>
+										</div>
+										<div class="userInfoLine">
+											<span class="mat-caption">Answered {{answer.createdAt |extractTime:'MMM Do'}}
+												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;">fiber_manual_record</mat-icon>
+											                          {{(answer.upvotes) ? answer.upvotes.length : '0'}} upvotes</span>
+										</div>
+									</div>
+								</div>
+								<div class="mat-body-1 pre-wrapped clickable" (click)="openQuestionPage()">
+									<div [innerHTML]="answer.text | linkify | shorten:100:'... (read more)'"></div>
+								</div>
+								<div style="margin-top: 20px;" class="mat-caption lightText">
+									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept && question.open">fiber_manual_record</mat-icon>
+									<a class="clickable acceptButton" *ngIf="answer.accept">
+										<span>
+											<i class="fa fa-check-circle"></i>&nbsp;&nbsp;&nbsp;
+											<b>Accepted</b>&nbsp;&nbsp;&nbsp;
+											<span style="font-size: 10px;">+ {{question.gyan}} GYAN</span>
+										</span>
+									</a>
+									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="answer.accept">fiber_manual_record</mat-icon>
+									<a class="clickable commentButton" (click)="openQuestionPage()">
+										<b>Comment
+											<mat-chip class="square smallSquare" *ngIf="answer.comments">{{answer.comments.length}}</mat-chip>
+										</b>
+									</a>
+									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;">fiber_manual_record</mat-icon>
+									<a *ngIf="!hasUpvoted(answer.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(answer.upvotes)}"
+									   (click)="addAnswerUpvote(answer)">
+										<b>Upvote
+											<mat-chip class="square smallSquare" *ngIf="answer.upvotes">{{answer.upvotes.length}}</mat-chip>
+										</b>
+									</a>
+									<a *ngIf="hasUpvoted(answer.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(answer.upvotes)}">
+										<b>Upvote
+											<mat-chip class="square smallSquare" *ngIf="answer.upvotes">{{answer.upvotes.length}}</mat-chip>
+										</b>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row" *ngIf="question.answers === undefined || question.answers.length === 0">
+						<div class="col-md-12 emptySectionText" style="margin-bottom: -25px; margin-top: 5px;" *ngIf="question.peer[0].id !== userId">
+							Be the first one to answer this question!
+						</div>
+						<div class="col-md-12 emptySectionText" style="margin-bottom: -25px; margin-top: 5px;" *ngIf="question.peer[0].id === userId">
+							Awaiting answers from other users.
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

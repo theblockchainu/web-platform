@@ -921,7 +921,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				this.busySavingData = false;
 			}
 		}, err => {
-			this.snackBar.open('An Error Occured', 'Retry', {
+			this.snackBar.open('An Error Occurred', 'Retry', {
 				duration: 3000
 			}).onAction().subscribe(res => {
 				this.submitCertificate(certificate);

@@ -33,7 +33,7 @@ import { MatButtonModule } from '@angular/material';
 import { MatTooltipModule } from '@angular/material';
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { CookieService } from 'ngx-cookie-service';
-import { UcWordsPipe } from 'ngx-pipes';
+import {UcFirstPipe, UcWordsPipe} from 'ngx-pipes';
 import * as Raven from 'raven-js';
 import { environment } from '../environments/environment';
 import { TokenflowComponent } from './tokenflow/tokenflow.component';
@@ -48,7 +48,7 @@ import {isPlatformBrowser} from '@angular/common';
 import {PdfViewerModule} from 'ng2-pdf-viewer';
 
 
-Raven
+/*Raven
 	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
 	.install();
 
@@ -60,7 +60,7 @@ export class RavenErrorHandler implements ErrorHandler {
 	handleError(err: any): void {
 		Raven.captureException(err);
 	}
-}
+}*/
 
 
 @NgModule({
@@ -125,10 +125,11 @@ export class RavenErrorHandler implements ErrorHandler {
 	providers: [
 		CookieService,
 		UcWordsPipe,
-		{
+		UcFirstPipe,
+		/*{
 			provide: ErrorHandler,
 			useClass: RavenErrorHandler
-		},
+		},*/
 		Title,
 		Meta
 	],
