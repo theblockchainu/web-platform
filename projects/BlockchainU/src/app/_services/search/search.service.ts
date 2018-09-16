@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
+import {UcFirstPipe, UcWordsPipe} from 'ngx-pipes';
 
 @Injectable()
 export class SearchService {
@@ -13,6 +14,8 @@ export class SearchService {
     constructor(
         private router: Router,
         private http: HttpClient,
+        private ucfirst: UcFirstPipe,
+        private ucwords: UcWordsPipe,
         private requestHeaderService: RequestHeaderService
     ) {
         this.envVariable = environment;
@@ -40,16 +43,14 @@ export class SearchService {
 
 
     public getCommunitySearchResults(userId, query: any, cb) {
-        if (userId) {
-            this.http
-                .get(environment.searchUrl + '/searchCommunity?' + 'query=' + query, this.requestHeaderService.options)
-                .subscribe((response: any) => {
-                    console.log(response);
-                    cb(null, response);
-                }, (err) => {
-                    cb(err);
-                });
-        }
+		this.http
+			.get(environment.searchUrl + '/searchCommunity?' + 'query=' + query, this.requestHeaderService.options)
+			.subscribe((response: any) => {
+				console.log(response);
+				cb(null, response);
+			}, (err) => {
+				cb(err);
+			});
     }
 
     public getSearchOptionText(option) {
@@ -57,25 +58,27 @@ export class SearchService {
             case 'collection':
                 switch (option.data.type) {
                     case 'class':
-                        return option.data.title;
+                        return this.ucfirst.transform(option.data.title);
                     case 'experience':
-                        return option.data.title;
+                        return this.ucfirst.transform(option.data.title);
+					case 'guide':
+						return this.ucfirst.transform(option.data.title);
                     default:
-                        return option.data.title;
+                        return this.ucfirst.transform(option.data.title);
                 }
             case 'topic':
-                return option.data.name;
+                return this.ucwords.transform(option.data.name);
             case 'community':
-                return option.data.title;
+                return this.ucfirst.transform(option.data.title);
             case 'question':
-                return option.data.text;
+                return this.ucfirst.transform(option.data.text);
             case 'peer':
                 if (option.data.profiles[0] === undefined) {
                     return option.data.id;
                 } else if (option.data.profiles[0] !== undefined && option.data.profiles[0].first_name === undefined) {
                     return option.data.id;
                 } else {
-                    return option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name;
+                    return this.ucwords.transform(option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name);
                 }
             default:
                 return;
@@ -91,6 +94,8 @@ export class SearchService {
                         return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
                     case 'experience':
                         return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
+					case 'guide':
+						return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
                     default:
                         return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
                 }
@@ -121,6 +126,8 @@ export class SearchService {
                         return 'Online Class';
                     case 'experience':
                         return 'In-person Experience';
+					case 'guide':
+						return 'Learning Guide';
                     default:
                         return 'Collection';
                 }
@@ -147,6 +154,9 @@ export class SearchService {
                     case 'experience':
                         this.router.navigate(['/experience', option.data.id]);
                         break;
+					case 'guide':
+						this.router.navigate(['/guide', option.data.id]);
+						break;
                     default:
                         this.router.navigate(['/console/dashboard']);
                         break;

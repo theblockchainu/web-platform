@@ -12,6 +12,7 @@ import { environment } from '../../../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
+import {QuestionService} from '../../_services/question/question.service';
 
 @Component({
 	selector: 'app-feed',
@@ -35,11 +36,13 @@ export class HomefeedComponent implements OnInit {
 	public experiences: Array<any>;
 	public guides: Array<any>;
 	public communities: Array<any>;
+	public questions: Array<any>;
 	public userId;
 	public peers: Array<any>;
 	public loadingClasses = false;
 	public loadingExperiences = false;
 	public loadingGuides = false;
+	public loadingQuestions = false;
 	public loadingCommunities = false;
 	public loadingPeers = false;
 	public loadingContinueLearning = false;
@@ -60,6 +63,7 @@ export class HomefeedComponent implements OnInit {
 		public _profileService: ProfileService,
 		private _cookieUtilsService: CookieUtilsService,
 		private _topicService: TopicService,
+		private _questionService: QuestionService,
 		public _dialogsService: DialogsService,
 		public _communityService: CommunityService,
 		private titleService: Title,
@@ -81,12 +85,13 @@ export class HomefeedComponent implements OnInit {
 		this.liveClassesObject = {};
 		this.upcomingClassesObject = {};
 		this.now = new Date();
+		this.fetchCommunities();
+		this.fetchQuestions();
+		this.fetchGuides();
 		this.fetchContinueLearning();
 		this.fetchClasses();
 		this.fetchExperiences();
-		this.fetchGuides();
 		this.fetchPeers();
-		this.fetchCommunities();
 		this.setTags();
 	}
 	private setTags() {
@@ -358,41 +363,13 @@ export class HomefeedComponent implements OnInit {
 				this.guides = [];
 				for (const responseObj of response) {
 					responseObj.collections.forEach(collection => {
-						// let experienceLocation = 'Unknown location';
-						// let lat = 37.5293864;
-						// let lng = -122.008471;
 						if (collection.status === 'active') {
-							// if (collection.contents) {
-							// 	collection.contents.forEach(content => {
-							// 		if (content.locations && content.locations.length > 0
-							// 			&& content.locations[0].city !== undefined
-							// 			&& content.locations[0].city.length > 0
-							// 			&& content.locations[0].map_lat !== undefined
-							// 			&& content.locations[0].map_lat.length > 0) {
-							// 			experienceLocation = content.locations[0].city;
-							// 			lat = parseFloat(content.locations[0].map_lat);
-							// 			lng = parseFloat(content.locations[0].map_lng);
-							// 		}
-							// 	});
-							// 	collection.location = experienceLocation;
-							// 	collection.lat = lat;
-							// 	collection.lng = lng;
-							// }
 							if (collection.owners && collection.owners[0].reviewsAboutYou) {
 								collection.rating = this._collectionService
 									.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
 								collection.ratingCount = this._collectionService
 									.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
 							}
-							// let hasActiveCalendar = false;
-							// if (collection.calendars) {
-							// 	collection.calendars.forEach(calendar => {
-							// 		if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
-							// 			hasActiveCalendar = true;
-							// 			return;
-							// 		}
-							// 	});
-							// }
 							this.guides.push(collection);
 						}
 					});
@@ -432,7 +409,6 @@ export class HomefeedComponent implements OnInit {
 		this.loadingCommunities = true;
 		this._topicService.getTopics(query).subscribe(
 			(response: any) => {
-				this.loadingCommunities = false;
 				this.communities = [];
 				for (const responseObj of response) {
 					responseObj.communities.forEach(community => {
@@ -473,9 +449,52 @@ export class HomefeedComponent implements OnInit {
 				this.communities = _.uniqBy(this.communities, 'id');
 				this.communities = _.orderBy(this.communities, ['createdAt'], ['desc']);
 				this.communities = _.chunk(this.communities, 5)[0];
-
+				this.loadingCommunities = false;
 			}, (err) => {
 				console.log(err);
+				this.loadingCommunities = false;
+			}
+		);
+	}
+	
+	fetchQuestions() {
+		this.loadingQuestions = true;
+		const query = {
+			'include': [
+				'views',
+				{ 'communities': ['owners', 'participants', 'topics'] },
+				{ 'peer': 'profiles' },
+				{ 'answers': [{ 'peer': 'profiles' }, { 'upvotes': { 'peer': 'profiles' } }, { 'comments': [{ 'peer': 'profiles' }, { 'replies': { 'peer': 'profiles' } }, { 'upvotes': 'peer' }] }, { 'views': 'peer' }, { 'flags': 'peer' }] },
+				{ 'comments': [{ 'peer': 'profiles' }, { 'replies': { 'peer': 'profiles' } }, { 'upvotes': 'peer' }] },
+				{ 'upvotes': { 'peer': 'profiles' } },
+				{ 'views': 'peer' },
+				{ 'flags': 'peer' },
+				{ 'followers': 'profiles' }
+			],
+			'order': 'createdAt desc',
+			'limit': 5
+		};
+		
+		this._questionService.getQuestions(JSON.stringify(query)).subscribe(
+			(response: any) => {
+				this.questions = [];
+				response.forEach(question => {
+						const topics = [];
+						question.communities[0].topics.forEach(topicObj => {
+							topics.push(this.titlecasepipe.transform(topicObj.name));
+						});
+						if (topics.length > 0) {
+							question.topics = topics;
+						} else {
+							topics.push('No topics selected');
+							question.topics = topics;
+						}
+						this.questions.push(question);
+				});
+				this.loadingQuestions = false;
+			}, (err) => {
+				console.log(err);
+				this.loadingQuestions = false;
 			}
 		);
 	}
@@ -573,6 +592,12 @@ export class HomefeedComponent implements OnInit {
 	public onCommunityRefresh(event) {
 		if (event) {
 			this.fetchCommunities();
+		}
+	}
+	
+	public onQuestionRefresh(event) {
+		if (event) {
+			this.fetchQuestions();
 		}
 	}
 

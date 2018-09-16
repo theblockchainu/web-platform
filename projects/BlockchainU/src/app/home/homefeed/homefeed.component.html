@@ -68,7 +68,7 @@
 				<div class="col-md-12">
 					<div class="row">
 						<div class="col-md-8">
-							<div class="mat-display-1 clickable" [routerLink]="'/home/communities'">Ask Questions in Communities</div>
+							<div class="mat-display-1 clickable" [routerLink]="'/home/communities'">Join Communities</div>
 						</div>
 						<div class="col-md-2 pull-right" style="text-align: right">
 							<a [routerLink]="'/home/communities'">
@@ -84,11 +84,38 @@
 					</div>
 					<div *ngIf="!loadingCommunities" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
 						<div class="noDataContainer" *ngIf="communities === undefined || communities.length === 0">
-							There are no new active communities to view right now. Browse from within your signed-up communities
-							<a class="clickable">here</a>.
+							There are no new active communities to view right now.
 						</div>
 						<div *ngFor="let community of communities; let i = index;">
 							<app-community-card *ngIf="i < 3" [community]="community" [cardsPerRow]="3" (refresh)="onCommunityRefresh($event)"></app-community-card>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row question-feed">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8">
+							<div class="mat-display-1 clickable" [routerLink]="'/home/questions'">Get Answer to Questions</div>
+						</div>
+						<div class="col-md-2 pull-right" style="text-align: right">
+							<a [routerLink]="'/home/questions'">
+								<span class="mat-body-1">
+									See all
+									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loadingQuestions">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loadingQuestions" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="questions === undefined || questions.length === 0">
+							There are no questions to view right now.
+						</div>
+						<div *ngFor="let question of questions; let i = index;">
+							<app-question-card *ngIf="i < 3" [question]="question" [cardsPerRow]="3" (refresh)="onQuestionRefresh($event)"></app-question-card>
 						</div>
 					</div>
 				</div>

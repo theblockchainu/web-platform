@@ -96,7 +96,7 @@
 						</button>
 					</mat-menu>
 					<div class="mat-title margin-bottom-10">
-						<div class="clickable" [routerLink]="['/question',question.id]" style="display: inline-block;" [innerHTML]="question.text | linkify "></div>
+						<div class="clickable" [routerLink]="['/question',question.id]" style="display: inline-block;" [innerHTML]="question.text | ucfirst | linkify "></div>
 						<span class="mat-h5 mat-border-button gyanBubble" *ngIf="question.gyan" matTooltip="{{question.gyan}} Gyan for the right answer.">
 							<!--<div style="position: relative; top: 5px;"><i class="fab fa-ethereum"></i>&nbsp; {{question.gyan}} GYAN</div>-->
 							<div style="font-size: 11px;">{{question.gyan | convertCurrency : 'GYAN' | async}} USD</div>
@@ -113,7 +113,7 @@
 										| ucwords}} {{question.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 								</div>
 							</div>
-							<div class="">
+							<div class="userInfoLine">
 								<span class="mat-caption">
 									Asked {{question.createdAt |extractTime:'MMM Do'}}
 									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;">fiber_manual_record</mat-icon>
@@ -233,7 +233,7 @@
 													| ucwords}} {{comment.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 											</div>
 										</div>
-										<div class="">
+										<div class="userInfoLine">
 											<span class="mat-caption">{{comment.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
 										</div>
 									</div>
@@ -296,7 +296,7 @@
 																| ucwords}} {{reply.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 														</div>
 													</div>
-													<div class="">
+													<div class="userInfoLine">
 														<span class="mat-caption">{{reply.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
 													</div>
 												</div>
@@ -338,7 +338,7 @@
 													| ucwords}} {{answer.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 											</div>
 										</div>
-										<div class="">
+										<div class="userInfoLine">
 											<span class="mat-caption">Answered {{answer.createdAt |extractTime:'MMM Do'}}
 												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;">fiber_manual_record</mat-icon>
 												{{(answer.upvotes) ? answer.upvotes.length : '0'}} upvotes</span>
@@ -440,7 +440,7 @@
 															| ucwords}} {{comment.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 													</div>
 												</div>
-												<div class="">
+												<div class="userInfoLine">
 													<span class="mat-caption">{{comment.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
 												</div>
 											</div>
@@ -503,7 +503,7 @@
 																		| ucwords}} {{reply.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 																</div>
 															</div>
-															<div class="">
+															<div class="userInfoLine">
 																<span class="mat-caption">{{reply.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
 															</div>
 														</div>

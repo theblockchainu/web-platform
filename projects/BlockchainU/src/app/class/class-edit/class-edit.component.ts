@@ -876,7 +876,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.router.navigate(['class', this.classId, 'edit', this.step]);
 			}
 		}, err => {
-			this.snackBar.open('An Error Occured', 'Retry', {
+			this.snackBar.open('An Error Occurred', 'Retry', {
 				duration: 3000
 			}).onAction().subscribe(res => {
 				this.submitCertificate(certificate);
