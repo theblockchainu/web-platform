@@ -52,7 +52,6 @@ export class HomefeedComponent implements OnInit {
 	public ongoingArray: Array<any>;
 	public upcomingArray: Array<any>;
 	public pastArray: Array<any>;
-	public pastClassesObject: any;
 	public liveClassesObject: any;
 	public upcomingClassesObject: any;
 	public now: Date;
