@@ -293,20 +293,22 @@ export class QuestionsComponent implements OnInit {
 			(response: any) => {
 				this.questions = [];
 				response.forEach(question => {
-					const topics = [];
-					question.communities[0].topics.forEach(topicObj => {
-						topics.push(this.titlecasepipe.transform(topicObj.name));
-					});
-					if (topics.length > 0) {
-						question.topics = topics;
-					} else {
-						topics.push('No topics selected');
-						question.topics = topics;
+					if (question.communities && question.communities.length > 0) {
+						const topics = [];
+						question.communities[0].topics.forEach(topicObj => {
+							topics.push(this.titlecasepipe.transform(topicObj.name));
+						});
+						if (topics.length > 0) {
+							question.topics = topics;
+						} else {
+							topics.push('No topics selected');
+							question.topics = topics;
+						}
+						question.community = question.communities[0];
+						question.communityId = question.community.id;
+						this.initializeUserType(question);
+						this.questions.push(question);
 					}
-					question.community = question.communities[0];
-					question.communityId = question.community.id;
-					this.initializeUserType(question);
-					this.questions.push(question);
 				});
 				this.questionsBackup = _.cloneDeep(this.questions);
 				this.loading = false;
