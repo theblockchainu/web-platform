@@ -17,6 +17,7 @@ import { SearchService } from '../../_services/search/search.service';
 import { first } from 'rxjs/operators';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import {QuestionService} from '../../_services/question/question.service';
 
 @Component({
 	selector: 'app-index',
@@ -34,12 +35,13 @@ export class IndexComponent implements OnInit {
 	public classes: Array<any>;
 	public experiences: Array<any>;
 	public communities: Array<any>;
+	public questions: Array<any>;
 	public peers: Array<any>;
 	public loadingClasses = false;
 	public loadingExperiences = false;
 	public loadingCommunities = false;
+	public loadingQuestions = false;
 	public loadingPeers = false;
-	public loadingContinueLearning = false;
 	private today = moment();
 	public envVariable;
 
@@ -50,9 +52,6 @@ export class IndexComponent implements OnInit {
 	public ongoingArray: Array<any>;
 	public upcomingArray: Array<any>;
 	public pastArray: Array<any>;
-	public pastClassesObject: any;
-	public liveClassesObject: any;
-	public upcomingClassesObject: any;
 	public now: Date;
 	public cardInFocus = false;
 	public myControl = new FormControl('');
@@ -76,6 +75,7 @@ export class IndexComponent implements OnInit {
 		public _collectionService: CollectionService,
 		private _topicService: TopicService,
 		public _communityService: CommunityService,
+		public _questionService: QuestionService,
 		private titlecasepipe: TitleCasePipe,
 		public _profileService: ProfileService,
 		public _searchService: SearchService
@@ -103,11 +103,12 @@ export class IndexComponent implements OnInit {
 			}
 		});
 		this.setTags();
+		this.fetchGuides();
+		this.fetchQuestions();
+		this.fetchCommunities();
 		this.fetchClasses();
 		this.fetchExperiences();
 		this.fetchPeers();
-		this.fetchGuides();
-		this.fetchCommunities();
 		this.initialiseSearchService();
 	}
 
@@ -407,6 +408,48 @@ export class IndexComponent implements OnInit {
 		});
 
 	}
+	
+	fetchQuestions() {
+		this.loadingQuestions = true;
+		const query = {
+			'include': [
+				'views',
+				{ 'communities': ['owners', 'participants', 'topics'] },
+				{ 'peer': 'profiles' },
+				{ 'answers': [{ 'peer': 'profiles' }, { 'upvotes': { 'peer': 'profiles' } }, { 'comments': [{ 'peer': 'profiles' }, { 'replies': { 'peer': 'profiles' } }, { 'upvotes': 'peer' }] }, { 'views': 'peer' }, { 'flags': 'peer' }] },
+				{ 'comments': [{ 'peer': 'profiles' }, { 'replies': { 'peer': 'profiles' } }, { 'upvotes': 'peer' }] },
+				{ 'upvotes': { 'peer': 'profiles' } },
+				{ 'views': 'peer' },
+				{ 'flags': 'peer' },
+				{ 'followers': 'profiles' }
+			],
+			'order': 'createdAt desc',
+			'limit': 5
+		};
+		
+		this._questionService.getQuestions(JSON.stringify(query)).subscribe(
+			(response: any) => {
+				this.questions = [];
+				response.forEach(question => {
+					const topics = [];
+					question.communities[0].topics.forEach(topicObj => {
+						topics.push(this.titlecasepipe.transform(topicObj.name));
+					});
+					if (topics.length > 0) {
+						question.topics = topics;
+					} else {
+						topics.push('No topics selected');
+						question.topics = topics;
+					}
+					this.questions.push(question);
+				});
+				this.loadingQuestions = false;
+			}, (err) => {
+				console.log(err);
+				this.loadingQuestions = false;
+			}
+		);
+	}
 
 
 	fetchPeers() {
@@ -495,6 +538,12 @@ export class IndexComponent implements OnInit {
 	public onCommunityRefresh(event) {
 		if (event) {
 			this.fetchCommunities();
+		}
+	}
+	
+	public onQuestionRefresh(event) {
+		if (event) {
+			this.fetchQuestions();
 		}
 	}
 

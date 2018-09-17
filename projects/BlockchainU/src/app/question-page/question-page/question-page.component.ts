@@ -275,7 +275,7 @@ export class QuestionPageComponent implements OnInit {
 				}
 			);
 		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+			this._dialogsService.openSignup('/question/' + this.questionId);
 		}
 	}
 	
@@ -286,7 +286,7 @@ export class QuestionPageComponent implements OnInit {
 				text: ''
 			});
 		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+			this._dialogsService.openSignup('/question/' + this.questionId);
 		}
 	}
 	
@@ -298,7 +298,7 @@ export class QuestionPageComponent implements OnInit {
 				isAnnouncement: false
 			});
 		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+			this._dialogsService.openSignup('/question/' + this.questionId);
 		}
 	}
 	
@@ -310,7 +310,7 @@ export class QuestionPageComponent implements OnInit {
 				isAnnouncement: false
 			});
 		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+			this._dialogsService.openSignup('/question/' + this.questionId);
 		}
 	}
 	
@@ -331,7 +331,7 @@ export class QuestionPageComponent implements OnInit {
 				}
 			);
 		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+			this._dialogsService.openSignup('/question/' + this.questionId);
 		}
 	}
 	
@@ -420,7 +420,7 @@ export class QuestionPageComponent implements OnInit {
 				}
 			);
 		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+			this._dialogsService.openSignup('/question/' + this.questionId);
 		}
 	}
 	
@@ -475,7 +475,7 @@ export class QuestionPageComponent implements OnInit {
 				}
 			);
 		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+			this._dialogsService.openSignup('/question/' + this.questionId);
 		}
 	}
 	
@@ -494,7 +494,7 @@ export class QuestionPageComponent implements OnInit {
 				}
 			);
 		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+			this._dialogsService.openSignup('/question/' + this.questionId);
 		}
 	}
 	
@@ -565,7 +565,7 @@ export class QuestionPageComponent implements OnInit {
 				});
 			}
 		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
+			this._dialogsService.openSignup('/question/' + this.questionId);
 		}
 	}
 	
