@@ -478,7 +478,7 @@ export class QuestionsComponent implements OnInit {
 				isAnnouncement: false
 			});
 		} else {
-			this._dialogsService.openSignup('/question/' + question.id);
+			this._dialogsService.openSignup('/home/questions');
 		}
 	}
 	
@@ -604,7 +604,7 @@ export class QuestionsComponent implements OnInit {
 				}
 			);
 		} else {
-			this._dialogsService.openSignup('/question/' + question.id);
+			this._dialogsService.openSignup('/home/questions');
 		}
 	}
 	
@@ -659,7 +659,7 @@ export class QuestionsComponent implements OnInit {
 				}
 			);
 		} else {
-			this._dialogsService.openSignup('/question/' + question.id);
+			this._dialogsService.openSignup('/home/questions');
 		}
 	}
 	
@@ -678,7 +678,7 @@ export class QuestionsComponent implements OnInit {
 				}
 			);
 		} else {
-			this._dialogsService.openSignup('/question/' + question.id);
+			this._dialogsService.openSignup('/home/questions');
 		}
 	}
 	
