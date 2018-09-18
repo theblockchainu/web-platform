@@ -1420,8 +1420,12 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	}
 
 	public openMessageDialog(peer) {
-		this.dialogsService.messageParticipant(peer).subscribe((result: any) => {
-		});
+		if (this.userId && this.userId.length > 5) {
+			this.dialogsService.messageParticipant(peer).subscribe((result: any) => {
+			});
+		} else {
+			this.openSignup('/guide/' + this.guideId);
+		}
 	}
 
 	public addToEthereum() {

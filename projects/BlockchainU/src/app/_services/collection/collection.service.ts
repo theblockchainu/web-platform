@@ -774,6 +774,10 @@ export class CollectionService {
 	public imgErrorHandler(event) {
 		event.target.src = '/assets/images/placeholder-image.jpg';
 	}
+	
+	public topicImgErrorHandler(event) {
+		event.target.src = '/assets/images/topic-placeholder.jpg';
+	}
 
 	public userImgErrorHandler(event) {
 		event.target.src = '/assets/images/user-placeholder.jpg';

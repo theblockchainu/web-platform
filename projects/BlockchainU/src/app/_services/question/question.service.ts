@@ -113,5 +113,10 @@ export class QuestionService {
         return this.http
             .get(environment.apiUrl + '/api/questions/' + questionId + '?filter=' + filter, this.requestHeaderService.options);
     }
+	
+	public getQuestions(filter: string) {
+		return this.http
+			.get(environment.apiUrl + '/api/questions?filter=' + filter, this.requestHeaderService.options);
+	}
 
 }

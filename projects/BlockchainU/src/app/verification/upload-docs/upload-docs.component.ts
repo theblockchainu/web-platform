@@ -201,7 +201,7 @@ export class UploadDocsComponent implements OnInit {
 				if (err && err.error && err.error.error && err.error.error.message) {
 					this.phoneFormError = err.error.error.message;
 				} else {
-					this.snackBar.open('An error occured', 'Retry?', {
+					this.snackBar.open('An error occurred', 'Retry?', {
 						duration: 3000
 					}).onAction().subscribe(res => {
 						this.sendPhoneOTP(nextStep);

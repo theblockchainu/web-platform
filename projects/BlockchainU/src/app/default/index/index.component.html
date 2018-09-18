@@ -125,6 +125,46 @@
 			</div>
 		</div>
 	</section>
+	
+	<section class="guide-around-world spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Introducing Learning Guides with Live Labs </h2>
+			<div class="loading-container" [hidden]="!loadingGuides">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingGuides" class="row feed-horizontal" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="guides === undefined || guides.length === 0">
+					There are no new active guides to view right now.
+				</div>
+				<div *ngFor="let guide of guides; let i = index;">
+					<app-guide-card *ngIf="i < 5" [guide]="guide" (refresh)="onGuideRefresh($event)"></app-guide-card>
+				</div>
+			</div>
+			<div class="read-more mt-2 mat-body-2" *ngIf="guides && guides.length > 5">
+				<a [routerLink]="['home','guides']">Show all ({{guides.length}}+)</a>
+			</div>
+		</div>
+	</section>
+	
+	<section class="guide-around-world spacing">
+		<div class="container">
+			<h2 class="section-title pb-0 clickable" [routerLink]="['home', 'questions']">Get Answer to Questions </h2>
+			<div class="loading-container" [hidden]="!loadingQuestions">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingQuestions" class="row feed-horizontal" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="questions === undefined || questions.length === 0">
+					There are no questions to view right now.
+				</div>
+				<div *ngFor="let question of questions; let i = index;">
+					<app-question-card *ngIf="i < 2" [question]="question" [cardsPerRow]="2" (refresh)="onQuestionRefresh($event)"></app-question-card>
+				</div>
+			</div>
+			<div class="read-more mt-2 mat-body-2" *ngIf="questions && questions.length > 2">
+				<a [routerLink]="['home','questions']">Show all ({{questions.length}}+)</a>
+			</div>
+		</div>
+	</section>
 
 	<section class="introducing-communities spacing">
 		<div class="container">
@@ -160,26 +200,6 @@
 				<div *ngFor="let community of communities; let i = index;">
 					<app-community-card *ngIf="i < 3" [cardsPerRow]="3" [community]="community" (refresh)="onCommunityRefresh($event)"></app-community-card>
 				</div>
-			</div>
-		</div>
-	</section>
-	
-	<section class="guide-around-world spacing">
-		<div class="container">
-			<h2 class="section-title pb-0">Introducing Learning Guides with Live Labs </h2>
-			<div class="loading-container" [hidden]="!loadingGuides">
-				<ngx-loading [show]="true"></ngx-loading>
-			</div>
-			<div *ngIf="!loadingGuides" class="row feed-horizontal" style="padding: 0px 7px;">
-				<div class="noDataContainer" *ngIf="guides === undefined || guides.length === 0">
-					There are no new active guides to view right now.
-				</div>
-				<div *ngFor="let guide of guides; let i = index;">
-					<app-guide-card *ngIf="i < 5" [guide]="guide" (refresh)="onGuideRefresh($event)"></app-guide-card>
-				</div>
-			</div>
-			<div class="read-more mt-2 mat-body-2" *ngIf="guides && guides.length > 5">
-				<a [routerLink]="['home','guides']">Show all ({{guides.length}}+)</a>
 			</div>
 		</div>
 	</section>

@@ -106,7 +106,7 @@ export class CreateAccreditationDialogComponent implements OnInit {
       this.dialogRef.close(true);
       this.snackBar.open('Accreditation Created', 'close', { duration: 3000 });
     }, err => {
-      this.snackBar.open('Error Occured', 'close', { duration: 3000 });
+      this.snackBar.open('Error Occurred', 'close', { duration: 3000 });
     });
   }
 

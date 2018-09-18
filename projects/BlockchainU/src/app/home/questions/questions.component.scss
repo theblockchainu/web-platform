@@ -86,10 +86,56 @@
 	border: 1px solid #33bd9e;
 }
 
+.homeContainer {
+	margin-top: 2%;
+	margin-bottom: 0%;
+	margin-left: 12%;
+	width: 76%;
+}
+
+.questionFeed {
+	padding-top: 30px;
+}
+
+.question-feed label{
+	color: #484848;
+	font-size: 13px;
+	font-weight: 400;
+}
+
+.question-feed .title {
+	font-size:17px !important;
+	color: #484848 !important;
+}
+
+.question-feed .headline {
+	font-size:16px !important;
+	color: #767676 !important;
+
+}
+
+.rightLinks span {
+	color: #767676 !important;
+	font-size:16px !important;
+}
+
+.mat-display-1 {
+	margin-bottom: 25px !important;
+}
+
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	.answerFormField {
 		width: 80% !important;
 	}
-}
 
+	.questionFeed {
+		padding-top: 0px;
+	}
+
+	.homeContainer {
+		margin-left: inherit;
+		width: inherit;
+	}
+}

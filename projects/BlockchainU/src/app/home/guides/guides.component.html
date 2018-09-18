@@ -24,13 +24,6 @@
 								</div>
 								<div class="margin-right-10" style="float: left;">
 									<mat-form-field class="filterFormField" [floatLabel]="'never'">
-										<mat-select placeholder="Location" formControlName="location" multiple>
-											<mat-option *ngFor="let location of locationList" [value]="location">{{location}}</mat-option>
-										</mat-select>
-									</mat-form-field>
-								</div>
-								<div class="margin-right-10" style="float: left;">
-									<mat-form-field class="filterFormField" [floatLabel]="'never'">
 										<mat-select placeholder="Difficulty Level" formControlName="difficultyLevel" multiple>
 											<mat-option *ngFor="let level of levelList" [value]="level">{{level}}</mat-option>
 										</mat-select>
@@ -49,7 +42,7 @@
 								</div>
 								<div class="margin-right-10" style="float: left;">
 									<mat-form-field class="filterFormField" [floatLabel]="'never'">
-										<mat-select placeholder="Subtype" formControlName="subtype" multiple>
+										<mat-select placeholder="Type" formControlName="subtype" multiple>
 											<mat-option *ngFor="let subtype of availableSubtypes" [value]="subtype">
 												{{subtype}}
 											</mat-option>

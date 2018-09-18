@@ -9,7 +9,7 @@
 			<div class="topic-div" *ngFor="let topicObj of availableTopics;let i =index" id="topic{{i}}">
 				<button mat-button class="mat-border-button" #topicButton (click)="topicClicked(i)">
 					<div class="mat-button-table">
-						<img src="{{envVariable.apiUrl + topicObj.topic.imageUrl + '/100'}}" alt="logo" (error)="_collectionService.imgErrorHandler($event)">
+						<img src="{{envVariable.apiUrl + topicObj.topic.imageUrl + '/100'}}" alt="logo" (error)="_collectionService.topicImgErrorHandler($event)">
 						<h3>{{topicObj.topic.name | titlecase}}</h3>
 					</div>
 				</button>

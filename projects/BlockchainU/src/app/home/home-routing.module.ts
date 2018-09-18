@@ -7,6 +7,7 @@ import { ExperiencesComponent } from './experiences/experiences.component';
 import { PeersComponent } from './peers/peers.component';
 import { CommunitiesComponent } from './communities/communities.component';
 import { GuidesComponent } from './guides/guides.component';
+import {QuestionsComponent} from './questions/questions.component';
 const routes: Routes = [
 	{
 		path: '',
@@ -31,6 +32,10 @@ const routes: Routes = [
 	{
 		path: 'guides',
 		component: GuidesComponent
+	},
+	{
+		path: 'questions',
+		component: QuestionsComponent
 	},
 	{
 		path: 'peers',

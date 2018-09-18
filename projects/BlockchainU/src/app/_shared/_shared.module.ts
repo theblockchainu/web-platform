@@ -96,6 +96,7 @@ import { PromocodeService } from '../_services/promocode/promocode.service';
 import { LinkifyPipe } from './linkify-pipe/linkify.pipe';
 import { LMarkdownEditorModule } from 'ngx-markdown-editor';
 import { GuideCardComponent } from './guide-card/guide-card.component';
+import { QuestionCardComponent } from './question-card/question-card.component';
 
 @NgModule({
     imports: [
@@ -132,6 +133,8 @@ import { GuideCardComponent } from './guide-card/guide-card.component';
         MatSelectModule,
         MatButtonToggleModule,
         MatCardModule,
+		MatChipsModule,
+		MatMenuModule,
         MatDatepickerModule,
         MatProgressBarModule
     ],
@@ -155,7 +158,8 @@ import { GuideCardComponent } from './guide-card/guide-card.component';
         SafePipe,
         UploadFileComponent,
         LinkifyPipe,
-        GuideCardComponent
+        GuideCardComponent,
+        QuestionCardComponent
     ],
     providers: [
         CollectionService,
@@ -261,7 +265,8 @@ import { GuideCardComponent } from './guide-card/guide-card.component';
         SpinnerModule,
         LinkifyPipe,
         LMarkdownEditorModule,
-        GuideCardComponent
+        GuideCardComponent,
+		QuestionCardComponent
     ]
 })
 export class SharedModule {

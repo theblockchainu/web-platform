@@ -368,7 +368,7 @@ export class GuidesComponent implements OnInit {
 		this.locationList = [];
 		this.levelList = [];
 		this.ratingList = [5, 4, 3, 2, 1, 0];
-		this.availableSubtypes = ['workshop', 'meetup', 'hackathon', 'bootcamp'];
+		this.availableSubtypes = ['lab'];
 		let maxPrice = 0;
 		const minPrice = 0;
 

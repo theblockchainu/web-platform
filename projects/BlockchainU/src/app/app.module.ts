@@ -33,7 +33,7 @@ import { MatButtonModule } from '@angular/material';
 import { MatTooltipModule } from '@angular/material';
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { CookieService } from 'ngx-cookie-service';
-import { UcWordsPipe } from 'ngx-pipes';
+import {UcFirstPipe, UcWordsPipe} from 'ngx-pipes';
 import * as Raven from 'raven-js';
 import { environment } from '../environments/environment';
 import { TokenflowComponent } from './tokenflow/tokenflow.component';
@@ -125,6 +125,7 @@ export class RavenErrorHandler implements ErrorHandler {
 	providers: [
 		CookieService,
 		UcWordsPipe,
+		UcFirstPipe,
 		{
 			provide: ErrorHandler,
 			useClass: RavenErrorHandler
