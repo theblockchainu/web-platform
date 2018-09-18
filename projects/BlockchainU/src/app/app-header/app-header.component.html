@@ -11,7 +11,8 @@
 			</span>
 			<span class="search-form hide-small">
 				<mat-form-field class="pb-block" floatLabel="never">
-					<input #searchInputBar name="search" class="search-box" matInput [formControl]="myControl" [matAutocomplete]="auto" placeholder="Try 'Hyperledger' or 'Blockchain' ">
+					<input #searchInputBar name="search" class="search-box" matInput [formControl]="myControl" [matAutocomplete]="auto"
+					 placeholder="Try 'Hyperledger' or 'Blockchain' ">
 					<mat-autocomplete #auto="matAutocomplete">
 						<mat-option *ngIf="searching">
 							<span>
@@ -107,7 +108,8 @@
 				</button>
 				<button mat-button disableRipple="true" class="headerButtons" [matMenuTriggerFor]="headerUserMenu" *ngIf="(isLoggedIn | async)">
 					<img *ngIf="!profile.picture_url" style="margin:0px" src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb">
-					<img *ngIf="profile.picture_url" style="margin:0px" src="{{envVariable.apiUrl + profile.picture_url + '/100'}}" alt="A" class="circle-thumb">
+					<img *ngIf="profile.picture_url" style="margin:0px" src="{{envVariable.apiUrl + profile.picture_url + '/100'}}"
+					 alt="A" class="circle-thumb">
 				</button>
 				<!-- <button mat-button class="headerButtons hide-small" [routerLink]="['/sign-up']" *ngIf="!(isLoggedIn | async)">
 					<b>Become a teacher</b>
@@ -134,9 +136,10 @@
 		<mat-toolbar-row [ngClass]="{'show-small': true, 'searchBar' : true, 'searchBarHeight': isSearchBarVisible}" *ngIf="(isLoggedIn | async) && isAccountApproved"
 		 style="border-top: 1px solid #ddd;">
 			<span class="search-form">
-				<mat-form-field style="color:#333333 !important" class="mat-block" *ngIf="(isLoggedIn | async) && isAccountApproved" [floatLabel]="'never'">
-					<input #searchInputBar name="search" style="color:#767676 !important" class="mat-block search-box" matInput [formControl]="myControl"
-					 [matAutocomplete]="auto" placeholder="Try 'Mumbai' ">
+				<mat-form-field style="color:#333333 !important" class="mat-block" *ngIf="(isLoggedIn | async) && isAccountApproved"
+				 [floatLabel]="'never'">
+					<input #searchInputBar name="search" style="color:#767676 !important" class="mat-block search-box" matInput
+					 [formControl]="myControl" [matAutocomplete]="auto" placeholder="Try 'Mumbai' ">
 					<mat-autocomplete #auto="matAutocomplete">
 						<mat-option *ngIf="searching" class="center">
 							<span>
@@ -188,7 +191,8 @@
 </header>
 
 <mat-menu #creditMenu [overlapTrigger]="false">
-	<span mat-menu-item style="height: auto; line-height: 26px; white-space: pre-wrap; padding: 15px;" *ngIf="isAccountApproved && (!profile.peer[0].ethAddress || profile.peer[0].ethAddress.substring(0, 2) !== '0x' ) && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
+	<span mat-menu-item style="height: auto; line-height: 26px; white-space: pre-wrap; padding: 15px;" *ngIf="isAccountApproved && (!profile.peer[0].ethAddress || profile.peer[0].ethAddress.substring(0, 2) !== '0x' ) && isLoggedIn | async"
+	 [routerLink]="['console', 'account', 'wallet']">
 		Setup Knowledge Wallet
 		<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
 			powered by one0x
@@ -212,7 +216,8 @@
 		</div>
 	</span>
 	<hr *ngIf="isAccountApproved && profile.peer[0].ethAddress && profile.peer[0].ethAddress.substring(0, 2) === '0x' && isLoggedIn | async">
-	<span mat-menu-item *ngIf="isAccountApproved && profile.peer[0].ethAddress && profile.peer[0].ethAddress.substring(0, 2) === '0x' && isLoggedIn | async" [routerLink]="['story', 'me']">
+	<span mat-menu-item *ngIf="isAccountApproved && profile.peer[0].ethAddress && profile.peer[0].ethAddress.substring(0, 2) === '0x' && isLoggedIn | async"
+	 [routerLink]="['story', 'me']">
 		<div class="col-xs-4">
 			<i class="fab fa-ethereum"></i> GYAN
 		</div>
@@ -257,6 +262,9 @@
 	</button>
 	<button mat-menu-item (click)="createExperience()">
 		Host an offline experience
+	</button>
+	<button mat-menu-item [routerLink]="'/console/teaching/guides'">
+		Create a Guide
 	</button>
 	<button mat-menu-item (click)="createClass()">
 		Create an online class
@@ -321,7 +329,8 @@
 		<i class="fas fa-database" style="color: #fff;"></i>&nbsp;&nbsp; Dashboard >
 	</button> -->
 	<button mat-menu-item [routerLink]="['/profile', userId]">
-		<i class="fas fa-user lighterText"></i>&nbsp;&nbsp;&nbsp; {{profile.first_name | titlecase}} {{profile.last_name | titlecase}}
+		<i class="fas fa-user lighterText"></i>&nbsp;&nbsp;&nbsp; {{profile.first_name | titlecase}} {{profile.last_name |
+		titlecase}}
 	</button>
 	<button mat-menu-item *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].isAdmin" [routerLink]="['/console/admin']">
 		<i class="fas fa-lock lighterText"></i>&nbsp;&nbsp; Admin

@@ -1,0 +1,21 @@
+.image-thumb{
+    height: 25vh;
+    width: auto;
+    object-fit: contain;
+    padding: 0.5vh;
+    align-self: center;
+}
+
+.image-container{
+    height: 55vh;
+    overflow: scroll;
+    background: #f5f5f5;
+}
+
+.image-box{
+    display: flex;
+    flex-direction: column;
+}
+.grey-back{
+    
+}

@@ -61,6 +61,8 @@ import { AddPromoCodeDialogComponent } from './add-promo-code-dialog/add-promo-c
 import { ViewPromocodeDialogComponent } from './view-promocode-dialog/view-promocode-dialog.component';
 import { AddParticipantDialogComponent } from './add-participant-dialog/add-participant-dialog.component';
 import { ConfirmDeleteAccountComponent } from './confirm-delete-account/confirm-delete-account.component';
+import { AddImageDialogComponent } from './add-image-dialog/add-image-dialog.component';
+
 @Injectable()
 export class DialogsService {
 
@@ -707,6 +709,15 @@ export class DialogsService {
             panelClass: 'responsive-dialog',
             width: '30vw',
             height: '40vh'
+        });
+        return dialogRef.afterClosed();
+    }
+
+    public addImageDialog() {
+        const dialogRef = this.dialog.open(AddImageDialogComponent, {
+            panelClass: 'responsive-dialog',
+            width: '55vw',
+            height: '90vh'
         });
         return dialogRef.afterClosed();
     }
