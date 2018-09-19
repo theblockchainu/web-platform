@@ -444,21 +444,19 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				});
 			this._collectionService.getCollectionDetail(this.guideId, query)
 				.subscribe(res => {
-					console.log(res);
-					this.guide = res;
-					this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
-					this.setTags();
-					if (fbq !== undefined) {
-						fbq('track', 'ContentView', {
-							currency: 'USD',
-							value: 0.0,
-							content_type: 'product',
-							content_ids: [this.guideId]
-						});
-					}
-				},
-					err => console.log('error'),
-					() => {
+					if (res) {
+						console.log(res);
+						this.guide = res;
+						this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
+						this.setTags();
+						if (fbq !== undefined) {
+							fbq('track', 'ContentView', {
+								currency: 'USD',
+								value: 0.0,
+								content_type: 'product',
+								content_ids: [this.guideId]
+							});
+						}
 						this.initializeUserType();
 						this.fixTopics();
 						this.getReviews();
@@ -473,7 +471,15 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 							this.router.navigate(['guide', this.guideId]);
 						}
 						this.recordStartView();
-					});
+					} else {
+						this.loadingGuide = false;
+					}
+				},
+					err => {
+						console.log('error');
+						this.loadingGuide = false;
+					},
+				);
 		} else {
 			console.log('NO COLLECTION');
 		}

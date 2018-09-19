@@ -1,8 +1,12 @@
 <div class="main-content">
-	<div class="loading-container" [hidden]="!loadingExperience" style="margin-left: 8.5%; margin-top: 3%;">
-		<ngx-loading [show]="true"></ngx-loading>
+	<div class="row" [hidden]="!loadingExperience">
+		<div class="col-xs-2 col-xs-offset-5">
+			<div class="loading-container">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+		</div>
 	</div>
-	<div *ngIf="experience" class="experiencePageContainer">
+	<div *ngIf="experience " class="experiencePageContainer">
 		<div class="row pending-actions" *ngIf="experience.status === 'cancelled' && userType==='teacher' ">
 			<div class="col-md-10 col-md-offset-1 center">
 				<span>This experience has been cancelled by the teacher</span>
@@ -1222,7 +1226,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="bottomButton" *ngIf="userType === 'public'">
+	<div class="bottomButton" *ngIf="userType === 'public' && experience">
 		<div class="col-xs-8" style="text-align: left;">
 			<div class="row">
 				<div class="col-md-12">
@@ -1260,6 +1264,11 @@
 			<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this experience">
 				<button mat-raised-button color="primary" [disabled]="true">See Dates</button>
 			</span>-->
+		</div>
+	</div>
+	<div class="row" *ngIf="!experience && !loadingExperience">
+		<div class="col-xs-12 center">
+			<h1>Not Found</h1>
 		</div>
 	</div>
 </div>
