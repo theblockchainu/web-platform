@@ -613,8 +613,10 @@ export class CollectionService {
 			case 'session':
 				this.router.navigate(['/session', collection.id]);
 				break;
+			case 'guide':
+				this.router.navigate(['/guide', collection.id]);
+				break;
 			default:
-				this.router.navigate(['/class', collection.id]);
 				break;
 		}
 	}
@@ -774,7 +776,7 @@ export class CollectionService {
 	public imgErrorHandler(event) {
 		event.target.src = '/assets/images/placeholder-image.jpg';
 	}
-	
+
 	public topicImgErrorHandler(event) {
 		event.target.src = '/assets/images/topic-placeholder.jpg';
 	}

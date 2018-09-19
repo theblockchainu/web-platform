@@ -357,13 +357,10 @@
 										<h2 class="title">Lets write the content of your learning guide</h2>
 										<p class="subtitle">Give detailed introduction & step by step guides on the topic you are covering.
 											<br><br>
-											Add code blocks and explain to the learner how it works. Include steps on how to run and test the code in live lab instantly.
+											Add code blocks and explain to the learner how it works. Include steps on how to run and test the code in
+											live lab instantly.
 										</p>
-										<!-- <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-top: 20px; margin-bottom: 20px">
-											<textarea matInput #description maxlength="2000" rows="1" matTextareaAutosize formControlName="description"
-											 placeholder="What we'll do in this guide?"></textarea>
-											<mat-hint align="end">{{description.value.length}} / </mat-hint>
-										</mat-form-field> -->
+										<button mat-raised-button type="button" (click)="insertImage()">Insert Image</button>
 										<md-editor [options]="editorOptions" formControlName="description" [height]="'360px'" maxlength="20000"></md-editor>
 									</div>
 								</div>
@@ -493,26 +490,6 @@
 										<div class="loading-container" [hidden]="!uploadingImage">
 											<ngx-loading [show]="true"></ngx-loading>
 										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-8">
-										<div class="stepHeader">Upload a video for cover</div>
-										<app-upload-file (uploaded)="addVideoUrl($event)"></app-upload-file>
-										<h5>Max File Size
-											<b>1000MB</b>
-										</h5>
-										<div *ngIf="urlForVideo.length" class="profileVideo delete">
-											<div *ngFor="let file of urlForVideo" class="col-md-6 padding-left-0 videoContainer">
-												<video controls width="150" class="uploaded_picture" style="border: 0.5px solid #ccc;" preload="metadata">
-													<source src="{{envVariable.apiUrl + file}}"> Your browser does not support the video tag.
-												</video>
-												<mat-icon (click)="deleteFromContainer(file, 'video')" class="delete-video">close</mat-icon>
-											</div>
-										</div>
-										<!-- <div class="loading-container" [hidden]="!uploadingVideo">
-												<ngx-loading [show]="true"></ngx-loading>
-											</div> -->
 									</div>
 								</div>
 								<div class="row padding-top-20">

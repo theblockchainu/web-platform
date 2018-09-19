@@ -33,11 +33,19 @@ export class LeftSidebarService {
         console.log(sidebarMenuItems);
         let completedSections = 0;
         if (collection.status === 'draft') {
-            sidebarMenuItems[4].visible = false;
-            sidebarMenuItems[3].visible = true;
+            if (sidebarMenuItems[4].visible) {
+                sidebarMenuItems[4].visible = false;
+            }
+            if (sidebarMenuItems[3].visible) {
+                sidebarMenuItems[3].visible = true;
+            }
         } else if (collection.status === 'submitted') {
-            sidebarMenuItems[4].visible = false;
-            sidebarMenuItems[3].visible = true;
+            if (sidebarMenuItems[4].visible) {
+                sidebarMenuItems[4].visible = false;
+            }
+            if (sidebarMenuItems[3]) {
+                sidebarMenuItems[3].visible = true;
+            }
             // sidebarMenuItems.forEach(mainItem => {
             //     if (mainItem.submenu !== undefined && mainItem.title !== 'Finishing Touches') {
             //         mainItem.submenu.forEach(item => {
@@ -46,17 +54,18 @@ export class LeftSidebarService {
             //     }
             // });
         } else {
-            sidebarMenuItems[4].visible = true;
-            sidebarMenuItems[4].submenu[0].visible = true;
-            sidebarMenuItems[4].submenu[1].visible = true;
-            sidebarMenuItems[3].visible = false;
-            // sidebarMenuItems.forEach(mainItem => {
-            //     if (mainItem.submenu !== undefined && mainItem.title !== 'Finishing Touches') {
-            //         mainItem.submenu.forEach(item => {
-            //             item.locked = true;
-            //         }, this);
-            //     }
-            // });
+            if (sidebarMenuItems[4].visible) {
+                sidebarMenuItems[4].visible = true;
+            } if (sidebarMenuItems[4].submenu[0]) {
+                sidebarMenuItems[4].submenu[1].visible = true;
+            }
+            if (sidebarMenuItems[4].submenu[1] && sidebarMenuItems[4].submenu[1].visible) {
+                sidebarMenuItems[4].submenu[1].visible = true;
+
+            }
+            if (sidebarMenuItems[3] && sidebarMenuItems[3].visible) {
+                sidebarMenuItems[3].visible = false;
+            }
         }
         if (collection.subCategory && collection.subCategory.length > 0) {
             sidebarMenuItems[0].submenu[0].complete = true;
@@ -122,7 +131,7 @@ export class LeftSidebarService {
 
 
     public updateSideMenuCertificate(certificate: any, sidebarMenuItems) {
-        if (certificate.formData && certificate.formData.length > 0 && certificate.expiryDate && certificate.expiryDate.length > 0) {
+        if (certificate && certificate.formData && certificate.formData.length > 0 && certificate.expiryDate && certificate.expiryDate.length > 0) {
             sidebarMenuItems[1].submenu[5].complete = true;
         }
         return sidebarMenuItems;

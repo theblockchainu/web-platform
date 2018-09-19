@@ -26,7 +26,7 @@ import { ProfileService } from '../../_services/profile/profile.service';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { CustomCertificateFormComponent } from '../../_shared/custom-certificate-form/custom-certificate-form.component';
 import { AssessmentService } from '../../_services/assessment/assessment.service';
-import { flatMap, startWith, map } from 'rxjs/operators';
+import { flatMap, startWith, map, subscribeOn } from 'rxjs/operators';
 @Component({
 	selector: 'app-guide-edit',
 	templateUrl: './guide-edit.component.html',
@@ -1598,6 +1598,16 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				);
 			});
 		}
+	}
+
+	public insertImage() {
+		this.dialogsService.addImageDialog().subscribe(res => {
+			if (res) {
+				this.guide.controls['description'].patchValue(this.guide.value.description + ' ![](' + res + ') ');
+			}
+		}, err => {
+			console.log(err);
+		});
 	}
 }
 

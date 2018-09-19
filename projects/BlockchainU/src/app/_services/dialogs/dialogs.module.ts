@@ -72,6 +72,7 @@ import { AddPromoCodeDialogComponent } from './add-promo-code-dialog/add-promo-c
 import { ViewPromocodeDialogComponent } from './view-promocode-dialog/view-promocode-dialog.component';
 import { AddParticipantDialogComponent } from './add-participant-dialog/add-participant-dialog.component';
 import { ConfirmDeleteAccountComponent } from './confirm-delete-account/confirm-delete-account.component';
+import { AddImageDialogComponent } from './add-image-dialog/add-image-dialog.component';
 
 @NgModule({
 	imports: [
@@ -122,7 +123,8 @@ import { ConfirmDeleteAccountComponent } from './confirm-delete-account/confirm-
 		AddPromoCodeDialogComponent,
 		ViewPromocodeDialogComponent,
 		AddParticipantDialogComponent,
-		ConfirmDeleteAccountComponent
+		ConfirmDeleteAccountComponent,
+		AddImageDialogComponent
 	],
 	providers: [
 		DialogsService,
@@ -146,7 +148,7 @@ import { ConfirmDeleteAccountComponent } from './confirm-delete-account/confirm-
 		ScholarshipDialogComponent, GenerateKnowledgeStoryComponent, RequestKnowledgeStoryComponent, ConfirmPasswordDialogComponent,
 		AddViewerDialogComponent, GyanPromptComponent, AddCommunityDialogComponent, CreateAccreditationDialogComponent, SelectFieldDialogComponent,
 		CertificateVerificationComponent, TermsAndConditionsDialogComponent, CollectionStandardsDialogComponent, OnboardingDialogComponent, AddPromoCodeDialogComponent,
-		ViewPromocodeDialogComponent, AddParticipantDialogComponent, ConfirmDeleteAccountComponent
+		ViewPromocodeDialogComponent, AddParticipantDialogComponent, ConfirmDeleteAccountComponent, AddImageDialogComponent
 	],
 })
 export class DialogsModule { }

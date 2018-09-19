@@ -554,99 +554,97 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				});
 			this._collectionService.getCollectionDetail(this.experienceId, query)
 				.subscribe(res => {
-					console.log(res);
-					this.experience = res;
-					this.inviteLink = environment.clientUrl + '/experience/' + this.experience.id;
-					this.setTags();
-					this.setCurrentCalendar();
-					if (fbq !== undefined) {
-						fbq('track', 'ContentView', {
-							currency: 'USD',
-							value: 0.0,
-							content_type: 'product',
-							content_ids: [this.experienceId]
-						});
-					}
-					this.itenariesObj = {};
-					this.itenaryArray = [];
-					// Scan through all contents and group them under their respective start days.
-					// Also scan through all contents and check if the user has made submission for a project.
-					this.experience.contents.forEach(contentObj => {
-						if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
-							this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
-						} else {
-							this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
-						}
-
-						if (contentObj.submissions && contentObj.submissions.length > 0) {
-							contentObj.submissions.forEach(submission => {
-								if (submission.peer) {
-									if (this.userId === submission.peer[0].id) {
-										this.peerHasSubmission = true;
-									}
-								}
+					if (res) {
+						console.log(res);
+						this.experience = res;
+						this.inviteLink = environment.clientUrl + '/experience/' + this.experience.id;
+						this.setTags();
+						this.setCurrentCalendar();
+						if (fbq !== undefined) {
+							fbq('track', 'ContentView', {
+								currency: 'USD',
+								value: 0.0,
+								content_type: 'product',
+								content_ids: [this.experienceId]
 							});
 						}
-
-						if (contentObj.locations && contentObj.locations.length > 0
-							&& contentObj.locations[0].map_lat !== undefined
-							&& contentObj.locations[0].map_lng !== undefined) {
-							this.lat = parseFloat(contentObj.locations[0].map_lat);
-							this.lng = parseFloat(contentObj.locations[0].map_lng);
-							this.mainLocation = contentObj.locations[0].location_name + ', ' + contentObj.locations[0].street_address + ', ' + contentObj.locations[0].city;
-						}
-					});
-					// Scan through all the start-day-groups of contents
-					// Calculate the calendar start and end date of each content group
-					// Sort the contents inside a group based on their start times
-					// Format the start time and end time of each of the individual content in that group
-					// Calculate the viewing metrics of each individual content
-					// Set hasRSVPd toggle on each of the content
-					// Create an object for the content group with properties: startDay, startDate, endDate and array of contents.
-					// Add content group to itinerary array
-					for (const key in this.itenariesObj) {
-						if (this.itenariesObj.hasOwnProperty(key)) {
-							let startDate, endDate;
-							if (this.currentCalendar) {
-								startDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
-								endDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
+						this.itenariesObj = {};
+						this.itenaryArray = [];
+						// Scan through all contents and group them under their respective start days.
+						// Also scan through all contents and check if the user has made submission for a project.
+						this.experience.contents.forEach(contentObj => {
+							if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
+								this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
 							} else {
-								startDate = this._collectionService.calculateDate(this.experience.calendars[0].startDate, key);
-								endDate = this._collectionService.calculateDate(this.experience.calendars[0].startDate, key);
+								this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
 							}
-							console.log('Sorting----------------');
 
-							this.itenariesObj[key].sort(function (a, b) {
-								return moment(a.schedules[0].startTime).diff(moment(b.schedules[0].startTime));
-							});
-							console.log('Sorted----------------');
+							if (contentObj.submissions && contentObj.submissions.length > 0) {
+								contentObj.submissions.forEach(submission => {
+									if (submission.peer) {
+										if (this.userId === submission.peer[0].id) {
+											this.peerHasSubmission = true;
+										}
+									}
+								});
+							}
 
-							this.itenariesObj[key].forEach(content => {
-								if (content.schedules[0].startTime !== undefined) {
-									content.schedules[0].startTime = startDate.format().toString().split('T')[0] +
-										'T' + content.schedules[0].startTime.split('T')[1];
-									content.schedules[0].endTime = startDate.format().toString().split('T')[0] +
-										'T' + content.schedules[0].endTime.split('T')[1];
+							if (contentObj.locations && contentObj.locations.length > 0
+								&& contentObj.locations[0].map_lat !== undefined
+								&& contentObj.locations[0].map_lng !== undefined) {
+								this.lat = parseFloat(contentObj.locations[0].map_lat);
+								this.lng = parseFloat(contentObj.locations[0].map_lng);
+								this.mainLocation = contentObj.locations[0].location_name + ', ' + contentObj.locations[0].street_address + ', ' + contentObj.locations[0].city;
+							}
+						});
+						// Scan through all the start-day-groups of contents
+						// Calculate the calendar start and end date of each content group
+						// Sort the contents inside a group based on their start times
+						// Format the start time and end time of each of the individual content in that group
+						// Calculate the viewing metrics of each individual content
+						// Set hasRSVPd toggle on each of the content
+						// Create an object for the content group with properties: startDay, startDate, endDate and array of contents.
+						// Add content group to itinerary array
+						for (const key in this.itenariesObj) {
+							if (this.itenariesObj.hasOwnProperty(key)) {
+								let startDate, endDate;
+								if (this.currentCalendar) {
+									startDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
+									endDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
+								} else {
+									startDate = this._collectionService.calculateDate(this.experience.calendars[0].startDate, key);
+									endDate = this._collectionService.calculateDate(this.experience.calendars[0].startDate, key);
 								}
-							});
-							this.setContentViews(this.itenariesObj[key]);
-							const contentObj = this.processContent(key);
-							const itenary = {
-								startDay: key,
-								startDate: startDate,
-								endDate: endDate,
-								contents: contentObj
-							};
-							this.itenaryArray.push(itenary);
+								console.log('Sorting----------------');
+
+								this.itenariesObj[key].sort(function (a, b) {
+									return moment(a.schedules[0].startTime).diff(moment(b.schedules[0].startTime));
+								});
+								console.log('Sorted----------------');
+
+								this.itenariesObj[key].forEach(content => {
+									if (content.schedules[0].startTime !== undefined) {
+										content.schedules[0].startTime = startDate.format().toString().split('T')[0] +
+											'T' + content.schedules[0].startTime.split('T')[1];
+										content.schedules[0].endTime = startDate.format().toString().split('T')[0] +
+											'T' + content.schedules[0].endTime.split('T')[1];
+									}
+								});
+								this.setContentViews(this.itenariesObj[key]);
+								const contentObj = this.processContent(key);
+								const itenary = {
+									startDay: key,
+									startDate: startDate,
+									endDate: endDate,
+									contents: contentObj
+								};
+								this.itenaryArray.push(itenary);
+							}
 						}
-					}
-					// Sort itinerary array in ascending order of content group start days.
-					this.itenaryArray.sort(function (a, b) {
-						return parseFloat(a.startDay) - parseFloat(b.startDay);
-					});
-				},
-					err => console.log('error'),
-					() => {
+						// Sort itinerary array in ascending order of content group start days.
+						this.itenaryArray.sort(function (a, b) {
+							return parseFloat(a.startDay) - parseFloat(b.startDay);
+						});
 						if (this.experience && this.experience.owners && this.experience.owners.length > 0) {
 							this.initializeUserType();
 							this.calculateTotalHours();
@@ -671,10 +669,19 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 							}
 							this.recordStartView();
 						} else {
-							this.snackBar.open('This in-person experience has either been deleted or flagged.', 'OK', {duration: 5000});
+							this.snackBar.open('This in-person experience has either been deleted or flagged.', 'OK', { duration: 5000 });
 							this.router.navigate(['home', 'experiences']);
 						}
-					});
+					} else {
+						this.loadingExperience = false;
+					}
+
+				},
+					err => {
+						this.loadingExperience = false;
+						console.log('error');
+					}
+				);
 		} else {
 			console.log('NO COLLECTION');
 		}

@@ -883,6 +883,7 @@ h3.calendarTitle {
 	margin-left: -15px;
 	display: inline-block;
 	border: 3px solid #ffffff;
+	object-fit: cover;
 }
 
 .circle-thumb-large img, .circle-thumb-large {
@@ -2080,10 +2081,10 @@ MD-Editor Styling
 }
 
 .ace-tm .ace_marker-layer .ace_active-line {
-	 background: #fff !important;
+	background: #fff !important;
 }
 
-.md-editor-container .tool-bar .btn-group > .btn:first-child::before {
+.md-editor-container .tool-bar .btn-group>.btn:first-child::before {
 	background-color: #fff !important;
 }
 

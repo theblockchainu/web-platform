@@ -361,10 +361,10 @@ export class ProfileService {
 				});
 		}
 	}
-	
+
 	public addBillingAddress(userId, profileId, billingAddress: any) {
 		return this.http
-				.post(environment.apiUrl + '/api/profiles/' + profileId + '/billingaddress', this.sanitize(billingAddress), this._requestHeaderService.options);
+			.post(environment.apiUrl + '/api/profiles/' + profileId + '/billingaddress', this.sanitize(billingAddress), this._requestHeaderService.options);
 	}
 
 	/**
@@ -783,5 +783,9 @@ export class ProfileService {
 
 	public linkPromoCode(peerId: string, promoCodeId: string) {
 		return this.http.put(environment.apiUrl + '/api/peers/' + peerId + '/promoCodesApplied/rel/' + promoCodeId, {}, this._requestHeaderService.options);
+	}
+
+	public getMedias(peerId: string) {
+		return this.http.get(environment.apiUrl + '/api/peers/' + peerId + '/medias', this._requestHeaderService.options);
 	}
 }
