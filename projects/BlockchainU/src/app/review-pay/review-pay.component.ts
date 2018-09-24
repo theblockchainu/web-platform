@@ -188,7 +188,7 @@ export class ReviewPayComponent implements OnInit {
                 });
                 this.card.mount('#card-element');
                 // FB Event Trigger
-				if (fbq !== undefined) {
+				if (fbq && fbq !== undefined) {
 					fbq('track', 'InitiateCheckout', {
 						currency: 'USD',
 						value: 0.0,
@@ -406,7 +406,7 @@ export class ReviewPayComponent implements OnInit {
                             this.createSourceData.token = result.token.id;
                             this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: any) => {
                                 if (res) {
-									if (fbq !== undefined) {
+									if (fbq && fbq !== undefined) {
 										fbq('track', 'AddPaymentInfo', {
 											currency: 'USD',
 											value: 0.0,
@@ -507,7 +507,7 @@ export class ReviewPayComponent implements OnInit {
 
     public joinCollection() {
         // FB Event Trigger
-		if (fbq !== undefined) {
+		if (fbq && fbq !== undefined) {
 			fbq('track', 'Purchase', {
 				currency: this.collection.currency,
 				value: this.totalPrice,

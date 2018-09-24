@@ -40,7 +40,7 @@ export class ExperienceCardComponent implements OnInit {
 				&& experience.bookmarks[0].peer[0].id === this.userId)) {
 				this._collectionService.saveBookmark(experience.id, (err, response) => {
 					// FB Event Trigger
-					if (fbq !== undefined) {
+					if (fbq && fbq !== undefined) {
 						fbq('track', 'AddToWishlist', {
 							currency: 'USD',
 							value: 0.0,

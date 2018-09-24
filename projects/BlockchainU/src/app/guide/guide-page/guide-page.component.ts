@@ -449,7 +449,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 						this.guide = res;
 						this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
 						this.setTags();
-						if (fbq !== undefined) {
+						if (fbq && fbq !== undefined) {
 							fbq('track', 'ContentView', {
 								currency: 'USD',
 								value: 0.0,
@@ -494,7 +494,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value;
 		this._authenticationService.createGuestContacts(first_name, '', email, subject, message)
 			.subscribe(res => {
-				if (fbq !== undefined) {
+				if (fbq && fbq !== undefined) {
 					fbq('track', 'Lead', {
 						currency: 'USD',
 						value: 1.0,
@@ -830,7 +830,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 					console.log(err);
 				} else {
 					// FB Event Trigger
-					if (fbq !== undefined) {
+					if (fbq && fbq !== undefined) {
 						fbq('track', 'AddToWishlist', {
 							currency: 'USD',
 							value: 0.0,

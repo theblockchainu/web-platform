@@ -108,7 +108,7 @@ export class SignupComponentDialogComponent implements OnInit {
 					this.loading = false;
 				} else {
 					console.log('FB EVENTS: Complete Registration');
-					if (fbq !== undefined) {
+					if (fbq && fbq !== undefined) {
 						fbq('track', 'CompleteRegistration', {
 							currency: 'USD',
 							value: 1.0,
@@ -119,7 +119,7 @@ export class SignupComponentDialogComponent implements OnInit {
 				}
 			}, err => {
 				console.log(err);
-				if (fbq !== undefined) {
+				if (fbq && fbq !== undefined) {
 					fbq('track', 'CompleteRegistration', {
 						currency: 'USD',
 						value: 1.0,
