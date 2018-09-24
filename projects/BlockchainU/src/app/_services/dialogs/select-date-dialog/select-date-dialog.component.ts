@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 	styleUrls: ['./select-date-dialog.component.scss']
 })
 export class SelectDateDialogComponent implements OnInit {
-	
+
 	public selectedIndex;
 	public itineraries;
 	public participants;
@@ -20,9 +20,9 @@ export class SelectDateDialogComponent implements OnInit {
 	public filteredItineraries = [];
 	public deletedCalendar = [];
 	public userId;
-	
+
 	constructor(public dialogRef: MatDialogRef<SelectDateDialogComponent>,
-				@Inject(MAT_DIALOG_DATA) public data: any) {
+		@Inject(MAT_DIALOG_DATA) public data: any) {
 		this.itineraries = data.itineraries;
 		this.mode = data.mode;
 		this.collectionType = data.collectionType;
@@ -31,6 +31,8 @@ export class SelectDateDialogComponent implements OnInit {
 		this.accountApproved = data.accountApproved;
 		this.userId = data.userId;
 		const today = moment();
+		// console.log(data);
+
 		this.itineraries.forEach(itinerary => {
 			let thisParticipantCount = 0;
 			this.participants.forEach(participant => {
@@ -45,19 +47,19 @@ export class SelectDateDialogComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	ngOnInit() {
 		console.log(this.data);
 	}
-	
+
 	onTabOpen(event) {
 		this.selectedIndex = event.index;
 	}
-	
+
 	onTabClose(event) {
 		this.selectedIndex = -1;
 	}
-	
+
 	deleteCohort(event, calendarId) {
 		event.preventDefault();
 		if (calendarId) {
@@ -67,7 +69,7 @@ export class SelectDateDialogComponent implements OnInit {
 			this.deletedCalendar.push(calendarId);
 		}
 	}
-	
+
 	closeSelectCohort() {
 		if (this.mode === 'editDelete') {
 			this.dialogRef.close(this.deletedCalendar);
@@ -75,15 +77,15 @@ export class SelectDateDialogComponent implements OnInit {
 			this.dialogRef.close();
 		}
 	}
-	
+
 	selectCohort(calendarId) {
 		this.dialogRef.close(calendarId);
 	}
-	
+
 	public calculateDate(fromDate, day) {
 		const current = moment(fromDate);
 		current.add(day, 'days');
 		return current.toDate();
 	}
-	
+
 }
