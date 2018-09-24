@@ -440,11 +440,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 
 	private initializeAllItenaries() {
 		this.events = [];
+		this.allItenaries = [];
 		const sortedCalendar = this.sort(this.experience.calendars, 'startDate', 'endDate');
 		this.viewDate = new Date(sortedCalendar[sortedCalendar.length - 1].endDate);
 		console.log('viewDate' + this.viewDate);
-		console.log(this.experience.calendars);
-
 		sortedCalendar.forEach((calendar, index) => {
 			const calendarItenary = [];
 			for (const key in this.itenariesObj) {
@@ -462,6 +461,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 					calendarItenary.push(itenary);
 				}
 			}
+			console.log('allitenaries');
+
+			console.log(this.allItenaries);
 			this.allItenaries.push(
 				{
 					calendar: calendar,
