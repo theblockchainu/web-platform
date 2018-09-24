@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Meta, Title} from '@angular/platform-browser';
-import {Router} from '@angular/router';
-import {environment} from '../../environments/environment';
+import { Meta, Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
 	selector: 'app-whitepaper',
@@ -9,8 +9,8 @@ import {environment} from '../../environments/environment';
 	styleUrls: ['./whitepaper.component.scss']
 })
 export class WhitepaperComponent implements OnInit {
-	
-	pdfSrc = '../assets/files/whitepaper.pdf';
+
+	pdfSrc = '/assets/files/whitepaper.pdf';
 	public envVariable;
 	constructor(
 		private titleService: Title,
@@ -19,12 +19,12 @@ export class WhitepaperComponent implements OnInit {
 	) {
 		this.envVariable = environment;
 	}
-	
+
 	ngOnInit() {
 		this.setTags();
-		
+
 	}
-	
+
 	private setTags() {
 		this.titleService.setTitle('White Paper');
 		this.metaService.updateTag({
@@ -44,5 +44,5 @@ export class WhitepaperComponent implements OnInit {
 			content: environment.clientUrl + this.router.url
 		});
 	}
-	
+
 }

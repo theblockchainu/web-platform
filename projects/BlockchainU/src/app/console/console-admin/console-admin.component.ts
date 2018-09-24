@@ -94,6 +94,7 @@ export class ConsoleAdminComponent implements OnInit {
 				this.scholarship = res[0];
 			}
 		}, err => {
+			console.log(err);
 			this.scholarshipsLoaded = true;
 		});
 	}
@@ -105,6 +106,8 @@ export class ConsoleAdminComponent implements OnInit {
 		this._communityService.getRequestedComminities(JSON.stringify(filter)).subscribe((res: any) => {
 			this.communityRequests = res;
 			this.communityRequestsLoaded = true;
+		}, err => {
+			console.log(err);
 		});
 	}
 
@@ -116,6 +119,8 @@ export class ConsoleAdminComponent implements OnInit {
 		this._profileService.getEmailSubscriptions(filter).subscribe((result: any) => {
 			this.emailSubscriptions = result;
 			this.emailSubLoaded = true;
+		}, err => {
+			console.log(err);
 		});
 	}
 
@@ -253,6 +258,8 @@ export class ConsoleAdminComponent implements OnInit {
 				duration: 5000
 			});
 			this.fetchCommunityRequests();
+		}, err => {
+			console.log(err);
 		});
 	}
 
@@ -270,6 +277,7 @@ export class ConsoleAdminComponent implements OnInit {
 			this.fetchScholarShips();
 			this.snackBar.open('Scholarship created', 'close', { duration: 5000 });
 		}, err => {
+			console.log(err);
 			this.snackBar.open('Error', 'close', { duration: 5000 });
 		});
 	}
@@ -298,6 +306,8 @@ export class ConsoleAdminComponent implements OnInit {
 		this._scholarshipService.deleteScholarship(id).subscribe(res => {
 			this.snackBar.open('Deleted');
 			this.fetchScholarShips();
+		}, err => {
+			console.log(err);
 		});
 
 	}
@@ -318,6 +328,8 @@ export class ConsoleAdminComponent implements OnInit {
 					duration: 5000
 				});
 				this.fetchScholarShips();
+			}, err => {
+				console.log(err);
 			});
 	}
 
@@ -327,6 +339,8 @@ export class ConsoleAdminComponent implements OnInit {
 			this.snackBar.open('Added', 'Close', {
 				duration: 5000
 			});
+		}, err => {
+			console.log(err);
 		});
 	}
 
@@ -336,6 +350,8 @@ export class ConsoleAdminComponent implements OnInit {
 			this.snackBar.open('Added', 'Close', {
 				duration: 5000
 			});
+		}, err => {
+			console.log(err);
 		});
 	}
 
@@ -343,6 +359,7 @@ export class ConsoleAdminComponent implements OnInit {
 		this.countryPickerService.postInbuiltCountries().subscribe(res => {
 			this.snackBar.open('Posted successfully', 'close', { duration: 3000 });
 		}, err => {
+			console.log(err);
 			this.snackBar.open('Error', 'close', { duration: 3000 });
 		});
 	}
@@ -351,6 +368,7 @@ export class ConsoleAdminComponent implements OnInit {
 		this.timezonePickerService.postAvailableTimezones().subscribe(res => {
 			this.snackBar.open('Posted successfully', 'close', { duration: 3000 });
 		}, err => {
+			console.log(err);
 			this.snackBar.open('Error', 'close', { duration: 3000 });
 		});
 	}
