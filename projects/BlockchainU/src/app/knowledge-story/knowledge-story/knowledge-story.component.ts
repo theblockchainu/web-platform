@@ -20,7 +20,7 @@ export class KnowledgeStoryComponent implements OnInit {
 	public loadingKnowledgeStory: boolean;
 	public loadingBlockTransactions = true;
 	public loadingCertificates = true;
-	public blockTransactions: any;
+	public blockTransactions: Array<any>;
 	public knowledgeStory: any;
 	public knowledgeStoryId: string;
 	public userId: string;
@@ -33,7 +33,7 @@ export class KnowledgeStoryComponent implements OnInit {
 	public storyNotFound = false;
 	public requested: boolean;
 	public globalStory = false;
-	public certificates: any;
+	public certificates: Array<any>;
 	public isBrowser: boolean;
 	constructor(
 		private activatedRoute: ActivatedRoute,
@@ -70,19 +70,23 @@ export class KnowledgeStoryComponent implements OnInit {
 	}
 
 	private setTags() {
-		this.titleService.setTitle(this.knowledgeStory.protagonist[0].profiles[0].first_name + '\'s Knowledge Story');
-		this.metaService.updateTag({
-			property: 'og:title',
-			content: this.knowledgeStory.protagonist[0].profiles[0].first_name + '\'s Knowledge Story'
-		});
+		if (this.knowledgeStory.protagonist && this.knowledgeStory.protagonist.length > 0 &&
+			this.knowledgeStory.protagonist[0].profiles && this.knowledgeStory.protagonist[0].profiles.length > 0) {
+			this.titleService.setTitle(this.knowledgeStory.protagonist[0].profiles[0].first_name + '\'s Knowledge Story');
+			this.metaService.updateTag({
+				property: 'og:title',
+				content: this.knowledgeStory.protagonist[0].profiles[0].first_name + '\'s Knowledge Story'
+			});
+			this.metaService.updateTag({
+				property: 'og:image',
+				content: environment.apiUrl + this.knowledgeStory.protagonist[0].profiles[0].picture_url
+			});
+		}
 		this.metaService.updateTag({
 			property: 'og:site_name',
 			content: 'theblockchainu.com'
 		});
-		this.metaService.updateTag({
-			property: 'og:image',
-			content: environment.apiUrl + this.knowledgeStory.protagonist[0].profiles[0].picture_url
-		});
+
 		this.metaService.updateTag({
 			property: 'og:url',
 			content: environment.clientUrl + this.router.url
@@ -165,9 +169,10 @@ export class KnowledgeStoryComponent implements OnInit {
 
 	private fetchBlockTransactions(topics) {
 		this.loadingBlockTransactions = true;
+		this.blockTransactions = [];
 		this._knowledgeStoryService.fetchBlockTransactions(this.knowledgeStory.protagonist[0].ethAddress, topics)
 			.subscribe(
-				res => {
+				(res: any) => {
 					if (res) {
 						this.blockTransactions = res;
 					} else {
@@ -184,9 +189,10 @@ export class KnowledgeStoryComponent implements OnInit {
 
 	private fetchCertificates(topics) {
 		this.loadingCertificates = true;
+		this.certificates = [];
 		this._certificateService.getCertificates(this.userId)
 			.subscribe(
-				res => {
+				(res: any) => {
 					if (res) {
 						this.certificates = res;
 					} else {

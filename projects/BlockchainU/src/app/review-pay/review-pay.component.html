@@ -115,7 +115,7 @@
 						<iframe #paymentframe height="600px" width="100%"></iframe>
 					</div>
 					<!--Load Stripe Payment Form-->
-					<div *ngIf="!loadingCountry" [hidden]="totalPrice===0 || userCountry === 'IN'">
+					<div [hidden]="totalPrice===0 || userCountry === 'IN' || loadingCountry">
 						<div class="margin-bottom-50" *ngIf="isCardExist">
 							<h3>Select payment method</h3>
 							<div class="row margin-top-50">
@@ -258,8 +258,10 @@
 							</div>
 						</div>
 						<div class="seperate-section" *ngIf="currentCalendar && currentCalendar.length > 0">
-							<div class="" *ngIf="currentCalendar && currentCalendar.length > 0">{{ currentCalendar.startDate | date: 'EEE, MMM dd' }} to {{currentCalendar.endDate | date: 'EEE, MMM dd' }}</div>
-							<div class="" *ngIf="collection.contents && collection.contents.length > 0">{{collection.contents.length}} Activities</div>
+							<div class="" *ngIf="currentCalendar && currentCalendar.length > 0">{{ currentCalendar.startDate | date: 'EEE,
+								MMM dd' }} to {{currentCalendar.endDate | date: 'EEE, MMM dd' }}</div>
+							<div class="" *ngIf="collection.contents && collection.contents.length > 0">{{collection.contents.length}}
+								Activities</div>
 							<!--<a href="#">See details</a>-->
 						</div>
 						<!--<div class="seperate-section">

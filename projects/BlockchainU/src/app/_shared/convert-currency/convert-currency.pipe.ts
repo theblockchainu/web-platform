@@ -24,6 +24,10 @@ export class ConvertCurrencyPipe implements PipeTransform {
 					} else {
 						return this._currencyPipe.transform(0, 'USD', 'symbol');
 					}
+				}, err => {
+					return new Observable((observer) => {
+						observer.next('ERROR');
+					});
 				}
 			));
 		} else {
@@ -41,6 +45,10 @@ export class ConvertCurrencyPipe implements PipeTransform {
 							} else {
 								return this._currencyPipe.transform(amount, 'USD', 'symbol', '1.0-0');
 							}
+						}, err => {
+							return new Observable((observer) => {
+								observer.next('ERROR');
+							});
 						}
 					)
 				);
