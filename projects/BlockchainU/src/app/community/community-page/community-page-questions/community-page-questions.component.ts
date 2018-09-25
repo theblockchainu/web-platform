@@ -11,7 +11,8 @@ import { MatSnackBar } from '@angular/material';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { AuthenticationService } from '../../../_services/authentication/authentication.service';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
-
+import { pipe } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 @Component({
     selector: 'app-community-page-questions',
     templateUrl: './community-page-questions.component.html',
@@ -43,6 +44,7 @@ export class CommunityPageQuestionsComponent implements OnInit {
     public gyanBalance: number;
     public questionHasQuestionMark = false;
     public questionKarmaBurn: number;
+    private topicsIdArray: Array<any>;
 
     constructor(activatedRoute: ActivatedRoute,
         public communityPageComponent: CommunityPageComponent,
@@ -63,6 +65,7 @@ export class CommunityPageQuestionsComponent implements OnInit {
                 this.communityId = '';
             } else {
                 this.communityId = urlSegment[0].path;
+                this.getCommunityTopics();
             }
         });
 
@@ -103,19 +106,31 @@ export class CommunityPageQuestionsComponent implements OnInit {
         });
     }
 
+    private getCommunityTopics() {
+
+        const filter = { 'include': ['topics'] };
+        this._communityService.getCommunityDetail(this.communityId, filter).subscribe((res: any) => {
+            console.log('topics');
+            this.topicsIdArray = [];
+            res.topics.forEach(topic => {
+                this.topicsIdArray.push(topic.id);
+            });
+            console.log(this.topicsIdArray);
+        });
+    }
     public getGyanBalance() {
-    	if (this.userId && this.userId.length > 5) {
-			this._profileService.getGyanBalance(this.userId, 'fixed').subscribe((res: any) => {
-				this.gyanBalance = parseInt(res, 10);
-			
-				if (this.gyanBalance === 0) {
-					this.questionForm.controls['gyan'].disable();
-				}
-			});
-		} else {
-    		this.gyanBalance = 0;
-			this.questionForm.controls['gyan'].disable();
-		}
+        if (this.userId && this.userId.length > 5) {
+            this._profileService.getGyanBalance(this.userId, 'fixed').subscribe((res: any) => {
+                this.gyanBalance = parseInt(res, 10);
+
+                if (this.gyanBalance === 0) {
+                    this.questionForm.controls['gyan'].disable();
+                }
+            });
+        } else {
+            this.gyanBalance = 0;
+            this.questionForm.controls['gyan'].disable();
+        }
     }
 
     public getQuestions() {
@@ -191,15 +206,25 @@ export class CommunityPageQuestionsComponent implements OnInit {
                     this.questionForm.value['gyan'] = 1;
                 }
                 this.busyQuestion = true;
-                this._communityService.postQuestion(this.communityId, this.questionForm.value).subscribe((result: any) => {
-                    this._authService.isLoginSubject.next(true);
-                    this.questionForm.reset();
-                    this.busyQuestion = false;
-                    this.getQuestions();
-                },
-                    err => {
-                        console.log(err);
-                    });
+                this._communityService.postQuestion(this.communityId, this.questionForm.value)
+                    .pipe(flatMap((res: any) => {
+                        console.log(res);
+
+                        const questionId = res.id;
+                        const body = {
+                            'targetIds': this.topicsIdArray
+                        };
+                        return this._questionsService.linkTopics(questionId, body);
+                    }))
+                    .subscribe((result: any) => {
+                        this._authService.isLoginSubject.next(true);
+                        this.questionForm.reset();
+                        this.busyQuestion = false;
+                        this.getQuestions();
+                    },
+                        err => {
+                            console.log(err);
+                        });
             } else {
                 this.snackBar.open('Check if you have enough gyan balance in your account for this question.', 'Ok', { duration: 5000 });
             }
