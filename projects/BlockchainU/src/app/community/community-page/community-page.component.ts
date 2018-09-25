@@ -1,6 +1,6 @@
 import {
 	Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, AfterViewChecked,
-	ChangeDetectorRef
+	ChangeDetectorRef, OnDestroy
 } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
@@ -37,6 +37,7 @@ import * as _ from 'lodash';
 import { Meta, Title } from '@angular/platform-browser';
 import { UcWordsPipe } from 'ngx-pipes';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
+import {SocketService} from "../../_services/socket/socket.service";
 
 @Component({
 	selector: 'app-community-page',
@@ -62,7 +63,7 @@ import { AuthenticationService } from '../../_services/authentication/authentica
 	]
 })
 
-export class CommunityPageComponent implements OnInit, AfterViewChecked {
+export class CommunityPageComponent implements OnInit, OnDestroy, AfterViewChecked {
 
 	public communityId: string;
 	public envVariable;
@@ -100,6 +101,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 	public isRatingReceived: boolean;
 	public maxLength: number;
 	public recommendations: any;
+	public startedView;
 	public questionMapping: { [k: string]: string };
 	public viewDate: Date;
 	refresh: Subject<any>;
@@ -120,6 +122,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 		private http: HttpClient,
 		private _cdRef: ChangeDetectorRef,
 		public dialogsService: DialogsService,
+		private _socketService: SocketService,
 		private titleService: Title,
 		private metaService: Meta,
 		private ucwords: UcWordsPipe,
@@ -142,6 +145,19 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 			this.initializePage();
 		});
 		this.initializePage();
+	}
+	
+	ngOnDestroy() {
+		if (this.startedView) {
+			this.startedView.viewer = {
+				id: this.userId
+			};
+			this.startedView.endTime = new Date();
+			this._socketService.sendEndView(this.startedView);
+			this._socketService.listenForViewEnded().subscribe(endedView => {
+				delete this.startedView;
+			});
+		}
 	}
 
 	private initializePage() {
@@ -228,7 +244,28 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 				}
 			}
 			this.loadingCommunity = false;
+			this.recordStartView();
 		}
+	}
+	
+	private recordStartView() {
+		// Send start view msg on socket
+		const view = {
+			type: 'user',
+			url: this.router.url,
+			ip_address: '',
+			browser: '',
+			viewedModelName: 'community',
+			startTime: new Date(),
+			community: this.community,
+			viewer: {
+				id: this.userId
+			}
+		};
+		this._socketService.sendStartView(view);
+		this._socketService.listenForViewStarted().subscribe(startedView => {
+			this.startedView = startedView;
+		});
 	}
 
 	private initializeCommunity() {
@@ -238,6 +275,7 @@ export class CommunityPageComponent implements OnInit, AfterViewChecked {
 				'topics',
 				'views',
 				'invites',
+				'questions',
 				'rooms',
 				{ 'collections': ['owners'] },
 				'links',

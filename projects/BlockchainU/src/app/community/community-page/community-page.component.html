@@ -138,6 +138,36 @@
 
 						<!--RIGHT SIDEBAR-->
 						<div class="col-md-4 col-md-offset-1 col-xs-12 col-xs-offset-0 right-content">
+							<!--METRICS-->
+							<div class="row" *ngIf="userType === 'public'">
+								<div class="col-xs-4 text-center">
+									<div class="mat-display-1" style="margin-bottom: 10px;">
+										{{participants ? participants.length : '0'}}
+									</div>
+									<div class="mat-caption">
+										Members
+									</div>
+								</div>
+								<div class="col-xs-4 text-center">
+									<div class="mat-display-1" style="margin-bottom: 10px;">
+										{{community.questions? community.questions.length : '0'}}
+									</div>
+									<div class="mat-caption">
+										Questions
+									</div>
+								</div>
+								<div class="col-xs-4 text-center">
+									<div class="mat-display-1" style="margin-bottom: 10px;">
+										{{community.views ? community.views.length : '0'}}
+									</div>
+									<div class="mat-caption">
+										Views
+									</div>
+								</div>
+								<div class="col-xs-12">
+									<hr>
+								</div>
+							</div>
 							<!--ACTION BUTTONS-->
 							<div class="row hide-small" style="margin-top: 15px; text-align: right;" *ngIf="userType === 'public'">
 								<div class="col-md-12">
