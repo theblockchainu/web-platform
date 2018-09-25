@@ -1,25 +1,25 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {ProfileService} from '../../_services/profile/profile.service';
-import {SelectPriceComponent} from '../dialogs/select-price/select-price.component';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ProfileService } from '../../_services/profile/profile.service';
+import { SelectPriceComponent } from '../dialogs/select-price/select-price.component';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material';
-import {TopicService} from '../../_services/topic/topic.service';
-import {DialogsService} from '../../_services/dialogs/dialog.service';
-import {SelectDurationComponentComponent} from '../dialogs/select-duration-component/select-duration-component.component';
-import {CollectionService} from '../../_services/collection/collection.service';
-import {SelectTopicsComponent} from '../dialogs/select-topics/select-topics.component';
-import {Meta, Title} from '@angular/platform-browser';
-import {CookieUtilsService} from '../../_services/cookieUtils/cookie-utils.service';
-import {environment} from '../../../environments/environment';
-import {Router} from '@angular/router';
-import {QuestionService} from '../../_services/question/question.service';
-import {TitleCasePipe} from '@angular/common';
-import {CommunityService} from '../../_services/community/community.service';
-import {CommentService} from '../../_services/comment/comment.service';
-import {AuthenticationService} from '../../_services/authentication/authentication.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
+import { TopicService } from '../../_services/topic/topic.service';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
+import { SelectDurationComponentComponent } from '../dialogs/select-duration-component/select-duration-component.component';
+import { CollectionService } from '../../_services/collection/collection.service';
+import { SelectTopicsComponent } from '../dialogs/select-topics/select-topics.component';
+import { Meta, Title } from '@angular/platform-browser';
+import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
+import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
+import { QuestionService } from '../../_services/question/question.service';
+import { TitleCasePipe } from '@angular/common';
+import { CommunityService } from '../../_services/community/community.service';
+import { CommentService } from '../../_services/comment/comment.service';
+import { AuthenticationService } from '../../_services/authentication/authentication.service';
 
 @Component({
 	selector: 'app-questions',
@@ -39,23 +39,23 @@ import {AuthenticationService} from '../../_services/authentication/authenticati
 	]
 })
 export class QuestionsComponent implements OnInit {
-	
+
 	public availableTopics: Array<any>;
 	public topicsBackup: Array<any>;
-	
+
 	public userId;
 	public questions: Array<any>;
 	public questionsBackup: Array<any>;
 	@ViewChild('topicButton') topicButton;
 	@ViewChild('priceButton') priceButton;
 	@ViewChild('durationButton') durationButton;
-	
+
 	public availableRange: Array<number>;
 	public selectedRange: Array<number>;
-	
+
 	public availableDurationRange: Array<number>;
 	public selectedDurationRange: Array<number>;
-	
+
 	public questionForm: FormGroup;
 	public answerForm: FormGroup;
 	public commentForm: FormGroup;
@@ -80,7 +80,7 @@ export class QuestionsComponent implements OnInit {
 	public ratingList: Array<number>;
 	public showArchived: boolean;
 	public availableSubtypes: Array<string>;
-	
+
 	constructor(
 		public _collectionService: CollectionService,
 		public _profileService: ProfileService,
@@ -114,7 +114,7 @@ export class QuestionsComponent implements OnInit {
 		this.initializeFilters();
 		this.setTags();
 	}
-	
+
 	private setTags() {
 		this.titleService.setTitle('Questions');
 		this.metaService.updateTag({
@@ -134,7 +134,7 @@ export class QuestionsComponent implements OnInit {
 			content: environment.clientUrl + this.router.url
 		});
 	}
-	
+
 	private getLoggedInUser() {
 		if (this.userId && this.userId.length > 5) {
 			this._profileService.getPeerData(this.userId, { 'include': ['profiles', 'reviewsAboutYou', 'ownedCollections', 'scholarships_joined'] }).subscribe(res => {
@@ -147,7 +147,7 @@ export class QuestionsComponent implements OnInit {
 			this.loggedInUser = null;
 		}
 	}
-	
+
 	private initializeForms() {
 		this.questionForm = this._fb.group({
 			text: ['', Validators.required],
@@ -164,7 +164,7 @@ export class QuestionsComponent implements OnInit {
 			description: ['', Validators.required]
 		});
 	}
-	
+
 	private initializeFilters() {
 		this.filterForm = this._fb.group({
 			language: [],
@@ -173,12 +173,12 @@ export class QuestionsComponent implements OnInit {
 			rating: [],
 			subtype: []
 		});
-		
+
 		this.filterForm.valueChanges.subscribe(res => {
 			this.fitlerResults();
 		});
 	}
-	
+
 	private fitlerResults() {
 		this.questions = this.questionsBackup.filter((val) => {
 			let languageBool = false;
@@ -188,7 +188,7 @@ export class QuestionsComponent implements OnInit {
 			let levelBool = false;
 			let ratingBool = false;
 			let subtypeBool = false;
-			
+
 			if (this.filterForm.value.language && this.filterForm.value.language.length > 0) {
 				for (let i = 0; (i < this.filterForm.value.language.length && !languageBool); i++) {
 					const language = this.filterForm.value.language[i];
@@ -199,7 +199,7 @@ export class QuestionsComponent implements OnInit {
 			} else {
 				languageBool = true;
 			}
-			
+
 			if (this.filterForm.value.location && this.filterForm.value.location.length > 0) {
 				for (let i = 0; (i < this.filterForm.value.location.length && !locationBool); i++) {
 					const location = this.filterForm.value.location[i];
@@ -210,7 +210,7 @@ export class QuestionsComponent implements OnInit {
 			} else {
 				locationBool = true;
 			}
-			
+
 			if (this.filterForm.value.difficultyLevel && this.filterForm.value.difficultyLevel.length > 0) {
 				for (let i = 0; (i < this.filterForm.value.difficultyLevel.length && !levelBool); i++) {
 					const level = this.filterForm.value.difficultyLevel[i];
@@ -221,13 +221,13 @@ export class QuestionsComponent implements OnInit {
 			} else {
 				levelBool = true;
 			}
-			
+
 			if (this.filterForm.value.subtype && this.filterForm.value.subtype.length > 0) {
 				for (let i = 0; (i < this.filterForm.value.subtype.length && !subtypeBool); i++) {
 					const subtype = this.filterForm.value.subtype[i];
 					console.log(subtype);
 					console.log(val.subCategory);
-					
+
 					if (val.subCategory === subtype) {
 						subtypeBool = true;
 					}
@@ -235,8 +235,8 @@ export class QuestionsComponent implements OnInit {
 			} else {
 				subtypeBool = true;
 			}
-			
-			
+
+
 			if (this.filterForm.value.rating && this.filterForm.value.rating.length > 0) {
 				for (let i = 0; (i < this.filterForm.value.rating.length && !ratingBool); i++) {
 					const rating = this.filterForm.value.rating[i];
@@ -248,29 +248,29 @@ export class QuestionsComponent implements OnInit {
 			} else {
 				ratingBool = true;
 			}
-			
+
 			if (this.selectedRange) {
 				priceBool = (val.price >= this.selectedRange[0] && val.price <= this.selectedRange[1]);
 			} else {
 				priceBool = true;
 			}
-			
+
 			if (this.selectedDurationRange) {
 				durationBool = (val.totalHours >= this.selectedDurationRange[0] && val.totalHours <= this.selectedDurationRange[1]);
 			} else {
 				durationBool = true;
 			}
-			
+
 			return languageBool && locationBool && priceBool && durationBool && levelBool && ratingBool && subtypeBool;
 		});
 	}
-	
+
 	fetchData() {
 		this.loading = true;
 		this.fetchQuestions();
 	}
-	
-	
+
+
 	fetchQuestions() {
 		this.loading = true;
 		const query = {
@@ -283,18 +283,19 @@ export class QuestionsComponent implements OnInit {
 				{ 'upvotes': { 'peer': 'profiles' } },
 				{ 'views': 'peer' },
 				{ 'flags': 'peer' },
-				{ 'followers': 'profiles' }
+				{ 'followers': 'profiles' },
+				'topics'
 			],
 			'order': 'createdAt desc',
 			'limit': 15
 		};
-		
+
 		this._questionsService.getQuestions(JSON.stringify(query)).subscribe(
 			(response: any) => {
 				this.questions = [];
 				response.forEach(question => {
+					const topics = [];
 					if (question.communities && question.communities.length > 0) {
-						const topics = [];
 						question.communities[0].topics.forEach(topicObj => {
 							topics.push(this.titlecasepipe.transform(topicObj.name));
 						});
@@ -307,8 +308,20 @@ export class QuestionsComponent implements OnInit {
 						question.community = question.communities[0];
 						question.communityId = question.community.id;
 						this.initializeUserType(question);
-						this.questions.push(question);
+					} else {
+						if (question.topics && question.topics.length > 0) {
+							const topicsArray = [];
+							question.topics.forEach(topicObj => {
+								if (topicObj.name) {
+									topicsArray.push(this.titlecasepipe.transform(topicObj.name));
+								}
+							});
+							question.topics = topicsArray;
+						}
 					}
+					this.questions.push(question);
+					console.log(question);
+
 				});
 				this.questionsBackup = _.cloneDeep(this.questions);
 				this.loading = false;
@@ -318,7 +331,7 @@ export class QuestionsComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	private initializeUserType(question) {
 		delete question.userType;
 		if (question.community) {
@@ -341,8 +354,8 @@ export class QuestionsComponent implements OnInit {
 			}
 		}
 	}
-	
-	
+
+
 	public openTopicsDialog(): void {
 		const dialogRef = this.dialog.open(SelectTopicsComponent, {
 			width: '250px',
@@ -355,7 +368,7 @@ export class QuestionsComponent implements OnInit {
 				left: this.topicButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
 			}
 		});
-		
+
 		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
 				this.availableTopics = result;
@@ -363,7 +376,7 @@ export class QuestionsComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public openPriceDialog(): void {
 		const dialogRef = this.dialog.open(SelectPriceComponent, {
 			width: '200px',
@@ -379,7 +392,7 @@ export class QuestionsComponent implements OnInit {
 				left: this.priceButton._elementRef.nativeElement.getBoundingClientRect().left + 'px'
 			}
 		});
-		
+
 		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
 				this.selectedRange = result.selectedRange;
@@ -387,7 +400,7 @@ export class QuestionsComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public openDurationDialog(): void {
 		const dialogRef = this.dialog.open(SelectDurationComponentComponent, {
 			width: '200px',
@@ -410,25 +423,25 @@ export class QuestionsComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public filterClickedTopic(index) {
 		this.availableTopics = _.cloneDeep(this.topicsBackup);
 		this.availableTopics[index]['checked'] = true;
 		this.fetchQuestions();
 	}
-	
+
 	public resetTopics() {
 		this.availableTopics = _.cloneDeep(this.topicsBackup);
 		this.fetchQuestions();
 	}
-	
+
 	public toggleArchive() {
 		this.questions = [];
 		this.loading = true;
 		this.showArchived = !this.showArchived;
 		this.fetchData();
 	}
-	
+
 	/**
 	 * delete question
 	 */
@@ -441,7 +454,7 @@ export class QuestionsComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	public addQuestionUpvote(question: any) {
 		if (this.userId && this.userId.length > 5) {
 			this._questionsService.addQuestionUpvote(question.id, {}).subscribe(
@@ -460,7 +473,7 @@ export class QuestionsComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + question.id);
 		}
 	}
-	
+
 	public createAnswerForm(question: any) {
 		if (this.userId && this.userId.length > 5 && question.userType !== 'public') {
 			this.answeringToQuestionId = question.id;
@@ -471,7 +484,7 @@ export class QuestionsComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + question.id);
 		}
 	}
-	
+
 	public createAnswerCommentForm(answer: any) {
 		if (this.userId && this.userId.length > 5) {
 			this.commentingToAnswerId = answer.id;
@@ -483,7 +496,7 @@ export class QuestionsComponent implements OnInit {
 			this._dialogsService.openSignup('/home/questions');
 		}
 	}
-	
+
 	public createQuestionCommentForm(question: any) {
 		if (this.userId && this.userId.length > 5 && question.userType !== 'public') {
 			this.commentingToQuestionId = question.id;
@@ -495,7 +508,7 @@ export class QuestionsComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + question.id);
 		}
 	}
-	
+
 	/**
 	 * post answer
 	 */
@@ -516,7 +529,7 @@ export class QuestionsComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + question.id);
 		}
 	}
-	
+
 	/**
 	 * accept answer
 	 */
@@ -539,7 +552,7 @@ export class QuestionsComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + question.id);
 		}
 	}
-	
+
 	/**
 	 * post comment to answer
 	 */
@@ -556,7 +569,7 @@ export class QuestionsComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	/**
 	 * post comment to question
 	 */
@@ -573,7 +586,7 @@ export class QuestionsComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	/**
 	 * delete answer
 	 */
@@ -586,7 +599,7 @@ export class QuestionsComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	/**
 	 * add answer upvote
 	 * @param answer
@@ -609,7 +622,7 @@ export class QuestionsComponent implements OnInit {
 			this._dialogsService.openSignup('/home/questions');
 		}
 	}
-	
+
 	public hasUpvoted(upvotes) {
 		let result = false;
 		if (upvotes !== undefined) {
@@ -625,7 +638,7 @@ export class QuestionsComponent implements OnInit {
 		}
 		return result;
 	}
-	
+
 	public isFollowing(followers) {
 		let result = false;
 		if (followers !== undefined) {
@@ -637,15 +650,15 @@ export class QuestionsComponent implements OnInit {
 		}
 		return result;
 	}
-	
+
 	public isMyQuestion(question) {
 		return question.peer[0].id === this.userId;
 	}
-	
+
 	public isMyAnswer(answer) {
 		return answer.peer[0].id === this.userId;
 	}
-	
+
 	public addCommentUpvote(comment: any) {
 		if (this.userId && this.userId.length > 5) {
 			this._commentService.addCommentUpvote(comment.id, {}).subscribe(
@@ -664,7 +677,7 @@ export class QuestionsComponent implements OnInit {
 			this._dialogsService.openSignup('/home/questions');
 		}
 	}
-	
+
 	public addReplyUpvote(reply: any) {
 		if (this.userId && this.userId.length > 5) {
 			this._commentService.addReplyUpvote(reply.id, {}).subscribe(
@@ -683,18 +696,18 @@ export class QuestionsComponent implements OnInit {
 			this._dialogsService.openSignup('/home/questions');
 		}
 	}
-	
+
 	public isMyComment(comment) {
 		return comment.peer[0].id === this.userId;
 	}
-	
+
 	public createReplyForm(comment: any) {
 		this.replyingToCommentId = comment.id;
 		this.replyForm = this._fb.group({
 			description: ''
 		});
 	}
-	
+
 	/**
 	 * postReply
 	 */
@@ -711,7 +724,7 @@ export class QuestionsComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	/**
 	 * deleteReply
 	 */
@@ -724,7 +737,7 @@ export class QuestionsComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	/**
 	 * deleteComment
 	 */
@@ -737,7 +750,7 @@ export class QuestionsComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	public addFollower(question) {
 		if (this.userId && this.userId.length > 5) {
 			if (!this.isFollowing(question.followers)) {
@@ -754,5 +767,13 @@ export class QuestionsComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + question.id);
 		}
 	}
-	
+
+	public askQuestion() {
+		this._dialogsService.askQuestion().subscribe(res => {
+			if (res) {
+				this.fetchData();
+			}
+		});
+	}
+
 }

@@ -62,6 +62,7 @@ import { ViewPromocodeDialogComponent } from './view-promocode-dialog/view-promo
 import { AddParticipantDialogComponent } from './add-participant-dialog/add-participant-dialog.component';
 import { ConfirmDeleteAccountComponent } from './confirm-delete-account/confirm-delete-account.component';
 import { AddImageDialogComponent } from './add-image-dialog/add-image-dialog.component';
+import { AskQuestionDialogComponent } from './ask-question-dialog/ask-question-dialog.component';
 
 @Injectable()
 export class DialogsService {
@@ -722,4 +723,12 @@ export class DialogsService {
         return dialogRef.afterClosed();
     }
 
+    public askQuestion() {
+        const dialogRef = this.dialog.open(AskQuestionDialogComponent, {
+            panelClass: 'responsive-dialog',
+            width: '55vw',
+            minHeight: '50vh'
+        });
+        return dialogRef.afterClosed();
+    }
 }
