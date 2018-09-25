@@ -113,10 +113,19 @@ export class QuestionService {
         return this.http
             .get(environment.apiUrl + '/api/questions/' + questionId + '?filter=' + filter, this.requestHeaderService.options);
     }
-	
-	public getQuestions(filter: string) {
-		return this.http
-			.get(environment.apiUrl + '/api/questions?filter=' + filter, this.requestHeaderService.options);
-	}
+
+    public getQuestions(filter: string) {
+        return this.http
+            .get(environment.apiUrl + '/api/questions?filter=' + filter, this.requestHeaderService.options);
+    }
+
+    public postQuestion(userId: string, questionObject: any) {
+        return this.http.post(environment.apiUrl + '/api/peers/' + userId + '/questions', questionObject,
+            this.requestHeaderService.options);
+    }
+
+    public linkTopics(questionId, body) {
+        return this.http.patch(environment.apiUrl + '/api/questions/' + questionId + '/topics/rel', body, this.requestHeaderService.options);
+    }
 
 }
