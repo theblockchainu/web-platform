@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
-import {UcFirstPipe, UcWordsPipe} from 'ngx-pipes';
-
+import { UcFirstPipe, UcWordsPipe } from 'ngx-pipes';
+import { Observable } from 'rxjs';
 @Injectable()
 export class SearchService {
 
@@ -36,21 +36,40 @@ export class SearchService {
     }
 
     public getPeerSearchResults(query: any) {
-        return this.http
-            .get(environment.searchUrl + '/api/search/'
-                + environment.uniqueDeveloperCode + '_peers/suggest?field=username&query=' + query, this.requestHeaderService.options);
+        if (query.length > 0) {
+            return this.http
+                .get(environment.searchUrl + '/api/search/'
+                    + environment.uniqueDeveloperCode + '_peers/suggest?field=username&query=' + query, this.requestHeaderService.options);
+        } else {
+            return new Observable(observer => {
+                observer.next([]);
+                return;
+            });
+        }
     }
 
+    public searchForCommunities(query: any) {
+        if (query.length > 0) {
+            return this.http
+                .get(environment.searchUrl + '/api/search/' + environment.uniqueDeveloperCode +
+                    '_communities/suggest?field=title&query=' + query, this.requestHeaderService.options);
+        } else {
+            return new Observable(observer => {
+                observer.next([]);
+                return;
+            });
+        }
+    }
 
     public getCommunitySearchResults(userId, query: any, cb) {
-		this.http
-			.get(environment.searchUrl + '/searchCommunity?' + 'query=' + query, this.requestHeaderService.options)
-			.subscribe((response: any) => {
-				console.log(response);
-				cb(null, response);
-			}, (err) => {
-				cb(err);
-			});
+        this.http
+            .get(environment.searchUrl + '/searchCommunity?' + 'query=' + query, this.requestHeaderService.options)
+            .subscribe((response: any) => {
+                console.log(response);
+                cb(null, response);
+            }, (err) => {
+                cb(err);
+            });
     }
 
     public getSearchOptionText(option) {
@@ -61,8 +80,8 @@ export class SearchService {
                         return this.ucfirst.transform(option.data.title);
                     case 'experience':
                         return this.ucfirst.transform(option.data.title);
-					case 'guide':
-						return this.ucfirst.transform(option.data.title);
+                    case 'guide':
+                        return this.ucfirst.transform(option.data.title);
                     default:
                         return this.ucfirst.transform(option.data.title);
                 }
@@ -94,8 +113,8 @@ export class SearchService {
                         return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
                     case 'experience':
                         return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
-					case 'guide':
-						return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
+                    case 'guide':
+                        return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
                     default:
                         return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
                 }
@@ -126,8 +145,8 @@ export class SearchService {
                         return 'Online Class';
                     case 'experience':
                         return 'In-person Experience';
-					case 'guide':
-						return 'Learning Guide';
+                    case 'guide':
+                        return 'Learning Guide';
                     default:
                         return 'Collection';
                 }
@@ -154,9 +173,9 @@ export class SearchService {
                     case 'experience':
                         this.router.navigate(['/experience', option.data.id]);
                         break;
-					case 'guide':
-						this.router.navigate(['/guide', option.data.id]);
-						break;
+                    case 'guide':
+                        this.router.navigate(['/guide', option.data.id]);
+                        break;
                     default:
                         this.router.navigate(['/console/dashboard']);
                         break;
