@@ -19,16 +19,16 @@
 								<ngx-loading [show]="true" style="position: absolute; top: 13px;"></ngx-loading>
 							</span>
 						</mat-option>
-						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)" style="height: auto;">
+						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)" style="height: auto; padding-top: 10px; padding-bottom: 10px;">
 							<div style="display: inline-block; vertical-align: middle;">
 								<img src="{{_searchService.getSearchOptionImage(option)}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
 								 (error)="_collectionService.imgErrorHandler($event)" />
 							</div>
-							<div style="display: inline-block; vertical-align: middle;">
-								<div>
+							<div style="display: inline-block; vertical-align: middle; width: 90%;">
+								<div style="white-space: normal; line-height: 1.7rem;">
 									{{_searchService.getSearchOptionText(option)}}
 								</div>
-								<div class="mat-h5 lightText" style="margin-top: -14px;">
+								<div class="mat-h5 lightText" style="margin-top: 0px; margin-bottom: 0px;">
 									{{_searchService.getSearchOptionType(option) | uppercase}}
 								</div>
 							</div>
@@ -264,7 +264,7 @@
 		Host an offline experience
 	</button>
 	<button mat-menu-item [routerLink]="'/console/teaching/guides'">
-		Create a Guide
+		Create a learning guide
 	</button>
 	<button mat-menu-item (click)="createClass()">
 		Create an online class
