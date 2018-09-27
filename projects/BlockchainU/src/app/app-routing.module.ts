@@ -133,6 +133,10 @@ const routes: Routes = [
 		loadChildren: './experience/experience.module#ExperienceModule'
 	},
 	{
+		path: 'bounty',
+		loadChildren: './bounty/bounty.module#BountyModule'
+	},
+	{
 		path: 'class',
 		loadChildren: './class/class.module#ClassModule'
 	},

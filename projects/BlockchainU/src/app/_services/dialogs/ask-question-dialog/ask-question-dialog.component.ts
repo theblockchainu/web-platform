@@ -10,6 +10,7 @@ import { flatMap } from 'rxjs/operators';
 import { pipe } from 'rxjs';
 import * as _ from 'lodash';
 import { CollectionService } from '../../collection/collection.service';
+import { TopicService } from '../../topic/topic.service';
 
 @Component({
   selector: 'app-ask-question-dialog',
@@ -26,7 +27,7 @@ export class AskQuestionDialogComponent implements OnInit {
   public gyanBalance: number;
   public busyQuestion: boolean;
   public interests = [];
-  public suggestedTopics = [];
+  public suggestedTopics: Array<any>;
   public searchTopicURL = '';
   public createTopicURL = '';
   public placeholderStringTopic = 'Search for a topic ';
@@ -40,6 +41,7 @@ export class AskQuestionDialogComponent implements OnInit {
   selectable = true;
   removable = true;
   addOnBlur = true;
+  public searchingCommunity: boolean;
 
   @ViewChild('communityInput') communityInput: ElementRef;
 
@@ -47,11 +49,12 @@ export class AskQuestionDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<AskQuestionDialogComponent>,
     private _fb: FormBuilder,
     private cookieUtilsService: CookieUtilsService,
-    private _profileService: ProfileService,
+    public _profileService: ProfileService,
     private questionService: QuestionService,
     private searchService: SearchService,
     private matSnackBar: MatSnackBar,
-    public collectionService: CollectionService
+    public collectionService: CollectionService,
+    private topicService: TopicService
   ) {
   }
 
@@ -98,7 +101,8 @@ export class AskQuestionDialogComponent implements OnInit {
       if (value) {
         if (value.substring(value.length - 1) !== '?' && value.substring(value.length - 2, value.length - 1) !== '?' && !this.questionHasQuestionMark) {
           this.questionHasQuestionMark = true;
-          this.questionForm.controls.text.setValue(value + '?');
+          console.log(value);
+          this.questionForm.controls.text.patchValue(value + '?');
         } else if (value.substring(value.length - 1) !== '?' && value.substring(value.length - 2, value.length - 1) !== '?' && this.questionHasQuestionMark) {
           this.questionForm.controls.text.setValue(value.substring(0, value.length - 1) + '?');
         } else if (value.substring(value.length - 1) !== '?' && value.substring(value.length - 2, value.length - 1) === '?') {
@@ -109,23 +113,25 @@ export class AskQuestionDialogComponent implements OnInit {
 
     this.interest1 = new FormGroup({});
 
-    if (this.interests.length === 0) {
-      this.searchService.getTopics()
-        .subscribe((response: any) => {
-          this.suggestedTopics = response.slice(0, 5);
-        });
-    } else {
-      this.suggestedTopics = this.interests;
-    }
-
     this.selectedCommunities = [];
 
     this.myControl.valueChanges.pipe(flatMap((value) => {
+      this.searchingCommunity = true;
       return this.searchService.searchForCommunities(value);
     })).subscribe((res: any) => {
       this.searchOptions = res;
+      this.searchingCommunity = false;
     }, err => {
       console.log(err);
+    });
+
+    const filter = {
+      'limit': 3
+    }
+    this.topicService.getTopics(filter).subscribe(res => {
+      console.log('topics');
+      console.log(res);
+      this.suggestedTopics = res;
     });
   }
 

@@ -72,7 +72,7 @@
 				<button mat-button class="headerButtons hide-small" (click)="gotoBookmarks()" *ngIf="(isLoggedIn | async)">
 					Saved
 				</button>
-				<button mat-button class="headerButtons hide-small" (click)="gotoConsoleLearning()" *ngIf="(isLoggedIn | async)">
+				<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async)">
 					Learner
 				</button>
 				<button mat-button class="headerButtons show-small-inline" (click)="showSearchBar()" *ngIf="(isLoggedIn | async) && isAccountApproved">
@@ -298,27 +298,28 @@
 </mat-menu>
 
 <mat-menu #headerLearnMenu [overlapTrigger]="false">
-	<!--<button mat-menu-item [routerLink]="['/console/dashboard']">
-		<i class="fas fa-bars lighterText"></i>&nbsp;&nbsp;&nbsp; Dashboard
-	</button>-->
 	<button mat-menu-item [routerLink]="['/console/learning/all']">
-		<i class="fas fa-graduation-cap lighterText"></i>&nbsp;&nbsp;&nbsp; Learning Journey
+		Learning Journey
 	</button>
-	<!--<button mat-menu-item [routerLink]="['/console/account/transactions']">
+	<button (click)="askQuestion()" mat-menu-item>
+		Ask question
+	</button>
+	<!-- 
+	<button mat-menu-item [routerLink]="['/console/account/transactions']">
 		<i class="fas fa-history lighterText"></i>&nbsp;&nbsp;&nbsp; Transaction History
-	</button>-->
+	</button>
 	<button mat-menu-item [routerLink]="['/console/learning/bookmarks']">
 		<i class="fas fa-bookmark lighterText"></i>&nbsp;&nbsp; Bookmarks
 	</button>
 	<button mat-menu-item [routerLink]="['/console/learning/story']">
 		<i class="fas fa-user lighterText"></i>&nbsp;&nbsp;&nbsp; Knowledge Stories
 	</button>
-	<!--<button mat-menu-item [routerLink]="['/console/learning/classes']">
+	<button mat-menu-item [routerLink]="['/console/learning/classes']">
 	  Classes
-	</button>-->
-	<!--<button mat-menu-item [routerLink]="['/console/calendar']">
+	</button>
+	<button mat-menu-item [routerLink]="['/console/calendar']">
 	  Calendar
-	</button>-->
+	</button> -->
 </mat-menu>
 
 <mat-menu #headerUserMenu [overlapTrigger]="false">

@@ -17,7 +17,7 @@ import { SearchService } from '../../_services/search/search.service';
 import { first } from 'rxjs/operators';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import {QuestionService} from '../../_services/question/question.service';
+import { QuestionService } from '../../_services/question/question.service';
 
 @Component({
 	selector: 'app-index',
@@ -408,7 +408,7 @@ export class IndexComponent implements OnInit {
 		});
 
 	}
-	
+
 	fetchQuestions() {
 		this.loadingQuestions = true;
 		const query = {
@@ -426,22 +426,25 @@ export class IndexComponent implements OnInit {
 			'order': 'createdAt desc',
 			'limit': 5
 		};
-		
+
 		this._questionService.getQuestions(JSON.stringify(query)).subscribe(
 			(response: any) => {
 				this.questions = [];
 				response.forEach(question => {
 					const topics = [];
-					question.communities[0].topics.forEach(topicObj => {
-						topics.push(this.titlecasepipe.transform(topicObj.name));
+					console.log(question.communities);
+					question.communities.forEach(community => {
+						community.topics.forEach(topicObj => {
+							topics.push(this.titlecasepipe.transform(topicObj.name));
+						});
+						if (topics.length > 0) {
+							question.topics = topics;
+						} else {
+							topics.push('No topics selected');
+							question.topics = topics;
+						}
+						this.questions.push(question);
 					});
-					if (topics.length > 0) {
-						question.topics = topics;
-					} else {
-						topics.push('No topics selected');
-						question.topics = topics;
-					}
-					this.questions.push(question);
 				});
 				this.loadingQuestions = false;
 			}, (err) => {
@@ -540,7 +543,7 @@ export class IndexComponent implements OnInit {
 			this.fetchCommunities();
 		}
 	}
-	
+
 	public onQuestionRefresh(event) {
 		if (event) {
 			this.fetchQuestions();
