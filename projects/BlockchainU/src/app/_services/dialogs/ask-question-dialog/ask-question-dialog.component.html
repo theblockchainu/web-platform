@@ -1,13 +1,13 @@
 <div class="dialog-container">
-    <div class="row padding-bottom-10">
-        <button class="pull-right" [mat-dialog-close]="true" mat-icon-button>
+    <div class="row padding-bottom-10" style="margin-right: -40px;">
+        <button class="pull-right" tabindex="-1" [mat-dialog-close]="false" mat-icon-button>
             <mat-icon>close</mat-icon>
         </button>
     </div>
     <mat-horizontal-stepper class="hide-header" #stepper>
         <mat-step>
             <div class="row">
-                <div class="col-xs-12 prompt">
+                <div class="col-xs-12 prompt lightText">
                     <span class="mat-subheading-2">How to quickly get a good answer:</span>
                     <ul>
                         <li> Keep your question short and to the point
@@ -22,18 +22,18 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-12 padding-left-0" *ngIf="loggedInUser">
+                <div class="col-xs-12 padding-left-0" *ngIf="loggedInUser && loggedInUser.profiles" style="margin-bottom: -20px;">
                     <div class="clickable ask-thumb" style="float: left; ">
-                        <app-profile-popup [peer]="loggedInUser"></app-profile-popup>
+                        <app-profile-popup [peer]="loggedInUser" [size]="'small'"></app-profile-popup>
                     </div>
-                    <div style="display: inline-block; margin-left: 5px; margin-top: 1px;">
-                        <span class="clickable mat-subheading-2" (click)="_profileService.viewProfile(loggedInUser)">{{loggedInUser.profiles[0].first_name
+                    <div style="display: inline-block; margin-left: 5px; margin-top: 9px;">
+                        <span class="clickable mat-body-2 lightText" (click)="_profileService.viewProfile(loggedInUser)">{{loggedInUser.profiles[0].first_name
                             | ucwords}} {{loggedInUser.profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
                     </div>
                 </div>
                 <form [formGroup]="questionForm" class="search-form" style="margin: 0px;" autocomplete="off">
-                    <mat-form-field [floatLabel]="'never'" class="full-width no- margin-top-10" style="font-size: 15px;">
-                        <input matInput class="darker-text" formControlName="text" placeholder="Start your question with 'What', 'How', or 'Why', etc"
+                    <mat-form-field [floatLabel]="'never'" class="full-width no- margin-top-10 darker-text question-form-field">
+                        <input tabindex="1" matInput formControlName="text" placeholder="Start your question with 'What', 'How', or 'Why', etc"
                             required>
                     </mat-form-field>
                 </form>
@@ -43,12 +43,13 @@
                     <mat-divider></mat-divider>
                     <mat-form-field class="pb-block" floatLabel="never">
                         <mat-chip-list #chipList>
+	                        <i class="fa fa-link lightText"></i>
                             <mat-chip *ngFor="let community of selectedCommunities" [selectable]="selectable"
                                 [removable]="removable" (removed)="removeCommunity(community)">
                                 {{community.title}}
                                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                             </mat-chip>
-                            <input placeholder="Optional: Select communities this question should be posted to"
+                            <input placeholder="&emsp;Select communities this question should be posted to"
                                 #communityInput [formControl]="myControl" [matAutocomplete]="auto" [matChipInputFor]="chipList"
                                 [matChipInputAddOnBlur]="addOnBlur">
                         </mat-chip-list>
@@ -88,7 +89,7 @@
                             </mat-form-field>
                         </div> -->
                 <div class="col-xs-12">
-                    <button matStepperNext class="pull-right" mat-raised-button color="accent">
+                    <button matStepperNext class="pull-right" mat-raised-button color="accent" [disabled]="!questionForm.valid">
                         Submit Question
                     </button>
                 </div>
@@ -97,8 +98,7 @@
         <mat-step>
             <div class="row margin-top-10">
                 <div class="col-xs-12">
-                    <h2 class="title">What topics does this question cover?</h2>
-                    <p class="subtitle">Select topics that this question covers</p>
+                    <div class="mat-display-1">What topics does this question cover?</div>
                     <br />
                     <div class="row">
                         <div class="col-sm-12 margin-bottom-30">
@@ -112,7 +112,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <span class="lightText">You can add upto {{maxTopics}} topics </span>
+                                    <span class="lightText">You can add up to {{maxTopics}} topics </span>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                 <div class="col-xs-12 margin-top-10">
                     <button [disabled]="busyQuestion || !interests ||interests.length<1 || !questionForm.value.text||  questionForm.value.text.length<0"
                         (click)="postQuestion()" class="pull-right" mat-raised-button color="accent">
-                        <span *ngIf="!busyQuestion">Submit</span>
+                        <span *ngIf="!busyQuestion">Add Topics</span>
                         <ngx-loading *ngIf="busyQuestion" [show]="true"></ngx-loading>
                     </button>
                 </div>

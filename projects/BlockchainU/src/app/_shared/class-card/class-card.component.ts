@@ -38,7 +38,7 @@ export class ClassCardComponent implements OnInit {
 				&& _class.bookmarks[0].peer[0].id === this.userId)) {
 				this._collectionService.saveBookmark(_class.id, (err, response) => {
 					// FB Event Trigger
-					if (fbq !== undefined) {
+					if (fbq && fbq !== undefined) {
 						fbq('track', 'AddToWishlist', {
 							currency: 'USD',
 							value: 0.0,

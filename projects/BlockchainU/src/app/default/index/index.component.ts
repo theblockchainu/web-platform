@@ -414,6 +414,7 @@ export class IndexComponent implements OnInit {
 		const query = {
 			'include': [
 				'views',
+				'topics',
 				{ 'communities': ['owners', 'participants', 'topics'] },
 				{ 'peer': 'profiles' },
 				{ 'answers': [{ 'peer': 'profiles' }, { 'upvotes': { 'peer': 'profiles' } }, { 'comments': [{ 'peer': 'profiles' }, { 'replies': { 'peer': 'profiles' } }, { 'upvotes': 'peer' }] }, { 'views': 'peer' }, { 'flags': 'peer' }] },
@@ -432,10 +433,11 @@ export class IndexComponent implements OnInit {
 				this.questions = [];
 				response.forEach(question => {
 					const topics = [];
-					console.log(question.communities);
-					question.communities.forEach(community => {
-						community.topics.forEach(topicObj => {
-							topics.push(this.titlecasepipe.transform(topicObj.name));
+					if (question.communities && question.communities.length > 0) {
+						question.communities.forEach(community => {
+							community.topics.forEach(topicObj => {
+								topics.push(this.titlecasepipe.transform(topicObj.name));
+							});
 						});
 						if (topics.length > 0) {
 							question.topics = topics;
@@ -443,8 +445,20 @@ export class IndexComponent implements OnInit {
 							topics.push('No topics selected');
 							question.topics = topics;
 						}
-						this.questions.push(question);
-					});
+						question.community = question.communities[0];
+						question.communityId = question.community.id;
+					} else {
+						if (question.topics && question.topics.length > 0) {
+							const topicsArray = [];
+							question.topics.forEach(topicObj => {
+								if (topicObj.name) {
+									topicsArray.push(this.titlecasepipe.transform(topicObj.name));
+								}
+							});
+							question.topics = topicsArray;
+						}
+					}
+					this.questions.push(question);
 				});
 				this.loadingQuestions = false;
 			}, (err) => {
@@ -586,6 +600,14 @@ export class IndexComponent implements OnInit {
 		this.dialogsService.openLogin().subscribe((result: any) => {
 			if (result) {
 				this._router.navigateByUrl('/invite/1');
+			}
+		});
+	}
+	
+	public openQuestionDialog() {
+		this.dialogsService.askQuestion().subscribe(res => {
+			if (res) {
+				this.snackBar.open('Question has been added.', 'OK', { duration: 5000});
 			}
 		});
 	}

@@ -1005,7 +1005,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	 * dropoutBounty
 	 */
 	public dropOutBounty() {
-		this.dialogsService.openExitCollection(this.bountyId, this.userId).subscribe((response: any) => {
+		this.dialogsService.openExitCollection(this.bountyId, this.userId, this.bounty.type).subscribe((response: any) => {
 			if (response) {
 				this.router.navigate(['bounty', this.bountyId]);
 			}

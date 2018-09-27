@@ -150,7 +150,7 @@ export class ConsoleLearningClassesComponent implements OnInit {
 }
 
 public exitClass(collection: any) {
-	this._dialogService.openExitCollection(collection.id, this.userId).subscribe((result: any) => {
+	this._dialogService.openExitCollection(collection.id, this.userId, collection.type).subscribe((result: any) => {
 		if (result) {
 			this.fetchClass();
 			this.snackBar.open('You have dropped out of the ' + collection.type, 'Close', {

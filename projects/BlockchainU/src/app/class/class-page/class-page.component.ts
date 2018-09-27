@@ -544,7 +544,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						this.setCurrentCalendar();
 						this.itenariesObj = {};
 						this.itenaryArray = [];
-						if (fbq !== undefined) {
+						if (fbq && fbq !== undefined) {
 							fbq('track', 'ContentView', {
 								currency: 'USD',
 								value: 0.0,
@@ -911,7 +911,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	 * dropoutClass
 	 */
 	public dropOutClass() {
-		this.dialogsService.openExitCollection(this.classId, this.userId).subscribe((response: any) => {
+		this.dialogsService.openExitCollection(this.classId, this.userId, this.class.type).subscribe((response: any) => {
 			if (response) {
 				this.initializePage();
 			}
@@ -976,7 +976,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					console.log(err);
 				} else {
 					// FB Event Trigger
-					if (fbq !== undefined) {
+					if (fbq && fbq !== undefined) {
 						fbq('track', 'AddToWishlist', {
 							currency: 'USD',
 							value: 0.0,
@@ -1843,7 +1843,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value;
 		this._authenticationService.createGuestContacts(first_name, '', email, subject, message)
 			.subscribe(res => {
-				if (fbq !== undefined) {
+				if (fbq && fbq !== undefined) {
 					fbq('track', 'Lead', {
 						currency: 'USD',
 						value: 1.0,

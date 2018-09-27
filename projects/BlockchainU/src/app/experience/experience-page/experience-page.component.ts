@@ -409,7 +409,6 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						console.log('ownerId:' + owner.id + ' userId:' + this.userId);
 
 						this.userType = 'teacher';
-						this.getCertificatetemplate();
 						this.sortAssessmentRules();
 						break;
 					}
@@ -562,7 +561,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						this.inviteLink = environment.clientUrl + '/experience/' + this.experience.id;
 						this.setTags();
 						this.setCurrentCalendar();
-						if (fbq !== undefined) {
+						if (fbq && fbq !== undefined) {
 							fbq('track', 'ContentView', {
 								currency: 'USD',
 								value: 0.0,
@@ -650,6 +649,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						if (this.experience && this.experience.owners && this.experience.owners.length > 0) {
 							this.initializeUserType();
 							this.calculateTotalHours();
+							this.getCertificatetemplate();
 							this.fixTopics();
 							this.getReviews();
 							this.getRecommendations();
@@ -698,7 +698,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value;
 		this._authenticationService.createGuestContacts(first_name, '', email, subject, message)
 			.subscribe(res => {
-				if (fbq !== undefined) {
+				if (fbq && fbq !== undefined) {
 					fbq('track', 'Lead', {
 						currency: 'USD',
 						value: 1.0,
@@ -850,6 +850,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this._collectionService.getBookmarks(this.experienceId, query, (err, response) => {
 			if (err) {
 				console.log(err);
+				this.hasBookmarked = false;
 			} else {
 				this.hasBookmarked = false;
 				response.forEach(bookmark => {
@@ -1005,7 +1006,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	 * dropoutExperience
 	 */
 	public dropOutExperience() {
-		this.dialogsService.openExitCollection(this.experienceId, this.userId).subscribe((response: any) => {
+		this.dialogsService.openExitCollection(this.experienceId, this.userId, this.experience.type).subscribe((response: any) => {
 			if (response) {
 				this.router.navigate(['experience', this.experienceId]);
 			}
@@ -1045,42 +1046,46 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	 * saveBookmark
 	 */
 	public saveBookmark() {
-		this.bookmarking = true;
-		if (!this.hasBookmarked) {
-			this._collectionService.saveBookmark(this.experienceId, (err, response) => {
-				if (err) {
-					console.log(err);
-				} else {
-					// FB Event Trigger
-					if (fbq !== undefined) {
-						fbq('track', 'AddToWishlist', {
-							currency: 'USD',
-							value: 0.0,
-							content_ids: [this.experienceId],
-							content_name: this.experience.title,
-							content_category: this.experience.type,
-							content_type: 'product'
+		if (this.userId && this.userId.length > 5) {
+			this.bookmarking = true;
+			if (!this.hasBookmarked) {
+				this._collectionService.saveBookmark(this.experienceId, (err, response) => {
+					if (err) {
+						console.log(err);
+					} else {
+						// FB Event Trigger
+						if (fbq && fbq !== undefined) {
+							fbq('track', 'AddToWishlist', {
+								currency: 'USD',
+								value: 0.0,
+								content_ids: [this.experienceId],
+								content_name: this.experience.title,
+								content_category: this.experience.type,
+								content_type: 'product'
+							});
+						}
+						this.snackBar.open('Bookmarked', 'Close', {
+							duration: 5000
 						});
+						this.getBookmarks();
+						this.bookmarking = false;
 					}
-					this.snackBar.open('Bookmarked', 'Close', {
-						duration: 5000
-					});
-					this.getBookmarks();
-					this.bookmarking = false;
-				}
-			});
+				});
+			} else {
+				this._collectionService.removeBookmark(this.bookmark.id, (err, response) => {
+					if (err) {
+						console.log(err);
+					} else {
+						this.snackBar.open('Removed Bookmark', 'Close', {
+							duration: 5000
+						});
+						this.getBookmarks();
+						this.bookmarking = false;
+					}
+				});
+			}
 		} else {
-			this._collectionService.removeBookmark(this.bookmark.id, (err, response) => {
-				if (err) {
-					console.log(err);
-				} else {
-					this.snackBar.open('Removed Bookmark', 'Close', {
-						duration: 5000
-					});
-					this.getBookmarks();
-					this.bookmarking = false;
-				}
-			});
+			this.dialogsService.openSignup('/experience/' + this.experience.id);
 		}
 	}
 
@@ -2008,6 +2013,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				this.initializePage();
 			}
 		});
+	}
+	
+	public openShareDialog() {
+		this.dialogsService.shareCollection(this.experience.type, this.experience.id, this.experience.title, this.experience.description, this.experience.headline, this.experience.imageUrls[0]);
 	}
 
 }

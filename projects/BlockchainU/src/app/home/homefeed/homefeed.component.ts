@@ -461,6 +461,7 @@ export class HomefeedComponent implements OnInit {
 		const query = {
 			'include': [
 				'views',
+				'topics',
 				{ 'communities': ['owners', 'participants', 'topics'] },
 				{ 'peer': 'profiles' },
 				{ 'answers': [{ 'peer': 'profiles' }, { 'upvotes': { 'peer': 'profiles' } }, { 'comments': [{ 'peer': 'profiles' }, { 'replies': { 'peer': 'profiles' } }, { 'upvotes': 'peer' }] }, { 'views': 'peer' }, { 'flags': 'peer' }] },
@@ -478,19 +479,25 @@ export class HomefeedComponent implements OnInit {
 			(response: any) => {
 				this.questions = [];
 				response.forEach(question => {
-					const topics = [];
-					question.communities.forEach(community => {
-						community.topics.forEach(topicObj => {
-							topics.push(this.titlecasepipe.transform(topicObj.name));
-						});
-					});
-					if (topics.length > 0) {
-						question.topics = topics;
-					} else {
-						topics.push('No topics selected');
-						question.topics = topics;
-					}
-					this.questions.push(question);
+						const topics = [];
+						if (question.communities && question.communities.length > 0) {
+							question.communities.forEach(community => {
+								community.topics.forEach(topicObj => {
+									topics.push(this.titlecasepipe.transform(topicObj.name));
+								});
+							});
+						} else if (question.topics) {
+							question.topics.forEach(topicObj => {
+								topics.push(this.titlecasepipe.transform(topicObj.name));
+							});
+						}
+						if (topics.length > 0) {
+							question.topics = topics;
+						} else {
+							topics.push('No topics selected');
+							question.topics = topics;
+						}
+						this.questions.push(question);
 				});
 				this.loadingQuestions = false;
 			}, (err) => {
@@ -606,6 +613,14 @@ export class HomefeedComponent implements OnInit {
 		if (event) {
 			this.fetchClasses();
 		}
+	}
+	
+	public askQuestion() {
+		this._dialogsService.askQuestion().subscribe(res => {
+			if (res) {
+				this.fetchQuestions();
+			}
+		});
 	}
 
 }

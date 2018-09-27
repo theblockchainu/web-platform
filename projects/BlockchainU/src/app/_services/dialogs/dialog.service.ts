@@ -86,7 +86,8 @@ export class DialogsService {
     public openLogin() {
         console.log('openLogin dialog');
         const dialogRef1: MatDialogRef<LoginComponentDialog> = this.dialog.open(LoginComponentDialog, {
-            panelClass: 'responsive-dialog'
+            panelClass: 'responsive-dialog',
+			maxHeight: '90vh'
         });
         return dialogRef1.afterClosed();
     }
@@ -226,11 +227,12 @@ export class DialogsService {
         return dialogRef.afterClosed();
     }
 
-    openExitCollection(collectionId: string, userId: string) {
+    openExitCollection(collectionId: string, userId: string, type: string) {
         const dialogRef = this.dialog.open(ExitCollectionDialogComponent, {
             data: {
                 collectionId: collectionId,
-                userId: userId
+                userId: userId,
+				type: type
             },
             panelClass: 'responsive-dialog', width: '30vw'
         });
@@ -727,7 +729,8 @@ export class DialogsService {
         const dialogRef = this.dialog.open(AskQuestionDialogComponent, {
             panelClass: 'responsive-dialog',
             width: '55vw',
-            minHeight: '50vh'
+            minHeight: '50vh',
+			maxHeight: '90vh'
         });
         return dialogRef.afterClosed();
     }

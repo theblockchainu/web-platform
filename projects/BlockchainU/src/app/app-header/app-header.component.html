@@ -19,16 +19,16 @@
 								<ngx-loading [show]="true" style="position: absolute; top: 13px;"></ngx-loading>
 							</span>
 						</mat-option>
-						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)" style="height: auto;">
+						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)" style="height: auto; padding-top: 10px; padding-bottom: 10px;">
 							<div style="display: inline-block; vertical-align: middle;">
 								<img src="{{_searchService.getSearchOptionImage(option)}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
 								 (error)="_collectionService.imgErrorHandler($event)" />
 							</div>
-							<div style="display: inline-block; vertical-align: middle;">
-								<div>
+							<div style="display: inline-block; vertical-align: middle; width: 90%;">
+								<div style="white-space: normal; line-height: 1.7rem;">
 									{{_searchService.getSearchOptionText(option)}}
 								</div>
-								<div class="mat-h5 lightText" style="margin-top: -14px;">
+								<div class="mat-h5 lightText" style="margin-top: 0px; margin-bottom: 0px;">
 									{{_searchService.getSearchOptionType(option) | uppercase}}
 								</div>
 							</div>
@@ -73,7 +73,7 @@
 					Saved
 				</button>
 				<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="headerLearnMenu" *ngIf="(isLoggedIn | async)">
-					Learner
+					Learn
 				</button>
 				<button mat-button class="headerButtons show-small-inline" (click)="showSearchBar()" *ngIf="(isLoggedIn | async) && isAccountApproved">
 					<mat-icon>search</mat-icon>
@@ -97,6 +97,9 @@
 				</div>
 				<button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']" *ngIf="!(isLoggedIn | async)">
 					White Paper
+				</button>
+				<button mat-button class="headerButtons hide-small" [routerLink]="['/about']" *ngIf="!(isLoggedIn | async)">
+					About Us
 				</button>
 				<button mat-button class="headerButtons" [matMenuTriggerFor]="creditMenu">
 					<span class="hide-small">
@@ -264,7 +267,7 @@
 		Host an offline experience
 	</button>
 	<button mat-menu-item [routerLink]="'/console/teaching/guides'">
-		Create a Guide
+		Create a learning guide
 	</button>
 	<button mat-menu-item (click)="createClass()">
 		Create an online class
@@ -299,12 +302,12 @@
 
 <mat-menu #headerLearnMenu [overlapTrigger]="false">
 	<button mat-menu-item [routerLink]="['/console/learning/all']">
-		Learning Journey
+		Activities
 	</button>
 	<button (click)="askQuestion()" mat-menu-item>
-		Ask question
+		Ask New Question
 	</button>
-	<!-- 
+	<!--
 	<button mat-menu-item [routerLink]="['/console/account/transactions']">
 		<i class="fas fa-history lighterText"></i>&nbsp;&nbsp;&nbsp; Transaction History
 	</button>

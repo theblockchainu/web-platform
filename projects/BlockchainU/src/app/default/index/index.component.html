@@ -12,6 +12,9 @@
 			<button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']">
 				White Paper
 			</button>
+			<button mat-button class="headerButtons hide-small" [routerLink]="['/about']">
+				About Us
+			</button>
 			<button mat-button class="headerButtons hide-small" [matMenuTriggerFor]="creditMenu">
 				Earn Credit
 			</button>
@@ -77,22 +80,26 @@
 								<ngx-loading [show]="true" style="position: absolute; top: 13px;"></ngx-loading>
 							</span>
 						</mat-option>
-						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)" style="height: auto;">
+						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)" style="height: auto; padding-top: 10px; padding-bottom: 10px;">
 							<div style="display: inline-block; vertical-align: middle;">
 								<img src="{{_searchService.getSearchOptionImage(option)}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
 								 (error)="_collectionService.imgErrorHandler($event)" />
 							</div>
-							<div style="display: inline-block; vertical-align: middle;">
-								<div>
+							<div style="display: inline-block; vertical-align: middle; width: 90%;">
+								<div style="white-space: normal; line-height: 1.7rem;">
 									{{_searchService.getSearchOptionText(option)}}
 								</div>
-								<div class="mat-h5 lightText" style="margin-top: -14px;">
+								<div class="mat-h5 lightText" style="margin-top: 0px; margin-bottom: 0px;">
 									{{_searchService.getSearchOptionType(option) | uppercase}}
 								</div>
 							</div>
 						</mat-option>
 					</mat-autocomplete>
 				</mat-form-field>
+				<div class="margin-top-30">
+					<button mat-button [color]="'white'" class="mat-border-button" [routerLink]="['home', 'homefeed']">Learn</button><span class="mat-body-2" style="color: #fff; padding-left: 20px; padding-right: 20px;">or</span>
+					<button mat-button [color]="'white'" class="mat-border-button" (click)="openQuestionDialog()">Ask a Question</button>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -354,7 +361,7 @@
 					</div>
 				</div>
 				<div class="col-12 col-sm-6">
-					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{topic: 'language'}">
+					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{topic: 'finance'}">
 						<div class="card-image rounded-6px">
 							<div class="card-image-content text-center">
 								<span class="image-heading">Finance</span>
@@ -365,7 +372,7 @@
 							<p class="tags text-uppercase">
 								<span>10+ experiences</span>
 							</p>
-							<p class="title mat-body-2">Design for the new internet</p>
+							<p class="title mat-body-2">Economics of the new internet</p>
 							<p>Pick from within our collection of non technical tracks like finance and blockchain solution architecture</p>
 						</div>
 					</div>

@@ -2,7 +2,8 @@
 	<div class="col-md-10 col-md-offset-1 homeContainer">
 		<div class="homefeedContainer">
 			<div class="mat-display-1" style="margin-bottom: 5px;">
-				Explore
+				Explore or
+				<span class="clickable dotted-underline" (click)="askQuestion()">Ask a Question</span>
 			</div>
 			<nav mat-tab-nav-bar disableRipple class="noJustify home">
 				<a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive"

@@ -296,8 +296,10 @@ export class QuestionsComponent implements OnInit {
 				response.forEach(question => {
 					const topics = [];
 					if (question.communities && question.communities.length > 0) {
-						question.communities[0].topics.forEach(topicObj => {
-							topics.push(this.titlecasepipe.transform(topicObj.name));
+						question.communities.forEach(community => {
+							community.topics.forEach(topicObj => {
+								topics.push(this.titlecasepipe.transform(topicObj.name));
+							});
 						});
 						if (topics.length > 0) {
 							question.topics = topics;

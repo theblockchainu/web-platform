@@ -37,7 +37,7 @@ const routes: Routes = [
 	},
 	{
 		path: 'about',
-		component: AboutUsComponent
+		component: IndexPhilComponent
 	},
 	{
 		path: 'career',

@@ -287,6 +287,35 @@ mat-subheader {
   color: #33bd9e !important;
 }
 
+.mat-border-button.mat-white {
+	margin: 0px !important;
+	position: relative !important;
+	text-align: center !important;
+	text-decoration: none !important;
+	-webkit-transition-property: background, border-color, color !important;
+	-moz-transition-property: background, border-color, color !important;
+	transition-property: background, border-color, color !important;
+	-webkit-transition-duration: 0.2s !important;
+	transition-duration: 0.2s !important;
+	-webkit-transition-timing-function: ease-out !important;
+	transition-timing-function: ease-out !important;
+	width: auto !important;
+	border-radius: 4px !important;
+	font-size: 16px !important;
+	line-height: 22px !important;
+	letter-spacing: normal !important;
+	font-family: Cereal, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue,
+	sans-serif !important;
+	text-transform: none !important;
+	font-weight: 800 !important;
+	padding: 12px 24px !important;
+	min-width: 77.66563145999496px !important;
+	box-shadow: none !important;
+	background: transparent !important;
+	border: 2px solid #ffffff !important;
+	color: #ffffff !important;
+}
+
 .mat-menu-panel {
   max-width: 400px !important;
 }
@@ -325,6 +354,10 @@ mat-subheader {
   outline: none;
 }
 
+.question-form-field .mat-form-field-wrapper {
+	padding-bottom: 0.7em !important;
+}
+
 .mat-toolbar-tools {
   font-size: 20px;
   letter-spacing: 0.005em;
@@ -344,6 +377,10 @@ mat-subheader {
   max-height: 64px;
   padding: 0 16px;
   margin: 0;
+}
+
+.dotted-underline {
+	border-bottom: 3px dashed #cccccc;
 }
 
 .mat-content {
@@ -950,8 +987,8 @@ h3.calendarTitle {
 }
 
 .ask-thumb app-profile-popup .clickable .circle-thumb {
-  width: 25px !important;
-  height: 25px !important;
+  width: 40px !important;
+  height: 40px !important;
 }
 
 .circle-thumb img,
