@@ -1216,11 +1216,11 @@
 						<div class="loading-container" [hidden]="!loadingSimilarBountys">
 							<ngx-loading [show]="true"></ngx-loading>
 						</div>
-						<div *ngIf="!loadingSimilarBountys" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;">
+						<!--<div *ngIf="!loadingSimilarBountys" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;">
 							<div *ngFor="let bounty of recommendations.collections; let i = index;">
 								<app-bounty-card *ngIf="i < 5" [bounty]="bounty" (refresh)="onBountyRefresh($event)"></app-bounty-card>
 							</div>
-						</div>
+						</div>-->
 					</div>
 				</div>
 			</div>
