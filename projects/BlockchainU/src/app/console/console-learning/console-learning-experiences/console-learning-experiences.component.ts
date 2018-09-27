@@ -146,7 +146,7 @@ export class ConsoleLearningExperiencesComponent implements OnInit {
       * exitExperiences
       */
     public exitExperiences(collection: any) {
-        this._dialogService.openExitCollection(collection.id, this.userId).subscribe((result: any) => {
+        this._dialogService.openExitCollection(collection.id, this.userId, collection.type).subscribe((result: any) => {
             if (result) {
                 this.fetchExperiences();
                 this.snackBar.open('You have dropped out of the ' + collection.type, 'Close', {

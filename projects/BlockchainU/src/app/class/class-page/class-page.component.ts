@@ -911,7 +911,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	 * dropoutClass
 	 */
 	public dropOutClass() {
-		this.dialogsService.openExitCollection(this.classId, this.userId).subscribe((response: any) => {
+		this.dialogsService.openExitCollection(this.classId, this.userId, this.class.type).subscribe((response: any) => {
 			if (response) {
 				this.initializePage();
 			}

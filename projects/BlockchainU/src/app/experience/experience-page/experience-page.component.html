@@ -122,7 +122,7 @@
 										<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}}</span>
 								</div>
 							</div>
-							<div class="col-md-2 lighterText clickable" style="font-size: 20px; top: 5px; text-align: right;">
+							<div class="col-md-2 clickable" style="font-size: 20px; top: 5px; text-align: right; color: #33bd9e;" *ngIf="userType === 'public'">
 								<span style="margin-right: 15px;" (click)="saveBookmark()">
 									<ngx-loading [show]="bookmarking"></ngx-loading>
 									<span [hidden]="bookmarking">
@@ -904,7 +904,7 @@
 							</div>
 						</div>
 						<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId === undefined">
-							<h3 class="margin-bottom-20">Participants Participants ({{participants ? participants.length : '0'}})</h3>
+							<h3 class="margin-bottom-20">Participants ({{participants ? participants.length : '0'}})</h3>
 							<div>
 								<div class="loading-container" [hidden]="!loadingParticipants">
 									<ngx-loading [show]="true"></ngx-loading>

@@ -1006,7 +1006,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	 * dropoutExperience
 	 */
 	public dropOutExperience() {
-		this.dialogsService.openExitCollection(this.experienceId, this.userId).subscribe((response: any) => {
+		this.dialogsService.openExitCollection(this.experienceId, this.userId, this.experience.type).subscribe((response: any) => {
 			if (response) {
 				this.router.navigate(['experience', this.experienceId]);
 			}

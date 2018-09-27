@@ -399,7 +399,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 						console.log('ownerId:' + owner.id + ' userId:' + this.userId);
 
 						this.userType = 'teacher';
-						// this.getCertificatetemplate();
 						this.sortAssessmentRules();
 						break;
 					}
@@ -774,7 +773,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	 * dropoutGuide
 	 */
 	public dropOutGuide() {
-		this.dialogsService.openExitCollection(this.guideId, this.userId).subscribe((response: any) => {
+		this.dialogsService.openExitCollection(this.guideId, this.userId, this.guide.type).subscribe((response: any) => {
 			if (response) {
 				this.initializePage();
 			}

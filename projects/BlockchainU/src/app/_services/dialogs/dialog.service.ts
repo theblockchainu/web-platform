@@ -226,11 +226,12 @@ export class DialogsService {
         return dialogRef.afterClosed();
     }
 
-    openExitCollection(collectionId: string, userId: string) {
+    openExitCollection(collectionId: string, userId: string, type: string) {
         const dialogRef = this.dialog.open(ExitCollectionDialogComponent, {
             data: {
                 collectionId: collectionId,
-                userId: userId
+                userId: userId,
+				type: type
             },
             panelClass: 'responsive-dialog', width: '30vw'
         });
