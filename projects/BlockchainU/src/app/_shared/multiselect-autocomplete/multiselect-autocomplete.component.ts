@@ -164,6 +164,8 @@ export class MultiselectAutocompleteComponent implements OnChanges {
 			}
 			if (this.searchUrl) {
 				const finalSearchURL = this.searchUrl + this.query;
+				console.log(finalSearchURL);
+
 				this.http.get(finalSearchURL, this.requestHeaderService.options)
 					.subscribe((res: any) => {
 						this.loadingSuggestions = false;

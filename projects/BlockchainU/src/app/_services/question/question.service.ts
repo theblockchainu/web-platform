@@ -128,4 +128,8 @@ export class QuestionService {
         return this.http.patch(environment.apiUrl + '/api/questions/' + questionId + '/topics/rel', body, this.requestHeaderService.options);
     }
 
+    public linkCommunities(questionId, body) {
+        return this.http.patch(environment.apiUrl + '/api/questions/' + questionId + '/communities/rel', body, this.requestHeaderService.options);
+    }
+
 }
