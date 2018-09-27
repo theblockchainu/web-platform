@@ -17,7 +17,7 @@ import { SearchService } from '../../_services/search/search.service';
 import { first } from 'rxjs/operators';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import {QuestionService} from '../../_services/question/question.service';
+import { QuestionService } from '../../_services/question/question.service';
 
 @Component({
 	selector: 'app-index',
@@ -408,7 +408,7 @@ export class IndexComponent implements OnInit {
 		});
 
 	}
-	
+
 	fetchQuestions() {
 		this.loadingQuestions = true;
 		const query = {
@@ -427,15 +427,17 @@ export class IndexComponent implements OnInit {
 			'order': 'createdAt desc',
 			'limit': 5
 		};
-		
+
 		this._questionService.getQuestions(JSON.stringify(query)).subscribe(
 			(response: any) => {
 				this.questions = [];
 				response.forEach(question => {
 					const topics = [];
 					if (question.communities && question.communities.length > 0) {
-						question.communities[0].topics.forEach(topicObj => {
-							topics.push(this.titlecasepipe.transform(topicObj.name));
+						question.communities.forEach(community => {
+							community.topics.forEach(topicObj => {
+								topics.push(this.titlecasepipe.transform(topicObj.name));
+							});
 						});
 						if (topics.length > 0) {
 							question.topics = topics;
@@ -555,7 +557,7 @@ export class IndexComponent implements OnInit {
 			this.fetchCommunities();
 		}
 	}
-	
+
 	public onQuestionRefresh(event) {
 		if (event) {
 			this.fetchQuestions();
@@ -598,6 +600,14 @@ export class IndexComponent implements OnInit {
 		this.dialogsService.openLogin().subscribe((result: any) => {
 			if (result) {
 				this._router.navigateByUrl('/invite/1');
+			}
+		});
+	}
+	
+	public openQuestionDialog() {
+		this.dialogsService.askQuestion().subscribe(res => {
+			if (res) {
+				this.snackBar.open('Question has been added.', 'OK', { duration: 5000});
 			}
 		});
 	}

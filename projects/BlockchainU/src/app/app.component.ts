@@ -62,6 +62,7 @@ export class AppComponent implements OnInit {
 			|| /\/console\/inbox\/.*./.test(url)
 			|| /^\/class\/.*\/edit\/./.test(url)
 			|| /^\/experience\/.*\/edit\/./.test(url)
+			|| /^\/bounty\/.*\/edit\/./.test(url)
 			|| /^\/guide\/.*\/edit\/./.test(url)
 			|| /^\/guide\/.*./.test(url)
 			|| /^\/session\/.*\/edit\/./.test(url));
@@ -71,6 +72,7 @@ export class AppComponent implements OnInit {
 		this.showHeader = !(
 			/^\/class\/.*\/edit\/./.test(url)
 			|| /^\/experience\/.*\/edit\/./.test(url)
+			|| /^\/bounty\/.*\/edit\/./.test(url)
 			|| /^\/session\/.*\/edit\/./.test(url)
 			|| /^\/digest\/.*./.test(url)
 			|| /^\/error/.test(url));

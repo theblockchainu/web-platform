@@ -12,7 +12,8 @@
 					<div style="display: inline-block; margin-left: 5px;">
 						<div>
 							<div>
-								<span class="clickable mat-body-2" style="margin-bottom: 5px;" (click)="_profileService.viewProfile(question.peer[0])">{{question.peer[0].profiles[0].first_name | ucwords}} {{question.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
+								<span class="clickable mat-body-2" style="margin-bottom: 5px;" (click)="_profileService.viewProfile(question.peer[0])">{{question.peer[0].profiles[0].first_name
+									| ucwords}} {{question.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 							</div>
 						</div>
 						<div class="userInfoLine">
@@ -26,13 +27,12 @@
 					</div>
 				</div>
 				<div style="margin-top: 20px;" class="mat-caption lightText">
-					<a *ngIf="question.peer[0].id !== userId && question.open" href="javascript:void(0);" class="answerButton"
-					   (click)="openQuestionPage()">
+					<a *ngIf="question.peer[0].id !== userId && question.open" href="javascript:void(0);" class="answerButton" (click)="openQuestionPage()">
 						<b>Answer</b>
 					</a>
 					<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer[0].id !== userId && question.open">fiber_manual_record</mat-icon>
 					<a *ngIf="!hasUpvoted(question.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(question.upvotes)}"
-					   (click)="addQuestionUpvote(question)">
+					 (click)="addQuestionUpvote(question)">
 						<b>Upvote
 							<mat-chip class="square smallSquare" *ngIf="question.upvotes">{{question.upvotes.length}}</mat-chip>
 						</b>
@@ -58,13 +58,14 @@
 									<div style="display: inline-block; margin-left: 5px;">
 										<div>
 											<div>
-												<span class="mat-body-2 clickable" (click)="_profileService.viewProfile(answer.peer[0])">{{answer.peer[0].profiles[0].first_name | ucwords}} {{answer.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
+												<span class="mat-body-2 clickable" (click)="_profileService.viewProfile(answer.peer[0])">{{answer.peer[0].profiles[0].first_name
+													| ucwords}} {{answer.peer[0].profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 											</div>
 										</div>
 										<div class="userInfoLine">
 											<span class="mat-caption">Answered {{answer.createdAt |extractTime:'MMM Do'}}
 												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;">fiber_manual_record</mat-icon>
-											                          {{(answer.upvotes) ? answer.upvotes.length : '0'}} upvotes</span>
+												{{(answer.upvotes) ? answer.upvotes.length : '0'}} upvotes</span>
 										</div>
 									</div>
 								</div>
@@ -88,7 +89,7 @@
 									</a>
 									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;">fiber_manual_record</mat-icon>
 									<a *ngIf="!hasUpvoted(answer.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(answer.upvotes)}"
-									   (click)="addAnswerUpvote(answer)">
+									 (click)="addAnswerUpvote(answer)">
 										<b>Upvote
 											<mat-chip class="square smallSquare" *ngIf="answer.upvotes">{{answer.upvotes.length}}</mat-chip>
 										</b>

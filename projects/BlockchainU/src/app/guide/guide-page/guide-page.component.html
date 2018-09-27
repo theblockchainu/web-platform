@@ -107,7 +107,18 @@
 													</div>
 												</div>
 												<div class="col-xs-5" style="text-align: right;">
-													<button mat-button class="mat-border-button" (click)="openMessageDialog(guide.owners[0])">Message</button>
+													<button mat-button class="mat-border-button" (click)="openMessageDialog(guide.owners[0])" *ngIf="userType !== 'public'">Message</button>
+													<div style="font-size: 20px; top: 5px; text-align: right;" class="lighterText">
+														<span class="clickable" style="margin-right: 15px;" (click)="saveBookmark()">
+															<ngx-loading [show]="bookmarking"></ngx-loading>
+															<span [hidden]="bookmarking">
+																<i [ngClass]="{'fa': true, 'fa-bookmark': true, 'hasBookmarked': hasBookmarked}"></i>
+															</span>
+														</span>
+														<span class="clickable" (click)="openShareDialog()">
+															<i class="fa fa-share"></i>
+														</span>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -717,7 +728,7 @@
 								</a>
 							</div>
 						</div>
-						<div class="row" *ngIf="userType === 'public'">
+						<!--<div class="row" *ngIf="userType === 'public'">
 							<div class="col-md-12">
 								<hr class="margin-top-10 margin-bottom-10">
 								<div class="row">
@@ -741,7 +752,7 @@
 								</div>
 								<hr class="margin-top-10 margin-bottom-10">
 							</div>
-						</div>
+						</div>-->
 						<!--<div class="row padding-top-20 padding-bottom-20" *ngIf="userType === 'public'">
 							<div class="col-xs-12">
 								<h2>Want to know more?</h2>
@@ -784,8 +795,8 @@
 									</div>
 								</form>
 							</div>
-						</div>
-						<hr class="margin-top-10 margin-bottom-10"> -->
+						</div> -->
+						<hr class="margin-top-10 margin-bottom-10">
 						<div class="row margin-bottom-20" *ngIf="userType === 'public'">
 							<div class="col-xs-12">
 								<i class="fa fa-headphones"></i>&nbsp;&nbsp; 24x7 support at

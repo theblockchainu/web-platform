@@ -86,7 +86,8 @@ export class DialogsService {
     public openLogin() {
         console.log('openLogin dialog');
         const dialogRef1: MatDialogRef<LoginComponentDialog> = this.dialog.open(LoginComponentDialog, {
-            panelClass: 'responsive-dialog'
+            panelClass: 'responsive-dialog',
+			maxHeight: '90vh'
         });
         return dialogRef1.afterClosed();
     }
@@ -728,7 +729,8 @@ export class DialogsService {
         const dialogRef = this.dialog.open(AskQuestionDialogComponent, {
             panelClass: 'responsive-dialog',
             width: '55vw',
-            minHeight: '50vh'
+            minHeight: '50vh',
+			maxHeight: '90vh'
         });
         return dialogRef.afterClosed();
     }

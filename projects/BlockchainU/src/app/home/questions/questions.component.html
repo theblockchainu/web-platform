@@ -32,20 +32,16 @@
 							<mat-card class="margin-bottom-20">
 								<div class="row">
 									<div class="col-xs-10 col-xs-offset-1">
-										<div class="clickable" style="float: left; ">
+										<div class="clickable ask-thumb" style="float: left; ">
 											<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
 										</div>
-										<div style="display: inline-block; margin-left: 5px;">
-											<div>
-												<div>
-													<span class="clickable mat-body-2" style="margin-bottom: 5px;" (click)="_profileService.viewProfile(loggedInUser)">{{loggedInUser.profiles[0].first_name
-														| ucwords}} {{loggedInUser.profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
-												</div>
-											</div>
+										<div style="display: inline-block; margin-left: 5px; margin-top: 9px;">
+											<span class="clickable mat-subheading-2" (click)="_profileService.viewProfile(loggedInUser)">{{loggedInUser.profiles[0].first_name
+												| ucwords}} {{loggedInUser.profiles[0].last_name | ucwords}}</span>&nbsp;&nbsp;
 										</div>
 									</div>
-									<div class="col-xs-10 col-xs-offset-1">
-										<span (click)="askQuestion()" class="clickable lightText mat-headline padding-left-40">What is your Questions?</span>
+									<div class="col-xs-10 col-xs-offset-1 margin-top-10">
+										<span (click)="askQuestion()" class="clickable lightText mat-title" style="margin-left: 5px;">What is your question?</span>
 									</div>
 								</div>
 							</mat-card>

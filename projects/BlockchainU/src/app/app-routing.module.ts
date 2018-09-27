@@ -37,7 +37,7 @@ const routes: Routes = [
 	},
 	{
 		path: 'about',
-		component: AboutUsComponent
+		component: IndexPhilComponent
 	},
 	{
 		path: 'career',
@@ -131,6 +131,10 @@ const routes: Routes = [
 	{
 		path: 'experience',
 		loadChildren: './experience/experience.module#ExperienceModule'
+	},
+	{
+		path: 'bounty',
+		loadChildren: './bounty/bounty.module#BountyModule'
 	},
 	{
 		path: 'class',

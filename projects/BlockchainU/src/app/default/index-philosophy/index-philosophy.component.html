@@ -1,151 +1,152 @@
 <div class="main-content">
-      <div class="outerContainer">
-            
-            <div class="col-md-offset-1 col-md-5 margin-top-100">
-                  <p class="mat-subheading-3" style="color:rgba(0,0,0,0.54)">The Blockchain University</p>
-                  <p class="mat-display-2 margin-bottom-20" style="color:black">Quality Education - </p>
-                  <p class="mat-display-2 margin-bottom-20" style="color:black">A Community Commitment.</p>
-            </div> 
-            <img src="/assets/images/images_landing/rightRhombus.png" class="pull-right rightRhombus"/>
-            <img src="/assets/images/images_landing/philosophy2.png" class="absolute right rightImage"/>
-            <img src="/assets/images/images_landing/waves_philosophy.png" class="absolute wavesPhilosophy"/>
-            <div class="margin-top-850 center">
-                  <div class="col-md-offset-3 col-md-6">
-                        <div class="row">
-                              <p class="mat-display-2 col-md-8 center headline" style="margin-left: 15%;">What problem are we solving</p>
-                        </div>
-                        <div class="row">
-                              <!-- <p class="content mat-subheading-2">Everyone is good at something and one should be willing to share his/her knowledge. Everyone has something to learn, and this is the best platform to do that too!</p> -->
-                              <p class="content mat-subheading-2">Our designed to revamp an already evolving educational ecosystem. As the primary educational paradigm shifts to one of co-learning, Blockchain University wants to ensure that alongside this co-learning, all our users are also being awarded for the learning that takes place. One of the key deficiencies in traditional educational models is the discrete learning that takes place through K-12 and post-secondary, with that being the conclusion of learning for the majority of the population. However, in a knowledge economy, it is necessary for members of society to experience continuous learning.</p>
-                              <p class="content mat-subheading-2">The current generation of students embody this concept, they are working learners who seek diverse learning and working experiences through various stages of their lives.The future of learning is already evolving today, as we see in the evolving content and methods of learning. This re-definition of learning is leading to the creation of new pathways to success, positive changes in life satisfaction and ultimately, a revamped economy.</p>
-                              <img src="/assets/images/images_landing/quote.png" class="quote margin-top-30"/>
-                              <p class="quoteText mat-title margin-top-20">Develop a passion for learning.<br> If you do, you will never cease to grow.</p>
-                              <p class="quoteAuthor center margin-top-40 margin-bottom-100">Sahil Parekh</p>
-                        </div>
-                  </div>
-            </div>
-            <div class="center">
-                  <div class="col-md-offset-2 col-md-8 margin-bottom-100">
-                        <div class="row">
-                              <p class="mat-display-2 col-md-12 center headline margin-bottom-100">Our Core Values</p>
-                        </div>
-                        <div class="row">
-                              <div class="col-md-12">
-                                    <div class="corevalue" *ngIf="!transformationSelected" (mouseenter)="showTransformation(true)" (mouseleave)="showTransformation(false)">
-                                          <img src="/assets/images/images_landing/default-circle.png" class="default-circle"/>
-                                          <img src="/assets/images/images_landing/transformation-default.png" class="absolute default-transformation"/>
-                                    </div>
-                                    <div class="corevalue" *ngIf="transformationSelected">
-                                          <img src="/assets/images/images_landing/active-circle.png" class="active-circle"/>
-                                          <img src="/assets/images/images_landing/transformation-active.png" class="absolute default-transformation"/>
-                                          <img src="/assets/images/images_landing/selectedValue.png" class="absolute selected1"/>
-                                    </div>
-                                    <div class="corevalue" *ngIf="!pplFocussedSelected" (mouseenter)="showPplFocussed(true)" (mouseleave)="showPplFocussed(false)">
-                                          <img src="/assets/images/images_landing/default-circle.png" class="default-circle"/>
-                                          <img src="/assets/images/images_landing/people-focussed-default.png" class="absolute default-pplFocussed"/>
-                                    </div>
-                                    <div class="corevalue" *ngIf="pplFocussedSelected">
-                                          <img src="/assets/images/images_landing/active-circle.png" class="active-circle"/>
-                                          <img src="/assets/images/images_landing/people-focussed-active.png" class="absolute default-pplFocussed"/>
-                                          <img src="/assets/images/images_landing/selectedValue.png" class="absolute selected2"/>
-                                    </div>
-                                    <div class="corevalue" *ngIf="!courageSelected" (mouseenter)="showCourage(true)" (mouseleave)="showCourage(false)">
-                                          <img src="/assets/images/images_landing/default-circle.png" class="default-circle"/>
-                                          <img src="/assets/images/images_landing/courage-default.png" class="absolute default-courage"/>
-                                    </div>
-                                    <div class="corevalue" *ngIf="courageSelected">
-                                          <img src="/assets/images/images_landing/active-circle.png" class="active-circle"/>
-                                          <img src="/assets/images/images_landing/courage-active.png" class="absolute default-courage"/>
-                                          <img src="/assets/images/images_landing/selectedValue.png" class="absolute selected3"/>
-                                    </div>
-                                    <div class="corevalue" *ngIf="!collabSelected" (mouseenter)="showCollab(true)" (mouseleave)="showCollab(false)">
-                                          <img src="/assets/images/images_landing/default-circle.png" class="default-circle"/>
-                                          <img src="/assets/images/images_landing/collaboration-default.png" class="absolute default-collab"/>
-                                    </div>
-                                    <div class="corevalue" *ngIf="collabSelected">
-                                          <img src="/assets/images/images_landing/active-circle.png" class="active-circle"/>
-                                          <img src="/assets/images/images_landing/collaboration-active.png" class="absolute default-collab"/>
-                                          <img src="/assets/images/images_landing/selectedValue.png" class="absolute selected4"/>
-                                    </div>
-                                    <div class="corevalue" *ngIf="!optimismSelected" (mouseenter)="showOptimism(true)" (mouseleave)="showOptimism(false)">
-                                          <img src="/assets/images/images_landing/default-circle.png" class="default-circle"/>
-                                          <img src="/assets/images/images_landing/optimism-default.png" class="absolute default-optmism"/>
-                                    </div>
-                                    <div class="corevalue" *ngIf="optimismSelected">
-                                          <img src="/assets/images/images_landing/active-circle.png" class="active-circle"/>
-                                          <img src="/assets/images/images_landing/optimism-active.png" class="absolute default-optmism"/>
-                                          <img src="/assets/images/images_landing/selectedValue.png" class="absolute selected5"/>
-                                    </div>
-                              </div>
-                              <div class="col-md-12 margin-top-100">
-                                    <div class="row">
-                                          <div class="col-md-offset-2 col-md-8" *ngIf="transformationSelected">
-                                                <p class="mat-display-1 coreTopic">Transformation</p>
-                                                <p class="content mat-subheading-2">We believe in constantly learning and taking bold actions that create lasting, systematic change within public education</p>
-                                          </div>
-                                    </div>
-                                    <div class="row">
-                                          <div class="col-md-offset-2 col-md-8" *ngIf="pplFocussedSelected">
-                                                <p class="mat-display-1 coreTopic">People Focused</p>
-                                                <p class="content mat-subheading-2">We keep communities that we serve at the forefront or our work and we thoughfully and responsibly steward the experiences of the extraordinary people who work with them and on their behalf.</p>
-                                          </div>
-                                    </div>
-                                    <div class="row">
-                                          <div class="col-md-offset-2 col-md-8" *ngIf="courageSelected">
-                                                <p class="mat-display-1 coreTopic">Courage</p>
-                                                <p class="content mat-subheading-2">We demonstrate the moral wherewithal necessary to build a public education system that serves everyone well.</p>
-                                          </div>
-                                    </div>
-                                    <div class="row">
-                                          <div class="col-md-offset-2 col-md-8" *ngIf="collabSelected">
-                                                <p class="mat-display-1 coreTopic">Collaboration</p>
-                                                <p class="content mat-subheading-2">We recognize that no single person or idea can solve public education's complex challenges and believe that people working together can create greater impact than any one individual or organization can accomplish alone.</p>
-                                          </div>
-                                    </div>
-                                    <div class="row">
-                                          <div class="col-md-offset-2 col-md-8" *ngIf="optimismSelected">
-                                                <p class="mat-display-1 coreTopic">Optimism</p>
-                                                <p class="content mat-subheading-2">We believe that we can solve public education's challenges - big and small. At the same time, we are open, honest and direct about the current problems in the sector.</p>
-                                          </div>
-                                    </div>
-                              </div>
-                        </div>
-                  </div>
-            </div>
-            <img src="/assets/images/images_landing/Shape_testimoni.png" class="pull-right view5Image"/>
-            <img src="/assets/images/images_landing/testimonial1.png" class="testimonial testimonial1"/>
-            <img src="/assets/images/images_landing/testimonial3.png" class="testimonial testimonial2"/>
-            <img src="/assets/images/images_landing/testimonial1.png" class="testimonial testimonial3"/>
-            <img src="/assets/images/images_landing/arrow-left.png" class="arrow arrow-left"/>
-            <div class="">
-                  <p class="text col-md-5 center">"The Blockchain University is the best platform I came across so far, to learn while you earn. I feel so grateful to the people who made this possible!"</p>
-                  <p class="author center"> John Collins</p>
-            </div>
-            <img src="/assets/images/images_landing/arrow-right.png" class="arrow arrow-right"/>
-            <img src="/assets/images/images_landing/shape_journey.png" class="view6Image"/>
-            <div>
-                  <h1 class="journeyText col-md-4 center mat-display-1" style="margin-bottom:20px">Journey</h1>
-                  <p class="journeyDesc center">Our journey so far...</p>
-                  <img src="/assets/images/images_landing/Journey_1.png" class="journey journey1"/>
-                  <img src="/assets/images/images_landing/Journey_2.png" class="journey journey2"/>
-                  <img src="/assets/images/images_landing/Journey_3.png" class="journey journey3"/>
-                  <img src="/assets/images/images_landing/Journey_4.png" class="journey journey4"/>
-            </div>
-            <img src="/assets/images/images_landing/shape_footer.png" class="footer"/>
-            <div>
-                  <p class="notif center"> Be notified when Blockchain University go live </p>
-                  <form [formGroup]="notifyForm">
-                              <div class="center">
-                                  <input matInput type="text" placeholder="Your email here" formControlName="email" class="mail-bg emailInput">
-                                  <div id="emailBase">
-                                      <button mat-button class="mat-raised email-btn" (click)="sendEmailSubscriptions()">Notify me!</button>
-                                  </div>
-                              </div>
-                  </form>
-            </div>
-            <img src="/assets/images/images_landing/oval-footer.png" class="oval"/>
-      </div>
-      
+	<div class="outerContainer">
+		
+		<div class="col-md-offset-1 col-md-5 margin-top-100">
+			<p class="mat-subheading-3" style="color:rgba(0,0,0,0.54)">The Blockchain University</p>
+			<p class="mat-display-2 margin-bottom-20" style="color:black">Quality Education - </p>
+			<p class="mat-display-2 margin-bottom-20" style="color:black">A Community Commitment.</p>
+		</div>
+		<img src="/assets/images/images_landing/rightRhombus.png" class="pull-right rightRhombus"/>
+		<img src="/assets/images/images_landing/philosophy2.png" class="absolute right rightImage"/>
+		<img src="/assets/images/images_landing/waves_philosophy.png" class="absolute wavesPhilosophy"/>
+		<div class="margin-top-850 center">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="row">
+					<p class="mat-display-2 col-md-12 center headline">What problem are we solving?</p>
+				</div>
+				<div class="row">
+					<!-- <p class="content mat-subheading-2">Everyone is good at something and one should be willing to share his/her knowledge. Everyone has something to learn, and this is the best platform to do that too!</p> -->
+					<p class="content mat-subheading-2">Our designed to revamp an already evolving educational ecosystem. As the primary educational paradigm shifts to one of co-learning, Blockchain University wants to ensure that alongside this co-learning, all our users are also being awarded for the learning that takes place. One of the key deficiencies in traditional educational models is the discrete learning that takes place through K-12 and post-secondary, with that being the conclusion of learning for the majority of the population. However, in a knowledge economy, it is necessary for members of society to experience continuous learning.</p>
+					<br><br>
+					<p class="content mat-subheading-2">The current generation of students embody this concept, they are working learners who seek diverse learning and working experiences through various stages of their lives. The future of learning is already evolving today, as we see in the evolving content and methods of learning. This re-definition of learning is leading to the creation of new pathways to success, positive changes in life satisfaction and ultimately, a revamped economy.</p>
+					<img src="/assets/images/images_landing/quote.png" class="quote margin-top-30"/>
+					<p class="quoteText mat-title margin-top-20">Develop a passion for Learning.<br> If you do, you will never cease to grow.</p>
+					<p class="quoteAuthor center margin-top-40 margin-bottom-100">Sahil Parekh</p>
+				</div>
+			</div>
+		</div>
+		<div class="center">
+			<div class="col-md-offset-2 col-md-8 margin-bottom-100">
+				<div class="row">
+					<p class="mat-display-2 col-md-12 center headline margin-bottom-100">Our Core Values</p>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="corevalue" *ngIf="!transformationSelected" (mouseenter)="showTransformation(true)" (mouseleave)="showTransformation(false)">
+							<img src="/assets/images/images_landing/default-circle.png" class="default-circle"/>
+							<img src="/assets/images/images_landing/transformation-default.png" class="absolute default-transformation"/>
+						</div>
+						<div class="corevalue" *ngIf="transformationSelected">
+							<img src="/assets/images/images_landing/active-circle.png" class="active-circle"/>
+							<img src="/assets/images/images_landing/transformation-active.png" class="absolute default-transformation"/>
+							<img src="/assets/images/images_landing/selectedValue.png" class="absolute selected1"/>
+						</div>
+						<div class="corevalue" *ngIf="!pplFocussedSelected" (mouseenter)="showPplFocussed(true)" (mouseleave)="showPplFocussed(false)">
+							<img src="/assets/images/images_landing/default-circle.png" class="default-circle"/>
+							<img src="/assets/images/images_landing/people-focussed-default.png" class="absolute default-pplFocussed"/>
+						</div>
+						<div class="corevalue" *ngIf="pplFocussedSelected">
+							<img src="/assets/images/images_landing/active-circle.png" class="active-circle"/>
+							<img src="/assets/images/images_landing/people-focussed-active.png" class="absolute default-pplFocussed"/>
+							<img src="/assets/images/images_landing/selectedValue.png" class="absolute selected2"/>
+						</div>
+						<div class="corevalue" *ngIf="!courageSelected" (mouseenter)="showCourage(true)" (mouseleave)="showCourage(false)">
+							<img src="/assets/images/images_landing/default-circle.png" class="default-circle"/>
+							<img src="/assets/images/images_landing/courage-default.png" class="absolute default-courage"/>
+						</div>
+						<div class="corevalue" *ngIf="courageSelected">
+							<img src="/assets/images/images_landing/active-circle.png" class="active-circle"/>
+							<img src="/assets/images/images_landing/courage-active.png" class="absolute default-courage"/>
+							<img src="/assets/images/images_landing/selectedValue.png" class="absolute selected3"/>
+						</div>
+						<div class="corevalue" *ngIf="!collabSelected" (mouseenter)="showCollab(true)" (mouseleave)="showCollab(false)">
+							<img src="/assets/images/images_landing/default-circle.png" class="default-circle"/>
+							<img src="/assets/images/images_landing/collaboration-default.png" class="absolute default-collab"/>
+						</div>
+						<div class="corevalue" *ngIf="collabSelected">
+							<img src="/assets/images/images_landing/active-circle.png" class="active-circle"/>
+							<img src="/assets/images/images_landing/collaboration-active.png" class="absolute default-collab"/>
+							<img src="/assets/images/images_landing/selectedValue.png" class="absolute selected4"/>
+						</div>
+						<div class="corevalue" *ngIf="!optimismSelected" (mouseenter)="showOptimism(true)" (mouseleave)="showOptimism(false)">
+							<img src="/assets/images/images_landing/default-circle.png" class="default-circle"/>
+							<img src="/assets/images/images_landing/optimism-default.png" class="absolute default-optmism"/>
+						</div>
+						<div class="corevalue" *ngIf="optimismSelected">
+							<img src="/assets/images/images_landing/active-circle.png" class="active-circle"/>
+							<img src="/assets/images/images_landing/optimism-active.png" class="absolute default-optmism"/>
+							<img src="/assets/images/images_landing/selectedValue.png" class="absolute selected5"/>
+						</div>
+					</div>
+					<div class="col-md-12 margin-top-100">
+						<div class="row">
+							<div class="col-md-offset-2 col-md-8" *ngIf="transformationSelected">
+								<p class="mat-display-1 coreTopic">Transformation</p>
+								<p class="content mat-subheading-2">We believe in constantly learning and taking bold actions that create lasting, systematic change within public education</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-offset-2 col-md-8" *ngIf="pplFocussedSelected">
+								<p class="mat-display-1 coreTopic">People Focused</p>
+								<p class="content mat-subheading-2">We keep communities that we serve at the forefront or our work and we thoughfully and responsibly steward the experiences of the extraordinary people who work with them and on their behalf.</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-offset-2 col-md-8" *ngIf="courageSelected">
+								<p class="mat-display-1 coreTopic">Courage</p>
+								<p class="content mat-subheading-2">We demonstrate the moral wherewithal necessary to build a public education system that serves everyone well.</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-offset-2 col-md-8" *ngIf="collabSelected">
+								<p class="mat-display-1 coreTopic">Collaboration</p>
+								<p class="content mat-subheading-2">We recognize that no single person or idea can solve public education's complex challenges and believe that people working together can create greater impact than any one individual or organization can accomplish alone.</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-offset-2 col-md-8" *ngIf="optimismSelected">
+								<p class="mat-display-1 coreTopic">Optimism</p>
+								<p class="content mat-subheading-2">We believe that we can solve public education's challenges - big and small. At the same time, we are open, honest and direct about the current problems in the sector.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<img src="/assets/images/images_landing/Shape_testimoni.png" class="pull-right view5Image"/>
+		<img src="/assets/images/images_landing/testimonial1.png" class="testimonial testimonial1"/>
+		<img src="/assets/images/images_landing/testimonial3.png" class="testimonial testimonial2"/>
+		<img src="/assets/images/images_landing/testimonial1.png" class="testimonial testimonial3"/>
+		<img src="/assets/images/images_landing/arrow-left.png" class="arrow arrow-left"/>
+		<div class="">
+			<p class="text col-md-5 center">"The Blockchain University is the best platform I came across so far, to learn while you earn. I feel so grateful to the people who made this possible!"</p>
+			<p class="author center"> John Collins</p>
+		</div>
+		<img src="/assets/images/images_landing/arrow-right.png" class="arrow arrow-right"/>
+		<img src="/assets/images/images_landing/shape_journey.png" class="view6Image"/>
+		<div>
+			<h1 class="journeyText col-md-4 center mat-display-1" style="margin-bottom:20px">Partners</h1>
+			<p class="journeyDesc center">Our corporate partners...</p>
+			<a href="https://dispatchlabs.io" target="_blank"><img src="/assets/images/images_landing/partner-dispatch.png" class="journey journey1"/></a>
+			<a href="https://y-center.org" target="_blank"><img src="/assets/images/images_landing/partner-ycenter.png" class="journey journey2"/></a>
+			<a href="https://google.com" target="_blank"><img src="/assets/images/images_landing/partner-google.png" class="journey journey3"/></a>
+			<a href="https://digitalasset.com" target="_blank"><img src="/assets/images/images_landing/partner-digitalasset.png" class="journey journey4"/></a>
+		</div>
+		<img src="/assets/images/images_landing/shape_footer.png" class="footer"/>
+		<div>
+			<p class="notif center"> Be notified of all Blockchain University updates </p>
+			<form [formGroup]="notifyForm">
+				<div class="center">
+					<input matInput type="text" placeholder="Your email here" formControlName="email" class="mail-bg emailInput">
+					<div id="emailBase">
+						<button mat-button class="mat-raised email-btn" (click)="sendEmailSubscriptions()">Subscribe me!</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<img src="/assets/images/images_landing/oval-footer.png" class="oval"/>
+	</div>
+
 </div>
 
 
@@ -174,8 +175,8 @@
 <div class="view3">
     <h2 class="text-center">Our Core Values</h2><br><br>
   <mat-toolbar class="border-bottom" color="white" layout="row">
-      <div class="footer-btn1"> 
-      <i class="fa fa-users fa-2x" aria-hidden="true"></i> 
+      <div class="footer-btn1">
+      <i class="fa fa-users fa-2x" aria-hidden="true"></i>
       
       </div>
       <div class="footer-btn1">
@@ -189,7 +190,7 @@
       </div>
        <div class="footer-btn1">
       <i class="fa fa-connectdevelop fa-2x" aria-hidden="true"></i>
-      </div>   
+      </div>
 </mat-toolbar>
 </div>
 <div class="center">

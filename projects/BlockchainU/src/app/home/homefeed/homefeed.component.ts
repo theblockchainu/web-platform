@@ -12,7 +12,7 @@ import { environment } from '../../../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
-import {QuestionService} from '../../_services/question/question.service';
+import { QuestionService } from '../../_services/question/question.service';
 
 @Component({
 	selector: 'app-feed',
@@ -455,7 +455,7 @@ export class HomefeedComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	fetchQuestions() {
 		this.loadingQuestions = true;
 		const query = {
@@ -474,15 +474,17 @@ export class HomefeedComponent implements OnInit {
 			'order': 'createdAt desc',
 			'limit': 5
 		};
-		
+
 		this._questionService.getQuestions(JSON.stringify(query)).subscribe(
 			(response: any) => {
 				this.questions = [];
 				response.forEach(question => {
 						const topics = [];
 						if (question.communities && question.communities.length > 0) {
-							question.communities[0].topics.forEach(topicObj => {
-								topics.push(this.titlecasepipe.transform(topicObj.name));
+							question.communities.forEach(community => {
+								community.topics.forEach(topicObj => {
+									topics.push(this.titlecasepipe.transform(topicObj.name));
+								});
 							});
 						} else if (question.topics) {
 							question.topics.forEach(topicObj => {
@@ -600,7 +602,7 @@ export class HomefeedComponent implements OnInit {
 			this.fetchCommunities();
 		}
 	}
-	
+
 	public onQuestionRefresh(event) {
 		if (event) {
 			this.fetchQuestions();
@@ -611,6 +613,14 @@ export class HomefeedComponent implements OnInit {
 		if (event) {
 			this.fetchClasses();
 		}
+	}
+	
+	public askQuestion() {
+		this._dialogsService.askQuestion().subscribe(res => {
+			if (res) {
+				this.fetchQuestions();
+			}
+		});
 	}
 
 }

@@ -1,141 +1,142 @@
 .answerButton {
-	border: 1px solid #777;
-	padding: 6px;
-	border-radius: 2px;
-	color: #777;
+  border: 1px solid #777;
+  padding: 6px;
+  border-radius: 2px;
+  color: #777;
 }
 
 .upvoteButton {
-	color: #777;
+  color: #777;
 }
 
 .acceptButton {
-	color: #33bd9e;
-	border: 1px solid #33bd9e;
-	padding: 4px 10px;
+  color: #33bd9e;
+  border: 1px solid #33bd9e;
+  padding: 4px 10px;
 }
 
 .followButton {
-	color: #777;
+  color: #777;
 }
 
-.reportButton, .commentButton {
-	color: #777;
+.reportButton,
+.commentButton {
+  color: #777;
 }
 
 .answersBox {
-	border: 1px solid #dbdbdb;
-	padding: 0px 50px 30px;
+  border: 1px solid #dbdbdb;
+  padding: 0px 50px 30px;
 }
 
 .commentsBox {
-	border: 1px solid #dbdbdb;
-	padding: 30px 20px;
-	margin-left: 0px;
-	margin-right: 0px;
+  border: 1px solid #dbdbdb;
+  padding: 30px 20px;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
-.answerForm, .commentForm {
-	border: 1px solid #dbdbdb;
-	padding: 35px 30px;
-	background-color: #fff;
+.answerForm,
+.commentForm {
+  border: 1px solid #dbdbdb;
+  padding: 35px 30px;
+  background-color: #fff;
 }
 
-.hasUpvoted, .hasFollowed {
-	color: #33bd9e !important;
+.hasUpvoted,
+.hasFollowed {
+  color: #33bd9e !important;
 }
 
 .answerRow {
-	padding-top: 20px;
-	padding-bottom: 20px;
-	border-bottom: 1px solid #dbdbdb;
-	&:last-child {
-		padding-bottom: 0px;
-		border-bottom: 0px;
-	}
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #dbdbdb;
+  &:last-child {
+    padding-bottom: 0px;
+    border-bottom: 0px;
+  }
 }
 
 .smallSquare {
-	padding: 2px 8px;
-	margin-left: 4px;
+  padding: 2px 8px;
+  margin-left: 4px;
 }
 
 .questionCommentContainer {
-	background-color: #f5f5f5;
-	border: 1px solid #eeeeee;
+  background-color: #f5f5f5;
+  border: 1px solid #eeeeee;
 }
 
 .questionCommentForm {
-	padding: 35px 30px;
+  padding: 35px 30px;
 }
 
 .questionCommentsBox {
-	padding: 0px 20px 30px 20px;
-	margin-left: 0px;
-	margin-right: 0px;
+  padding: 0px 20px 30px 20px;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 .answerFormField {
-	margin-left: 15px;
-	width: 88%;
-	margin-bottom: 20px;
+  margin-left: 15px;
+  width: 88%;
+  margin-bottom: 20px;
 }
 
 .community-border-box {
-	padding: 25px;
-	border: 1px solid #33bd9e;
+  padding: 25px;
+  border: 1px solid #33bd9e;
 }
 
 .homeContainer {
-	margin-top: 2%;
-	margin-bottom: 0%;
-	margin-left: 12%;
-	width: 76%;
+  margin-top: 2%;
+  margin-bottom: 0%;
+  margin-left: 12%;
+  width: 76%;
 }
 
 .questionFeed {
-	padding-top: 30px;
+  padding-top: 30px;
 }
 
-.question-feed label{
-	color: #484848;
-	font-size: 13px;
-	font-weight: 400;
+.question-feed label {
+  color: #484848;
+  font-size: 13px;
+  font-weight: 400;
 }
 
 .question-feed .title {
-	font-size:17px !important;
-	color: #484848 !important;
+  font-size: 17px !important;
+  color: #484848 !important;
 }
 
 .question-feed .headline {
-	font-size:16px !important;
-	color: #767676 !important;
-
+  font-size: 16px !important;
+  color: #767676 !important;
 }
 
 .rightLinks span {
-	color: #767676 !important;
-	font-size:16px !important;
+  color: #767676 !important;
+  font-size: 16px !important;
 }
 
 .mat-display-1 {
-	margin-bottom: 25px !important;
+  margin-bottom: 25px !important;
 }
-
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
-	.answerFormField {
-		width: 80% !important;
-	}
+  .answerFormField {
+    width: 80% !important;
+  }
 
-	.questionFeed {
-		padding-top: 0px;
-	}
+  .questionFeed {
+    padding-top: 0px;
+  }
 
-	.homeContainer {
-		margin-left: inherit;
-		width: inherit;
-	}
+  .homeContainer {
+    margin-left: inherit;
+    width: inherit;
+  }
 }
