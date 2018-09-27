@@ -393,4 +393,7 @@ export class AppHeaderComponent implements OnInit {
 			}
 		});
 	}
+	public askQuestion() {
+		this.dialogsService.askQuestion();
+	}
 }

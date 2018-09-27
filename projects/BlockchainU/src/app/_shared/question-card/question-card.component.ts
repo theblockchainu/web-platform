@@ -1,22 +1,22 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DialogsService} from '../../_services/dialogs/dialog.service';
-import {CookieUtilsService} from '../../_services/cookieUtils/cookie-utils.service';
-import {environment} from '../../../environments/environment';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ProfileService} from '../../_services/profile/profile.service';
-import {MatSnackBar} from '@angular/material';
-import {CommentService} from '../../_services/comment/comment.service';
-import {QuestionService} from '../../_services/question/question.service';
-import {CommunityService} from '../../_services/community/community.service';
-import {Router} from "@angular/router";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
+import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
+import { environment } from '../../../environments/environment';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProfileService } from '../../_services/profile/profile.service';
+import { MatSnackBar } from '@angular/material';
+import { CommentService } from '../../_services/comment/comment.service';
+import { QuestionService } from '../../_services/question/question.service';
+import { CommunityService } from '../../_services/community/community.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-question-card',
-  templateUrl: './question-card.component.html',
-  styleUrls: ['./question-card.component.scss']
+	selector: 'app-question-card',
+	templateUrl: './question-card.component.html',
+	styleUrls: ['./question-card.component.scss']
 })
 export class QuestionCardComponent implements OnInit {
-	
+
 	public envVariable;
 	public userId;
 	public questionForm: FormGroup;
@@ -34,11 +34,11 @@ export class QuestionCardComponent implements OnInit {
 	public gyanBalance: number;
 	public community: any;
 	private communityId: string;
-	
+
 	@Input() question: any;
 	@Input() cardsPerRow = 3;
 	@Output() refresh = new EventEmitter<any>();
-	
+
 	constructor(
 		private _cookieUtilsService: CookieUtilsService,
 		public _dialogsService: DialogsService,
@@ -53,14 +53,16 @@ export class QuestionCardComponent implements OnInit {
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
-		this.community = this.question.communities[0];
-		this.communityId = this.community.id;
+		if (this.question.communities[0]) {
+			this.community = this.question.communities[0];
+			this.communityId = this.community.id;
+		}
 		this.initializeUserType();
 		this.initializeForms();
 	}
-	
+
 	private initializeUserType() {
 		delete this.userType;
 		if (this.community) {
@@ -83,7 +85,7 @@ export class QuestionCardComponent implements OnInit {
 			}
 		}
 	}
-	
+
 	private initializeForms() {
 		this.questionForm = this._fb.group({
 			text: ['', Validators.required],
@@ -100,7 +102,7 @@ export class QuestionCardComponent implements OnInit {
 			description: ['', Validators.required]
 		});
 	}
-	
+
 	/**
 	 * delete question
 	 */
@@ -113,7 +115,7 @@ export class QuestionCardComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	public addQuestionUpvote(question: any) {
 		if (this.userId && this.userId.length > 5) {
 			this._questionsService.addQuestionUpvote(question.id, {}).subscribe(
@@ -132,7 +134,7 @@ export class QuestionCardComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + this.question.id);
 		}
 	}
-	
+
 	public createAnswerForm(question: any) {
 		if (this.userId && this.userId.length > 5 && this.userType !== 'public') {
 			this.answeringToQuestionId = question.id;
@@ -143,7 +145,7 @@ export class QuestionCardComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + this.question.id);
 		}
 	}
-	
+
 	public createAnswerCommentForm(answer: any) {
 		if (this.userId && this.userId.length > 5 && this.userType !== 'public') {
 			this.commentingToAnswerId = answer.id;
@@ -155,7 +157,7 @@ export class QuestionCardComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + this.question.id);
 		}
 	}
-	
+
 	public createQuestionCommentForm(question: any) {
 		if (this.userId && this.userId.length > 5 && this.userType !== 'public') {
 			this.commentingToQuestionId = question.id;
@@ -167,7 +169,7 @@ export class QuestionCardComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + this.question.id);
 		}
 	}
-	
+
 	/**
 	 * post answer
 	 */
@@ -188,7 +190,7 @@ export class QuestionCardComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + this.question.id);
 		}
 	}
-	
+
 	/**
 	 * accept answer
 	 */
@@ -206,7 +208,7 @@ export class QuestionCardComponent implements OnInit {
 			);
 		}
 	}
-	
+
 	/**
 	 * post comment to answer
 	 */
@@ -223,7 +225,7 @@ export class QuestionCardComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	/**
 	 * post comment to question
 	 */
@@ -240,7 +242,7 @@ export class QuestionCardComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	/**
 	 * delete answer
 	 */
@@ -253,7 +255,7 @@ export class QuestionCardComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	/**
 	 * add answer upvote
 	 * @param answer
@@ -276,7 +278,7 @@ export class QuestionCardComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + this.question.id);
 		}
 	}
-	
+
 	public hasUpvoted(upvotes) {
 		let result = false;
 		if (upvotes !== undefined) {
@@ -292,7 +294,7 @@ export class QuestionCardComponent implements OnInit {
 		}
 		return result;
 	}
-	
+
 	public isFollowing(followers) {
 		let result = false;
 		if (followers !== undefined) {
@@ -304,15 +306,15 @@ export class QuestionCardComponent implements OnInit {
 		}
 		return result;
 	}
-	
+
 	public isMyQuestion(question) {
 		return question.peer[0].id === this.userId;
 	}
-	
+
 	public isMyAnswer(answer) {
 		return answer.peer[0].id === this.userId;
 	}
-	
+
 	public addCommentUpvote(comment: any) {
 		if (this.userId && this.userId.length > 5) {
 			this._commentService.addCommentUpvote(comment.id, {}).subscribe(
@@ -331,7 +333,7 @@ export class QuestionCardComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + this.question.id);
 		}
 	}
-	
+
 	public addReplyUpvote(reply: any) {
 		if (this.userId && this.userId.length > 5) {
 			this._commentService.addReplyUpvote(reply.id, {}).subscribe(
@@ -350,18 +352,18 @@ export class QuestionCardComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + this.question.id);
 		}
 	}
-	
+
 	public isMyComment(comment) {
 		return comment.peer[0].id === this.userId;
 	}
-	
+
 	public createReplyForm(comment: any) {
 		this.replyingToCommentId = comment.id;
 		this.replyForm = this._fb.group({
 			description: ''
 		});
 	}
-	
+
 	/**
 	 * postReply
 	 */
@@ -378,7 +380,7 @@ export class QuestionCardComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	/**
 	 * deleteReply
 	 */
@@ -391,7 +393,7 @@ export class QuestionCardComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	/**
 	 * deleteComment
 	 */
@@ -404,7 +406,7 @@ export class QuestionCardComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	public addFollower(question) {
 		if (this.userId && this.userId.length > 5) {
 			if (!this.isFollowing(question.followers)) {
@@ -421,7 +423,7 @@ export class QuestionCardComponent implements OnInit {
 			this._dialogsService.openSignup('/question/' + this.question.id);
 		}
 	}
-	
+
 	public openQuestionPage() {
 		this.router.navigate(['question', this.question.id]);
 	}

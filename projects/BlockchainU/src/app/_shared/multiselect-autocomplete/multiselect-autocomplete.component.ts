@@ -53,7 +53,7 @@ export class MultiselectAutocompleteComponent implements OnChanges {
 
 	// Optional Input Parameter
 	@Input()
-	private suggestedTopics: any = [];
+	private suggestedTopics: any;
 
 	@Input()
 	private create = false;
@@ -113,7 +113,20 @@ export class MultiselectAutocompleteComponent implements OnChanges {
 		}
 	}
 
+	focusFunction() {
+		console.log('initialising');
+		console.log(this.suggestedTopics);
+		if (this.suggestedTopics) {
+			this.suggestedTopics.forEach(suggestedTopic => {
+				console.log('pushing');
+				this.filteredList.push(suggestedTopic);
+			});
+		}
+	}
+
 	ngOnChanges(changes: SimpleChanges) {
+		console.log(changes);
+
 		for (const property in changes) {
 			if (property === 'preSelectedTopics') {
 				this.filteredList = [];

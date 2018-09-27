@@ -2,15 +2,16 @@
 	<ul class="ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all" style="padding-left: 0.0em">
 		<li class="ui-autocomplete-input-token col-sm-12">
 			<mat-icon icon="search" aria-label="search" role="img" class="vAlignMiddle">search</mat-icon>
-			<input #box id="list" type="text" class="form-control input-topic" [(ngModel)]=query (keyup)=filter() placeholder="{{ title }}"
-			 autocomplete="off">
+			<input #box id="list" (focus)="focusFunction()" type="text" class="form-control input-topic" [(ngModel)]=query
+			 (keyup)=filter() placeholder="{{ title }}" autocomplete="off">
 		</li>
 
 	</ul>
 </span>
 <div class="margin-top-20">
 	<mat-chip-list>
-		<mat-chip *ngFor="let item of selected" [selectable]="false" [removable]="true" (removed)="remove(item)">{{item.name |titlecase}}
+		<mat-chip *ngFor="let item of selected" [selectable]="false" [removable]="true" (removed)="remove(item)">{{item.name
+			|titlecase}}
 			<mat-icon matChipRemove>cancel</mat-icon>
 		</mat-chip>
 	</mat-chip-list>
