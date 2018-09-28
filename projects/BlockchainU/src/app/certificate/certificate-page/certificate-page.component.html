@@ -144,7 +144,7 @@
 						<div class="row lightText padding-bottom-20">
 							<div class="col-xs-12">
 								<div class="mat-body-2" *ngIf="!loadingCollection">
-									<a [routerLink]="[collection.type, collection.id]">< View {{collection.type}} details</a>
+									<a [routerLink]="['/', collection.type, collection.id]">< View {{collection.type}} details</a>
 								</div>
 								<button class="pull-right" (click)="snav.open()" mat-icon-button>
 									<mat-icon>info</mat-icon>
@@ -199,7 +199,7 @@
 										Transaction ID
 									</span>
 									<br>
-									<b>{{certificate.signature.anchors[0].sourceId | shorten: 10 : '...'}}</b>
+									<b>{{certificate.signature.anchors[0].sourceId}}</b>
 								</div>
 							</div>
 						</div>
