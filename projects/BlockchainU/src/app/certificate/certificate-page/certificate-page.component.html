@@ -4,7 +4,7 @@
 	</div>
 	<div *ngIf="certificate">
 		<mat-sidenav-container class="certificate">
-			<mat-sidenav style="background: white; max-height: 90vh; overflow-y: scroll;" #snav [mode]="'over'" position="end">
+			<mat-sidenav style="background: white; max-height: 90vh; overflow-y: scroll; width: 330px;" #snav [mode]="'over'" position="end">
 				<div class="row">
 					<div class="col-xs-12 padding-top-30" *ngIf="issuer">
 						<h2 class="lightText">Issuer</h2>
@@ -143,6 +143,9 @@
 					<div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3 padding-top-30 padding-bottom-30">
 						<div class="row lightText padding-bottom-20">
 							<div class="col-xs-12">
+								<div class="mat-body-2" *ngIf="!loadingCollection">
+									<a [routerLink]="[collection.type, collection.id]">< View {{collection.type}} details</a>
+								</div>
 								<button class="pull-right" (click)="snav.open()" mat-icon-button>
 									<mat-icon>info</mat-icon>
 								</button>
@@ -178,7 +181,7 @@
 								<br>
 								<b>{{certificate.issuedOn | date:'mediumDate' }}</b>
 							</div>
-							<div class="col-md-3 col-xs-6">
+							<div class="col-md-5 col-xs-6">
 								<span class="lightText">
 									Issuer
 								</span>
@@ -186,18 +189,18 @@
 								<b>{{certificate.issuer.profile.first_name+' '+certificate.issuer.profile.last_name |titlecase}}</b>
 							</div>
 							<div class="col-md-2 col-xs-6">
+								<button mat-raised-button color="primary" (click)="verify()">
+									Verify
+								</button>
+							</div>
+							<div class="col-md-12">
 								<div *ngIf="certificate.signature.anchors[0].sourceId">
 									<span class="lightText">
-										Txn ID
+										Transaction ID
 									</span>
 									<br>
 									<b>{{certificate.signature.anchors[0].sourceId | shorten: 10 : '...'}}</b>
 								</div>
-							</div>
-							<div class="col-md-2 col-xs-6">
-								<button mat-raised-button color="primary" (click)="verify()">
-									Verify
-								</button>
 							</div>
 						</div>
 						<div class="row">
@@ -213,13 +216,13 @@
 								<span class="lightText">
 									Verified by
 								</span>
-								<img style="width: 100px" src="assets/images/one0x.png" alt="logo">
+								<a href="https://one0x.com" target="_blank"><img style="width: 100px" src="assets/images/one0x.png" alt="logo"></a>
 							</div>
 							<div class="col-md-3 col-xs-12 margin-top-10" *ngIf="!verified">
 								<span class="lightText">
 									Verification by
 								</span>
-								<img style="width: 100px" src="assets/images/one0x.png" alt="logo">
+								<a href="https://one0x.com" target="_blank"><img style="width: 100px" src="assets/images/one0x.png" alt="logo"></a>
 							</div>
 						</div>
 					</div>

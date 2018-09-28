@@ -23,6 +23,8 @@ export class CertificatePageComponent implements OnInit {
 	initialised: boolean;
 	certificateId: string;
 	userId: string;
+	collection: any;
+	loadingCollection = true;
 	accountApproved: string;
 	loadingCertificate: boolean;
 	certificateHTML: string;
@@ -73,8 +75,21 @@ export class CertificatePageComponent implements OnInit {
 			console.log(this.certificate);
 			this.generateDownloadJsonUri();
 			this.getProfileData();
+			this.getCollection();
 			this.setTags();
 		});
+	}
+	
+	getCollection() {
+		this.loadingCollection = true;
+		const filter = {
+			include: ['owners', 'participants']
+		};
+		this.collectionService.getCollectionDetail(this.certificate.collection.id, filter)
+			.subscribe(res => {
+				this.collection = res;
+				this.loadingCollection = false;
+			});
 	}
 	
 	getProfileData() {
