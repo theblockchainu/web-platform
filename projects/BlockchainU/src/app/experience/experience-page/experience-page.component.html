@@ -32,7 +32,7 @@
 				<span>This cohort has ended. You can still add a review and participate in discussions</span>
 			</div>
 		</div>
-		<div class="row pending-actions center" *ngIf="(experience && experience.assessment_models && experience.assessment_models.length>0 && experience.assessment_models[0].type && userType === experience.assessment_models[0].type.toLowerCase())">
+		<div class="row pending-actions center" *ngIf="(experience && experience.assessment_models && experience.assessment_models.length>0 && experience.assessment_models[0].type && userType === experience.assessment_models[0].type.toLowerCase() && calendarId !== undefined)">
 			<div class="col-md-10 col-md-offset-1">
 				<span>
 					<a href="javascript:void(0);" (click)="openAssessmentDialog()">Assess your student's performance now.</a>
@@ -904,7 +904,7 @@
 							</div>
 						</div>
 						<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId === undefined">
-							<h3 class="margin-bottom-20">Participants ({{participants ? participants.length : '0'}})</h3>
+							<h3 class="margin-bottom-20">Participants ({{allParticipants ? allParticipants.length : '0'}})</h3>
 							<div>
 								<div class="loading-container" [hidden]="!loadingParticipants">
 									<ngx-loading [show]="true"></ngx-loading>
