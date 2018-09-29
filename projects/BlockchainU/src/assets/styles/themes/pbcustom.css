@@ -2277,7 +2277,7 @@ MD-Editor Styling
     flex: 1;
   }
   .main-content {
-    padding-top: 100px !important;
+    padding-top: 60px !important;
   }
   .show-small .headerButtons {
     flex: 1;

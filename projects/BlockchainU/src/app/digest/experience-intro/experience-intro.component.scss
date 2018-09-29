@@ -1,6 +1,6 @@
 body{
 	color: #484848;
-	font-family: 'Lato', sans-serif;
+	font-family: 'Cereal', sans-serif;
 	line-height: 1.5;
 	font-size: 16px;
 	font-weight: 400;
@@ -113,6 +113,8 @@ h2 {
 	font-size: 14px;
 	font-weight: 600;
 	color: #fff !important;
+	padding: 5px 15px;
+	margin-right: 20px;
 }
 
 header .navbar{
@@ -410,7 +412,7 @@ header .right-links a.nav-link:hover{
 
 .started-step{
 	position: relative;
-	margin-top: 240px;
+	margin-top: 140px;
 	color: #fff;
 }
 .started-step .number{
@@ -423,6 +425,7 @@ header .right-links a.nav-link:hover{
 	margin: 0 auto;
 	line-break: 50px;
 	text-align: center;
+	line-height: 36px;
 }
 .started-step h2{
 	font-size: 21px;
