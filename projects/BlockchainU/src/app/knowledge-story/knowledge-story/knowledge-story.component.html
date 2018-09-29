@@ -133,7 +133,7 @@
 								<div class="col-xs-12" *ngIf="globalStory || knowledgeStory.status === 'approved'">
 									<h3>Certificates</h3>
 								</div>
-								<div class="col-xs-6 margin-top-10" *ngFor="let certificate of certificates">
+								<div class="col-xs-12 col-md-6 margin-top-10" *ngFor="let certificate of certificates">
 									<mat-card style="max-height: 450px; overflow-y: hidden;">
 										<mat-card-content>
 											<div [innerHTML]="parseCertificate(certificate.stringifiedJSON).displayHtml | safe : 'html'"></div>
