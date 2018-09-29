@@ -672,7 +672,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 							this.recordStartView();
 						} else {
 							this.snackBar.open('This in-person bounty has either been deleted or flagged.', 'OK', { duration: 5000 });
-							this.router.navigate(['home', 'bountys']);
+							this.router.navigate(['home', 'bounties']);
 						}
 					} else {
 						this.loadingBounty = false;
@@ -1018,7 +1018,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	public deleteBounty() {
 		this.dialogsService.openDeleteCollection(this.bounty).subscribe((response: any) => {
 			if (response) {
-				this.router.navigate(['/console/teaching/bountys']);
+				this.router.navigate(['/console/teaching/bounties']);
 			}
 		});
 	}

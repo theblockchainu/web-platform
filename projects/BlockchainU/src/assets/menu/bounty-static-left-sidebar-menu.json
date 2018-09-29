@@ -1,0 +1,149 @@
+[
+  {
+    "title": "The Basics",
+    "active": true,
+    "step": 1,
+    "submenu": [
+      {
+        "title": "Type",
+        "step": 2,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Topics",
+        "step": 3,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "About The Host",
+        "step": 4,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      }
+    ],
+    "visible": true,
+    "locked": false
+  },
+  {
+    "title": "Experience Page",
+    "active": false,
+    "step": 5,
+    "submenu": [
+      {
+        "title": "Title",
+        "step": 6,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Description",
+        "step": 7,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Peer Requirements",
+        "step": 8,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Photos",
+        "step": 9,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Certification",
+        "step": 10,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Assessment",
+        "step": 11,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Price",
+        "step": 12,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      }
+    ],
+    "visible": true,
+    "locked": false
+  },
+  {
+    "title": "Bounty Projects",
+    "active": false,
+    "step": 13,
+    "submenu": [
+      {
+        "title": "Select Dates",
+        "step": 14,
+        "active": false,
+        "visible": true,
+        "locked": false,
+        "complete": false
+      }
+    ],
+    "visible": true,
+    "locked": false
+  },
+  {
+    "title": "Review & Submit",
+    "active": false,
+    "step": 15,
+    "visible": true,
+    "locked": false
+  },
+  {
+    "title": "Finishing Touches",
+    "active": false,
+    "visible": false,
+    "step": 16,
+    "submenu": [
+      {
+        "title": "Phone Number",
+        "step": 16,
+        "active": false,
+        "visible": false,
+        "locked": false,
+        "complete": false
+      },
+      {
+        "title": "Payments",
+        "step": 17,
+        "active": false,
+        "visible": false,
+        "locked": false,
+        "complete": false
+      }
+    ],
+    "locked": false
+  }
+]

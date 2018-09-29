@@ -218,4 +218,10 @@ export class ConsoleTeachingComponent implements OnInit {
         });
     }
 
+    public createBounty() {
+        this._collectionService.postCollection(this.userId, 'bounty').subscribe((bountyObject: any) => {
+            this.router.navigate(['bounty', bountyObject.id, 'edit', 1]);
+        });
+    }
+
 }
