@@ -63,7 +63,7 @@
 					</span>
 					<mat-icon class="show-small-inline">add_circle_outline</mat-icon>
 				</button> -->
-				<button mat-button class="headerButtons" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async) && isAccountApproved && isTeacher">
+				<button mat-button class="headerButtons" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async) && isAccountApproved">
 					<span class="hide-small">
 						Teach
 					</span>
@@ -271,10 +271,10 @@
 	</button>
 	<button mat-menu-item (click)="createSession()">
 		<span *ngIf="sessionId.length < 5">
-			Start a peer session
+			Start an expert session
 		</span>
 		<span *ngIf="isSessionApproved && sessionId.length > 5">
-			Edit session availability
+			Edit session calendar
 		</span>
 	</button>
 	<button mat-menu-item [routerLink]="['/console/teaching/bounties']">

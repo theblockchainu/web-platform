@@ -332,7 +332,6 @@ export class AppHeaderComponent implements OnInit {
 		} else {
 			this.router.navigate(['digest', 'experiences']);
 		}
-
 	}
 
 	public createClass() {

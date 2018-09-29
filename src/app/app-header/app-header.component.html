@@ -246,10 +246,10 @@
 	</button>
 	<button mat-menu-item (click)="createSession()">
 		<span *ngIf="sessionId.length < 5">
-			Start a peer session
+			Start an expert session
 		</span>
 		<span *ngIf="isSessionApproved && sessionId.length > 5">
-			Edit session availability
+			Edit session calendar
 		</span>
 	</button>
 	<button mat-menu-item [routerLink]="['/console/teaching/all']" *ngIf="isTeacher">
