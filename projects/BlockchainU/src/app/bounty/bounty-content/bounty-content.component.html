@@ -2,9 +2,9 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<div style="margin-bottom: 20px;" class="mat-body-2">
-				Timeline
-				<br/>
-				<span class="mat-caption">Add a day to your timeline and schedule activities on it. Repeat for all days if you like.</span>
+				Projects
+				<br />
+				<span class="mat-caption">Add a day to your timeline and add project on it.</span>
 			</div>
 			<form [formGroup]="myForm" novalidate>
 				<!--itenary-->
@@ -12,8 +12,8 @@
 					<div *ngFor="let Itenary of myForm.controls['itenary']['controls']; let i=index" class="panel panel-default">
 						<div class="panel-body" [formGroupName]="i">
 							<app-itenary [itenaryForm]="myForm.controls['itenary']['controls'][i]" [itenaryId]="i" [collectionStartDate]="getCalendarStartDate()"
-							             [collectionEndDate]="getCalendarEndDate()" [selectedItineraryDates]="getSelectedItineraryDates()" (triggerSave)="saveTriggered($event,i)"
-							             [bountyStatus]="collection.status"></app-itenary>
+							 [collectionEndDate]="getCalendarEndDate()" [selectedItineraryDates]="getSelectedItineraryDates()" (triggerSave)="saveTriggered($event,i)"
+							 [bountyStatus]="collection.status"></app-itenary>
 						</div>
 					</div>
 				</div>

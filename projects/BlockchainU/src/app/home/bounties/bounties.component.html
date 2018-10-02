@@ -1,0 +1,103 @@
+<div class="main-content">
+	<div class="col-md-10 col-md-offset-1 homeContainer">
+		<div class="feed bountiesFeed">
+			<div class="row bounty-feed">
+				<div class="col-md-12">
+					<div class="row margin-bottom-20 filterRow">
+						<div class="col-md-12">
+							<div class="margin-right-10 mobile-margin-bottom-20" style="float: left;">
+								<button mat-button class="mat-border-button" #priceButton (click)="openPriceDialog()" style="color: rgba(0,0,0,0.54) !important;">Price</button>
+							</div>
+							<!-- <div class="margin-right-10 mobile-margin-bottom-20" style="float: left;">
+								<button mat-button class="mat-border-button" #durationButton (click)="openDurationDialog()" style="color: rgba(0,0,0,0.54) !important;">Duration</button>
+							</div> -->
+							<!--<div style="float: left;">
+							  <button mat-button class="mat-border-button" #topicButton (click)="openTopicsDialog()" style="color: rgba(0,0,0,0.54) !important;">Topics</button>
+							</div>-->
+							<form [formGroup]="filterForm">
+								<div class="margin-right-10" style="float: left;">
+									<mat-form-field class="filterFormField" [floatLabel]="'never'">
+										<mat-select placeholder="Languages" formControlName="language" multiple>
+											<mat-option *ngFor="let language of languageList" [value]="language">{{language}}</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<!-- <div class="margin-right-10" style="float: left;">
+									<mat-form-field class="filterFormField" [floatLabel]="'never'">
+										<mat-select placeholder="Location" formControlName="location" multiple>
+											<mat-option *ngFor="let location of locationList" [value]="location">{{location}}</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div> -->
+								<div class="margin-right-10" style="float: left;">
+									<mat-form-field class="filterFormField" [floatLabel]="'never'">
+										<mat-select placeholder="Difficulty Level" formControlName="difficultyLevel" multiple>
+											<mat-option *ngFor="let level of levelList" [value]="level">{{level}}</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div class="margin-right-10" style="float: left;">
+									<mat-form-field class="filterFormField" [floatLabel]="'never'">
+										<mat-select placeholder="Rating" formControlName="rating" multiple>
+											<mat-option *ngFor="let rating of ratingList" [value]="rating">
+												<p-rating class="padding-left-0" style="float: left;" [ngModelOptions]="{standalone: true}" [ngModel]="rating"
+												 readonly="true" stars="5" [cancel]="false">
+												</p-rating>
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div class="margin-right-10" style="float: left;">
+									<mat-form-field class="filterFormField" [floatLabel]="'never'">
+										<mat-select placeholder="Subtype" formControlName="subtype" multiple>
+											<mat-option *ngFor="let subtype of availableSubtypes" [value]="subtype">
+												{{subtype}}
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="mat-display-1" style="margin-bottom: 5px !important; margin-top: 34px;">
+						Available topics
+					</div>
+					<app-topic-row [availableTopics]="availableTopics" (topciClickedEvent)="filterClickedTopic($event)"></app-topic-row>
+					<div class="row">
+						<div class="col-xs-9 mat-display-1" style="margin-bottom: 25px !important;">
+							<span *ngIf="showArchived">
+								Archived
+							</span>Bounties
+							<span class="mat-display-1" *ngIf="selectedTopics && selectedTopics.length !== 0">
+								in
+								<span *ngFor="let topicObj of selectedTopics;let i=index">
+									{{topicObj.name}}
+								</span>
+								<mat-icon class="clickable" style="font-size: 12px; font-weight: 200;" (click)="resetTopics()">
+									close
+								</mat-icon>
+							</span>
+						</div>
+						<div class="col-xs-3">
+							<a class="clickable pull-right" (click)="toggleArchive()">
+								<span *ngIf="!showArchived">Show archived</span>
+								<span *ngIf="showArchived">Show active</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loading">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loading" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="bounties === undefined || bounties.length === 0">
+							There are no active bounties to view right now.
+						</div>
+						<div *ngFor="let bounty of bounties;">
+							<app-bounty-card [bounty]="bounty" (refresh)="onBountyRefresh($event)"></app-bounty-card>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

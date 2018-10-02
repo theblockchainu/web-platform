@@ -26,42 +26,6 @@
 				</span>
 			</div>
 		</div>
-		<div class="row pending-actions center" *ngIf="(calendarId !== undefined && bounty.status === 'active' && !hasCohortEnded())">
-			<!--<div class="row pending-actions center" *ngIf="(calendarId !== undefined && bounty.status === 'active')">-->
-			<div class="col-md-10 col-md-offset-1">
-				<span>This cohort has ended. You can still add a review and participate in discussions</span>
-			</div>
-		</div>
-		<div class="row pending-actions center" *ngIf="(bounty && bounty.assessment_models && bounty.assessment_models.length>0 && bounty.assessment_models[0].type && userType === bounty.assessment_models[0].type.toLowerCase())">
-			<div class="col-md-10 col-md-offset-1">
-				<span>
-					<a href="javascript:void(0);" (click)="openAssessmentDialog()">Assess your student's performance now.</a>
-				</span>
-			</div>
-		</div>
-		<div class="row upcoming-actions center" *ngIf="(bounty.status === 'active' && calendarId === undefined && hasLiveCohort() && userType === 'teacher')">
-			<div class="col-md-10 col-md-offset-1">
-				<span>The cohort of
-					<b>{{liveCohort.startDate | date: 'MMM, dd'}} to {{liveCohort.endDate | date: 'MMM, dd'}}</b> is currently
-					underway.
-					<a href="javascript:void(0);" (click)="viewDetails(liveCohort.id)">View details</a>
-				</span>
-			</div>
-		</div>
-		<div class="row pending-actions center" *ngIf="bounty.status === 'active' && calendarId === undefined && !hasUpcomingCohort()">
-			<div class="col-md-10 col-md-offset-1">
-				<span>This in-person bounty was run in the past but has no upcoming batches.
-					<a href="javascript:void(0);" *ngIf="userType === 'teacher'" (click)="editCalendar()">Schedule one now?</a>
-				</span>
-			</div>
-		</div>
-		<div class="row pending-actions center" *ngIf="calendarId !== undefined && currentCalendar !== undefined && currentCalendar.status === 'cancelled'">
-			<div class="col-md-10 col-md-offset-1">
-				<span>This cohort was cancelled by the teacher.
-					<a href="javascript:void(0);" (click)="selectJoiningDates()">View other cohorts?</a>
-				</span>
-			</div>
-		</div>
 		<div class="row pending-actions center" *ngIf="(userType === 'public' && userId !== undefined && userId.length > 5 && accountApproved !== 'true')">
 			<div class="col-md-10 col-md-offset-1">
 				<span>Your account is still under review. You can sign-up for this bounty after you are approved.
@@ -80,55 +44,27 @@
 		<div class="row margin-top-40">
 			<div class="col-md-10 col-md-offset-1">
 				<div class="row bounty-header">
-					<div class="col-md-7">
-						<div class="row">
+					<div class="col-md-6">
+						<div class="row padding-bottom-20">
 							<div class="col-md-12">
-								<a class="clickable margin-bottom-10" *ngIf="calendarId && userType !== 'participant'" (click)="backToCollection(bounty)">
-									< Back to bounty page </a> <p class="mat-display-1" style="margin-bottom: 20px !important;">{{bounty.title
-										| titlecase}}
-										<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
-										<span *ngIf="!checkingEthereum && isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant">&emsp;
-											<i class="fa fa-globe lightText" style="color: #ff6d71; font-size: 14px;"></i>
-										</span>
-										<span *ngIf="!checkingEthereum && !isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="Add to one0x Blockchain"
-										 (click)="addToEthereum()" class="clickable">&emsp;
-											<i class="fa fa-plus lightText" style="font-size: 14px;"></i>
-										</span>
-										</p>
-										<div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px; margin-bottom: 10px;">
-											<span *ngIf="currentCalendar">
-												<b>{{currentCalendar.startDate | date:'d MMM'}} to {{currentCalendar.endDate| date:'d MMM'}}</b>
-												&nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
-											</span>
-											<span> {{totalDuration | i18nPlural : hourMapping}} {{bounty.type}} &nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{bounty.contents.length
-												| i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
-											<span *ngIf="userType==='teacher'">
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{bounty.calendars.length
-												| i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;
-											</span>
-											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
-												<br />
-												<mat-icon style="top: 5px;">date_range</mat-icon> Change cohort
-											</a>
-											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId === undefined" (click)="changeDates()">
-												<br />
-												<mat-icon style="top: 5px;">date_range</mat-icon> Select cohort to view participants
-											</a>
-										</div>
-										<div *ngIf="userType==='public'" style="margin-top: -12px;">
-											<span>{{itenaryArray.length | i18nPlural : dayMapping}} / {{totalDuration | i18nPlural : hourMapping}}
-												&nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{bounty.contents.length
-												| i18nPlural : activityMapping}}</span>
-										</div>
+								<span class="mat-display-1" style="margin-bottom: 20px !important;">{{bounty.title
+									| titlecase}}
+									<span *ngIf="!checkingEthereum && isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant">&emsp;
+										<i class="fa fa-globe lightText" style="color: #ff6d71; font-size: 14px;"></i>
+									</span>
+									<span *ngIf="!checkingEthereum && !isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="Add to one0x Blockchain"
+									 (click)="addToEthereum()" class="clickable">&emsp;
+										<i class="fa fa-plus lightText" style="font-size: 14px;"></i>
+									</span>
+								</span>
 							</div>
 						</div>
 					</div>
-					<div class="col-md-5">
+					<div class="col-md-6">
 						<div class="row" style="margin-top: 15px; text-align: right" *ngIf="userType==='teacher' || userType==='participant'">
 							<div class="col-xs-12 button-row">
+								<button mat-button class="mat-border-button" *ngIf="userType==='teacher'" (click)="opensubmissionAssessmentDialog()">Assess
+									Submissions</button>
 								<button mat-button class="mat-border-button" (click)="openGroupChat()">Group Chat</button>
 								<button mat-button class="mat-border-button" *ngIf="userType ==='participant' || userType === 'teacher'"
 								 (click)="scrollToDiscussion()">Discussion</button>
@@ -147,10 +83,6 @@
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length > 0"
 								 (click)="cancelBounty()">Cancel
 									Bounty
-								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length === 0"
-								 (click)=" deleteCohort()">Delete
-									Cohort
 								</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined" (click)=" addParticipant()">Add
 									participant
@@ -193,17 +125,20 @@
 						</div>
 						<!--TOPICS SECTION-->
 						<div class="row Topics margin-top-20" *ngIf="userType === 'public'">
-							<div class="col-xs-8 col-xs-offset-4">
+							<div class="col-xs-4">
+								<h3>Topics</h3>
+							</div>
+							<div class="col-xs-8">
 								<mat-chip-list>
 									<mat-chip *ngFor="let topic of topicFix" disabled> {{topic.name | titlecase}} </mat-chip>
 								</mat-chip-list>
 							</div>
 						</div>
 						<div *ngIf="userType==='public'" class="row Description margin-top-20 pre-wrapped">
-							<div class="col-xs-4">
+							<div class="col-xs-12">
 								<h3 *ngIf="userType === 'public'">Bounty overview</h3>
 							</div>
-							<div class="col-xs-8">
+							<div class="col-xs-12">
 								<div>
 									<td-markdown>
 										{{bounty.description}}
@@ -232,7 +167,7 @@
 							<div class="col-md-12">
 								<div class="row">
 									<div class="col-xs-4">
-										<h3>Taught by</h3>
+										<h3>Posted by</h3>
 									</div>
 									<div class="col-xs-8">
 										<div class="row">
@@ -270,8 +205,7 @@
 								</div>
 							</div>
 						</div>
-						<hr *ngIf="userType==='public'">
-						<div class="row" *ngIf="userType === 'public'">
+						<!-- <div class="row" *ngIf="userType === 'public'">
 							<div class="col-md-12">
 								<div class="row">
 									<div class="col-xs-4">
@@ -294,7 +228,7 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						<hr *ngIf="userType==='public'">
 						<div class="row" *ngIf="userType === 'public'">
 							<div class="col-md-12">
@@ -325,11 +259,11 @@
 							<div class="featurette" id="about">
 								<div class="col-md-12">
 									<div class="mat-h3 margin-bottom-20">
-										Itinerary
+										Projects
 									</div>
 									<div class="qa-message-list" id="wallmessages">
 										<div [ngClass]="{'message-item-wrapper' : oneDay(), 'message-item-wrapper-one-day': !oneDay()}" *ngFor="let itenary of itenaryArray">
-											<div [ngClass]="{'message-item': oneDay() , 'message-item-ticked': hasDatePassed(itenary.startDate)}">
+											<div [ngClass]="{'message-item': oneDay()}">
 												<div class="message-inner">
 													<div class="qa-message-content">
 														<div style="top: -5px; position: relative;">
@@ -920,18 +854,6 @@
 										</div>
 									</div>
 								</div>
-								<div>
-									<div class="row">
-										<div class="col-md-12">
-											<div class="emptySectionText">
-												Select one bounty cohort to view participants signed up for that batch.
-												<br>
-												<br>
-												<button mat-button class="mat-border-button" (click)="changeDates()">Select cohort</button>
-											</div>
-										</div>
-									</div>
-								</div>
 							</div>
 						</div>
 						<div *ngIf="bounty.isApproved && certificateHTML !== undefined && certificateHTML.length > 10">
@@ -956,28 +878,7 @@
 							</div>
 							<br>
 						</div>
-						<div *ngIf="userType==='teacher' && bounty.isApproved && assessmentRules !== undefined">
-							<hr class="margin-top-30 margin-bottom-30">
-							<div>
-								<h3 style="display: inline-block;">Assessment Rules</h3>
-								<!-- <span (click)="editCalendar()" class="pull-right clickable" style="cursor: pointer;">
-										<mat-icon style="font-size: 1rem; top: 15px;">edit</mat-icon>
-									</span> -->
-								<!-- <br> -->
-								<div class="row padding-top-20" *ngFor="let assessment_rule of assessmentRules">
-									<div class="col-xs-4">
-										For {{assessment_rule.value | titlecase}}
-									</div>
-									<div class="col-xs-8">
-										student gets &nbsp;
-										<i class="fab fa-ethereum"></i> &nbsp;
-										<b>{{getGyanForRule(assessment_rule.gyan, bounty.academicGyan)}} Gyan</b>
-									</div>
-								</div>
-							</div>
-							<br>
-						</div>
-						<div *ngIf="userType==='teacher' && bounty.isApproved">
+						<!-- <div *ngIf="userType==='teacher' && bounty.isApproved">
 							<hr class="margin-top-30 margin-bottom-30">
 							<div>
 								<h3 style="display: inline-block;">Bounty Batches</h3>
@@ -988,27 +889,6 @@
 								<span class="text-muted h6">{{bounty.calendars.length}} Cohorts</span>
 							</div>
 							<br>
-							<div class="border-calendar calendar">
-								<div class="flex flexContainer" style="margin-bottom:10px">
-									<div class="col-md-8">
-										<h3 class="calendarTitle">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
-									</div>
-									<span class="flex"></span>
-									<div class="prevNext" style="margin-top: -5px">
-										<button mat-button class="mat-icon-button" type="button" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
-											<mat-icon class="" aria-hidden="true">chevron_left</mat-icon>
-										</button>
-										<button mat-button class="mat-icon-button" type="button" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
-											<mat-icon class="" aria-hidden="true">chevron_right</mat-icon>
-										</button>
-									</div>
-								</div>
-								<div [ngSwitch]="view">
-									<mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
-									 (dayClicked)="dayClicked($event.day)">
-									</mwl-calendar-month-view>
-								</div>
-							</div>
 							<div [ngClass]="{'clickedDate' : true, 'displayNone' : !dateClicked, 'displayBlock': dateClicked}">
 								<div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
 									<span class="cal-day-badge"></span>
@@ -1044,7 +924,7 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						<div class="row" *ngIf="userType==='public'" style="margin-top: -85px;">
 							<div class="col-md-12">
 								<!--COVER IMAGE-->
@@ -1091,8 +971,7 @@
 												<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
 											</div>
 											<div class="col-md-12">
-												<span matTooltip="Earn up to {{bounty.academicGyan + bounty.nonAcademicGyan}} Gyan from this bounty"
-												 style="font-weight: 700; vertical-align: middle;">
+												<span matTooltip="Earn up to {{bounty.academicGyan + bounty.nonAcademicGyan}} Gyan from this bounty" style="font-weight: 700; vertical-align: middle;">
 													Earn
 													<i class="fab fa-ethereum lightText"></i> {{bounty.academicGyan + bounty.nonAcademicGyan}}
 												</span>
@@ -1109,11 +988,33 @@
 									</div>
 									<div class="col-xs-4" style="padding-top: 9px;">
 										<span>
-											<button mat-raised-button (click)="selectJoiningDates()" color="primary">Apply Now</button>
+											<button mat-raised-button (click)="selectJoiningDates()" color="primary">Join Now</button>
 										</span>
 										<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this bounty">
 											<button mat-raised-button color="primary" [disabled]="true">See Dates</button>
 										</span>-->
+									</div>
+								</div>
+								<hr class="margin-top-10 margin-bottom-10">
+								<div class="row" *ngIf="bounty && bounty.rewards">
+									<div class="col-xs-12">
+										<div class="row padding-bottom-30">
+											<div class="col-xs-12">
+												<h3>Rewards</h3>
+											</div>
+										</div>
+										<div class="row" *ngFor="let reward of bounty.rewards">
+											<div class="col-xs-2">
+												<span class="mat-body-2">{{reward.position}}</span>
+											</div>
+											<div class="col-xs-5">
+												{{reward.title |titlecase}}
+											</div>
+											<div class="col-xs-5">
+												<h3>{{reward.value | convertCurrency:
+													reward.currency |async}}</h3>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -1202,10 +1103,10 @@
 					<div class="col-md-12">
 						<div class="row margin-bottom-20">
 							<div class="col-md-5">
-								<h3>Similar Bountys</h3>
+								<h3>Similar Bounties</h3>
 							</div>
 							<div class="col-md-2 pull-right" style="text-align: right">
-								<a [routerLink]="'/home/bountys'">
+								<a [routerLink]="'/home/bounties'">
 									<span class="mat-body-1">
 										See all
 										<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
@@ -1213,10 +1114,10 @@
 								</a>
 							</div>
 						</div>
-						<div class="loading-container" [hidden]="!loadingSimilarBountys">
+						<div class="loading-container" [hidden]="!loadingSimilarBounties">
 							<ngx-loading [show]="true"></ngx-loading>
 						</div>
-						<!--<div *ngIf="!loadingSimilarBountys" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;">
+						<!--<div *ngIf="!loadingSimilarBounties" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;">
 							<div *ngFor="let bounty of recommendations.collections; let i = index;">
 								<app-bounty-card *ngIf="i < 5" [bounty]="bounty" (refresh)="onBountyRefresh($event)"></app-bounty-card>
 							</div>
@@ -1241,8 +1142,7 @@
 					<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
 				</div>
 				<div class="col-md-12">
-					<span matTooltip="Earn up to {{bounty.academicGyan + bounty.nonAcademicGyan}} Gyan from this bounty"
-					 style="font-weight: 700; vertical-align: middle;">
+					<span matTooltip="Earn up to {{bounty.academicGyan + bounty.nonAcademicGyan}} Gyan from this bounty" style="font-weight: 700; vertical-align: middle;">
 						Earn
 						<i class="fab fa-ethereum"></i> {{bounty.academicGyan + bounty.nonAcademicGyan}}
 					</span>

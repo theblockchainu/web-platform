@@ -144,7 +144,7 @@ export class BountyContentComponent implements OnInit, AfterViewInit {
 					}
 				} else if (result === 'reject') {
 					// Do nothing
-					this.router.navigate(['console', 'teaching', 'bountys']);
+					this.router.navigate(['console', 'teaching', 'bounties']);
 				}
 			});
 	}
@@ -159,7 +159,7 @@ export class BountyContentComponent implements OnInit, AfterViewInit {
 							this.postContent(event, i);
 						} else if (result === 'reject') {
 							// Do nothing
-							this.router.navigate(['console', 'teaching', 'bountys']);
+							this.router.navigate(['console', 'teaching', 'bounties']);
 						}
 					});
 			} else {
@@ -174,7 +174,7 @@ export class BountyContentComponent implements OnInit, AfterViewInit {
 							this.patchContent(event, i);
 						} else if (result === 'reject') {
 							// Do nothing
-							this.router.navigate(['console', 'teaching', 'bountys']);
+							this.router.navigate(['console', 'teaching', 'bounties']);
 						}
 					});
 			} else {
@@ -188,7 +188,7 @@ export class BountyContentComponent implements OnInit, AfterViewInit {
 							this.deleteContent(event.value, i);
 						} else if (result === 'reject') {
 							// Do nothing
-							this.router.navigate(['console', 'teaching', 'bountys']);
+							this.router.navigate(['console', 'teaching', 'bounties']);
 						}
 					});
 			} else {
@@ -205,7 +205,7 @@ export class BountyContentComponent implements OnInit, AfterViewInit {
 							this.days.emit(itenary);
 						} else if (result === 'reject') {
 							// Do nothing
-							this.router.navigate(['console', 'teaching', 'bountys']);
+							this.router.navigate(['console', 'teaching', 'bounties']);
 						}
 					});
 			} else {

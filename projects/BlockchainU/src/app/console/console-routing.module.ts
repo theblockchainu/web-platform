@@ -35,7 +35,7 @@ import { ConsoleAccountScholarshipsComponent } from './console-account/console-a
 import { ConsoleLearningKnowledgeStoryComponent } from './console-learning/console-learning-knowledge-story/console-learning-knowledge-story.component';
 import { ConsoleTeachingAccreditationComponent } from './console-teaching/console-teaching-accreditation/console-teaching-accreditation.component';
 import { ConsoleTeachingGuideComponent } from './console-teaching/console-teaching-guide/console-teaching-guide.component';
-
+import { ConsoleTeachingBountyComponent } from './console-teaching/console-teaching-bounty/console-teaching-bounty.component';
 const routes: Routes = [{
 	path: '',
 	component: ConsoleComponent,
@@ -107,6 +107,10 @@ const routes: Routes = [{
 				{
 					path: 'experiences',
 					component: ConsoleTeachingExperienceComponent
+				},
+				{
+					path: 'bounties',
+					component: ConsoleTeachingBountyComponent
 				},
 				{
 					path: 'sessions',
