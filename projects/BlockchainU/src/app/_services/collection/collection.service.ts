@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { flatMap } from 'rxjs/operators';
-
 import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { AuthenticationService } from '../authentication/authentication.service';
@@ -1040,6 +1039,54 @@ export class CollectionService {
 				return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/rewards', rewardsArray, this.requestHeaderService.options);
 			})
 		);
+	}
+
+	public linkPeertoReward(rewardId: string, participantId: string) {
+		return this.httpClient
+			.get(environment.apiUrl + '/api/rewards/' + rewardId +
+				'/winners', this.requestHeaderService.options)
+			.pipe(
+				flatMap((res: any) => {
+					const delinkRequestArray = [];
+					if (res.length > 0) {
+						res.forEach(peer => {
+							delinkRequestArray.push(
+								this.httpClient.delete(environment.apiUrl + '/api/rewards/' + rewardId +
+									'/winners/rel/' + peer.id, this.requestHeaderService.options)
+							);
+						});
+						return forkJoin(delinkRequestArray);
+					} else {
+						return new Observable(observer => {
+							observer.next(true);
+						});
+					}
+				}), flatMap(res => {
+					return this.httpClient
+						.put(environment.apiUrl + '/api/rewards/' + rewardId +
+							'/winners/rel/' + participantId, {}, this.requestHeaderService.options);
+				})
+			);
+
+	}
+
+	public unlinkPeerFromRewards(rewardsArray: Array<string>, participantId: string, ) {
+		if (rewardsArray.length > 0) {
+			const unlinkPeerArray = [];
+			rewardsArray.forEach((rewardId: string) => {
+				unlinkPeerArray.push(
+					this.httpClient
+						.delete(environment.apiUrl + '/api/rewards/' + rewardId +
+							'/winners/rel/' + participantId, this.requestHeaderService.options)
+				);
+			});
+			return forkJoin(unlinkPeerArray);
+		} else {
+			return new Observable(observer => {
+				observer.next(true);
+			});
+		}
+
 	}
 
 }

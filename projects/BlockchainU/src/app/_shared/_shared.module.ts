@@ -97,7 +97,7 @@ import { LinkifyPipe } from './linkify-pipe/linkify.pipe';
 import { LMarkdownEditorModule } from 'ngx-markdown-editor';
 import { GuideCardComponent } from './guide-card/guide-card.component';
 import { QuestionCardComponent } from './question-card/question-card.component';
-
+import { BountyCardComponent } from './bounty-card/bounty-card.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -133,8 +133,8 @@ import { QuestionCardComponent } from './question-card/question-card.component';
         MatSelectModule,
         MatButtonToggleModule,
         MatCardModule,
-		MatChipsModule,
-		MatMenuModule,
+        MatChipsModule,
+        MatMenuModule,
         MatDatepickerModule,
         MatProgressBarModule
     ],
@@ -159,7 +159,8 @@ import { QuestionCardComponent } from './question-card/question-card.component';
         UploadFileComponent,
         LinkifyPipe,
         GuideCardComponent,
-        QuestionCardComponent
+        QuestionCardComponent,
+        BountyCardComponent
     ],
     providers: [
         CollectionService,
@@ -266,7 +267,8 @@ import { QuestionCardComponent } from './question-card/question-card.component';
         LinkifyPipe,
         LMarkdownEditorModule,
         GuideCardComponent,
-		QuestionCardComponent
+        QuestionCardComponent,
+        BountyCardComponent
     ]
 })
 export class SharedModule {

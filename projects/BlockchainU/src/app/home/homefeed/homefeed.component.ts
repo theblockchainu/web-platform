@@ -34,6 +34,7 @@ import { QuestionService } from '../../_services/question/question.service';
 export class HomefeedComponent implements OnInit {
 	public classes: Array<any>;
 	public experiences: Array<any>;
+	public bounties: Array<any>;
 	public guides: Array<any>;
 	public communities: Array<any>;
 	public questions: Array<any>;
@@ -41,6 +42,7 @@ export class HomefeedComponent implements OnInit {
 	public peers: Array<any>;
 	public loadingClasses = false;
 	public loadingExperiences = false;
+	public loadingBounties = false;
 	public loadingGuides = false;
 	public loadingQuestions = false;
 	public loadingCommunities = false;
@@ -90,6 +92,7 @@ export class HomefeedComponent implements OnInit {
 		this.fetchContinueLearning();
 		this.fetchClasses();
 		this.fetchExperiences();
+		this.fetchBounties();
 		this.fetchPeers();
 		this.setTags();
 	}
@@ -341,6 +344,61 @@ export class HomefeedComponent implements OnInit {
 		);
 	}
 
+	private fetchBounties() {
+		const query = {
+			'include': [
+				{
+					'relation': 'collections', 'scope': {
+						'include':
+							[{ 'owners': ['reviewsAboutYou', 'profiles'] },
+								'participants',
+								'calendars', { 'bookmarks': 'peer' }, {
+								'contents':
+									['schedules']
+							}], 'where': { 'type': 'bounty' }
+					}
+				}
+			],
+			'order': 'createdAt desc'
+		};
+		this.loadingBounties = true;
+		this._topicService.getTopics(query).subscribe(
+			(response: any) => {
+				this.loadingBounties = false;
+				this.bounties = [];
+				for (const responseObj of response) {
+					responseObj.collections.forEach(collection => {
+						if (collection.status === 'active') {
+							if (collection.owners && collection.owners[0].reviewsAboutYou) {
+								collection.rating = this._collectionService
+									.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+								collection.ratingCount = this._collectionService
+									.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
+							}
+							let hasActiveCalendar = false;
+							if (collection.calendars) {
+								collection.calendars.forEach(calendar => {
+									if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
+										hasActiveCalendar = true;
+										return;
+									}
+								});
+							}
+							if (hasActiveCalendar) {
+								this.bounties.push(collection);
+							}
+						}
+					});
+				}
+				this.bounties = _.uniqBy(this.bounties, 'id');
+				this.bounties = _.orderBy(this.bounties, ['createdAt'], ['desc']);
+				this.bounties = _.chunk(this.bounties, 5)[0];
+			}, (err) => {
+				console.log(err);
+			}
+		);
+	}
+
 	private fetchGuides() {
 		const query = {
 			'include': [
@@ -479,25 +537,25 @@ export class HomefeedComponent implements OnInit {
 			(response: any) => {
 				this.questions = [];
 				response.forEach(question => {
-						const topics = [];
-						if (question.communities && question.communities.length > 0) {
-							question.communities.forEach(community => {
-								community.topics.forEach(topicObj => {
-									topics.push(this.titlecasepipe.transform(topicObj.name));
-								});
-							});
-						} else if (question.topics) {
-							question.topics.forEach(topicObj => {
+					const topics = [];
+					if (question.communities && question.communities.length > 0) {
+						question.communities.forEach(community => {
+							community.topics.forEach(topicObj => {
 								topics.push(this.titlecasepipe.transform(topicObj.name));
 							});
-						}
-						if (topics.length > 0) {
-							question.topics = topics;
-						} else {
-							topics.push('No topics selected');
-							question.topics = topics;
-						}
-						this.questions.push(question);
+						});
+					} else if (question.topics) {
+						question.topics.forEach(topicObj => {
+							topics.push(this.titlecasepipe.transform(topicObj.name));
+						});
+					}
+					if (topics.length > 0) {
+						question.topics = topics;
+					} else {
+						topics.push('No topics selected');
+						question.topics = topics;
+					}
+					this.questions.push(question);
 				});
 				this.loadingQuestions = false;
 			}, (err) => {
@@ -591,6 +649,12 @@ export class HomefeedComponent implements OnInit {
 		}
 	}
 
+	public onBountiesRefresh(event) {
+		if (event) {
+			this.fetchExperiences();
+		}
+	}
+
 	public onGuideRefresh(event) {
 		if (event) {
 			this.fetchGuides();
@@ -614,7 +678,7 @@ export class HomefeedComponent implements OnInit {
 			this.fetchClasses();
 		}
 	}
-	
+
 	public askQuestion() {
 		this._dialogsService.askQuestion().subscribe(res => {
 			if (res) {

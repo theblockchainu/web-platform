@@ -146,8 +146,7 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
     public nAAssessmentParams: Array<string>;
     public maxGyanExceding: boolean;
     totalGyan = 0;
-    totalDuration = 0;
-    timelineStep = 15;
+    timelineStep = 14;
     exitAfterSave = false;
     @ViewChild('certificateComponent') certificateComponent: CustomCertificateFormComponent;
     defaultAssesment: any;
@@ -404,14 +403,18 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private initializeTimeLine(res) {
+        console.log('sortedCalendar');
+        console.log(res.calendars);
 
         const sortedCalendar = this.sort(res.calendars, 'startDate', 'endDate');
+        console.log(sortedCalendar);
+
         if (sortedCalendar[0] !== undefined && sortedCalendar[0].startDate) {
+            console.log(sortedCalendar);
             const calendar = sortedCalendar[0];
             calendar['startDate'] = this.extractDate(calendar.startDate);
             calendar['endDate'] = this.extractDate(calendar.endDate);
             this._collectionService.sanitize(calendar);
-
             if (this.bountyData.status === 'active') {
                 this.isBountyActive = true;
                 this.activeBounty = 'disabledMAT';
@@ -449,7 +452,6 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
         for (const key in itenaries) {
             if (itenaries.hasOwnProperty(key)) {
                 const itr: FormGroup = this.InitItenary();
-                console.log(itr);
                 itr.controls.date.patchValue(moment(this.calculatedDate(this.timeline.value.calendar.startDate, key)).toDate());
                 itr.controls.startDay.patchValue(key);
                 for (const contentObj of itenaries[key]) {
@@ -634,9 +636,9 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.bounty.controls['nonAcademicGyan'].valueChanges.subscribe(res => {
         // 	this.validateGyan();
         // });
-        this.timeline.valueChanges.subscribe(res => {
-            this.totalHours();
-        });
+        // this.timeline.valueChanges.subscribe(res => {
+        //     this.totalHours();
+        // });
     }
 
     validateGyan() {
@@ -911,7 +913,7 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
     public submitBountyTimeline() {
         this.busySavingData = true;
         if (this.calendarIsValid(this.step)) {
-            this.bounty.controls['academicGyan'].patchValue(this.totalDuration >= 2 ? this.totalDuration - 1 : 1);
+            // this.bounty.controls['academicGyan'].patchValue(this.totalDuration >= 2 ? this.totalDuration - 1 : 1);
             this.bounty.controls['nonAcademicGyan'].patchValue(1);
             this.totalGyan = this.bounty.controls['academicGyan'].value + this.bounty.controls['nonAcademicGyan'].value;
             this.checkStatusAndSubmit(this.bounty, this.timeline, this.step);
@@ -998,7 +1000,7 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
         });
-        this.totalDuration = totalLength;
+        // this.totalDuration = totalLength;
         this.totalGyan = totalLength;
         this.bounty.controls['academicGyan'].patchValue(totalLength);
         this.bounty.controls['totalHours'].patchValue(totalLength);
@@ -1091,7 +1093,11 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
     public submitTimeline(collectionId, data: FormGroup) {
         const body = data.value.calendar;
         const itinerary = data.controls.contentGroup.value.itenary;
-        if (body.startDate && body.endDate && itinerary && itinerary.length > 0 && this.totalDuration > 0) {
+        console.log('submitting calendar');
+
+        console.log(body);
+
+        if (body.startDate && body.endDate && itinerary && itinerary.length > 0) {
             this.http.patch(environment.apiUrl + '/api/collections/' + collectionId + '/calendar', body, this.requestHeaderService.options)
                 .subscribe((response: any) => {
                     if (this.exitAfterSave) {
@@ -1106,7 +1112,7 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.busySavingData = false;
             console.log('No date selected or no content added to itinerary! - ' + JSON.stringify(itinerary));
-            if (!itinerary || itinerary.length === 0 || this.totalDuration === 0) {
+            if (!itinerary || itinerary.length === 0) {
                 if (this.exitAfterSave) {
                     this.snackBar.open('You need to add at least 1 activity to your bounty to proceed.', 'Exit Anyways', {
                         duration: 5000
@@ -1221,7 +1227,6 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.sidebarMenuItems[4].active = true;
                     this.sidebarMenuItems[4].submenu[0].visible = true;
                     this.sidebarMenuItems[4].submenu[1].visible = true;
-
                 }
             });
 

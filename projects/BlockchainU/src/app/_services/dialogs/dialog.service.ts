@@ -63,6 +63,7 @@ import { AddParticipantDialogComponent } from './add-participant-dialog/add-part
 import { ConfirmDeleteAccountComponent } from './confirm-delete-account/confirm-delete-account.component';
 import { AddImageDialogComponent } from './add-image-dialog/add-image-dialog.component';
 import { AskQuestionDialogComponent } from './ask-question-dialog/ask-question-dialog.component';
+import { SubmissionReviewDialogComponent } from './submission-review-dialog/submission-review-dialog.component';
 
 @Injectable()
 export class DialogsService {
@@ -87,7 +88,7 @@ export class DialogsService {
         console.log('openLogin dialog');
         const dialogRef1: MatDialogRef<LoginComponentDialog> = this.dialog.open(LoginComponentDialog, {
             panelClass: 'responsive-dialog',
-			maxHeight: '90vh'
+            maxHeight: '90vh'
         });
         return dialogRef1.afterClosed();
     }
@@ -232,7 +233,7 @@ export class DialogsService {
             data: {
                 collectionId: collectionId,
                 userId: userId,
-				type: type
+                type: type
             },
             panelClass: 'responsive-dialog', width: '30vw'
         });
@@ -730,7 +731,18 @@ export class DialogsService {
             panelClass: 'responsive-dialog',
             width: '55vw',
             minHeight: '50vh',
-			maxHeight: '90vh'
+            maxHeight: '90vh'
+        });
+        return dialogRef.afterClosed();
+    }
+
+    public assessSubmissions(collectionId: string) {
+        const dialogRef = this.dialog.open(SubmissionReviewDialogComponent, {
+            data: collectionId,
+            panelClass: 'responsive-dialog',
+            width: '80vw',
+            minHeight: '50vh',
+            maxHeight: '90vh'
         });
         return dialogRef.afterClosed();
     }

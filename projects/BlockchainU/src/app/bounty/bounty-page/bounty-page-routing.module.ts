@@ -9,14 +9,8 @@ const routes: Routes = [
     component: BountyPageComponent
   },
   {
-    path: 'calendar/:calendarId',
-    component: BountyPageComponent,
-    canActivateChild: [AuthGuardService]
-  },
-  {
-    path: 'calendar/:calendarId/:dialogName',
-    component: BountyPageComponent,
-    canActivateChild: [AuthGuardService]
+    path: ':dialogName',
+    component: BountyPageComponent
   }
 ];
 

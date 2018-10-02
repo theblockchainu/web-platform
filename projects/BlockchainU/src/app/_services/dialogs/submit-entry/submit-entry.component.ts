@@ -62,7 +62,8 @@ export class SubmitEntryComponent implements OnInit {
             name: ['', Validators.required],
             picture_url: [],
             description: ['', Validators.required],
-            isPrivate: ['true', Validators.required]
+            isPrivate: ['true', Validators.required],
+            git_url: ['']
         });
     }
 
@@ -71,7 +72,8 @@ export class SubmitEntryComponent implements OnInit {
             name: this.submitEntryForm.controls['name'].value,
             description: this.submitEntryForm.controls['description'].value,
             picture_url: this.submitEntryForm.controls['picture_url'].value,
-            isPrivate: this.submitEntryForm.controls['isPrivate'].value
+            isPrivate: this.submitEntryForm.controls['isPrivate'].value,
+            git_url: this.submitEntryForm.controls['git_url'].value
         };
         this.savingDraft = true;
         this.projectSubmissionService.submitProject(this.data.content.id, submissionForm).subscribe((response: any) => {
