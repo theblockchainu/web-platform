@@ -60,6 +60,13 @@
 			</div>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-xs-7 col-xs-offset-5">
+			<div class="loading-container" [hidden]="certificateProcessed" style="margin-top: 40px;">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+		</div>
+	</div>
 	<div class="row mat-headline padding-top-10" *ngIf="certificateProcessed">
 		<div class="col-xs-12" style="padding-left: 0px; padding-right: 0px;">
 			<div class="row" *ngIf="certificateValid" style="color: #33bd9e">

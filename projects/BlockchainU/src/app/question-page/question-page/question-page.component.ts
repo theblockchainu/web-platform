@@ -174,8 +174,10 @@ export class QuestionPageComponent implements OnInit {
 				console.log(res);
 				
 				this.question = res;
-				this.community = res.communities[0];
-				this.communityId = this.community.id;
+				if (res.communities && res.communities.length > 0) {
+					this.community = res.communities[0];
+					this.communityId = this.community.id;
+				}
 				this.loadingQuestion = false;
 				this.initializeUserType();
 			}, err => {
@@ -207,44 +209,6 @@ export class QuestionPageComponent implements OnInit {
 			this.loadingUser = false;
 			console.log(this.loggedInUser);
 		});
-	}
-	
-	/**
-	 * post question
-	 */
-	public postQuestion() {
-		if (this.userId && this.userId.length > 5 && this.userType !== 'public') {
-			if (this.questionForm.valid && (this.questionForm.controls['gyan'].value <= this.gyanBalance || this.questionForm.controls['gyan'].disabled)) {
-				// If user has a scholarship, make sure the scholarship is used for karma burn.
-				if (this.loggedInUser.scholarships_joined && this.loggedInUser.scholarships_joined.length > 0) {
-					this.questionForm.controls['scholarshipId'].patchValue(this.loggedInUser.scholarships_joined[0].id);
-				}
-				// If gyan balance is 0, make the gyan amount 1.
-				if (this.gyanBalance === 0) {
-					this.questionForm.controls['gyan'].patchValue(1);
-					this.questionForm.value['gyan'] = 1;
-				}
-				this.busyQuestion = true;
-				this._communityService.postQuestion(this.communityId, this.questionForm.value).subscribe((result: any) => {
-						this._authService.isLoginSubject.next(true);
-						this.questionForm.reset();
-						this.busyQuestion = false;
-						this.getQuestion();
-					},
-					err => {
-						console.log(err);
-					});
-			} else {
-				this.snackBar.open('Check if you have enough gyan balance in your account for this question.', 'Ok', { duration: 5000 });
-			}
-		} else if (this.userId && this.userId.length > 5 && this.userType === 'public') {
-			this.snackBar.open('Please join this community before posting any questions.', 'Join Now', { duration: 5000 })
-				.onAction().subscribe(res => {
-				
-			});
-		} else {
-			this._dialogsService.openSignup('/community/' + this.communityId + '/questions');
-		}
 	}
 	
 	/**

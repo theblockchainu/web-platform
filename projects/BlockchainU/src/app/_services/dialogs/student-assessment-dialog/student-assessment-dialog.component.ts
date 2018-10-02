@@ -1,6 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import {MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import {Router} from '@angular/router';
+import {environment} from '../../../../environments/environment';
+import {AssessmentService} from '../../assessment/assessment.service';
 
 @Component({
 	selector: 'app-student-assessment-dialog',
@@ -14,31 +17,57 @@ export class StudentAssessmentDialogComponent implements OnInit {
 
 	constructor(public dialogRef: MatDialogRef<StudentAssessmentDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,
+		private router: Router,
+		private snackBar: MatSnackBar,
+		private assessmentService: AssessmentService,
 		private _fb: FormBuilder) { }
 
 	ngOnInit() {
-
-		const participantsInitArray = [];
+		
 		console.log(this.data);
+		this.loadData();
+	}
+	
+	private loadData() {
+		const participantsInitArray = [];
 		this.pendingParticipants = false;
 		this.data.participants.forEach(participant => {
 			let isParticipantAssessed = false;
 			let isParticipantEngagementAssessed = false;
 			let isParticipantCommitmentAssessed = false;
+			let participantAssessmentId = '';
 			let participantResult = '';
 			let engagementResult = '';
 			let commitmentResult = '';
+			participant.hasCertificate = false;
+			if (participant.certificates) {
+				participant.certificates.forEach(certificate => {
+					if (certificate && certificate.stringifiedJSON && certificate.stringifiedJSON.length > 0) {
+						const certificateData = JSON.parse(certificate.stringifiedJSON);
+						if (certificateData.collection !== undefined && certificateData.collection.id === this.data.collection.id) {
+							participant.hasCertificate = true;
+							participant.certificateId = certificate.id;
+						}
+					} else if (certificate && certificate.stringifiedJSONWithoutSignature && certificate.stringifiedJSONWithoutSignature.length > 0) {
+						const certificateNonSignedData = JSON.parse(certificate.stringifiedJSONWithoutSignature);
+						if (certificateNonSignedData.collection !== undefined && certificateNonSignedData.collection.id === this.data.collection.id) {
+							participant.certificateId = certificate.id;
+						}
+					}
+				});
+			}
 			this.data.assessment_models[0].assessment_rules.forEach(assessment_rule => {
 				if (assessment_rule.assessment_result) {
 					assessment_rule.assessment_result.forEach((result: any) => {
 						if (result.assessees && result.assessees.length > 0 && result.assessees[0].id === participant.id) {
 							isParticipantAssessed = true;
 							participantResult = assessment_rule;
+							participantAssessmentId = result.id;
 							console.log(participantResult);
 						}
 					});
 				}
-
+				
 			});
 			this.data.assessment_models[0].assessment_na_rules.forEach(assessment_na_rule => {
 				if (assessment_na_rule.assessment_result) {
@@ -57,7 +86,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 						}
 					});
 				}
-
+				
 			});
 			if (!isParticipantAssessed) {
 				this.pendingParticipants = true;
@@ -70,17 +99,23 @@ export class StudentAssessmentDialogComponent implements OnInit {
 					rule_obj: [{ value: participantResult, disabled: isParticipantAssessed }],
 					engagement_result: [{ value: engagementResult, disabled: isParticipantEngagementAssessed }],
 					commitment_result: [{ value: commitmentResult, disabled: isParticipantCommitmentAssessed }],
-					isAssessed: isParticipantAssessed
+					isAssessed: isParticipantAssessed,
+					hasCertificate: participant.hasCertificate,
+					certificateId: participant.certificateId,
+					assessmentId: participantAssessmentId
 				})
 			);
 		});
-
+		
 		this.assessmentForm = this._fb.group({
 			participants: this._fb.array(participantsInitArray)
 		});
 	}
 
 	public getGyanForRule(gyanPercent, totalGyan) {
+		if (!gyanPercent || !totalGyan) {
+			return 0;
+		}
 		return Math.floor((gyanPercent / 100) * totalGyan);
 	}
 
@@ -92,6 +127,33 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			}
 		});
 		this.dialogRef.close({ participants: participants });
+	}
+	
+	public openCertificate(certificateId) {
+		window.open(environment.clientUrl + '/certificate/' + certificateId, '_blank');
+		/*this.router.navigate(['/certificate', certificateId]);*/
+	}
+	
+	public resendCertificate(certificateId, assessmentId, index) {
+		const body = {
+			certificateId: certificateId,
+			assessmentId: assessmentId,
+			collectionId: this.data.collection.id,
+			collectionTitle: this.data.collection.title,
+			collectionType: this.data.collection.type
+		};
+		this.assessmentService.reissueCertificate(body)
+			.subscribe(res => {
+				if (res) {
+					this.snackBar.open('Certificate has been re-issued and sent to participant over email.', 'OK', {duration: 5000});
+					this.data.participants[index].certificates.push(res);
+					this.loadData();
+				} else {
+					this.snackBar.open('Error occurred. Try again later.', 'OK', {duration: 5000});
+				}
+			}, err => {
+				this.snackBar.open('Cannot re-issue certificate. No backup available.', 'DISMISS', {duration: 5000});
+			});
 	}
 
 }
