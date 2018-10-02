@@ -1058,7 +1058,7 @@ export class CollectionService {
 						return forkJoin(delinkRequestArray);
 					} else {
 						return new Observable(observer => {
-							observer.next(true);
+							observer.next();
 						});
 					}
 				}), flatMap(res => {
@@ -1083,7 +1083,7 @@ export class CollectionService {
 			return forkJoin(unlinkPeerArray);
 		} else {
 			return new Observable(observer => {
-				observer.next(true);
+				observer.next();
 			});
 		}
 
