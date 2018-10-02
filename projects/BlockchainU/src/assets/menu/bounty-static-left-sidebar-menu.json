@@ -33,7 +33,7 @@
     "locked": false
   },
   {
-    "title": "Experience Page",
+    "title": "Bounty Page",
     "active": false,
     "step": 5,
     "submenu": [
@@ -78,7 +78,7 @@
         "complete": false
       },
       {
-        "title": "Assessment",
+        "title": "Rewards",
         "step": 11,
         "active": false,
         "visible": true,

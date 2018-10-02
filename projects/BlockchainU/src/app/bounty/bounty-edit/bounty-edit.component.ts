@@ -298,10 +298,11 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.rewardsArray = this._fb.array([
             this._fb.group({
-                position: ['', Validators.required],
+                position: [''],
                 title: ['', Validators.required],
                 currency: ['', Validators.required],
-                url: ['', Validators.required]
+                url: [''],
+                value: ['', Validators.required]
             })
         ]);
 
@@ -687,7 +688,7 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
     initializeCertificate() {
         this.certificateService.getCertificateTemplate(this.bountyId).subscribe((res: any) => {
-            this.sidebarMenuItems = this._leftSideBarService.updateSideMenuCertificate(res, this.sidebarMenuItems);
+            this.sidebarMenuItems = this._leftSideBarService.updateSideMenuCertificate(res, this.sidebarMenuItems, 1, 4);
             if (res && res.formData) {
                 this.certificateForm.controls['formData'].patchValue(JSON.parse(res.formData));
             }
@@ -806,6 +807,30 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.bounty.controls['subCategory'].patchValue(res.subCategory);
 
 
+        console.log('rewards');
+
+        console.log(res);
+
+        if (res.rewards && res.rewards.length > 0) {
+            const rewardsArray = res.rewards.sort((a, b) => {
+                if (a === b) { return 0; }
+                return (a.position > b.position) ? 1 : -1;
+            });
+            this.rewardsArray.removeAt(0);
+            rewardsArray.forEach(reward => {
+                this.rewardsArray.push(
+                    this._fb.group({
+                        position: [reward.position],
+                        title: [reward.title, Validators.required],
+                        currency: [reward.currency, Validators.required],
+                        url: [reward.url],
+                        value: [reward.value, Validators.required]
+                    })
+                );
+            });
+            this.rewardsArray.patchValue(rewardsArray);
+        }
+
         this.isPhoneVerified = res.owners[0].phoneVerified;
 
         this.isSubmitted = this.bounty.controls.status.value === 'submitted';
@@ -922,7 +947,7 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.certificateForm.controls['formData'].patchValue(JSON.stringify(certificate.formData));
         this.certificateForm.controls['expiryDate'].patchValue(certificate.expiryDate);
         this._collectionService.submitCertificate(this.bountyId, this.certificateForm.value).subscribe(res => {
-            this.sidebarMenuItems = this._leftSideBarService.updateSideMenuCertificate(res, this.sidebarMenuItems);
+            this.sidebarMenuItems = this._leftSideBarService.updateSideMenuCertificate(res, this.sidebarMenuItems, 1, 4);
             if (this.exitAfterSave) {
                 this.exit();
             } else {
@@ -1290,7 +1315,7 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
         const myCan = document.createElement('canvas');
         const img = new Image();
         img.src = e.target.result;
-        img.onload = function() {
+        img.onload = function () {
 
             myCan.id = 'myTempCanvas';
             const tsize = 100;
@@ -1323,12 +1348,12 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((response: any) => {
                 console.log(response);
                 if (fileType === 'video') {
-                    this.urlForVideo = _.remove(this.urlForVideo, function(n) {
+                    this.urlForVideo = _.remove(this.urlForVideo, function (n) {
                         return n !== fileurl;
                     });
                     this.bounty.controls.videoUrls.patchValue(this.urlForVideo);
                 } else if (fileType === 'image') {
-                    this.urlForImages = _.remove(this.urlForImages, function(n) {
+                    this.urlForImages = _.remove(this.urlForImages, function (n) {
                         return n !== fileurl;
                     });
                     this.bounty.controls.imageUrls.patchValue(this.urlForImages);
@@ -1347,12 +1372,12 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
                 .subscribe((response: any) => {
                     console.log(response);
                     if (fileType === 'video') {
-                        this.urlForVideo = _.remove(this.urlForVideo, function(n) {
+                        this.urlForVideo = _.remove(this.urlForVideo, function (n) {
                             return n !== fileurl;
                         });
                         this.bounty.controls.videoUrls.patchValue(this.urlForVideo);
                     } else if (fileType === 'image') {
-                        this.urlForImages = _.remove(this.urlForImages, function(n) {
+                        this.urlForImages = _.remove(this.urlForImages, function (n) {
                             return n !== fileurl;
                         });
                         this.bounty.controls.imageUrls.patchValue(this.urlForImages);
@@ -1599,13 +1624,38 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    addReward() {
+    public addReward() {
         this.rewardsArray.push(this._fb.group({
-            position: ['', Validators.required],
+            position: [''],
             title: ['', Validators.required],
             currency: ['', Validators.required],
-            url: ['', Validators.required]
+            url: [''],
+            value: ['', Validators.required]
         }));
+    }
+
+    deleteReward(index: number) {
+        this.rewardsArray.removeAt(index);
+    }
+
+    public submitRewards() {
+        this.busySavingData = true;
+        let index = 1;
+        this.rewardsArray.controls.forEach((rewardObject: FormGroup) => {
+            console.log(rewardObject);
+            rewardObject.controls['position'].patchValue(index);
+            index++;
+        });
+        this._collectionService.addRewards(this.bountyId, this.rewardsArray.value).subscribe(res => {
+            console.log(res);
+
+            this.step++;
+            this.bountyStepUpdate();
+            this.router.navigate(['bounty', this.bountyId, 'edit', this.step]);
+            this.busySavingData = false;
+        }, err => {
+            this.snackBar.open('Error', 'Close', { duration: 3000 });
+        });
     }
 }
 

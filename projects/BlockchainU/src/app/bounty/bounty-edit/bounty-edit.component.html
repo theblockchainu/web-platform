@@ -510,13 +510,72 @@
 							</p>
 						</div>
 					</div>
-					<div class="row" *ngFor="let rewardForm of rewardsArray.controls">
+					<div class="row padding-top-20" *ngFor="let rewardForm of rewardsArray.controls;let i=index">
 						<div class="col-xs-12">
 							<mat-card>
-								<form>
-
+								<form [formGroup]="rewardForm">
+									<div class="row">
+										<div class="col-xs-12">
+											<h3>Reward Data for position: {{i+1}} </h3>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-3">
+											<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
+												<input matInput formControlName="title" maxlength="100" placeholder="Title">
+											</mat-form-field>
+										</div>
+										<div class="col-xs-2">
+											<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
+												<input matInput type="number" formControlName="value" maxlength="100" placeholder="Value">
+											</mat-form-field>
+										</div>
+										<div class="col-md-3">
+											<mat-form-field [floatLabel]="'always'" class="pb-block">
+												<mat-label>
+													Currency
+												</mat-label>
+												<mat-select formControlName="currency" placeholder="USD">
+													<mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
+												</mat-select>
+											</mat-form-field>
+										</div>
+										<div class="col-md-3">
+											<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
+												<input matInput formControlName="url" maxlength="100" placeholder="URL(Optional)">
+											</mat-form-field>
+										</div>
+										<div class="col-md-1">
+											<button (click)="deleteReward(i)" mat-icon-button>
+												<mat-icon>
+													delete
+												</mat-icon>
+											</button>
+										</div>
+									</div>
 								</form>
 							</mat-card>
+						</div>
+					</div>
+					<div class="row padding-top-50">
+						<div class="col-xs-12 center">
+							<button mat-raised-button (click)="addReward()">
+								Add Reward
+							</button>
+						</div>
+					</div>
+					<div class="row padding-top-50">
+						<div class="col-xs-12">
+							<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
+								Back
+							</button>
+							<button color="primary" [disabled]="!rewardsArray.valid" mat-button type="button" class="pull-right mat-border-button"
+							 (click)="submitRewards()">
+								<span *ngIf="!busySavingData">Next</span>
+								<span>
+									<ngx-loading [show]="busySavingData"></ngx-loading>
+								</span>
+							</button>
 						</div>
 					</div>
 				</div>

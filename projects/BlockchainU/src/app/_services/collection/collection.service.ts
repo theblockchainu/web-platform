@@ -1033,4 +1033,13 @@ export class CollectionService {
 		return this.httpClient.get(environment.apiUrl + '/api/collections/' + collectionId + '/promoCodes?filter=' + JSON.stringify(filter), this.requestHeaderService.options);
 	}
 
+	public addRewards(collectionId: string, rewardsArray: Array<any>) {
+		console.log(rewardsArray);
+		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/rewards', this.requestHeaderService.options).pipe(
+			flatMap(res => {
+				return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/rewards', rewardsArray, this.requestHeaderService.options);
+			})
+		);
+	}
+
 }

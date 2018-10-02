@@ -129,8 +129,10 @@ export class LeftSidebarService {
         return sidebarMenuItems;
     }
 
-    public updateSideMenuCertificate(certificate: any, sidebarMenuItems) {
-        if (certificate && certificate.formData && certificate.formData.length > 0 && certificate.expiryDate && certificate.expiryDate.length > 0) {
+    public updateSideMenuCertificate(certificate: any, sidebarMenuItems, menuIndex?: number, subMenuIndex?: number) {
+        if (menuIndex && subMenuIndex) {
+            sidebarMenuItems[menuIndex].submenu[subMenuIndex].complete = true;
+        } else if (certificate && certificate.formData && certificate.formData.length > 0 && certificate.expiryDate && certificate.expiryDate.length > 0) {
             sidebarMenuItems[1].submenu[5].complete = true;
         }
         return sidebarMenuItems;
@@ -257,22 +259,22 @@ export class LeftSidebarService {
             sidebarMenuItems[1].submenu[2].complete = true;
             completedSections++;
         }
-        if (collection.maxSpots !== undefined && collection.maxSpots.length > 0) {
-            sidebarMenuItems[1].submenu[3].complete = true;
-            completedSections++;
-        }
+        // if (collection.maxSpots !== undefined && collection.maxSpots.length > 0) {
+        //     sidebarMenuItems[1].submenu[3].complete = true;
+        //     completedSections++;
+        // }
         if ((collection.imageUrls && collection.imageUrls.length > 0)
             || (collection.videoUrls && collection.videoUrls.length > 0)) {
-            sidebarMenuItems[1].submenu[4].complete = true;
+            sidebarMenuItems[1].submenu[3].complete = true;
             completedSections++;
         } else {
-            sidebarMenuItems[1].submenu[4].complete = false;
+            sidebarMenuItems[1].submenu[3].complete = false;
         }
-        if (collection.price !== undefined && collection.currency && collection.cancellationPolicy && collection.academicGyan !== undefined && collection.nonAcademicGyan !== undefined) {
-            sidebarMenuItems[1].submenu[7].complete = true;
+        if (collection.rewards && collection.rewards.length > 0) {
+            sidebarMenuItems[1].submenu[5].complete = true;
             completedSections++;
         }
-        if (collection.assessment_models && collection.assessment_models[0] && collection.assessment_models[0].assessment_rules && collection.assessment_models[0].assessment_na_rules) {
+        if (collection.price !== undefined && collection.currency && collection.cancellationPolicy && collection.academicGyan !== undefined && collection.nonAcademicGyan !== undefined) {
             sidebarMenuItems[1].submenu[6].complete = true;
             completedSections++;
         }
