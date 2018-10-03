@@ -415,7 +415,7 @@
 					<app-bounty-card *ngIf="i < 5" [bounty]="bounty" (refresh)="onBountyRefresh($event)"></app-bounty-card>
 				</div>
 			</div>
-			<div class="read-more mt-2 mat-body-2" *ngIf="bounty && bounty.length > 5">
+			<div class="read-more mt-2 mat-body-2" *ngIf="bounties && bounties.length > 5">
 				<a [routerLink]="['home','bounties']">Show all ({{bounties.length}}+)</a>
 			</div>
 		</div>
