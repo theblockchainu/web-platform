@@ -35,10 +35,10 @@ export class ShareDialogComponent implements OnInit {
 			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Knowledge Story&summary=See my knowledge story on ' + this.generatedUrl;
 		} else if (data.type === 'certificate') {
 			this.tweetUrl = 'https://twitter.com/intent/tweet?text=Take a look at my certificate for ' + this.data.title + '&url=' + this.generatedUrl;
-			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Take a look at my certificate for ' + this.data.title + '&source=TheBlockchainUniversity';
+			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Take a look at my certificate for ' + this.data.title + '&source=The Blockchain University';
 		} else {
 			this.tweetUrl = 'https://twitter.com/intent/tweet?text=Join me for ' + this.data.title + '&url=' + this.generatedUrl;
-			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Join me for ' + this.data.title + '&summary=' + this.data.headline + '&source=TheBlockchainUniversity';
+			this.LinkedInShareUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + this.generatedUrl + '&title=Join me for ' + this.data.title + '&summary=' + this.data.headline + '&source=The Blockchain University';
 		}
 	}
 
@@ -62,16 +62,28 @@ export class ShareDialogComponent implements OnInit {
 	}
 
 	public onFBClicked() {
+		let title = '';
+		let description = '';
+		if (this.data.type === 'story') {
+			title = this.data.title + '\'s Knowledge Story';
+			description = 'View my knowledge story at ' + this.generatedUrl;
+		} else if (this.data.type === 'certificate') {
+			title = 'Smart Certificate for ' + this.data.title;
+			description = 'Smart Certificates are instantly verifiable and backed by blockchain technology.';
+		} else {
+			title = 'Join me for ' + this.data.title;
+			description = this.data.headline;
+		}
 		FB.ui({
 			method: 'share_open_graph',
 			action_type: 'og.shares',
 			action_properties: JSON.stringify({
 				object: {
 					'og:url': this.generatedUrl, // your url to share
-					'og:title': (this.data.type === 'story') ? 'Knowledge story of ' + this.data.title : 'Join me for ' + this.data.title,
+					'og:title': title,
 					'og:site_name': 'The Blockchain University',
 					'og:image': this.data.image,
-					'og:description': (this.data.type === 'story') ? 'View my knowledge story at ' + this.generatedUrl : this.data.headline,
+					'og:description': description,
 				}
 			})
 		}, function (response) {
@@ -80,7 +92,7 @@ export class ShareDialogComponent implements OnInit {
 	}
 
 	public onLinkedInClicked() {
-		window.open(this.LinkedInShareUrl, 'MyWindow', 'width = 600, height = 300'); return false;
+		window.open(this.LinkedInShareUrl, 'MyWindow', 'width = 600, height = 400'); return false;
 	}
 
 }

@@ -352,6 +352,7 @@ export class HomefeedComponent implements OnInit {
 						'include':
 							[{ 'owners': ['reviewsAboutYou', 'profiles'] },
 								'participants',
+								'rewards',
 								'calendars', { 'bookmarks': 'peer' }, {
 								'contents':
 									['schedules']

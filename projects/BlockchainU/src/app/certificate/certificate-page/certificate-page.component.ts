@@ -116,7 +116,7 @@ export class CertificatePageComponent implements OnInit {
 	}
 	
 	share() {
-		this.dialogsService.shareCollection('certificate', this.certificateId, this.certificate.collection.title, 'Certificate for ' + this.certificate.collection.title, '', environment.apiUrl + this.certificate.collection.imageUrls[0]).subscribe(res => {
+		this.dialogsService.shareCollection('certificate', this.certificateId, this.certificate.collection.title, 'Smart Certificate for ' + this.certificate.collection.title, '', environment.apiUrl + this.certificate.collection.imageUrls[0]).subscribe(res => {
 			console.log(res);
 		});
 	}
@@ -128,14 +128,18 @@ export class CertificatePageComponent implements OnInit {
 	}
 	
 	private setTags() {
-		this.titleService.setTitle('Certificate:' + this.ucwords.transform(this.certificate.recipient.profile.first_name));
+		this.titleService.setTitle('Smart Certificate for ' + this.ucwords.transform(this.certificate.recipient.profile.first_name) + ' ' + this.ucwords.transform(this.certificate.recipient.profile.first_name));
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Certificate:' + this.ucwords.transform(this.certificate.recipient.profile.first_name)
+			content: 'Smart Certificate for ' + this.ucwords.transform(this.certificate.recipient.profile.first_name) + ' ' + this.ucwords.transform(this.certificate.recipient.profile.last_name)
 		});
 		this.metaService.updateTag({
 			property: 'og:description',
 			content: this.certificate.collection.description
+		});
+		this.metaService.updateTag({
+			property: 'og:image',
+			content: environment.apiUrl + this.certificate.collection.imageUrls[0]
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

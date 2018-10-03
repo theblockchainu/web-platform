@@ -64,13 +64,13 @@
 		</div> -->
 		<div class="row margin-top-20">
 			<div class="col-md-12">
-				<p class="pre-wrapped">{{data.content.description}}</p>
+				<p class="pre-wrapped">{{data.content.description | trim | ucfirst | linkify}}</p>
 			</div>
 		</div>
 		<div *ngIf="attachmentUrls.length" class="pic delete">
 			<hr style="margin-top:0px;">
 			<div>
-				<b>Supplement Materials</b>
+				<b>Supplemental Materials</b>
 			</div>
 			<br>
 			<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">

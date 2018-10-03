@@ -18,6 +18,7 @@ export class KarmaBalancePipe implements PipeTransform {
 	}
 
 	transform(userId: string, forNode: string, convertTo = 'KARMA'): any {
+		console.log('userId: ' + userId);
 		if (!userId || userId.length === 0) {
 			// create observable
 			return new Observable((observer) => {

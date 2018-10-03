@@ -51,14 +51,14 @@
 					<b>What we'll do</b>
 				</div>
 				<br>
-				<p class="pre-wrapped alignJustify">{{data.content.description | trim | ucfirst }}</p>
+				<p class="pre-wrapped alignJustify">{{data.content.description | trim | ucfirst | linkify }}</p>
 				<div *ngIf="data.content.prerequisites">
 					<hr>
 					<div>
 						<b>Need to know</b>
 					</div>
 					<br>
-					<p class="pre-wrapped alignJustify">{{data.content.prerequisites | trim | ucfirst}}</p>
+					<p class="pre-wrapped alignJustify">{{data.content.prerequisites | trim | ucfirst | linkify}}</p>
 				</div>
 				<div *ngIf="data.content.locations">
 					<hr>

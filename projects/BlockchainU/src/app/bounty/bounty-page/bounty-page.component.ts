@@ -181,7 +181,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	public activityMapping:
 		{ [k: string]: string } = { '=0': 'No activity', '=1': 'One activity', 'other': '# activities' };
 	public hourMapping:
-		{ [k: string]: string } = { '=0': 'Less than an hour of learning', '=1': 'One hour of learning', 'other': '# hours of learning' };
+		{ [k: string]: string } = { '=0': 'No tasks to sumit', '=1': 'One task to submit', 'other': '# tasks to submit' };
 	public projectMapping:
 		{ [k: string]: string } = { '=0': 'No projects', '=1': 'One project', 'other': '# projects' };
 	public inPersonSessionMapping:
@@ -1096,8 +1096,8 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 				const endMoment = moment(content.schedules[0].endTime);
 				const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
 				totalLength += parseInt(contentLength, 10);
-			} else if (content.type === 'video') {
-
+			} else if (content.type === 'project') {
+				totalLength += 1;
 			}
 		});
 		this.totalDuration = totalLength.toString();
@@ -1636,6 +1636,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 		};
 		this._collectionService.getParticipants(this.bountyId, query).subscribe(
 			(response: any) => {
+				this.participants = [];
 				this.allParticipants = response;
 				for (const responseObj of response) {
 					if (responseObj.id === this.userId) {

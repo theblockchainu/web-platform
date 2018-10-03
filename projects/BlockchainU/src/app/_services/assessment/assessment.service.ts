@@ -15,6 +15,10 @@ export class AssessmentService {
 	public submitAssessment(assessment: Array<AssessmentResult>) {
 		return this.httpClient.post(environment.apiUrl + '/api/assessment_results', assessment, this._requestHeaderService.options);
 	}
+	
+	public reissueCertificate(body) {
+		return this.httpClient.post(environment.apiUrl + '/api/assessment_results/reissue-certificate', body, this._requestHeaderService.options);
+	}
 
 	public getAssessmentItems(fileLocation: string) {
 		return this.httpClient.get(fileLocation, this._requestHeaderService.options);

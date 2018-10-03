@@ -472,7 +472,7 @@ export class DialogsService {
         return this.dialog.open(StudentAssessmentDialogComponent, {
             panelClass: 'responsive-dialog',
             width: '55vw',
-            height: '90vh',
+            height: '100vh',
             data: data
         }).afterClosed();
     }

@@ -173,7 +173,7 @@
 							</div>
 						</div>
 					</div>
-					<!--Pay at Venue section-->
+					<!--&lt;!&ndash;Pay at Venue section&ndash;&gt;
 					<div *ngIf="collection.type==='experience' && paymentStatus === undefined" class="row margin-top-20 margin-bottom-40">
 						<div class="col-sm-12">
 							<mat-checkbox [(ngModel)]="payAtVenue" [ngModelOptions]="{standalone: true}">Or Pay at Venue
@@ -189,7 +189,7 @@
 								</li>
 							</ul>
 						</div>
-					</div>
+					</div>-->
 					<!--Action buttons-->
 					<div *ngIf="!loadingCountry || payAtVenue">
 						<div *ngIf="totalPrice && totalPrice!==0 && userCountry !== 'IN'">
