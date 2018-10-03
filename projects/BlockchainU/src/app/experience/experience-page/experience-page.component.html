@@ -119,7 +119,19 @@
 								<div *ngIf="userType==='public'" style="margin-top: -12px;">
 									<span>{{itenaryArray.length | i18nPlural : dayMapping}} / {{totalDuration | i18nPlural : hourMapping}}
 									      &nbsp;&nbsp;&nbsp;
-										<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}}</span>
+										<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
+									      {{experience.contents.length | i18nPlural : activityMapping}}
+									    <span matTooltip = "{{allParticipants ? allParticipants.length : '0'}} Participants" *ngIf="allParticipants && allParticipants.length > 0">
+										    &nbsp;&nbsp;&nbsp;
+										    <mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
+										    <i class="fa fa-group lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{allParticipants ? allParticipants.length : '0'}}
+									    </span>
+										<span matTooltip = "{{experience.views ? experience.views.length : '0'}} Views" *ngIf="experience.views && experience.views.length > 0">
+											&nbsp;&nbsp;&nbsp;
+											<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
+											<i class="fa fa-eye lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{experience.views ? experience.views.length : '0'}}
+										</span>
+									</span>
 								</div>
 							</div>
 							<div class="col-md-2 clickable lighterText" style="font-size: 20px; top: 5px; text-align: right;" *ngIf="userType === 'public'">

@@ -53,8 +53,9 @@ export class ContentProjectComponent implements OnInit {
 			});
 		}
 		if (data.startDate !== undefined) {
-			const startDateMoment = moment(data.startDate);
-			this.isSubmissionPossible = moment().diff(startDateMoment) <= 0;
+		const tempMoment = moment(data.startDate);
+			tempMoment.add(data.content.schedules[0].endDay, 'days');
+			this.isSubmissionPossible = moment().diff(tempMoment) <= 0;
 		}
 		this.userId = cookieUtilsService.getValue('userId');
 		this.data.content.supplementUrls.forEach(file => {

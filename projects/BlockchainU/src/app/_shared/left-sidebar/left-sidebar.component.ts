@@ -81,7 +81,22 @@ export class LeftSidebarComponent implements OnInit {
 					this.status = res.status;
 					this.collection = res;
 					if (this.sidebarMenuItems) {
-						this.sidebarMenuItems = this._leftSidebarService.updateSideMenu(this.collection, this.sidebarMenuItems);
+						switch (this.collection.type) {
+							case 'experience':
+								this.sidebarMenuItems = this._leftSidebarService.updateSideMenu(this.collection, this.sidebarMenuItems);
+								break;
+							case 'class':
+								this.sidebarMenuItems = this._leftSidebarService.updateSideMenu(this.collection, this.sidebarMenuItems);
+								break;
+							case 'session':
+								this.sidebarMenuItems = this._leftSidebarService.updateSessionMenu(this.collection, this.sidebarMenuItems);
+								break;
+							case 'bounty':
+								this.sidebarMenuItems = this._leftSidebarService.updateBountySideMenu(this.collection, this.sidebarMenuItems);
+								break;
+							default:
+								break;
+						}
 					} else {
 						this._leftSidebarService.getMenuItems(this.menuFile).subscribe(response => {
 							this.sidebarMenuItems = this._leftSidebarService.updateSideMenu(this.collection, response);

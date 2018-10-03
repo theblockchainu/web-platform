@@ -230,7 +230,7 @@
 			</span>
 		</div>
 	</span>
-	<span mat-menu-item *ngIf="isAccountApproved && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
+	<span mat-menu-item *ngIf="isAccountApproved && profile.peer[0].ethAddress && profile.peer[0].ethAddress.substring(0, 2) === '0x' && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
 		<div class="col-xs-4">
 			<i class="fa fa-fire"></i> KARMA
 		</div>
@@ -257,10 +257,7 @@
 	<!--<button mat-menu-item [routerLink]="['/console/teaching/all']" *ngIf="isTeacher">
 		<i class="fas fa-chart-line lighterText"></i>&nbsp;&nbsp;&nbsp; Teaching Journey
 	</button>-->
-	<!--<button mat-menu-item [routerLink]="['/console/account/transactions']" *ngIf="isTeacher">
-		<i class="fas fa-history lighterText"></i>&nbsp;&nbsp;&nbsp;Transaction History
-	</button>-->
-	<button mat-menu-item [routerLink]="['/console/dashboard']" *ngIf="isTeacher">
+	<button mat-menu-item [routerLink]="['/console/dashboard']">
 		Dashboard
 	</button>
 	<button mat-menu-item (click)="createExperience()">
@@ -280,13 +277,16 @@
 			Edit session calendar
 		</span>
 	</button>
-	<button mat-menu-item [routerLink]="['/console/teaching/all']" *ngIf="isTeacher">
+	<button mat-menu-item [routerLink]="['/console/teaching/bounties']">
+		Create a Bounty
+	</button>
+	<button mat-menu-item [routerLink]="['/console/teaching/all']">
 		Activities
 	</button>
 	<!-- <button mat-menu-item [routerLink]="['session', sessionId,'edit','10']" *ngIf="isSessionApproved && sessionId.length > 5">
 		 Available Hours
 	</button> -->
-	<button mat-menu-item [routerLink]="['/console/inbox']" *ngIf="isTeacher">
+	<button mat-menu-item [routerLink]="['/console/inbox']">
 		Inbox
 	</button>
 	<!-- <button mat-menu-item (click)="openGenerateStoryDialog()" *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].ethAddress">

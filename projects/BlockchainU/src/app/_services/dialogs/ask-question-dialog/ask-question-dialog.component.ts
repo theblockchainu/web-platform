@@ -74,10 +74,19 @@ export class AskQuestionDialogComponent implements OnInit {
 	private getGyanBalance() {
 		if (this.userId && this.userId.length > 5) {
 			this._profileService.getGyanBalance(this.userId, 'fixed').subscribe((res: any) => {
-				this.gyanBalance = parseInt(res, 10);
-				if (this.gyanBalance === 0) {
+				if (res) {
+					this.gyanBalance = parseInt(res, 10);
+					if (this.gyanBalance === 0) {
+						this.questionForm.controls['gyan'].disable();
+					}
+				} else {
+					this.gyanBalance = 0;
 					this.questionForm.controls['gyan'].disable();
 				}
+			}, (err) => {
+				console.log(err);
+				this.gyanBalance = 0;
+				this.questionForm.controls['gyan'].disable();
 			});
 		} else {
 			this.gyanBalance = 0;

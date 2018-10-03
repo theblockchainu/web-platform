@@ -131,7 +131,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	refresh: Subject<any>;
 	events: CalendarEvent[];
 	activeDayIsOpen: boolean;
-	public loadingSimilarBountys: boolean;
+	public loadingSimilarBounties: boolean;
 	public loadingComments: boolean;
 	public loadingParticipants: boolean;
 	public loadingBounty: boolean;
@@ -181,7 +181,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	public activityMapping:
 		{ [k: string]: string } = { '=0': 'No activity', '=1': 'One activity', 'other': '# activities' };
 	public hourMapping:
-		{ [k: string]: string } = { '=0': 'Less than an hour of learning', '=1': 'One hour of learning', 'other': '# hours of learning' };
+		{ [k: string]: string } = { '=0': 'No tasks to sumit', '=1': 'One task to submit', 'other': '# tasks to submit' };
 	public projectMapping:
 		{ [k: string]: string } = { '=0': 'No projects', '=1': 'One project', 'other': '# projects' };
 	public inPersonSessionMapping:
@@ -279,19 +279,19 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 		this.events = [
 		];
 		this.activeDayIsOpen = true;
-		this.loadingSimilarBountys = true;
+		this.loadingSimilarBounties = true;
 		this.loadingComments = true;
 		this.loadingParticipants = true;
 		this.loadingBounty = true;
 		this.loadingReviews = true;
 		this.accountApproved = 'false';
 		this.inviteLink = '';
+		this.participants = [];
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.bountyId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
 				location.reload();
 			}
 			this.bountyId = params['collectionId'];
-			this.calendarId = params['calendarId'];
 			this.toOpenDialogName = params['dialogName'];
 		});
 		this.activatedRoute.queryParams.subscribe(params => {
@@ -541,7 +541,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 						}]
 				},
 				'rooms',
-				{ 'assessment_models': [{ 'assessment_na_rules': { 'assessment_result': 'assessees' } }, { 'assessment_rules': { 'assessment_result': 'assessees' } }] }
+				'rewards'
 			],
 			'relInclude': 'calendarId'
 		};
@@ -555,9 +555,10 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 					}
 				});
 			this._collectionService.getCollectionDetail(this.bountyId, query)
-				.subscribe(res => {
+				.subscribe((res: any) => {
 					if (res) {
 						console.log(res);
+						this.calendarId = res.calendars[0].id;
 						this.bounty = res;
 						this.inviteLink = environment.clientUrl + '/bounty/' + this.bounty.id;
 						this.setTags();
@@ -672,7 +673,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 							this.recordStartView();
 						} else {
 							this.snackBar.open('This in-person bounty has either been deleted or flagged.', 'OK', { duration: 5000 });
-							this.router.navigate(['home', 'bountys']);
+							this.router.navigate(['home', 'bounties']);
 						}
 					} else {
 						this.loadingBounty = false;
@@ -1018,7 +1019,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	public deleteBounty() {
 		this.dialogsService.openDeleteCollection(this.bounty).subscribe((response: any) => {
 			if (response) {
-				this.router.navigate(['/console/teaching/bountys']);
+				this.router.navigate(['/console/teaching/bounties']);
 			}
 		});
 	}
@@ -1095,8 +1096,8 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 				const endMoment = moment(content.schedules[0].endTime);
 				const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
 				totalLength += parseInt(contentLength, 10);
-			} else if (content.type === 'video') {
-
+			} else if (content.type === 'project') {
+				totalLength += 1;
 			}
 		});
 		this.totalDuration = totalLength.toString();
@@ -1344,14 +1345,16 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	 * getRecommendations
 	 */
 	public getRecommendations() {
-		this.loadingSimilarBountys = true;
+		this.loadingSimilarBounties = true;
 		const query = {
 			'include': [
 				{
 					'relation': 'collections', 'scope': {
 						'include':
-							[{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', 'participants',
-							{ 'contents': 'locations' }], 'where': { 'type': 'bounty' }
+							[
+								{ 'owners': ['reviewsAboutYou', 'profiles'] },
+								'calendars', 'participants', 'rewards',
+								{ 'contents': 'locations' }], 'where': { 'type': 'bounty' }
 					}
 				}
 			]
@@ -1406,7 +1409,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 				this.recommendations.collections = _.uniqBy(this.recommendations.collections, 'id');
 				this.recommendations.collections = _.orderBy(this.recommendations.collections, ['createdAt'], ['desc']);
 				this.recommendations.collections = _.chunk(this.recommendations.collections, 5)[0];
-				this.loadingSimilarBountys = false;
+				this.loadingSimilarBounties = false;
 			}, (err) => {
 				console.log(err);
 			}
@@ -1417,19 +1420,13 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	 * selectJoiningDates
 	 */
 	public selectJoiningDates() {
-
-		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.bounty.type, this.bounty.maxSpots, this.accountApproved, this.userId)
-			.subscribe((result: any) => {
-				if (result) {
-					if (this.userId) {
-						this.router.navigate(['review-pay', 'collection', this.bountyId, result]);
-					} else {
-						// this.router.navigate(['sign-up']);
-						const returnTo = 'review-pay/collection/' + this.bountyId + '/' + result;
-						this.openSignup(returnTo);
-					}
-				}
-			});
+		if (this.userId) {
+			this.router.navigate(['review-pay', 'collection', this.bountyId]);
+		} else {
+			// this.router.navigate(['sign-up']);
+			const returnTo = 'review-pay/collection/' + this.bountyId;
+			this.openSignup(returnTo);
+		}
 	}
 
 	public openSignup(returnTo) {
@@ -1637,26 +1634,15 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 			'relInclude': 'calendarId',
 			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections']
 		};
-		let isCurrentUserParticipant = false;
-		let currentUserParticipatingCalendar = '';
 		this._collectionService.getParticipants(this.bountyId, query).subscribe(
 			(response: any) => {
+				this.participants = [];
 				this.allParticipants = response;
 				for (const responseObj of response) {
-					if (this.calendarId && this.calendarId === responseObj.calendarId) {
-						this.participants.push(responseObj);
-					}
-					if (this.calendarId === undefined && responseObj.id === this.userId) {
-						// current user is a participant of this bounty
-						isCurrentUserParticipant = true;
-						currentUserParticipatingCalendar = responseObj.calendarId;
-					}
 					if (responseObj.id === this.userId) {
 						this.loggedInUser = responseObj;
 					}
-				}
-				if (isCurrentUserParticipant && currentUserParticipatingCalendar) {
-					this.router.navigate(['bounty', this.bountyId, 'calendar', currentUserParticipatingCalendar]);
+					this.participants.push(responseObj);
 				}
 				this.loadingParticipants = false;
 			}, (err) => {
@@ -2008,6 +1994,10 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 				this.initializePage();
 			}
 		});
+	}
+
+	public opensubmissionAssessmentDialog() {
+		this.dialogsService.assessSubmissions(this.bountyId);
 	}
 
 }

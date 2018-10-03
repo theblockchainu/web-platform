@@ -1,0 +1,70 @@
+<div mat-dialog-content class="dialog-container">
+	<div class="row">
+		<div class="col-xs-12">
+			<button disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" tabindex="-1" (click)="dialogRef.close()">
+				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+			</button>
+			<div class="mat-display-1" style="margin-bottom: 20px;">
+				Issue Rewards to Winners
+			</div>
+		</div>
+	</div>
+	<div class="row mat-body-2">
+		<div class="col-xs-3">
+			Peer
+		</div>
+		<div class="col-xs-7 center">
+			Submissions
+		</div>
+		<div class="col-xs-2">
+			Action
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-xs-2" style="text-align: left">
+			<div *ngIf="loadingData">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+		</div>
+	</div>
+	<div *ngIf="!loadingData">
+		<div class="row padding-top-30" *ngFor="let peerObject of peersArray">
+			<div class="col-xs-3">
+				<div class="row" *ngIf="peerObject.peer.profiles">
+					<div class="col-md-2 vcenter clickable">
+						<app-profile-popup [peer]="peerObject.peer"></app-profile-popup>
+					</div>
+					<div class="col-md-9 vcenter clickable" [routerLink]="['/peer/'+peerObject.peer.id]">
+						{{peerObject.peer.profiles[0].first_name +' '+peerObject.peer.profiles[0].last_name }}
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-7">
+				<div class="row">
+					<div class="col-sm-3" *ngFor="let submission of peerObject.submissions" (click)="viewSubmission(submission.id)"
+					     style="cursor: pointer">
+						<img class="img-responsive" src="{{ submission.picture_url ? envVariable.apiUrl+submission.picture_url.split(',')[0] : noImage }}"
+						     alt="image" height="117" />
+						<div class="submission-title">{{ submission.name | titlecase }}</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-2">
+				<mat-form-field>
+					<mat-select [ngModel]="peerObject.reward" (ngModelChange)="onPositionChange($event,peerObject)" placeholder="Position">
+						<mat-option *ngFor="let reward of rewardOptions" [value]="reward">
+							{{reward.position + ' '+reward.title }}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+		</div>
+		<div class="row margin-top-20" *ngIf="!peersArray || peersArray.length === 0">
+			<div class="col-xs-12 mat-caption lightText">
+				<i class="fa fa-info-circle" style="margin-right: 15px;"></i> You do not have any participants that have made submissions yet.
+			</div>
+		</div>
+	</div>
+
+</div>
