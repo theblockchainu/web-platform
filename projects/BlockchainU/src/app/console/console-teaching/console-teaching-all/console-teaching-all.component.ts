@@ -237,7 +237,7 @@ export class ConsoleTeachingAllComponent implements OnInit {
 			this.router.navigate(['experience', experienceObject.id, 'edit', 1]);
 		});
 	}
-	
+
 	public createGuide() {
 		this._collectionService.postCollection(this.userId, 'guide').subscribe((guideObject: any) => {
 			this.router.navigate(['guide', guideObject.id, 'edit', 1]);

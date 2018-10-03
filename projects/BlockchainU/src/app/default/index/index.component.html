@@ -97,7 +97,8 @@
 					</mat-autocomplete>
 				</mat-form-field>
 				<div class="margin-top-30">
-					<button mat-button [color]="'white'" class="mat-border-button" [routerLink]="['home', 'homefeed']">Learn</button><span class="mat-body-2" style="color: #fff; padding-left: 20px; padding-right: 20px;">or</span>
+					<button mat-button [color]="'white'" class="mat-border-button" [routerLink]="['home', 'homefeed']">Learn</button><span
+					 class="mat-body-2" style="color: #fff; padding-left: 20px; padding-right: 20px;">or</span>
 					<button mat-button [color]="'white'" class="mat-border-button" (click)="openQuestionDialog()">Ask a Question</button>
 				</div>
 			</div>
@@ -110,7 +111,7 @@
 			<div class="homefeedContainer">
 				<nav mat-tab-nav-bar disableRipple class="noJustify home">
 					<a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive"
-					   matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
+					 matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
 						<img src="/assets/images/community_thumb.jpg" alt="logo" style="height: 100%;">
 						<h3>Communities</h3>
 					</a>
@@ -132,7 +133,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<section class="guide-around-world spacing">
 		<div class="container">
 			<h2 class="section-title pb-0">Introducing Learning Guides with Live Labs </h2>
@@ -152,7 +153,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<section class="guide-around-world spacing">
 		<div class="container">
 			<h2 class="section-title pb-0 clickable" [routerLink]="['home', 'questions']">Get Answer to Questions </h2>
@@ -210,7 +211,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<section class="one-0x mb-5 padding-bottom-30 padding-top-40">
 		<div class="container">
 			<div class="gradient-banner">
@@ -223,8 +224,8 @@
 									<img style="width: auto !important;" src="/assets/images/one0x-footer-logo.png" alt="one0x-footer-logo">
 								</div>
 								<h3>Tracking all your learning and digitizing it into certificates on the blockchain, making it instantly
-								    verifiable
-								    by any employer</h3>
+									verifiable
+									by any employer</h3>
 								<div class="action-btn">
 									<a href="https://one0x.com/">Explore Compliance</a>
 								</div>
@@ -377,6 +378,27 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-around-world spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Bounties</h2>
+			<div class="loading-container" [hidden]="!loadingBounties">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingBounties" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="bounties === undefined || bounties.length === 0">
+					There are no new active bounties to view right now. Browse from within your signed-up bounties
+					<a class="clickable">here</a>.
+				</div>
+				<div *ngFor="let bounty of bounties; let i = index;">
+					<app-bounty-card *ngIf="i < 5" [bounty]="bounty" (refresh)="onBountiesRefresh($event)"></app-bounty-card>
+				</div>
+			</div>
+			<div class="read-more mt-2 mat-body-2" *ngIf="bounties && bounties.length > 5">
+				<a [routerLink]="['home','bounties']">Show all ({{bounties.length}}+)</a>
 			</div>
 		</div>
 	</section>

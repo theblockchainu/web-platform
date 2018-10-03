@@ -45,6 +45,8 @@ import { ConsoleLearningKnowledgeStoryComponent } from './console-learning/conso
 import { ConsoleTeachingAccreditationComponent } from './console-teaching/console-teaching-accreditation/console-teaching-accreditation.component';
 import { ConsoleTeachingGuideComponent } from './console-teaching/console-teaching-guide/console-teaching-guide.component';
 import { ConsoleTeachingBountyComponent } from './console-teaching/console-teaching-bounty/console-teaching-bounty.component';
+import { ConsoleLearningBountiesComponent } from './console-learning/console-learning-bounty/console-learning-bounties.component';
+import { ConsoleLearningGuidesComponent } from './console-learning/console-learning-guides/console-learning-guides.component';
 @NgModule({
 	imports: [
 		CommonModule,
@@ -101,7 +103,10 @@ import { ConsoleTeachingBountyComponent } from './console-teaching/console-teach
 		ConsoleLearningKnowledgeStoryComponent,
 		ConsoleTeachingAccreditationComponent,
 		ConsoleTeachingGuideComponent,
-		ConsoleTeachingBountyComponent
+		ConsoleTeachingBountyComponent,
+		ConsoleLearningBountiesComponent,
+		ConsoleLearningGuidesComponent,
+		ConsoleLearningGuidesComponent
 	],
 	providers: [TimezonePickerService],
 	bootstrap: [CohortDetailDialogComponent]

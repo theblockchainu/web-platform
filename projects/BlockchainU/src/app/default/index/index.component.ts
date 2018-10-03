@@ -59,6 +59,8 @@ export class IndexComponent implements OnInit {
 	public searching: boolean;
 	public guides: Array<any>;
 	public loadingGuides = false;
+	public loadingBounties = false;
+	public bounties: Array<any>;
 
 	constructor(
 		private authenticationService: AuthenticationService,
@@ -110,6 +112,7 @@ export class IndexComponent implements OnInit {
 		this.fetchExperiences();
 		this.fetchPeers();
 		this.initialiseSearchService();
+		this.fetchBounties();
 	}
 
 	public onGuideRefresh(event) {
@@ -603,11 +606,11 @@ export class IndexComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public openQuestionDialog() {
 		this.dialogsService.askQuestion().subscribe(res => {
 			if (res) {
-				this.snackBar.open('Question has been added.', 'OK', { duration: 5000});
+				this.snackBar.open('Question has been added.', 'OK', { duration: 5000 });
 			}
 		});
 	}
@@ -676,6 +679,67 @@ export class IndexComponent implements OnInit {
 				this.guides = _.orderBy(this.guides, ['createdAt'], ['desc']);
 				this.guides = _.chunk(this.guides, 5)[0];
 				this.loadingGuides = false;
+			}, (err) => {
+				console.log(err);
+			}
+		);
+	}
+
+	public onBountiesRefresh(event) {
+		if (event) {
+			this.fetchBounties();
+		}
+	}
+
+	private fetchBounties() {
+		const query = {
+			'include': [
+				{
+					'relation': 'collections', 'scope': {
+						'include':
+							[{ 'owners': ['reviewsAboutYou', 'profiles'] },
+								'participants',
+								'calendars', { 'bookmarks': 'peer' }, {
+								'contents':
+									['schedules']
+							}], 'where': { 'type': 'bounty' }
+					}
+				}
+			],
+			'order': 'createdAt desc'
+		};
+		this.loadingBounties = true;
+		this._topicService.getTopics(query).subscribe(
+			(response: any) => {
+				this.loadingBounties = false;
+				this.bounties = [];
+				for (const responseObj of response) {
+					responseObj.collections.forEach(collection => {
+						if (collection.status === 'active') {
+							if (collection.owners && collection.owners[0].reviewsAboutYou) {
+								collection.rating = this._collectionService
+									.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+								collection.ratingCount = this._collectionService
+									.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
+							}
+							let hasActiveCalendar = false;
+							if (collection.calendars) {
+								collection.calendars.forEach(calendar => {
+									if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
+										hasActiveCalendar = true;
+										return;
+									}
+								});
+							}
+							if (hasActiveCalendar) {
+								this.bounties.push(collection);
+							}
+						}
+					});
+				}
+				this.bounties = _.uniqBy(this.bounties, 'id');
+				this.bounties = _.orderBy(this.bounties, ['createdAt'], ['desc']);
+				this.bounties = _.chunk(this.bounties, 5)[0];
 			}, (err) => {
 				console.log(err);
 			}
