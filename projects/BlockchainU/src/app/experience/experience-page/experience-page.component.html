@@ -34,8 +34,8 @@
 		</div>
 		<div class="row pending-actions center" *ngIf="(experience && experience.assessment_models && experience.assessment_models.length>0 && experience.assessment_models[0].type && userType === experience.assessment_models[0].type.toLowerCase() && calendarId !== undefined)">
 			<div class="col-md-10 col-md-offset-1">
-				<span>
-					<a href="javascript:void(0);" (click)="openAssessmentDialog()">Assess your student's performance now.</a>
+				<span class="mat-body-2">
+					<a href="javascript:void(0);" (click)="openAssessmentDialog()">Assess your students and issue Smart Certificates</a>
 				</span>
 			</div>
 		</div>
@@ -88,12 +88,12 @@
 								</a>
 								<p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title | titlecase}}
 									<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
-									<span *ngIf="!checkingEthereum && isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant">&emsp;
-										<i class="fa fa-globe lightText" style="color: #ff6d71; font-size: 14px;"></i>
+									<span *ngIf="!checkingEthereum && isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant" style="padding-left: 15px; position: relative; top: -7px;">&emsp;
+										<i class="fa fa-globe" style="color: #ff6d71; font-size: 14px;"></i>
 									</span>
 									<span *ngIf="!checkingEthereum && !isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="Add to one0x Blockchain"
-									      (click)="addToEthereum()" class="clickable">&emsp;
-										<i class="fa fa-plus lightText" style="font-size: 14px;"></i>
+									      (click)="addToEthereum()" class="clickable" style="padding-left: 15px; position: relative; top: -7px;">&emsp;
+										<i class="fa fa-plus lighterText" style="font-size: 14px;"></i>
 									</span>
 								</p>
 								<div *ngIf="userType==='teacher' || userType==='participant'" style="margin-top: -12px; margin-bottom: 10px;">
@@ -119,10 +119,22 @@
 								<div *ngIf="userType==='public'" style="margin-top: -12px;">
 									<span>{{itenaryArray.length | i18nPlural : dayMapping}} / {{totalDuration | i18nPlural : hourMapping}}
 									      &nbsp;&nbsp;&nbsp;
-										<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}}</span>
+										<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
+									      {{experience.contents.length | i18nPlural : activityMapping}}
+									    <span matTooltip = "{{allParticipants ? allParticipants.length : '0'}} Participants" *ngIf="allParticipants && allParticipants.length > 0">
+										    &nbsp;&nbsp;&nbsp;
+										    <mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
+										    <i class="fa fa-group lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{allParticipants ? allParticipants.length : '0'}}
+									    </span>
+										<span matTooltip = "{{experience.views ? experience.views.length : '0'}} Views" *ngIf="experience.views && experience.views.length > 0">
+											&nbsp;&nbsp;&nbsp;
+											<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
+											<i class="fa fa-eye lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{experience.views ? experience.views.length : '0'}}
+										</span>
+									</span>
 								</div>
 							</div>
-							<div class="col-md-2 clickable" style="font-size: 20px; top: 5px; text-align: right; color: #33bd9e;" *ngIf="userType === 'public'">
+							<div class="col-md-2 clickable lighterText" style="font-size: 20px; top: 5px; text-align: right;" *ngIf="userType === 'public'">
 								<span style="margin-right: 15px;" (click)="saveBookmark()">
 									<ngx-loading [show]="bookmarking"></ngx-loading>
 									<span [hidden]="bookmarking">

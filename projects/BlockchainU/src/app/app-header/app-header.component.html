@@ -230,7 +230,7 @@
 			</span>
 		</div>
 	</span>
-	<span mat-menu-item *ngIf="isAccountApproved && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
+	<span mat-menu-item *ngIf="isAccountApproved && profile.peer[0].ethAddress && profile.peer[0].ethAddress.substring(0, 2) === '0x' && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
 		<div class="col-xs-4">
 			<i class="fa fa-fire"></i> KARMA
 		</div>

@@ -79,7 +79,7 @@
 			<div class="col-md-12">
 				<b>What we'll do</b>
 				<br>
-				<p class="pre-wrapped">{{data.content.description | trim | ucfirst }}</p>
+				<p class="pre-wrapped">{{data.content.description | trim | ucfirst | linkify }}</p>
 			</div>
 		</div>
 		<div *ngIf="data.content.prerequisites">
@@ -88,7 +88,7 @@
 				<b>Need to know</b>
 			</div>
 			<br>
-			<p class="pre-wrapped">{{data.content.prerequisites}}</p>
+			<p class="pre-wrapped">{{data.content.prerequisites | trim | ucfirst | linkify}}</p>
 		</div>
 		<div *ngIf="attachmentUrls.length" class="pic delete">
 			<hr>

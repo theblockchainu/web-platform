@@ -10,7 +10,7 @@
 				<button mat-button class="mat-border-button" #topicButton (click)="topicClicked(i)">
 					<div class="mat-button-table">
 						<img src="{{envVariable.apiUrl + topicObj.topic.imageUrl + '/100'}}" alt="logo" (error)="_collectionService.topicImgErrorHandler($event)">
-						<h3>{{topicObj.topic.name | titlecase}}</h3>
+						<h3 style="white-space: initial;">{{topicObj.topic.name | titlecase}}</h3>
 					</div>
 				</button>
 			</div>

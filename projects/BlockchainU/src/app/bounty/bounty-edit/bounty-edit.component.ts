@@ -27,6 +27,7 @@ import { CertificateService } from '../../_services/certificate/certificate.serv
 import { CustomCertificateFormComponent } from '../../_shared/custom-certificate-form/custom-certificate-form.component';
 import { AssessmentService } from '../../_services/assessment/assessment.service';
 import { flatMap, startWith, map } from 'rxjs/operators';
+
 @Component({
     selector: 'app-bounty-edit',
     templateUrl: './bounty-edit.component.html',
@@ -679,6 +680,7 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.sidebarMenuItems[4].submenu[0].visible = true;
                         this.sidebarMenuItems[4].submenu[1].visible = true;
                     }
+                    this.sidebarMenuItems = this._leftSideBarService.updateBountySideMenu(this.bountyData, this.sidebarMenuItems);
                 },
                     err => console.log('error'),
                     () => console.log('Completed!'));
@@ -1559,7 +1561,7 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
             })
         ).subscribe(res => {
             this.bountyData.assessment_models[0].assessment_na_rules = res;
-            this._leftSideBarService.updateBountySideMenu(this.bountyData, this.sidebarMenuItems);
+            this.sidebarMenuItems = this._leftSideBarService.updateBountySideMenu(this.bountyData, this.sidebarMenuItems);
 
             if (this.exitAfterSave) {
                 this.exit();
@@ -1653,9 +1655,10 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         this._collectionService.addRewards(this.bountyId, this.rewardsArray.value).subscribe(res => {
             console.log(res);
-
+			this.bountyData.rewards = res;
             this.step++;
             this.bountyStepUpdate();
+			this.sidebarMenuItems = this._leftSideBarService.updateBountySideMenu(this.bountyData, this.sidebarMenuItems);
             this.router.navigate(['bounty', this.bountyId, 'edit', this.step]);
             this.busySavingData = false;
         }, err => {

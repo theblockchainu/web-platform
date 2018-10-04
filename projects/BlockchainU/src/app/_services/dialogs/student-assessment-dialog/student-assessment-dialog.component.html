@@ -5,7 +5,7 @@
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<div class="mat-display-1" style="margin-bottom: 20px;">
-				Student Assessment
+				Student Assessment & Certificate Issue
 			</div>
 		</div>
 	</div>
@@ -21,7 +21,7 @@
 			<div *ngFor="let participant of assessmentForm['controls']['participants']['controls'];index as i">
 				<div class="row margin-top-10" [formGroup]="participant">
 					<div class="col-xs-4">
-						<h3>
+						<h3 [ngClass]="{'lighterText': participant.value.isAssessed === true}">
 							{{participant.value.name | ucwords}}
 						</h3>
 					</div>
@@ -68,8 +68,14 @@
 							</div>
 						</div>
 						<div class="row" *ngIf="participant.value.isAssessed">
-							<div class="col-sm-12">
+							<div class="col-sm-12 primaryColor mat-body-2">
 								This participant has already been assessed.
+							</div>
+							<div class="col-sm-12 margin-top-20" *ngIf="participant.value.hasCertificate">
+								<button mat-button class="mat-border-button" (click)="openCertificate(participant.value.certificateId)">View Certificate</button>
+							</div>
+							<div class="col-sm-12 margin-top-20">
+								<button mat-button class="mat-border-button" (click)="resendCertificate(participant.value.certificateId, participant.value.assessmentId, i)">Resend Certificate</button>
 							</div>
 						</div>
 					</div>
@@ -80,8 +86,9 @@
 	</form>
 	<div class="row">
 		<div class="col-xs-12">
-			<button type="button" [disabled]="!assessmentForm.valid || !pendingParticipants" class="pull-right" (click)="submitForm()"
-			 mat-raised-button color="accent">Submit Assessment</button>
+			<button type="button" [disabled]="!assessmentForm.valid || !pendingParticipants" (click)="submitForm()"
+			        mat-raised-button color="primary">Submit Assessment & Issue Certificates</button>
+			<div class="mat-h5 lightText margin-top-10">Submitting this assessment will automatically send an email to the participant with his Smart Certificate attached.</div>
 		</div>
 	</div>
 </div>

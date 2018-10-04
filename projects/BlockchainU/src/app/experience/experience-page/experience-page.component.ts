@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, OnDestroy, ViewChildren, ElementRef, QueryList } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
-import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar } from '@angular/material';
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute} from '@angular/router';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Title, Meta } from '@angular/platform-browser';
@@ -138,6 +138,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public loadingReviews: boolean;
 	public accountApproved: string;
 	public inviteLink: string;
+	private certificateDomSubscription;
 
 	public loggedInUser;
 	public bookmark;
@@ -666,8 +667,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 									});
 								});
 							} else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
-								const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
-								snackBarRef.onAction().subscribe();
+								this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
 							}
 							this.recordStartView();
 						} else {
@@ -1640,12 +1640,13 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.loadingParticipants = true;
 		const query = {
 			'relInclude': 'calendarId',
-			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections']
+			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections', 'certificates']
 		};
 		let isCurrentUserParticipant = false;
 		let currentUserParticipatingCalendar = '';
 		this._collectionService.getParticipants(this.experienceId, query).subscribe(
 			(response: any) => {
+				this.participants = [];
 				this.allParticipants = response;
 				for (const responseObj of response) {
 					if (this.calendarId && this.calendarId === responseObj.calendarId) {
@@ -1750,8 +1751,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 					'og:site_name': 'The Blockchain University',
 					'og:description': this.experience.description,
 					'og:image': environment.apiUrl + this.experience.imageUrls[0],
-					'og:image:width': '250',
-					'og:image:height': '257'
+					'og:image:width': '500',
+					'og:image:height': '700'
 				}
 			})
 		}, function (response) {
@@ -1908,6 +1909,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public openAssessmentDialog() {
 		this.dialogsService.studentAssessmentDialog(
 			{
+				'collection': this.experience,
 				'participants': this.participants,
 				'assessment_models': this.experience.assessment_models,
 				'academicGyan': this.experience.academicGyan,
@@ -1992,7 +1994,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.certificateService.getCertificateTemplate(this.experienceId).subscribe((res: any) => {
 			if (res !== null && res !== undefined) {
 				this.certificateHTML = res.certificateHTML;
-				this.certificateDomHTML.changes.subscribe(elem => {
+				this.certificateDomSubscription = this.certificateDomHTML.changes.subscribe(elem => {
 					if (elem['first']) {
 						const image = elem['first'].nativeElement.children[0].children[0].children[1].children[0];
 						image.src = '/assets/images/theblockchainu-qr.png';
@@ -2016,7 +2018,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 	
 	public openShareDialog() {
-		this.dialogsService.shareCollection(this.experience.type, this.experience.id, this.experience.title, this.experience.description, this.experience.headline, this.experience.imageUrls[0]);
+		this.dialogsService.shareCollection(this.experience.type, this.experience.id, this.experience.title, this.experience.description, this.experience.headline, environment.apiUrl + this.experience.imageUrls[0]);
 	}
 
 }

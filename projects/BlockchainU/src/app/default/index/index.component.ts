@@ -34,11 +34,13 @@ export class IndexComponent implements OnInit {
 
 	public classes: Array<any>;
 	public experiences: Array<any>;
+	public bounties: Array<any>;
 	public communities: Array<any>;
 	public questions: Array<any>;
 	public peers: Array<any>;
 	public loadingClasses = false;
 	public loadingExperiences = false;
+	public loadingBounties = false;
 	public loadingCommunities = false;
 	public loadingQuestions = false;
 	public loadingPeers = false;
@@ -48,6 +50,7 @@ export class IndexComponent implements OnInit {
 	public classesCount: number;
 	public experiencesCount: number;
 	public communitiesCount: number;
+	public bountiesCount: number;
 
 	public ongoingArray: Array<any>;
 	public upcomingArray: Array<any>;
@@ -110,6 +113,7 @@ export class IndexComponent implements OnInit {
 		this.fetchCommunities();
 		this.fetchClasses();
 		this.fetchExperiences();
+		this.fetchBounties();
 		this.fetchPeers();
 		this.initialiseSearchService();
 		this.fetchBounties();
@@ -328,6 +332,67 @@ export class IndexComponent implements OnInit {
 			this.experiencesCount = res.count;
 		});
 
+	}
+	
+	fetchBounties() {
+		const query = {
+			'include': [
+				{
+					'relation': 'collections', 'scope': {
+						'include':
+							[{ 'owners': ['reviewsAboutYou', 'profiles'] },
+								'participants',
+								'rewards',
+								'calendars', { 'bookmarks': 'peer' }, {
+								'contents':
+									['schedules']
+							}], 'where': { 'type': 'bounty' }
+					}
+				}
+			],
+			'order': 'createdAt desc'
+		};
+		this.loadingBounties = true;
+		this._topicService.getTopics(query).subscribe(
+			(response: any) => {
+				this.loadingBounties = false;
+				this.bounties = [];
+				for (const responseObj of response) {
+					responseObj.collections.forEach(collection => {
+						if (collection.status === 'active') {
+							if (collection.owners && collection.owners[0].reviewsAboutYou) {
+								collection.rating = this._collectionService
+									.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
+								collection.ratingCount = this._collectionService
+									.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
+							}
+							let hasActiveCalendar = false;
+							if (collection.calendars) {
+								collection.calendars.forEach(calendar => {
+									if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
+										hasActiveCalendar = true;
+										return;
+									}
+								});
+							}
+							if (hasActiveCalendar) {
+								this.bounties.push(collection);
+							}
+						}
+					});
+				}
+				this.bounties = _.uniqBy(this.bounties, 'id');
+				this.bounties = _.orderBy(this.bounties, ['createdAt'], ['desc']);
+				this.bounties = _.chunk(this.bounties, 5)[0];
+			}, (err) => {
+				console.log(err);
+			}
+		);
+		
+		this._collectionService.getTotalCollectionCount('type', 'bounty').subscribe((res: any) => {
+			this.bountiesCount = res.count;
+		});
+		
 	}
 
 	fetchCommunities() {
@@ -554,6 +619,12 @@ export class IndexComponent implements OnInit {
 			this.fetchExperiences();
 		}
 	}
+	
+	public onBountyRefresh(event) {
+		if (event) {
+			this.fetchBounties();
+		}
+	}
 
 	public onCommunityRefresh(event) {
 		if (event) {
@@ -636,41 +707,13 @@ export class IndexComponent implements OnInit {
 			(response: any) => {
 				for (const responseObj of response) {
 					responseObj.collections.forEach(collection => {
-						// let experienceLocation = 'Unknown location';
-						// let lat = 37.5293864;
-						// let lng = -122.008471;
 						if (collection.status === 'active') {
-							// if (collection.contents) {
-							// 	collection.contents.forEach(content => {
-							// 		if (content.locations && content.locations.length > 0
-							// 			&& content.locations[0].city !== undefined
-							// 			&& content.locations[0].city.length > 0
-							// 			&& content.locations[0].map_lat !== undefined
-							// 			&& content.locations[0].map_lat.length > 0) {
-							// 			experienceLocation = content.locations[0].city;
-							// 			lat = parseFloat(content.locations[0].map_lat);
-							// 			lng = parseFloat(content.locations[0].map_lng);
-							// 		}
-							// 	});
-							// 	collection.location = experienceLocation;
-							// 	collection.lat = lat;
-							// 	collection.lng = lng;
-							// }
 							if (collection.owners && collection.owners[0].reviewsAboutYou) {
 								collection.rating = this._collectionService
 									.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
 								collection.ratingCount = this._collectionService
 									.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
 							}
-							// let hasActiveCalendar = false;
-							// if (collection.calendars) {
-							// 	collection.calendars.forEach(calendar => {
-							// 		if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
-							// 			hasActiveCalendar = true;
-							// 			return;
-							// 		}
-							// 	});
-							// }
 							this.guides.push(collection);
 						}
 					});

@@ -1,12 +1,12 @@
 <div class="main-content">
 	<div class="row" [hidden]="!loadingBounty">
-		<div class="col-xs-2 col-xs-offset-5">
+		<div class="col-xs-2 col-xs-offset-1">
 			<div class="loading-container">
 				<ngx-loading [show]="true"></ngx-loading>
 			</div>
 		</div>
 	</div>
-	<div *ngIf="bounty " class="bountyPageContainer">
+	<div *ngIf="bounty" class="bountyPageContainer">
 		<div class="row pending-actions" *ngIf="bounty.status === 'cancelled' && userType==='teacher' ">
 			<div class="col-md-10 col-md-offset-1 center">
 				<span>This bounty has been cancelled by the teacher</span>
@@ -47,24 +47,38 @@
 					<div class="col-md-6">
 						<div class="row padding-bottom-20">
 							<div class="col-md-12">
-								<span class="mat-display-1" style="margin-bottom: 20px !important;">{{bounty.title
-									| titlecase}}
-									<span *ngIf="!checkingEthereum && isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant">&emsp;
+								<p class="mat-display-1" style="margin-bottom: 20px !important;">{{bounty.title | titlecase}}
+									<span *ngIf="!checkingEthereum && isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant" style="padding-left: 15px; position: relative; top: -7px;">&emsp;
 										<i class="fa fa-globe lightText" style="color: #ff6d71; font-size: 14px;"></i>
 									</span>
 									<span *ngIf="!checkingEthereum && !isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="Add to one0x Blockchain"
-									 (click)="addToEthereum()" class="clickable">&emsp;
+									 (click)="addToEthereum()" class="clickable" style="padding-left: 15px; position: relative; top: -7px;">&emsp;
 										<i class="fa fa-plus lightText" style="font-size: 14px;"></i>
 									</span>
-								</span>
+								</p>
+								<div *ngIf="userType==='public'" style="margin-top: -12px;">
+									<span>{{totalDuration | i18nPlural : hourMapping}}
+										<span matTooltip = "{{allParticipants ? allParticipants.length : '0'}} Participants" *ngIf="allParticipants && allParticipants.length > 0">
+											&nbsp;&nbsp;&nbsp;
+											<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
+											<i class="fa fa-group lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{allParticipants ? allParticipants.length : '0'}}
+										</span>
+										<span matTooltip = "{{bounty.views ? bounty.views.length : '0'}} Views" *ngIf="bounty.views && bounty.views.length > 0">
+											&nbsp;&nbsp;&nbsp;
+											<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
+											<i class="fa fa-eye lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{bounty.views ? bounty.views.length : '0'}}
+										</span>
+									</span>
+								</div>
 							</div>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="row" style="margin-top: 15px; text-align: right" *ngIf="userType==='teacher' || userType==='participant'">
 							<div class="col-xs-12 button-row">
-								<button mat-button class="mat-border-button" *ngIf="userType==='teacher'" (click)="opensubmissionAssessmentDialog()">Assess
-									Submissions</button>
+								<button mat-button class="mat-border-button" *ngIf="userType==='teacher'" (click)="opensubmissionAssessmentDialog()">
+									Announce Winners
+								</button>
 								<button mat-button class="mat-border-button" (click)="openGroupChat()">Group Chat</button>
 								<button mat-button class="mat-border-button" *ngIf="userType ==='participant' || userType === 'teacher'"
 								 (click)="scrollToDiscussion()">Discussion</button>
@@ -260,7 +274,7 @@
 							<div class="featurette" id="about">
 								<div class="col-md-12">
 									<div class="mat-h3 margin-bottom-20">
-										Projects
+										Tasks
 									</div>
 									<div class="qa-message-list" id="wallmessages">
 										<div [ngClass]="{'message-item-wrapper' : oneDay(), 'message-item-wrapper-one-day': !oneDay()}" *ngFor="let itenary of itenaryArray">
