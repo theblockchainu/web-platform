@@ -1,5 +1,5 @@
 import { BrowserModule, Meta, Title } from '@angular/platform-browser';
-import {APP_ID, ErrorHandler, Inject, NgModule, PLATFORM_ID} from '@angular/core';
+import { APP_ID, ErrorHandler, Inject, NgModule, PLATFORM_ID } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppNotificationDialogComponent } from './app-header/dialogs/app-notification-dialog/app-notification-dialog.component';
 import { GlobalErrorHandlerComponent } from './error-handler/globalerrorhandler';
@@ -33,7 +33,7 @@ import { MatButtonModule } from '@angular/material';
 import { MatTooltipModule } from '@angular/material';
 import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { CookieService } from 'ngx-cookie-service';
-import {UcFirstPipe, UcWordsPipe} from 'ngx-pipes';
+import { UcFirstPipe, UcWordsPipe } from 'ngx-pipes';
 import * as Raven from 'raven-js';
 import { environment } from '../environments/environment';
 import { TokenflowComponent } from './tokenflow/tokenflow.component';
@@ -44,23 +44,23 @@ import { PrivatebetaComponent } from './privatebeta/privatebeta.component';
 import { LandingPageModule } from './landing-page/landing-page.module';
 import { SharedModule } from './_shared/_shared.module';
 import { TransferHttpCacheModule } from '@nguniversal/common';
-import {isPlatformBrowser} from '@angular/common';
-import {PdfViewerModule} from 'ng2-pdf-viewer';
+import { isPlatformBrowser } from '@angular/common';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
-// Raven
-//  	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
-//  	.install();
+Raven
+	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
+	.install();
 
-// Raven.setExtraContext({
-//  	environment: (environment.production) ? 'production' : 'development'
-// });
+Raven.setExtraContext({
+	environment: (environment.production) ? 'production' : 'development'
+});
 
-// export class RavenErrorHandler implements ErrorHandler {
-//  	handleError(err: any): void {
-//  		Raven.captureException(err);
-//  	}
-// }
+export class RavenErrorHandler implements ErrorHandler {
+	handleError(err: any): void {
+		Raven.captureException(err);
+	}
+}
 
 
 @NgModule({
@@ -126,10 +126,10 @@ import {PdfViewerModule} from 'ng2-pdf-viewer';
 		CookieService,
 		UcWordsPipe,
 		UcFirstPipe,
-		// {
-		//  	provide: ErrorHandler,
-		//  	useClass: RavenErrorHandler
-		// },
+		{
+			provide: ErrorHandler,
+			useClass: RavenErrorHandler
+		},
 		Title,
 		Meta
 	],
