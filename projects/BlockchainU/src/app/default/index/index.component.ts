@@ -62,8 +62,6 @@ export class IndexComponent implements OnInit {
 	public searching: boolean;
 	public guides: Array<any>;
 	public loadingGuides = false;
-	public loadingBounties = false;
-	public bounties: Array<any>;
 
 	constructor(
 		private authenticationService: AuthenticationService,
@@ -333,7 +331,7 @@ export class IndexComponent implements OnInit {
 		});
 
 	}
-	
+
 	fetchBounties() {
 		const query = {
 			'include': [
@@ -388,11 +386,11 @@ export class IndexComponent implements OnInit {
 				console.log(err);
 			}
 		);
-		
+
 		this._collectionService.getTotalCollectionCount('type', 'bounty').subscribe((res: any) => {
 			this.bountiesCount = res.count;
 		});
-		
+
 	}
 
 	fetchCommunities() {
@@ -619,7 +617,7 @@ export class IndexComponent implements OnInit {
 			this.fetchExperiences();
 		}
 	}
-	
+
 	public onBountyRefresh(event) {
 		if (event) {
 			this.fetchBounties();
@@ -732,60 +730,5 @@ export class IndexComponent implements OnInit {
 		if (event) {
 			this.fetchBounties();
 		}
-	}
-
-	private fetchBounties() {
-		const query = {
-			'include': [
-				{
-					'relation': 'collections', 'scope': {
-						'include':
-							[{ 'owners': ['reviewsAboutYou', 'profiles'] },
-								'participants',
-								'calendars', { 'bookmarks': 'peer' }, {
-								'contents':
-									['schedules']
-							}], 'where': { 'type': 'bounty' }
-					}
-				}
-			],
-			'order': 'createdAt desc'
-		};
-		this.loadingBounties = true;
-		this._topicService.getTopics(query).subscribe(
-			(response: any) => {
-				this.loadingBounties = false;
-				this.bounties = [];
-				for (const responseObj of response) {
-					responseObj.collections.forEach(collection => {
-						if (collection.status === 'active') {
-							if (collection.owners && collection.owners[0].reviewsAboutYou) {
-								collection.rating = this._collectionService
-									.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
-								collection.ratingCount = this._collectionService
-									.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
-							}
-							let hasActiveCalendar = false;
-							if (collection.calendars) {
-								collection.calendars.forEach(calendar => {
-									if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
-										hasActiveCalendar = true;
-										return;
-									}
-								});
-							}
-							if (hasActiveCalendar) {
-								this.bounties.push(collection);
-							}
-						}
-					});
-				}
-				this.bounties = _.uniqBy(this.bounties, 'id');
-				this.bounties = _.orderBy(this.bounties, ['createdAt'], ['desc']);
-				this.bounties = _.chunk(this.bounties, 5)[0];
-			}, (err) => {
-				console.log(err);
-			}
-		);
 	}
 }
