@@ -14,7 +14,7 @@
 	<a [routerLink]="'/bounty/'+bounty.id">
 		<div class="">
 			<div class="recommendation-thumb" *ngIf="bounty.imageUrls && bounty.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + bounty.imageUrls[0] + '/300' + '), url(../../assets/images/collection-placeholder.jpg)', 'background-size': 'cover'}">
-			
+
 			</div>
 			<div class="recommendation-thumb" *ngIf="!bounty.imageUrls || bounty.imageUrls.length<=0" [ngStyle]="{'background': 'url(../../assets/images/collection-placeholder.jpg)', 'background-size': 'cover'}">
 				<div class="recommendation-price" [ngClass]="{'hidden': bounty.cardInFocus}">
@@ -37,6 +37,10 @@
 		</div>
 		<div style="margin-top: 5px; text-transform: uppercase; font-size: 12px;" class="mat-body-2">
 			{{bounty.subCategory | titlecase}}
+			<span *ngIf="bounty.rewards">
+				&nbsp; &nbsp; &#183; &nbsp; &nbsp;
+				{{bounty.rewards.length}} Rewards
+			</span>
 		</div>
 		<div class="mat-body-2" style="margin-top: -3px; font-weight: 900; color: #333;">{{bounty.title | titlecase}}</div>
 		<div style="margin-top: 2px; font-size: 15px; color: #333;">
@@ -55,6 +59,11 @@
 			<span class="mat-border-button gyanBubbleCard" style="margin-left: 0 !important;" matTooltip="Rewards payout {{getPredictedGyanEarn(bounty) | convertCurrency : 'GYAN' | async}} in 7 days">
 				<div style="font-size: 12px;">{{getPredictedGyanEarn(bounty) | convertCurrency : 'GYAN' | async}}</div>
 			</span>-->
+		</div>
+		<div style="margin-top: 2px; font-size: 15px; color: #333;">
+			<span *ngIf="bounty.resultsAnnounced">Results Announced</span>
+			<span *ngIf="!bounty.resultsAnnounced && bounty.startDiff<0">Starts in {{bounty.startsIn}}</span>
+			<span *ngIf="!bounty.resultsAnnounced && bounty.startDiff>=0">Ends in {{bounty.endsIn}}</span>
 		</div>
 		<!--<div style="margin-top: -4px;">{{bounty.owners[0].pr	ofiles[0].first_name + ' ' + bounty.owners[0].profiles[0].last_name | ucwords}}
 		</div>-->

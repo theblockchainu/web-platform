@@ -4,6 +4,7 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { CollectionService } from '../../_services/collection/collection.service';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 declare var fbq: any;
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-bounty-card',
@@ -41,7 +42,21 @@ export class BountyCardComponent implements OnInit {
 			}
 			this.bounty.highestReward = highestReward;
 		}
+		this.getTime();
 		console.log(this.bounty.highestReward);
+	}
+
+	public getTime() {
+		const startMoment = moment(this.bounty.calendars[0].startDate);
+		const endMoment = moment(this.bounty.calendars[0].startDate);
+
+		this.bounty.startsIn = startMoment.toNow();
+		this.bounty.startDiff = startMoment.diff(moment());
+		console.log(this.bounty.startsIn);
+
+		console.log(this.bounty.startDiff);
+
+		this.bounty.endsIn = endMoment.toNow();
 	}
 
 	public toggleBountyBookmark(bounty) {

@@ -65,6 +65,10 @@ export class BountyContentProjectComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		console.log('input data');
+
+		console.log(this.inputData);
+
 		const content = <FormArray>this.itenaryForm.controls.contents;
 		this.lastIndex = this.lastIndex !== -1 ? this.lastIndex : content.controls.length - 1;
 		this.resultData['data'] = this.lastIndex;
