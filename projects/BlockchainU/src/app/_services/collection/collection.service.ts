@@ -1092,4 +1092,9 @@ export class CollectionService {
 
 	}
 
+	public announceResult(collectionId: string) {
+		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId +
+			'/announceResult', {}, this.requestHeaderService.options);
+	}
+
 }
