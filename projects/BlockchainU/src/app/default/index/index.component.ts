@@ -114,6 +114,7 @@ export class IndexComponent implements OnInit {
 		this.fetchBounties();
 		this.fetchPeers();
 		this.initialiseSearchService();
+		this.fetchBounties();
 	}
 
 	public onGuideRefresh(event) {
@@ -330,7 +331,7 @@ export class IndexComponent implements OnInit {
 		});
 
 	}
-	
+
 	fetchBounties() {
 		const query = {
 			'include': [
@@ -385,11 +386,11 @@ export class IndexComponent implements OnInit {
 				console.log(err);
 			}
 		);
-		
+
 		this._collectionService.getTotalCollectionCount('type', 'bounty').subscribe((res: any) => {
 			this.bountiesCount = res.count;
 		});
-		
+
 	}
 
 	fetchCommunities() {
@@ -616,7 +617,7 @@ export class IndexComponent implements OnInit {
 			this.fetchExperiences();
 		}
 	}
-	
+
 	public onBountyRefresh(event) {
 		if (event) {
 			this.fetchBounties();
@@ -674,11 +675,11 @@ export class IndexComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public openQuestionDialog() {
 		this.dialogsService.askQuestion().subscribe(res => {
 			if (res) {
-				this.snackBar.open('Question has been added.', 'OK', { duration: 5000});
+				this.snackBar.open('Question has been added.', 'OK', { duration: 5000 });
 			}
 		});
 	}
@@ -723,5 +724,11 @@ export class IndexComponent implements OnInit {
 				console.log(err);
 			}
 		);
+	}
+
+	public onBountiesRefresh(event) {
+		if (event) {
+			this.fetchBounties();
+		}
 	}
 }

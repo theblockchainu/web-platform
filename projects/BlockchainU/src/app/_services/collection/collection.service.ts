@@ -612,6 +612,9 @@ export class CollectionService {
 			case 'session':
 				this.router.navigate(['/session', collection.id]);
 				break;
+			case 'bounty':
+				this.router.navigate(['/bounty', collection.id]);
+				break;
 			case 'guide':
 				this.router.navigate(['/guide', collection.id]);
 				break;
@@ -1087,6 +1090,11 @@ export class CollectionService {
 			});
 		}
 
+	}
+
+	public announceResult(collectionId: string) {
+		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId +
+			'/announceResult', {}, this.requestHeaderService.options);
 	}
 
 }

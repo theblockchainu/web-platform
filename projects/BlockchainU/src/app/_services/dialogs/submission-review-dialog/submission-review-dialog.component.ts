@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
 	styleUrls: ['./submission-review-dialog.component.scss']
 })
 export class SubmissionReviewDialogComponent implements OnInit {
-	
+
 	public collectionData: any;
 	public peersArray: Array<PeerObject>;
 	public noImage = 'assets/images/no-image.jpg';
@@ -23,7 +23,7 @@ export class SubmissionReviewDialogComponent implements OnInit {
 	public envVariable;
 	public rewardOptions: Array<any>;
 	public loadingData: boolean;
-	
+
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		public dialogRef: MatDialogRef<SubmissionReviewDialogComponent>,
@@ -33,13 +33,13 @@ export class SubmissionReviewDialogComponent implements OnInit {
 		private matSnackBar: MatSnackBar
 	) {
 		this.envVariable = environment;
-		
+
 	}
-	
+
 	ngOnInit() {
 		this.fetchSubmissions();
 	}
-	
+
 	private fetchSubmissions() {
 		this.loadingData = true;
 		this.peersArray = [];
@@ -48,12 +48,12 @@ export class SubmissionReviewDialogComponent implements OnInit {
 				{ 'rewards': { 'winners': 'profiles' } },
 				{
 					'contents':
+					{
+						'submissions':
 						{
-							'submissions':
-								{
-									'peer': ['profiles', 'reviewsAboutYou', 'ownedCollections']
-								}
+							'peer': ['profiles', 'reviewsAboutYou', 'ownedCollections']
 						}
+					}
 				}
 			]
 		};
@@ -62,7 +62,7 @@ export class SubmissionReviewDialogComponent implements OnInit {
 			this.filterData();
 		});
 	}
-	
+
 	private filterData() {
 		this.rewardOptions = this.collectionData.rewards;
 		this.collectionData.contents.forEach(content => {
@@ -72,7 +72,7 @@ export class SubmissionReviewDialogComponent implements OnInit {
 				});
 			}
 		});
-		
+
 		this.collectionData.rewards.forEach(reward => {
 			if (reward.winners && reward.winners.length > 0) {
 				this.findAndPushReward(reward);
@@ -80,7 +80,7 @@ export class SubmissionReviewDialogComponent implements OnInit {
 		});
 		this.loadingData = false;
 	}
-	
+
 	private findAndPushReward(reward) {
 		const searchedIndex = this.peersArray.findIndex((a) => {
 			return a.peer.id === reward.winners[0].id;
@@ -89,7 +89,7 @@ export class SubmissionReviewDialogComponent implements OnInit {
 			this.peersArray[searchedIndex].reward = reward;
 		}
 	}
-	
+
 	private findAndPushSubmission(submission: any) {
 		const pushIndex = this.peersArray.findIndex((a) => {
 			return a.peer.id === submission.peer[0].id;
@@ -104,7 +104,7 @@ export class SubmissionReviewDialogComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	public viewSubmission(submissionId) {
 		const query = '{"include":[{"upvotes":"peer"}, {"peer": "profiles"}, ' +
 			'{"comments": [{"peer": {"profiles": "work"}}, {"replies": [{"peer": {"profiles": "work"}}]}]}]}';
@@ -115,7 +115,7 @@ export class SubmissionReviewDialogComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	private submissionView(userType, submission, peerHasSubmission, collectionId) {
 		return this.dialog.open(SubmissionViewComponent, {
 			data: {
@@ -128,7 +128,7 @@ export class SubmissionReviewDialogComponent implements OnInit {
 			height: '100vh'
 		}).afterClosed();
 	}
-	
+
 	public onPositionChange(event: any, peerObject: PeerObject) {
 		this.loadingData = true;
 		console.log(event);
@@ -142,7 +142,7 @@ export class SubmissionReviewDialogComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	private linkPeer(rewardId, peerId) {
 		const unlinkPeerIds = [];
 		this.rewardOptions.forEach(rewardOption => {
@@ -161,7 +161,7 @@ export class SubmissionReviewDialogComponent implements OnInit {
 			this.fetchSubmissions();
 		});
 	}
-	
+
 	private checkConflicts(event: any, peerObject: PeerObject) {
 		console.log('check conflict');
 		let conflictPresent = false;
@@ -176,20 +176,32 @@ export class SubmissionReviewDialogComponent implements OnInit {
 			}
 		});
 		if (conflictPresent) {
-			return this.winnerChangePrompt(message);
+			return this.promptDialog(message);
 		} else {
 			return new Observable(observer => {
 				observer.next(true);
 			});
 		}
 	}
-	
-	private winnerChangePrompt(message: string) {
+
+	private promptDialog(message: string) {
 		return this.dialog.open(GenericPromptDialogComponent, {
 			data: message,
 			panelClass: 'responsive-dialog', width: '45vw',
 			height: '30vh'
 		}).afterClosed();
+	}
+
+	private makeAnnouncement() {
+		this.promptDialog('Are you sure you want to announce the results. This will lock further actions on this bounty.')
+			.subscribe(res => {
+				if (res) {
+					this.collectionService.announceResult(this.data).subscribe(result => {
+						console.log(result);
+						this.fetchSubmissions();
+					});
+				}
+			});
 	}
 }
 

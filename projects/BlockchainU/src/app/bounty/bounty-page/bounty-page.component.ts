@@ -571,6 +571,15 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 								content_ids: [this.bountyId]
 							});
 						}
+						this.bounty.rewards.sort((a, b) => {
+							if (a.position > b.position) {
+								return 1;
+							} else if (a.position < b.position) {
+								return -1;
+							} else {
+								return 0;
+							}
+						});
 						this.itenariesObj = {};
 						this.itenaryArray = [];
 						// Scan through all contents and group them under their respective start days.

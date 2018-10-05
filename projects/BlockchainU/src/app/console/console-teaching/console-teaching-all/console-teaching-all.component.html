@@ -28,7 +28,7 @@
 								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create an Experience </span>
 								&emsp;
 								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
-								<br/>
+								<br />
 								<span class="mat-caption lightText">Create an in-person experience</span>
 							</div>
 						</button>
@@ -42,7 +42,7 @@
 								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Class </span>
 								&emsp;
 								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
-								<br/>
+								<br />
 								<span class="mat-caption lightText">Create an online course</span>
 							</div>
 						</button>
@@ -51,12 +51,12 @@
 				<div class="col-md-4 padding-top-20">
 					<span matTooltip="Your Account is pending approval from Blockchain University team." [matTooltipDisabled]="accountVerified">
 						<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createGuide()" class="pb-block clickable card-button"
-						        style="background: url('/assets/images/peers_icon1.jpg');	">
+						 style="background: url('/assets/images/peers_icon1.jpg');	">
 							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
 								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create Learning Guide </span>
 								&emsp;
 								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
-								<br/>
+								<br />
 								<span class="mat-caption lightText">Create a learning guide</span>
 							</div>
 						</button>
@@ -80,7 +80,7 @@
 								</span>
 								&emsp;
 								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
-								<br/>
+								<br />
 								<span class="mat-caption lightText">Enable live sessions</span>
 							</div>
 						</button>
@@ -88,13 +88,13 @@
 				</div>
 				<div class="col-md-4 padding-top-20">
 					<span matTooltip="Your Account is pending approval from Blockchain University team." [matTooltipDisabled]="accountVerified">
-						<button mat-button mat-raised-button [disabled]="!accountVerified" [routerLink]="'/console/account/scholarships'" class="pb-block clickable card-button"
-						 style="background: url('/assets/images/scholarship_img.jpg');">
+						<button mat-button mat-raised-button [disabled]="!accountVerified" [routerLink]="'/console/account/scholarships'"
+						 class="pb-block clickable card-button" style="background: url('/assets/images/scholarship_img.jpg');">
 							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
 								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Scholarship </span>
 								&emsp;
 								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
-								<br/>
+								<br />
 								<span class="mat-caption lightText">Create scholarships for students</span>
 							</div>
 						</button>
@@ -108,7 +108,7 @@
 								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create an Accreditation </span>
 								&emsp;
 								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
-								<br/>
+								<br />
 								<span class="mat-caption lightText">Create accreditations for teachers</span>
 							</div>
 						</button>
@@ -158,10 +158,12 @@
 										<div class="participantCount">
 											<span>{{collection.participants.length}} Participants </span>
 										</div>
-										<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+										<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{
+											collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
 										<!-- <mat-progress-bar mode="determinate" value="{{_collectionService.getProgressValue(collection)}}"></mat-progress-bar> -->
 										<div class="cohortDate">
-											<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
+											<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate
+												|extractTime:'Do
 												MMM' }}</span>
 										</div>
 										<div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
@@ -179,7 +181,8 @@
 												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
 											</div>
 											<div class="upcomingEventTime">
-												{{ _collectionService.getUpcomingEvent(collection).type | titlecase}} {{ _collectionService.getUpcomingEvent(collection).fillerWord}}
+												{{ _collectionService.getUpcomingEvent(collection).type | titlecase}} {{
+												_collectionService.getUpcomingEvent(collection).fillerWord}}
 												today
 											</div>
 										</span>
@@ -191,7 +194,8 @@
 												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
 											</div>
 											<div class="upcomingEventTime">
-												{{ _collectionService.getUpcomingEvent(collection).type | titlecase }} {{ _collectionService.getUpcomingEvent(collection).fillerWord
+												{{ _collectionService.getUpcomingEvent(collection).type | titlecase }} {{
+												_collectionService.getUpcomingEvent(collection).fillerWord
 												+ ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' days' }}
 											</div>
 										</span>
@@ -203,7 +207,8 @@
 												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
 											</div>
 											<div class="upcomingEventTime">
-												{{ _collectionService.getUpcomingEvent(collection).type| titlecase }} {{ _collectionService.getUpcomingEvent(collection).fillerWord
+												{{ _collectionService.getUpcomingEvent(collection).type| titlecase }} {{
+												_collectionService.getUpcomingEvent(collection).fillerWord
 												+ ' was ' + -(_collectionService.getUpcomingEvent(collection).timeToStart) + ' days ago' }}
 											</div>
 										</span>
@@ -226,7 +231,8 @@
 										<button mat-raised-button (click)="_collectionService.viewCollection(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
 									</mat-card-actions>
 									<mat-card-footer class="cardFooter" style="margin-top: -4px">
-										<button mat-button [routerLink]="['/' + collection.type + '/'+collection.id+'/calendar/'+collection.calendars[0].id]">Continue Teaching</button>
+										<button mat-button [routerLink]="['/' + collection.type + '/'+collection.id+'/calendar/'+collection.calendars[0].id]">Continue
+											Teaching</button>
 									</mat-card-footer>
 								</mat-card>
 							</div>
@@ -265,15 +271,22 @@
 											<span class="participantCount">{{collection.participants.length}} Participants </span> |
 											<span class="lightText">{{collection.maxSpots - collection.participants.length}} available </span>
 										</div>
-										<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
+										<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{
+											collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
 										<div class="cohortDate">
-											<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do
+											<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate
+												|extractTime:'Do
 												MMM' }}</span>
 										</div>
 										<div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
 											{{ collection.itenaries.length }} Days | {{collection.contents.length}} Activity |
 											<span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>
 										</div>
+										<span *ngIf="!_collectionService.getUpcomingEvent(collection) || collection.type=='bounty'">
+											<p class="upcomingEventLabel">
+												{{collection.type | titlecase}}
+											</p>
+										</span>
 										<span *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart === 0">
 											<p class="upcomingEventLabel">
 												First Activity
@@ -282,7 +295,8 @@
 												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
 											</div>
 											<div class="upcomingEventTime">
-												{{ _collectionService.getUpcomingEvent(collection).type | titlecase}} {{ _collectionService.getUpcomingEvent(collection).fillerWord}}
+												{{ _collectionService.getUpcomingEvent(collection).type | titlecase}} {{
+												_collectionService.getUpcomingEvent(collection).fillerWord}}
 												today
 											</div>
 										</span>
@@ -294,7 +308,8 @@
 												{{ _collectionService.getUpcomingEvent(collection).title | titlecase | shorten:20 :'...'}}
 											</div>
 											<div class="upcomingEventTime">
-												{{ _collectionService.getUpcomingEvent(collection).type | titlecase }} {{ _collectionService.getUpcomingEvent(collection).fillerWord
+												{{ _collectionService.getUpcomingEvent(collection).type | titlecase }} {{
+												_collectionService.getUpcomingEvent(collection).fillerWord
 												+ ' in ' + _collectionService.getUpcomingEvent(collection).timeToStart + ' days' }}
 											</div>
 										</span>
@@ -316,8 +331,9 @@
 									<mat-card-actions *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).hasStarted">
 										<button mat-raised-button (click)="_collectionService.viewCollection(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
 									</mat-card-actions>
-									<mat-card-footer class="cardFooter" style="line-height: 30px; position: absolute;bottom: 24px;width: 100%;left: 24px;">
-										<a style="font-size: 1.077rem" (click)="_collectionService.viewCollection(collection)">Is this a recurring {{collection.type}}?</a>
+									<mat-card-footer *ngIf="collection.type==='experience'||collection.type==='class'" class="cardFooter" style="line-height: 30px; position: absolute;bottom: 24px;width: 100%;left: 24px;">
+										<a style="font-size: 1.077rem" (click)="_collectionService.viewCollection(collection)">Is this a recurring
+											{{collection.type}}?</a>
 									</mat-card-footer>
 								</mat-card>
 							</div>
@@ -356,8 +372,10 @@
 													</mat-chip-list>
 												</div>
 											</div>
-											<div class="mat-body-2" style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
-											<div style="font-size: 12px; margin-top: -30px; margin-bottom: 10px;" *ngIf="collection.status === 'draft'">Last edited on {{collection.updatedAt | extractTime: 'Do MMM'}}</div>
+											<div class="mat-body-2" style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title' |
+												titlecase | shorten:20 :'...'}} </div>
+											<div style="font-size: 12px; margin-top: -30px; margin-bottom: 10px;" *ngIf="collection.status === 'draft'">Last
+												edited on {{collection.updatedAt | extractTime: 'Do MMM'}}</div>
 											<ng-template #draftMessage>
 												<mat-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></mat-progress-bar>
 												<p class="lightText" style="margin-top:20px">
@@ -373,7 +391,8 @@
 											<span *ngIf="collection.status == 'draft'; then draftMessage else submittedMessage"></span>
 										</mat-card-content>
 										<mat-card-actions>
-											<button mat-raised-button (click)="onSelect(collection)">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
+											<button mat-raised-button (click)="onSelect(collection)">{{
+												_collectionService.getDraftButtonText(collection.status) }}</button>
 										</mat-card-actions>
 										<mat-card-footer>
 
@@ -398,7 +417,8 @@
 													</a>
 												</div>
 											</div>
-											<div class="mat-body-2" style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
+											<div class="mat-body-2" style="margin-top: 30px; margin-bottom: 30px">{{ collection.title || 'No Title'|
+												titlecase | shorten:20 :'...'}} </div>
 											<ng-template #draftMessage>
 												<mat-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></mat-progress-bar>
 												<p class="lightText" style="margin-top:20px">
@@ -414,7 +434,8 @@
 											<span *ngIf="collection.status == 'draft'; then draftMessage else submittedMessage"></span>
 										</mat-card-content>
 										<mat-card-actions>
-											<button mat-raised-button (click)="onSelect(collection)">{{ _collectionService.getDraftButtonText(collection.status) }}</button>
+											<button mat-raised-button (click)="onSelect(collection)">{{
+												_collectionService.getDraftButtonText(collection.status) }}</button>
 										</mat-card-actions>
 										<mat-card-footer>
 
@@ -481,13 +502,16 @@
 												<span>{{collection.participants.length}} Participants </span>
 											</div>
 											<div class="cohortCount">
-												<a (click)="openCohortDetailDialog(collection, 'complete')">{{consoleTeachingComponent.getCompletedCalendars(collection.calendars).length}} cohorts completed
+												<a (click)="openCohortDetailDialog(collection, 'complete')">{{consoleTeachingComponent.getCompletedCalendars(collection.calendars).length}}
+													cohorts completed
 												</a>
 												<br>
-												<a (click)="openCohortDetailDialog(collection, 'cancelled')">{{consoleTeachingComponent.getCanceledCalendars(collection.calendars).length}} cohorts cancelled
+												<a (click)="openCohortDetailDialog(collection, 'cancelled')">{{consoleTeachingComponent.getCanceledCalendars(collection.calendars).length}}
+													cohorts cancelled
 												</a>
 											</div>
-											<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.viewCollection(collection)">{{ collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
+											<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.viewCollection(collection)">{{
+												collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
 											<div class="collectionSubtitle clickable" (click)="_collectionService.openCollection(collection)">
 												{{ collection.itenaries.length}} Days | {{collection.contents.length}} Activity |
 												<span *ngIf="collection.topics.length > 0; then topicName else noTopicText"></span>

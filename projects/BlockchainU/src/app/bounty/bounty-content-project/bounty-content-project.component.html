@@ -10,7 +10,8 @@
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<div>
-				<div class="mat-display-1" style="margin-bottom: 20px;">{{getAddOrEditText()}} project activity for {{itenaryForm.value.date | date: 'MMM dd, y'}}</div>
+				<div class="mat-display-1" style="margin-bottom: 20px;">{{getAddOrEditText()}} project activity for
+					{{itenaryForm.value.date | date: 'MMM dd, y'}}</div>
 			</div>
 		</div>
 	</div>
@@ -30,8 +31,8 @@
 
 						<div formGroupName="schedule" class="margin-top-20 margin-bottom-20">
 							<mat-form-field class="dateStyles">
-								<input #deadline matInput [matDatepicker]="endDayDatePicker" (click)="endDayDatePicker.open()" [min]="itenaryForm.value.date"
-								 placeholder="Deadline" formControlName="endDay" [required]="true">
+								<input #deadline matInput [matDatepicker]="endDayDatePicker" (click)="endDayDatePicker.open()" [min]="inputData.collectionStartDate"
+								 [max]="inputData.collectionEndDate" placeholder="Deadline" formControlName="endDay" [required]="true">
 								<mat-datepicker-toggle matSuffix [for]="endDayDatePicker" class="svgStyle"></mat-datepicker-toggle>
 								<mat-datepicker touchUi="true" #endDayDatePicker></mat-datepicker>
 							</mat-form-field>
@@ -54,9 +55,12 @@
 									</mat-grid-tile>
 								</mat-grid-list> -->
 								<div *ngIf="mediaObject && mediaObject.hasOwnProperty('type') && mediaObject.hasOwnProperty('url')" class="col-md-6 padding-left-0 pic delete imageContainerVideo">
-									<img *ngIf="mediaObject.type.includes('image')" src="{{envVariable.apiUrl + mediaObject.url}}" width="150" style="border: 0.5px solid #ccc; position: relative;">
-									<mat-icon *ngIf="mediaObject.type.includes('image')" (click)="deleteFromContainer(mediaObject.url, 'image')" class="delete-image">close</mat-icon>
-									<video *ngIf="mediaObject.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
+									<img *ngIf="mediaObject.type.includes('image')" src="{{envVariable.apiUrl + mediaObject.url}}" width="150"
+									 style="border: 0.5px solid #ccc; position: relative;">
+									<mat-icon *ngIf="mediaObject.type.includes('image')" (click)="deleteFromContainer(mediaObject.url, 'image')"
+									 class="delete-image">close</mat-icon>
+									<video *ngIf="mediaObject.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc"
+									 preload="metadata">
 										<source src="{{envVariable.apiUrl + mediaObject.url}}"> Your browser does not support the video tag.
 									</video>
 									<mat-icon *ngIf="mediaObject.type.includes('video')" (click)="deleteFromContainer(mediaObject.url, '')" class="delete-button">close</mat-icon>
@@ -65,14 +69,14 @@
 						</div>
 
 						<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
-							<textarea matInput #description maxlength="2000" rows="1" matTextareaAutosize formControlName="description" placeholder="What will we do?"
-							 [required]="true"></textarea>
+							<textarea matInput #description maxlength="2000" rows="1" matTextareaAutosize formControlName="description"
+							 placeholder="What will we do?" [required]="true"></textarea>
 							<mat-hint align="end">{{description.value.length}} / 2000</mat-hint>
 						</mat-form-field>
 
 						<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
-							<textarea matInput #prerequisites maxlength="1000" rows="1" matTextareaAutosize formControlName="prerequisites" placeholder="What do learners need to know?"
-							 [required]="true"></textarea>
+							<textarea matInput #prerequisites maxlength="1000" rows="1" matTextareaAutosize formControlName="prerequisites"
+							 placeholder="What do learners need to know?" [required]="true"></textarea>
 							<mat-hint align="end">{{prerequisites.value.length}} / 1000</mat-hint>
 						</mat-form-field>
 
@@ -120,9 +124,11 @@
 			</div>
 			<mat-dialog-actions>
 				<span matTooltip="All mandatory fields need to be completed before saving" [matTooltipDisabled]=" title.value.length!==0  && description.value.length !== 0 && prerequisites.value.length !== 0">
-					<button mat-raised-button [mat-dialog-close]="getSaveDialogData()" color="primary" *ngIf="!isEdit" [disabled]="title.value.length === 0 || description.value.length === 0 || prerequisites.value.length === 0 || deadline.value.length === 0">Save</button> &emsp;
+					<button mat-raised-button [mat-dialog-close]="getSaveDialogData()" color="primary" *ngIf="!isEdit" [disabled]="title.value.length === 0 || description.value.length === 0 || prerequisites.value.length === 0 || deadline.value.length === 0">Save</button>
+					&emsp;
 				</span>
-				<button mat-raised-button [mat-dialog-close]="getEditDialogData()" color="primary" *ngIf="isEdit">Update</button> &emsp;
+				<button mat-raised-button [mat-dialog-close]="getEditDialogData()" color="primary" *ngIf="isEdit">Update</button>
+				&emsp;
 				<button mat-button [mat-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>
 				<button mat-button [mat-dialog-close]="getDeleteDialogData()" *ngIf="isEdit">Delete</button>
 			</mat-dialog-actions>

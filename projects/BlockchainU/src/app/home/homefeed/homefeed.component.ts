@@ -652,7 +652,7 @@ export class HomefeedComponent implements OnInit {
 
 	public onBountiesRefresh(event) {
 		if (event) {
-			this.fetchExperiences();
+			this.fetchBounties();
 		}
 	}
 

@@ -77,6 +77,11 @@ export class ConsoleDashboardComponent implements OnInit {
 
     public loggedInUser;
 
+    public totalTeachingBountyCount = 0;
+    public totalLearningBountyCount = 0;
+    public totalTeachingGuideCount = 0;
+    public totalLearningGuideCount = 0;
+
     constructor(
         public activatedRoute: ActivatedRoute,
         public consoleComponent: ConsoleComponent,
@@ -285,7 +290,14 @@ export class ConsoleDashboardComponent implements OnInit {
                 this.totalTeachingClassCount++;
             } if (collection.type === 'experience') {
                 this.totalTeachingExperienceCount++;
-            } if (collection.views) {
+            }
+            if (collection.type === 'guide') {
+                this.totalTeachingGuideCount++;
+            } if (collection.type === 'bounty') {
+                this.totalTeachingBountyCount++;
+            }
+
+            if (collection.views) {
                 this.totalTeachingViews += collection.views.length;
             } if (collection.participants && collection.price) {
                 this.totalTeachingEarningValue += (collection.price * collection.participants.length);
@@ -429,7 +441,7 @@ export class ConsoleDashboardComponent implements OnInit {
             }
         }
 
-        this.collections = _.slice(_.union(this.ongoingArray, this.upcomingArray, this.pastArray), 0, 2);
+        this.collections = _.union(this.ongoingArray, this.upcomingArray, this.pastArray);
     }
 
     public onSelect(collection) {
@@ -682,9 +694,17 @@ export class ConsoleDashboardComponent implements OnInit {
         data.forEach(collection => {
             if (collection.type === 'class') {
                 this.totalLearningClassCount++;
-            } if (collection.type === 'experience') {
+            }
+            if (collection.type === 'experience') {
                 this.totalLearningExperienceCount++;
-            } collection.calendars.forEach(calendar => {
+            }
+            if (collection.type === 'bounty') {
+                this.totalLearningBountyCount++;
+            }
+            if (collection.type === 'buide') {
+                this.totalLearningGuideCount++;
+            }
+            collection.calendars.forEach(calendar => {
                 if (collection.calendarId === calendar.id && calendar.endDate) {
                     if (now.diff(moment.utc(calendar.endDate)) < 0) {
                         if (!now.isBetween(calendar.startDate, calendar.endDate)) {
