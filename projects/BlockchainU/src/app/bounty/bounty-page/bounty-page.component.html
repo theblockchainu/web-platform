@@ -137,18 +137,6 @@
 								</div>
 							</div>
 						</div>
-						<!--TOPICS SECTION-->
-						<div class="row Topics margin-top-20" *ngIf="userType === 'public'">
-							<!-- <div class="col-xs-4">
-								<h3>Topics</h3>
-							</div> -->
-							<div class="col-xs-12">
-								<i class="fa fa-tag lightText"></i>
-								<mat-chip-list style="display: inline-flex;padding-left: 1%;">
-									<mat-chip *ngFor="let topic of topicFix" disabled> {{topic.name | titlecase}} </mat-chip>
-								</mat-chip-list>
-							</div>
-						</div>
 						<div *ngIf="userType==='public'" class="row Description margin-top-20 pre-wrapped">
 							<!-- <div class="col-xs-12">
 								<h3 *ngIf="userType === 'public'">Bounty overview</h3>
@@ -159,6 +147,18 @@
 										{{bounty.description}}
 									</td-markdown>
 								</div>
+							</div>
+						</div>
+						<!--TOPICS SECTION-->
+						<div class="row Topics margin-top-20" *ngIf="userType === 'public'">
+							<!-- <div class="col-xs-4">
+								<h3>Topics</h3>
+							</div> -->
+							<div class="col-xs-12">
+								<i class="fa fa-tag lightText" style="top: 5px;"></i>
+								<mat-chip-list style="display: inline-flex;padding-left: 1%;">
+									<mat-chip *ngFor="let topic of topicFix" disabled> {{topic.name | titlecase}} </mat-chip>
+								</mat-chip-list>
 							</div>
 						</div>
 						<div class="row Progress margin-top-20" *ngIf="calendarId !== undefined && (userType === 'teacher' || userType === 'participant')">
@@ -244,6 +244,34 @@
 								</div>
 							</div>
 						</div> -->
+						<hr class="margin-top-10 margin-bottom-10">
+						<div class="row" *ngIf="bounty && bounty.rewards">
+							<div class="col-xs-12">
+								<div class="row padding-bottom-30">
+									<div class="col-xs-12">
+										<h3>Rewards</h3>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-3" *ngFor="let reward of bounty.rewards">
+										<mat-card>
+											<div class="row">
+												<div class="col-xs-12 center">
+													<span class="mat-body-2">{{reward.position}}</span>
+												</div>
+												<div class="col-xs-12 center">
+													{{reward.title}}
+												</div>
+												<div class="col-xs-12 center">
+													<h3>{{reward.value | convertCurrency:
+													    reward.currency |async}}</h3>
+												</div>
+											</div>
+										</mat-card>
+									</div>
+								</div>
+							</div>
+						</div>
 						<hr *ngIf="userType==='public'">
 						<div class="row" *ngIf="userType === 'public'">
 							<div class="col-md-12">
@@ -593,34 +621,6 @@
 										<div class="col-xs-12">
 											<hr class="margin-top-30">
 										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<hr class="margin-top-10 margin-bottom-10">
-						<div class="row" *ngIf="bounty && bounty.rewards">
-							<div class="col-xs-12">
-								<div class="row padding-bottom-30">
-									<div class="col-xs-12">
-										<h3>Rewards</h3>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-xs-3" *ngFor="let reward of bounty.rewards">
-										<mat-card>
-											<div class="row">
-												<div class="col-xs-12 center">
-													<span class="mat-body-2">{{reward.position}}</span>
-												</div>
-												<div class="col-xs-12 center">
-													{{reward.title |titlecase}}
-												</div>
-												<div class="col-xs-12 center">
-													<h3>{{reward.value | convertCurrency:
-														reward.currency |async}}</h3>
-												</div>
-											</div>
-										</mat-card>
 									</div>
 								</div>
 							</div>
