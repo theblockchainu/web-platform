@@ -426,7 +426,11 @@ export class QuestionPageComponent implements OnInit {
 	}
 	
 	public isMyQuestion(question) {
-		return question.peer[0].id === this.userId;
+		if (question.peer && question.peer.length > 0) {
+			return question.peer[0].id === this.userId;
+		} else {
+			return false;
+		}
 	}
 	
 	public isMyAnswer(answer) {
