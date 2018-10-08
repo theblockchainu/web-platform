@@ -535,7 +535,8 @@
 												<mat-label>
 													Currency
 												</mat-label>
-												<mat-select formControlName="currency" placeholder="USD">
+												<mat-select formControlName="currency">
+													<mat-option value="KARMA">KARMA</mat-option>
 													<mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
 												</mat-select>
 											</mat-form-field>
