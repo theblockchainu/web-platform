@@ -184,7 +184,7 @@ export class SubmissionReviewDialogComponent implements OnInit {
 		}
 	}
 
-	private promptDialog(message: string) {
+	public promptDialog(message: string) {
 		return this.dialog.open(GenericPromptDialogComponent, {
 			data: message,
 			panelClass: 'responsive-dialog', width: '45vw',
@@ -192,7 +192,7 @@ export class SubmissionReviewDialogComponent implements OnInit {
 		}).afterClosed();
 	}
 
-	private makeAnnouncement() {
+	public makeAnnouncement() {
 		this.promptDialog('Are you sure you want to announce the results. This will lock further actions on this bounty.')
 			.subscribe(res => {
 				if (res) {
