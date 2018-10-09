@@ -300,7 +300,7 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
             this._fb.group({
                 position: [''],
                 title: ['', Validators.required],
-                currency: ['', Validators.required],
+                currency: ['USD', Validators.required],
                 url: [''],
                 value: ['', Validators.required]
             })
@@ -1635,7 +1635,7 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.rewardsArray.push(this._fb.group({
             position: [''],
             title: ['', Validators.required],
-            currency: ['', Validators.required],
+            currency: ['USD', Validators.required],
             url: [''],
             value: ['', Validators.required]
         }));

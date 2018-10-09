@@ -48,7 +48,8 @@
 						<div class="row padding-bottom-20">
 							<div class="col-md-12">
 								<p class="mat-display-1" style="margin-bottom: 20px !important;">{{bounty.title | titlecase}}
-									<span *ngIf="!checkingEthereum && isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant" style="padding-left: 15px; position: relative; top: -7px;">&emsp;
+									<span *ngIf="!checkingEthereum && isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant"
+									 style="padding-left: 15px; position: relative; top: -7px;">&emsp;
 										<i class="fa fa-globe lightText" style="color: #ff6d71; font-size: 14px;"></i>
 									</span>
 									<span *ngIf="!checkingEthereum && !isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="Add to one0x Blockchain"
@@ -58,15 +59,17 @@
 								</p>
 								<div *ngIf="userType==='public'" style="margin-top: -12px;">
 									<span>{{totalDuration | i18nPlural : hourMapping}}
-										<span matTooltip = "{{allParticipants ? allParticipants.length : '0'}} Participants" *ngIf="allParticipants && allParticipants.length > 0">
+										<span matTooltip="{{allParticipants ? allParticipants.length : '0'}} Participants" *ngIf="allParticipants && allParticipants.length > 0">
 											&nbsp;&nbsp;&nbsp;
 											<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
-											<i class="fa fa-group lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{allParticipants ? allParticipants.length : '0'}}
+											<i class="fa fa-group lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{allParticipants ?
+											allParticipants.length : '0'}}
 										</span>
-										<span matTooltip = "{{bounty.views ? bounty.views.length : '0'}} Views" *ngIf="bounty.views && bounty.views.length > 0">
+										<span matTooltip="{{bounty.views ? bounty.views.length : '0'}} Views" *ngIf="bounty.views && bounty.views.length > 0">
 											&nbsp;&nbsp;&nbsp;
 											<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
-											<i class="fa fa-eye lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{bounty.views ? bounty.views.length : '0'}}
+											<i class="fa fa-eye lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{bounty.views ?
+											bounty.views.length : '0'}}
 										</span>
 									</span>
 								</div>
@@ -264,7 +267,7 @@
 												</div>
 												<div class="col-xs-12 center">
 													<h3>{{reward.value | convertCurrency:
-													    reward.currency |async}}</h3>
+														reward.currency |async}}</h3>
 												</div>
 											</div>
 										</mat-card>
@@ -617,9 +620,6 @@
 													</div>
 												</div>
 											</div>
-										</div>
-										<div class="col-xs-12">
-											<hr class="margin-top-30">
 										</div>
 									</div>
 								</div>

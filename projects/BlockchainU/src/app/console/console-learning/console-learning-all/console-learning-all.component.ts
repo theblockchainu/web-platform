@@ -54,7 +54,17 @@ export class ConsoleLearningAllComponent implements OnInit {
     }
 
     private fetchCollections() {
-        this._collectionService.getParticipatingCollections(this.userId, '{ "relInclude": "calendarId", "include": ["calendars", {"owners":["profiles", "reviewsAboutYou", "ownedCollections"]}, {"participants": "profiles"}, "topics", {"contents":["schedules","views","submissions"]}, {"reviews":"peer"}] }', (err, result) => {
+        const query = {
+            'relInclude': 'calendarId',
+            'include': ['calendars',
+                { 'owners': ['profiles', 'reviewsAboutYou', 'ownedCollections'] },
+                { 'participants': 'profiles' },
+                'topics',
+                { 'contents': ['schedules', 'views', 'submissions'] },
+                { 'reviews': 'peer' }]
+        };
+
+        this._collectionService.getParticipatingCollections(this.userId, JSON.stringify(query), (err, result) => {
             if (err) {
                 console.log(err);
             } else {
@@ -74,8 +84,10 @@ export class ConsoleLearningAllComponent implements OnInit {
     private createOutput(data: any) {
         const now = moment();
         data.forEach(collection => {
+            console.log(collection);
             collection.calendars.forEach(calendar => {
-                if (collection.calendarId === calendar.id && calendar.endDate) {
+                console.log(calendar);
+                if ((collection.calendarId === calendar.id || collection.type === 'bounty') && calendar.endDate) {
                     if (now.diff(moment.utc(calendar.endDate)) < 0) {
                         if (!now.isBetween(calendar.startDate, calendar.endDate)) {
                             if (collection.id in this.upcomingCollectionsObject) {
@@ -162,7 +174,12 @@ export class ConsoleLearningAllComponent implements OnInit {
     }
 
     public openCollection(collection: any) {
-        this.router.navigateByUrl('/' + collection.type + '/' + collection.id + '/calendar/' + collection.calendarId);
+        if (collection.type === 'bounty' || collection.type === 'guide') {
+            this.router.navigateByUrl('/' + collection.type + '/' + collection.id);
+        } else {
+            this.router.navigateByUrl('/' + collection.type + '/' + collection.id + '/calendar/' + collection.calendarId);
+
+        }
     }
 
     public openProfile(peer: any) {
