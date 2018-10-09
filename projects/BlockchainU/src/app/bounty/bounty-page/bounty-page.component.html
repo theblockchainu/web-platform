@@ -140,23 +140,7 @@
 								</div>
 							</div>
 						</div>
-<<<<<<< HEAD
-						<!--TOPICS SECTION-->
-						<div class="row Topics margin-top-20" *ngIf="userType === 'public'">
-							<!-- <div class="col-xs-4">
-								<h3>Topics</h3>
-							</div> -->
-							<div class="col-xs-12">
-								<i class="fa fa-tag lightText"></i>
-								<mat-chip-list style="display: inline-flex;padding-left: 1%;">
-									<mat-chip *ngFor="let topic of topicFix" disabled> {{topic.name | titlecase}} </mat-chip>
-								</mat-chip-list>
-							</div>
-						</div>
-						<div class="row Description margin-top-20 pre-wrapped">
-=======
 						<div *ngIf="userType==='public'" class="row Description margin-top-20 pre-wrapped">
->>>>>>> upstream/develop
 							<!-- <div class="col-xs-12">
 								<h3 *ngIf="userType === 'public'">Bounty overview</h3>
 							</div> -->
@@ -283,7 +267,7 @@
 												</div>
 												<div class="col-xs-12 center">
 													<h3>{{reward.value | convertCurrency:
-													    reward.currency |async}}</h3>
+														reward.currency |async}}</h3>
 												</div>
 											</div>
 										</mat-card>
