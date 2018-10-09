@@ -174,7 +174,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	public clickedCohortEndDate;
 	public eventsForTheDay: any;
 	public toOpenDialogName;
-
+	public winnerReward: any;
 	public objectKeys = Object.keys;
 
 
@@ -197,7 +197,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	public carouselBanner: any;
 	public startedView;
 	public previewAs: string;
-
+	public isWinner: boolean;
 	certificateHTML: string;
 	loadingCertificate: boolean;
 	public assessmentRules: Array<any>;
@@ -659,6 +659,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 						});
 						if (this.bounty && this.bounty.owners && this.bounty.owners.length > 0) {
 							this.initializeUserType();
+							this.checkIfWinner();
 							this.calculateTotalHours();
 							this.fixTopics();
 							this.getReviews();
@@ -699,6 +700,18 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	private checkIfWinner() {
+		this.isWinner = false;
+		if (this.userType === 'participant') {
+			this.bounty.rewards.forEach(reward => {
+				if (reward.winners[0].id === this.userId) {
+					this.winnerReward = reward;
+					this.isWinner = true;
+					return;
+				}
+			});
+		}
+	}
 	public createGuestContacts() {
 		console.log('Submitting request');
 
@@ -2007,6 +2020,13 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 
 	public opensubmissionAssessmentDialog() {
 		this.dialogsService.assessSubmissions(this.bountyId);
+	}
+
+	/**
+	 * openWinnerDialog
+	 */
+	public openWinnerDialog() {
+		this.dialogsService.winnersDialog(this.winnerReward, this.bounty);
 	}
 
 }

@@ -64,7 +64,7 @@ import { ConfirmDeleteAccountComponent } from './confirm-delete-account/confirm-
 import { AddImageDialogComponent } from './add-image-dialog/add-image-dialog.component';
 import { AskQuestionDialogComponent } from './ask-question-dialog/ask-question-dialog.component';
 import { SubmissionReviewDialogComponent } from './submission-review-dialog/submission-review-dialog.component';
-
+import { WinnerDialogComponent } from './winner-dialog/winner-dialog.component';
 @Injectable()
 export class DialogsService {
 
@@ -746,4 +746,18 @@ export class DialogsService {
         });
         return dialogRef.afterClosed();
     }
+
+    public winnersDialog(rewardData: any, collectionData: any) {
+        const dialogRef = this.dialog.open(WinnerDialogComponent, {
+            data: {
+                rewardData: rewardData,
+                collectionData: collectionData
+            },
+            panelClass: 'responsive-dialog',
+            width: '80vw',
+            maxHeight: '90vh'
+        });
+        return dialogRef.afterClosed();
+    }
+
 }
