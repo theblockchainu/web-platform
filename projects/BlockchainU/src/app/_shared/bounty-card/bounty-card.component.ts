@@ -48,15 +48,10 @@ export class BountyCardComponent implements OnInit {
 
 	public getTime() {
 		const startMoment = moment(this.bounty.calendars[0].startDate);
-		const endMoment = moment(this.bounty.calendars[0].startDate);
-
-		this.bounty.startsIn = startMoment.toNow();
+		const endMoment = moment(this.bounty.calendars[0].endDate);
+		this.bounty.startsIn = moment().to(startMoment);
 		this.bounty.startDiff = startMoment.diff(moment());
-		console.log(this.bounty.startsIn);
-
-		console.log(this.bounty.startDiff);
-
-		this.bounty.endsIn = endMoment.toNow();
+		this.bounty.endsIn = moment().to(endMoment);
 	}
 
 	public toggleBountyBookmark(bounty) {

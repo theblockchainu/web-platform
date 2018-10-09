@@ -98,6 +98,7 @@ import { LMarkdownEditorModule } from 'ngx-markdown-editor';
 import { GuideCardComponent } from './guide-card/guide-card.component';
 import { QuestionCardComponent } from './question-card/question-card.component';
 import { BountyCardComponent } from './bounty-card/bounty-card.component';
+import { PositionPipe } from './position-pipe/position.pipe';
 @NgModule({
     imports: [
         CommonModule,
@@ -160,7 +161,8 @@ import { BountyCardComponent } from './bounty-card/bounty-card.component';
         LinkifyPipe,
         GuideCardComponent,
         QuestionCardComponent,
-        BountyCardComponent
+        BountyCardComponent,
+        PositionPipe
     ],
     providers: [
         CollectionService,
@@ -268,7 +270,8 @@ import { BountyCardComponent } from './bounty-card/bounty-card.component';
         LMarkdownEditorModule,
         GuideCardComponent,
         QuestionCardComponent,
-        BountyCardComponent
+        BountyCardComponent,
+        PositionPipe
     ]
 })
 export class SharedModule {

@@ -18,7 +18,7 @@ export class SubmissionReviewDialogComponent implements OnInit {
 
 	public collectionData: any;
 	public peersArray: Array<PeerObject>;
-	public noImage = 'assets/images/no-image.jpg';
+	public noImage = 'assets/images/community-banner-bg.jpg';
 	public defaultProfileUrl = '/assets/images/avatar.png';
 	public envVariable;
 	public rewardOptions: Array<any>;
@@ -27,7 +27,7 @@ export class SubmissionReviewDialogComponent implements OnInit {
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		public dialogRef: MatDialogRef<SubmissionReviewDialogComponent>,
-		private collectionService: CollectionService,
+		public collectionService: CollectionService,
 		private projectSubmissionService: ProjectSubmissionService,
 		public dialog: MatDialog,
 		private matSnackBar: MatSnackBar
@@ -65,6 +65,17 @@ export class SubmissionReviewDialogComponent implements OnInit {
 
 	private filterData() {
 		this.rewardOptions = this.collectionData.rewards;
+		console.log(this.rewardOptions);
+
+		this.rewardOptions = this.rewardOptions.sort((a, b) => {
+			if (a.position > b.position) {
+				return 1;
+			} else if (a.position > b.position) {
+				return -1;
+			} else {
+				return 0;
+			}
+		});
 		this.collectionData.contents.forEach(content => {
 			if (content.submissions) {
 				content.submissions.forEach(submission => {
@@ -72,6 +83,9 @@ export class SubmissionReviewDialogComponent implements OnInit {
 				});
 			}
 		});
+
+		console.log(this.peersArray);
+
 
 		this.collectionData.rewards.forEach(reward => {
 			if (reward.winners && reward.winners.length > 0) {

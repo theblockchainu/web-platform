@@ -4,6 +4,7 @@
 			&lt; Back</a>
 	</div>
 	<div class="mat-display-1">{{ data.submission.name | ucfirst }}</div>
+	<div>{{data.submission.createdAt|date :'fullDate'}}</div>
 	<div class="margin-bottom-20 clearfix">
 		<span class="fs-13 display-inline-block margin-top-10">
 			<i *ngIf="!iHaveUpvoted" class="fa fa-thumbs-o-up" style="cursor: pointer;" (click)="addSubmissionUpvote(data.submission)"></i>&nbsp;&nbsp;

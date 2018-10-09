@@ -57,6 +57,8 @@ export class SubmissionViewComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this.data.submission);
+
         this.getMedia();
         this.initializeForms();
         this.getDiscussions();

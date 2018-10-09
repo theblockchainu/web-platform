@@ -541,7 +541,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 						}]
 				},
 				'rooms',
-				'rewards'
+				{ 'rewards': { 'winners': [{ 'profiles': ['work'] }] } }
 			],
 			'relInclude': 'calendarId'
 		};

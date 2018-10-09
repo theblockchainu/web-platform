@@ -252,22 +252,39 @@
 							<div class="col-xs-12">
 								<div class="row padding-bottom-30">
 									<div class="col-xs-12">
-										<h3>Rewards</h3>
+										<h3 *ngIf="!bounty.resultsAnnounced">Rewards</h3>
+										<h3 *ngIf="bounty.resultsAnnounced">Leader Boards</h3>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-xs-3" *ngFor="let reward of bounty.rewards">
 										<mat-card>
 											<div class="row">
-												<div class="col-xs-12 center">
-													<span class="mat-body-2">{{reward.position}}</span>
+												<div class="col-xs-12 center" style="height: 12vh;" *ngIf="bounty.resultsAnnounced">
+													<div class="clickable" style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
+														<app-profile-popup [peer]="reward.winners[0]"></app-profile-popup>
+													</div>
+													<div style="display: inline-block; margin-left: 10px;">
+														<div class="clickable" (click)="openProfilePage(reward.winners[0].id)">
+															<span *ngIf="reward.winners[0].profiles[0].first_name !== undefined">
+																{{reward.winners[0].profiles[0].first_name | ucwords }} {{reward.winners[0].profiles[0].last_name
+																| ucwords }}
+															</span>
+															<span *ngIf="reward.winners[0].profiles[0].first_name === undefined">
+																John Doe
+															</span>
+														</div>
+													</div>
 												</div>
-												<div class="col-xs-12 center">
-													{{reward.title}}
+												<div class="col-xs-12 center mat-body-2">
+													{{reward.position | position}}
 												</div>
-												<div class="col-xs-12 center">
-													<h3>{{reward.value | convertCurrency:
-														reward.currency |async}}</h3>
+												<div class="col-xs-12 center mat-body-2">
+													{{reward.title | titlecase}}
+												</div>
+												<div class="col-xs-12 center mat-body-2" *ngIf="reward.value>0">
+													{{reward.value | convertCurrency:
+													reward.currency |async}}
 												</div>
 											</div>
 										</mat-card>

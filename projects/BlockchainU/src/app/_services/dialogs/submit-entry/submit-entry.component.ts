@@ -6,7 +6,7 @@ import { MediaUploaderService } from '../../mediaUploader/media-uploader.service
 import { SubmissionViewComponent } from '../submission-view/submission-view.component';
 import { ProjectSubmissionService } from '../../project-submission/project-submission.service';
 import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
-
+import { CustomValidators } from 'ngx-custom-validators';
 import { ContentService } from '../../content/content.service';
 import { environment } from '../../../../environments/environment';
 import * as _ from 'lodash';
@@ -63,7 +63,7 @@ export class SubmitEntryComponent implements OnInit {
             picture_url: [''],
             description: ['', Validators.required],
             isPrivate: ['true', Validators.required],
-            git_url: ['']
+            git_url: ['', CustomValidators.url]
         });
     }
 

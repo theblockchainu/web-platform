@@ -597,7 +597,8 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.availableSubtypes = [{ name: 'bug', pic_url: '/assets/images/class_icon2.jpg', description: '' },
         { name: 'competitive', pic_url: '/assets/images/classes-anywhere.jpg', description: '' },
         { name: 'hackathon', pic_url: '/assets/images/coding-card.jpg', description: '' },
-        { name: 'hiring', pic_url: '/assets/images/blockchain-dev-card.jpg', description: '' }];
+        { name: 'hiring', pic_url: '/assets/images/blockchain-dev-card.jpg', description: '' },
+        { name: 'token', pic_url: '/assets/images/blockchain-dev-card.jpg', description: '' }];
 
         this.placeholderStringTopic = 'Start typing to to see a list of suggested topics...';
 
@@ -1655,10 +1656,10 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         this._collectionService.addRewards(this.bountyId, this.rewardsArray.value).subscribe(res => {
             console.log(res);
-			this.bountyData.rewards = res;
+            this.bountyData.rewards = res;
             this.step++;
             this.bountyStepUpdate();
-			this.sidebarMenuItems = this._leftSideBarService.updateBountySideMenu(this.bountyData, this.sidebarMenuItems);
+            this.sidebarMenuItems = this._leftSideBarService.updateBountySideMenu(this.bountyData, this.sidebarMenuItems);
             this.router.navigate(['bounty', this.bountyId, 'edit', this.step]);
             this.busySavingData = false;
         }, err => {

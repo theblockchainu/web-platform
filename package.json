@@ -67,6 +67,7 @@
     "ng2-pdf-viewer": "^5.1.2",
     "ngx-clipboard": "^11.1.3",
     "ngx-cookie-service": "^1.0.10",
+    "ngx-custom-validators": "^6.1.0",
     "ngx-device-detector": "^1.3.0",
     "ngx-geoautocomplete": "^0.1.1",
     "ngx-loading": "^1.0.14",

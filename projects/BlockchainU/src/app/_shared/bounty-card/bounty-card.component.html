@@ -44,8 +44,14 @@
 		</div>
 		<div class="mat-body-2" style="margin-top: -3px; font-weight: 900; color: #333;">{{bounty.title | titlecase}}</div>
 		<div style="margin-top: 2px; font-size: 15px; color: #333;">
-			<span class="mat-body-2" *ngIf="bounty.highestReward">
-				Rewards upto {{bounty.highestReward.value | convertCurrency:bounty.highestReward.currency |async}}</span>
+			Win <span class="mat-body-2" *ngIf="bounty.highestReward">
+				<span *ngIf="bounty.highestReward.value>0">
+					upto {{bounty.highestReward.value | convertCurrency:bounty.highestReward.currency |async}}</span>
+				<span *ngIf="bounty.highestReward.value<=0">
+					{{bounty.highestReward.title}}
+				</span>
+			</span>
+
 			<!--<mat-icon style="font-size: 5px; top: -3px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
 			<span matTooltip="Earn upto {{bounty.academicGyan + bounty.nonAcademicGyan}} Gyan">
 				Earn <i class="fab fa-ethereum lightText"></i> {{bounty.academicGyan + bounty.nonAcademicGyan}}
@@ -62,8 +68,8 @@
 		</div>
 		<div style="margin-top: 2px; font-size: 15px; color: #333;">
 			<span *ngIf="bounty.resultsAnnounced">Results Announced</span>
-			<span *ngIf="!bounty.resultsAnnounced && bounty.startDiff<0">Starts in {{bounty.startsIn}}</span>
-			<span *ngIf="!bounty.resultsAnnounced && bounty.startDiff>=0">Ends in {{bounty.endsIn}}</span>
+			<span *ngIf="!bounty.resultsAnnounced && bounty.startDiff>0">Starts {{bounty.startsIn}}</span>
+			<span *ngIf="!bounty.resultsAnnounced && bounty.startDiff<=0">Ends {{bounty.endsIn}}</span>
 		</div>
 		<!--<div style="margin-top: -4px;">{{bounty.owners[0].pr	ofiles[0].first_name + ' ' + bounty.owners[0].profiles[0].last_name | ucwords}}
 		</div>-->
