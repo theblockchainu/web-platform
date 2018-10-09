@@ -10,19 +10,22 @@
 		</div>
 		<hr>
 		<div class="form-group">
-			<label class="title fw-bold text-dark-grey margin-top-20 margin-bottom-20">Upload submission file (pdf, doc, jpg,
-				png, gif, mp4 etc.)</label>
+			<label class="title fw-bold text-dark-grey margin-top-20 margin-bottom-20">Upload submission file</label>
 			<div class="upload-image-section imageHolder">
 				<div class="loading-container" [hidden]="!uploadingImage">
 					<ngx-loading [show]="true"></ngx-loading>
 				</div>
-				<p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)"
+				<app-upload-file (uploaded)="addAttachmentUrl($event)"></app-upload-file>
+				<h5>Max File Size
+					<b>1000MB</b>
+				</h5>
+				<!-- <p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" customUpload="true" (uploadHandler)="uploadImage($event)"
 				 maxFileSize="10000000" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*,video/*"
 				 chooseLabel="Browse" multiple="multiple">
 				</p-fileUpload>
 				<h5>Max File Size
 					<b>10MB</b>
-				</h5>
+				</h5> -->
 				<div *ngIf="urlForImages.length" class="pic delete">
 					<div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
 						<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}/100" width="150" style="border: 0.5px solid #ccc; position: relative;">

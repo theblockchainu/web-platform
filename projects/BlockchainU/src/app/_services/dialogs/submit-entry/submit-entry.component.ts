@@ -60,7 +60,7 @@ export class SubmitEntryComponent implements OnInit {
     ngOnInit() {
         this.submitEntryForm = this._fb.group({
             name: ['', Validators.required],
-            picture_url: [],
+            picture_url: [''],
             description: ['', Validators.required],
             isPrivate: ['true', Validators.required],
             git_url: ['']
@@ -142,6 +142,19 @@ export class SubmitEntryComponent implements OnInit {
         });
         const control = <FormArray>this.submitEntryForm.controls['picture_url'];
         control.patchValue(value);
+    }
+
+    addAttachmentUrl(url: string) {
+        console.log('Adding image url: ' + url);
+        const control = <FormControl>this.submitEntryForm.controls['picture_url'];
+        control.patchValue(url);
+        this._contentService.getMediaObject(url).subscribe((res: any) => {
+            if (this.urlForImages.length === 0) {
+                this.urlForImages.push(res[0]);
+            } else {
+                this.urlForImages[0] = res[0];
+            }
+        });
     }
 
 }

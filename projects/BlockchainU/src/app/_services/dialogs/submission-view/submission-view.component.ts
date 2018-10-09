@@ -7,7 +7,7 @@ import { ProjectSubmissionService } from '../../project-submission/project-submi
 import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
 import { environment } from '../../../../environments/environment';
 import { EditSubmissionDialogComponent } from '../edit-submission-dialog/edit-submission-dialog.component';
-
+import { ContentService } from '../../content/content.service';
 @Component({
     selector: 'app-submission-view',
     templateUrl: './submission-view.component.html',
@@ -27,6 +27,7 @@ export class SubmissionViewComponent implements OnInit {
     public envVariable;
     public editCommentForm: FormGroup;
     public editReplyForm: FormGroup;
+    public urlForImages: Array<any>;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -37,6 +38,7 @@ export class SubmissionViewComponent implements OnInit {
         private _commentService: CommentService,
         private _submissionService: ProjectSubmissionService,
         private _cookieUtilsService: CookieUtilsService,
+        private _contentService: ContentService
     ) {
         this.envVariable = environment;
         this.userType = data.userType;
@@ -55,10 +57,16 @@ export class SubmissionViewComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.getMedia();
         this.initializeForms();
         this.getDiscussions();
     }
 
+    getMedia() {
+        this._contentService.getMediaObject(this.data.submission.picture_url).subscribe((res: any) => {
+            this.urlForImages = [res[0]];
+        });
+    }
     private initializeForms() {
         this.chatForm = this._fb.group({
             description: ['', Validators.required]

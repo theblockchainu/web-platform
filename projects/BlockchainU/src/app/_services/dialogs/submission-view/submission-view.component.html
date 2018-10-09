@@ -15,10 +15,10 @@
 		 tabindex="-1">Edit</button>
 		<div class="pull-right" *ngIf="!isMySubmission">
 			<div class="position-relative" *ngIf="data.submission.peer && data.submission.peer.length>0">
-				<img class="circle-thumb" src="{{data.submission.peer[0].profiles[0].picture_url}}/100" alt="thumb" (error)="_collectionService.imgErrorHandler($event)"
-				/>
+				<img class="circle-thumb" src="{{data.submission.peer[0].profiles[0].picture_url}}/100" alt="thumb" (error)="_collectionService.imgErrorHandler($event)" />
 				<div style="display: inline-block; position: relative; top: 11px;">
-					{{data.submission.peer[0].profiles[0].first_name | ucwords}} {{data.submission.peer[0].profiles[0].last_name | ucwords}}
+					{{data.submission.peer[0].profiles[0].first_name | ucwords}} {{data.submission.peer[0].profiles[0].last_name |
+					ucwords}}
 					<br>
 					<p style="font-size: 90%;">{{data.submission.peer[0].profiles[0].headline | ucfirst }}</p>
 				</div>
@@ -26,20 +26,33 @@
 		</div>
 	</div>
 	<hr>
-	<div class="content-image" *ngIf="data.submission.picture_url">
-		<img class="img-responsive media-middle" style="width: 100%" src="{{envVariable.apiUrl+data.submission.picture_url.split(',')[0]}}/500"
-		 alt="image" (error)="_collectionService.imgErrorHandler($event)">
+	<h3>Submitted Files</h3>
+	<div *ngIf="urlForImages && urlForImages.length" class="pic delete">
+		<div *ngFor="let file of urlForImages" class="col-md-6 padding-left-0 imageContainer">
+			<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}/100" width="150" style="border: 0.5px solid #ccc; position: relative;">
+			<div *ngIf="file.type.includes('application')" class="uploaded_file">
+				<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
+			</div>
+			<video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
+				<source src="{{envVariable.apiUrl + file.url}}">
+			</video>
+		</div>
 	</div>
-	<div class="default-image" *ngIf="!data.submission.picture_url">
-		<i class="fa fa-picture-o"></i>
-	</div>
+	<br>
+	<hr>
 	<div class="content-box">
 		<div class="margin-top-20 margin-bottom-20">
 			<div>
-				<b>Description</b>
+				<h3>Submission</h3>
 			</div>
 			<div class="section-description margin-top-20 margin-bottom-20">{{ data.submission.description }}</div>
+
 		</div>
+	</div>
+	<div *ngIf="data.submission.git_url">
+		<h3>Git URL</h3>
+		<a target="_blank" href="{{data.submission.git_url}}">{{data.submission.git_url}}</a>
+
 	</div>
 	<hr>
 	<!--DISCUSSION THREAD-->
@@ -107,7 +120,8 @@
 									<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
 										<div>
 											<div>
-												<span style="font-weight: 500">{{comment.peer[0].profiles[0].first_name}} {{comment.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+												<span style="font-weight: 500">{{comment.peer[0].profiles[0].first_name}}
+													{{comment.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
 											</div>
 										</div>
 										<div class="">
@@ -117,9 +131,11 @@
 								</div>
 								<div style="margin-top: 10px;" *ngIf="!(replyForm && replyingToCommentId===comment.id)">
 									<a href="javascript:void(0);" (click)="createReplyForm(comment)">
-										<mat-icon style="top: 5px;">reply</mat-icon> Reply</a>
+										<mat-icon style="top: 5px;">reply</mat-icon> Reply
+									</a>
 								</div>
-								<div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -25px;">
+								<div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id"
+								 style="margin-left: -25px;">
 									<form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
 										<img src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
 										<mat-form-field [floatLabel]="'always'" style="margin-left: 15px; width: 88%;">
@@ -189,7 +205,8 @@
 													<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
 														<div>
 															<div>
-																<span style="font-weight: 500">{{reply.peer[0].profiles[0].first_name}} {{reply.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+																<span style="font-weight: 500">{{reply.peer[0].profiles[0].first_name}}
+																	{{reply.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
 															</div>
 														</div>
 														<div class="">
