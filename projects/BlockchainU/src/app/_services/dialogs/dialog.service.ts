@@ -64,7 +64,7 @@ import { ConfirmDeleteAccountComponent } from './confirm-delete-account/confirm-
 import { AddImageDialogComponent } from './add-image-dialog/add-image-dialog.component';
 import { AskQuestionDialogComponent } from './ask-question-dialog/ask-question-dialog.component';
 import { SubmissionReviewDialogComponent } from './submission-review-dialog/submission-review-dialog.component';
-
+import { WinnerDialogComponent } from './winner-dialog/winner-dialog.component';
 @Injectable()
 export class DialogsService {
 
@@ -444,7 +444,7 @@ export class DialogsService {
         }).afterClosed();
     }
 
-    public shareCollection(type: string, Id: string, title: string, description: string, headline: string, imageUrl: string, cohortId?: string) {
+    public shareCollection(type: string, Id: string, title: string, description: string, headline: string, imageUrl: string, cohortId?: string, isTeacher?: boolean) {
         return this.dialog.open(ShareDialogComponent,
             {
                 data: {
@@ -454,7 +454,8 @@ export class DialogsService {
                     title: title,
                     description: description,
                     headline: headline,
-                    image: imageUrl
+                    image: imageUrl,
+                    isTeacher: isTeacher
                 },
                 panelClass: 'responsive-dialog', width: '40vw'
             }
@@ -746,4 +747,18 @@ export class DialogsService {
         });
         return dialogRef.afterClosed();
     }
+
+    public winnersDialog(rewardData: any, collectionData: any) {
+        const dialogRef = this.dialog.open(WinnerDialogComponent, {
+            data: {
+                rewardData: rewardData,
+                collectionData: collectionData
+            },
+            panelClass: 'responsive-dialog',
+            width: '80vw',
+            maxHeight: '90vh'
+        });
+        return dialogRef.afterClosed();
+    }
+
 }

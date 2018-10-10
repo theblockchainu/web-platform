@@ -77,7 +77,7 @@ export class ReviewPayComponent implements OnInit {
     public addressForm: FormGroup;
     public isBillingAddressAvailable = false;
     public maxLength = 140;
-
+    private referrerId: string;
 
     constructor(
         private _cookieUtilsService: CookieUtilsService,
@@ -111,6 +111,7 @@ export class ReviewPayComponent implements OnInit {
             }
         });
         this.userId = _cookieUtilsService.getValue('userId');
+        this.referrerId = _cookieUtilsService.getValue('referrerId');
         this.ccavenueAccessCode = environment.ccavenueAccessCode;
         this.ccavenueMerchantId = environment.ccavenueMerchantId;
     }
@@ -120,7 +121,6 @@ export class ReviewPayComponent implements OnInit {
         this.setupForms();
         this.getUserCountry();
         this.stripe = Stripe(environment.stripePublishableKey);
-
         this.initializeStripeElements();
         this.loadCollectionData();
         this.fetchScholarships();
@@ -188,16 +188,16 @@ export class ReviewPayComponent implements OnInit {
                 });
                 this.card.mount('#card-element');
                 // FB Event Trigger
-				if (fbq && fbq !== undefined) {
-					fbq('track', 'InitiateCheckout', {
-						currency: 'USD',
-						value: 0.0,
-						content_type: 'product',
-						content_ids: [this.collectionId],
-						content_name: this.collection.title,
-						content_category: this.collection.type
-					});
-				}
+                if (fbq && fbq !== undefined) {
+                    fbq('track', 'InitiateCheckout', {
+                        currency: 'USD',
+                        value: 0.0,
+                        content_type: 'product',
+                        content_ids: [this.collectionId],
+                        content_name: this.collection.title,
+                        content_category: this.collection.type
+                    });
+                }
             }
         });
     }
@@ -406,14 +406,14 @@ export class ReviewPayComponent implements OnInit {
                             this.createSourceData.token = result.token.id;
                             this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: any) => {
                                 if (res) {
-									if (fbq && fbq !== undefined) {
-										fbq('track', 'AddPaymentInfo', {
-											currency: 'USD',
-											value: 0.0,
-											content_ids: [this.collectionId],
-											content_category: this.collection.type
-										});
-									}
+                                    if (fbq && fbq !== undefined) {
+                                        fbq('track', 'AddPaymentInfo', {
+                                            currency: 'USD',
+                                            value: 0.0,
+                                            content_ids: [this.collectionId],
+                                            content_category: this.collection.type
+                                        });
+                                    }
                                     // console.log(JSON.stringify(res ));
                                     this.createChargeData.source = res.id;
                                     this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: any) => {
@@ -507,17 +507,18 @@ export class ReviewPayComponent implements OnInit {
 
     public joinCollection() {
         // FB Event Trigger
-		if (fbq && fbq !== undefined) {
-			fbq('track', 'Purchase', {
-				currency: this.collection.currency,
-				value: this.totalPrice,
-				content_type: 'product',
-				content_ids: [this.collectionId],
-				content_name: this.collection.title,
-				content_category: this.collection.type
-			});
-		}
-        this._collectionService.addParticipant(this.collectionId, this.userId, this.collectionCalendarId, this.selectedScholarship).subscribe((response: any) => {
+        if (fbq && fbq !== undefined) {
+            fbq('track', 'Purchase', {
+                currency: this.collection.currency,
+                value: this.totalPrice,
+                content_type: 'product',
+                content_ids: [this.collectionId],
+                content_name: this.collection.title,
+                content_category: this.collection.type
+            });
+        }
+        this._collectionService.addParticipant(this.collectionId, this.userId, this.collectionCalendarId, this.selectedScholarship, this.referrerId).subscribe((response: any) => {
+            console.log(response);
             if (this.codefound && this.codefound.id.length > 5) {
                 this.profileService.linkPromoCode(this.userId, this.codefound.id).subscribe(
                     res => {

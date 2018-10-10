@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { environment } from '../../../../environments/environment';
+import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
 declare var FB: any;
 
 
@@ -20,12 +21,16 @@ export class ShareDialogComponent implements OnInit {
 	public LinkedInShareUrl: string;
 	constructor(public dialogRef: MatDialogRef<ShareDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,
-		private snackBar: MatSnackBar) {
+		private snackBar: MatSnackBar,
+		private cookieUtilsService: CookieUtilsService) {
+		const userId = cookieUtilsService.getValue('userId');
 		this.envVariable = environment;
+		this.generatedUrl = environment.clientUrl + '/' + data.type + '/' + data.id;
 		if (data.cohortId) {
-			this.generatedUrl = environment.clientUrl + '/' + data.type + '/' + data.id + '/calendar/' + data.cohortId;
-		} else {
-			this.generatedUrl = environment.clientUrl + '/' + data.type + '/' + data.id;
+			this.generatedUrl = this.generatedUrl + '/calendar/' + data.cohortId;
+		}
+		if (data.isTeacher) {
+			this.generatedUrl = this.generatedUrl + '?referredBy=' + userId;
 		}
 		this.generatedTitle = data.title;
 		this.generatedDescription = data.description;

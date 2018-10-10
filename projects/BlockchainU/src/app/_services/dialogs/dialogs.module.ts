@@ -76,6 +76,7 @@ import { AddImageDialogComponent } from './add-image-dialog/add-image-dialog.com
 import { AskQuestionDialogComponent } from './ask-question-dialog/ask-question-dialog.component';
 import { SubmissionReviewDialogComponent } from './submission-review-dialog/submission-review-dialog.component';
 import { GenericPromptDialogComponent } from './generic-prompt-dialog/generic-prompt-dialog.component';
+import { WinnerDialogComponent } from './winner-dialog/winner-dialog.component';
 
 @NgModule({
 	imports: [
@@ -130,7 +131,8 @@ import { GenericPromptDialogComponent } from './generic-prompt-dialog/generic-pr
 		AddImageDialogComponent,
 		AskQuestionDialogComponent,
 		SubmissionReviewDialogComponent,
-		GenericPromptDialogComponent
+		GenericPromptDialogComponent,
+		WinnerDialogComponent
 	],
 	providers: [
 		DialogsService,
@@ -155,7 +157,7 @@ import { GenericPromptDialogComponent } from './generic-prompt-dialog/generic-pr
 		AddViewerDialogComponent, GyanPromptComponent, AddCommunityDialogComponent, CreateAccreditationDialogComponent, SelectFieldDialogComponent,
 		CertificateVerificationComponent, TermsAndConditionsDialogComponent, CollectionStandardsDialogComponent, OnboardingDialogComponent, AddPromoCodeDialogComponent,
 		ViewPromocodeDialogComponent, AddParticipantDialogComponent, ConfirmDeleteAccountComponent, AddImageDialogComponent, AskQuestionDialogComponent, SubmissionReviewDialogComponent
-		, GenericPromptDialogComponent
+		, GenericPromptDialogComponent, WinnerDialogComponent
 	],
 })
 export class DialogsModule { }

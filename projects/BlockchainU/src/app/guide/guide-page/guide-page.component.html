@@ -706,7 +706,7 @@
 						<hr class="margin-top-10 margin-bottom-10" *ngIf="userType === 'public'">
 						<div class="row" style="color: #777777" *ngIf="userType === 'public'">
 							<div class="col-xs-4" style="cursor: pointer;">
-								<a (click)="openInviteFriendsDialog()">Invite friends</a>
+								<a (click)="openShareDialog()">Invite friends</a>
 							</div>
 							<div class="col-xs-4 clickable" (click)="saveBookmark()" style="cursor: pointer;">
 								<ngx-loading [show]="bookmarking"></ngx-loading>

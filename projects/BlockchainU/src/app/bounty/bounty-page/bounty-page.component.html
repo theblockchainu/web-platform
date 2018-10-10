@@ -82,6 +82,9 @@
 								<button mat-button class="mat-border-button" *ngIf="userType==='teacher'" (click)="opensubmissionAssessmentDialog()">
 									Announce Winners
 								</button>
+								<button mat-button class="mat-border-button" *ngIf="userType==='participant' && isWinner" (click)="openWinnerDialog()">
+									Claim Reward
+								</button>
 								<button mat-button class="mat-border-button" (click)="openGroupChat()">Group Chat</button>
 								<button mat-button class="mat-border-button" *ngIf="userType ==='participant' || userType === 'teacher'"
 								 (click)="scrollToDiscussion()">Discussion</button>
@@ -252,22 +255,39 @@
 							<div class="col-xs-12">
 								<div class="row padding-bottom-30">
 									<div class="col-xs-12">
-										<h3>Rewards</h3>
+										<h3 *ngIf="!bounty.resultsAnnounced">Rewards</h3>
+										<h3 *ngIf="bounty.resultsAnnounced">Leader Boards</h3>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-xs-3" *ngFor="let reward of bounty.rewards">
 										<mat-card>
 											<div class="row">
-												<div class="col-xs-12 center">
-													<span class="mat-body-2">{{reward.position}}</span>
+												<div class="col-xs-12 center" style="height: 12vh;" *ngIf="bounty.resultsAnnounced">
+													<div class="clickable" style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
+														<app-profile-popup [peer]="reward.winners[0]"></app-profile-popup>
+													</div>
+													<div style="display: inline-block; margin-left: 10px;">
+														<div class="clickable" (click)="openProfilePage(reward.winners[0].id)">
+															<span *ngIf="reward.winners[0].profiles[0].first_name !== undefined">
+																{{reward.winners[0].profiles[0].first_name | ucwords }} {{reward.winners[0].profiles[0].last_name
+																| ucwords }}
+															</span>
+															<span *ngIf="reward.winners[0].profiles[0].first_name === undefined">
+																John Doe
+															</span>
+														</div>
+													</div>
 												</div>
-												<div class="col-xs-12 center">
-													{{reward.title}}
+												<div class="col-xs-12 center mat-body-2">
+													{{reward.position | position}}
 												</div>
-												<div class="col-xs-12 center">
-													<h3>{{reward.value | convertCurrency:
-														reward.currency |async}}</h3>
+												<div class="col-xs-12 center mat-body-2">
+													{{reward.title | titlecase}}
+												</div>
+												<div class="col-xs-12 center mat-body-2" *ngIf="reward.value>0">
+													{{reward.value | convertCurrency:
+													reward.currency |async}}
 												</div>
 											</div>
 										</mat-card>
@@ -844,7 +864,7 @@
 								<div>
 									<div class="row" *ngIf="participants.length === 0">
 										<div class="col-md-12">
-											<div class="clickable emptySectionText" (click)="openInviteFriendsDialog()">Invite peers to this cohort?</div>
+											<div class="clickable emptySectionText" (click)="openShareDialog()">Invite peers to this cohort?</div>
 										</div>
 									</div>
 								</div>
@@ -1087,7 +1107,7 @@
 						<hr class="margin-top-10 margin-bottom-10" *ngIf="userType === 'public'">
 						<div class="row" style="color: #777777">
 							<div class="col-xs-4" style="cursor: pointer;">
-								<a (click)="openInviteFriendsDialog()">Invite friends</a>
+								<a (click)="openShareDialog()">Invite friends</a>
 							</div>
 							<div class="col-xs-4 clickable" (click)="saveBookmark()" style="cursor: pointer;">
 								<ngx-loading [show]="bookmarking"></ngx-loading>

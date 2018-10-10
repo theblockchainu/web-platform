@@ -174,7 +174,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	public clickedCohortEndDate;
 	public eventsForTheDay: any;
 	public toOpenDialogName;
-
+	public winnerReward: any;
 	public objectKeys = Object.keys;
 
 
@@ -197,12 +197,13 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	public carouselBanner: any;
 	public startedView;
 	public previewAs: string;
-
+	public isWinner: boolean;
 	certificateHTML: string;
 	loadingCertificate: boolean;
 	public assessmentRules: Array<any>;
 	public contactUsForm: FormGroup;
 	@ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
+	public referredBy: string;
 
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -299,6 +300,9 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 				this.previewAs = params['previewAs'];
 				console.log('Previewing as ' + this.previewAs);
 			}
+			if (params['referredBy']) {
+				this._collectionService.saveRefferedBY(params['referredBy']);
+			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
@@ -321,6 +325,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 			touch: true
 		};
 	}
+
 
 	refreshView(): void {
 		this.refresh.next();
@@ -541,7 +546,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 						}]
 				},
 				'rooms',
-				'rewards'
+				{ 'rewards': { 'winners': [{ 'profiles': ['work'] }] } }
 			],
 			'relInclude': 'calendarId'
 		};
@@ -659,6 +664,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 						});
 						if (this.bounty && this.bounty.owners && this.bounty.owners.length > 0) {
 							this.initializeUserType();
+							this.checkIfWinner();
 							this.calculateTotalHours();
 							this.fixTopics();
 							this.getReviews();
@@ -699,6 +705,18 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	private checkIfWinner() {
+		this.isWinner = false;
+		if (this.userType === 'participant') {
+			this.bounty.rewards.forEach(reward => {
+				if (reward.winners && reward.winners[0].id === this.userId) {
+					this.winnerReward = reward;
+					this.isWinner = true;
+					return;
+				}
+			});
+		}
+	}
 	public createGuestContacts() {
 		console.log('Submitting request');
 
@@ -1640,11 +1658,13 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 		this.participants = [];
 		this.loadingParticipants = true;
 		const query = {
-			'relInclude': 'calendarId',
+			'relInclude': ['calendarId', 'referrerId'],
 			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections']
 		};
+		console.log('getParticipants');
 		this._collectionService.getParticipants(this.bountyId, query).subscribe(
 			(response: any) => {
+				console.log(response);
 				this.participants = [];
 				this.allParticipants = response;
 				for (const responseObj of response) {
@@ -2007,6 +2027,18 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 
 	public opensubmissionAssessmentDialog() {
 		this.dialogsService.assessSubmissions(this.bountyId);
+	}
+
+	/**
+	 * openWinnerDialog
+	 */
+	public openWinnerDialog() {
+		this.dialogsService.winnersDialog(this.winnerReward, this.bounty);
+	}
+
+	public openShareDialog() {
+		this.dialogsService.shareCollection('bounty', this.bountyId, this.bounty.title, this.bounty.description,
+			this.bounty.headline, environment.apiUrl + this.bounty.imageUrls[0], null, this.userType === 'teacher');
 	}
 
 }

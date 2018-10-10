@@ -6,7 +6,7 @@ import { MediaUploaderService } from '../../mediaUploader/media-uploader.service
 import { SubmissionViewComponent } from '../submission-view/submission-view.component';
 import { ProjectSubmissionService } from '../../project-submission/project-submission.service';
 import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
-
+import { CustomValidators } from 'ngx-custom-validators';
 import { ContentService } from '../../content/content.service';
 import { environment } from '../../../../environments/environment';
 import * as _ from 'lodash';
@@ -60,10 +60,10 @@ export class SubmitEntryComponent implements OnInit {
     ngOnInit() {
         this.submitEntryForm = this._fb.group({
             name: ['', Validators.required],
-            picture_url: [],
+            picture_url: [''],
             description: ['', Validators.required],
             isPrivate: ['true', Validators.required],
-            git_url: ['']
+            git_url: ['', CustomValidators.url]
         });
     }
 
@@ -142,6 +142,19 @@ export class SubmitEntryComponent implements OnInit {
         });
         const control = <FormArray>this.submitEntryForm.controls['picture_url'];
         control.patchValue(value);
+    }
+
+    addAttachmentUrl(url: string) {
+        console.log('Adding image url: ' + url);
+        const control = <FormControl>this.submitEntryForm.controls['picture_url'];
+        control.patchValue(url);
+        this._contentService.getMediaObject(url).subscribe((res: any) => {
+            if (this.urlForImages.length === 0) {
+                this.urlForImages.push(res[0]);
+            } else {
+                this.urlForImages[0] = res[0];
+            }
+        });
     }
 
 }

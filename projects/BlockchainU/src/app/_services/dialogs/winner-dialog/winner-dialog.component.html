@@ -1,0 +1,24 @@
+<div class="dialog-container">
+  <div class="row padding-top-30">
+    <div class="col-xs-12">
+      Congratulations <span class="mat-body-2">{{data.rewardData.winners[0].profiles[0].first_name +
+        data.rewardData.winners[0].profiles[0].last_name |titlecase}}</span>, you have won <span class="mat-body-2">
+        {{data.rewardData.position | position}} </span> position for the collection <span class="mat-body-2">
+        {{data.collectionData.title |titlecase}}</span> and your won
+    </div>
+    <div class="col-xs-12 mat-body-2 center">
+      {{data.rewardData.title |titlecase}}, <span *ngIf="data.rewardData.value>0">
+        {{data.rewardData.value | convertCurrency: data.rewardData.currency |async}}
+      </span>
+
+    </div>
+    <div class="col-xs-12">
+      You will receive your reward at your address mentioned in your profile within 7 working days. If you've not
+      updated your address in your profile yet, please do it ASAP.
+    </div>
+    <div class="col-xs-12 padding-top-30">
+      <button color="primary" class="pull-right" mat-dialog-close mat-raised-button [routerLink]="['/console','profile']">Update
+        Address</button>
+    </div>
+  </div>
+</div>

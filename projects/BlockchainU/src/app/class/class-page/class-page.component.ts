@@ -288,6 +288,9 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				this.previewAs = params['previewAs'];
 				console.log('Previewing as ' + this.previewAs);
 			}
+			if (params['referredBy']) {
+				this._collectionService.saveRefferedBY(params['referredBy']);
+			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
@@ -1864,6 +1867,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				this.initializePage();
 			}
 		});
+	}
+
+	public openShareDialog() {
+		this.dialogsService.shareCollection(this.class.type, this.class.id, this.class.title, this.class.description, this.class.headline, environment.apiUrl + this.class.imageUrls[0]
+			, this.calendarId, this.userType === 'teacher');
 	}
 
 }
