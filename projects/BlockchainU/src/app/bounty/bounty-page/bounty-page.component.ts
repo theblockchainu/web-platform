@@ -203,6 +203,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	public assessmentRules: Array<any>;
 	public contactUsForm: FormGroup;
 	@ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
+	public referredBy: string;
 
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -299,6 +300,9 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 				this.previewAs = params['previewAs'];
 				console.log('Previewing as ' + this.previewAs);
 			}
+			if (params['referredBy']) {
+				this._collectionService.saveRefferedBY(params['referredBy']);
+			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
@@ -321,6 +325,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 			touch: true
 		};
 	}
+
 
 	refreshView(): void {
 		this.refresh.next();
@@ -704,7 +709,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 		this.isWinner = false;
 		if (this.userType === 'participant') {
 			this.bounty.rewards.forEach(reward => {
-				if (reward.winners[0].id === this.userId) {
+				if (reward.winners && reward.winners[0].id === this.userId) {
 					this.winnerReward = reward;
 					this.isWinner = true;
 					return;
@@ -1653,11 +1658,13 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 		this.participants = [];
 		this.loadingParticipants = true;
 		const query = {
-			'relInclude': 'calendarId',
+			'relInclude': ['calendarId', 'referrerId'],
 			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections']
 		};
+		console.log('getParticipants');
 		this._collectionService.getParticipants(this.bountyId, query).subscribe(
 			(response: any) => {
+				console.log(response);
 				this.participants = [];
 				this.allParticipants = response;
 				for (const responseObj of response) {
@@ -2027,6 +2034,11 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	 */
 	public openWinnerDialog() {
 		this.dialogsService.winnersDialog(this.winnerReward, this.bounty);
+	}
+
+	public openShareDialog() {
+		this.dialogsService.shareCollection('bounty', this.bountyId, this.bounty.title, this.bounty.description,
+			this.bounty.headline, environment.apiUrl + this.bounty.imageUrls[0], null, this.userType === 'teacher');
 	}
 
 }

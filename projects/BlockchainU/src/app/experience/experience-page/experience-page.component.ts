@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -299,6 +299,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			if (params['previewAs']) {
 				this.previewAs = params['previewAs'];
 				console.log('Previewing as ' + this.previewAs);
+			}
+			if (params['referredBy']) {
+				this._collectionService.saveRefferedBY(params['referredBy']);
 			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
@@ -2016,9 +2019,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	public openShareDialog() {
-		this.dialogsService.shareCollection(this.experience.type, this.experience.id, this.experience.title, this.experience.description, this.experience.headline, environment.apiUrl + this.experience.imageUrls[0]);
+		this.dialogsService.shareCollection(this.experience.type, this.experience.id, this.experience.title, this.experience.description, this.experience.headline, environment.apiUrl + this.experience.imageUrls[0]
+			, this.calendarId, this.userType === 'teacher');
 	}
 
 }

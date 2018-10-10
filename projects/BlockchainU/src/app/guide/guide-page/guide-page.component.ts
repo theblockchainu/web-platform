@@ -289,6 +289,9 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				this.previewAs = params['previewAs'];
 				console.log('Previewing as ' + this.previewAs);
 			}
+			if (params['referredBy']) {
+				this._collectionService.saveRefferedBY(params['referredBy']);
+			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
@@ -1341,10 +1344,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.router.navigate(['profile', peerId]);
 	}
 
-	public openInviteFriendsDialog() {
-		this.dialogsService.inviteFriends(this.guide);
-	}
-
 	private sort(calendars, param1, param2) {
 		return _.sortBy(calendars, [param1, param2]);
 	}
@@ -1467,9 +1466,10 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	public openShareDialog() {
-		this.dialogsService.shareCollection(this.guide.type, this.guide.id, this.guide.title, this.guide.description, this.guide.headline, environment.apiUrl + this.guide.imageUrls[0]);
+		this.dialogsService.shareCollection(this.guide.type, this.guide.id, this.guide.title, this.guide.description, this.guide.headline, environment.apiUrl + this.guide.imageUrls[0]
+			, null, this.userType === 'teacher');
 	}
 
 }

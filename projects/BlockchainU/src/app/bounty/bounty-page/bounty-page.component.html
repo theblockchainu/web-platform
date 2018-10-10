@@ -864,7 +864,7 @@
 								<div>
 									<div class="row" *ngIf="participants.length === 0">
 										<div class="col-md-12">
-											<div class="clickable emptySectionText" (click)="openInviteFriendsDialog()">Invite peers to this cohort?</div>
+											<div class="clickable emptySectionText" (click)="openShareDialog()">Invite peers to this cohort?</div>
 										</div>
 									</div>
 								</div>
@@ -1107,7 +1107,7 @@
 						<hr class="margin-top-10 margin-bottom-10" *ngIf="userType === 'public'">
 						<div class="row" style="color: #777777">
 							<div class="col-xs-4" style="cursor: pointer;">
-								<a (click)="openInviteFriendsDialog()">Invite friends</a>
+								<a (click)="openShareDialog()">Invite friends</a>
 							</div>
 							<div class="col-xs-4 clickable" (click)="saveBookmark()" style="cursor: pointer;">
 								<ngx-loading [show]="bookmarking"></ngx-loading>

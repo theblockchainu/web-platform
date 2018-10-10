@@ -6,6 +6,7 @@ import { flatMap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 declare var moment: any;
 
 @Injectable()
@@ -18,7 +19,8 @@ export class CollectionService {
 		private route: ActivatedRoute,
 		public router: Router,
 		private authService: AuthenticationService,
-		private requestHeaderService: RequestHeaderService
+		private requestHeaderService: RequestHeaderService,
+		private cookieUtilsService: CookieUtilsService
 	) {
 		this.envVariable = environment;
 		this.now = new Date();
@@ -558,11 +560,13 @@ export class CollectionService {
 	/**
 	 * addParticipant
 	 collectionID:string,userId:string,calendarId:string   */
-	public addParticipant(collectionId: string, userId: string, calendarId?: string, scholarshipId?: string) {
+	public addParticipant(collectionId: string, userId: string, calendarId?: string, scholarshipId?: string, referrerId?: string) {
 		const body = {
-			'calendarId': calendarId,
-			'scholarshipId': scholarshipId
+			'calendarId': calendarId ? calendarId : '',
+			'scholarshipId': scholarshipId ? scholarshipId : '',
+			'referrerId': referrerId ? referrerId : ''
 		};
+		console.log(body);
 		return this.httpClient
 			.put(environment.apiUrl + '/api/collections/' + collectionId + '/participants/rel/' + userId, body, this.requestHeaderService.options);
 	}
@@ -1095,6 +1099,11 @@ export class CollectionService {
 	public announceResult(collectionId: string) {
 		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId +
 			'/announceResult', {}, this.requestHeaderService.options);
+	}
+
+	saveRefferedBY(referrerId: string) {
+		console.log('saving referred by');
+		this.cookieUtilsService._cookieService.set('referrerId', referrerId, 1);
 	}
 
 }
