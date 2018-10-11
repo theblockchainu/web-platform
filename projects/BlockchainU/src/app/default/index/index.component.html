@@ -422,27 +422,6 @@
 		</div>
 	</section>
 
-	<section class="experience-around-world spacing">
-		<div class="container">
-			<h2 class="section-title pb-0">Bounties</h2>
-			<div class="loading-container" [hidden]="!loadingBounties">
-				<ngx-loading [show]="true"></ngx-loading>
-			</div>
-			<div *ngIf="!loadingBounties" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
-				<div class="noDataContainer" *ngIf="bounties === undefined || bounties.length === 0">
-					There are no new active bounties to view right now. Browse from within your signed-up bounties
-					<a class="clickable">here</a>.
-				</div>
-				<div *ngFor="let bounty of bounties; let i = index;">
-					<app-bounty-card *ngIf="i < 5" [bounty]="bounty" (refresh)="onBountiesRefresh($event)"></app-bounty-card>
-				</div>
-			</div>
-			<div class="read-more mt-2 mat-body-2" *ngIf="bounties && bounties.length > 5">
-				<a [routerLink]="['home','bounties']">Show all ({{bounties.length}}+)</a>
-			</div>
-		</div>
-	</section>
-
 	<section class="classes-anywhere spacing">
 		<div class="container">
 			<h2 class="section-title">Introducing Classes</h2>

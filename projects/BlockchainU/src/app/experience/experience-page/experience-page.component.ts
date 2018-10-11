@@ -837,6 +837,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		} else {
 			this.maxLength = 140;
 		}
+		this.onContentReady();
+	}
+	
+	public onContentReady() {
+		return true;
 	}
 
 	private getBookmarks() {

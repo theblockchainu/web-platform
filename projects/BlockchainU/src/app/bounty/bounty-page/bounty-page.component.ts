@@ -585,6 +585,8 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 								return 0;
 							}
 						});
+						
+						this.analyzeBountyTime();
 						this.itenariesObj = {};
 						this.itenaryArray = [];
 						// Scan through all contents and group them under their respective start days.
@@ -703,6 +705,14 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 		} else {
 			console.log('NO COLLECTION');
 		}
+	}
+	
+	private analyzeBountyTime() {
+		const startMoment = moment(this.bounty.calendars[0].startDate);
+		const endMoment = moment(this.bounty.calendars[0].endDate);
+		this.bounty.startsIn = moment().to(startMoment);
+		this.bounty.startDiff = startMoment.diff(moment());
+		this.bounty.endsIn = moment().to(endMoment);
 	}
 
 	private checkIfWinner() {

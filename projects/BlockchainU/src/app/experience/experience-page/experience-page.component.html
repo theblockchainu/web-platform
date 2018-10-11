@@ -230,9 +230,9 @@
 							</div>
 							<div class="col-xs-8">
 								<div>
-									<td-markdown>
-										{{experience.description}}
-									</td-markdown>
+									<td-markdown [content]="experience.description | shorten: maxLength : '...'"></td-markdown>
+									<span class="clickable" *ngIf="experience.description.length > maxLength" (click)="showAll(experience.description.length)" style="color:#33bd9e">read more</span>
+									<span class="clickable" *ngIf="experience.description.length >140 && experience.description.length <= maxLength" (click)="showAll(experience.description.length)" style="color:#33bd9e">show less</span>
 								</div>
 							</div>
 						</div>
@@ -265,7 +265,7 @@
 												<div class="clickable" style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
 													<app-profile-popup [peer]="experience.owners[0]"></app-profile-popup>
 												</div>
-												<div style="display: inline-block; margin-left: 10px;">
+												<div style="display: inline-block; margin-left: 10px; width: 85%;">
 													<div class="row">
 														<div class="col-md-12 clickable" (click)="openProfilePage(experience.owners[0].id)">
 															<span *ngIf="experience.owners[0].profiles[0].first_name !== undefined">
@@ -846,12 +846,11 @@
 									<div class="clickable" style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
 										<app-profile-popup [peer]="experience.owners[0]"></app-profile-popup>
 									</div>
-									<div style="display: inline-block; margin-left: 10px;">
+									<div style="display: inline-block; margin-left: 10px; width: 85%;">
 										<div>
 											<div class="clickable" (click)="openProfilePage(experience.owners[0].id)">
 												<span *ngIf="experience.owners[0].profiles[0].first_name !== undefined">
-													{{experience.owners[0].profiles[0].first_name | ucwords }} {{experience.owners[0].profiles[0].last_name
-													| ucwords }}
+													{{experience.owners[0].profiles[0].first_name | ucwords }} {{experience.owners[0].profiles[0].last_name | ucwords }}
 												</span>
 												<span *ngIf="experience.owners[0].profiles[0].first_name === undefined">
 													John Doe
@@ -1130,7 +1129,7 @@
 								<div class="row padding-top-20">
 									<div class="col-xs-12">
 										<ngx-loading [show]="loadingCertificate"></ngx-loading>
-										<div class="mat-border-button padding-top-20 padding-bottom-20">
+										<div style="border: 1px solid #ccc; padding: 20px; border-radius: 4px;">
 											<div #certificateDomHTML [innerHTML]="certificateHTML | safe: 'html'"></div>
 										</div>
 									</div>
