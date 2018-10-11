@@ -161,7 +161,7 @@ export class ReviewPayComponent implements OnInit {
             if (collectionData) {
                 console.log(collectionData);
                 this.createChargeData.amount = (collectionData.price) * 100;
-                this.totalPrice = collectionData.price;
+                this.totalPrice = this.getTotalPrice(collectionData);
                 this.createChargeData.currency = collectionData.currency;
                 this.createChargeData.description = collectionData.description;
                 this.collection = collectionData;
@@ -201,6 +201,14 @@ export class ReviewPayComponent implements OnInit {
             }
         });
     }
+    
+    private getTotalPrice(collection) {
+		if (this.userCountry && this.userCountry === 'IN') {
+			return collection.price * 1.18;
+		} else {
+			return collection.price;
+		}
+	}
 
     private loadStudentData() {
         const filter = {
@@ -685,10 +693,16 @@ export class ReviewPayComponent implements OnInit {
     updatePrice(codefound) {
         this.matSnackBar.open('Promo code successfully applied!', 'Close', { duration: 3000 });
         if (codefound.discountType === 'percentage') {
-            this.totalPrice = this.collection.price - (this.collection.price * codefound.discountValue / 100);
+			this.totalPrice = this.collection.price - (this.collection.price * codefound.discountValue / 100);
+			if (this.userCountry && this.userCountry === 'IN') {
+				this.totalPrice = this.totalPrice * 1.18;
+			}
         } else if (codefound.discountType === 'absolute') {
             this.paymentService.convertCurrency(codefound.discountValue, codefound.discountCurrency, this.collection.currency).subscribe(convertedAmount => {
                 this.totalPrice = this.collection.price - convertedAmount.amount;
+				if (this.userCountry && this.userCountry === 'IN') {
+					this.totalPrice = this.totalPrice * 1.18;
+				}
             });
         }
         this.loadCCAvenueForm();
@@ -697,7 +711,7 @@ export class ReviewPayComponent implements OnInit {
     }
 
     removeCode() {
-        this.totalPrice = this.collection.price;
+        this.totalPrice = this.getTotalPrice(this.collection);
         this.discountCode.reset();
         this.discountCode.enable();
         delete this.codefound;

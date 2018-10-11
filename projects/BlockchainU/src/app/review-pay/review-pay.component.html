@@ -329,6 +329,11 @@
 								<span class="pull-right">{{collection.price * guestCount | convertCurrency: collection.currency |async}}
 								</span>
 							</div>
+							<div class="margin-bottom-10" *ngIf="userCountry === 'IN'">
+								<span class="text-grey">Tax</span>
+								<span class="pull-right">{{collection.price * guestCount * 0.18 | convertCurrency: collection.currency |async}}
+								</span>
+							</div>
 							<div *ngIf="codefound" style="color:#33bd9e" class="margin-bottom-10 row">
 								<div class="col-xs-6">
 									Discount code applied : {{codefound.description}}
