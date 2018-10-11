@@ -58,7 +58,22 @@
 									</span>
 								</p>
 								<div *ngIf="userType==='public'" style="margin-top: -12px;">
-									<span>{{totalDuration | i18nPlural : hourMapping}}
+									<span>
+										{{totalDuration | i18nPlural : hourMapping}}
+										<span *ngIf="bounty.resultsAnnounced">
+											&nbsp;&nbsp;&nbsp;
+											<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
+											Results Announced
+										</span>
+										<span *ngIf="!bounty.resultsAnnounced && bounty.startDiff>0">
+											&nbsp;&nbsp;&nbsp;
+											<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
+											Starts {{bounty.startsIn}}
+										</span>
+										<span *ngIf="!bounty.resultsAnnounced && bounty.startDiff<=0">
+											&nbsp;&nbsp;&nbsp;
+											<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>Ends {{bounty.endsIn}}
+										</span>
 										<span matTooltip="{{allParticipants ? allParticipants.length : '0'}} Participants" *ngIf="allParticipants && allParticipants.length > 0">
 											&nbsp;&nbsp;&nbsp;
 											<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
@@ -182,7 +197,7 @@
 									and updates will show up here.</div>
 							</div>
 						</div>
-						<hr *ngIf="calendarId !== undefined || userType === 'public'">
+						<hr *ngIf="userType === 'public'">
 						<!--TODO: Description of bounty-->
 						<div class="row Description" *ngIf="userType==='public'">
 							<div class="col-md-12">
@@ -226,37 +241,13 @@
 								</div>
 							</div>
 						</div>
-						<!-- <div class="row" *ngIf="userType === 'public'">
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-xs-4">
-										<h3>
-											Location
-										</h3>
-									</div>
-									<div class="col-xs-8 margin-top-8">
-										<div *ngIf="mainLocation !== undefined" class="margin-bottom-20">
-											{{mainLocation}}
-										</div>
-										<agm-map *ngIf="lat !== undefined && lng !== undefined" [latitude]="lat" [longitude]="lng" [mapDraggable]="false"
-										 [scrollwheel]="false" [usePanning]="true" [zoomControl]="false" [zoom]="14" [streetViewControl]="false">
-											<agm-circle [latitude]="lat" [longitude]="lng" [radius]="500" [fillColor]="'#33bd9e'" [strokeColor]="'#33bd9e'"
-											 [strokeOpacity]="0.9"></agm-circle>
-										</agm-map>
-										<p *ngIf="lat === undefined || lng === undefined">No valid location co-ordinates recorded for this
-											bounty.
-											Please contact the teacher or The Blockchain University support.</p>
-									</div>
-								</div>
-							</div>
-						</div> -->
-						<hr class="margin-top-10 margin-bottom-10">
+						<hr *ngIf="bounty && bounty.rewards">
 						<div class="row" *ngIf="bounty && bounty.rewards">
 							<div class="col-xs-12">
 								<div class="row padding-bottom-30">
 									<div class="col-xs-12">
-										<h3 *ngIf="!bounty.resultsAnnounced">Rewards</h3>
-										<h3 *ngIf="bounty.resultsAnnounced">Leader Boards</h3>
+										<h3 *ngIf="!bounty.resultsAnnounced">{{bounty.rewards ? bounty.rewards.length : '0'}} Rewards Available</h3>
+										<h3 *ngIf="bounty.resultsAnnounced">Leader Board</h3>
 									</div>
 								</div>
 								<div class="row">
@@ -283,7 +274,7 @@
 													{{reward.position | position}}
 												</div>
 												<div class="col-xs-12 center mat-body-2">
-													{{reward.title | titlecase}}
+													{{reward.title}}
 												</div>
 												<div class="col-xs-12 center mat-body-2" *ngIf="reward.value>0">
 													{{reward.value | convertCurrency:
@@ -296,6 +287,7 @@
 							</div>
 						</div>
 						<hr *ngIf="userType==='public'">
+						<!--NEED TO KNOW-->
 						<div class="row" *ngIf="userType === 'public'">
 							<div class="col-md-12">
 								<div class="row">
@@ -319,7 +311,7 @@
 								</div>
 							</div>
 						</div>
-						<hr *ngIf="userType === 'public'">
+						<hr>
 						<!--TIMELINE-->
 						<div class="row Itenary">
 							<div class="featurette" id="about">
@@ -930,7 +922,7 @@
 								<div class="row padding-top-20">
 									<div class="col-xs-12">
 										<ngx-loading [show]="loadingCertificate"></ngx-loading>
-										<div class="mat-border-button">
+										<div style="border: 1px solid #ccc; padding: 15px; border-radius: 4px;">
 											<div #certificateDomHTML [innerHTML]="certificateHTML | safe: 'html'"></div>
 										</div>
 									</div>

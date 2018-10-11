@@ -219,7 +219,7 @@ export class ReviewPayComponent implements OnInit {
                 console.log(this.custId);
 
                 if (!this.emailVerified) {
-                    this._dialogsService.openOnboardingDialog(false).subscribe((result: any) => {
+                    this._dialogsService.openOnboardingDialog(true).subscribe((result: any) => {
                         // do nothing
                     });
                 }
