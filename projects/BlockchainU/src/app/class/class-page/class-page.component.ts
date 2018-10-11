@@ -428,6 +428,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 
 	private initializeAllItenaries() {
 		this.events = [];
+		this.allItenaries = [];
 		const sortedCalendar = this.sort(this.class.calendars, 'startDate', 'endDate');
 		this.viewDate = new Date(sortedCalendar[sortedCalendar.length - 1].endDate);
 		sortedCalendar.forEach((calendar, index) => {
