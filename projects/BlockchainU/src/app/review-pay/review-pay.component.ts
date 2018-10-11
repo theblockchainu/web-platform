@@ -697,15 +697,16 @@ export class ReviewPayComponent implements OnInit {
 			if (this.userCountry && this.userCountry === 'IN') {
 				this.totalPrice = this.totalPrice * 1.18;
 			}
+			this.loadCCAvenueForm();
         } else if (codefound.discountType === 'absolute') {
             this.paymentService.convertCurrency(codefound.discountValue, codefound.discountCurrency, this.collection.currency).subscribe(convertedAmount => {
                 this.totalPrice = this.collection.price - convertedAmount.amount;
 				if (this.userCountry && this.userCountry === 'IN') {
 					this.totalPrice = this.totalPrice * 1.18;
 				}
+				this.loadCCAvenueForm();
             });
         }
-        this.loadCCAvenueForm();
         this.codefound = codefound;
         this.discountCode.disable();
     }
