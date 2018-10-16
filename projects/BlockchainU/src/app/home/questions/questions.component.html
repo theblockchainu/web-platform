@@ -74,7 +74,7 @@
 												<div style="font-size: 11px;">{{question.gyan | convertCurrency : 'GYAN' | async}} USD</div>
 											</span>
 										</div>
-										<div *ngIf="question.peer.length>0">
+										<div *ngIf="question.peer && question.peer.length>0">
 											<div class="clickable" style="float: left; ">
 												<app-profile-popup [peer]="question.peer[0]"></app-profile-popup>
 											</div>
@@ -96,11 +96,11 @@
 											</div>
 										</div>
 										<div style="margin-top: 20px;" class="mat-caption lightText">
-											<a *ngIf="question.peer[0].id !== userId && question.open" href="javascript:void(0);" class="answerButton"
+											<a *ngIf="question.peer && question.peer.length > 0 && question.peer[0].id !== userId && question.open" href="javascript:void(0);" class="answerButton"
 											 (click)="createAnswerForm(question)">
 												<b>Answer</b>
 											</a>
-											<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer[0].id !== userId && question.open">fiber_manual_record</mat-icon>
+											<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer && question.peer.length > 0 && question.peer[0].id !== userId && question.open">fiber_manual_record</mat-icon>
 											<a *ngIf="!hasUpvoted(question.upvotes)" class="clickable upvoteButton" [ngClass]="{'hasUpvoted': !!hasUpvoted(question.upvotes)}"
 											 (click)="addQuestionUpvote(question)">
 												<b>Upvote
@@ -324,14 +324,14 @@
 														<div [innerHTML]="answer.text | linkify "></div>
 													</div>
 													<div style="margin-top: 20px;" class="mat-caption lightText">
-														<a class="clickable acceptButton" *ngIf="question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept && question.open"
+														<a class="clickable acceptButton" *ngIf="question.peer && question.peer.length > 0 && question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept && question.open"
 														 (click)="acceptAnswer(question, answer)">
 															<span>
 																<i class="fa fa-check-circle-o"></i>&nbsp;&nbsp;&nbsp;
 																<b>Accept</b>
 															</span>
 														</a>
-														<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept && question.open">fiber_manual_record</mat-icon>
+														<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer && question.peer.length > 0 && question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept && question.open">fiber_manual_record</mat-icon>
 														<a class="clickable acceptButton" *ngIf="answer.accept">
 															<span>
 																<i class="fa fa-check-circle"></i>&nbsp;&nbsp;&nbsp;
@@ -493,10 +493,10 @@
 												</div>
 											</div>
 											<div class="row" *ngIf="question.answers === undefined || question.answers.length === 0">
-												<div class="col-md-12 emptySectionText" style="margin-bottom: -10px;" *ngIf="question.peer[0].id !== userId">
+												<div class="col-md-12 emptySectionText" style="margin-bottom: -10px;" *ngIf="question.peer && question.peer.length > 0 && question.peer[0].id !== userId">
 													Be the first one to answer this question!
 												</div>
-												<div class="col-md-12 emptySectionText" style="margin-bottom: -10px;" *ngIf="question.peer[0].id === userId">
+												<div class="col-md-12 emptySectionText" style="margin-bottom: -10px;" *ngIf="question.peer && question.peer.length > 0 && question.peer[0].id === userId">
 													Awaiting answers from other users.
 												</div>
 											</div>

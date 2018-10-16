@@ -299,10 +299,10 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	initializeCertificate() {
 		this.certificateService.getCertificateTemplate(this.classId).subscribe((res: any) => {
 			this.sidebarMenuItems = this._leftSideBarService.updateSideMenuCertificate(res, this.sidebarMenuItems);
-			if (res.formData) {
+			if (res && res.formData) {
 				this.certificateForm.controls['formData'].patchValue(JSON.parse(res.formData));
 			}
-			if (res.expiryDate) {
+			if (res && res.expiryDate) {
 				this.certificateForm.controls['expiryDate'].patchValue(res.expiryDate);
 			}
 			this.certificateLoaded = true;

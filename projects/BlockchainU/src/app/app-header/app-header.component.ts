@@ -395,4 +395,8 @@ export class AppHeaderComponent implements OnInit {
 	public askQuestion() {
 		this.dialogsService.askQuestion();
 	}
+	
+	public openBlog() {
+		window.location.href = 'https://medium.com/theblockchainu';
+	}
 }

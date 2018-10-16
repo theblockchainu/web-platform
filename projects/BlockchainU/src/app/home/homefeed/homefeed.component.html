@@ -30,9 +30,9 @@
 		<div class="feed homefeed">
 			<div class="row continue-learning-feed" *ngIf="userId !== undefined && userId.length > 5 && ongoingArray !== undefined && ongoingArray.length > 0">
 				<div class="col-md-12">
-					<div class="row">
+					<div class="row" [routerLink]="'/console/learning/all'">
 						<div class="col-md-5">
-							<div class="mat-display-1">Continue learning</div>
+							<div class="mat-display-1 clickable">Continue learning</div>
 						</div>
 						<div class="col-md-2 pull-right" style="text-align: right">
 							<a [routerLink]="'/console/learning/all'">

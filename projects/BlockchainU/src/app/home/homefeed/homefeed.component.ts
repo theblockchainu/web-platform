@@ -138,8 +138,8 @@ export class HomefeedComponent implements OnInit {
 		data.forEach(_class => {
 			_class.calendars.forEach(calendar => {
 				if (_class.calendarId === calendar.id && calendar.endDate) {
-					if (now.diff(moment.utc(calendar.endDate)) < 0) {
-						if (now.isBetween(calendar.startDate, calendar.endDate)) {
+					// if (now.diff(moment(calendar.endDate)) < 0) {
+						// if (now.isBetween(calendar.startDate, calendar.endDate)) {
 							if (_class.id in this.liveClassesObject) {
 								this.liveClassesObject[_class.id]['class']['calendars'].push(calendar);
 							} else {
@@ -147,8 +147,8 @@ export class HomefeedComponent implements OnInit {
 								this.liveClassesObject[_class.id]['class'] = _.clone(_class);
 								this.liveClassesObject[_class.id]['class']['calendars'] = [calendar];
 							}
-						}
-					}
+						// }
+					// }
 				}
 			});
 		});
@@ -158,6 +158,8 @@ export class HomefeedComponent implements OnInit {
 				this.ongoingArray.push(this.liveClassesObject[key].class);
 			}
 		}
+		
+		this.ongoingArray = _.orderBy(this.ongoingArray, ['calendars[0].startDate'], ['desc']);
 	}
 
 	/**
@@ -166,38 +168,42 @@ export class HomefeedComponent implements OnInit {
 	public getLearnerUpcomingEvent(collection) {
 		const contents = collection.contents;
 		const calendars = collection.calendars;
-		const currentCalendar = this.getLearnerCalendar(collection);
-		contents.sort((a, b) => {
-			if (a.schedules[0].startDay < b.schedules[0].startDay) {
-				return -1;
+		if (contents && contents.length > 0) {
+			const currentCalendar = this.getLearnerCalendar(collection);
+			contents.sort((a, b) => {
+				if (a.schedules[0].startDay < b.schedules[0].startDay) {
+					return -1;
+				}
+				if (a.schedules[0].startDay > b.schedules[0].startDay) {
+					return 1;
+				}
+				return 0;
+			}).filter((element, index) => {
+				return moment() < moment(element.startDay);
+			});
+			let fillerWord = '';
+			if (contents[0].type === 'online') {
+				fillerWord = 'session';
+			} else if (contents[0].type === 'video') {
+				fillerWord = 'recording';
+			} else if (contents[0].type === 'project') {
+				fillerWord = 'submission';
+			} else if (contents[0].type === 'in-person') {
+				fillerWord = 'session';
 			}
-			if (a.schedules[0].startDay > b.schedules[0].startDay) {
-				return 1;
+			if (currentCalendar) {
+				const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
+				const timeToStart = contentStartDate.diff(moment(), 'days');
+				contents[0].timeToStart = timeToStart;
+			} else {
+				contents[0].timeToStart = 0;
 			}
-			return 0;
-		}).filter((element, index) => {
-			return moment() < moment(element.startDay);
-		});
-		let fillerWord = '';
-		if (contents[0].type === 'online') {
-			fillerWord = 'session';
-		} else if (contents[0].type === 'video') {
-			fillerWord = 'recording';
-		} else if (contents[0].type === 'project') {
-			fillerWord = 'submission';
-		} else if (contents[0].type === 'in-person') {
-			fillerWord = 'session';
-		}
-		if (currentCalendar) {
-			const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
-			const timeToStart = contentStartDate.diff(moment(), 'days');
-			contents[0].timeToStart = timeToStart;
+			contents[0].fillerWord = fillerWord;
+			contents[0].hasStarted = false;
+			return contents[0];
 		} else {
-			contents[0].timeToStart = 0;
+			return {};
 		}
-		contents[0].fillerWord = fillerWord;
-		contents[0].hasStarted = false;
-		return contents[0];
 	}
 
 	/**

@@ -452,7 +452,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 						this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
 						this.setTags();
 						if (fbq && fbq !== undefined) {
-							fbq('track', 'ContentView', {
+							fbq('track', 'ViewContent', {
 								currency: 'USD',
 								value: 0.0,
 								content_type: 'product',

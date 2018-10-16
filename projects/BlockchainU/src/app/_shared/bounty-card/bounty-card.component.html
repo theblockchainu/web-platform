@@ -44,6 +44,11 @@
 		</div>
 		<div class="mat-body-2" style="margin-top: -3px; font-weight: 900; color: #333;">{{bounty.title | titlecase}}</div>
 		<div style="margin-top: 2px; font-size: 15px; color: #333;">
+			<span *ngIf="bounty.resultsAnnounced">Results Announced</span>
+			<span *ngIf="!bounty.resultsAnnounced && bounty.startDiff>0">Starts {{bounty.startsIn}}</span>
+			<span *ngIf="!bounty.resultsAnnounced && bounty.startDiff<=0">Ends {{bounty.endsIn}}</span>
+		</div>
+		<div style="margin-top: 2px; font-size: 15px; color: #333;">
 			Win <span class="mat-body-2" *ngIf="bounty.highestReward">
 				<span *ngIf="bounty.highestReward.value>0">
 					upto {{bounty.highestReward.value | convertCurrency:bounty.highestReward.currency |async}}</span>
@@ -65,11 +70,6 @@
 			<span class="mat-border-button gyanBubbleCard" style="margin-left: 0 !important;" matTooltip="Rewards payout {{getPredictedGyanEarn(bounty) | convertCurrency : 'GYAN' | async}} in 7 days">
 				<div style="font-size: 12px;">{{getPredictedGyanEarn(bounty) | convertCurrency : 'GYAN' | async}}</div>
 			</span>-->
-		</div>
-		<div style="margin-top: 2px; font-size: 15px; color: #333;">
-			<span *ngIf="bounty.resultsAnnounced">Results Announced</span>
-			<span *ngIf="!bounty.resultsAnnounced && bounty.startDiff>0">Starts {{bounty.startsIn}}</span>
-			<span *ngIf="!bounty.resultsAnnounced && bounty.startDiff<=0">Ends {{bounty.endsIn}}</span>
 		</div>
 		<!--<div style="margin-top: -4px;">{{bounty.owners[0].pr	ofiles[0].first_name + ' ' + bounty.owners[0].profiles[0].last_name | ucwords}}
 		</div>-->

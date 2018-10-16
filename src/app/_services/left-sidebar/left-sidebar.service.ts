@@ -120,7 +120,7 @@ export class LeftSidebarService {
 
 
     public updateSideMenuCertificate(certificate: any, sidebarMenuItems) {
-        if (certificate.formData && certificate.formData.length > 0 && certificate.expiryDate && certificate.expiryDate.length > 0) {
+        if (certificate && certificate.formData && certificate.formData.length > 0 && certificate.expiryDate && certificate.expiryDate.length > 0) {
             sidebarMenuItems[1].submenu[5].complete = true;
         }
         return sidebarMenuItems;

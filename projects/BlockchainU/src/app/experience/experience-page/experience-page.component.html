@@ -231,8 +231,8 @@
 							<div class="col-xs-8">
 								<div>
 									<td-markdown [content]="experience.description | shorten: maxLength : '...'"></td-markdown>
-									<span class="clickable" *ngIf="experience.description.length > maxLength" (click)="showAll(experience.description.length)" style="color:#33bd9e">read more</span>
-									<span class="clickable" *ngIf="experience.description.length >140 && experience.description.length <= maxLength" (click)="showAll(experience.description.length)" style="color:#33bd9e">show less</span>
+									<span class="clickable" *ngIf="experience.description && experience.description.length > maxLength" (click)="showAll(experience.description.length)" style="color:#33bd9e">read more</span>
+									<span class="clickable" *ngIf="experience.description && experience.description.length >140 && experience.description.length <= maxLength" (click)="showAll(experience.description.length)" style="color:#33bd9e">show less</span>
 								</div>
 							</div>
 						</div>
@@ -891,12 +891,12 @@
 								<div>
 									<div class="row" *ngIf="participants.length === 0">
 										<div class="col-md-12">
-											<div class="clickable emptySectionText" (click)="openShareDialog()">Invite peers to this cohort?</div>
+											<div class="clickable emptySectionText" (click)="openShareDialog()">Invite participants to this experience</div>
 										</div>
 									</div>
 								</div>
 								<div *ngFor="let participant of participants; let i=index">
-									<div class="row" *ngIf="participant.profiles && i<4">
+									<div class="row margin-bottom-10" *ngIf="participant.profiles && i<4">
 										<div class="col-md-2 vcenter clickable">
 											<app-profile-popup [peer]="participant"></app-profile-popup>
 										</div>
@@ -919,18 +919,19 @@
 							</div>
 						</div>
 						<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId === undefined">
-							<h3 class="margin-bottom-20">Participants ({{allParticipants ? allParticipants.length : '0'}})</h3>
+							<h3 class="margin-bottom-20">All Participants ({{allParticipants ? allParticipants.length : '0'}})</h3>
 							<div>
 								<div class="loading-container" [hidden]="!loadingParticipants">
 									<ngx-loading [show]="true"></ngx-loading>
 								</div>
 								<div *ngFor="let participant of allParticipants; let i=index">
-									<div class="row" *ngIf="participant.profiles && i<4">
+									<div class="row margin-bottom-10" *ngIf="participant.profiles && i<4">
 										<div class="col-md-2 vcenter clickable">
 											<app-profile-popup [peer]="participant"></app-profile-popup>
 										</div>
 										<div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
 											{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
+											<br>
 											<span *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="lightText">{{participant.profiles[0].headline}}</span>
 										</div>
 									</div>
@@ -948,7 +949,7 @@
 									<div class="row">
 										<div class="col-md-12">
 											<div class="emptySectionText">
-												Select one experience cohort to view participants signed up for that batch.
+												Select one cohort to view participants signed up for that batch.
 												<br>
 												<br>
 												<button mat-button class="mat-border-button" (click)="changeDates()">Select cohort</button>
@@ -1109,7 +1110,7 @@
 									</div>
 									<div class="col-xs-4" style="padding-top: 9px;">
 										<span>
-											<button mat-raised-button (click)="selectJoiningDates()" color="primary">Apply Now</button>
+											<button mat-raised-button (click)="selectJoiningDates()" color="primary">Join Now</button>
 										</span>
 										<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this experience">
 											<button mat-raised-button color="primary" [disabled]="true">See Dates</button>
@@ -1263,8 +1264,7 @@
 					<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
 				</div>
 				<div class="col-md-12">
-					<span matTooltip="Earn up to {{experience.academicGyan + experience.nonAcademicGyan}} Gyan from this experience"
-					 style="font-weight: 700; vertical-align: middle;">
+					<span matTooltip="Earn up to {{experience.academicGyan + experience.nonAcademicGyan}} Gyan from this experience" style="font-weight: 700; vertical-align: middle;">
 						Earn
 						<i class="fab fa-ethereum"></i> {{experience.academicGyan + experience.nonAcademicGyan}}
 					</span>
@@ -1281,7 +1281,7 @@
 		</div>
 		<div class="col-xs-4" style="padding-top: 9px;">
 			<span>
-				<button mat-raised-button (click)="selectJoiningDates()" color="primary">Apply Now</button>
+				<button mat-raised-button (click)="selectJoiningDates()" color="primary">Join Now</button>
 			</span>
 			<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this experience">
 				<button mat-raised-button color="primary" [disabled]="true">See Dates</button>
@@ -1289,7 +1289,7 @@
 		</div>
 	</div>
 	<div class="row" *ngIf="!experience && !loadingExperience">
-		<div class="col-xs-12 center margin-top-50 lightText">
+		<div class="col-xs-12 center margin-top-100 lightText">
 			<div class="mat-display-2">this experience was not found on our servers</div>
 		</div>
 	</div>

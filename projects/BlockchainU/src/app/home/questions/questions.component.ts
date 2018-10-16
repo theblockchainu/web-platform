@@ -629,7 +629,7 @@ export class QuestionsComponent implements OnInit {
 		let result = false;
 		if (upvotes !== undefined) {
 			upvotes.forEach(upvote => {
-				if (upvote.peer !== undefined) {
+				if (upvote.peer !== undefined && upvote.peer.length > 0) {
 					if (upvote.peer[0].id === this.userId) {
 						result = true;
 					}
@@ -662,7 +662,11 @@ export class QuestionsComponent implements OnInit {
 	}
 
 	public isMyAnswer(answer) {
-		return answer.peer[0].id === this.userId;
+		if (answer && answer.peer && answer.peer.length > 0) {
+			return answer.peer[0].id === this.userId;
+		} else {
+			return false;
+		}
 	}
 
 	public addCommentUpvote(comment: any) {

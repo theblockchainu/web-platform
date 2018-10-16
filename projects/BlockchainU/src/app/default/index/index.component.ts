@@ -731,4 +731,8 @@ export class IndexComponent implements OnInit {
 			this.fetchBounties();
 		}
 	}
+	
+	public openBlog() {
+		window.location.href = 'https://medium.com/theblockchainu';
+	}
 }

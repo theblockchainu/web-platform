@@ -123,77 +123,79 @@ export class ClassesComponent implements OnInit {
 	}
 
 	private fitlerResults() {
-		this.classes = this.classesBackup.filter((val) => {
-			let languageBool = false;
-			let priceBool = false;
-			let durationBool = false;
-			let levelBool = false;
-			let ratingBool = false;
-			let subtypeBool = false;
-
-			if (this.filterForm.value.language && this.filterForm.value.language.length > 0) {
-				for (let i = 0; (i < this.filterForm.value.language.length && !languageBool); i++) {
-					const language = this.filterForm.value.language[i];
-					if (val.language.includes(language) && !languageBool) {
-						languageBool = true;
+		if (this.classesBackup) {
+			this.classes = this.classesBackup.filter((val) => {
+				let languageBool = false;
+				let priceBool = false;
+				let durationBool = false;
+				let levelBool = false;
+				let ratingBool = false;
+				let subtypeBool = false;
+				
+				if (this.filterForm.value.language && this.filterForm.value.language.length > 0) {
+					for (let i = 0; (i < this.filterForm.value.language.length && !languageBool); i++) {
+						const language = this.filterForm.value.language[i];
+						if (val.language.includes(language) && !languageBool) {
+							languageBool = true;
+						}
 					}
+				} else {
+					languageBool = true;
 				}
-			} else {
-				languageBool = true;
-			}
-
-			if (this.filterForm.value.difficultyLevel && this.filterForm.value.difficultyLevel.length > 0) {
-				for (let i = 0; (i < this.filterForm.value.difficultyLevel.length && !levelBool); i++) {
-					const level = this.filterForm.value.difficultyLevel[i];
-					if (val.difficultyLevel === level) {
-						levelBool = true;
+				
+				if (this.filterForm.value.difficultyLevel && this.filterForm.value.difficultyLevel.length > 0) {
+					for (let i = 0; (i < this.filterForm.value.difficultyLevel.length && !levelBool); i++) {
+						const level = this.filterForm.value.difficultyLevel[i];
+						if (val.difficultyLevel === level) {
+							levelBool = true;
+						}
 					}
+				} else {
+					levelBool = true;
 				}
-			} else {
-				levelBool = true;
-			}
-
-			if (this.filterForm.value.rating && this.filterForm.value.rating.length > 0) {
-				console.log(this.filterForm.value.rating);
-				for (let i = 0; (i < this.filterForm.value.rating.length && !ratingBool); i++) {
-					const rating = this.filterForm.value.rating[i];
-					if (val.rating === rating) {
-						ratingBool = true;
+				
+				if (this.filterForm.value.rating && this.filterForm.value.rating.length > 0) {
+					console.log(this.filterForm.value.rating);
+					for (let i = 0; (i < this.filterForm.value.rating.length && !ratingBool); i++) {
+						const rating = this.filterForm.value.rating[i];
+						if (val.rating === rating) {
+							ratingBool = true;
+						}
 					}
+				} else {
+					ratingBool = true;
 				}
-			} else {
-				ratingBool = true;
-			}
-
-			if (this.filterForm.value.subtype && this.filterForm.value.subtype.length > 0) {
-				for (let i = 0; (i < this.filterForm.value.subtype.length && !subtypeBool); i++) {
-					const subtype = this.filterForm.value.subtype[i];
-					console.log(subtype);
-					console.log(val.subCategory);
-
-					if (val.subCategory === subtype) {
-						subtypeBool = true;
+				
+				if (this.filterForm.value.subtype && this.filterForm.value.subtype.length > 0) {
+					for (let i = 0; (i < this.filterForm.value.subtype.length && !subtypeBool); i++) {
+						const subtype = this.filterForm.value.subtype[i];
+						console.log(subtype);
+						console.log(val.subCategory);
+						
+						if (val.subCategory === subtype) {
+							subtypeBool = true;
+						}
 					}
+				} else {
+					subtypeBool = true;
 				}
-			} else {
-				subtypeBool = true;
-			}
-
-
-			if (this.selectedRange) {
-				priceBool = (val.price >= this.selectedRange[0] && val.price <= this.selectedRange[1]);
-			} else {
-				priceBool = true;
-			}
-
-			if (this.selectedDurationRange) {
-				durationBool = (val.totalHours >= this.selectedDurationRange[0] && val.totalHours <= this.selectedDurationRange[1]);
-			} else {
-				durationBool = true;
-			}
-
-			return languageBool && priceBool && durationBool && levelBool && ratingBool && subtypeBool;
-		});
+				
+				
+				if (this.selectedRange) {
+					priceBool = (val.price >= this.selectedRange[0] && val.price <= this.selectedRange[1]);
+				} else {
+					priceBool = true;
+				}
+				
+				if (this.selectedDurationRange) {
+					durationBool = (val.totalHours >= this.selectedDurationRange[0] && val.totalHours <= this.selectedDurationRange[1]);
+				} else {
+					durationBool = true;
+				}
+				
+				return languageBool && priceBool && durationBool && levelBool && ratingBool && subtypeBool;
+			});
+		}
 	}
 
 	fetchData() {

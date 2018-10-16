@@ -173,7 +173,7 @@ export class KnowledgeStoryComponent implements OnInit {
 		this._knowledgeStoryService.fetchBlockTransactions(this.knowledgeStory.protagonist[0].ethAddress, topics)
 			.subscribe(
 				(res: any) => {
-					if (res) {
+					if (res && res.constructor === Array) {
 						this.blockTransactions = res;
 					} else {
 						this.blockTransactions = [];

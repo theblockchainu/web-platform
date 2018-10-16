@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, OnDestroy } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute, Params, NavigationStart } from '@angular/router';
-import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar } from '@angular/material';
+import {Component, OnInit, OnDestroy, QueryList, ViewChildren} from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Title, Meta } from '@angular/platform-browser';
@@ -116,6 +116,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public bookmark;
 	public hasBookmarked: boolean;
 	public replyingToCommentId: string;
+	private certificateDomSubscription;
 	public itenaryArray: Array<any>;
 	public class: any;
 	public currentCalendar: any;
@@ -190,6 +191,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public inviteLink: string;
 	public assessmentRules: Array<any>;
 	public contactUsForm: FormGroup;
+	
+	@ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
 
 	objectKeys = Object.keys;
 
@@ -399,6 +402,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				for (const owner of this.class.owners) {
 					if (owner.id === this.userId) {
 						this.userType = 'teacher';
+						this.sortAssessmentRules();
 						break;
 					}
 				}
@@ -546,16 +550,16 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						this.inviteLink = environment.clientUrl + '/class/' + this.class.id;
 						this.setTags();
 						this.setCurrentCalendar();
-						this.itenariesObj = {};
-						this.itenaryArray = [];
 						if (fbq && fbq !== undefined) {
-							fbq('track', 'ContentView', {
+							fbq('track', 'ViewContent', {
 								currency: 'USD',
 								value: 0.0,
 								content_type: 'product',
 								content_ids: [this.classId]
 							});
 						}
+						this.itenariesObj = {};
+						this.itenaryArray = [];
 						// Scan through all contents and group them under their respective start days.
 						// Also scan through all contents and check if the user has made submission for a project.
 						this.class.contents.forEach(contentObj => {
@@ -619,10 +623,10 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						this.itenaryArray.sort(function (a, b) {
 							return parseFloat(a.startDay) - parseFloat(b.startDay);
 						});
-
 						if (this.class && this.class.owners && this.class.owners.length > 0) {
 							this.initializeUserType();
 							this.calculateTotalHours();
+							this.getCertificatetemplate();
 							this.fixTopics();
 							this.getReviews();
 							this.getRecommendations();
@@ -630,9 +634,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 							this.getDiscussions();
 							this.getBookmarks();
 							this.setUpCarousel();
-							this.getCertificatetemplate();
-							this.sortAssessmentRules();
-
 							if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
 								this.itenaryArray.forEach(itinerary => {
 									itinerary.contents.forEach(content => {
@@ -643,7 +644,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 								});
 							} else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
 								const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
-								snackBarRef.onAction().subscribe();
 							}
 							this.recordStartView();
 						} else {
@@ -661,6 +661,30 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		} else {
 			console.log('NO COLLECTION');
 		}
+	}
+	
+	public createGuestContacts() {
+		console.log('Submitting request');
+		
+		const first_name = this.contactUsForm.controls['first_name'].value;
+		const email = this.contactUsForm.controls['email'].value;
+		const subject = 'Class: ' + this.class.title;
+		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value;
+		this._authenticationService.createGuestContacts(first_name, '', email, subject, message)
+			.subscribe(res => {
+				if (fbq && fbq !== undefined) {
+					fbq('track', 'Lead', {
+						currency: 'USD',
+						value: 1.0,
+						content_name: this.class.title,
+						content_category: this.class.type
+					});
+				}
+				this.contactUsForm.reset();
+				this.snackBar.open('Thanks for your interest we will get back to you shortly', 'Close', { duration: 5000 });
+			}, err => {
+				this.snackBar.open('Error in sending mail', 'Close', { duration: 3000 });
+			});
 	}
 
 	private setTags() {
@@ -686,6 +710,30 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.metaService.updateTag({
 			property: 'og:url',
 			content: environment.clientUrl + this.router.url
+		});
+		this.metaService.addTag({
+			property: 'product:brand',
+			content: 'The Blockchain U'
+		});
+		this.metaService.addTag({
+			property: 'product:availability',
+			content: 'in stock'
+		});
+		this.metaService.addTag({
+			property: 'product:condition',
+			content: 'new'
+		});
+		this.metaService.addTag({
+			property: 'product:price:amount',
+			content: this.class.price
+		});
+		this.metaService.addTag({
+			property: 'product:price:currency',
+			content: this.class.currency
+		});
+		this.metaService.addTag({
+			property: 'product:retailer_item_id',
+			content: this.class.id
 		});
 	}
 
@@ -776,6 +824,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this._collectionService.getBookmarks(this.classId, query, (err, response) => {
 			if (err) {
 				console.log(err);
+				this.hasBookmarked = false;
 			} else {
 				this.hasBookmarked = false;
 				response.forEach(bookmark => {
@@ -832,15 +881,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	private initializeForms() {
-		this.contactUsForm = this._fb.group(
-			{
-				first_name: ['', Validators.required],
-				email: ['', Validators.required],
-				subject: [''],
-				message: ['', Validators.required],
-				phone: ['']
-			}
-		);
 		this.chatForm = this._fb.group({
 			description: ['', Validators.required],
 			isAnnouncement: [false]
@@ -856,14 +896,40 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		const filter = {
 			'include': [{ 'profiles': ['phone_numbers'] }]
 		};
+		
+		this.contactUsForm = this._fb.group(
+			{
+				first_name: ['', Validators.required],
+				email: ['', Validators.required],
+				subject: [''],
+				message: ['', Validators.required],
+				phone: ['']
+			}
+		);
 
 		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
 			if (res && res.profiles && res.profiles.length > 0) {
-				this.contactUsForm.patchValue({
-					first_name: res.profiles[0].first_name,
-					email: res.email,
-					phone: (res.profiles[0].phone_numbers[0]) ? res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : ''
-				});
+				const userPhone = res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0 ? '+'
+					+ res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '';
+				this.contactUsForm = this._fb.group(
+					{
+						first_name: [res.profiles[0].first_name, Validators.required],
+						email: [res.email, Validators.required],
+						subject: [''],
+						message: ['', Validators.required],
+						phone: [userPhone]
+					}
+				);
+			} else {
+				this.contactUsForm = this._fb.group(
+					{
+						first_name: ['', Validators.required],
+						email: ['', Validators.required],
+						subject: [''],
+						message: ['', Validators.required],
+						phone: ['']
+					}
+				);
 			}
 		});
 
@@ -917,7 +983,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public dropOutClass() {
 		this.dialogsService.openExitCollection(this.classId, this.userId, this.class.type).subscribe((response: any) => {
 			if (response) {
-				this.initializePage();
+				this.router.navigate(['class', this.classId]);
 			}
 		});
 	}
@@ -973,42 +1039,46 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	 * saveBookmark
 	 */
 	public saveBookmark() {
-		this.bookmarking = true;
-		if (!this.hasBookmarked) {
-			this._collectionService.saveBookmark(this.classId, (err, response) => {
-				if (err) {
-					console.log(err);
-				} else {
-					// FB Event Trigger
-					if (fbq && fbq !== undefined) {
-						fbq('track', 'AddToWishlist', {
-							currency: 'USD',
-							value: 0.0,
-							content_ids: [this.classId],
-							content_name: this.class.title,
-							content_category: this.class.type,
-							content_type: 'product'
+		if (this.userId && this.userId.length > 5) {
+			this.bookmarking = true;
+			if (!this.hasBookmarked) {
+				this._collectionService.saveBookmark(this.classId, (err, response) => {
+					if (err) {
+						console.log(err);
+					} else {
+						// FB Event Trigger
+						if (fbq && fbq !== undefined) {
+							fbq('track', 'AddToWishlist', {
+								currency: 'USD',
+								value: 0.0,
+								content_ids: [this.classId],
+								content_name: this.class.title,
+								content_category: this.class.type,
+								content_type: 'product'
+							});
+						}
+						this.snackBar.open('Bookmarked', 'Close', {
+							duration: 5000
 						});
+						this.getBookmarks();
+						this.bookmarking = false;
 					}
-					this.snackBar.open('Bookmarked', 'Close', {
-						duration: 5000
-					});
-					this.getBookmarks();
-					this.bookmarking = false;
-				}
-			});
+				});
+			} else {
+				this._collectionService.removeBookmark(this.bookmark.id, (err, response) => {
+					if (err) {
+						console.log(err);
+					} else {
+						this.snackBar.open('Removed Bookmark', 'Close', {
+							duration: 5000
+						});
+						this.getBookmarks();
+						this.bookmarking = false;
+					}
+				});
+			}
 		} else {
-			this._collectionService.removeBookmark(this.bookmark.id, (err, response) => {
-				if (err) {
-					console.log(err);
-				} else {
-					this.snackBar.open('Removed Bookmark', 'Close', {
-						duration: 5000
-					});
-					this.getBookmarks();
-					this.bookmarking = false;
-				}
-			});
+			this.dialogsService.openSignup('/class/' + this.class.id);
 		}
 	}
 
@@ -1081,11 +1151,14 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	viewParticipants() {
-		this.dialogsService.viewParticipantstDialog(this.participants, this.classId, this.userId).subscribe();
+		this.dialogsService.viewParticipantstDialog(
+			this.participants,
+			this.classId,
+			this.userType).subscribe();
 	}
 
 	viewAllParticipants() {
-		this.dialogsService.viewParticipantstDialog(this.allParticipants, this.classId).subscribe();
+		this.dialogsService.viewParticipantstDialog(this.allParticipants, this.classId, this.userType).subscribe();
 	}
 
 	/**
@@ -1127,11 +1200,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						panelClass: 'responsive-dialog',
 						width: '45vw',
 						height: '100vh'
-					});
-					dialogRef.afterClosed().subscribe(res => {
-						if (res === 'login') {
-							this.initializeClass();
-						}
 					});
 					break;
 				}
@@ -1461,12 +1529,13 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.loadingParticipants = true;
 		const query = {
 			'relInclude': 'calendarId',
-			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections']
+			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections', 'certificates']
 		};
 		let isCurrentUserParticipant = false;
 		let currentUserParticipatingCalendar = '';
 		this._collectionService.getParticipants(this.classId, query).subscribe(
 			(response: any) => {
+				this.participants = [];
 				this.allParticipants = response;
 				for (const responseObj of response) {
 					if (this.calendarId && this.calendarId === responseObj.calendarId) {
@@ -1571,12 +1640,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					'og:site_name': 'The Blockchain University',
 					'og:description': this.class.description,
 					'og:image': environment.apiUrl + this.class.imageUrls[0],
-					'og:image:width': '250',
-					'og:image:height': '257'
+					'og:image:width': '500',
+					'og:image:height': '700'
 				}
 			})
 		}, function (response) {
-			console.log('response is ', response);
 		});
 	}
 
@@ -1778,8 +1846,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					}
 				});
 				this._assessmentService.submitAssessment(assessmentArray).subscribe((result: any) => {
+					this.initializeClass();
 					this.snackBar.open('Your assessment has been submitted. Students will be informed over email.', 'Ok', { duration: 5000 });
-					this._authenticationService.isLoginSubject.next(true);
 				});
 			}
 		});
@@ -1829,6 +1897,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.certificateService.getCertificateTemplate(this.classId).subscribe((res: any) => {
 			if (res !== undefined && res !== null) {
 				this.certificateHTML = res.certificateHTML;
+				this.certificateDomSubscription = this.certificateDomHTML.changes.subscribe(elem => {
+					if (elem['first']) {
+						const image = elem['first'].nativeElement.children[0].children[0].children[1].children[0];
+						image.src = '/assets/images/theblockchainu-qr.png';
+					}
+				});
 			}
 			this.loadingCertificate = false;
 		});
@@ -1836,30 +1910,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 
 	public getGyanForRule(gyanPercent, totalGyan) {
 		return Math.floor((gyanPercent / 100) * totalGyan);
-	}
-
-	public createGuestContacts() {
-		console.log('Submitting request');
-
-		const first_name = this.contactUsForm.controls['first_name'].value;
-		const email = this.contactUsForm.controls['email'].value;
-		const subject = 'Class: ' + this.class.title;
-		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value;
-		this._authenticationService.createGuestContacts(first_name, '', email, subject, message)
-			.subscribe(res => {
-				if (fbq && fbq !== undefined) {
-					fbq('track', 'Lead', {
-						currency: 'USD',
-						value: 1.0,
-						content_name: this.class.title,
-						content_category: this.class.type
-					});
-				}
-				this.contactUsForm.reset();
-				this.snackBar.open('Thanks for your interest we will get back to you shortly', 'Close', { duration: 3000 });
-			}, err => {
-				this.snackBar.open('Error in sending mail', 'Close', { duration: 3000 });
-			});
 	}
 
 	public addParticipant() {
