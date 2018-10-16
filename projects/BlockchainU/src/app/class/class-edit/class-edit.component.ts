@@ -922,17 +922,17 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 						startMoment = moment('01-02-1990 ' + contentObj.schedule.startTime);
 						endMoment = moment('01-02-1990 ' + contentObj.schedule.endTime);
 					}
-					contentLength = endMoment.diff(startMoment, 'minutes');
+					contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
 					totalLength += parseInt(contentLength, 10);
 				} else if (contentObj.type === 'video' && contentObj.videoLength) {
 					this.totalVideoDuration += contentObj.videoLength;
-					const contentLength = contentObj.videoLength / 60;
+					const contentLength = contentObj.videoLength / 3600;
 					totalLength += Math.round(contentLength);
 				}
 			});
 		});
-		this.totalDuration = totalLength / 60;
-		this.totalGyan = totalLength / 60;
+		this.totalDuration = totalLength;
+		this.totalGyan = totalLength;
 		this.class.controls['academicGyan'].patchValue(totalLength);
 		this.class.controls['totalHours'].patchValue(this.totalDuration);
 	}
