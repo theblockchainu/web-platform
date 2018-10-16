@@ -569,7 +569,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 						this.setTags();
 						this.setCurrentCalendar();
 						if (fbq !== undefined) {
-							fbq('track', 'ContentView', {
+							fbq('track', 'ViewContent', {
 								currency: 'USD',
 								value: 0.0,
 								content_type: 'product',

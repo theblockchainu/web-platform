@@ -53,7 +53,7 @@
 				<!--Disclaimer-->
 				<div class="onboarding step-1" [hidden]="step!=1">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">The Blockchain University Experience Guidelines</h2>
 							<p class="subtitle">The Blockchain University is a platform dedicated to connecting people who are forward
 								thinking, passionate about
@@ -89,13 +89,13 @@
 				<!-- step 1 Subtype -->
 				<div class="onboarding step-2" [hidden]="step!=2">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">What type of experience is this?</h2>
 							<p class="subtitle">Select what kind of experience is this</p>
 							<br />
 							<form [formGroup]="experience" (ngSubmit)="submitExperience()">
 								<div class="row padding-bottom-50">
-									<div class="col-xs-4">
+									<div class="col-md-4 col-xs-12">
 										<mat-form-field>
 											<mat-select placeholder="Select Type" formControlName="subCategory">
 												<mat-option *ngFor="let subType of availableSubtypes" [value]="subType.name">
@@ -127,7 +127,7 @@
 				<!-- step 1 starts here -->
 				<div class="onboarding step-3" [hidden]="step!=3">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">What topics does this experience cover?</h2>
 							<p class="subtitle">Select topics that this experience covers</p>
 							<br />
@@ -201,7 +201,7 @@
 
 				<div class="onboarding step-4" [hidden]="step!=4">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">Which language will you host in?</h2>
 							<p class="subtitle">You will write your descriptions and present your experience in this language. Guests will
 								be
@@ -237,7 +237,7 @@
 				<!-- step 4 ends here  -->
 				<div class="onboarding step-5" [hidden]="step!=5">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">Introduce yourself as a teacher</h2>
 							<p class="subtitle">Describe yourself and tell guests how you came to be passionate about hosting this
 								experience.</p>
@@ -276,7 +276,7 @@
 				<!--Disclaimer-->
 				<div class="onboarding step-6" [hidden]="step!=6">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">Create the page learners will see</h2>
 							<p class="subtitle" style="color: #333333;">Write in a clear, straightforward and friendly way. We'll prompt you
 								on
@@ -297,7 +297,7 @@
 				<!-- Step 6 - Title -->
 				<div class="onboarding step-7" [hidden]="step!=7">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<form [formGroup]="experience" (ngSubmit)="submitExperience()">
 								<div class="row">
 									<div class="col-sm-12 margin-bottom-30">
@@ -350,7 +350,7 @@
 				<!-- step 7 - Description  -->
 				<div class="onboarding step-8" [hidden]="step!=8">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<form [formGroup]="experience" (ngSubmit)="submitExperience()">
 								<div class="row">
 									<div class="col-sm-12">
@@ -384,7 +384,7 @@
 				<!-- step 8 Difficulty Level-->
 				<div class="onboarding step-9" [hidden]="step!=9">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<form [formGroup]="experience" (ngSubmit)="submitExperience()">
 								<h2 class="title">Who should come?</h2>
 								<p class="subtitle">Start with a level of difficulty</p>
@@ -424,7 +424,7 @@
 				<!-- Step 9 - Max Spots -->
 				<div class="onboarding step-10" [hidden]="step!=10">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">How many seats are available in each cohort? </h2>
 							<p class="subtitle">
 								Remember to keep your experience as personal as possible.
@@ -463,7 +463,7 @@
 				<!-- step 10 Photos -->
 				<div class="onboarding step-11" [hidden]="step!=11">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">Showcase your experience</h2>
 							<p class="subtitle">
 								Give the world a taste of your experience by showcasing captivating videos and/or photos
@@ -547,7 +547,7 @@
 				<div class="onboarding step-13" [hidden]="step!=13">
 					<form [formGroup]="assessmentForm" (ngSubmit)="submitAssessment()">
 						<div class="row">
-							<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+							<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 								<h2 class="title">How will you grade your students?</h2>
 								<p class="subtitle">
 									You can select one of the sample grading systems from above or you can create a custom system by adding new
@@ -661,7 +661,7 @@
 				<!-- step 13 - Price -->
 				<div class="onboarding step-14" [hidden]="step!=14">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<form [formGroup]="experience" (ngSubmit)="submitExperience()">
 								<h2 class="title">Set a price for this class</h2>
 								<p class="subtitle">
@@ -679,11 +679,11 @@
 									<div class="lightText mat-caption" *ngIf="!freeExperience">OR</div>
 									<br />
 									<div class="row margin-left-0" *ngIf="!freeExperience">
-										<div class="col-md-4 col-xs-3 padding-top-10">
+										<div class="col-md-4 col-xs-12 padding-top-10">
 											{{0 | currency: experience.controls['currency'].value : 'symbol' | slice:0:1}} &nbsp;
 											<p-spinner size="7" formControlName="price" style="font-size: 26px;"></p-spinner>
 										</div>
-										<div class="col-md-2 col-xs-3">
+										<div class="col-md-2 col-xs-12">
 											<mat-form-field [floatLabel]="'never'" style="width: 100%;">
 												<mat-select formControlName="currency" placeholder="USD">
 													<mat-option *ngFor="let c of currencies" [value]="c">{{c}}</mat-option>
@@ -725,7 +725,7 @@
 				<!--Step 13 - Disclaimer-->
 				<div class="onboarding step-15" [hidden]="step!=15">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">Add content to your Experience</h2>
 							<form [formGroup]="experience">
 								<p class="subtitle">Create a detailed timeline of your experience and add content for every event in your
@@ -744,7 +744,7 @@
 				<!--Step 14 - Itinerary-->
 				<div class="onboarding step-16" [hidden]="step!=16">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">Set your default timeline
 							</h2>
 							<p class="subtitle">
@@ -815,7 +815,7 @@
 				<!--Step 15 - Submit for review-->
 				<div class="onboarding step-16" [hidden]="step!=17">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">Review and submit</h2>
 							<div *ngIf="!isSubmitted">
 								<div style="margin-top:40px;">
@@ -851,7 +851,7 @@
 				</div>
 				<div class="onboarding step-18" [hidden]="step!=18">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">Do you want to provide your phone number to learners?</h2>
 							<div class="subtitle">Phone numbers make it easy for learners to reach out to you in case of urgent queries.</div>
 							<form [formGroup]="phoneDetails">
@@ -904,7 +904,7 @@
 				</div>
 				<div class="onboarding step-19" [hidden]="step!=19">
 					<div class="row">
-						<div class="col-xs-11 col-sm-8 col-md-8 col-lg-8">
+						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">Connect Payment Option</h2>
 							<div class="subtitle">Choose from available payout options or add a new one</div>
 							<div class="row loading-container" style="padding-top: 10px; padding-bottom: 10px;" *ngIf="payoutLoading">

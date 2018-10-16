@@ -302,6 +302,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 			if (params['referredBy']) {
 				this._collectionService.saveRefferedBY(params['referredBy']);
+			} else {
+				this._cookieUtilsService.deleteValue('referrerId');
 			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
@@ -566,7 +568,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						this.setTags();
 						this.setCurrentCalendar();
 						if (fbq && fbq !== undefined) {
-							fbq('track', 'ContentView', {
+							fbq('track', 'ViewContent', {
 								currency: 'USD',
 								value: 0.0,
 								content_type: 'product',
@@ -1251,7 +1253,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	viewAllParticipants() {
-		this.dialogsService.viewParticipantstDialog(this.allParticipants, this.experienceId).subscribe();
+		this.dialogsService.viewParticipantstDialog(this.allParticipants, this.experienceId, this.userType).subscribe();
 	}
 
 	/**
@@ -1647,7 +1649,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.participants = [];
 		this.loadingParticipants = true;
 		const query = {
-			'relInclude': 'calendarId',
+			'relInclude': ['calendarId', 'referrerId'],
 			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections', 'certificates']
 		};
 		let isCurrentUserParticipant = false;

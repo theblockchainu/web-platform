@@ -2328,6 +2328,7 @@ MD-Editor Styling
 	}
 	.navbar-page-content {
 		padding: 5% !important;
+		padding-top: 130px !important;
 	}
 	.date-select {
 		margin-top: 0px !important;
@@ -2368,5 +2369,11 @@ MD-Editor Styling
 		left: 17% !important;
 		top: 45% !important;
 		font-size: 17px !important;
+	}
+	.mat-toolbar-single-row {
+		height: 120px !important;
+	}
+	mat-sidenav {
+		padding: 120px 30px 50px 30px;
 	}
 }

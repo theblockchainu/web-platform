@@ -3,20 +3,20 @@
 		<div class="col-md-4">
 			<h3 class="calendarTitle">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
 		</div>
-		
+
 		<span class="flex"></span>
-		
+
 		<div class="prevNext">
 			<button mat-button class="mat-icon-button" type="button" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
 				<mat-icon class="" aria-hidden="true">chevron_left</mat-icon>
 			</button>
-			
+
 			<button mat-button class="mat-icon-button" type="button" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
 				<mat-icon class="" aria-hidden="true">chevron_right</mat-icon>
 			</button>
 		</div>
 	</div>
-	
+
 	<div [ngSwitch]="view">
 		<mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [refresh]="refresh" (dayClicked)="dayClicked($event.day)">
 		</mwl-calendar-month-view>

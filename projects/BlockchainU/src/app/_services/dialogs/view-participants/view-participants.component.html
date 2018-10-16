@@ -27,7 +27,10 @@
 						ucwords}}</span>
 				</div>
 				<div class="col-md-3 vcenter">
-					{{participant.referrerId}}
+					<div *ngIf="data.userType === 'teacher'">
+						<div>Source</div>
+						<div class="mat-caption lightText">{{participant.referrerId ? participant.referrerId : 'Direct'}}</div>
+					</div>
 				</div>
 				<div class="col-md-1 vcenter">
 					<button mat-icon-button [matMenuTriggerFor]="menu">

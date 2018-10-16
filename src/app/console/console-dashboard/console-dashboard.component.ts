@@ -603,37 +603,42 @@ export class ConsoleDashboardComponent implements OnInit {
     public getLearnerUpcomingEvent(collection) {
         const contents = collection.contents;
         const calendars = collection.calendars;
-        const currentCalendar = this.getLearnerCalendar(collection);
-        contents.sort((a, b) => {
-            if (a.schedules[0].startDay < b.schedules[0].startDay) {
-                return -1;
-            }
-            if (a.schedules[0].startDay > b.schedules[0].startDay) {
-                return 1;
-            }
-            return 0;
-        }).filter((element, index) => {
-            return moment() < moment(element.startDay);
-        });
-        let fillerWord = '';
-        if (contents[0].type === 'online') {
-            fillerWord = 'session';
-        } else if (contents[0].type === 'video') {
-            fillerWord = 'recording';
-        } else if (contents[0].type === 'project') {
-            fillerWord = 'submission';
-        } else if (contents[0].type === 'in-person') {
-            fillerWord = 'session';
-        } if (currentCalendar) {
-            const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
-            const timeToStart = contentStartDate.diff(moment(), 'days');
-            contents[0].timeToStart = timeToStart;
-        } else {
-            contents[0].timeToStart = 0;
-        }
-        contents[0].fillerWord = fillerWord;
-        contents[0].hasStarted = false;
-        return contents[0];
+		if (contents && contents.length > 0) {
+			const currentCalendar = this.getLearnerCalendar(collection);
+			contents.sort((a, b) => {
+				if (a.schedules[0].startDay < b.schedules[0].startDay) {
+					return -1;
+				}
+				if (a.schedules[0].startDay > b.schedules[0].startDay) {
+					return 1;
+				}
+				return 0;
+			}).filter((element, index) => {
+				return moment() < moment(element.startDay);
+			});
+			let fillerWord = '';
+			if (contents[0].type === 'online') {
+				fillerWord = 'session';
+			} else if (contents[0].type === 'video') {
+				fillerWord = 'recording';
+			} else if (contents[0].type === 'project') {
+				fillerWord = 'submission';
+			} else if (contents[0].type === 'in-person') {
+				fillerWord = 'session';
+			}
+			if (currentCalendar) {
+				const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
+				const timeToStart = contentStartDate.diff(moment(), 'days');
+				contents[0].timeToStart = timeToStart;
+			} else {
+				contents[0].timeToStart = 0;
+			}
+			contents[0].fillerWord = fillerWord;
+			contents[0].hasStarted = false;
+			return contents[0];
+		} else {
+			return {};
+		}
     }
     /**
      * Get the progress bar value of this class

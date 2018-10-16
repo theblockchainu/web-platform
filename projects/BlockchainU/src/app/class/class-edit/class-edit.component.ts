@@ -302,10 +302,10 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	initializeCertificate() {
 		this.certificateService.getCertificateTemplate(this.classId).subscribe((res: any) => {
 			this.sidebarMenuItems = this._leftSideBarService.updateSideMenuCertificate(res, this.sidebarMenuItems);
-			if (res.formData) {
+			if (res && res.formData) {
 				this.certificateForm.controls['formData'].patchValue(JSON.parse(res.formData));
 			}
-			if (res.expiryDate) {
+			if (res && res.expiryDate) {
 				this.certificateForm.controls['expiryDate'].patchValue(res.expiryDate);
 			}
 			this.certificateLoaded = true;
@@ -1051,15 +1051,15 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else {
 			this.busySavingData = false;
 			console.log('No date selected or no content added to itinerary! - ' + JSON.stringify(itinerary));
-			if (!itinerary || itinerary.length === 0 || this.totalDuration < 1) {
+			if (!itinerary || itinerary.length === 0 || this.totalDuration <= 0 || this.totalVideoDuration <= 0) {
 				if (this.exitAfterSave) {
-					this.snackBar.open('You need to add at least 1 hour of activity to your class to proceed.', 'Exit Anyways', {
+					this.snackBar.open('You need to add at least 1 hour of live activity or 1 video to your class to proceed.', 'Exit Anyways', {
 						duration: 5000
 					}).onAction().subscribe(res => {
 						this.exit();
 					});
 				} else {
-					this.snackBar.open('You need to add at least 1 activity to your class to proceed.', 'Close', {
+					this.snackBar.open('You need to add at least 1 hour of live activity or 1 video to your class to proceed.', 'Close', {
 						duration: 5000
 					});
 				}

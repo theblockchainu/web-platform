@@ -1101,9 +1101,10 @@ export class CollectionService {
 			'/announceResult', {}, this.requestHeaderService.options);
 	}
 
-	saveRefferedBY(referrerId: string) {
+	public saveRefferedBY(referrerId: string) {
 		console.log('saving referred by');
-		this.cookieUtilsService._cookieService.set('referrerId', referrerId, 1);
+		this.cookieUtilsService.deleteValue('referrerId');
+		this.cookieUtilsService.setValue('referrerId', referrerId);
 	}
 
 }
