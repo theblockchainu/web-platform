@@ -977,6 +977,10 @@ h3.calendarTitle {
 	color: #cccccc;
 }
 
+.Description h1 {
+	margin-top: 0em !important;
+}
+
 .center {
 	text-align: center;
 }

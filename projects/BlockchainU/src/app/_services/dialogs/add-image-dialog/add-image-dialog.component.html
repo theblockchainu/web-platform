@@ -1,27 +1,27 @@
 <div class="dialog-container">
-  <div class="row">
-    <div class="col-xs-12">
-      <h1>Available Images</h1>
-    </div>
-  </div>
-  <div class="row" *ngIf="loadingMedias">
-    <div class="col-xs-12 center">
-      <div class="loading-container">
-        <ngx-loading [show]="true"></ngx-loading>
-      </div>
-    </div>
-  </div>
-  <div class="row image-container" *ngIf="!loadingMedias">
-    <div class="col-xs-4 image-box" *ngFor="let content of medias;let i=index">
-      <button (click)="selectImage(content.url)" mat-button>
-        <img *ngIf="content.type!=='video'" class="img-responsive image-thumb" src="{{envVariable.apiUrl+content.url}}"
-          (error)="_collectionService.imgErrorHandler($event)">
-      </button>
-    </div>
-  </div>
-  <div class="row margin-top-50">
-    <div class="col-xs-12">
-      <app-upload-file (uploaded)="addAttachmentUrl($event)"></app-upload-file>
-    </div>
-  </div>
+	<div class="row">
+		<div class="col-xs-12">
+			<h1>Available Images</h1>
+		</div>
+	</div>
+	<div class="row" *ngIf="loadingMedias">
+		<div class="col-xs-12 center">
+			<div class="loading-container">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+		</div>
+	</div>
+	<div class="row image-container" *ngIf="!loadingMedias">
+		<div class="col-xs-4 image-box" *ngFor="let content of medias;let i=index">
+			<button (click)="selectImage(content.url)" mat-button>
+				<img *ngIf="content.type!=='video'" class="img-responsive image-thumb" src="{{envVariable.apiUrl+content.url}}"
+				     (error)="_collectionService.imgErrorHandler($event)">
+			</button>
+		</div>
+	</div>
+	<div class="row margin-top-50">
+		<div class="col-xs-12">
+			<app-upload-file (uploaded)="addAttachmentUrl($event)"></app-upload-file>
+		</div>
+	</div>
 </div>
