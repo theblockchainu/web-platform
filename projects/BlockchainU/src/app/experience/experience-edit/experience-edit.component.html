@@ -361,6 +361,7 @@
 											 placeholder="What we'll do in this experience?"></textarea>
 											<mat-hint align="end">{{description.value.length}} / </mat-hint>
 										</mat-form-field> -->
+										<button mat-raised-button type="button" (click)="insertImage()">Insert Image</button>
 										<md-editor [options]="editorOptions" formControlName="description" [height]="'360px'" maxlength="2000"></md-editor>
 									</div>
 								</div>

@@ -268,7 +268,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.noWrapSlides = true;
 		this.peerHasSubmission = false;
 		this.isRatingReceived = false;
-		this.maxLength = 140;
+		this.maxLength = 50000;
 		this.bookmarking = false;
 		this.recommendations = {
 			collections: []

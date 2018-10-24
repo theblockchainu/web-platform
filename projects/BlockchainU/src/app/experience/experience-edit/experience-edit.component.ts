@@ -1587,6 +1587,16 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			});
 		}
 	}
+	
+	public insertImage() {
+		this.dialogsService.addImageDialog().subscribe(res => {
+			if (res) {
+				this.experience.controls['description'].patchValue(this.experience.value.description + ' ![](' + res + ') ');
+			}
+		}, err => {
+			console.log(err);
+		});
+	}
 }
 
 interface AssessmentTypeData {
