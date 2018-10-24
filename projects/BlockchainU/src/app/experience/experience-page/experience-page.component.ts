@@ -2059,6 +2059,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				console.log(res);
 				delete this.isFollowing;
 				this.isFollowing = true;
+				this.snackBar.open('Experience Subscribed');
 			}, (err) => {
 				console.log(err);
 			});
@@ -2068,6 +2069,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				console.log(res);
 				delete this.isFollowing;
 				this.isFollowing = false;
+				this.snackBar.open('Experience Unsubscribed');
+
 			}, (err) => {
 				console.log(err);
 			});

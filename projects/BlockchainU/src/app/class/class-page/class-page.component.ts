@@ -1932,6 +1932,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				console.log(res);
 				delete this.isFollowing;
 				this.isFollowing = true;
+				this.snackBar.open('Class Subscribed');
 			}, (err) => {
 				console.log(err);
 			});
@@ -1941,6 +1942,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				console.log(res);
 				delete this.isFollowing;
 				this.isFollowing = false;
+				this.snackBar.open('Class unsubscribed');
 			}, (err) => {
 				console.log(err);
 			});

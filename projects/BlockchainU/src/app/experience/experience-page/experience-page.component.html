@@ -149,8 +149,7 @@
 									<i class="fa fa-share"></i>
 								</span>
 								<span (click)="followCollectionToggle()" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{experience.type | titlecase}}">
-									<i *ngIf="!isFollowing" class="far fa-bell"></i>
-									<i *ngIf="isFollowing" class="fas fa-bell"></i>
+									<i class="far fa-bell"></i>
 								</span>
 							</div>
 						</div>
