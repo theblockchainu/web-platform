@@ -86,7 +86,8 @@
 									< Back to class page </a> <p class="mat-display-1" style="margin-bottom: 20px !important;">{{class.title |
 										titlecase}}
 										<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
-										<span *ngIf="!checkingEthereum && isOnEthereum  && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant" style="padding-left: 15px; position: relative; top: -7px;">&emsp;
+										<span *ngIf="!checkingEthereum && isOnEthereum  && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant"
+										 style="padding-left: 15px; position: relative; top: -7px;">&emsp;
 											<i class="fa fa-globe" style="color: #ff6d71; font-size: 14px;"></i>
 										</span>
 										<span *ngIf="!checkingEthereum && !isOnEthereum  && userType === 'teacher' && !previewAs" matTooltip="Add to one0x Blockchain"
@@ -120,7 +121,7 @@
 											<span>{{itenaryArray.length | i18nPlural : dayMapping}} / {{totalDuration | i18nPlural : hourMapping}}
 												&nbsp;&nbsp;&nbsp;
 												<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
-											      {{class.contents.length | i18nPlural : activityMapping}}
+												{{class.contents.length | i18nPlural : activityMapping}}
 												<span matTooltip="{{allParticipants ? allParticipants.length : '0'}} Participants" *ngIf="allParticipants && allParticipants.length > 0">
 													&nbsp;&nbsp;&nbsp;
 													<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
@@ -145,6 +146,10 @@
 								</span>
 								<span (click)="openShareDialog()">
 									<i class="fa fa-share"></i>
+								</span>
+								<span (click)="followCollectionToggle()" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{class.type | titlecase}}">
+									<i *ngIf="!isFollowing" class="far fa-bell"></i>
+									<i *ngIf="isFollowing" class="fas fa-bell"></i>
 								</span>
 							</div>
 						</div>
@@ -229,8 +234,10 @@
 							<div class="col-xs-8">
 								<div>
 									<td-markdown [content]="class.description | shorten: maxLength : '...'"></td-markdown>
-									<span class="clickable" *ngIf="class.description && class.description.length > maxLength" (click)="showAll(class.description.length)" style="color:#33bd9e">read more</span>
-									<span class="clickable" *ngIf="class.description && class.description.length >140 && class.description.length <= maxLength" (click)="showAll(class.description.length)" style="color:#33bd9e">show less</span>
+									<span class="clickable" *ngIf="class.description && class.description.length > maxLength" (click)="showAll(class.description.length)"
+									 style="color:#33bd9e">read more</span>
+									<span class="clickable" *ngIf="class.description && class.description.length >140 && class.description.length <= maxLength"
+									 (click)="showAll(class.description.length)" style="color:#33bd9e">show less</span>
 								</div>
 							</div>
 						</div>
@@ -360,7 +367,8 @@
 																			<h3> {{content.title | titlecase}}</h3>
 																			<div>
 																				<span class="mat-caption" *ngIf="content.schedules[0].startTime !== undefined && content.type === 'online'">
-																					{{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm a'}} &nbsp;&nbsp;&nbsp;
+																					{{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm
+																					a'}} &nbsp;&nbsp;&nbsp;
 																					<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
 																				</span>
 																				{{_collectionService.getContentTypeFullName(content.type) | titlecase}}
