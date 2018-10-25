@@ -546,7 +546,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this._collectionService.getCollectionDetail(this.classId, query)
 				.subscribe(res => {
 					if (res) {
-
 						this.class = res;
 						this.inviteLink = environment.clientUrl + '/class/' + this.class.id;
 						this.setTags();
@@ -653,7 +652,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 							this.router.navigate(['home', 'classes']);
 						}
 					} else {
-						this.loadingClass = false;
+						this.checkIfURLisCollectionTitle();
 					}
 				},
 					err => {
@@ -1961,6 +1960,24 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
+
+	private checkIfURLisCollectionTitle() {
+		const title = this.classId.replace('-', ' ').toLowerCase();
+		const query = {
+			'where': {
+				'title': title
+			}
+		};
+		this._collectionService.getAllCollections(query).subscribe(res => {
+			console.log('collection found');
+			this.classId = res[0].id;
+			this.initializeClass();
+			console.log(res);
+		}, err => {
+			this.loadingClass = false;
+		});
+	}
+
 }
 
 interface AssessmentResult {
