@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, QueryList, ViewChildren} from '@angular/core';
+import { Component, OnInit, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatSnackBar } from '@angular/material';
@@ -191,7 +191,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public inviteLink: string;
 	public assessmentRules: Array<any>;
 	public contactUsForm: FormGroup;
-	
+	public isFollowing: boolean;
 	@ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
 
 	objectKeys = Object.keys;
@@ -277,7 +277,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.inviteLink = '';
 		this.loadingClass = true;
 		this.loadingReviews = true;
-
+		this.isFollowing = false;
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.classId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
 				location.reload();
@@ -519,6 +519,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				'topics',
 				'calendars',
 				'views',
+				'peersFollowing',
 				{ 'participants': [{ 'profiles': ['work'] }] },
 				{ 'owners': [{ 'profiles': ['work'] }] },
 				{
@@ -634,6 +635,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 							this.getDiscussions();
 							this.getBookmarks();
 							this.setUpCarousel();
+							this.checkIfFollowing();
 							if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
 								this.itenaryArray.forEach(itinerary => {
 									itinerary.contents.forEach(content => {
@@ -662,10 +664,23 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			console.log('NO COLLECTION');
 		}
 	}
-	
+
+	private checkIfFollowing() {
+		if (this.class.peersFollowing && this.class.peersFollowing.length > 0) {
+			this.class.peersFollowing.some(peer => {
+				console.log(peer);
+				if (peer.id === this.userId) {
+					this.isFollowing = true;
+					console.log('isFollowing');
+					return true;
+				}
+			});
+		}
+	}
+
 	public createGuestContacts() {
 		console.log('Submitting request');
-		
+
 		const first_name = this.contactUsForm.controls['first_name'].value;
 		const email = this.contactUsForm.controls['email'].value;
 		const subject = 'Class: ' + this.class.title;
@@ -896,7 +911,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		const filter = {
 			'include': [{ 'profiles': ['phone_numbers'] }]
 		};
-		
+
 		this.contactUsForm = this._fb.group(
 			{
 				first_name: ['', Validators.required],
@@ -1925,6 +1940,27 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			, this.calendarId, this.userType === 'teacher');
 	}
 
+	public followCollectionToggle() {
+		if (!this.isFollowing) {
+			this._profileService.followCollection(this.userId, this.classId).subscribe(res => {
+				console.log('added');
+				console.log(res);
+				this.isFollowing = true;
+				this.snackBar.open('Class Subscribed', 'close', { duration: 3000 });
+			}, (err) => {
+				console.log(err);
+			});
+		} else {
+			this._profileService.unfollowCollection(this.userId, this.classId).subscribe(res => {
+				console.log('deleted');
+				console.log(res);
+				this.isFollowing = false;
+				this.snackBar.open('Class unsubscribed', 'close', { duration: 3000 });
+			}, (err) => {
+				console.log(err);
+			});
+		}
+	}
 }
 
 interface AssessmentResult {

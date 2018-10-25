@@ -788,4 +788,12 @@ export class ProfileService {
 	public getMedias(peerId: string) {
 		return this.http.get(environment.apiUrl + '/api/peers/' + peerId + '/medias', this._requestHeaderService.options);
 	}
+
+	public followCollection(peerId: string, collectionId: string) {
+		return this.http.put(environment.apiUrl + '/api/peers/' + peerId + '/collectionsFollowing/rel/' + collectionId, {}, this._requestHeaderService.options);
+	}
+
+	public unfollowCollection(peerId: string, collectionId: string) {
+		return this.http.delete(environment.apiUrl + '/api/peers/' + peerId + '/collectionsFollowing/rel/' + collectionId, this._requestHeaderService.options);
+	}
 }
