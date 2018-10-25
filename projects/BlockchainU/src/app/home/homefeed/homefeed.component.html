@@ -6,24 +6,24 @@
 				<span class="clickable dotted-underline" (click)="askQuestion()">Ask a Question</span>
 			</div>
 			<nav mat-tab-nav-bar disableRipple class="noJustify home">
+				<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
+				   matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
+					<img src="/assets/images/experiences_icon.jpeg" alt="logo" style="height: 100%;">
+					<h3 class="margin-left-10">In-person Experiences</h3>
+				</a>
+				<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive">
+					<img src="/assets/images/peers_icon1.jpg" alt="logo" style="height: 100%;">
+					<h3 class="margin-left-10">Learning Guides</h3>
+				</a>
 				<a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive"
 				 matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
 					<img src="/assets/images/communities_icon1.jpg" alt="logo" style="height: 100%;">
 					<h3>Communities</h3>
 				</a>
-				<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive">
-					<img src="/assets/images/peers_icon1.jpg" alt="logo" style="height: 100%;">
-					<h3 class="margin-left-10">Guides</h3>
-				</a>
-				<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
-				 matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
-					<img src="/assets/images/experiences_icon.jpeg" alt="logo" style="height: 100%;">
-					<h3 class="margin-left-10">Experiences</h3>
-				</a>
 				<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive"
-				 matTooltip="Classes are a way to learn any subject completely online with videos, projects & live sessions.">
+				 matTooltip="Courses are a way to learn any subject completely online with videos, projects & live sessions.">
 					<img src="/assets/images/class_icon2.jpg" alt="logo" style="height: 100%;">
-					<h3 class="margin-left-10">Classes</h3>
+					<h3 class="margin-left-10">Online Courses</h3>
 				</a>
 			</nav>
 		</div>
@@ -61,6 +61,62 @@
 									{{getLearnerUpcomingEvent(collection).title | shorten: 70 : '...' | titlecase}}
 								</div>
 							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row experience-feed">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8">
+							<div class="mat-display-1 clickable" [routerLink]="'/home/experiences'">In-person Experiences</div>
+						</div>
+						<div class="col-md-2 pull-right" style="text-align: right">
+							<a [routerLink]="'/home/experiences'">
+								<span class="mat-body-1">
+									See all
+									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loadingExperiences">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loadingExperiences" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
+							There are no new active experiences to view right now.
+						</div>
+						<div *ngFor="let experience of experiences; let i = index;">
+							<app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row experience-feed">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8">
+							<div class="mat-display-1 clickable" [routerLink]="'/home/bounties'">Reward Bounties</div>
+						</div>
+						<div class="col-md-2 pull-right" style="text-align: right">
+							<a [routerLink]="'/home/bounties'">
+								<span class="mat-body-1">
+									See all
+									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loadingBounties">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loadingBounties" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="bounties === undefined || bounties.length === 0">
+							There are no new active bounties to view right now.
+						</div>
+						<div *ngFor="let bounty of bounties; let i = index;">
+							<app-bounty-card *ngIf="i < 5" [bounty]="bounty" (refresh)="onBountiesRefresh($event)"></app-bounty-card>
 						</div>
 					</div>
 				</div>
@@ -149,67 +205,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="row experience-feed">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-md-8">
-							<div class="mat-display-1 clickable" [routerLink]="'/home/experiences'">In-person Experiences</div>
-						</div>
-						<div class="col-md-2 pull-right" style="text-align: right">
-							<a [routerLink]="'/home/experiences'">
-								<span class="mat-body-1">
-									See all
-									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
-								</span>
-							</a>
-						</div>
-					</div>
-					<div class="loading-container" [hidden]="!loadingExperiences">
-						<ngx-loading [show]="true"></ngx-loading>
-					</div>
-					<div *ngIf="!loadingExperiences" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
-						<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
-							There are no new active experiences to view right now.
-						</div>
-						<div *ngFor="let experience of experiences; let i = index;">
-							<app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row experience-feed">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-md-8">
-							<div class="mat-display-1 clickable" [routerLink]="'/home/bounties'">Reward Bounties</div>
-						</div>
-						<div class="col-md-2 pull-right" style="text-align: right">
-							<a [routerLink]="'/home/bounties'">
-								<span class="mat-body-1">
-									See all
-									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
-								</span>
-							</a>
-						</div>
-					</div>
-					<div class="loading-container" [hidden]="!loadingBounties">
-						<ngx-loading [show]="true"></ngx-loading>
-					</div>
-					<div *ngIf="!loadingBounties" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
-						<div class="noDataContainer" *ngIf="bounties === undefined || bounties.length === 0">
-							There are no new active bounties to view right now.
-						</div>
-						<div *ngFor="let bounty of bounties; let i = index;">
-							<app-bounty-card *ngIf="i < 5" [bounty]="bounty" (refresh)="onBountiesRefresh($event)"></app-bounty-card>
-						</div>
-					</div>
-				</div>
-			</div>
 			<div class="row class-feed">
 				<div class="col-md-12">
 					<div class="row">
 						<div class="col-md-8">
-							<div class="mat-display-1 clickable" [routerLink]="'/home/classes'">Online Classes</div>
+							<div class="mat-display-1 clickable" [routerLink]="'/home/classes'">Online Courses</div>
 						</div>
 						<div class="col-md-2 pull-right" style="text-align: right">
 							<a [routerLink]="'/home/classes'">
@@ -225,7 +225,7 @@
 					</div>
 					<div *ngIf="!loadingClasses" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
 						<div class="noDataContainer" *ngIf="classes === undefined || classes.length === 0">
-							There are no new active classes to view right now.
+							There are no new active courses to view right now.
 						</div>
 						<div *ngFor="let class of classes; let i =index">
 							<app-class-card [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>

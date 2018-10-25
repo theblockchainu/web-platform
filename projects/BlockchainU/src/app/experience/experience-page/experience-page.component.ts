@@ -2053,24 +2053,28 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	public followCollectionToggle() {
-		if (!this.isFollowing) {
-			this._profileService.followCollection(this.userId, this.experienceId).subscribe(res => {
-				console.log('added');
-				console.log(res);
-				this.isFollowing = true;
-				this.snackBar.open('Experience Subscribed', 'close', { duration: 3000 });
-			}, (err) => {
-				console.log(err);
-			});
+		if (this.userId && this.userId.length > 5) {
+			if (!this.isFollowing) {
+				this._profileService.followCollection(this.userId, this.experienceId).subscribe(res => {
+					console.log('added');
+					console.log(res);
+					this.isFollowing = true;
+					this.snackBar.open('Experience Subscribed', 'close', { duration: 3000 });
+				}, (err) => {
+					console.log(err);
+				});
+			} else {
+				this._profileService.unfollowCollection(this.userId, this.experienceId).subscribe(res => {
+					console.log('deleted');
+					console.log(res);
+					this.isFollowing = false;
+					this.snackBar.open('Experience Unsubscribed', 'close', { duration: 3000 });
+				}, (err) => {
+					console.log(err);
+				});
+			}
 		} else {
-			this._profileService.unfollowCollection(this.userId, this.experienceId).subscribe(res => {
-				console.log('deleted');
-				console.log(res);
-				this.isFollowing = false;
-				this.snackBar.open('Experience Unsubscribed', 'close', { duration: 3000 });
-			}, (err) => {
-				console.log(err);
-			});
+			this.dialogsService.openSignup('/experience/' + this.experience.id);
 		}
 	}
 

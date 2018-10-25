@@ -12,7 +12,7 @@
 			<span class="search-form hide-small">
 				<mat-form-field class="pb-block" floatLabel="never">
 					<input #searchInputBar name="search" class="search-box" matInput [formControl]="myControl" [matAutocomplete]="auto"
-					 placeholder="Try 'Hyperledger' or 'Blockchain' ">
+					 placeholder="What do you want to learn? ">
 					<mat-autocomplete #auto="matAutocomplete">
 						<mat-option *ngIf="searching">
 							<span>
@@ -145,7 +145,7 @@
 				<mat-form-field style="color:#333333 !important" class="mat-block" *ngIf="(isLoggedIn | async) && isAccountApproved"
 				 [floatLabel]="'never'">
 					<input #searchInputBar name="search" style="color:#767676 !important" class="mat-block search-box" matInput
-					 [formControl]="myControl" [matAutocomplete]="auto" placeholder="Try 'Mumbai' ">
+					 [formControl]="myControl" [matAutocomplete]="auto" placeholder="What do you want to learn?">
 					<mat-autocomplete #auto="matAutocomplete">
 						<mat-option *ngIf="searching" class="center">
 							<span>

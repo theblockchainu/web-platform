@@ -115,7 +115,6 @@ export class PaymentService {
 			'amount': amount
 		};
 		console.log(body);
-		/*if (from.length === 3 && this._cookieUtilsService.getValue('currency').length === 3) {*/
 		return this.http.post(environment.apiUrl + '/convertCurrency', body, this._requestHeaderService.options)
 			.pipe(map((response: any) => {
 				const res = response;

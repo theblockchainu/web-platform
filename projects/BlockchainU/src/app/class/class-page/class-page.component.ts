@@ -1941,24 +1941,28 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	public followCollectionToggle() {
-		if (!this.isFollowing) {
-			this._profileService.followCollection(this.userId, this.classId).subscribe(res => {
-				console.log('added');
-				console.log(res);
-				this.isFollowing = true;
-				this.snackBar.open('Class Subscribed', 'close', { duration: 3000 });
-			}, (err) => {
-				console.log(err);
-			});
+		if (this.userId && this.userId.length > 5) {
+			if (!this.isFollowing) {
+				this._profileService.followCollection(this.userId, this.classId).subscribe(res => {
+					console.log('added');
+					console.log(res);
+					this.isFollowing = true;
+					this.snackBar.open('Class Subscribed', 'close', {duration: 3000});
+				}, (err) => {
+					console.log(err);
+				});
+			} else {
+				this._profileService.unfollowCollection(this.userId, this.classId).subscribe(res => {
+					console.log('deleted');
+					console.log(res);
+					this.isFollowing = false;
+					this.snackBar.open('Class unsubscribed', 'close', {duration: 3000});
+				}, (err) => {
+					console.log(err);
+				});
+			}
 		} else {
-			this._profileService.unfollowCollection(this.userId, this.classId).subscribe(res => {
-				console.log('deleted');
-				console.log(res);
-				this.isFollowing = false;
-				this.snackBar.open('Class unsubscribed', 'close', { duration: 3000 });
-			}, (err) => {
-				console.log(err);
-			});
+			this.dialogsService.openSignup('/class/' + this.class.id);
 		}
 	}
 }

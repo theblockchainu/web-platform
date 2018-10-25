@@ -30,7 +30,6 @@ export class BountyCardComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log('card');
 		let highestReward: any;
 		if (this.bounty.rewards && this.bounty.rewards.length > 0) {
 			for (let index = 0; index < this.bounty.rewards.length; index++) {
