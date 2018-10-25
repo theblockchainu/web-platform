@@ -203,6 +203,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	loadingCertificate: boolean;
 	public assessmentRules: Array<any>;
 	public contactUsForm: FormGroup;
+
+	public isFollowing: boolean;
+
 	@ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
 
 	constructor(public router: Router,
@@ -287,6 +290,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.loadingReviews = true;
 		this.accountApproved = 'false';
 		this.inviteLink = '';
+		this.isFollowing = false;
+
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.experienceId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
 				location.reload();
@@ -546,6 +551,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						}]
 				},
 				'rooms',
+				'peersFollowing',
 				{ 'assessment_models': [{ 'assessment_na_rules': { 'assessment_result': 'assessees' } }, { 'assessment_rules': { 'assessment_result': 'assessees' } }] }
 			],
 			'relInclude': 'calendarId'
@@ -663,6 +669,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 							this.getDiscussions();
 							this.getBookmarks();
 							this.setUpCarousel();
+							this.checkIfFollowing();
 							if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
 								this.itenaryArray.forEach(itinerary => {
 									itinerary.contents.forEach(content => {
@@ -691,6 +698,19 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				);
 		} else {
 			console.log('NO COLLECTION');
+		}
+	}
+
+	private checkIfFollowing() {
+		if (this.experience.peersFollowing && this.experience.peersFollowing.length > 0) {
+			this.experience.peersFollowing.some(peer => {
+				console.log(peer);
+				if (peer.id === this.userId) {
+					this.isFollowing = true;
+					console.log('isFollowing');
+					return true;
+				}
+			});
 		}
 	}
 
@@ -841,7 +861,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		}
 		this.onContentReady();
 	}
-	
+
 	public onContentReady() {
 		return true;
 	}
@@ -2030,6 +2050,28 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public openShareDialog() {
 		this.dialogsService.shareCollection(this.experience.type, this.experience.id, this.experience.title, this.experience.description, this.experience.headline, environment.apiUrl + this.experience.imageUrls[0]
 			, this.calendarId, this.userType === 'teacher');
+	}
+
+	public followCollectionToggle() {
+		if (!this.isFollowing) {
+			this._profileService.followCollection(this.userId, this.experienceId).subscribe(res => {
+				console.log('added');
+				console.log(res);
+				this.isFollowing = true;
+				this.snackBar.open('Experience Subscribed', 'close', { duration: 3000 });
+			}, (err) => {
+				console.log(err);
+			});
+		} else {
+			this._profileService.unfollowCollection(this.userId, this.experienceId).subscribe(res => {
+				console.log('deleted');
+				console.log(res);
+				this.isFollowing = false;
+				this.snackBar.open('Experience Unsubscribed', 'close', { duration: 3000 });
+			}, (err) => {
+				console.log(err);
+			});
+		}
 	}
 
 }
