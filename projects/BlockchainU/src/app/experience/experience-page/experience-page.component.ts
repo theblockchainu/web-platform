@@ -2057,9 +2057,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this._profileService.followCollection(this.userId, this.experienceId).subscribe(res => {
 				console.log('added');
 				console.log(res);
-				delete this.isFollowing;
 				this.isFollowing = true;
-				this.snackBar.open('Experience Subscribed');
+				this.snackBar.open('Experience Subscribed', 'close', { duration: 3000 });
 			}, (err) => {
 				console.log(err);
 			});
@@ -2067,10 +2066,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this._profileService.unfollowCollection(this.userId, this.experienceId).subscribe(res => {
 				console.log('deleted');
 				console.log(res);
-				delete this.isFollowing;
 				this.isFollowing = false;
-				this.snackBar.open('Experience Unsubscribed');
-
+				this.snackBar.open('Experience Unsubscribed', 'close', { duration: 3000 });
 			}, (err) => {
 				console.log(err);
 			});

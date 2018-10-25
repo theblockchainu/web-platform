@@ -519,6 +519,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				'topics',
 				'calendars',
 				'views',
+				'peersFollowing',
 				{ 'participants': [{ 'profiles': ['work'] }] },
 				{ 'owners': [{ 'profiles': ['work'] }] },
 				{
@@ -634,6 +635,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 							this.getDiscussions();
 							this.getBookmarks();
 							this.setUpCarousel();
+							this.checkIfFollowing();
 							if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
 								this.itenaryArray.forEach(itinerary => {
 									itinerary.contents.forEach(content => {
@@ -660,6 +662,19 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					});
 		} else {
 			console.log('NO COLLECTION');
+		}
+	}
+
+	private checkIfFollowing() {
+		if (this.class.peersFollowing && this.class.peersFollowing.length > 0) {
+			this.class.peersFollowing.some(peer => {
+				console.log(peer);
+				if (peer.id === this.userId) {
+					this.isFollowing = true;
+					console.log('isFollowing');
+					return true;
+				}
+			});
 		}
 	}
 
@@ -1930,9 +1945,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this._profileService.followCollection(this.userId, this.classId).subscribe(res => {
 				console.log('added');
 				console.log(res);
-				delete this.isFollowing;
 				this.isFollowing = true;
-				this.snackBar.open('Class Subscribed');
+				this.snackBar.open('Class Subscribed', 'close', { duration: 3000 });
 			}, (err) => {
 				console.log(err);
 			});
@@ -1940,9 +1954,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this._profileService.unfollowCollection(this.userId, this.classId).subscribe(res => {
 				console.log('deleted');
 				console.log(res);
-				delete this.isFollowing;
 				this.isFollowing = false;
-				this.snackBar.open('Class unsubscribed');
+				this.snackBar.open('Class unsubscribed', 'close', { duration: 3000 });
 			}, (err) => {
 				console.log(err);
 			});

@@ -148,7 +148,7 @@
 									<i class="fa fa-share"></i>
 								</span>
 								<span (click)="followCollectionToggle()" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{class.type | titlecase}}">
-									<i class="far fa-bell"></i>
+									<i [class]="'fa-bell fa' + (isFollowing ? 's' : 'r')"></i> </span>
 								</span>
 							</div>
 						</div>
