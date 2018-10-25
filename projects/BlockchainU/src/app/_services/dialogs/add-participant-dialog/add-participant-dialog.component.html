@@ -1,7 +1,12 @@
 <div class="dialog-container">
 	<div class="row">
 		<div class="col-xs-12">
-			<div class="mat-display-1">Add participant to cohort</div>
+			<button disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+			</button>
+			<div class="mat-display-1" style="margin-bottom: 20px;">
+				Add participant to cohort
+			</div>
 		</div>
 	</div>
 	<div class="row">
@@ -43,8 +48,8 @@
 	</div>-->
 	<div class="row">
 		<div class="col-xs-12">
-			<button (click)="addParticipant()" mat-raised-button>
-				Add participant
+			<button (click)="addParticipant()" mat-raised-button color="primary">
+				Add Participants
 			</button>
 		</div>
 	</div>

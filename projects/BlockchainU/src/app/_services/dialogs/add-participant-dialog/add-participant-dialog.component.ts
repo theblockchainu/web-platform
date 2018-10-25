@@ -21,7 +21,7 @@ export class AddParticipantDialogComponent implements OnInit {
 				@Inject(MAT_DIALOG_DATA) public data: any,
 				public _collectionService: CollectionService,
 				private matSnackBar: MatSnackBar,
-				private dialogRef: MatDialogRef<AddParticipantDialogComponent>,
+				public dialogRef: MatDialogRef<AddParticipantDialogComponent>,
 	) {
 		this.envVariable = environment;
 	}
