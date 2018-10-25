@@ -227,6 +227,7 @@ export class HomefeedComponent implements OnInit {
 						'include': [
 							{ 'owners': ['reviewsAboutYou', 'profiles'] },
 							'participants',
+							'views',
 							'calendars',
 							{ 'bookmarks': 'peer' }
 						],
@@ -266,7 +267,7 @@ export class HomefeedComponent implements OnInit {
 					});
 				}
 				this.classes = _.uniqBy(this.classes, 'id');
-				this.classes = _.orderBy(this.classes, ['createdAt'], ['desc']);
+				this.classes = _.orderBy(this.classes, ['views.length'], ['desc']);
 				this.classes = _.chunk(this.classes, 5)[0];
 
 			}, (err) => {
@@ -283,6 +284,7 @@ export class HomefeedComponent implements OnInit {
 						'include':
 							[{ 'owners': ['reviewsAboutYou', 'profiles'] },
 								'participants',
+								'views',
 								'calendars', { 'bookmarks': 'peer' }, {
 								'contents':
 									['schedules', 'locations']
@@ -341,7 +343,7 @@ export class HomefeedComponent implements OnInit {
 					});
 				}
 				this.experiences = _.uniqBy(this.experiences, 'id');
-				this.experiences = _.orderBy(this.experiences, ['createdAt'], ['desc']);
+				this.experiences = _.orderBy(this.experiences, ['views.length'], ['desc']);
 				this.experiences = _.chunk(this.experiences, 5)[0];
 
 			}, (err) => {
@@ -358,6 +360,7 @@ export class HomefeedComponent implements OnInit {
 						'include':
 							[{ 'owners': ['reviewsAboutYou', 'profiles'] },
 								'participants',
+								'views',
 								'rewards',
 								'calendars', { 'bookmarks': 'peer' }, {
 								'contents':
@@ -398,7 +401,7 @@ export class HomefeedComponent implements OnInit {
 					});
 				}
 				this.bounties = _.uniqBy(this.bounties, 'id');
-				this.bounties = _.orderBy(this.bounties, ['createdAt'], ['desc']);
+				this.bounties = _.orderBy(this.bounties, ['views.length'], ['desc']);
 				this.bounties = _.chunk(this.bounties, 5)[0];
 			}, (err) => {
 				console.log(err);
@@ -414,6 +417,7 @@ export class HomefeedComponent implements OnInit {
 						'include':
 							[{ 'owners': ['reviewsAboutYou', 'profiles'] },
 								'participants',
+								'views',
 								'calendars', { 'bookmarks': 'peer' }
 							], 'where': { 'type': 'guide' }
 					}
@@ -439,7 +443,7 @@ export class HomefeedComponent implements OnInit {
 					});
 				}
 				this.guides = _.uniqBy(this.guides, 'id');
-				this.guides = _.orderBy(this.guides, ['createdAt'], ['desc']);
+				this.guides = _.orderBy(this.guides, ['views.length'], ['desc']);
 				this.guides = _.chunk(this.guides, 5)[0];
 				this.loadingGuides = false;
 			}, (err) => {
@@ -564,6 +568,7 @@ export class HomefeedComponent implements OnInit {
 					}
 					this.questions.push(question);
 				});
+				this.questions = _.orderBy(this.questions, ['views.length'], ['desc']);
 				this.loadingQuestions = false;
 			}, (err) => {
 				console.log(err);

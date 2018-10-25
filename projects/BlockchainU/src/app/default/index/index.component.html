@@ -1,7 +1,7 @@
 <!-- header start here -->
 <header>
 	<nav class="navbar navbar-expand-md navbar-dark">
-		<a class="navbar-brand" href="#">
+		<a class="navbar-brand clickable" (click)="goToHome()">
 			<img src="/assets/images/BU logo_07.png" alt="blockchainu-logo">
 		</a>
 		<span class="example-spacer"></span>
@@ -69,34 +69,36 @@
 		<div class="dark-gray-overlay"></div>
 		<div class="container">
 			<div class="content center">
-				<h1 style="line-height: 3.2rem;">YOUR HOME FOR BLOCKCHAIN
+				<h1 style="line-height: 3.2rem;">BUILD A CAREER IN BLOCKCHAIN
 				</h1>
 				<h2>
-					The world’s leading blockchain developer community
+					The world’s leading blockchain education company
 				</h2>
 				<mat-form-field appearance="outline" color="accent" floatLabel="never" class="search-form search-home pb-block mat-elevation-z20">
-					<input #searchInputBar name="search" placeholder='Try "Blockchain or Hyperledger"' matInput [formControl]="myControl"
+					<input #searchInputBar name="search" placeholder='What do you want to learn?' matInput [formControl]="myControl"
 					 [matAutocomplete]="auto">
 					<mat-autocomplete #auto="matAutocomplete">
-						<mat-option style="height: auto;" *ngIf="searching">
-							<span style="display: inline-block;margin-left: 3%;">
-								<ngx-loading [show]="true" style="position: absolute; top: 13px;"></ngx-loading>
-							</span>
-						</mat-option>
-						<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)" style="height: auto; padding-top: 10px; padding-bottom: 10px;">
-							<div style="display: inline-block; vertical-align: middle;">
-								<img src="{{_searchService.getSearchOptionImage(option)}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
-								 (error)="_collectionService.imgErrorHandler($event)" />
-							</div>
-							<div style="display: inline-block; vertical-align: middle; width: 90%;">
-								<div style="white-space: normal; line-height: 1.7rem;">
-									{{_searchService.getSearchOptionText(option)}}
+						<mat-optgroup [label]="'Popular Searches'">
+							<mat-option style="height: auto;" *ngIf="searching">
+								<span style="display: inline-block;margin-left: 3%;">
+									<ngx-loading [show]="true" style="position: absolute; top: 13px;"></ngx-loading>
+								</span>
+							</mat-option>
+							<mat-option *ngFor="let option of options" [value]="" (click)="onSearchOptionClicked(option)" style="height: auto; padding-top: 10px; padding-bottom: 10px;">
+								<div style="display: inline-block; vertical-align: middle;">
+									<img src="{{_searchService.getSearchOptionImage(option)}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
+									 (error)="_collectionService.imgErrorHandler($event)" />
 								</div>
-								<div class="mat-h5 lightText" style="margin-top: 0px; margin-bottom: 0px;">
-									{{_searchService.getSearchOptionType(option) | uppercase}}
+								<div style="display: inline-block; vertical-align: middle; width: 90%;">
+									<div style="white-space: normal; line-height: 1.7rem;">
+										{{_searchService.getSearchOptionText(option)}}
+									</div>
+									<div class="mat-h5 lightText" style="margin-top: 0px; margin-bottom: 0px;">
+										{{_searchService.getSearchOptionType(option) | uppercase}}
+									</div>
 								</div>
-							</div>
-						</mat-option>
+							</mat-option>
+						</mat-optgroup>
 					</mat-autocomplete>
 				</mat-form-field>
 				<div class="margin-top-30">
@@ -113,26 +115,169 @@
 			<h2 class="section-title">Explore The Blockchain University</h2>
 			<div class="homefeedContainer">
 				<nav mat-tab-nav-bar disableRipple class="noJustify home">
+					<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
+					   matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
+						<img src="/assets/images/experience_thumb.jpg" alt="logo" style="height: 100%;">
+						<h3 class="margin-left-10">In-person Experiences</h3>
+					</a>
+					<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive">
+						<img src="/assets/images/peer_thumb.jpg" alt="logo" style="height: 100%;">
+						<h3 class="margin-left-10">Learning Guides</h3>
+					</a>
 					<a mat-tab-link [routerLink]="'/home/communities'" routerLinkActive #communityLink="routerLinkActive" [active]="communityLink.isActive"
 					 matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
 						<img src="/assets/images/community_thumb.jpg" alt="logo" style="height: 100%;">
 						<h3>Communities</h3>
 					</a>
-					<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive">
-						<img src="/assets/images/peer_thumb.jpg" alt="logo" style="height: 100%;">
-						<h3 class="margin-left-10">Guides</h3>
-					</a>
-					<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
-					 matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
-						<img src="/assets/images/experience_thumb.jpg" alt="logo" style="height: 100%;">
-						<h3 class="margin-left-10">Experiences</h3>
-					</a>
 					<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive"
-					 matTooltip="Classes are a way to learn any subject completely online with videos, projects & live sessions.">
+					 matTooltip="Online Courses are a way to learn any subject completely online with videos, projects & live sessions.">
 						<img src="/assets/images/classes_thumb.jpg" alt="logo" style="height: 100%;">
-						<h3 class="margin-left-10">Classes</h3>
+						<h3 class="margin-left-10">Online Courses</h3>
 					</a>
 				</nav>
+			</div>
+		</div>
+	</section>
+	
+	<section class="introducing-experience spacing">
+		<div class="container">
+			<h2 class="section-title">Introducing In-Person Experiences </h2>
+			<div class="gradient-banner">
+				<div class="hero-banner-bg">
+					<div class="gray-gradient-overlay"></div>
+					<div class="d-table">
+						<div class="d-table-cell align-middle">
+							<div class="content">
+								<h3>Educational bootcamps, workshops &amp; hackathons designed and led by local experts.</h3>
+								<div class="action-btn">
+									<a [routerLink]="'/home/experiences'">Explore Experiences</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<section class="experience-around-world spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">In-person Experiences around the world</h2>
+			<div class="loading-container" [hidden]="!loadingExperiences">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingExperiences" class="row feed-horizontal" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
+					There are no new active experiences to view right now.
+				</div>
+				<div *ngFor="let experience of experiences; let i = index;">
+					<app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
+				</div>
+			</div>
+			<div class="read-more mt-2 mat-body-2" *ngIf="experiences && experiences.length > 5">
+				<a [routerLink]="['home','experiences']">Show all ({{experiences.length}}+)</a>
+			</div>
+		</div>
+	</section>
+	
+	<section class="experience-spotlight spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Experiences for your kind of learning</h2>
+			<div class="row small-margin">
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{subtype: 'workshop'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Workshops</span>
+							</div>
+							<img src="/assets/images/workshop-card.jpg" alt="Workshops">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Explore Now</span>
+							</p>
+							<h3 class="title">Workshop Experiences</h3>
+							<p>Experiences in the style of physical workshops that can be from a few hours to a few days.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{subtype: 'meetup'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Meetups</span>
+							</div>
+							<img src="/assets/images/meetup-card.jpg" alt="Meetups">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Explore Now</span>
+							</p>
+							<h3 class="title">Meetup Experiences</h3>
+							<p>Education related meetups for communities to get together and collaborate on common passions</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-4 small-padding">
+					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{subtype: 'hackathon'}">
+						<div class="card-image rounded-6px">
+							<div class="card-image-content text-center">
+								<span class="image-heading">Hackathons</span>
+							</div>
+							<img src="/assets/images/hackathon-card.jpg" alt="Hackathons">
+						</div>
+						<div class="card-content">
+							<p class="tags text-uppercase">
+								<span>Explore Now</span>
+							</p>
+							<h3 class="title">Hackathon Experiences</h3>
+							<p>Bootcamps and hackathons are more practical in-person experiences where you immerse yourself in finding
+							   practical
+							   solutions to problems</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<section class="classes-anywhere spacing">
+		<div class="container">
+			<h2 class="section-title">Introducing Reward Bounties </h2>
+			<div class="jumbo-image-box">
+				<div class="row">
+					<div class="col-xs-4 image align-top">
+						<div class="image-container">
+							<img src="/assets/images/bounties-anywhere.jpg" alt="bounties-anywhere" class="img-fluid">
+						</div>
+					</div>
+					<div class="col-xs-8 content align-middle">
+						<h3>Rewards based bounties designed by corporate partners</h3>
+						<div class="intro mb-3">Bug bounties, competitive bounties, hiring bounties and much more.</div>
+						<a [routerLink]="'/home/bounties'" class="theme-btn">Find out more</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<section class="experience-around-world spacing">
+		<div class="container">
+			<h2 class="section-title pb-0">Accept Challenges with Reward Bounties</h2>
+			<div class="loading-container" [hidden]="!loadingBounties">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingBounties" class="row feed-horizontal" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="bounties === undefined || bounties.length === 0">
+					There are no new active reward bounties to view right now.
+				</div>
+				<div *ngFor="let bounty of bounties; let i = index;">
+					<app-bounty-card *ngIf="i < 5" [bounty]="bounty" (refresh)="onBountyRefresh($event)"></app-bounty-card>
+				</div>
+			</div>
+			<div class="read-more mt-2 mat-body-2" *ngIf="bounties && bounties.length > 5">
+				<a [routerLink]="['home','bounties']">Show all ({{bounties.length}}+)</a>
 			</div>
 		</div>
 	</section>
@@ -240,110 +385,7 @@
 		</div>
 	</section>
 
-	<section class="introducing-experience spacing">
-		<div class="container">
-			<h2 class="section-title">Introducing In-Person Experiences </h2>
-			<div class="gradient-banner">
-				<div class="hero-banner-bg">
-					<div class="gray-gradient-overlay"></div>
-					<div class="d-table">
-						<div class="d-table-cell align-middle">
-							<div class="content">
-								<h3>Educational bootcamps, workshops &amp; hackathons designed and led by local experts.</h3>
-								<div class="action-btn">
-									<a [routerLink]="'/home/experiences'">Explore Experiences</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="experience-around-world spacing">
-		<div class="container">
-			<h2 class="section-title pb-0">Experiences around the world</h2>
-			<div class="loading-container" [hidden]="!loadingExperiences">
-				<ngx-loading [show]="true"></ngx-loading>
-			</div>
-			<div *ngIf="!loadingExperiences" class="row feed-horizontal" style="padding: 0px 7px;">
-				<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
-					There are no new active experiences to view right now.
-				</div>
-				<div *ngFor="let experience of experiences; let i = index;">
-					<app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
-				</div>
-			</div>
-			<div class="read-more mt-2 mat-body-2" *ngIf="experiences && experiences.length > 5">
-				<a [routerLink]="['home','experiences']">Show all ({{experiences.length}}+)</a>
-			</div>
-		</div>
-	</section>
-
-	<section class="experience-spotlight spacing">
-		<div class="container">
-			<h2 class="section-title pb-0">Experiences for your kind of learning</h2>
-			<div class="row small-margin">
-				<div class="col-12 col-md-4 small-padding">
-					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{subtype: 'workshop'}">
-						<div class="card-image rounded-6px">
-							<div class="card-image-content text-center">
-								<span class="image-heading">Workshops</span>
-							</div>
-							<img src="/assets/images/workshop-card.jpg" alt="Workshops">
-						</div>
-						<div class="card-content">
-							<p class="tags text-uppercase">
-								<span>Explore Now</span>
-							</p>
-							<h3 class="title">Workshops Experiences</h3>
-							<p>Experiences in the style of physical workshops that can be from a few hours to a few days.
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-12 col-md-4 small-padding">
-					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{subtype: 'meetup'}">
-						<div class="card-image rounded-6px">
-							<div class="card-image-content text-center">
-								<span class="image-heading">Meetups</span>
-							</div>
-							<img src="/assets/images/meetup-card.jpg" alt="Meetups">
-						</div>
-						<div class="card-content">
-							<p class="tags text-uppercase">
-								<span>Explore Now</span>
-							</p>
-							<h3 class="title">Meetup Experiences</h3>
-							<p>Education related meetups for communities to get together and collaborate on common passions</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-12 col-md-4 small-padding">
-					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{subtype: 'hackathon'}">
-						<div class="card-image rounded-6px">
-							<div class="card-image-content text-center">
-								<span class="image-heading">Hackathons</span>
-							</div>
-							<img src="/assets/images/hackathon-card.jpg" alt="Hackathons">
-						</div>
-						<div class="card-content">
-							<p class="tags text-uppercase">
-								<span>Explore Now</span>
-							</p>
-							<h3 class="title">Hackathon Experiences</h3>
-							<p>Bootcamps and hackathons are more practical in-person experiences where you immerse yourself in finding
-								practical
-								solutions to problems</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="unique-experience spacing">
+	<!--<section class="unique-experience spacing">
 		<div class="container">
 			<h2 class="section-title  pb-0">Experiences in the spotlight</h2>
 			<div class="row">
@@ -383,51 +425,11 @@
 				</div>
 			</div>
 		</div>
-	</section>
-	
-	<section class="classes-anywhere spacing">
-		<div class="container">
-			<h2 class="section-title">Introducing Reward Bounties </h2>
-			<div class="jumbo-image-box">
-				<div class="row">
-					<div class="col-xs-4 image align-top">
-						<div class="image-container">
-							<img src="/assets/images/bounties-anywhere.jpg" alt="bounties-anywhere" class="img-fluid">
-						</div>
-					</div>
-					<div class="col-xs-8 content align-middle">
-						<h3>Rewards based bounties designed by corporate partners</h3>
-						<div class="intro mb-3">Bug bounties, competitive bounties, hiring bounties and much more.</div>
-						<a [routerLink]="'/home/bounties'" class="theme-btn">Find out more</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	
-	<section class="experience-around-world spacing">
-		<div class="container">
-			<h2 class="section-title pb-0">Accept Challenges with Reward Bounties</h2>
-			<div class="loading-container" [hidden]="!loadingBounties">
-				<ngx-loading [show]="true"></ngx-loading>
-			</div>
-			<div *ngIf="!loadingBounties" class="row feed-horizontal" style="padding: 0px 7px;">
-				<div class="noDataContainer" *ngIf="bounties === undefined || bounties.length === 0">
-					There are no new active reward bounties to view right now.
-				</div>
-				<div *ngFor="let bounty of bounties; let i = index;">
-					<app-bounty-card *ngIf="i < 5" [bounty]="bounty" (refresh)="onBountyRefresh($event)"></app-bounty-card>
-				</div>
-			</div>
-			<div class="read-more mt-2 mat-body-2" *ngIf="bounties && bounties.length > 5">
-				<a [routerLink]="['home','bounties']">Show all ({{bounties.length}}+)</a>
-			</div>
-		</div>
-	</section>
+	</section>-->
 
 	<section class="classes-anywhere spacing">
 		<div class="container">
-			<h2 class="section-title">Introducing Classes</h2>
+			<h2 class="section-title">Introducing Online Courses</h2>
 			<div class="jumbo-image-box">
 				<div class="row">
 					<div class="col-xs-4 image align-top">
@@ -447,13 +449,13 @@
 
 	<section class="experience-around-world top-rated-classes spacing">
 		<div class="container">
-			<h2 class="section-title pb-0">Top rated classes</h2>
+			<h2 class="section-title pb-0">Top rated online courses</h2>
 			<div class="loading-container" [hidden]="!loadingClasses">
 				<ngx-loading [show]="true"></ngx-loading>
 			</div>
 			<div *ngIf="!loadingClasses" class="row feed-horizontal" style="padding: 0px 7px;">
 				<div class="noDataContainer" *ngIf="classes === undefined || classes.length === 0">
-					There are no new active classes to view right now.
+					There are no new active courses to view right now.
 				</div>
 				<div *ngFor="let class of classes; let i =index">
 					<app-class-card *ngIf="i < 5" [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>
@@ -467,7 +469,7 @@
 
 	<section class="experience-spotlight classes-spotlight spacing">
 		<div class="container">
-			<h2 class="section-title pb-0">Classes in the spotlight</h2>
+			<h2 class="section-title pb-0">Online courses in the spotlight</h2>
 			<div class="row small-margin">
 				<div class="col-12 col-md-4 small-padding">
 					<div class="custom-card clickable" [routerLink]="'/home/classes'" [queryParams]="{topic: 'ethereum'}">
@@ -481,7 +483,7 @@
 							<p class="tags text-uppercase">
 								<span>Explore Now</span>
 							</p>
-							<h3 class="title">Ethereum Classes</h3>
+							<h3 class="title">Ethereum Courses</h3>
 							<p>Learn from online webinars, live sessions and recorded videos about ethereum, solidity, truffle etc.
 							</p>
 						</div>
@@ -499,7 +501,7 @@
 							<p class="tags text-uppercase">
 								<span>Explore Now</span>
 							</p>
-							<h3 class="title">Hyperledger Classes</h3>
+							<h3 class="title">Hyperledger Courses</h3>
 							<p>Engage in interactive online sessions with experts to learn about hyperledger design and development</p>
 						</div>
 					</div>
@@ -516,7 +518,7 @@
 							<p class="tags text-uppercase">
 								<span>Explore Now</span>
 							</p>
-							<h3 class="title">Corda Classes</h3>
+							<h3 class="title">Corda Courses</h3>
 							<p>From beginner classes for Corda enthusiasts to advanced programs for senior developers, from software
 								engineers
 								to company executives, everything you need to learn about the decentralized technology</p>

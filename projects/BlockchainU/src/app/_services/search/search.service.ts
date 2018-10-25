@@ -73,129 +73,154 @@ export class SearchService {
     }
 
     public getSearchOptionText(option) {
-        switch (option.index.split('_')[1]) {
-            case 'collection':
-                switch (option.data.type) {
-                    case 'class':
-                        return this.ucfirst.transform(option.data.title);
-                    case 'experience':
-                        return this.ucfirst.transform(option.data.title);
-                    case 'guide':
-                        return this.ucfirst.transform(option.data.title);
-                    default:
-                        return this.ucfirst.transform(option.data.title);
-                }
-            case 'topic':
-                return this.ucwords.transform(option.data.name);
-            case 'community':
-                return this.ucfirst.transform(option.data.title);
-            case 'question':
-                return this.ucfirst.transform(option.data.text);
-            case 'peer':
-                if (option.data.profiles[0] === undefined) {
-                    return option.data.id;
-                } else if (option.data.profiles[0] !== undefined && option.data.profiles[0].first_name === undefined) {
-                    return option.data.id;
-                } else {
-                    return this.ucwords.transform(option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name);
-                }
-            default:
-                return;
-        }
+		if (option && option.index) {
+			switch (option.index.split('_')[1]) {
+				case 'collection':
+					switch (option.data.type) {
+						case 'class':
+							return this.ucfirst.transform(option.data.title);
+						case 'experience':
+							return this.ucfirst.transform(option.data.title);
+						case 'guide':
+							return this.ucfirst.transform(option.data.title);
+						case 'bounty':
+							return this.ucfirst.transform(option.data.title);
+						default:
+							return this.ucfirst.transform(option.data.title);
+					}
+				case 'topic':
+					return this.ucwords.transform(option.data.name);
+				case 'community':
+					return this.ucfirst.transform(option.data.title);
+				case 'question':
+					return this.ucfirst.transform(option.data.text);
+				case 'peer':
+					if (option.data.profiles[0] === undefined) {
+						return option.data.id;
+					} else if (option.data.profiles[0] !== undefined && option.data.profiles[0].first_name === undefined) {
+						return option.data.id;
+					} else {
+						return this.ucwords.transform(option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name);
+					}
+				default:
+					return;
+			}
+		} else {
+			return option;
+		}
     }
 
 
     public getSearchOptionImage(option) {
-        switch (option.index.split('_')[1]) {
-            case 'collection':
-                switch (option.data.type) {
-                    case 'class':
-                        return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
-                    case 'experience':
-                        return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
-                    case 'guide':
-                        return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
-                    default:
-                        return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
-                }
-            case 'topic':
-                return environment.apiUrl + option.data.imageUrl + '/100';
-            case 'community':
-                return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/placeholder-image.jpg';
-            case 'question':
-                return '/assets/images/placeholder-image.jpg';
-            case 'peer':
-                if (option.data.profiles[0] === undefined) {
-                    return '/assets/images/user-placeholder.jpg';
-                } else if (option.data.profiles[0] !== undefined && option.data.profiles[0].picture_url === undefined) {
-                    return '/assets/images/user-placeholder.jpg';
-                } else {
-                    return environment.apiUrl + option.data.profiles[0].picture_url + '/100';
-                }
-            default:
-                return;
-        }
+		if (option && option.index) {
+			switch (option.index.split('_')[1]) {
+				case 'collection':
+					switch (option.data.type) {
+						case 'class':
+							return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/collection-placeholder.jpg';
+						case 'experience':
+							return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/collection-placeholder.jpg';
+						case 'bounty':
+							return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/collection-placeholder.jpg';
+						case 'guide':
+							return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/collection-placeholder.jpg';
+						default:
+							return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/collection-placeholder.jpg';
+					}
+				case 'topic':
+					return option.data.imageUrls ? environment.apiUrl + option.data.imageUrl + '/100' : '/assets/images/collection-placeholder.jpg';
+				case 'community':
+					return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/community-banner-bg.jpg';
+				case 'question':
+					return '/assets/images/question-icon.png';
+				case 'peer':
+					if (option.data.profiles[0] === undefined) {
+						return '/assets/images/user-placeholder.jpg';
+					} else if (option.data.profiles[0] !== undefined && option.data.profiles[0].picture_url === undefined) {
+						return '/assets/images/user-placeholder.jpg';
+					} else {
+						return environment.apiUrl + option.data.profiles[0].picture_url + '/100';
+					}
+				default:
+					return '/assets/images/collection-placeholder.jpg';
+			}
+		} else {
+			return '/assets/images/collection-placeholder.jpg';
+		}
     }
 
     public getSearchOptionType(option) {
-        switch (option.index.split('_')[1]) {
-            case 'collection':
-                switch (option.data.type) {
-                    case 'class':
-                        return 'Online Class';
-                    case 'experience':
-                        return 'In-person Experience';
-                    case 'guide':
-                        return 'Learning Guide';
-                    default:
-                        return 'Collection';
-                }
-            case 'topic':
-                return 'Topic';
-            case 'community':
-                return 'Community';
-            case 'question':
-                return 'Question';
-            case 'peer':
-                return 'User';
-            default:
-                return;
-        }
+		if (option && option.index) {
+			switch (option.index.split('_')[1]) {
+				case 'collection':
+					switch (option.data.type) {
+						case 'class':
+							return 'Online Course';
+						case 'experience':
+							return 'In-person Experience';
+						case 'bounty':
+							return 'Reward Bounty';
+						case 'guide':
+							return 'Learning Guide';
+						default:
+							return 'Collection';
+					}
+				case 'topic':
+					return 'Topic';
+				case 'community':
+					return 'Community';
+				case 'question':
+					return 'Question';
+				case 'peer':
+					return 'User';
+				default:
+					return;
+			}
+		} else {
+			return '';
+		}
     }
 
     public onSearchOptionClicked(option) {
-        switch (option.index.split('_')[1]) {
-            case 'collection':
-                switch (option.data.type) {
-                    case 'class':
-                        this.router.navigate(['/class', option.data.id]);
-                        break;
-                    case 'experience':
-                        this.router.navigate(['/experience', option.data.id]);
-                        break;
-                    case 'guide':
-                        this.router.navigate(['/guide', option.data.id]);
-                        break;
-                    default:
-                        this.router.navigate(['/console/dashboard']);
-                        break;
-                }
-                break;
-            case 'topic':
-                this.router.navigate(['/console/profile/topics']);
-                break;
-            case 'community':
-                this.router.navigate(['/community', option.data.id]);
-                break;
-            case 'question':
-                this.router.navigate(['/question', option.data.id]);
-                break;
-            case 'peer':
-                this.router.navigate(['/profile', option.data.id]);
-                break;
-            default:
-                break;
-        }
+    	if (option && option.index) {
+			switch (option.index.split('_')[1]) {
+				case 'collection':
+					switch (option.data.type) {
+						case 'class':
+							this.router.navigate(['/class', option.data.id]);
+							break;
+						case 'experience':
+							this.router.navigate(['/experience', option.data.id]);
+							break;
+						case 'bounty':
+							this.router.navigate(['/bounty', option.data.id]);
+							break;
+						case 'guide':
+							this.router.navigate(['/guide', option.data.id]);
+							break;
+						default:
+							this.router.navigate(['/console/dashboard']);
+							break;
+					}
+					break;
+				case 'topic':
+					this.router.navigate(['/console/profile/topics']);
+					break;
+				case 'community':
+					this.router.navigate(['/community', option.data.id]);
+					break;
+				case 'question':
+					this.router.navigate(['/question', option.data.id]);
+					break;
+				case 'peer':
+					this.router.navigate(['/profile', option.data.id]);
+					break;
+				default:
+					break;
+			}
+		} else {
+			this.router.navigateByUrl('/home/experiences?title=' + option);
+		}
     }
 
     public getTopics() {

@@ -49,9 +49,11 @@
 			<span *ngIf="!bounty.resultsAnnounced && bounty.startDiff<=0">Ends {{bounty.endsIn}}</span>
 		</div>
 		<div style="margin-top: 2px; font-size: 15px; color: #333;">
-			Win <span class="mat-body-2" *ngIf="bounty.highestReward">
+			Win
+			<span class="mat-body-2" *ngIf="bounty.highestReward">
 				<span *ngIf="bounty.highestReward.value>0">
-					upto {{bounty.highestReward.value | convertCurrency:bounty.highestReward.currency |async}}</span>
+					upto {{bounty.highestReward.value | convertCurrency:bounty.highestReward.currency |async}}
+				</span>
 				<span *ngIf="bounty.highestReward.value<=0">
 					{{bounty.highestReward.title}}
 				</span>

@@ -62,6 +62,7 @@ export class IndexComponent implements OnInit {
 	public searching: boolean;
 	public guides: Array<any>;
 	public loadingGuides = false;
+	public popularSearches = [];
 
 	constructor(
 		private authenticationService: AuthenticationService,
@@ -87,6 +88,14 @@ export class IndexComponent implements OnInit {
 
 	ngOnInit() {
 		this.loadingHome = false;
+		this.options = [
+			'ethereum',
+			'hyperledger',
+			'blockchain',
+			'cryptography',
+			'design thinking',
+			'machine learning'
+		];
 		this.notifyForm = this._fb.group(
 			{ email: ['', [Validators.required, Validators.email]] }
 		);
@@ -140,7 +149,14 @@ export class IndexComponent implements OnInit {
 				});
 			} else {
 				this.searching = false;
-				this.options = [];
+				this.options = [
+					'ethereum',
+					'hyperledger',
+					'blockchain',
+					'cryptography',
+					'design thinking',
+					'machine learning'
+				];
 			}
 		});
 	}
@@ -199,6 +215,7 @@ export class IndexComponent implements OnInit {
 						'include': [
 							{ 'owners': ['reviewsAboutYou', 'profiles'] },
 							'participants',
+							'views',
 							'calendars',
 							{ 'bookmarks': 'peer' }
 						],
@@ -239,7 +256,7 @@ export class IndexComponent implements OnInit {
 					});
 				}
 				this.classes = _.uniqBy(this.classes, 'id');
-				this.classes = _.orderBy(this.classes, ['createdAt'], ['desc']);
+				this.classes = _.orderBy(this.classes, ['views.length'], ['desc']);
 				this.classes = _.chunk(this.classes, 5)[0];
 			}, (err) => {
 				console.log(err);
@@ -259,6 +276,7 @@ export class IndexComponent implements OnInit {
 						'include':
 							[{ 'owners': ['reviewsAboutYou', 'profiles'] },
 								'participants',
+								'views',
 								'calendars', { 'bookmarks': 'peer' }, {
 								'contents':
 									['schedules', 'locations']
@@ -317,7 +335,7 @@ export class IndexComponent implements OnInit {
 					});
 				}
 				this.experiences = _.uniqBy(this.experiences, 'id');
-				this.experiences = _.orderBy(this.experiences, ['createdAt'], ['desc']);
+				this.experiences = _.orderBy(this.experiences, ['views.length'], ['desc']);
 				this.experiences = _.chunk(this.experiences, 5)[0];
 				console.log(this.experiences);
 				this.loadingExperiences = false;
@@ -340,6 +358,7 @@ export class IndexComponent implements OnInit {
 						'include':
 							[{ 'owners': ['reviewsAboutYou', 'profiles'] },
 								'participants',
+								'views',
 								'rewards',
 								'calendars', { 'bookmarks': 'peer' }, {
 								'contents':
@@ -380,7 +399,7 @@ export class IndexComponent implements OnInit {
 					});
 				}
 				this.bounties = _.uniqBy(this.bounties, 'id');
-				this.bounties = _.orderBy(this.bounties, ['createdAt'], ['desc']);
+				this.bounties = _.orderBy(this.bounties, ['views.length'], ['desc']);
 				this.bounties = _.chunk(this.bounties, 5)[0];
 			}, (err) => {
 				console.log(err);
@@ -526,6 +545,7 @@ export class IndexComponent implements OnInit {
 					}
 					this.questions.push(question);
 				});
+				this.questions = _.orderBy(this.questions, ['views.length'], ['desc']);
 				this.loadingQuestions = false;
 			}, (err) => {
 				console.log(err);
@@ -734,5 +754,9 @@ export class IndexComponent implements OnInit {
 	
 	public openBlog() {
 		window.location.href = 'https://medium.com/theblockchainu';
+	}
+	
+	public goToHome() {
+		this._router.navigate(['/']);
 	}
 }

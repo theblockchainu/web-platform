@@ -978,7 +978,15 @@ h3.calendarTitle {
 }
 
 .Description h1 {
-	margin-top: 0em !important;
+	margin-top: 5px !important;
+	margin-bottom: 0em !important;
+	padding-bottom: 0em !important;
+	border: 0px !important;
+	font-size: 1.50em !important;
+}
+
+.Description ul {
+	margin-top: -40px !important;
 }
 
 .center {
