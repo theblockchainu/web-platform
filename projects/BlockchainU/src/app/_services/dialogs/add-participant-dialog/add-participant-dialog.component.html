@@ -22,7 +22,7 @@
 						{{peer.name | ucwords}}
 						<mat-icon matChipRemove>cancel</mat-icon>
 					</mat-chip>
-					<input placeholder="Search for a user you want to add to this cohort.." #peerInput [ngModel]="searchField" (ngModelChange)="onSearch($event)"
+					<input placeholder="Search for a user you want to add to this cohort.." #peerInput [(ngModel)]="searchField" (keyup)="onSearch($event)"
 					       [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputAddOnBlur]="true" />
 				</mat-chip-list>
 				<mat-autocomplete #auto="matAutocomplete">
