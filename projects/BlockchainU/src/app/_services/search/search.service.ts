@@ -34,6 +34,17 @@ export class SearchService {
                 cb(err);
             });
     }
+	
+	public getPeerSearch(query: any, cb) {
+		this.http
+			.get(environment.searchUrl + '/searchPeer?' + 'query=' + query, this.requestHeaderService.options)
+			.subscribe((response: any) => {
+				console.log(response);
+				cb(null, response);
+			}, (err) => {
+				cb(err);
+			});
+	}
 
     public getPeerSearchResults(query: any) {
         if (query.length > 0) {

@@ -20,6 +20,10 @@ footer {
 	padding: 20px;
 }
 
+b {
+	font-weight: 600 !important;
+}
+
 a,
 a:active,
 a:visited {

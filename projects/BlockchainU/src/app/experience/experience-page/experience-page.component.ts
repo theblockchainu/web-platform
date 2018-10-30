@@ -573,13 +573,17 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						this.inviteLink = environment.clientUrl + '/experience/' + this.experience.id;
 						this.setTags();
 						this.setCurrentCalendar();
-						if (fbq && fbq !== undefined) {
-							fbq('track', 'ViewContent', {
-								currency: 'USD',
-								value: 0.0,
-								content_type: 'product',
-								content_ids: [this.experienceId]
-							});
+						try {
+							if (fbq && fbq !== undefined) {
+								fbq('track', 'ViewContent', {
+									currency: 'USD',
+									value: 0.0,
+									content_type: 'product',
+									content_ids: [this.experienceId]
+								});
+							}
+						} catch (e) {
+							console.log(e);
 						}
 						this.itenariesObj = {};
 						this.itenaryArray = [];
@@ -723,13 +727,17 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value;
 		this._authenticationService.createGuestContacts(first_name, '', email, subject, message)
 			.subscribe(res => {
-				if (fbq && fbq !== undefined) {
-					fbq('track', 'Lead', {
-						currency: 'USD',
-						value: 1.0,
-						content_name: this.experience.title,
-						content_category: this.experience.type
-					});
+				try {
+					if (fbq && fbq !== undefined) {
+						fbq('track', 'Lead', {
+							currency: 'USD',
+							value: 1.0,
+							content_name: this.experience.title,
+							content_category: this.experience.type
+						});
+					}
+				} catch (e) {
+					console.log(e);
 				}
 				this.contactUsForm.reset();
 				this.snackBar.open('Thanks for your interest we will get back to you shortly', 'Close', { duration: 3000 });
@@ -1084,15 +1092,19 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						console.log(err);
 					} else {
 						// FB Event Trigger
-						if (fbq && fbq !== undefined) {
-							fbq('track', 'AddToWishlist', {
-								currency: 'USD',
-								value: 0.0,
-								content_ids: [this.experienceId],
-								content_name: this.experience.title,
-								content_category: this.experience.type,
-								content_type: 'product'
-							});
+						try {
+							if (fbq && fbq !== undefined) {
+								fbq('track', 'AddToWishlist', {
+									currency: 'USD',
+									value: 0.0,
+									content_ids: [this.experienceId],
+									content_name: this.experience.title,
+									content_category: this.experience.type,
+									content_type: 'product'
+								});
+							}
+						} catch (e) {
+							console.log(e);
 						}
 						this.snackBar.open('Bookmarked', 'Close', {
 							duration: 5000

@@ -39,15 +39,19 @@ export class GuideCardComponent implements OnInit {
 				&& guide.bookmarks[0].peer[0].id === this.userId)) {
 				this._collectionService.saveBookmark(guide.id, (err, response) => {
 					// FB Event Trigger
-					if (fbq && fbq !== undefined) {
-						fbq('track', 'AddToWishlist', {
-							currency: 'USD',
-							value: 0.0,
-							content_ids: [guide.id],
-							content_name: guide.title,
-							content_category: guide.type,
-							content_type: 'product'
-						});
+					try {
+						if (fbq && fbq !== undefined) {
+							fbq('track', 'AddToWishlist', {
+								currency: 'USD',
+								value: 0.0,
+								content_ids: [guide.id],
+								content_name: guide.title,
+								content_category: guide.type,
+								content_type: 'product'
+							});
+						}
+					} catch (e) {
+						console.log(e);
 					}
 					this.refresh.emit(true);
 				});

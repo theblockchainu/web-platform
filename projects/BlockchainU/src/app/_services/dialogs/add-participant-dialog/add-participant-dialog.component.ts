@@ -52,9 +52,12 @@ export class AddParticipantDialogComponent implements OnInit {
 	
 	onSearch(event: any) {
 		console.log(this.searchField);
-		this._searchService.getPeerSearchResults(this.searchField).subscribe((res: any) => {
-			console.log(res);
-			this.searchOptions = res;
+		this._searchService.getPeerSearch(this.searchField, (err, result) => {
+			if (!err) {
+				this.searchOptions = result;
+			} else {
+				console.log(err);
+			}
 		});
 	}
 	

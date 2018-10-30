@@ -134,11 +134,12 @@ export class ExperiencesComponent implements OnInit {
 			let subtypeBool = false;
 			let titleBool = false;
 			
-			
-			for (let i = 0; (i < this.filterForm.value.title.length && !titleBool); i++) {
-				const title = this.filterForm.value.title[i];
-				if (_.includes(val.title, title)) {
-					titleBool = true;
+			if (this.filterForm.value && this.filterForm.value.title) {
+				for (let i = 0; (i < this.filterForm.value.title.length && !titleBool); i++) {
+					const title = this.filterForm.value.title[i];
+					if (_.includes(val.title, title)) {
+						titleBool = true;
+					}
 				}
 			}
 			
