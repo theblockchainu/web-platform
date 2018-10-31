@@ -8,13 +8,18 @@ import { ExperienceIntroComponent } from './experience-intro/experience-intro.co
 import { ClassIntroComponent } from './class-intro/class-intro.component';
 import { CommunityIntroComponent } from './community-intro/community-intro.component';
 import { PeerIntroComponent } from './peer-intro/peer-intro.component';
-import { MatMenuModule } from '@angular/material';
+import { MatMenuModule, MatButtonModule } from '@angular/material';
+import { AboutUsComponent } from './about-us/about-us.component';
 @NgModule({
   imports: [
     CommonModule,
     DigestRoutingModule,
-    MatMenuModule
+    MatMenuModule,
+    MatButtonModule
   ],
-  declarations: [WhyTeachComponent, TeachingBenefitsComponent, ResponsibleTeachingComponent, ExperienceIntroComponent, ClassIntroComponent, CommunityIntroComponent, PeerIntroComponent]
+  declarations: [WhyTeachComponent,
+    TeachingBenefitsComponent, ResponsibleTeachingComponent,
+    ExperienceIntroComponent, ClassIntroComponent, CommunityIntroComponent,
+    PeerIntroComponent, AboutUsComponent]
 })
 export class DigestModule { }

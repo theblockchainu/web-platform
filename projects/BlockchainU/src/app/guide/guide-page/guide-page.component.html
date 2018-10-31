@@ -71,7 +71,8 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<p class="mat-display-1" style="margin-bottom: 20px !important; font-weight: 700;">{{guide.title | titlecase}}
+										<p class="mat-display-1" style="margin-bottom: 20px !important; font-weight: 700;">{{guide.title |
+											titlecase}}
 										</p>
 									</div>
 								</div>
@@ -610,28 +611,8 @@
 					<div class="col-md-5 col-md-offset-1 right-content right-content-sticky hide-small">
 						<!--CODE LAB-->
 						<div *ngIf="userType==='participant' || userType === 'teacher'">
-							<div class="row">
-								<!--<div class="col-md-12" style="height: 100vh; background: #fff; padding-top: 20px; padding-bottom: 20px;">
-									<iframe src="http://peerbuds.com:8090" width="100%" height="100%" style="border: none;"></iframe>
-								</div>-->
-								<div class="col-md-12 margin-top-40">
-									<div class="mat-display-2">
-										Introducing Code Labs
-									</div>
-								</div>
-								<div class="col-md-12 margin-top-30">
-									<div class="mat-caption">
-										Highlights:
-									</div>
-									<br>
-									<br>
-									<ul>
-										<li>No need for complex setups to start learning blockchain coding.</li>
-										<li>Write code in your browser and see results instantly.</li>
-										<li>Share your code with peers and get reviews from the community.</li>
-									</ul>
-								</div>
-							</div>
+							<iframe style="height:-webkit-fill-available;width: -webkit-fill-available" src="https://blockc.westus2.cloudapp.azure.com:3000/">
+							</iframe>
 						</div>
 						<div class="row" *ngIf="userType === 'public'">
 							<div class="col-md-12">

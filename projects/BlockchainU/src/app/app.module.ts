@@ -121,7 +121,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 		}),
 		LandingPageModule,
 		SharedModule
-	],
+		],
 	providers: [
 		CookieService,
 		UcWordsPipe,
