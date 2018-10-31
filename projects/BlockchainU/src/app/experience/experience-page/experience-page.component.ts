@@ -693,10 +693,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 					} else {
 						this.loadingExperience = false;
 					}
-
 				},
 					err => {
-						this.loadingExperience = false;
+						this.checkIfURLisCollectionTitle();
 						console.log('error');
 					}
 				);
@@ -704,7 +703,22 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			console.log('NO COLLECTION');
 		}
 	}
-
+	private checkIfURLisCollectionTitle() {
+		const title = this.experienceId.replace('-', ' ').toLowerCase();
+		const query = {
+			'where': {
+				'title': title
+			}
+		};
+		this._collectionService.getAllCollections(query).subscribe(res => {
+			console.log('collection found');
+			this.experienceId = res[0].id;
+			this.initializeExperience();
+			console.log(res);
+		}, err => {
+			this.loadingExperience = false;
+		});
+	}
 	private checkIfFollowing() {
 		if (this.experience.peersFollowing && this.experience.peersFollowing.length > 0) {
 			this.experience.peersFollowing.some(peer => {
