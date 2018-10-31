@@ -3,19 +3,20 @@ import { CommonModule } from '@angular/common';
 
 import { LeftSidebarRoutingModule } from './left-sidebar-routing.module';
 import { LeftSidebarComponent } from './left-sidebar.component';
-import { MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
+import {MatSidenavModule, MatIconModule, MatListModule, MatTooltipModule} from '@angular/material';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    LeftSidebarRoutingModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule
-  ],
-  declarations: [LeftSidebarComponent],
-  exports: [
-    LeftSidebarComponent
-  ]
+	imports: [
+		CommonModule,
+		LeftSidebarRoutingModule,
+		MatSidenavModule,
+		MatIconModule,
+		MatTooltipModule,
+		MatListModule
+	],
+	declarations: [LeftSidebarComponent],
+	exports: [
+		LeftSidebarComponent
+	]
 })
 export class LeftSidebarModule { }

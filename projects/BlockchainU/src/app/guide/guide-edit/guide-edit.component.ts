@@ -76,7 +76,7 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public searchTopicURL = '';
 	public createTopicURL = '';
 	public placeholderStringTopic = 'Search for a topic ';
-	public maxTopicMsg = 'Choose max 3 related topics';
+	public maxTopicMsg = 'Choose max 5 related topics';
 
 
 	public difficulties = [];
@@ -86,7 +86,7 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public availableAssessmentTypes = [];
 	public availableAssessmentStyles = [];
 	public key;
-	public maxTopics = 3;
+	public maxTopics = 5;
 	public otpSent = false;
 
 	profileImagePending: Boolean;
