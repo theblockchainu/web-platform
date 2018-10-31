@@ -241,6 +241,16 @@ export class CollectionService {
 		const b = moment(endDate);
 		const diff = b.diff(a, 'days');
 		switch (true) {
+			case diff === -1:
+				return 'tomorrow';
+			case diff < 0 && diff > -7:
+				return 'in ' + Math.abs(diff) + ' days';
+			case diff <= -7 && diff > -30:
+				return 'in ' + Math.abs(Math.floor(diff / 7)) + ' weeks';
+			case diff <= -30 && diff > -365:
+				return 'in ' + Math.abs(Math.floor(diff / 30)) + ' months';
+			case diff <= -365:
+				return 'in ' + Math.abs(Math.floor(diff / 365)) + ' years';
 			case diff === 0:
 				return 'today';
 			case diff === 1:
@@ -332,6 +342,25 @@ export class CollectionService {
 			return 0;
 		}).filter((element, index) => {
 			return moment() < moment(element.endDate);
+		});
+		return calendars[0];
+	}
+	
+	/**
+	 * Get the upcoming active calendar of this collection
+	 * @param calendars
+	 */
+	public getUpcomingCalendar(calendars) {
+		calendars = calendars.sort((a, b) => {
+			if (moment(a.startDate) < moment(b.startDate)) {
+				return -1;
+			}
+			if (moment(a.startDate) > moment(b.startDate)) {
+				return 1;
+			}
+			return 0;
+		}).filter((element, index) => {
+			return moment() < moment(element.startDate);
 		});
 		return calendars[0];
 	}

@@ -38,15 +38,19 @@ export class ClassCardComponent implements OnInit {
 				&& _class.bookmarks[0].peer[0].id === this.userId)) {
 				this._collectionService.saveBookmark(_class.id, (err, response) => {
 					// FB Event Trigger
-					if (fbq && fbq !== undefined) {
-						fbq('track', 'AddToWishlist', {
-							currency: 'USD',
-							value: 0.0,
-							content_ids: [_class.id],
-							content_name: _class.title,
-							content_category: _class.type,
-							content_type: 'product'
-						});
+					try {
+						if (fbq && fbq !== undefined) {
+							fbq('track', 'AddToWishlist', {
+								currency: 'USD',
+								value: 0.0,
+								content_ids: [_class.id],
+								content_name: _class.title,
+								content_category: _class.type,
+								content_type: 'product'
+							});
+						}
+					} catch (e) {
+						console.log(e);
 					}
 					this.refresh.emit(true);
 				});

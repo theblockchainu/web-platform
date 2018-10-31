@@ -26,13 +26,13 @@
 					       [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputAddOnBlur]="true" />
 				</mat-chip-list>
 				<mat-autocomplete #auto="matAutocomplete">
-					<mat-option *ngFor="let option of searchOptions" [value]="" (click)="onSearchOptionClicked(option)">
+					<mat-option *ngFor="let option of searchOptions" [value]="" (click)="onSearchOptionClicked(option.data)">
 						<span>
-							<img src="{{envVariable.apiUrl+option.profiles[0].picture_url}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
+							<img src="{{envVariable.apiUrl+option.data.profiles[0].picture_url}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
 							     (error)="_collectionService.imgErrorHandler($event)" />
 						</span>
 						<span>
-							{{option.profiles[0].first_name + ' ' + option.profiles[0].last_name | ucwords}}
+							{{option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name | ucwords}}
 						</span>
 					</mat-option>
 				</mat-autocomplete>

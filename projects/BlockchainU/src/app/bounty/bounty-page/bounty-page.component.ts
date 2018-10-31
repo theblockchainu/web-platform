@@ -568,13 +568,17 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 						this.inviteLink = environment.clientUrl + '/bounty/' + this.bounty.id;
 						this.setTags();
 						this.setCurrentCalendar();
-						if (fbq !== undefined) {
-							fbq('track', 'ViewContent', {
-								currency: 'USD',
-								value: 0.0,
-								content_type: 'product',
-								content_ids: [this.bountyId]
-							});
+						try {
+							if (fbq !== undefined) {
+								fbq('track', 'ViewContent', {
+									currency: 'USD',
+									value: 0.0,
+									content_type: 'product',
+									content_ids: [this.bountyId]
+								});
+							}
+						} catch (e) {
+							console.log(e);
 						}
 						this.bounty.rewards.sort((a, b) => {
 							if (a.position > b.position) {
@@ -736,13 +740,17 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value;
 		this._authenticationService.createGuestContacts(first_name, '', email, subject, message)
 			.subscribe(res => {
-				if (fbq !== undefined) {
-					fbq('track', 'Lead', {
-						currency: 'USD',
-						value: 1.0,
-						content_name: this.bounty.title,
-						content_category: this.bounty.type
-					});
+				try {
+					if (fbq !== undefined) {
+						fbq('track', 'Lead', {
+							currency: 'USD',
+							value: 1.0,
+							content_name: this.bounty.title,
+							content_category: this.bounty.type
+						});
+					}
+				} catch (e) {
+					console.log(e);
 				}
 				this.contactUsForm.reset();
 				this.snackBar.open('Thanks for your interest we will get back to you shortly', 'Close', { duration: 3000 });
@@ -1090,15 +1098,19 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 					console.log(err);
 				} else {
 					// FB Event Trigger
-					if (fbq !== undefined) {
-						fbq('track', 'AddToWishlist', {
-							currency: 'USD',
-							value: 0.0,
-							content_ids: [this.bountyId],
-							content_name: this.bounty.title,
-							content_category: this.bounty.type,
-							content_type: 'product'
-						});
+					try {
+						if (fbq !== undefined) {
+							fbq('track', 'AddToWishlist', {
+								currency: 'USD',
+								value: 0.0,
+								content_ids: [this.bountyId],
+								content_name: this.bounty.title,
+								content_category: this.bounty.type,
+								content_type: 'product'
+							});
+						}
+					} catch (e) {
+						console.log(e);
 					}
 					this.snackBar.open('Bookmarked', 'Close', {
 						duration: 5000
