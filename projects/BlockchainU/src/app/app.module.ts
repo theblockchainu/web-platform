@@ -121,7 +121,7 @@ export class RavenErrorHandler implements ErrorHandler {
 		}),
 		LandingPageModule,
 		SharedModule
-	],
+		],
 	providers: [
 		CookieService,
 		UcWordsPipe,

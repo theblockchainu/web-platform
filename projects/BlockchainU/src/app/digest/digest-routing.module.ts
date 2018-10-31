@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {WhyTeachComponent} from './why-teach/why-teach.component';
-import {TeachingBenefitsComponent} from './teaching-benefits/teaching-benefits.component';
-import {ResponsibleTeachingComponent} from './responsible-teaching/responsible-teaching.component';
-import {AuthGuardService} from '../_services/auth-guard/auth-guard.service';
-import {ExperienceIntroComponent} from './experience-intro/experience-intro.component';
-import {ClassIntroComponent} from './class-intro/class-intro.component';
-import {CommunityIntroComponent} from './community-intro/community-intro.component';
-import {PeerIntroComponent} from './peer-intro/peer-intro.component';
-
+import { WhyTeachComponent } from './why-teach/why-teach.component';
+import { TeachingBenefitsComponent } from './teaching-benefits/teaching-benefits.component';
+import { ResponsibleTeachingComponent } from './responsible-teaching/responsible-teaching.component';
+import { AuthGuardService } from '../_services/auth-guard/auth-guard.service';
+import { ExperienceIntroComponent } from './experience-intro/experience-intro.component';
+import { ClassIntroComponent } from './class-intro/class-intro.component';
+import { CommunityIntroComponent } from './community-intro/community-intro.component';
+import { PeerIntroComponent } from './peer-intro/peer-intro.component';
+import { AboutUsComponent } from './about-us/about-us.component';
 const routes: Routes = [
     {
         path: '',
@@ -25,22 +25,26 @@ const routes: Routes = [
                 path: 'responsibleTeaching',
                 component: ResponsibleTeachingComponent
             },
-			{
-				path: 'experiences',
-				component: ExperienceIntroComponent
-			},
-			{
-				path: 'classes',
-				component: ClassIntroComponent
-			},
-			{
-				path: 'communities',
-				component: CommunityIntroComponent
-			},
-			{
-				path: 'peers',
-				component: PeerIntroComponent
-			}
+            {
+                path: 'experiences',
+                component: ExperienceIntroComponent
+            },
+            {
+                path: 'classes',
+                component: ClassIntroComponent
+            },
+            {
+                path: 'communities',
+                component: CommunityIntroComponent
+            },
+            {
+                path: 'peers',
+                component: PeerIntroComponent
+            },
+            {
+                path: 'about-us',
+                component: AboutUsComponent
+            }
 
         ]
     }

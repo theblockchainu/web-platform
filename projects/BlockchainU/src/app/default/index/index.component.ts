@@ -210,206 +210,66 @@ export class IndexComponent implements OnInit {
 	fetchClasses() {
 		const query = {
 			'include': [
-				{
-					'relation': 'collections', 'scope': {
-						'include': [
-							{ 'owners': ['reviewsAboutYou', 'profiles'] },
-							'participants',
-							'views',
-							'calendars',
-							{ 'bookmarks': 'peer' }
-						],
-						'where': { 'type': 'class' }
-					}
-				}
+				{ 'owners': ['reviewsAboutYou', 'profiles'] },
+				'participants',
+				'calendars',
+				{ 'bookmarks': 'peer' }
 			],
-			'order': 'createdAt desc'
+			'where': { 'type': 'class' }
 		};
 		this.loadingClasses = true;
-		this.classes = [];
-		this._topicService.getTopics(query).subscribe(
-			(response: any) => {
+		this._collectionService.fetchTrendingCollections(query).subscribe(
+			(collections: any) => {
 				this.loadingClasses = false;
-				for (const responseObj of response) {
-					responseObj.collections.forEach(collection => {
-						if (collection.status === 'active') {
-							console.log(collection);
-							if (collection.owners && collection.owners[0].reviewsAboutYou) {
-								collection.rating = this._collectionService
-									.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
-								collection.ratingCount = this._collectionService
-									.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
-							}
-							let hasActiveCalendar = false;
-							if (collection.calendars) {
-								collection.calendars.forEach(calendar => {
-									if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
-										hasActiveCalendar = true;
-										return;
-									}
-								});
-							}
-							if (hasActiveCalendar) {
-								this.classes.push(collection);
-							}
-						}
-					});
-				}
-				this.classes = _.uniqBy(this.classes, 'id');
-				this.classes = _.orderBy(this.classes, ['views.length'], ['desc']);
-				this.classes = _.chunk(this.classes, 5)[0];
+				this.classes = collections;
 			}, (err) => {
 				console.log(err);
 			}
 		);
-
-		this._collectionService.getTotalCollectionCount('type', 'class').subscribe((res: any) => {
-			this.classesCount = res.count;
-		});
 	}
 
-	fetchExperiences() {
+	private fetchExperiences() {
 		const query = {
-			'include': [
-				{
-					'relation': 'collections', 'scope': {
-						'include':
-							[{ 'owners': ['reviewsAboutYou', 'profiles'] },
-								'participants',
-								'views',
-								'calendars', { 'bookmarks': 'peer' }, {
-								'contents':
-									['schedules', 'locations']
-							}], 'where': { 'type': 'experience' }
-					}
-				}
-			],
-			'order': 'createdAt desc'
+			'include':
+				[{ 'owners': ['reviewsAboutYou', 'profiles'] },
+					'participants',
+					'calendars', { 'bookmarks': 'peer' }, {
+					'contents':
+						['schedules', 'locations']
+				}],
+			'where': { 'type': 'experience' }
 		};
 		this.loadingExperiences = true;
-		this.experiences = [];
-		this._topicService.getTopics(query).subscribe(
-			(response: any) => {
-				for (const responseObj of response) {
-					responseObj.collections.forEach(collection => {
-						let experienceLocation = 'Unknown location';
-						let lat = 37.5293864;
-						let lng = -122.008471;
-						if (collection.status === 'active') {
-							if (collection.contents) {
-								collection.contents.forEach(content => {
-									if (content.locations && content.locations.length > 0
-										&& content.locations[0].city !== undefined
-										&& content.locations[0].city.length > 0
-										&& content.locations[0].map_lat !== undefined
-										&& content.locations[0].map_lat.length > 0) {
-										experienceLocation = content.locations[0].city;
-										lat = parseFloat(content.locations[0].map_lat);
-										lng = parseFloat(content.locations[0].map_lng);
-									}
-								});
-								collection.location = experienceLocation;
-								collection.lat = lat;
-								collection.lng = lng;
-							}
-							if (collection.owners && collection.owners[0].reviewsAboutYou) {
-								collection.rating = this._collectionService
-									.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
-								collection.ratingCount = this._collectionService
-									.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
-							}
-							let hasActiveCalendar = false;
-							if (collection.calendars) {
-								collection.calendars.forEach(calendar => {
-									if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
-										hasActiveCalendar = true;
-										return;
-									}
-								});
-							}
-							if (hasActiveCalendar) {
-								this.experiences.push(collection);
-							}
-
-						}
-					});
-				}
-				this.experiences = _.uniqBy(this.experiences, 'id');
-				this.experiences = _.orderBy(this.experiences, ['views.length'], ['desc']);
-				this.experiences = _.chunk(this.experiences, 5)[0];
-				console.log(this.experiences);
+		this._collectionService.fetchTrendingCollections(query).subscribe(
+			(collections: any) => {
 				this.loadingExperiences = false;
+				this.experiences = collections;
 			}, (err) => {
 				console.log(err);
 			}
 		);
-
-		this._collectionService.getTotalCollectionCount('type', 'experience').subscribe((res: any) => {
-			this.experiencesCount = res.count;
-		});
-
 	}
 
-	fetchBounties() {
+	private fetchBounties() {
 		const query = {
-			'include': [
-				{
-					'relation': 'collections', 'scope': {
-						'include':
-							[{ 'owners': ['reviewsAboutYou', 'profiles'] },
-								'participants',
-								'views',
-								'rewards',
-								'calendars', { 'bookmarks': 'peer' }, {
-								'contents':
-									['schedules']
-							}], 'where': { 'type': 'bounty' }
-					}
-				}
-			],
-			'order': 'createdAt desc'
+			'include':
+				[{ 'owners': ['reviewsAboutYou', 'profiles'] },
+					'participants',
+					'rewards',
+					'calendars', { 'bookmarks': 'peer' }, {
+					'contents':
+						['schedules']
+				}], 'where': { 'type': 'bounty' }
 		};
 		this.loadingBounties = true;
-		this._topicService.getTopics(query).subscribe(
-			(response: any) => {
+		this._collectionService.fetchTrendingCollections(query).subscribe(
+			(collections: any) => {
 				this.loadingBounties = false;
-				this.bounties = [];
-				for (const responseObj of response) {
-					responseObj.collections.forEach(collection => {
-						if (collection.status === 'active') {
-							if (collection.owners && collection.owners[0].reviewsAboutYou) {
-								collection.rating = this._collectionService
-									.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
-								collection.ratingCount = this._collectionService
-									.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
-							}
-							let hasActiveCalendar = false;
-							if (collection.calendars) {
-								collection.calendars.forEach(calendar => {
-									if (moment(calendar.endDate).diff(this.today, 'days') >= -1) {
-										hasActiveCalendar = true;
-										return;
-									}
-								});
-							}
-							if (hasActiveCalendar) {
-								this.bounties.push(collection);
-							}
-						}
-					});
-				}
-				this.bounties = _.uniqBy(this.bounties, 'id');
-				this.bounties = _.orderBy(this.bounties, ['views.length'], ['desc']);
-				this.bounties = _.chunk(this.bounties, 5)[0];
+				this.bounties = collections;
 			}, (err) => {
 				console.log(err);
 			}
 		);
-
-		this._collectionService.getTotalCollectionCount('type', 'bounty').subscribe((res: any) => {
-			this.bountiesCount = res.count;
-		});
-
 	}
 
 	fetchCommunities() {
@@ -705,40 +565,17 @@ export class IndexComponent implements OnInit {
 	}
 
 	private fetchGuides() {
-		this.guides = [];
 		const query = {
-			'include': [
-				{
-					'relation': 'collections', 'scope': {
-						'include':
-							[{ 'owners': ['reviewsAboutYou', 'profiles'] },
-								'participants',
-								'calendars', { 'bookmarks': 'peer' }
-							], 'where': { 'type': 'guide' }
-					}
-				}
-			],
-			'order': 'createdAt desc'
+			'include':
+				[{ 'owners': ['reviewsAboutYou', 'profiles'] },
+					'participants',
+					'calendars', { 'bookmarks': 'peer' }
+				], 'where': { 'type': 'guide' }
 		};
 		this.loadingGuides = true;
-		this._topicService.getTopics(query).subscribe(
-			(response: any) => {
-				for (const responseObj of response) {
-					responseObj.collections.forEach(collection => {
-						if (collection.status === 'active') {
-							if (collection.owners && collection.owners[0].reviewsAboutYou) {
-								collection.rating = this._collectionService
-									.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
-								collection.ratingCount = this._collectionService
-									.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
-							}
-							this.guides.push(collection);
-						}
-					});
-				}
-				this.guides = _.uniqBy(this.guides, 'id');
-				this.guides = _.orderBy(this.guides, ['createdAt'], ['desc']);
-				this.guides = _.chunk(this.guides, 5)[0];
+		this._collectionService.fetchTrendingCollections(query).subscribe(
+			(collections: any) => {
+				this.guides = collections;
 				this.loadingGuides = false;
 			}, (err) => {
 				console.log(err);
@@ -751,11 +588,11 @@ export class IndexComponent implements OnInit {
 			this.fetchBounties();
 		}
 	}
-	
+
 	public openBlog() {
 		window.location.href = 'https://medium.com/theblockchainu';
 	}
-	
+
 	public goToHome() {
 		this._router.navigate(['/']);
 	}
