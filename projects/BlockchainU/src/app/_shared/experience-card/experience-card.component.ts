@@ -4,6 +4,7 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { CollectionService } from '../../_services/collection/collection.service';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 declare var fbq: any;
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-experience-card',
@@ -29,7 +30,15 @@ export class ExperienceCardComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log(this.experience);
+		this.getTime();
+	}
+	
+	public getTime() {
+		const startMoment = moment(this._collectionService.getCurrentCalendar(this.experience.calendars).startDate);
+		const endMoment = moment(this._collectionService.getCurrentCalendar(this.experience.calendars).endDate);
+		this.experience.startsIn = moment().to(startMoment);
+		this.experience.startDiff = startMoment.diff(moment());
+		this.experience.endsIn = moment().to(endMoment);
 	}
 
 	public toggleExperienceBookmark(experience) {
@@ -40,15 +49,19 @@ export class ExperienceCardComponent implements OnInit {
 				&& experience.bookmarks[0].peer[0].id === this.userId)) {
 				this._collectionService.saveBookmark(experience.id, (err, response) => {
 					// FB Event Trigger
-					if (fbq && fbq !== undefined) {
-						fbq('track', 'AddToWishlist', {
-							currency: 'USD',
-							value: 0.0,
-							content_ids: [experience.id],
-							content_name: experience.title,
-							content_category: experience.type,
-							content_type: 'product'
-						});
+					try {
+						if (fbq && fbq !== undefined) {
+							fbq('track', 'AddToWishlist', {
+								currency: 'USD',
+								value: 0.0,
+								content_ids: [experience.id],
+								content_name: experience.title,
+								content_category: experience.type,
+								content_type: 'product'
+							});
+						}
+					} catch (e) {
+						console.log(e);
 					}
 					this.refresh.emit(true);
 				});

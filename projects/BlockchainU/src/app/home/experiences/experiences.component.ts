@@ -114,7 +114,8 @@ export class ExperiencesComponent implements OnInit {
 			location: [],
 			difficultyLevel: [],
 			rating: [],
-			subtype: []
+			subtype: [],
+			title: []
 		});
 
 		this.filterForm.valueChanges.subscribe(res => {
@@ -131,7 +132,17 @@ export class ExperiencesComponent implements OnInit {
 			let levelBool = false;
 			let ratingBool = false;
 			let subtypeBool = false;
-
+			let titleBool = false;
+			
+			if (this.filterForm.value && this.filterForm.value.title) {
+				for (let i = 0; (i < this.filterForm.value.title.length && !titleBool); i++) {
+					const title = this.filterForm.value.title[i];
+					if (_.includes(val.title, title)) {
+						titleBool = true;
+					}
+				}
+			}
+			
 			if (this.filterForm.value.language && this.filterForm.value.language.length > 0) {
 				for (let i = 0; (i < this.filterForm.value.language.length && !languageBool); i++) {
 					const language = this.filterForm.value.language[i];
@@ -204,7 +215,7 @@ export class ExperiencesComponent implements OnInit {
 				durationBool = true;
 			}
 
-			return languageBool && locationBool && priceBool && durationBool && levelBool && ratingBool && subtypeBool;
+			return titleBool && languageBool && locationBool && priceBool && durationBool && levelBool && ratingBool && subtypeBool;
 		});
 	}
 
@@ -341,7 +352,6 @@ export class ExperiencesComponent implements OnInit {
 					this.experiencesBackup = _.cloneDeep(this.experiences);
 
 					if (!this.initialized) {
-						console.log(this.experiences);
 						this.setFilterData();
 						this.initialized = true;
 						this.activatedRoute.queryParams.forEach(param => {

@@ -30,7 +30,6 @@ export class BountyCardComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log('card');
 		let highestReward: any;
 		if (this.bounty.rewards && this.bounty.rewards.length > 0) {
 			for (let index = 0; index < this.bounty.rewards.length; index++) {
@@ -62,15 +61,19 @@ export class BountyCardComponent implements OnInit {
 				&& bounty.bookmarks[0].peer[0].id === this.userId)) {
 				this._collectionService.saveBookmark(bounty.id, (err, response) => {
 					// FB Event Trigger
-					if (fbq && fbq !== undefined) {
-						fbq('track', 'AddToWishlist', {
-							currency: 'USD',
-							value: 0.0,
-							content_ids: [bounty.id],
-							content_name: bounty.title,
-							content_category: bounty.type,
-							content_type: 'product'
-						});
+					try {
+						if (fbq && fbq !== undefined) {
+							fbq('track', 'AddToWishlist', {
+								currency: 'USD',
+								value: 0.0,
+								content_ids: [bounty.id],
+								content_name: bounty.title,
+								content_category: bounty.type,
+								content_type: 'product'
+							});
+						}
+					} catch (e) {
+						console.log(e);
 					}
 					this.refresh.emit(true);
 				});

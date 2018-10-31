@@ -51,6 +51,9 @@
 		<div class="row pending-actions center" *ngIf="experience.status === 'active' && calendarId === undefined && !hasUpcomingCohort()">
 			<div class="col-md-10 col-md-offset-1">
 				<span>This in-person experience was run in the past but has no upcoming batches.
+					<span class="clickable" (click)="followCollectionToggle()" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{experience.type | titlecase}}">
+						&emsp; <i [class]="'fa-bell fa' + (isFollowing ? 's' : 'r')"></i>
+					</span>
 					<a href="javascript:void(0);" *ngIf="userType === 'teacher'" (click)="editCalendar()">Schedule one now?</a>
 				</span>
 			</div>
@@ -148,8 +151,6 @@
 								<span (click)="openShareDialog()">
 									<i class="fa fa-share"></i>
 								</span>
-								<span (click)="followCollectionToggle()" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{experience.type | titlecase}}">
-									<i [class]="'fa-bell fa' + (isFollowing ? 's' : 'r')"></i> </span>
 							</div>
 						</div>
 					</div>
@@ -224,6 +225,19 @@
 								<mat-chip-list>
 									<mat-chip *ngFor="let topic of topicFix" disabled> {{topic.name | titlecase}} </mat-chip>
 								</mat-chip-list>
+							</div>
+						</div>
+						<div class="row margin-top-40 upcomingCohortBox" *ngIf="userType === 'public' && _collectionService.getUpcomingCalendar(experience.calendars)">
+							<div class="col-md-1 col-xs-1">
+								<i class="fa fa-info-circle lightText"></i>
+							</div>
+							<div class="col-md-8 col-xs-8">
+								Next cohort starts {{_collectionService.getDaysBetween(_collectionService.getUpcomingCalendar(experience.calendars).startDate, today)}}
+								<br>
+								<b>{{_collectionService.getUpcomingCalendar(experience.calendars).startDate | extractTime:'Do MMMM YY'}}</b> - <b>{{_collectionService.getUpcomingCalendar(experience.calendars).endDate | extractTime:'Do MMMM YY'}}</b>
+							</div>
+							<div class="col-md-3 col-xs-3" style="text-align: right">
+								<button mat-button class="mat-border-button">View Dates</button>
 							</div>
 						</div>
 						<div *ngIf="userType==='public'" class="row Description margin-top-20 pre-wrapped">
@@ -1115,7 +1129,7 @@
 									</div>
 									<div class="col-xs-4" style="padding-top: 9px;">
 										<span>
-											<button mat-raised-button (click)="selectJoiningDates()" color="primary">Join Now</button>
+											<button mat-raised-button (click)="selectJoiningDates()" color="primary">Enroll Now</button>
 										</span>
 										<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this experience">
 											<button mat-raised-button color="primary" [disabled]="true">See Dates</button>
@@ -1287,7 +1301,7 @@
 		</div>
 		<div class="col-xs-4" style="padding-top: 9px;">
 			<span>
-				<button mat-raised-button (click)="selectJoiningDates()" color="primary">Join Now</button>
+				<button mat-raised-button (click)="selectJoiningDates()" color="primary">Enroll Now</button>
 			</span>
 			<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this experience">
 				<button mat-raised-button color="primary" [disabled]="true">See Dates</button>

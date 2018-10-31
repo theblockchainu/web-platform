@@ -62,6 +62,7 @@ export class IndexComponent implements OnInit {
 	public searching: boolean;
 	public guides: Array<any>;
 	public loadingGuides = false;
+	public popularSearches = [];
 
 	constructor(
 		private authenticationService: AuthenticationService,
@@ -87,6 +88,14 @@ export class IndexComponent implements OnInit {
 
 	ngOnInit() {
 		this.loadingHome = false;
+		this.options = [
+			'ethereum',
+			'hyperledger',
+			'blockchain',
+			'cryptography',
+			'design thinking',
+			'machine learning'
+		];
 		this.notifyForm = this._fb.group(
 			{ email: ['', [Validators.required, Validators.email]] }
 		);
@@ -140,7 +149,14 @@ export class IndexComponent implements OnInit {
 				});
 			} else {
 				this.searching = false;
-				this.options = [];
+				this.options = [
+					'ethereum',
+					'hyperledger',
+					'blockchain',
+					'cryptography',
+					'design thinking',
+					'machine learning'
+				];
 			}
 		});
 	}
@@ -389,6 +405,7 @@ export class IndexComponent implements OnInit {
 					}
 					this.questions.push(question);
 				});
+				this.questions = _.orderBy(this.questions, ['views.length'], ['desc']);
 				this.loadingQuestions = false;
 			}, (err) => {
 				console.log(err);
@@ -574,5 +591,9 @@ export class IndexComponent implements OnInit {
 
 	public openBlog() {
 		window.location.href = 'https://medium.com/theblockchainu';
+	}
+
+	public goToHome() {
+		this._router.navigate(['/']);
 	}
 }

@@ -108,6 +108,22 @@ export class SignupComponentDialogComponent implements OnInit {
 					this.loading = false;
 				} else {
 					console.log('FB EVENTS: Complete Registration');
+					try {
+						if (fbq && fbq !== undefined) {
+							fbq('track', 'CompleteRegistration', {
+								currency: 'USD',
+								value: 1.0,
+								status: 'approved'
+							});
+						}
+					} catch (e) {
+						console.log(e);
+					}
+					this.signIn();
+				}
+			}, err => {
+				console.log(err);
+				try {
 					if (fbq && fbq !== undefined) {
 						fbq('track', 'CompleteRegistration', {
 							currency: 'USD',
@@ -115,16 +131,8 @@ export class SignupComponentDialogComponent implements OnInit {
 							status: 'approved'
 						});
 					}
-					this.signIn();
-				}
-			}, err => {
-				console.log(err);
-				if (fbq && fbq !== undefined) {
-					fbq('track', 'CompleteRegistration', {
-						currency: 'USD',
-						value: 1.0,
-						status: 'approved'
-					});
+				} catch (e) {
+					console.log(e);
 				}
 				this.signIn();
 			});

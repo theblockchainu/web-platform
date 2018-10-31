@@ -419,6 +419,7 @@ export class HomefeedComponent implements OnInit {
 					}
 					this.questions.push(question);
 				});
+				this.questions = _.orderBy(this.questions, ['views.length'], ['desc']);
 				this.loadingQuestions = false;
 			}, (err) => {
 				console.log(err);

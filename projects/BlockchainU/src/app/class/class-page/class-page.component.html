@@ -50,6 +50,9 @@
 		<div class="row pending-actions center" *ngIf="class.status === 'active' && calendarId === undefined && !hasUpcomingCohort()">
 			<div class="col-md-10 col-md-offset-1">
 				<span>This online class was run in the past but has no upcoming batches.
+					<span class="clickable" (click)="followCollectionToggle()" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{class.type | titlecase}}">
+						&emsp; <i [class]="'fa-bell fa' + (isFollowing ? 's' : 'r')"></i>
+					</span>
 					<a href="javascript:void(0);" *ngIf="userType === 'teacher'" (click)="editCalendar()">Schedule one now?</a>
 				</span>
 			</div>
@@ -146,9 +149,6 @@
 								</span>
 								<span (click)="openShareDialog()">
 									<i class="fa fa-share"></i>
-								</span>
-								<span (click)="followCollectionToggle()" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{class.type | titlecase}}">
-									<i [class]="'fa-bell fa' + (isFollowing ? 's' : 'r')"></i>
 								</span>
 							</div>
 						</div>

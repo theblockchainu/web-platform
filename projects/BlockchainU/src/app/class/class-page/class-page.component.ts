@@ -550,13 +550,17 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						this.inviteLink = environment.clientUrl + '/class/' + this.class.id;
 						this.setTags();
 						this.setCurrentCalendar();
-						if (fbq && fbq !== undefined) {
-							fbq('track', 'ViewContent', {
-								currency: 'USD',
-								value: 0.0,
-								content_type: 'product',
-								content_ids: [this.classId]
-							});
+						try {
+							if (fbq && fbq !== undefined) {
+								fbq('track', 'ViewContent', {
+									currency: 'USD',
+									value: 0.0,
+									content_type: 'product',
+									content_ids: [this.classId]
+								});
+							}
+						} catch (e) {
+							console.log(e);
 						}
 						this.itenariesObj = {};
 						this.itenaryArray = [];
@@ -686,13 +690,17 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value;
 		this._authenticationService.createGuestContacts(first_name, '', email, subject, message)
 			.subscribe(res => {
-				if (fbq && fbq !== undefined) {
-					fbq('track', 'Lead', {
-						currency: 'USD',
-						value: 1.0,
-						content_name: this.class.title,
-						content_category: this.class.type
-					});
+				try {
+					if (fbq && fbq !== undefined) {
+						fbq('track', 'Lead', {
+							currency: 'USD',
+							value: 1.0,
+							content_name: this.class.title,
+							content_category: this.class.type
+						});
+					}
+				} catch (e) {
+					console.log(e);
 				}
 				this.contactUsForm.reset();
 				this.snackBar.open('Thanks for your interest we will get back to you shortly', 'Close', { duration: 5000 });
@@ -1061,15 +1069,19 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						console.log(err);
 					} else {
 						// FB Event Trigger
-						if (fbq && fbq !== undefined) {
-							fbq('track', 'AddToWishlist', {
-								currency: 'USD',
-								value: 0.0,
-								content_ids: [this.classId],
-								content_name: this.class.title,
-								content_category: this.class.type,
-								content_type: 'product'
-							});
+						try {
+							if (fbq && fbq !== undefined) {
+								fbq('track', 'AddToWishlist', {
+									currency: 'USD',
+									value: 0.0,
+									content_ids: [this.classId],
+									content_name: this.class.title,
+									content_category: this.class.type,
+									content_type: 'product'
+								});
+							}
+						} catch (e) {
+							console.log(e);
 						}
 						this.snackBar.open('Bookmarked', 'Close', {
 							duration: 5000
@@ -1940,24 +1952,28 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	public followCollectionToggle() {
-		if (!this.isFollowing) {
-			this._profileService.followCollection(this.userId, this.classId).subscribe(res => {
-				console.log('added');
-				console.log(res);
-				this.isFollowing = true;
-				this.snackBar.open('Class Subscribed', 'close', { duration: 3000 });
-			}, (err) => {
-				console.log(err);
-			});
+		if (this.userId && this.userId.length > 5) {
+			if (!this.isFollowing) {
+				this._profileService.followCollection(this.userId, this.classId).subscribe(res => {
+					console.log('added');
+					console.log(res);
+					this.isFollowing = true;
+					this.snackBar.open('Class Subscribed', 'close', {duration: 3000});
+				}, (err) => {
+					console.log(err);
+				});
+			} else {
+				this._profileService.unfollowCollection(this.userId, this.classId).subscribe(res => {
+					console.log('deleted');
+					console.log(res);
+					this.isFollowing = false;
+					this.snackBar.open('Class unsubscribed', 'close', {duration: 3000});
+				}, (err) => {
+					console.log(err);
+				});
+			}
 		} else {
-			this._profileService.unfollowCollection(this.userId, this.classId).subscribe(res => {
-				console.log('deleted');
-				console.log(res);
-				this.isFollowing = false;
-				this.snackBar.open('Class unsubscribed', 'close', { duration: 3000 });
-			}, (err) => {
-				console.log(err);
-			});
+			this.dialogsService.openSignup('/class/' + this.class.id);
 		}
 	}
 
