@@ -1136,4 +1136,10 @@ export class CollectionService {
 		this.cookieUtilsService.setValue('referrerId', referrerId);
 	}
 
+	public fetchTrendingCollections(filter: any) {
+		return this.httpClient
+			.get(environment.apiUrl + '/api/collections/trending?filter=' + JSON.stringify(filter),
+				this.requestHeaderService.options);
+
+	}
 }

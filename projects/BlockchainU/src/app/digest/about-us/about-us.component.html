@@ -1,0 +1,375 @@
+<!-- header start here -->
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark">
+    <a class="navbar-brand" href="javascript:void(0)" (click)="goToHome()">
+      <img src="/assets/images/bu_white.png" alt="blockchainu-logo">
+    </a>
+    <span class="example-spacer"></span>
+    <span class="options" style="position: relative; top: -15px;">
+      <button mat-button class="headerButtons mat-button hide-small" [matMenuTriggerFor]="headerTeachMenu">
+        Become a teacher
+      </button>
+      <!--<button mat-button class="headerButtons mat-button hide-small" [routerLink]="['/whitepaper']">
+				White Paper
+			</button>-->
+      <button mat-button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)" (click)="openLogin()">
+        Log in
+      </button>
+      <button mat-button class="headerButtons mat-button" *ngIf="!(isLoggedIn | async)" [routerLink]="['/sign-up']">
+        Sign up
+      </button>
+      <span *ngIf="(isLoggedIn | async) && profile">
+        <a ddress mat-button disableRipple="true" class="clickable" [matMenuTriggerFor]="headerUserMenu">
+          <img *ngIf="!profile.picture_url" style="margin:0px" src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb">
+          <img *ngIf="profile.picture_url" style="margin:0px" src="{{envVariable.apiUrl + profile.picture_url + '/100'}}"
+            alt="A" class="circle-thumb">
+        </a>
+        <mat-menu #headerUserMenu [overlapTrigger]="false">
+          <button mat-menu-item [routerLink]="['/profile', userId]">
+            <i class="fas fa-user lighterText"></i>&nbsp;&nbsp;&nbsp; {{profile.first_name | titlecase}}
+            {{profile.last_name | titlecase}}
+          </button>
+          <button mat-menu-item *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].isAdmin" [routerLink]="['/console/admin']">
+            <i class="fas fa-lock lighterText"></i>&nbsp;&nbsp; Admin
+          </button>
+          <button mat-menu-item [routerLink]="['/console/profile/account']">
+            <i class="fas fa-pencil-alt lighterText"></i>&nbsp;&nbsp; Account Settings
+          </button>
+          <button mat-menu-item (click)="authService.logout()">
+            <i class="fas fa-sign-out-alt lighterText"></i>&nbsp;&nbsp; Logout
+          </button>
+        </mat-menu>
+      </span>
+      <mat-menu #headerTeachMenu [overlapTrigger]="false">
+        <button mat-menu-item [routerLink]="['/digest','experiences']">
+          Host an offline experience
+        </button>
+        <button mat-menu-item [routerLink]="['/digest','classes']">
+          Create an online class
+        </button>
+        <button mat-menu-item [routerLink]="['/console','teaching','guides']">
+          Create a learning guide
+        </button>
+        <button mat-menu-item [routerLink]="['/digest','peers']">
+          Start an expert session
+        </button>
+      </mat-menu>
+    </span>
+  </nav>
+</header>
+<!-- header end here -->
+<section class="home-banner">
+  <div class="dark-gray-overlay"></div>
+  <div class="container">
+    <div class="content text-center">
+      <h1>About Peerbuds</h1>
+      <h3 class="b-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et purus nisl. Nullam cursus
+        ut quam vel fringilla. Donec imperdiet orci erat, eu egestas.</h3>
+    </div>
+  </div>
+</section>
+<section class="classes-anywhere spacing mg-20">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 about-style">
+        <div class="line-top"></div>
+        <h2 class="text-uppercase">Know about <span class="color-org">peerbuds</span></h2>
+        <p>
+          Are you considering buying a compatible inkjet cartridge for your printer? There are many reputed companies
+          like Canon, Epson, Dell, and Lexmark that provide the necessary cartridges to replace the empty cartridges.
+          Dell Compatible Inkjet Cartridge. There are many reputed companies like Canon, Epson, Dell, and Lexmark
+          that provide the necessary cartridges to replace the empty cartridges. Dell Compatible Inkjet Cartridge
+        </p>
+      </div>
+
+      <div class="col-md-4 col-md-offset-1 text-img">
+        <img src="/assets/images/about-us/about-bg.jpg">
+      </div>
+
+    </div>
+  </div>
+</section>
+<section class="peers-teaching advisors spacing mg-20">
+  <div class="container about-style">
+    <div class="line-top-center"></div>
+    <h2 class="text-uppercase text-center">Our <span class="color-org">Advisors</span></h2>
+    <div class="row small-margin">
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face1.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Matilda Curtis</h3>
+            <p class="designation text-center">Motion Designer</p>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face2.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Matilda Lewis</h3>
+            <p class="designation text-center">UI/UX Designer</p>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face3.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Estella Parks</h3>
+            <p class="designation text-center">Digital Designer</p>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face4.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Fannie Shelton</h3>
+            <p class="designation text-center">Art Direction</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row small-margin">
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face1.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Matilda Curtis</h3>
+            <p class="designation text-center">Motion Designer</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face2.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Matilda Lewis</h3>
+            <p class="designation text-center">UI/UX Designer</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face3.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Estella Parks</h3>
+            <p class="designation text-center">Digital Designer</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face4.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Fannie Shelton</h3>
+            <p class="designation text-center">Art Direction</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="peers-teaching advisors spacing mg-20">
+  <div class="container about-style">
+    <div class="line-top-center"></div>
+    <h2 class="text-uppercase text-center">Our <span class="color-org">Team</span></h2>
+    <div class="row small-margin">
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face1.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Matilda Curtis</h3>
+            <p class="designation text-center">Motion Designer</p>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face2.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Matilda Lewis</h3>
+            <p class="designation text-center">UI/UX Designer</p>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face3.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Estella Parks</h3>
+            <p class="designation text-center">Digital Designer</p>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face4.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Fannie Shelton</h3>
+            <p class="designation text-center">Art Direction</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row small-margin">
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face1.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Matilda Curtis</h3>
+            <p class="designation text-center">Motion Designer</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face2.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Matilda Lewis</h3>
+            <p class="designation text-center">UI/UX Designer</p>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face3.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Estella Parks</h3>
+            <p class="designation text-center">Digital Designer</p>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4 col-md-3 small-padding">
+        <div class="custom-card">
+          <div class="card-image" style="background-image: url('/assets/images/face4.jpg');"></div>
+          <div class="card-content">
+            <h3 class="title text-uppercase text-center">Fannie Shelton</h3>
+            <p class="designation text-center">Art Direction</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="peers-teaching advisors spacing mg-20">
+  <div class="container about-style">
+    <div class="line-top-center"></div>
+    <h2 class="text-uppercase text-center">Our <span class="color-org">Partners</span></h2>
+    <p class="text-center">Microsoft Patch Management For Home Users </p>
+    <div class="d-flex small-margin mg-20">
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/comcast_logo_detail.png">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/images.png">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/logo_01.png">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/slack-card.png">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/SURGEX_LOGO_v1.0_2CLR_BLACK-PMS-116_1600px.jpg">
+      </div>
+    </div>
+    <div class="d-flex small-margin">
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/logo_01.png">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/SURGEX_LOGO_v1.0_2CLR_BLACK-PMS-116_1600px.jpg">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/images.png">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/comcast_logo_detail.png">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/slack-card.png">
+      </div>
+    </div>
+    <div class="d-flex small-margin">
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/SURGEX_LOGO_v1.0_2CLR_BLACK-PMS-116_1600px.jpg">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/logo_01.png">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/slack-card.png">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/images.png">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/comcast_logo_detail.png">
+      </div>
+    </div>
+    <div class="d-flex small-margin">
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/images.png" height="30">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/comcast_logo_detail.png">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/SURGEX_LOGO_v1.0_2CLR_BLACK-PMS-116_1600px.jpg">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/slack-card.png">
+      </div>
+      <div class="partner-cards">
+        <img src="/assets/images/about-us/partner-logos/logo_01.png">
+      </div>
+    </div>
+  </div>
+</section>
+<section class="container-fluid margin-top-20 pl-0 pr-0">
+  <div class="about-curv"></div>
+  <div class="bg-orange">
+    <div class="container">
+      <h3 class="text-uppercase text-center about-text-main"> A Few Facts About Peerbuds</h3>
+      <div class="row">
+        <div class="col-4 text-center about-facts">
+          <h3>01</h3>
+          <p>Not All Blank Cassettes Are Created Equal</p>
+        </div>
+        <div class="col-4 text-center about-facts">
+          <h3>02</h3>
+          <p>Computer Hardware Desktops And Notebooks And Handhelds Oh My</p>
+        </div>
+        <div class="col-4 text-center about-facts">
+          <h3>03</h3>
+          <p>Help Finding Information Online </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4 text-center about-facts">
+          <h3>04</h3>
+          <p>Microsoft Patch Management For Home Users </p>
+        </div>
+        <div class="col-4 text-center about-facts">
+          <h3>05</h3>
+          <p>Addiction When Gambling Becomes A Problem</p>
+        </div>
+        <div class="col-4 text-center about-facts">
+          <h3>06</h3>
+          <p>Unmatched Toner Cartridge Quality 20 Less Than Oem Price </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
