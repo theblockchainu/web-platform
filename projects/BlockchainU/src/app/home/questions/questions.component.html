@@ -151,8 +151,8 @@
 												<form [formGroup]="commentForm" (ngSubmit)="postCommentToQuestion(question)">
 													<app-profile-popup [peer]="loggedInUser" style="position: relative; top: 7px;"></app-profile-popup>
 													<mat-form-field [floatLabel]="'auto'" style="margin-left: 15px; width: 87%;">
-														<input matInput type="text" #description1 maxlength="2000" formControlName="description" placeholder="Write your comment on the above question">
-														<mat-hint align="end">{{description1.value.length}} / 2000</mat-hint>
+														<textarea matInput matTextareaAutosize #description1 maxlength="5000" rows="1" formControlName="description" placeholder="Write your comment on the above question" cdkAutosizeTextarea="true"></textarea>
+														<mat-hint align="end" *ngIf="description1.value.length < 20">At least {{20 - description1.value.length}} more characters</mat-hint>
 													</mat-form-field>
 													<div style="text-align: right">
 														<button [disabled]="!commentForm.valid" mat-raised-button color="primary" class="margin-top-20">
@@ -222,8 +222,8 @@
 														<form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
 															<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
 															<mat-form-field [floatLabel]="'auto'" style="margin-left: 15px; width: 85%;">
-																<input matInput type="text" #description2 maxlength="2000" formControlName="description" placeholder="Reply to above comment...">
-																<mat-hint align="end">{{description2.value.length}} / 2000</mat-hint>
+																<textarea matInput matTextareaAutosize #description2 maxlength="5000" rows="1" formControlName="description" placeholder="Reply to above comment..." cdkAutosizeTextarea="true"></textarea>
+																<mat-hint align="end" *ngIf="description2.value.length < 20">At least {{20 - description2.value.length}} more characters</mat-hint>
 															</mat-form-field>
 															<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right margin-top-20" color="primary">
 																<span *ngIf="!busyReply">Post</span>
@@ -367,8 +367,8 @@
 														<form [formGroup]="commentForm" (ngSubmit)="postCommentToAnswer(answer)">
 															<app-profile-popup [peer]="loggedInUser" style="position: relative; top: 7px;"></app-profile-popup>
 															<mat-form-field [floatLabel]="'auto'" style="margin-left: 15px; width: 86%;">
-																<input matInput type="text" #description3 maxlength="2000" formControlName="description" placeholder="Write your comment on the above answer">
-																<mat-hint align="end">{{description3.value.length}} / 2000</mat-hint>
+																<textarea matInput matTextareaAutosize #description3 maxlength="5000" rows="1" formControlName="description" placeholder="Write your comment on the above answer" cdkAutosizeTextarea="true"></textarea>
+																<mat-hint align="end" *ngIf="description3.value.length < 20">At least {{20 - description3.value.length}} more characters</mat-hint>
 															</mat-form-field>
 															<div style="text-align: right">
 																<button [disabled]="!commentForm.valid" mat-raised-button color="primary" class="margin-top-20">
@@ -431,8 +431,8 @@
 																<form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
 																	<app-profile-popup [peer]="loggedInUser"></app-profile-popup>
 																	<mat-form-field [floatLabel]="'auto'" style="margin-left: 15px; width: 85%;">
-																		<input matInput type="text" #description4 maxlength="2000" formControlName="description" placeholder="Reply to above comment...">
-																		<mat-hint align="end">{{description4.value.length}} / 2000</mat-hint>
+																		<textarea matInput matTextareaAutosize #description4 maxlength="5000" rows="1" formControlName="description" placeholder="Reply to above comment..." cdkAutosizeTextarea="true"></textarea>
+																		<mat-hint align="end" *ngIf="description4.value.length < 20">At least {{20 - description4.value.length}} more characters</mat-hint>
 																	</mat-form-field>
 																	<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right margin-top-20" color="primary">
 																		<span *ngIf="!busyReply">Post</span>

@@ -19,7 +19,7 @@ export class CreateAccreditationDialogComponent implements OnInit {
   public envVariable;
   freeAccreditation = false;
   public interest1: FormGroup;
-  public maxTopicMsg = 'Choose max 3 related topics';
+  public maxTopicMsg = 'Choose max 5 relevant topics';
   public interests = [];
   public suggestedTopics = [];
   public removedInterests = [];
@@ -27,7 +27,7 @@ export class CreateAccreditationDialogComponent implements OnInit {
   public searchTopicURL = '';
   public createTopicURL = '';
   public placeholderStringTopic = 'Search for a topic ';
-  public maxTopics = 3;
+  public maxTopics = 5;
 
   constructor(
     public dialogRef: MatDialogRef<CreateAccreditationDialogComponent>,

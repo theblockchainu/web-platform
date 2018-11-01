@@ -38,8 +38,8 @@ export class OnboardingComponent implements OnInit {
 		'google': false
 	};
 
-	public maxTopicMsg = 'Choose max 3 related topics';
-	public maxTopics = 3;
+	public maxTopicMsg = 'Choose max 5 relevant topics';
+	public maxTopics = 5;
 	public removedInterests = [];
 	public relTopics = [];
 	public showRequestNewTopic = false;

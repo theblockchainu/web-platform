@@ -9,7 +9,6 @@ import { IndexPhilComponent } from './default/index-philosophy/index-philosophy.
 import { GlobalErrorHandlerComponent } from './error-handler/globalerrorhandler';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ContactComponent } from './contact-us/contact-us.component';
-import { AboutUsComponent } from './about-us/about-us.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { CareerComponent } from './career/career.component';
@@ -23,6 +22,7 @@ import { KnowledgeeconomyComponent } from './knowledgeeconomy/knowledgeeconomy.c
 import { TokenflowComponent } from './tokenflow/tokenflow.component';
 import { WhitepaperComponent } from './whitepaper/whitepaper.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { AboutUsComponent } from './digest/about-us/about-us.component';
 
 const routes: Routes = [
 	{
@@ -37,7 +37,7 @@ const routes: Routes = [
 	},
 	{
 		path: 'about',
-		component: IndexPhilComponent
+		component: AboutUsComponent
 	},
 	{
 		path: 'career',

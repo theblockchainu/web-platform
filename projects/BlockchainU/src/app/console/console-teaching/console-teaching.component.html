@@ -5,10 +5,10 @@
 				View All
 			</mat-list-item>
 			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/classes'" [class.bold]="getActiveTab() === 'classes'">
-				Classes
+				Online Courses
 			</mat-list-item>
 			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/experiences'" [class.bold]="getActiveTab() === 'experiences'">
-				Experiences
+				In-person Workshops
 			</mat-list-item>
 			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/guides'" [class.bold]="getActiveTab() === 'guides'">
 				Guides
@@ -35,10 +35,10 @@
 				</span>
 			</mat-list-item>
 			<mat-list-item *ngIf="activeTab === 'experiences'">
-				<span matTooltip="Please wait for your account to be verified before creating a new experience."
+				<span matTooltip="Please wait for your account to be verified before creating a new workshop."
 				 [matTooltipDisabled]="accountVerified">
 					<button mat-raised-button (click)="createExperience()" [disabled]="!accountVerified" color="primary">New
-						Experience</button>
+						Workshop</button>
 				</span>
 			</mat-list-item>
 			<mat-list-item *ngIf="activeTab === 'bounties'">
@@ -48,7 +48,7 @@
 				</span>
 			</mat-list-item>
 			<mat-list-item *ngIf="activeTab === 'guides'">
-				<span matTooltip="Please wait for your account to be verified before creating a new experience."
+				<span matTooltip="Please wait for your account to be verified before creating a new workshop."
 				 [matTooltipDisabled]="accountVerified">
 					<button mat-raised-button (click)="createGuide()" [disabled]="!accountVerified" color="primary">New
 						Guide</button>

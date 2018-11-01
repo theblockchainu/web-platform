@@ -67,7 +67,7 @@
 						<div class="col-xs-9 mat-display-1" style="margin-bottom: 25px !important;">
 							<span *ngIf="showArchived">
 								Archived
-							</span>In-person Experiences
+							</span>In-person Workshops
 							<span class="mat-display-1" *ngIf="selectedTopics && selectedTopics.length !== 0">
 								in
 								<span *ngFor="let topicObj of selectedTopics;let i=index">
@@ -90,7 +90,7 @@
 					</div>
 					<div *ngIf="!loading" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;">
 						<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
-							There are no active experiences to view right now.
+							There are no active workshops to view right now.
 						</div>
 						<div *ngFor="let experience of experiences;">
 							<app-experience-card [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>

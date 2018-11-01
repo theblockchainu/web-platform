@@ -1,14 +1,14 @@
 <mat-nav-list>
     <div *ngFor="let title of sidebarMenuItems">
         <mat-list-item disableRipple *ngIf="title.visible">
-            <span matLine [ngClass]="{'sidebar-brand' : true, 'disabled' : title.title === 'Review & Submit' && step !== 14}">
+            <span matLine [ngClass]="{'sidebar-brand' : true, 'disabled' : title.title === 'Review & Submit' && step !== 14}" matTooltip="You need to complete all above steps to unlock this step." [matTooltipDisabled]="!title.locked">
                 <a (click)=goto(title) class="menuSectionTitle" [class.active]="title.step == step">{{title.title |uppercase}}</a>
                 <mat-icon *ngIf="title.locked" style="float: right; color: #33bd9e; font-size: 18px; font-weight:bold; line-height:35px;">lock_outline</mat-icon>
             </span>
         </mat-list-item>
         <div *ngFor="let submenu of title.submenu">
             <mat-list-item disableRipple *ngIf="submenu.visible">
-                <span matLine class="childItem">
+                <span matLine class="childItem" matTooltip="You need to complete all above steps to unlock this step." [matTooltipDisabled]="!submenu.locked">
                     <a *ngIf="submenu.visible" class="menuSectionChild" [style.pointer-events]="title.title == 'Review & Submit' && step !== 14 ? 'none' : 'visible'"
                         (click)=goto(submenu) [class.active]="submenu.step == step">{{submenu.title}}</a>
                     <mat-icon *ngIf="submenu.visible && submenu.complete" color="primary" style="float: right; font-size: 18px; font-weight:bold;margin-top:5px;">done</mat-icon>

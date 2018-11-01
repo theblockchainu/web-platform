@@ -168,7 +168,7 @@ export class SearchService {
 						case 'class':
 							return 'Online Course';
 						case 'experience':
-							return 'In-person Experience';
+							return 'In-person Workshop';
 						case 'bounty':
 							return 'Reward Bounty';
 						case 'guide':

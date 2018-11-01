@@ -10,15 +10,15 @@
 		<div #noContentView *ngIf="ongoingArray.length === 0 && upcomingArray.length===0 && drafts.length === 0 && pastArray.length === 0"
 		 class="center" style="margin-top: 10%; margin-bottom: 10%">
 			<div class="lightText">
-				You are not teaching any experience
+				You are not teaching any workshop
 				<br>
 				<br>
 				<div *ngIf="accountVerified">
 					Start by creating your first
-					<a color="default" (click)="createExperience()">Experience </a>
+					<a color="default" (click)="createExperience()">Workshop </a>
 				</div>
 				<div *ngIf="!accountVerified">
-					You will be able to create a new experience once your account has been approved!
+					You will be able to create a new workshop once your account has been approved!
 				</div>
 			</div>
 		</div>
@@ -110,7 +110,7 @@
 											Cancel
 										</button>
 										<button mat-menu-item (click)="_collectionService.openEditExperience(collection)">
-											Edit Experience
+											Edit Workshop
 										</button>
 										<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
 											Add Promo Code
@@ -198,14 +198,14 @@
 											View Promo Codes
 										</button>
 										<button mat-menu-item (click)="_collectionService.openEditExperience(collection)">
-											Edit Experience
+											Edit Workshop
 										</button>
 									</mat-menu>
 									<mat-card-actions *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).hasStarted">
 										<button mat-raised-button (click)="_collectionService.viewExperience(collection)">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
 									</mat-card-actions>
 									<mat-card-footer class="cardFooter" style="line-height: 30px; position: absolute;bottom: 24px;width: 100%;left: 24px;">
-										<a style="font-size: 1.077rem" (click)="_collectionService.viewExperience(collection)">Is this a recurring experience?</a>
+										<a style="font-size: 1.077rem" (click)="_collectionService.viewExperience(collection)">Is this a recurring workshop?</a>
 									</mat-card-footer>
 								</mat-card>
 							</div>
@@ -240,7 +240,7 @@
 											<ng-template #draftMessage>
 												<mat-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></mat-progress-bar>
 												<p class="lightText" style="margin-top:20px">
-													You still have to complete filling up your experience details
+													You still have to complete filling up your workshop details
 												</p>
 											</ng-template>
 											<ng-template #submittedMessage>
@@ -263,7 +263,7 @@
 											Delete
 										</button>
 										<button mat-menu-item (click)="_collectionService.viewExperience(collection)">
-											View Experience
+											View Workshop
 										</button>
 									</mat-menu>
 								</div>
@@ -281,7 +281,7 @@
 											<ng-template #draftMessage>
 												<mat-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></mat-progress-bar>
 												<p class="lightText" style="margin-top:20px">
-													You still have to complete filling up your experience details
+													You still have to complete filling up your workshop details
 												</p>
 											</ng-template>
 											<ng-template #submittedMessage>
@@ -304,7 +304,7 @@
 											Delete
 										</button>
 										<button mat-menu-item (click)="_collectionService.viewExperience(collection)">
-											View Experience
+											View Workshop
 										</button>
 									</mat-menu>
 								</div>
@@ -372,7 +372,7 @@
 										</mat-card-content>
 										<mat-menu #pastCardMenu>
 											<button mat-menu-item (click)="_collectionService.viewExperience(collection)">
-												View Experience
+												View Workshop
 											</button>
 											<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
 												Add Promo Code

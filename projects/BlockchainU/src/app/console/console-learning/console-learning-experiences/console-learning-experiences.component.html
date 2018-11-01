@@ -10,10 +10,10 @@
 		<div #noContentView *ngIf="ongoingArray.length === 0 && upcomingArray.length===0 && pastArray.length === 0" class="center"
 		     style="margin-top: 10%; margin-bottom: 10%">
 			<div class="lightText">
-				You are not learning any experience
+				You are not learning any workshop
 				<br>
 				<br> Start by signing up for a
-				<a color="default" [routerLink]="'/home/experiences'">Experience </a>
+				<a color="default" [routerLink]="'/home/experiences'">Workshop </a>
 			</div>
 		</div>
 		<div *ngIf="ongoingArray.length > 0 || upcomingArray.length>0">

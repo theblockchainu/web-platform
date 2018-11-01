@@ -71,7 +71,7 @@ export class SessionEditComponent implements OnInit {
 	public searchTopicURL = '';
 	public createTopicURL = '';
 	public placeholderStringTopic = 'Search for a topic ';
-	public maxTopicMsg = 'Choose max 3 related topics';
+	public maxTopicMsg = 'Choose max 5 topics you can teach';
 
 
 	public difficulties = [];
@@ -79,7 +79,7 @@ export class SessionEditComponent implements OnInit {
 	public contentComplete = false;
 	public currencies = [];
 	public key;
-	public maxTopics = 3;
+	public maxTopics = 5;
 	public otpSent = false;
 
 	profileImagePending: Boolean;

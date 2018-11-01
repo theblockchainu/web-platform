@@ -7,9 +7,9 @@
 			</div>
 			<nav mat-tab-nav-bar disableRipple class="noJustify home">
 				<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
-				   matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
+				   matTooltip="In-person Workshops are a way to learn any subject in the real world together with your teacher.">
 					<img src="/assets/images/experiences_icon.jpeg" alt="logo" style="height: 100%;">
-					<h3 class="margin-left-10">In-person Experiences</h3>
+					<h3 class="margin-left-10">In-person Workshops</h3>
 				</a>
 				<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive">
 					<img src="/assets/images/peers_icon1.jpg" alt="logo" style="height: 100%;">
@@ -69,7 +69,7 @@
 				<div class="col-md-12">
 					<div class="row">
 						<div class="col-md-8">
-							<div class="mat-display-1 clickable" [routerLink]="'/home/experiences'">In-person Experiences</div>
+							<div class="mat-display-1 clickable" [routerLink]="'/home/experiences'">In-person Workshops</div>
 						</div>
 						<div class="col-md-2 pull-right" style="text-align: right">
 							<a [routerLink]="'/home/experiences'">
@@ -85,7 +85,7 @@
 					</div>
 					<div *ngIf="!loadingExperiences" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
 						<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
-							There are no new active experiences to view right now.
+							There are no new active workshops to view right now.
 						</div>
 						<div *ngFor="let experience of experiences; let i = index;">
 							<app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>

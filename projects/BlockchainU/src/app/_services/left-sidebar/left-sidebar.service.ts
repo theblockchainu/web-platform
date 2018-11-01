@@ -160,33 +160,41 @@ export class LeftSidebarService {
 
         if (dataToUpdate.educationObject && dataToUpdate.educationObject.length > 0) {
             sidebarMenuItems[0].submenu[3].complete = true;
+			completedSections++;
         }
 
         if (dataToUpdate.topicsObject) {
             sidebarMenuItems[1].submenu[0].complete = true;
             sidebarMenuItems[1].submenu[1].complete = true;
+			completedSections++;
         }
 
         if (dataToUpdate.provisionObject && dataToUpdate.provisionObject.length > 0) {
             sidebarMenuItems[1].submenu[2].complete = true;
+			completedSections++;
         }
 
         if (dataToUpdate.availabilityObject && dataToUpdate.availabilityObject.length > 0) {
             sidebarMenuItems[1].submenu[3].complete = true;
+			completedSections++;
         }
 
         if (dataToUpdate.priceObject && dataToUpdate.priceObject.length > 0) {
             sidebarMenuItems[1].submenu[4].complete = true;
+			completedSections++;
         }
 
         if (dataToUpdate.preferenceObject) {
             if (dataToUpdate.preferenceObject.bookingProcess) {
                 sidebarMenuItems[2].submenu[0].complete = true;
+				completedSections++;
             }
             if (dataToUpdate.preferenceObject.customUrl) {
                 sidebarMenuItems[2].submenu[1].complete = true;
+				completedSections++;
             }
         }
+		sidebarMenuItems[3].locked = completedSections !== 10;
         return sidebarMenuItems;
     }
 
@@ -303,4 +311,5 @@ interface SessionConfigObject {
     availabilityObject?: any;
     priceObject?: any;
     preferenceObject?: any;
+    isLocked?: boolean;
 }

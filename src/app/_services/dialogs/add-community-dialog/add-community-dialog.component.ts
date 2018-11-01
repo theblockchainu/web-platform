@@ -31,7 +31,7 @@ export class AddCommunityDialogComponent implements OnInit {
   freeCommunity = false;
   public currencies = [];
   public interest1: FormGroup;
-  public maxTopicMsg = 'Choose max 3 related topics';
+  public maxTopicMsg = 'Choose max 5 relevant topics';
   public interests = [];
   public suggestedTopics = [];
   public removedInterests = [];
@@ -39,7 +39,7 @@ export class AddCommunityDialogComponent implements OnInit {
   public searchTopicURL = '';
   public createTopicURL = '';
   public placeholderStringTopic = 'Search for a topic ';
-  public maxTopics = 3;
+  public maxTopics = 5;
   public submitting: boolean;
 
   constructor(
