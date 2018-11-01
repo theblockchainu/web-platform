@@ -46,6 +46,7 @@ import { SharedModule } from './_shared/_shared.module';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 import { isPlatformBrowser } from '@angular/common';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import {DigestModule} from './digest/digest.module';
 
 
 /*Raven
@@ -111,6 +112,7 @@ export class RavenErrorHandler implements ErrorHandler {
 		MatListModule,
 		MatBadgeModule,
 		PdfViewerModule,
+		DigestModule,
 		LoadingModule.forRoot({
 			animationType: ANIMATION_TYPES.threeBounce,
 			backdropBackgroundColour: 'rgba(0,0,0,0)',
