@@ -6,7 +6,7 @@
 			<mat-icon *ngIf="experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId"
 			 color="primary">bookmark</mat-icon>
 		</button>
-		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.id,experience.title, experience.description, experience.headline, envVariable.apiUrl + experience.imageUrls[0])"
+		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.customUrl,experience.title, experience.description, experience.headline, envVariable.apiUrl + experience.imageUrls[0])"
 		 matTooltip="Share">
 			<mat-icon>share</mat-icon>
 		</button>
