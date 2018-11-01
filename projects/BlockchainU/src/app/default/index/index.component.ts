@@ -418,74 +418,13 @@ export class IndexComponent implements OnInit {
 	fetchPeers() {
 		const query = {
 			'include': [
-				'reviewsAboutYou',
 				'profiles',
-				'wallet',
-				'topicsTeaching',
-				{
-					'relation': 'ownedCollections',
-					'scope': {
-						'where': {
-							'type': 'session'
-						}
-					}
-				}
-			],
-			'where': {
-				and: [
-					{ 'id': { 'neq': this.userId } },
-					{ 'accountVerified': true }
-				]
-			},
-			'limit': 50,
-			'order': 'createdAt DESC'
+				'wallet'
+			]
 		};
 		this.loadingPeers = true;
-		this._profileService.getAllPeers(query).subscribe((result: any) => {
-			this.peers = [];
-			let isTeacher = false;
-			for (const responseObj of result) {
-				if (responseObj.ownedCollections && responseObj.ownedCollections.length > 0 && responseObj.topicsTeaching && responseObj.topicsTeaching.length > 0) {
-					responseObj.ownedCollections.forEach(ownedCollection => {
-						if (ownedCollection.status === 'active') {
-							isTeacher = true;
-						}
-					});
-					if (isTeacher) {
-						responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
-						const topics = [];
-						responseObj.topicsTeaching.forEach(topicObj => {
-							topics.push(this.titlecasepipe.transform(topicObj.name));
-						});
-						if (topics.length > 0) {
-							responseObj.topics = topics;
-						} else {
-							topics.push('No topics selected');
-							responseObj.topics = topics;
-						}
-						if (this.peers.length <= 6) {
-							this.peers.push(responseObj);
-						}
-					} else {
-						responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
-						const topics = [];
-						if (responseObj.topicsTeaching) {
-							responseObj.topicsTeaching.forEach(topicObj => {
-								topics.push(this.titlecasepipe.transform(topicObj.name));
-							});
-						}
-						if (topics.length > 0) {
-							responseObj.topics = topics;
-						} else {
-							topics.push('No topics selected');
-							responseObj.topics = topics;
-						}
-						if (this.peers.length <= 6) {
-							this.peers.push(responseObj);
-						}
-					}
-				}
-			}
+		this._profileService.fetchTrendingPeers(query).subscribe((result: any) => {
+			this.peers = result;
 			this.loadingPeers = false;
 		}, (err) => {
 			console.log(err);
