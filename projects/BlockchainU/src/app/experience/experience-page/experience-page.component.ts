@@ -687,7 +687,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 							}
 							this.recordStartView();
 						} else {
-							this.snackBar.open('This in-person experience has either been deleted or flagged.', 'OK', { duration: 5000 });
+							this.snackBar.open('This in-person workshop has either been deleted or flagged.', 'OK', { duration: 5000 });
 							this.router.navigate(['home', 'experiences']);
 						}
 					} else {

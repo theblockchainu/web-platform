@@ -9,13 +9,13 @@
 	<div class="col-md-12">
 		<div class="row margin-top-20" *ngIf="userType !== 'public'">
 			<div class="col-md-12">
-				<div class="mat-body-2">Add your experience</div>
+				<div class="mat-body-2">Add your workshop</div>
 			</div>
 		</div>
 		<div class="row" *ngIf="userType !== 'public'">
 			<div class="col-md-11 col-xs-10">
 				<mat-form-field [floatLabel]="'never'" class="pb-block classSelector margin-top-20">
-					<mat-select #selectedExperience placeholder="Select from your existing experiences" [disableRipple]="'true'">
+					<mat-select #selectedExperience placeholder="Select from your existing workshops" [disableRipple]="'true'">
 						<mat-option *ngFor="let experience of ownedExperiences" [value]="experience.id">{{experience.title | ucwords}}</mat-option>
 					</mat-select>
 				</mat-form-field>

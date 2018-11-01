@@ -12,7 +12,7 @@
 				<mat-form-field [floatLabel]="'always'">
 					<mat-select class="col-md-8" style="margin-left:5px" [(value)]="selected" (ngModelChange)="getSelectedCollection()">
 						<mat-option value="all">All Messages ({{tempJoinedRooms.length}})</mat-option>
-						<mat-option value="experience">Experiences ({{experienceCollection.length}})</mat-option>
+						<mat-option value="experience">Workshops ({{experienceCollection.length}})</mat-option>
 						<mat-option value="peer">Peers ({{experienceCollection.length}})</mat-option>
 						<!--<mat-option value="class">Classes ({{classCollection.length}})</mat-option>-->
 					</mat-select>

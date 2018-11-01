@@ -53,7 +53,7 @@
 	</mat-menu>
 	<mat-menu #headerTeachMenu [overlapTrigger]="false">
 		<button mat-menu-item (click)="createExperience()">
-			Host an in-person experience
+			Host an in-person workshop
 		</button>
 		<button mat-menu-item (click)="createClass()">
 			Create an online class
@@ -116,10 +116,11 @@
 			<div class="homefeedContainer">
 				<nav mat-tab-nav-bar disableRipple class="noJustify home">
 					<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
-					   matTooltip="Experiences are a way to learn any subject in the real world together with your teacher.">
+					   matTooltip="In-person Workshops are a way to learn any subject in the real world together with your teacher.">
 						<img src="/assets/images/experience_thumb.jpg" alt="logo" style="height: 100%;">
-						<h3 class="margin-left-10">In-person Experiences</h3>
+						<h3 class="margin-left-10">In-person Workshops</h3>
 					</a>
+					
 					<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive">
 						<img src="/assets/images/peer_thumb.jpg" alt="logo" style="height: 100%;">
 						<h3 class="margin-left-10">Learning Guides</h3>
@@ -141,7 +142,7 @@
 	
 	<section class="introducing-experience spacing">
 		<div class="container">
-			<h2 class="section-title">Introducing In-Person Experiences </h2>
+			<h2 class="section-title">Introducing In-Person Workshops </h2>
 			<div class="gradient-banner">
 				<div class="hero-banner-bg">
 					<div class="gray-gradient-overlay"></div>
@@ -150,7 +151,7 @@
 							<div class="content">
 								<h3>Educational bootcamps, workshops &amp; hackathons designed and led by local experts.</h3>
 								<div class="action-btn">
-									<a [routerLink]="'/home/experiences'">Explore Experiences</a>
+									<a [routerLink]="'/home/experiences'">Explore Workshops</a>
 								</div>
 							</div>
 						</div>
@@ -162,13 +163,13 @@
 	
 	<section class="experience-around-world spacing">
 		<div class="container">
-			<h2 class="section-title pb-0">In-person Experiences around the world</h2>
+			<h2 class="section-title pb-0">In-person Workshops around the world</h2>
 			<div class="loading-container" [hidden]="!loadingExperiences">
 				<ngx-loading [show]="true"></ngx-loading>
 			</div>
 			<div *ngIf="!loadingExperiences" class="row feed-horizontal" style="padding: 0px 7px;">
 				<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
-					There are no new active experiences to view right now.
+					There are no new active workshops to view right now.
 				</div>
 				<div *ngFor="let experience of experiences; let i = index;">
 					<app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
@@ -182,7 +183,7 @@
 	
 	<section class="experience-spotlight spacing">
 		<div class="container">
-			<h2 class="section-title pb-0">Experiences for your kind of learning</h2>
+			<h2 class="section-title pb-0">In-person Workshops for your kind of learning</h2>
 			<div class="row small-margin">
 				<div class="col-12 col-md-4 small-padding">
 					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{subtype: 'workshop'}">
@@ -196,8 +197,8 @@
 							<p class="tags text-uppercase">
 								<span>Explore Now</span>
 							</p>
-							<h3 class="title">Workshop Experiences</h3>
-							<p>Experiences in the style of physical workshops that can be from a few hours to a few days.
+							<h3 class="title">Workshops </h3>
+							<p>Workshops in the style of physical experiences that can be from a few hours to a few days.
 							</p>
 						</div>
 					</div>
@@ -214,7 +215,7 @@
 							<p class="tags text-uppercase">
 								<span>Explore Now</span>
 							</p>
-							<h3 class="title">Meetup Experiences</h3>
+							<h3 class="title">Meetup Workshops</h3>
 							<p>Education related meetups for communities to get together and collaborate on common passions</p>
 						</div>
 					</div>
@@ -231,8 +232,8 @@
 							<p class="tags text-uppercase">
 								<span>Explore Now</span>
 							</p>
-							<h3 class="title">Hackathon Experiences</h3>
-							<p>Bootcamps and hackathons are more practical in-person experiences where you immerse yourself in finding
+							<h3 class="title">Hackathon Workshops</h3>
+							<p>Bootcamps and hackathons are more practical in-person workshops where you immerse yourself in finding
 							   practical
 							   solutions to problems</p>
 						</div>
