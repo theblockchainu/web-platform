@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
+import { map } from 'rxjs/operators';
 declare var moment: any;
 
 @Injectable()
@@ -106,7 +107,6 @@ export class CollectionService {
 		const filter = JSON.stringify(param);
 		return this.httpClient
 			.get(environment.apiUrl + '/api/collections/' + id + '?filter=' + filter, this.requestHeaderService.options);
-
 	}
 
 	public getCollectionEthereumInfo(id: string, param: any) {
@@ -345,7 +345,7 @@ export class CollectionService {
 		});
 		return calendars[0];
 	}
-	
+
 	/**
 	 * Get the upcoming active calendar of this collection
 	 * @param calendars
@@ -1142,4 +1142,40 @@ export class CollectionService {
 				this.requestHeaderService.options);
 
 	}
+
+	public getUniqueURL(title: string, index?: number): Observable<string> {
+		if (title.length <= 0) {
+			return null;
+		}
+		const titleUrl = title.replace(/ /g, '-');
+		let urlString = titleUrl;
+		if (index) {
+			urlString = titleUrl + '-' + index.toString();
+		}
+
+		const query = {
+			where: {
+				customUrl: urlString
+			}
+		};
+
+		return this.getAllCollections(query).
+			pipe(map(((res: any) => {
+				if (res && res.length > 0) {
+					console.log('title found');
+					if (index) {
+						this.getUniqueURL(title, index++).subscribe(newString => {
+							return newString;
+						});
+					} else {
+						this.getUniqueURL(title, 1).subscribe(newString => {
+							return newString;
+						});
+					}
+				} else {
+					return urlString;
+				}
+			})));
+	}
+
 }

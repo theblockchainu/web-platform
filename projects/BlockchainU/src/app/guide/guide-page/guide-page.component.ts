@@ -400,7 +400,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				for (const owner of this.guide.owners) {
 					if (owner.id === this.userId) {
 						console.log('ownerId:' + owner.id + ' userId:' + this.userId);
-
 						this.userType = 'teacher';
 						this.sortAssessmentRules();
 						break;
@@ -433,62 +432,95 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				{ 'participants': [{ 'profiles': ['work'] }] },
 				{ 'owners': [{ 'profiles': ['work'] }] },
 				'rooms'
-			]
+			],
+			'where': {
+				'customUrl': this.guideId
+			}
 		};
 
 		if (this.guideId) {
-			this._collectionService.getCollectionEthereumInfo(this.guideId, {})
-				.subscribe(res => {
-					this.checkingEthereum = false;
-					if (res && res[6] && res[6] !== '0') {
-						this.isOnEthereum = true;
-					}
-				});
-			this._collectionService.getCollectionDetail(this.guideId, query)
-				.subscribe(res => {
-					if (res) {
+			this._collectionService.getAllCollections(query)
+				.subscribe((res: any) => {
+					if (res && res.length > 0) {
 						console.log(res);
-						this.guide = res;
-						this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
-						this.setTags();
-						try {
-							if (fbq && fbq !== undefined) {
-								fbq('track', 'ViewContent', {
-									currency: 'USD',
-									value: 0.0,
-									content_type: 'product',
-									content_ids: [this.guideId]
-								});
-							}
-						} catch (e) {
-							console.log(e);
-						}
-						this.initializeUserType();
-						this.fixTopics();
-						this.getReviews();
-						this.getRecommendations();
-						this.getParticipants();
-						this.getDiscussions();
-						this.getBookmarks();
-						this.setUpCarousel();
-						if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
-							const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
-							snackBarRef.onAction().subscribe();
-							this.router.navigate(['guide', this.guideId]);
-						}
-						this.recordStartView();
+						this.processData(res[0]);
 					} else {
 						this.loadingGuide = false;
+						delete query.where;
+						this.fetchById(query);
 					}
 				},
 					err => {
 						console.log('error');
-						this.loadingGuide = false;
-					},
+						delete query.where;
+						this.fetchById(query);
+					}
 				);
 		} else {
 			console.log('NO COLLECTION');
 		}
+	}
+
+	fetchById(query: any) {
+		this._collectionService.getCollectionDetail(this.guideId, query)
+			.subscribe((res: any) => {
+				if (res) {
+					console.log(res);
+					this.processData(res);
+				} else {
+					this.loadingGuide = false;
+				}
+			},
+				err => {
+					this.loadingGuide = false;
+					console.log('error');
+				}
+			);
+	}
+
+	private getEthereumInfo() {
+		this._collectionService.getCollectionEthereumInfo(this.guideId, {})
+			.subscribe(res => {
+				this.checkingEthereum = false;
+				if (res && res[6] && res[6] !== '0') {
+					this.isOnEthereum = true;
+				}
+			});
+	}
+
+	private processData(res: any) {
+		console.log(res);
+		this.guide = res;
+		this.guideId = this.guide.id;
+		this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
+		this.setTags();
+		try {
+			if (fbq && fbq !== undefined) {
+				fbq('track', 'ViewContent', {
+					currency: 'USD',
+					value: 0.0,
+					content_type: 'product',
+					content_ids: [this.guideId]
+				});
+			}
+		} catch (e) {
+			console.log(e);
+		}
+		this.initializeUserType();
+		this.fixTopics();
+		this.getReviews();
+		this.getRecommendations();
+		this.getParticipants();
+		this.getDiscussions();
+		this.getBookmarks();
+		this.setUpCarousel();
+		this.getEthereumInfo();
+		if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
+			const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
+			snackBarRef.onAction().subscribe();
+			this.router.navigate(['guide', this.guideId]);
+		}
+		this.recordStartView();
 	}
 
 	public createGuestContacts() {

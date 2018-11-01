@@ -148,6 +148,7 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
     public maxGyanExceding: boolean;
     totalGyan = 0;
     timelineStep = 14;
+    titleStep = 6;
     exitAfterSave = false;
     @ViewChild('certificateComponent') certificateComponent: CustomCertificateFormComponent;
     defaultAssesment: any;
@@ -240,7 +241,8 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
             status: 'draft',
             academicGyan: '',
             nonAcademicGyan: 1,
-            subCategory: ''
+            subCategory: '',
+            customUrl: ''
         });
 
         this.timeline = this._fb.group({
@@ -943,7 +945,16 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public submitBounty() {
         this.busySavingData = true;
-        this.checkStatusAndSubmit(this.bounty, this.timeline, this.step);
+        if (this.step === this.titleStep) {
+            this._collectionService.getUniqueURL(this.bounty.value.title).subscribe(urlString => {
+                if (urlString) {
+                    this.bounty.controls['customUrl'].patchValue(urlString);
+                }
+                this.checkStatusAndSubmit(this.bounty, this.timeline, this.step);
+            });
+        } else {
+            this.checkStatusAndSubmit(this.bounty, this.timeline, this.step);
+        }
     }
 
     public submitCertificate(certificate: any) {
@@ -1064,7 +1075,7 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.busySavingData = false;
                     }
                 }
-            }, (err: HttpErrorResponse ) => {
+            }, (err: HttpErrorResponse) => {
                 if (err.statusText === 'Unauthorized') {
                     this.dialogsService.openLogin().subscribe(res => {
                         if (res) {

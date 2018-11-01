@@ -11,7 +11,7 @@
 			<mat-icon>share</mat-icon>
 		</button>
 	</span>
-	<a [routerLink]="'/bounty/'+bounty.id">
+	<a [routerLink]="'/bounty/'+bounty.customUrl">
 		<div class="">
 			<div class="recommendation-thumb" *ngIf="bounty.imageUrls && bounty.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + bounty.imageUrls[0] + '/300' + '), url(../../assets/images/collection-placeholder.jpg)', 'background-size': 'cover'}">
 
