@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {CommunityPageComponent} from '../community-page.component';
-import {ActivatedRoute} from '@angular/router';
-import {CollectionService} from '../../../_services/collection/collection.service';
-import {CookieUtilsService} from '../../../_services/cookieUtils/cookie-utils.service';
-import {CommunityService} from '../../../_services/community/community.service';
+import { Component, OnInit } from '@angular/core';
+import { CommunityPageComponent } from '../community-page.component';
+import { ActivatedRoute } from '@angular/router';
+import { CollectionService } from '../../../_services/collection/collection.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+import { CommunityService } from '../../../_services/community/community.service';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import {DialogsService} from '../../../_services/dialogs/dialog.service';
-import {environment} from '../../../../environments/environment';
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
 	selector: 'app-community-page-classes',
@@ -15,7 +15,7 @@ import {environment} from '../../../../environments/environment';
 	styleUrls: ['./community-page-classes.component.scss']
 })
 export class CommunityPageClassesComponent implements OnInit {
-	
+
 	public ownedClasses;
 	public userId;
 	public communityId;
@@ -23,13 +23,13 @@ export class CommunityPageClassesComponent implements OnInit {
 	private today = moment();
 	public loadingClasses = true;
 	public envVariable;
-	
+	public userType;
 	constructor(public activatedRoute: ActivatedRoute,
-				public communityPageComponent: CommunityPageComponent,
-				public _collectionService: CollectionService,
-				public _communityService: CommunityService,
-				public _dialogsService: DialogsService,
-				public _cookieUtilsService: CookieUtilsService) {
+		public communityPageComponent: CommunityPageComponent,
+		public _collectionService: CollectionService,
+		public _communityService: CommunityService,
+		public _dialogsService: DialogsService,
+		public _cookieUtilsService: CookieUtilsService) {
 		this.envVariable = environment;
 		activatedRoute.pathFromRoot[3].url.subscribe((urlSegment) => {
 			console.log('activated route is: ' + JSON.stringify(urlSegment));
@@ -49,14 +49,14 @@ export class CommunityPageClassesComponent implements OnInit {
 		});
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.getClasses();
 		this.getCollections();
 	}
-	
+
 	public getClasses() {
-		this._collectionService.getOwnedCollections(this.userId, JSON.stringify({'where': {'and': [{'status': 'active'}, {'type': 'class'}]}}), (err, res) => {
+		this._collectionService.getOwnedCollections(this.userId, JSON.stringify({ 'where': { 'and': [{ 'status': 'active' }, { 'type': 'class' }] } }), (err, res) => {
 			if (err) {
 				console.log(err);
 			} else {
@@ -64,7 +64,7 @@ export class CommunityPageClassesComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public getCollections() {
 		this.loadingClasses = true;
 		const query = {
@@ -73,7 +73,7 @@ export class CommunityPageClassesComponent implements OnInit {
 				'calendars',
 				'participants',
 				{ 'bookmarks': 'peer' },
-				{ 'contents' : ['schedules', 'locations' ]}
+				{ 'contents': ['schedules', 'locations'] }
 			],
 			'where': { 'type': 'class' }
 		};
@@ -128,7 +128,7 @@ export class CommunityPageClassesComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public addClass(classId) {
 		console.log(classId);
 		if (classId !== null && classId.length > 0) {
@@ -141,11 +141,11 @@ export class CommunityPageClassesComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	public onClassRefresh(event) {
 		if (event) {
 			this.getCollections();
 		}
 	}
-	
+
 }

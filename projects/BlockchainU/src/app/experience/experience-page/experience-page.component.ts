@@ -122,7 +122,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public maxLength: number;
 	public bookmarking: boolean;
 	public recommendations: any;
-	private today: any;
+	public today: any;
 	public checkingEthereum: boolean;
 	public isOnEthereum: boolean;
 	public view: string;
@@ -762,7 +762,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		const first_name = this.contactUsForm.controls['first_name'].value;
 		const email = this.contactUsForm.controls['email'].value;
 		const subject = 'Experience: ' + this.experience.title;
-		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value;
+		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value
+			+ ' URL: ' + environment.clientUrl + this.router.url;
 		this._authenticationService.createGuestContacts(first_name, '', email, subject, message)
 			.subscribe(res => {
 				try {
