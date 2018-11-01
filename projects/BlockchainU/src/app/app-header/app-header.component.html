@@ -50,7 +50,7 @@
 				<!--<button mat-button class="headerButtons hide-small" style="color: #33bd9e; font-weight: 600;" [routerLink]="['/console/teaching/experiences']"
 				 *ngIf="(isLoggedIn | async)">
 					<mat-icon style="top: 4px; font-size: 15px;">add</mat-icon>
-					New Experience
+					New Workshop
 				</button>-->
 				<!--<button mat-button class="headerButtons hide-small" style="color: #33bd9e; font-weight: 600;" [routerLink]="['/console/teaching/sessions']"
 				 *ngIf="(isLoggedIn | async) && isEmailVerified && !isSessionApproved">
@@ -101,7 +101,7 @@
 				<button mat-button class="headerButtons hide-small" [routerLink]="['/whitepaper']" *ngIf="!(isLoggedIn | async)">
 					White Paper
 				</button>
-				<button mat-button class="headerButtons hide-small" [routerLink]="['/digest/about-us']" *ngIf="!(isLoggedIn | async)">
+				<button mat-button class="headerButtons hide-small" [routerLink]="['/about']" *ngIf="!(isLoggedIn | async)">
 					About Us
 				</button>
 				<button mat-button class="headerButtons" [matMenuTriggerFor]="creditMenu">
@@ -264,17 +264,17 @@
 		Dashboard
 	</button>
 	<button mat-menu-item (click)="createExperience()">
-		Host an offline experience
+		Host an in-person workshop
 	</button>
 	<button mat-menu-item [routerLink]="'/console/teaching/guides'">
 		Create a learning guide
 	</button>
 	<button mat-menu-item (click)="createClass()">
-		Create an online class
+		Create an online course
 	</button>
 	<button mat-menu-item (click)="createSession()">
 		<span *ngIf="sessionId.length < 5">
-			Start an expert session
+			Start a mentor session
 		</span>
 		<span *ngIf="isSessionApproved && sessionId.length > 5">
 			Edit session calendar

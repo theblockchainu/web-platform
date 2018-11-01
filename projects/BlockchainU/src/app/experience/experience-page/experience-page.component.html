@@ -9,19 +9,19 @@
 	<div *ngIf="experience " class="experiencePageContainer">
 		<div class="row pending-actions" *ngIf="experience.status === 'cancelled' && userType==='teacher' ">
 			<div class="col-md-10 col-md-offset-1 center">
-				<span>This experience has been cancelled by the teacher</span>
+				<span>This workshop has been cancelled by the teacher</span>
 			</div>
 		</div>
 		<div class="row pending-actions center" *ngIf="experience.status === 'submitted' && userType==='teacher' ">
 			<div class="col-md-10 col-md-offset-1">
-				<span>This experience is pending approval from Blockchain University team</span>
+				<span>This workshop is pending approval from Blockchain University team</span>
 			</div>
 		</div>
 		<div class="row pending-actions center" *ngIf="(experience.status === 'draft' || experience.status === '' ) && previewAs ">
 			<div class="col-md-10 col-md-offset-1">
 				<span>You are previewing as
 					<b>{{previewAs | titlecase}}</b>
-					. Submit your experience to get it approved.
+					. Submit your workshop to get it approved.
 					<a href="javascript:void(0);" (click)="_collectionService.openEditCollection(experience)">Continue editing?</a>
 				</span>
 			</div>
@@ -50,7 +50,7 @@
 		</div>
 		<div class="row pending-actions center" *ngIf="experience.status === 'active' && calendarId === undefined && !hasUpcomingCohort()">
 			<div class="col-md-10 col-md-offset-1">
-				<span>This in-person experience was run in the past but has no upcoming batches.
+				<span>This in-person workshop was run in the past but has no upcoming batches.
 					<span class="clickable" (click)="followCollectionToggle()" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{experience.type | titlecase}}">
 						&emsp; <i [class]="'fa-bell fa' + (isFollowing ? 's' : 'r')"></i>
 					</span>
@@ -67,14 +67,14 @@
 		</div>
 		<div class="row pending-actions center" *ngIf="(userType === 'public' && userId !== undefined && userId.length > 5 && accountApproved !== 'true')">
 			<div class="col-md-10 col-md-offset-1">
-				<span>Your account is still under review. You can sign-up for this experience after you are approved.
+				<span>Your account is still under review. You can sign-up for this workshop after you are approved.
 					<a href="javascript:void(0);" (click)="openVerificationPage()">Check verification status</a>
 				</span>
 			</div>
 		</div>
 		<div class="row pending-actions center" *ngIf="(userId === undefined)">
 			<div class="col-md-10 col-md-offset-1">
-				<span>You need to login or sign-up to start taking this experience.
+				<span>You need to login or sign-up to start taking this workshop.
 					<a href="javascript:void(0);" (click)="openLoginPage()">Login now</a>
 				</span>
 			</div>
@@ -87,7 +87,7 @@
 						<div class="row">
 							<div class="col-md-10">
 								<a class="clickable margin-bottom-10" *ngIf="calendarId && userType !== 'participant'" (click)="backToCollection(experience)">
-									< Back to experience page </a> <p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title
+									< Back to workshop page </a> <p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title
 										| titlecase}}
 										<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
 										<span *ngIf="!checkingEthereum && isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant"
@@ -170,11 +170,11 @@
 								</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length === 0"
 								 (click)="deleteExperience()">Delete
-									Experience
+									Workshop
 								</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length > 0"
 								 (click)="cancelExperience()">Cancel
-									Experience
+									Workshop
 								</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length === 0"
 								 (click)=" deleteCohort()">Delete
@@ -245,7 +245,7 @@
 						</div>
 						<div *ngIf="userType==='public'" class="row Description margin-top-20 pre-wrapped">
 							<div class="col-xs-4">
-								<h3 *ngIf="userType === 'public'">Experience overview</h3>
+								<h3 *ngIf="userType === 'public'">Workshop overview</h3>
 							</div>
 							<div class="col-xs-8">
 								<div>
@@ -335,7 +335,7 @@
 											 [strokeOpacity]="0.9"></agm-circle>
 										</agm-map>
 										<p *ngIf="lat === undefined || lng === undefined">No valid location co-ordinates recorded for this
-											experience.
+											workshop.
 											Please contact the teacher or The Blockchain University support.</p>
 									</div>
 								</div>
@@ -482,7 +482,7 @@
 								<h3 *ngIf="comments === undefined">Discussion (0)</h3>
 								<form [formGroup]="chatForm" (ngSubmit)="postComment()">
 									<mat-form-field class="full-width margin-top-10 margin-bottom-10">
-										<input matInput type="text" #description1 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this experience">
+										<input matInput type="text" #description1 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this workshop">
 										<mat-hint align="end">{{description1.value.length}} / 2000</mat-hint>
 									</mat-form-field>
 									<mat-checkbox [formControlName]="'isAnnouncement'" *ngIf="userType==='teacher'">Make Announcement</mat-checkbox>
@@ -499,7 +499,7 @@
 							<div class="col-md-12">
 								<div class="row lighterText" *ngIf="comments !== undefined && comments.length === 0">
 									<div class="col-md-12">
-										<div class="emptySectionText">Be the first one to start a discussion on this experience..</div>
+										<div class="emptySectionText">Be the first one to start a discussion on this workshop..</div>
 									</div>
 								</div>
 								<div class="row" *ngFor="let comment of comments">
@@ -601,7 +601,7 @@
 												<div class="col-md-12">
 													<form [formGroup]="editCommentForm" (ngSubmit)="updateComment()">
 														<mat-form-field class="full-width margin-top-10">
-															<input matInput type="text" #description3 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this experience">
+															<input matInput type="text" #description3 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this workshop">
 															<mat-hint align="end">{{description3.value.length}} / 2000</mat-hint>
 														</mat-form-field>
 														<mat-checkbox [formControlName]="'isAnnouncement'" *ngIf="userType==='teacher'">Make Announcement</mat-checkbox>
@@ -716,7 +716,7 @@
 									<div class="col-md-12">
 										<form [formGroup]="reviewForm" (ngSubmit)="postReview()">
 											<mat-form-field class="full-width margin-bottom-10">
-												<input matInput #description5 maxlength="2000" formControlName="description" placeholder="Describe your experience with this experience">
+												<input matInput #description5 maxlength="2000" formControlName="description" placeholder="Describe your experience with this workshop">
 												<mat-hint align="end">{{description5.value.length}} / 2000</mat-hint>
 											</mat-form-field>
 											<span matTooltip="Have you given a star rating for this review?" [matTooltipDisabled]="isRatingReceived"
@@ -731,9 +731,9 @@
 								</div>
 								<div class="row lighterText" *ngIf="reviews.length === 0">
 									<div class="col-md-12">
-										<div class="emptySectionText" *ngIf="userType !== 'teacher'">Start by giving stars to this experience..</div>
+										<div class="emptySectionText" *ngIf="userType !== 'teacher'">Start by giving stars to this workshop..</div>
 										<div class="emptySectionText" *ngIf="userType === 'teacher'">Awaiting first review from participants of
-											this experience..</div>
+											this workshop..</div>
 									</div>
 								</div>
 								<div class="row">
@@ -798,7 +798,7 @@
 															 [cancel]="false"></p-rating>
 															<form [formGroup]="editReviewForm" (ngSubmit)="updateReview()">
 																<mat-form-field class="full-width">
-																	<input matInput #description6 maxlength="2000" formControlName="description" placeholder="Review this experience">
+																	<input matInput #description6 maxlength="2000" formControlName="description" placeholder="Review this workshop">
 																	<mat-hint align="end">{{description6.value.length}} / 2000</mat-hint>
 																</mat-form-field>
 																<button [disabled]="!editReviewForm.valid" mat-raised-button color="primary">
@@ -913,7 +913,7 @@
 								<div>
 									<div class="row" *ngIf="participants.length === 0">
 										<div class="col-md-12">
-											<div class="clickable emptySectionText" (click)="openShareDialog()">Invite participants to this experience</div>
+											<div class="clickable emptySectionText" (click)="openShareDialog()">Invite participants to this workshop</div>
 										</div>
 									</div>
 								</div>
@@ -1005,7 +1005,7 @@
 						<div *ngIf="userType==='teacher' && experience.isApproved">
 							<hr class="margin-top-30 margin-bottom-30">
 							<div>
-								<h3 style="display: inline-block;">Experience Batches</h3>
+								<h3 style="display: inline-block;">Workshop Batches</h3>
 								<span (click)="editCalendar()" class="pull-right clickable" style="cursor: pointer;">
 									<mat-icon style="font-size: 1rem; top: 15px;">edit</mat-icon>
 								</span>
@@ -1114,7 +1114,7 @@
 												<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
 											</div>
 											<div class="col-md-12">
-												<span matTooltip="Earn up to {{experience.academicGyan + experience.nonAcademicGyan}} Gyan from this experience"
+												<span matTooltip="Earn up to {{experience.academicGyan + experience.nonAcademicGyan}} Gyan from this workshop"
 												 style="font-weight: 700; vertical-align: middle;">
 													Earn
 													<i class="fab fa-ethereum lightText"></i> {{experience.academicGyan + experience.nonAcademicGyan}}
@@ -1146,7 +1146,7 @@
 							<div>
 								<h3 style="display: inline-block;">Smart Certificate</h3>
 								<div class="margin-top-20">
-									You will receive this Smart Certificate immediately on completing this experience.
+									You will receive this Smart Certificate immediately on completing this workshop.
 								</div>
 								<!-- <br> -->
 								<div class="row padding-top-20">
@@ -1247,7 +1247,7 @@
 					<div class="col-md-12">
 						<div class="row margin-bottom-20">
 							<div class="col-md-5">
-								<h3>Similar Experiences</h3>
+								<h3>Similar Workshops</h3>
 							</div>
 							<div class="col-md-2 pull-right" style="text-align: right">
 								<a [routerLink]="'/home/experiences'">
@@ -1286,7 +1286,7 @@
 					<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
 				</div>
 				<div class="col-md-12">
-					<span matTooltip="Earn up to {{experience.academicGyan + experience.nonAcademicGyan}} Gyan from this experience"
+					<span matTooltip="Earn up to {{experience.academicGyan + experience.nonAcademicGyan}} Gyan from this workshop"
 					 style="font-weight: 700; vertical-align: middle;">
 						Earn
 						<i class="fab fa-ethereum"></i> {{experience.academicGyan + experience.nonAcademicGyan}}
@@ -1313,7 +1313,7 @@
 	</div>
 	<div class="row" *ngIf="!experience && !loadingExperience">
 		<div class="col-xs-12 center margin-top-100 lightText">
-			<div class="mat-display-2">this experience was not found on our servers</div>
+			<div class="mat-display-2">this workshop was not found on our servers</div>
 		</div>
 	</div>
 </div>

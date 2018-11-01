@@ -32,7 +32,7 @@ export class AskQuestionDialogComponent implements OnInit {
 	public searchTopicURL = '';
 	public createTopicURL = '';
 	public placeholderStringTopic = 'Search for a topic ';
-	public maxTopics = 3;
+	public maxTopics = 5;
 	public interest1: FormGroup;
 	public selectedCommunities: Array<CommunityObject>;
 	public myControl = new FormControl('');

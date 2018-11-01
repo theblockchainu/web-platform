@@ -15,7 +15,7 @@
 							<mat-tab label="Completed Transactions">
 								<div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
 									Here you will see all the transactions that were either paid out to your account we have on record or is scheduled to be
-									paid out on completion of your class, experience or session.
+									paid out on completion of your online course, workshop or mentor session.
 								</div>
 								<h2 *ngIf="totalTransactions >= 0"> Balance : {{totalTransactions | convertCurrency : userCurrency:true | async}} </h2>
 								<h2 *ngIf="totalTransactions < 0" class="mat-error"> Balance : {{makeAbsolute(totalTransactions) | convertCurrency: userCurrency | async}} </h2>

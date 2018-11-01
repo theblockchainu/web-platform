@@ -139,7 +139,7 @@
 							<div class="col-md-12">
 								<form [formGroup]="editCommentForm" (ngSubmit)="updateComment()">
 									<mat-form-field class="full-width margin-top-10">
-										<input matInput type="text" #description3 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this experience">
+										<input matInput type="text" #description3 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this workshop">
 										<mat-hint align="end">{{description3.value.length}}/2000</mat-hint>
 									</mat-form-field>
 									<button mat-raised-button color="primary" [disabled]="!editCommentForm.valid" class="pull-right">

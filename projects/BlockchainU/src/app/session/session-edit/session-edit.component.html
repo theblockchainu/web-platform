@@ -225,7 +225,9 @@
 									<agm-marker [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"></agm-marker>
 								</agm-map>
 							</div>
-							<h2 class="title margin-top-20">Add languages to your profile</h2>
+							<div class="margin-top-30">
+								<h2 class="title">What languages can you teach in?</h2>
+							</div>
 							<p class="subtitle margin-bottom-30">You'll write your description in this language and students will expect you to
 								speak it during sessions</p>
 							<form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
@@ -360,7 +362,7 @@
 					<div class="row">
 						<div class="col-sm-12 margin-bottom-30">
 							<h2 class="title">What topics are you passionate about teaching?</h2>
-							<p class="subtitle">Learners can select only from within these topics when they book a peer session with you.</p>
+							<p class="subtitle">Learners can select only from within these topics when they book a mentor session with you.</p>
 						</div>
 					</div>
 					<div class="row">
@@ -400,6 +402,11 @@
 						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">What experience do you have in each of your selected topics?</h2>
 							<div class="margin-top-70">
+								<div class="row" *ngIf="!relTopics || relTopics.length === 0">
+									<div class="col-md-12 lightText">
+										You have not selected any topics to teach yet. Once you select a topic, you will be able to describe your experience in that topic here.
+									</div>
+								</div>
 								<div class="row" *ngFor="let topic of relTopics">
 									<form #f="ngForm">
 										<div class="topic-name col-md-8">
@@ -434,9 +441,9 @@
 				<div class="onboarding step-9" [hidden]="step!=9">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
-							<h2 class="title">What i'll provide? </h2>
+							<h2 class="title">What will you provide? </h2>
 							<p class="subtitle">Let your peers know about specific items you would provide in your sessions. These could include
-								things like software licenses, or workstation or food etc.</p>
+								things like software licenses, or workstation or certification etc.</p>
 							<form class="margin-top-50" [formGroup]="provisionForm" (ngSubmit)="saveProvision()">
 								<div formArrayName="provisions">
 									<div *ngFor="let provisionObj of provisionForm.controls['provisions']['controls']; let i=index" [formGroupName]="i" class="margin-bottom-10">
@@ -475,7 +482,7 @@
 								<div class="col-xs-12">
 									<p-schedule [events]="events" [eventOverlap]="false" [defaultView]="'agendaWeek'" [editable]="true" (onDayClick)="handleDayClick($event)"
 									 (onEventClick)="handleEventClick($event)" (onEventDrop)="updateEvent($event)" (onEventResize)="updateEvent($event)"
-									 [height]="500" [allDaySlot]="false" [slotDuration]="'01:00:00'" [nowIndicator]="true" [scrollTime]="nowTime"></p-schedule>
+									 [height]="500" [allDaySlot]="false" [slotDuration]="'01:00:00'" [nowIndicator]="true" [scrollTime]="nowTime" [style]=""></p-schedule>
 								</div>
 							</div>
 
@@ -493,7 +500,7 @@
 						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<form [formGroup]="packageForm" (ngSubmit)="submitPackages()">
 								<h2 class="title">Set your pricing</h2>
-								<p class="subtitle">Setup a trial package and as many paid packages for your peer sessions. Learners can only select
+								<p class="subtitle">Setup a trial package and as many paid packages for your mentor sessions. Learners can only select
 									from within these packages when booking.</p>
 								<h3 class="margin-top-50">Trial Package</h3>
 								<div class="trialPackageContainer" formGroupName="trialPackage">
@@ -501,7 +508,7 @@
 									<div class="row">
 										<div class="col-md-4">
 											<mat-checkbox formControlName="isFree">Free</mat-checkbox>&emsp;
-											<span class="lightText mat-h6" *ngIf="!packageForm.controls['trialPackage']['controls']['isFree'].value">--- OR
+											<span class="lightText mat-h6 padding-left-20" *ngIf="!packageForm.controls['trialPackage']['controls']['isFree'].value">--- OR
 												---
 											</span>
 										</div>
@@ -524,7 +531,7 @@
 										</div>
 									</div>
 									<div class="title mat-subheading-2">Hours
-										<mat-icon class="lightText" style="top: 7px;" [matTooltip]="'Select the length of your trial package and optionally put a price on it. Peers are more likely to book free trial packages.'">info_outline</mat-icon>
+										<mat-icon class="lightText" style="top: 7px;" matTooltip="'Select the length of your trial package and optionally put a price on it. Peers are more likely to book free trial packages.'">info_outline</mat-icon>
 									</div>
 									<div class="row margin-left-0">
 										<div class="col-sm-12 padding-left-0">
@@ -580,7 +587,7 @@
 											</div>
 										</div>
 										<div class="title mat-subheading-2">Hours
-											<mat-icon class="lightText" style="top: 7px;" [matTooltip]="'You can create paid session packages of different hours with custom pricing for your peers to select.'">info_outline</mat-icon>
+											<mat-icon class="lightText" style="top: 7px;" matTooltip="'You can create paid session packages of different hours with custom pricing for your peers to select.'">info_outline</mat-icon>
 										</div>
 										<div class="row margin-left-0">
 											<div class="col-sm-12 padding-left-0">
@@ -659,7 +666,7 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">Custom Url</h2>
-							<div class="subtitle">Select custom URL for your page</div>
+							<div class="subtitle">Select custom URL for your mentor page</div>
 							<form class="margin-top-50" [formGroup]="preferencesForm" (ngSubmit)="savePreferences()">
 								<mat-form-field [floatLabel]="'always'">
 									<input type="text" style="border-bottom: 0px;" matInput #price formControlName="customUrl">

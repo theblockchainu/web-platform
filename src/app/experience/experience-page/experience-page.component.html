@@ -5,19 +5,19 @@
 	<div *ngIf="experience" class="experiencePageContainer">
 		<div class="row pending-actions" *ngIf="experience.status === 'cancelled' && userType==='teacher' ">
 			<div class="col-md-10 col-md-offset-1 center">
-				<span>This experience has been cancelled by the teacher</span>
+				<span>This workshop has been cancelled by the teacher</span>
 			</div>
 		</div>
 		<div class="row pending-actions center" *ngIf="experience.status === 'submitted' && userType==='teacher' ">
 			<div class="col-md-10 col-md-offset-1">
-				<span>This experience is pending approval from peerbuds team</span>
+				<span>This workshop is pending approval from peerbuds team</span>
 			</div>
 		</div>
 		<div class="row pending-actions center" *ngIf="(experience.status === 'draft' || experience.status === '' ) && previewAs ">
 			<div class="col-md-10 col-md-offset-1">
 				<span>You are previewing as
 					<b>{{previewAs | titlecase}}</b>
-					. Submit your experience to get it approved.
+					. Submit your workshop to get it approved.
 					<a href="javascript:void(0);" (click)="_collectionService.openEditCollection(experience)">Continue editing?</a>
 				</span>
 			</div>
@@ -45,7 +45,7 @@
 		</div>
 		<div class="row pending-actions center" *ngIf="(experience.status === 'active' && calendarId === undefined && !hasUpcomingCohort() && userType === 'teacher')">
 			<div class="col-md-10 col-md-offset-1">
-				<span>There are no more upcoming cohorts scheduled for this experience!
+				<span>There are no more upcoming cohorts scheduled for this workshop!
 					<a href="javascript:void(0);" (click)="editCalendar()">Schedule one now?</a>
 				</span>
 			</div>
@@ -59,14 +59,14 @@
 		</div>
 		<div class="row pending-actions center" *ngIf="(userType === 'public' && userId !== undefined && userId.length > 5 && accountApproved !== 'true')">
 			<div class="col-md-10 col-md-offset-1">
-				<span>Your account is still under review. You can sign-up for this experience after you are approved.
+				<span>Your account is still under review. You can sign-up for this workshop after you are approved.
 					<a href="javascript:void(0);" (click)="openVerificationPage()">Check verification status</a>
 				</span>
 			</div>
 		</div>
 		<div class="row pending-actions center" *ngIf="(userId === undefined)">
 			<div class="col-md-10 col-md-offset-1">
-				<span>You need to login or sign-up to start taking this experience.
+				<span>You need to login or sign-up to start taking this workshop.
 					<a href="javascript:void(0);" (click)="openLoginPage()">Login now</a>
 				</span>
 			</div>

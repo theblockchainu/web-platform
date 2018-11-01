@@ -58,6 +58,8 @@ export class LeftSidebarComponent implements OnInit {
 	ngOnInit() {
 		this._leftSidebarService.getMenuItems(this.menuFile).subscribe(response => {
 			this.sidebarMenuItems = response;
+			console.log('SIDEBAR MENU');
+			console.log(this.sidebarMenuItems);
 			this.menuArray.emit(this.sidebarMenuItems);
 		});
 		this.path = this.router.url.split('/')[1];
@@ -89,7 +91,7 @@ export class LeftSidebarComponent implements OnInit {
 								this.sidebarMenuItems = this._leftSidebarService.updateSideMenu(this.collection, this.sidebarMenuItems);
 								break;
 							case 'session':
-								this.sidebarMenuItems = this._leftSidebarService.updateSessionMenu(this.collection, this.sidebarMenuItems);
+								this.sidebarMenuItems = this._leftSidebarService.updateSessionMenu(this.sidebarMenuItems, this.collection);
 								break;
 							case 'bounty':
 								this.sidebarMenuItems = this._leftSidebarService.updateBountySideMenu(this.collection, this.sidebarMenuItems);
