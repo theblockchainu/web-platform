@@ -796,4 +796,10 @@ export class ProfileService {
 	public unfollowCollection(peerId: string, collectionId: string) {
 		return this.http.delete(environment.apiUrl + '/api/peers/' + peerId + '/collectionsFollowing/rel/' + collectionId, this._requestHeaderService.options);
 	}
+
+	public fetchTrendingPeers(filter: any) {
+		return this.http
+			.get(environment.apiUrl + '/api/peers/trending?filter=' + JSON.stringify(filter),
+				this._requestHeaderService.options);
+	}
 }

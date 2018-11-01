@@ -182,59 +182,16 @@ export class ProfileComponent implements OnInit {
 		);
 	}
 
-	private getRecommendedPeers() {
+	public getRecommendedPeers() {
 		const query = {
 			'include': [
-				'reviewsAboutYou',
-				'wallet',
 				'profiles',
-				'topicsTeaching',
-				{
-					'relation': 'ownedCollections',
-					'scope': {
-						'where': {
-							'type': 'session'
-						}
-					}
-				}
-			],
-			'where': {
-				and: [
-					{ 'id': { 'neq': this.urluserId } },
-					{ 'accountVerified': true }
-				]
-			},
-			'limit': 50,
-			'order': 'createdAt DESC'
+				'wallet'
+			]
 		};
-		this._profileService.getAllPeers(query).subscribe((result: any) => {
-			this.recommendedpeers = [];
-			let isTeacher = false;
-			for (const responseObj of result) {
-				if (responseObj.ownedCollections && responseObj.ownedCollections.length > 0 && responseObj.topicsTeaching && responseObj.topicsTeaching.length > 0) {
-					responseObj.ownedCollections.forEach(ownedCollection => {
-						if (ownedCollection.status === 'active') {
-							isTeacher = true;
-						}
-					});
-					if (isTeacher) {
-						responseObj.rating = this._collectionService.calculateRating(responseObj.reviewsAboutYou);
-						const topics = [];
-						responseObj.topicsTeaching.forEach(topicObj => {
-							topics.push(this.titlecasepipe.transform(topicObj.name));
-						});
-						if (topics.length > 0) {
-							responseObj.topics = topics;
-						} else {
-							topics.push('No topics selected');
-							responseObj.topics = topics;
-						}
-						if (this.recommendedpeers.length < 6) {
-							this.recommendedpeers.push(responseObj);
-						}
-					}
-				}
-			}
+		this.loadingPeers = true;
+		this._profileService.fetchTrendingPeers(query).subscribe((result: any) => {
+			this.recommendedpeers = result;
 			this.loadingPeers = false;
 		}, (err) => {
 			console.log(err);
