@@ -907,6 +907,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		if (this.step === this.titleStep) {
 			this._collectionService.getUniqueURL(this.experience.value.title).subscribe(urlString => {
 				if (urlString) {
+					console.log(urlString);
+
 					this.experience.controls['customUrl'].patchValue(urlString);
 				}
 				this.checkStatusAndSubmit(this.experience, this.timeline, this.step);

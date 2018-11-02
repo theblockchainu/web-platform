@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { flatMap } from 'rxjs/operators';
+import { flatMap, first } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { AuthenticationService } from '../authentication/authentication.service';
@@ -1143,39 +1143,42 @@ export class CollectionService {
 
 	}
 
-	public getUniqueURL(title: string, index?: number): Observable<string> {
-		if (title.length <= 0) {
-			return null;
-		}
+	public getUniqueURL(title: string): Observable<string> {
+		return new Observable(obs => {
+			this.generateURL(title).then((url) => {
+				obs.next(url);
+			});
+		});
+	}
+
+	private async generateURL(title: string): Promise<string> {
 		const titleUrl = title.replace(/ /g, '-');
-		let urlString = titleUrl;
-		if (index) {
-			urlString = titleUrl + '-' + index.toString();
-		}
-
-		const query = {
-			where: {
-				customUrl: urlString
+		let suffix = null;
+		let unique = false;
+		let finalUrl;
+		while (!unique) {
+			let testUrl = titleUrl;
+			if (suffix) {
+				testUrl += '-' + suffix.toString();
 			}
-		};
-
-		return this.getAllCollections(query).
-			pipe(map(((res: any) => {
-				if (res && res.length > 0) {
-					console.log('title found');
-					if (index) {
-						this.getUniqueURL(title, index++).subscribe(newString => {
-							return newString;
-						});
-					} else {
-						this.getUniqueURL(title, 1).subscribe(newString => {
-							return newString;
-						});
-					}
-				} else {
-					return urlString;
+			const query = {
+				'where': {
+					'customUrl': testUrl
 				}
-			})));
+			};
+			const data = <any>await this.getAllCollections(query).pipe(first()).toPromise();
+			if (data && data.length > 0) {
+				if (suffix) {
+					suffix++;
+				} else {
+					suffix = 1;
+				}
+			} else {
+				unique = true;
+				finalUrl = testUrl;
+			}
+		}
+		return finalUrl;
 	}
 
 }
