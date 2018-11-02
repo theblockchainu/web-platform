@@ -59,7 +59,7 @@
 			Create an online class
 		</button>
 		<button mat-menu-item (click)="createSession()">
-			Become a blockchain expert
+			Become a blockchain mentor
 		</button>
 	</mat-menu>
 </header>
@@ -532,12 +532,12 @@
 
 	<section class="peer-sessions spacing">
 		<div class="container">
-			<h2 class="section-title">Introducing Expert Sessions</h2>
+			<h2 class="section-title">Introducing Mentor Sessions</h2>
 			<div class="jumbo-image-box">
 				<div class="row">
 					<div class="col-xs-4 image align-top">
 						<div class="image-container">
-							<img src="/assets/images/pexels-photo-1181244.jpeg" alt="Expert sessions" class="img-fluid">
+							<img src="/assets/images/pexels-photo-1181244.jpeg" alt="Mentor sessions" class="img-fluid">
 						</div>
 					</div>
 					<div class="col-xs-8 content align-middle">
@@ -558,7 +558,7 @@
 			</div>
 			<div *ngIf="!loadingPeers" class="row feed-horizontal" style="padding: 0px 7px;">
 				<div class="noDataContainer" *ngIf="peers === undefined || peers.length === 0">
-					There are no new available experts to view right now.
+					There are no available mentors to view right now.
 				</div>
 				<div *ngFor="let peer of peers; let i = index;">
 					<app-peer-card *ngIf="i < 6" [peer]="peer"></app-peer-card>
@@ -569,7 +569,7 @@
 
 	<section class="experience-spotlight super-teacher spacing margin-bottom-50">
 		<div class="container">
-			<h2 class="section-title pb-0">Featured Blockchain Experts</h2>
+			<h2 class="section-title pb-0">Featured Blockchain Mentors</h2>
 			<div class="row small-margin">
 				<div class="col-12 col-md-4 small-padding">
 					<div class="custom-card clickable" [routerLink]="'/home/peers'" [queryParams]="{topic: 'solidity'}">
@@ -577,13 +577,13 @@
 							<div class="card-image-content text-center">
 								<span class="image-heading">Solidity</span>
 							</div>
-							<img src="/assets/images/coding-card.jpg" alt="Experts teaching solidity">
+							<img src="/assets/images/coding-card.jpg" alt="Mentors teaching solidity">
 						</div>
 						<div class="card-content">
 							<p class="tags text-uppercase">
 								<span>Explore Now</span>
 							</p>
-							<p class="para">Experts teaching Solidity
+							<p class="para">Mentors teaching Solidity
 							</p>
 						</div>
 					</div>
@@ -594,13 +594,13 @@
 							<div class="card-image-content text-center">
 								<span class="image-heading">Corda</span>
 							</div>
-							<img src="/assets/images/design-card.jpg" alt="Experts teaching Corda">
+							<img src="/assets/images/design-card.jpg" alt="Mentors teaching Corda">
 						</div>
 						<div class="card-content">
 							<p class="tags text-uppercase">
 								<span>Explore Now</span>
 							</p>
-							<p class="para">Experts teaching Corda</p>
+							<p class="para">Mentors teaching Corda</p>
 						</div>
 					</div>
 				</div>
@@ -610,13 +610,13 @@
 							<div class="card-image-content text-center">
 								<span class="image-heading">Distributed Ledgers</span>
 							</div>
-							<img src="/assets/images/cooking-card.jpg" alt="Experts teaching distributed ledgers">
+							<img src="/assets/images/cooking-card.jpg" alt="Mentors teaching distributed ledgers">
 						</div>
 						<div class="card-content">
 							<p class="tags text-uppercase">
 								<span>Explore Now</span>
 							</p>
-							<p class="para">Experts teaching Distributed Ledgers</p>
+							<p class="para">Mentors teaching Distributed Ledgers</p>
 						</div>
 					</div>
 				</div>

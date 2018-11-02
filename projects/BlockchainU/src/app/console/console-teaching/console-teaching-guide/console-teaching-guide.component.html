@@ -156,8 +156,10 @@
 											</div>
 										</div>
 										<div style="margin-top: 15px;">
-											<span class="participantCount">{{collection.participants.length}} Participants </span> |
-											<span class="lightText">{{collection.maxSpots - collection.participants.length}} available </span>
+											<span class="participantCount">{{collection.participants.length}} Participants </span>
+											<span *ngIf="collection.maxSpots && collection.maxSpots > 0">|
+												<span class="lightText">{{collection.maxSpots - collection.participants.length}} available </span>
+											</span>
 										</div>
 										<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{
 											collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>

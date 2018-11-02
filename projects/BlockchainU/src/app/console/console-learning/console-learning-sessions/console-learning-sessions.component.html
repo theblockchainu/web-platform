@@ -10,10 +10,10 @@
 		<div #noContentView *ngIf="upcomingSessions.length === 0 && ongoingSessions.length === 0 && pastSessions.length === 0 && notApproved.length === 0"
 		     class="center" style="margin-top: 10%">
 			<div class="lightText">
-				You are not taking any sessions
+				You have not enrolled for any mentor sessions
 				<br>
 				<br> Start by signing up for a
-				<a color="default" [routerLink]="'/home/peers'">session with any of these peers</a>
+				<a color="default" [routerLink]="'/home/peers'">session with any of these mentors</a>
 			</div>
 		</div>
 		<div *ngIf="upcomingSessions.length > 0 || ongoingSessions.length > 0">
