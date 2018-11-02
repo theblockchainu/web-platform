@@ -287,7 +287,7 @@ export class CollectionService {
 			return moment() < moment(element.startDay);
 		});
 		let fillerWord = '';
-		if (contents[0]) {
+		if (contents[0] && currentCalendar) {
 			if (contents[0].type === 'online') {
 				fillerWord = 'activity';
 			} else if (contents[0].type === 'video') {

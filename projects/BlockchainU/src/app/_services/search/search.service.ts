@@ -101,6 +101,8 @@ export class SearchService {
 					}
 				case 'topic':
 					return this.ucwords.transform(option.data.name);
+				case 'content':
+					return this.ucwords.transform(option.data.title);
 				case 'community':
 					return this.ucfirst.transform(option.data.title);
 				case 'question':
@@ -138,8 +140,10 @@ export class SearchService {
 						default:
 							return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/collection-placeholder.jpg';
 					}
+				case 'content':
+					return option.data.imageUrl ? environment.apiUrl + option.data.imageUrl + '/100' : '/assets/images/collection-placeholder.jpg';
 				case 'topic':
-					return option.data.imageUrls ? environment.apiUrl + option.data.imageUrl + '/100' : '/assets/images/collection-placeholder.jpg';
+					return option.data.imageUrl ? environment.apiUrl + option.data.imageUrl + '/100' : '/assets/images/collection-placeholder.jpg';
 				case 'community':
 					return option.data.imageUrls ? environment.apiUrl + option.data.imageUrls[0] + '/100' : '/assets/images/community-banner-bg.jpg';
 				case 'question':
@@ -178,6 +182,8 @@ export class SearchService {
 					}
 				case 'topic':
 					return 'Topic';
+				case 'content':
+					return this.ucwords.transform(option.data.type) + ' Activity';
 				case 'community':
 					return 'Community';
 				case 'question':
@@ -216,6 +222,9 @@ export class SearchService {
 					break;
 				case 'topic':
 					this.router.navigate(['/console/profile/topics']);
+					break;
+				case 'content':
+					this.router.navigate(['/content', option.data.id]);
 					break;
 				case 'community':
 					this.router.navigate(['/community', option.data.id]);
