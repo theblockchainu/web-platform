@@ -274,13 +274,13 @@ export class GuidesComponent implements OnInit {
 		if (this.selectedTopics.length < 1) {
 			query = {
 				'include': [
-					{ 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'participants', 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'guide' } } }
+					{ 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'participants', 'topics', 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'guide' } } }
 				]
 			};
 		} else {
 			query = {
 				'include': [
-					{ 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'participants', 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'guide' } } }
+					{ 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'participants', 'topics', 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'guide' } } }
 				],
 				'where': { or: this.selectedTopics }
 			};
@@ -327,6 +327,15 @@ export class GuidesComponent implements OnInit {
 											return;
 										}
 									});
+								}
+								collection.topics.forEach(topicObj => {
+									topics.push(this.titlecasepipe.transform(topicObj.name));
+								});
+								if (topics.length > 0) {
+									collection.topics = topics;
+								} else {
+									topics.push('No topics selected');
+									collection.topics = topics;
 								}
 								if (hasActiveCalendar) {
 									guides.push(collection);

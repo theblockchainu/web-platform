@@ -33,7 +33,8 @@
 			<span class="mat-body-2">{{class.price | convertCurrency: class.currency |async}}</span>
 			<mat-icon style="font-size: 5px; top: -3px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
 			<span matTooltip="Earn upto {{class.academicGyan + class.nonAcademicGyan}} Gyan">
-				Earn <i class="fab fa-ethereum lightText"></i> {{class.academicGyan + class.nonAcademicGyan}}
+				<!--Earn <i class="fab fa-ethereum lightText"></i> {{class.academicGyan + class.nonAcademicGyan}}-->
+				{{class.academicGyan + class.nonAcademicGyan}} hours
 			</span>
 			<!--<mat-icon style="font-size: 5px; top: -3px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>-->
 			<!--<span matTooltip="Burn {{(class.academicGyan + class.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async}} KARMA to participate" style="font-weight: 700; vertical-align: middle;">

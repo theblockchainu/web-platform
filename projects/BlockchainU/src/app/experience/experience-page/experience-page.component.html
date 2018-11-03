@@ -240,7 +240,7 @@
 								<b>{{_collectionService.getUpcomingCalendar(experience.calendars).endDate | extractTime:'Do MMMM YY'}}</b>
 							</div>
 							<div class="col-md-3 col-xs-3" style="text-align: right">
-								<button mat-button class="mat-border-button">View Dates</button>
+								<button mat-button class="mat-border-button" (click)="selectJoiningDates()">View Dates</button>
 							</div>
 						</div>
 						<div *ngIf="userType==='public'" class="row Description margin-top-20 pre-wrapped">
