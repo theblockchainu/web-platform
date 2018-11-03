@@ -328,6 +328,7 @@ export class GuidesComponent implements OnInit {
 										}
 									});
 								}
+								const topics = [];
 								collection.topics.forEach(topicObj => {
 									topics.push(this.titlecasepipe.transform(topicObj.name));
 								});
