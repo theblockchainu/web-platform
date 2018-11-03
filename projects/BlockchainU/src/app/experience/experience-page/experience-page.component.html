@@ -232,9 +232,12 @@
 								<i class="fa fa-info-circle lightText"></i>
 							</div>
 							<div class="col-md-8 col-xs-8">
-								Next cohort starts {{_collectionService.getDaysBetween(_collectionService.getUpcomingCalendar(experience.calendars).startDate, today)}}
+								Next cohort starts
+								{{_collectionService.getDaysBetween(_collectionService.getUpcomingCalendar(experience.calendars).startDate,
+								today)}}
 								<br>
-								<b>{{_collectionService.getUpcomingCalendar(experience.calendars).startDate | extractTime:'Do MMMM YY'}}</b> - <b>{{_collectionService.getUpcomingCalendar(experience.calendars).endDate | extractTime:'Do MMMM YY'}}</b>
+								<b>{{_collectionService.getUpcomingCalendar(experience.calendars).startDate | extractTime:'Do MMMM YY'}}</b> -
+								<b>{{_collectionService.getUpcomingCalendar(experience.calendars).endDate | extractTime:'Do MMMM YY'}}</b>
 							</div>
 							<div class="col-md-3 col-xs-3" style="text-align: right">
 								<button mat-button class="mat-border-button" (click)="selectJoiningDates()">View Dates</button>

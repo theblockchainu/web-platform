@@ -7,7 +7,7 @@
 			</div>
 			<nav mat-tab-nav-bar disableRipple class="noJustify home">
 				<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
-				   matTooltip="In-person Workshops are a way to learn any subject in the real world together with your teacher.">
+				 matTooltip="In-person Workshops are a way to learn any subject in the real world together with your teacher.">
 					<img src="/assets/images/experiences_icon.jpeg" alt="logo" style="height: 100%;">
 					<h3 class="margin-left-10">In-person Workshops</h3>
 				</a>
@@ -123,12 +123,12 @@
 			</div>
 			<div class="row experience-feed">
 				<div class="col-md-12">
-					<div class="row" [routerLink]="'/home/guides'">
+					<div class="row">
 						<div class="col-md-8">
-							<div class="mat-display-1 clickable">Learning Guides</div>
+							<div class="mat-display-1 clickable" [routerLink]="'/home/guides'">Learning Guides</div>
 						</div>
 						<div class="col-md-2 pull-right" style="text-align: right">
-							<a>
+							<a [routerLink]="'/home/guides'">
 								<span class="mat-body-1">
 									See all
 									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>

@@ -16,7 +16,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { LeftSidebarService } from '../../_services/left-sidebar/left-sidebar.service';
 import { environment } from '../../../environments/environment';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
-import { Observable, merge } from 'rxjs';
+import { Observable, merge, observable } from 'rxjs';
 import { TopicService } from '../../_services/topic/topic.service';
 import { PaymentService } from '../../_services/payment/payment.service';
 import { DataSharingService } from '../../_services/data-sharing-service/data-sharing.service';
@@ -147,6 +147,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	totalGyan = 0;
 	totalDuration = 0;
 	timelineStep = 16;
+	titleStep = 7;
 	exitAfterSave = false;
 	@ViewChild('certificateComponent') certificateComponent: CustomCertificateFormComponent;
 	defaultAssesment: any;
@@ -237,7 +238,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			status: 'draft',
 			academicGyan: '',
 			nonAcademicGyan: 1,
-			subCategory: ''
+			subCategory: '',
+			customUrl: ''
 		});
 
 		this.timeline = this._fb.group({
@@ -902,8 +904,20 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	public submitExperience() {
 		this.busySavingData = true;
-		this.checkStatusAndSubmit(this.experience, this.timeline, this.step);
+		if (this.step === this.titleStep) {
+			this._collectionService.getUniqueURL(this.experience.value.title).subscribe(urlString => {
+				if (urlString) {
+					console.log(urlString);
+
+					this.experience.controls['customUrl'].patchValue(urlString);
+				}
+				this.checkStatusAndSubmit(this.experience, this.timeline, this.step);
+			});
+		} else {
+			this.checkStatusAndSubmit(this.experience, this.timeline, this.step);
+		}
 	}
+
 
 	public submitCertificate(certificate: any) {
 		this.busySavingData = true;
@@ -1023,7 +1037,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 						this.busySavingData = false;
 					}
 				}
-			}, (err: HttpErrorResponse ) => {
+			}, (err: HttpErrorResponse) => {
 				if (err.statusText === 'Unauthorized') {
 					this.dialogsService.openLogin().subscribe(res => {
 						if (res) {
@@ -1587,7 +1601,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			});
 		}
 	}
-	
+
 	public insertImage() {
 		this.dialogsService.addImageDialog().subscribe(res => {
 			if (res) {

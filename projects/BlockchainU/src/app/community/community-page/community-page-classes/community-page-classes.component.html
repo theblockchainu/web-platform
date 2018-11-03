@@ -15,7 +15,7 @@
 		<div class="row" *ngIf="userType !== 'public'">
 			<div class="col-md-11 col-xs-10">
 				<mat-form-field [floatLabel]="'never'" class="pb-block classSelector margin-top-20">
-					<mat-select #selectedClass placeholder="Select from your existing classes"  [disableRipple]="true">
+					<mat-select #selectedClass placeholder="Select from your existing classes" [disableRipple]="true">
 						<mat-option *ngFor="let class of ownedClasses" [value]="class.id">{{class.title | ucwords}}</mat-option>
 					</mat-select>
 				</mat-form-field>

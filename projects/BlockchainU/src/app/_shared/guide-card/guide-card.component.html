@@ -4,14 +4,14 @@
 			<mat-icon *ngIf="!(guide.bookmarks && guide.bookmarks[0] && guide.bookmarks[0].peer && guide.bookmarks[0].peer[0] && guide.bookmarks[0].peer[0].id===userId)">
 				bookmark</mat-icon>
 			<mat-icon *ngIf="guide.bookmarks && guide.bookmarks[0] && guide.bookmarks[0].peer && guide.bookmarks[0].peer[0] && guide.bookmarks[0].peer[0].id===userId"
-			          color="primary">bookmark</mat-icon>
+			 color="primary">bookmark</mat-icon>
 		</button>
-		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('guide',guide.id,guide.title, guide.description, guide.headline, envVariable.apiUrl + guide.imageUrls[0])"
-		        matTooltip="Share">
+		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('guide',guide.customUrl,guide.title, guide.description, guide.headline, envVariable.apiUrl + guide.imageUrls[0])"
+		 matTooltip="Share">
 			<mat-icon>share</mat-icon>
 		</button>
 	</span>
-	<a [routerLink]="'/guide/'+guide.id">
+	<a [routerLink]="'/guide/'+guide.customUrl">
 		<div class="">
 			<div class="recommendation-thumb" *ngIf="guide.imageUrls && guide.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + guide.imageUrls[0] + '/300' + '), url(../../assets/images/collection-placeholder.jpg)', 'background-size': 'cover', 'border-radius': '5%'}">
 			</div>
@@ -27,9 +27,9 @@
 		<div class="mat-body-2" style="font-weight: 900; color: #333;">{{guide.title | titlecase}}</div>
 		<div style="margin-top: 2px; font-size: 15px; color: #333;">
 			<span class="mat-body-2">{{guide.price | convertCurrency: guide.currency |async}}</span>
-			 <mat-icon style="font-size: 5px; top: -3px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
+			<mat-icon style="font-size: 5px; top: -3px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
 			<span>
-			  2 min read
+				2 min read
 			</span>
 		</div>
 		<!--<div style="margin-top: -4px;">{{guide.owners[0].profiles[0].first_name + ' ' + guide.owners[0].profiles[0].last_name | ucwords}}

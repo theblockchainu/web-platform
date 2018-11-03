@@ -429,9 +429,6 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 				}
 				if (!this.userType) {
 					this.userType = 'public';
-					if (this.calendarId) {
-						this.router.navigate(['bounty', this.bountyId]);
-					}
 				}
 			}
 			if (this.userType === 'public' || this.userType === 'teacher') {
@@ -548,169 +545,200 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 				'rooms',
 				{ 'rewards': { 'winners': [{ 'profiles': ['work'] }] } }
 			],
-			'relInclude': 'calendarId'
+			'relInclude': 'calendarId',
+			'where': {
+				'customUrl': this.bountyId
+			}
 		};
 
 		if (this.bountyId) {
-			this._collectionService.getCollectionEthereumInfo(this.bountyId, {})
-				.subscribe(res => {
-					this.checkingEthereum = false;
-					if (res && res[6] && res[6] !== '0') {
-						this.isOnEthereum = true;
-					}
-				});
-			this._collectionService.getCollectionDetail(this.bountyId, query)
+			this._collectionService.getAllCollections(query)
 				.subscribe((res: any) => {
-					if (res) {
+					if (res && res.length > 0) {
 						console.log(res);
-						this.calendarId = res.calendars[0].id;
-						this.bounty = res;
-						this.inviteLink = environment.clientUrl + '/bounty/' + this.bounty.id;
-						this.setTags();
-						this.setCurrentCalendar();
-						try {
-							if (fbq !== undefined) {
-								fbq('track', 'ViewContent', {
-									currency: 'USD',
-									value: 0.0,
-									content_type: 'product',
-									content_ids: [this.bountyId]
-								});
-							}
-						} catch (e) {
-							console.log(e);
-						}
-						this.bounty.rewards.sort((a, b) => {
-							if (a.position > b.position) {
-								return 1;
-							} else if (a.position < b.position) {
-								return -1;
-							} else {
-								return 0;
-							}
-						});
-						
-						this.analyzeBountyTime();
-						this.itenariesObj = {};
-						this.itenaryArray = [];
-						// Scan through all contents and group them under their respective start days.
-						// Also scan through all contents and check if the user has made submission for a project.
-						this.bounty.contents.forEach(contentObj => {
-							if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
-								this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
-							} else {
-								this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
-							}
-
-							if (contentObj.submissions && contentObj.submissions.length > 0) {
-								contentObj.submissions.forEach(submission => {
-									if (submission.peer) {
-										if (this.userId === submission.peer[0].id) {
-											this.peerHasSubmission = true;
-										}
-									}
-								});
-							}
-
-							if (contentObj.locations && contentObj.locations.length > 0
-								&& contentObj.locations[0].map_lat !== undefined
-								&& contentObj.locations[0].map_lng !== undefined) {
-								this.lat = parseFloat(contentObj.locations[0].map_lat);
-								this.lng = parseFloat(contentObj.locations[0].map_lng);
-								this.mainLocation = contentObj.locations[0].location_name + ', ' + contentObj.locations[0].street_address + ', ' + contentObj.locations[0].city;
-							}
-						});
-						// Scan through all the start-day-groups of contents
-						// Calculate the calendar start and end date of each content group
-						// Sort the contents inside a group based on their start times
-						// Format the start time and end time of each of the individual content in that group
-						// Calculate the viewing metrics of each individual content
-						// Set hasRSVPd toggle on each of the content
-						// Create an object for the content group with properties: startDay, startDate, endDate and array of contents.
-						// Add content group to itinerary array
-						for (const key in this.itenariesObj) {
-							if (this.itenariesObj.hasOwnProperty(key)) {
-								let startDate, endDate;
-								if (this.currentCalendar) {
-									startDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
-									endDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
-								} else {
-									startDate = this._collectionService.calculateDate(this.bounty.calendars[0].startDate, key);
-									endDate = this._collectionService.calculateDate(this.bounty.calendars[0].startDate, key);
-								}
-								console.log('Sorting----------------');
-
-								this.itenariesObj[key].sort(function (a, b) {
-									return moment(a.schedules[0].startTime).diff(moment(b.schedules[0].startTime));
-								});
-								console.log('Sorted----------------');
-
-								this.itenariesObj[key].forEach(content => {
-									if (content.schedules[0].startTime !== undefined) {
-										content.schedules[0].startTime = startDate.format().toString().split('T')[0] +
-											'T' + content.schedules[0].startTime.split('T')[1];
-										content.schedules[0].endTime = startDate.format().toString().split('T')[0] +
-											'T' + content.schedules[0].endTime.split('T')[1];
-									}
-								});
-								this.setContentViews(this.itenariesObj[key]);
-								const contentObj = this.processContent(key);
-								const itenary = {
-									startDay: key,
-									startDate: startDate,
-									endDate: endDate,
-									contents: contentObj
-								};
-								this.itenaryArray.push(itenary);
-							}
-						}
-						// Sort itinerary array in ascending order of content group start days.
-						this.itenaryArray.sort(function (a, b) {
-							return parseFloat(a.startDay) - parseFloat(b.startDay);
-						});
-						if (this.bounty && this.bounty.owners && this.bounty.owners.length > 0) {
-							this.initializeUserType();
-							this.checkIfWinner();
-							this.calculateTotalHours();
-							this.fixTopics();
-							this.getReviews();
-							this.getRecommendations();
-							this.getParticipants();
-							this.getDiscussions();
-							this.getBookmarks();
-							this.setUpCarousel();
-							if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
-								this.itenaryArray.forEach(itinerary => {
-									itinerary.contents.forEach(content => {
-										if (content.id === this.toOpenDialogName) {
-											this.openDialog(content, itinerary.startDate, itinerary.endDate);
-										}
-									});
-								});
-							} else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
-								const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
-								snackBarRef.onAction().subscribe();
-							}
-							this.recordStartView();
-						} else {
-							this.snackBar.open('This in-person bounty has either been deleted or flagged.', 'OK', { duration: 5000 });
-							this.router.navigate(['home', 'bounties']);
-						}
+						this.processData(res[0]);
 					} else {
 						this.loadingBounty = false;
+						delete query.where;
+						this.fetchById(query);
 					}
-
 				},
 					err => {
-						this.loadingBounty = false;
 						console.log('error');
+						delete query.where;
+						this.fetchById(query);
 					}
 				);
 		} else {
 			console.log('NO COLLECTION');
 		}
 	}
-	
+
+	fetchById(query: any) {
+		this._collectionService.getCollectionDetail(this.bountyId, query)
+			.subscribe((res: any) => {
+				if (res) {
+					console.log(res);
+					this.processData(res);
+				} else {
+					this.loadingBounty = false;
+				}
+			},
+				err => {
+					this.loadingBounty = false;
+					console.log('error');
+				}
+			);
+	}
+
+	private processData(res: any) {
+		this.calendarId = res.calendars[0].id;
+		this.bounty = res;
+		this.bountyId = this.bounty.id;
+		this.inviteLink = environment.clientUrl + '/bounty/' + this.bounty.id;
+		this.setTags();
+		this.setCurrentCalendar();
+		try {
+			if (fbq !== undefined) {
+				fbq('track', 'ViewContent', {
+					currency: 'USD',
+					value: 0.0,
+					content_type: 'product',
+					content_ids: [this.bountyId]
+				});
+			}
+		} catch (e) {
+			console.log(e);
+		}
+		this.bounty.rewards.sort((a, b) => {
+			if (a.position > b.position) {
+				return 1;
+			} else if (a.position < b.position) {
+				return -1;
+			} else {
+				return 0;
+			}
+		});
+
+		this.analyzeBountyTime();
+		this.itenariesObj = {};
+		this.itenaryArray = [];
+		// Scan through all contents and group them under their respective start days.
+		// Also scan through all contents and check if the user has made submission for a project.
+		this.bounty.contents.forEach(contentObj => {
+			if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
+				this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
+			} else {
+				this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
+			}
+
+			if (contentObj.submissions && contentObj.submissions.length > 0) {
+				contentObj.submissions.forEach(submission => {
+					if (submission.peer) {
+						if (this.userId === submission.peer[0].id) {
+							this.peerHasSubmission = true;
+						}
+					}
+				});
+			}
+
+			if (contentObj.locations && contentObj.locations.length > 0
+				&& contentObj.locations[0].map_lat !== undefined
+				&& contentObj.locations[0].map_lng !== undefined) {
+				this.lat = parseFloat(contentObj.locations[0].map_lat);
+				this.lng = parseFloat(contentObj.locations[0].map_lng);
+				this.mainLocation = contentObj.locations[0].location_name + ', ' + contentObj.locations[0].street_address + ', ' + contentObj.locations[0].city;
+			}
+		});
+		// Scan through all the start-day-groups of contents
+		// Calculate the calendar start and end date of each content group
+		// Sort the contents inside a group based on their start times
+		// Format the start time and end time of each of the individual content in that group
+		// Calculate the viewing metrics of each individual content
+		// Set hasRSVPd toggle on each of the content
+		// Create an object for the content group with properties: startDay, startDate, endDate and array of contents.
+		// Add content group to itinerary array
+		for (const key in this.itenariesObj) {
+			if (this.itenariesObj.hasOwnProperty(key)) {
+				let startDate, endDate;
+				if (this.currentCalendar) {
+					startDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
+					endDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
+				} else {
+					startDate = this._collectionService.calculateDate(this.bounty.calendars[0].startDate, key);
+					endDate = this._collectionService.calculateDate(this.bounty.calendars[0].startDate, key);
+				}
+				console.log('Sorting----------------');
+
+				this.itenariesObj[key].sort(function (a, b) {
+					return moment(a.schedules[0].startTime).diff(moment(b.schedules[0].startTime));
+				});
+				console.log('Sorted----------------');
+
+				this.itenariesObj[key].forEach(content => {
+					if (content.schedules[0].startTime !== undefined) {
+						content.schedules[0].startTime = startDate.format().toString().split('T')[0] +
+							'T' + content.schedules[0].startTime.split('T')[1];
+						content.schedules[0].endTime = startDate.format().toString().split('T')[0] +
+							'T' + content.schedules[0].endTime.split('T')[1];
+					}
+				});
+				this.setContentViews(this.itenariesObj[key]);
+				const contentObj = this.processContent(key);
+				const itenary = {
+					startDay: key,
+					startDate: startDate,
+					endDate: endDate,
+					contents: contentObj
+				};
+				this.itenaryArray.push(itenary);
+			}
+		}
+		// Sort itinerary array in ascending order of content group start days.
+		this.itenaryArray.sort(function (a, b) {
+			return parseFloat(a.startDay) - parseFloat(b.startDay);
+		});
+		if (this.bounty && this.bounty.owners && this.bounty.owners.length > 0) {
+			this.getEthereumInfo();
+			this.initializeUserType();
+			this.checkIfWinner();
+			this.calculateTotalHours();
+			this.fixTopics();
+			this.getReviews();
+			this.getRecommendations();
+			this.getParticipants();
+			this.getDiscussions();
+			this.getBookmarks();
+			this.setUpCarousel();
+			if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
+				this.itenaryArray.forEach(itinerary => {
+					itinerary.contents.forEach(content => {
+						if (content.id === this.toOpenDialogName) {
+							this.openDialog(content, itinerary.startDate, itinerary.endDate);
+						}
+					});
+				});
+			} else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
+				const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
+				snackBarRef.onAction().subscribe();
+			}
+			this.recordStartView();
+		} else {
+			this.snackBar.open('This in-person bounty has either been deleted or flagged.', 'OK', { duration: 5000 });
+			this.router.navigate(['home', 'bounties']);
+		}
+	}
+
+	private getEthereumInfo() {
+		this._collectionService.getCollectionEthereumInfo(this.bountyId, {})
+			.subscribe(res => {
+				this.checkingEthereum = false;
+				if (res && res[6] && res[6] !== '0') {
+					this.isOnEthereum = true;
+				}
+			});
+	}
+
 	private analyzeBountyTime() {
 		const startMoment = moment(this.bounty.calendars[0].startDate);
 		const endMoment = moment(this.bounty.calendars[0].endDate);
@@ -737,7 +765,8 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 		const first_name = this.contactUsForm.controls['first_name'].value;
 		const email = this.contactUsForm.controls['email'].value;
 		const subject = 'Bounty: ' + this.bounty.title;
-		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value;
+		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value
+			+ ' URL: ' + environment.clientUrl + this.router.url;
 		this._authenticationService.createGuestContacts(first_name, '', email, subject, message)
 			.subscribe(res => {
 				try {
