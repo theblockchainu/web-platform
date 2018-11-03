@@ -17,6 +17,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
+import {TitleCasePipe} from '@angular/common';
 
 @Component({
 	selector: 'app-guides',
@@ -78,7 +79,8 @@ export class GuidesComponent implements OnInit {
 		private titleService: Title,
 		private metaService: Meta,
 		private router: Router,
-		private activatedRoute: ActivatedRoute
+		private activatedRoute: ActivatedRoute,
+		private titlecasepipe: TitleCasePipe
 	) {
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
