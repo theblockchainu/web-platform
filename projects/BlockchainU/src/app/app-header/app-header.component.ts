@@ -74,6 +74,14 @@ export class AppHeaderComponent implements OnInit {
 
 	ngOnInit() {
 		this.initializeHeader();
+		this.options = [
+			'ethereum',
+			'hyperledger',
+			'blockchain',
+			'cryptography',
+			'design thinking',
+			'machine learning'
+		];
 		this.isLoggedIn = this.authService.isLoginSubject.asObservable();
 		this.authService.isLoginSubject.subscribe(res => {
 			console.log('Initializing Header');
@@ -81,16 +89,29 @@ export class AppHeaderComponent implements OnInit {
 			this.initializeHeader();
 		});
 		this.myControl.valueChanges.subscribe((value) => {
-			this.searching = true;
-			this._searchService.getAllSearchResults(this.userId, value, (err, result) => {
-				if (!err) {
-					this.options = result;
-					this.searching = false;
-				} else {
-					console.log(err);
-					this.searching = false;
-				}
-			});
+			this.options = [];
+			if (value && value.length > 0) {
+				this.searching = true;
+				this._searchService.getAllSearchResults(this.userId, value, (err, result) => {
+					if (!err) {
+						this.options = result;
+						this.searching = false;
+					} else {
+						console.log(err);
+						this.searching = false;
+					}
+				});
+			} else {
+				this.searching = false;
+				this.options = [
+					'ethereum',
+					'hyperledger',
+					'blockchain',
+					'cryptography',
+					'design thinking',
+					'machine learning'
+				];
+			}
 		});
 	}
 

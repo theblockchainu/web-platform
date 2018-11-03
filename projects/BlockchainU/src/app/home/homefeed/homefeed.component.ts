@@ -291,13 +291,27 @@ export class HomefeedComponent implements OnInit {
 			'include':
 				[{ 'owners': ['reviewsAboutYou', 'profiles'] },
 					'participants',
+					'topics',
 					'calendars', { 'bookmarks': 'peer' }
 				], 'where': { 'type': 'guide' }
 		};
 		this.loadingGuides = true;
 		this._collectionService.fetchTrendingCollections(query).subscribe(
 			(collections: any) => {
-				this.guides = collections;
+				this.guides = [];
+				collections.forEach(collection => {
+					const topics = [];
+					collection.topics.forEach(topicObj => {
+						topics.push(this.titlecasepipe.transform(topicObj.name));
+					});
+					if (topics.length > 0) {
+						collection.topics = topics;
+					} else {
+						topics.push('No topics selected');
+						collection.topics = topics;
+					}
+					this.guides.push(collection);
+				});
 				this.loadingGuides = false;
 			}, (err) => {
 				console.log(err);
