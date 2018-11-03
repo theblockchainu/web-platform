@@ -6,12 +6,12 @@
 			<mat-icon *ngIf="experience.bookmarks && experience.bookmarks[0] && experience.bookmarks[0].peer && experience.bookmarks[0].peer[0] && experience.bookmarks[0].peer[0].id===userId"
 			 color="primary">bookmark</mat-icon>
 		</button>
-		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.id,experience.title, experience.description, experience.headline, envVariable.apiUrl + experience.imageUrls[0])"
+		<button mat-icon-button class="share" (click)="_dialogsService.shareCollection('experience',experience.customUrl,experience.title, experience.description, experience.headline, envVariable.apiUrl + experience.imageUrls[0])"
 		 matTooltip="Share">
 			<mat-icon>share</mat-icon>
 		</button>
 	</span>
-	<a [routerLink]="'/experience/'+experience.id">
+	<a [routerLink]="'/experience/'+experience.customUrl">
 		<div class="">
 			<div class="recommendation-thumb" *ngIf="experience.imageUrls && experience.imageUrls.length>0" [ngStyle]="{'background': 'url(' + envVariable.apiUrl + experience.imageUrls[0] + '/300' + '), url(../../assets/images/collection-placeholder.jpg)', 'background-size': 'cover'}">
 				<!--<div class="recommendation-price" [ngClass]="{'hidden': experience.cardInFocus}">

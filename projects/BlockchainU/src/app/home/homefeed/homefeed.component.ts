@@ -254,6 +254,8 @@ export class HomefeedComponent implements OnInit {
 		this.loadingExperiences = true;
 		this._collectionService.fetchTrendingCollections(query).subscribe(
 			(collections: any) => {
+				console.log(collections);
+
 				this.loadingExperiences = false;
 				this.experiences = collections;
 			}, (err) => {

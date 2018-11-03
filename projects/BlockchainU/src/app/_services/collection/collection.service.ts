@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { flatMap } from 'rxjs/operators';
+import { flatMap, first } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
+import { map } from 'rxjs/operators';
 declare var moment: any;
 
 @Injectable()
@@ -106,7 +107,6 @@ export class CollectionService {
 		const filter = JSON.stringify(param);
 		return this.httpClient
 			.get(environment.apiUrl + '/api/collections/' + id + '?filter=' + filter, this.requestHeaderService.options);
-
 	}
 
 	public getCollectionEthereumInfo(id: string, param: any) {
@@ -345,7 +345,7 @@ export class CollectionService {
 		});
 		return calendars[0];
 	}
-	
+
 	/**
 	 * Get the upcoming active calendar of this collection
 	 * @param calendars
@@ -1142,4 +1142,43 @@ export class CollectionService {
 				this.requestHeaderService.options);
 
 	}
+
+	public getUniqueURL(title: string): Observable<string> {
+		return new Observable(obs => {
+			this.generateURL(title).then((url) => {
+				obs.next(url);
+			});
+		});
+	}
+
+	private async generateURL(title: string): Promise<string> {
+		const titleUrl = title.replace(/ /g, '-');
+		let suffix = null;
+		let unique = false;
+		let finalUrl;
+		while (!unique) {
+			let testUrl = titleUrl;
+			if (suffix) {
+				testUrl += '-' + suffix.toString();
+			}
+			const query = {
+				'where': {
+					'customUrl': testUrl
+				}
+			};
+			const data = <any>await this.getAllCollections(query).pipe(first()).toPromise();
+			if (data && data.length > 0) {
+				if (suffix) {
+					suffix++;
+				} else {
+					suffix = 1;
+				}
+			} else {
+				unique = true;
+				finalUrl = testUrl;
+			}
+		}
+		return finalUrl;
+	}
+
 }

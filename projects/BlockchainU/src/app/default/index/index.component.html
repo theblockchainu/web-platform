@@ -116,11 +116,11 @@
 			<div class="homefeedContainer">
 				<nav mat-tab-nav-bar disableRipple class="noJustify home">
 					<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
-					   matTooltip="In-person Workshops are a way to learn any subject in the real world together with your teacher.">
+					 matTooltip="In-person Workshops are a way to learn any subject in the real world together with your teacher.">
 						<img src="/assets/images/experience_thumb.jpg" alt="logo" style="height: 100%;">
 						<h3 class="margin-left-10">In-person Workshops</h3>
 					</a>
-					
+
 					<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive">
 						<img src="/assets/images/peer_thumb.jpg" alt="logo" style="height: 100%;">
 						<h3 class="margin-left-10">Learning Guides</h3>
@@ -139,7 +139,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<section class="introducing-experience spacing">
 		<div class="container">
 			<h2 class="section-title">Introducing In-Person Workshops </h2>
@@ -160,10 +160,22 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<section class="experience-around-world spacing">
 		<div class="container">
-			<h2 class="section-title pb-0">In-person Workshops around the world</h2>
+			<div class="row">
+				<div class="col-md-8">
+					<h2 class="section-title pb-0" [routerLink]="'/home/experiences'">In-person Workshops around the world</h2>
+				</div>
+				<div class="col-md-2 pull-right" style="text-align: right">
+					<a [routerLink]="'/home/experiences'">
+						<span class="mat-body-1">
+							See all
+							<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+						</span>
+					</a>
+				</div>
+			</div>
 			<div class="loading-container" [hidden]="!loadingExperiences">
 				<ngx-loading [show]="true"></ngx-loading>
 			</div>
@@ -175,12 +187,9 @@
 					<app-experience-card *ngIf="i < 5" [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>
 				</div>
 			</div>
-			<div class="read-more mt-2 mat-body-2" *ngIf="experiences && experiences.length > 5">
-				<a [routerLink]="['home','experiences']">Show all ({{experiences.length}}+)</a>
-			</div>
 		</div>
 	</section>
-	
+
 	<section class="experience-spotlight spacing">
 		<div class="container">
 			<h2 class="section-title pb-0">In-person Workshops for your kind of learning</h2>
@@ -234,15 +243,15 @@
 							</p>
 							<h3 class="title">Hackathon Workshops</h3>
 							<p>Bootcamps and hackathons are more practical in-person workshops where you immerse yourself in finding
-							   practical
-							   solutions to problems</p>
+								practical
+								solutions to problems</p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-	
+
 	<section class="classes-anywhere spacing">
 		<div class="container">
 			<h2 class="section-title">Introducing Reward Bounties </h2>
@@ -262,10 +271,22 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<section class="experience-around-world spacing">
 		<div class="container">
-			<h2 class="section-title pb-0">Accept Challenges with Reward Bounties</h2>
+			<div class="row">
+				<div class="col-md-8">
+					<h2 class="section-title pb-0" [routerLink]="['home','bounties']">Accept Challenges with Reward Bounties</h2>
+				</div>
+				<div class="col-md-2 pull-right" style="text-align: right">
+					<a [routerLink]="['home','bounties']">
+						<span class="mat-body-1">
+							See all
+							<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+						</span>
+					</a>
+				</div>
+			</div>
 			<div class="loading-container" [hidden]="!loadingBounties">
 				<ngx-loading [show]="true"></ngx-loading>
 			</div>
@@ -277,15 +298,24 @@
 					<app-bounty-card *ngIf="i < 5" [bounty]="bounty" (refresh)="onBountyRefresh($event)"></app-bounty-card>
 				</div>
 			</div>
-			<div class="read-more mt-2 mat-body-2" *ngIf="bounties && bounties.length > 5">
-				<a [routerLink]="['home','bounties']">Show all ({{bounties.length}}+)</a>
-			</div>
 		</div>
 	</section>
 
 	<section class="guide-around-world spacing">
 		<div class="container">
-			<h2 class="section-title pb-0">Introducing Learning Guides with Live Labs </h2>
+			<div class="row">
+				<div class="col-md-8">
+					<h2 class="section-title pb-0" [routerLink]="['home','guides']">Introducing Learning Guides with Live Labs </h2>
+				</div>
+				<div class="col-md-2 pull-right" style="text-align: right">
+					<a [routerLink]="['home','guides']">
+						<span class="mat-body-1">
+							See all
+							<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+						</span>
+					</a>
+				</div>
+			</div>
 			<div class="loading-container" [hidden]="!loadingGuides">
 				<ngx-loading [show]="true"></ngx-loading>
 			</div>
@@ -297,15 +327,24 @@
 					<app-guide-card *ngIf="i < 5" [guide]="guide" (refresh)="onGuideRefresh($event)"></app-guide-card>
 				</div>
 			</div>
-			<div class="read-more mt-2 mat-body-2" *ngIf="guides && guides.length > 5">
-				<a [routerLink]="['home','guides']">Show all ({{guides.length}}+)</a>
-			</div>
 		</div>
 	</section>
 
 	<section class="guide-around-world spacing">
 		<div class="container">
-			<h2 class="section-title pb-0 clickable" [routerLink]="['home', 'questions']">Get Answer to Questions </h2>
+			<div class="row">
+				<div class="col-md-8">
+					<h2 class="section-title pb-0 clickable" [routerLink]="['home','questions']">Get Answer to Questions </h2>
+				</div>
+				<div class="col-md-2 pull-right" style="text-align: right">
+					<a [routerLink]="['home','questions']">
+						<span class="mat-body-1">
+							See all
+							<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+						</span>
+					</a>
+				</div>
+			</div>
 			<div class="loading-container" [hidden]="!loadingQuestions">
 				<ngx-loading [show]="true"></ngx-loading>
 			</div>
@@ -316,9 +355,6 @@
 				<div *ngFor="let question of questions; let i = index;">
 					<app-question-card *ngIf="i < 2" [question]="question" [cardsPerRow]="2" (refresh)="onQuestionRefresh($event)"></app-question-card>
 				</div>
-			</div>
-			<div class="read-more mt-2 mat-body-2" *ngIf="questions && questions.length > 2">
-				<a [routerLink]="['home','questions']">Show all ({{questions.length}}+)</a>
 			</div>
 		</div>
 	</section>
@@ -450,7 +486,19 @@
 
 	<section class="experience-around-world top-rated-classes spacing">
 		<div class="container">
-			<h2 class="section-title pb-0">Top rated online courses</h2>
+			<div class="row">
+				<div class="col-md-8">
+					<h2 class="section-title pb-0" [routerLink]="'/home/classes'">Top rated online courses</h2>
+				</div>
+				<div class="col-md-2 pull-right" style="text-align: right">
+					<a [routerLink]="'/home/classes'">
+						<span class="mat-body-1">
+							See all
+							<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+						</span>
+					</a>
+				</div>
+			</div>
 			<div class="loading-container" [hidden]="!loadingClasses">
 				<ngx-loading [show]="true"></ngx-loading>
 			</div>
@@ -461,9 +509,6 @@
 				<div *ngFor="let class of classes; let i =index">
 					<app-class-card *ngIf="i < 5" [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>
 				</div>
-			</div>
-			<div class="read-more mt-2 mat-body-2" *ngIf="classes && classes.length > 5">
-				<a [routerLink]="'/home/classes'">Show all ({{classes.length}}+)</a>
 			</div>
 		</div>
 	</section>
