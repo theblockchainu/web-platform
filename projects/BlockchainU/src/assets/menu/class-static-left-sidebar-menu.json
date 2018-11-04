@@ -41,7 +41,7 @@
         "locked": false
     },
     {
-        "title": "Class Page",
+        "title": "Course Page",
         "active": false,
         "step": 6,
         "submenu": [
@@ -114,7 +114,7 @@
         "locked": false
     },
     {
-        "title": "Class Itinerary",
+        "title": "Course Itinerary",
         "active": false,
         "step": 15,
         "submenu": [

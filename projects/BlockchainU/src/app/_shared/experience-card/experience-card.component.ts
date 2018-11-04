@@ -34,11 +34,17 @@ export class ExperienceCardComponent implements OnInit {
 	}
 	
 	public getTime() {
-		const startMoment = moment(this._collectionService.getCurrentCalendar(this.experience.calendars).startDate);
-		const endMoment = moment(this._collectionService.getCurrentCalendar(this.experience.calendars).endDate);
-		this.experience.startsIn = moment().to(startMoment);
-		this.experience.startDiff = startMoment.diff(moment());
-		this.experience.endsIn = moment().to(endMoment);
+		if (this._collectionService.getCurrentCalendar(this.experience.calendars)) {
+			const startMoment = moment(this._collectionService.getCurrentCalendar(this.experience.calendars).startDate);
+			const endMoment = moment(this._collectionService.getCurrentCalendar(this.experience.calendars).endDate);
+			this.experience.startsIn = moment().to(startMoment);
+			this.experience.startDiff = startMoment.diff(moment());
+			this.experience.endsIn = moment().to(endMoment);
+		} else {
+			this.experience.startsIn = '';
+			this.experience.startDiff = '';
+			this.experience.endsIn = '';
+		}
 	}
 
 	public toggleExperienceBookmark(experience) {
