@@ -1,7 +1,7 @@
 <div class="dialog-container">
 	<div class="row">
 		<div class="col-xs-12">
-			<h1>Available Images</h1>
+			<h1>Select from one of your existing images</h1>
 		</div>
 	</div>
 	<div class="row" *ngIf="loadingMedias">
@@ -17,6 +17,11 @@
 				<img *ngIf="content.type!=='video'" class="img-responsive image-thumb" src="{{envVariable.apiUrl+content.url}}"
 				     (error)="_collectionService.imgErrorHandler($event)">
 			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<h1>Or upload a new image</h1>
 		</div>
 	</div>
 	<div class="row margin-top-50">
