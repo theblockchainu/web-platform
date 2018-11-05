@@ -51,8 +51,8 @@
 		<div class="row pending-actions center" *ngIf="experience.status === 'active' && calendarId === undefined && !hasUpcomingCohort()">
 			<div class="col-md-10 col-md-offset-1">
 				<span>This in-person workshop was run in the past but has no upcoming batches.
-					<span class="clickable" (click)="followCollectionToggle()" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{experience.type | titlecase}}">
-						&emsp; <i [class]="'fa-bell fa' + (isFollowing ? 's' : 'r')"></i>
+					<span class="clickable mat-body-2" style="padding-left: 15px;" (click)="followCollectionToggle()" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{experience.type | titlecase}}">
+						&emsp; <i [class]="'fa-bell fa' + (isFollowing ? 's' : 'r')"></i> Get notified of upcoming cohorts
 					</span>
 					<a href="javascript:void(0);" *ngIf="userType === 'teacher'" (click)="editCalendar()">Schedule one now?</a>
 				</span>
