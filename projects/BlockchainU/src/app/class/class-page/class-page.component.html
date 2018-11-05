@@ -9,19 +9,19 @@
 	<div *ngIf="class" class="classPageContainer">
 		<div class="row pending-actions" *ngIf="class.status === 'cancelled' && userType==='teacher' ">
 			<div class="col-md-10 col-md-offset-1">
-				<span>This class has been cancelled by the teacher</span>
+				<span>This course has been cancelled by the teacher</span>
 			</div>
 		</div>
 		<div class="row pending-actions center" *ngIf="class.status === 'submitted' && userType==='teacher' ">
 			<div class="col-md-10 col-md-offset-1">
-				<span>This class is pending approval from Blockchain University team</span>
+				<span>This course is pending approval from Blockchain University team</span>
 			</div>
 		</div>
 		<div class="row pending-actions center" *ngIf="(class.status === 'draft' || class.status === '' ) && previewAs ">
 			<div class="col-md-10 col-md-offset-1">
 				<span>You are previewing as
 					<b>{{previewAs | titlecase}}</b>
-					. Submit your Class to get it approved.
+					. Submit your course to get it approved.
 					<a class="clickable" (click)="_collectionService.openEditCollection(class)">Continue editing?</a>
 				</span>
 			</div>
@@ -50,8 +50,8 @@
 		<div class="row pending-actions center" *ngIf="class.status === 'active' && calendarId === undefined && !hasUpcomingCohort()">
 			<div class="col-md-10 col-md-offset-1">
 				<span>This online course was run in the past but has no upcoming batches.
-					<span class="clickable" (click)="followCollectionToggle()" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{class.type | titlecase}}">
-						&emsp; <i [class]="'fa-bell fa' + (isFollowing ? 's' : 'r')"></i>
+					<span class="clickable mat-body-2" (click)="followCollectionToggle()" style="padding-left: 15px;" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{class.type | titlecase}}">
+						&emsp; <i [class]="'fa-bell fa' + (isFollowing ? 's' : 'r')"></i> Get notified of upcoming cohorts
 					</span>
 					<a href="javascript:void(0);" *ngIf="userType === 'teacher'" (click)="editCalendar()">Schedule one now?</a>
 				</span>
@@ -66,14 +66,14 @@
 		</div>
 		<div class="row pending-actions center" *ngIf="(userType === 'public' && userId !== undefined && userId.length > 5 && accountApproved !== 'true')">
 			<div class="col-md-10 col-md-offset-1">
-				<span>Your account is still under review. You can sign-up for this class after you are approved.
+				<span>Your account is still under review. You can sign-up for this course after you are approved.
 					<a href="javascript:void(0);" (click)="openVerificationPage()">Check verification status</a>
 				</span>
 			</div>
 		</div>
 		<div class="row pending-actions center" *ngIf="(userId === undefined)">
 			<div class="col-md-10 col-md-offset-1">
-				<span>You need to login or sign-up to start taking this class.
+				<span>You need to login or sign-up to start taking this course.
 					<a href="javascript:void(0);" (click)="openLoginPage()">Login now</a>
 				</span>
 			</div>
@@ -86,7 +86,7 @@
 						<div class="row">
 							<div class="col-md-10">
 								<a class="clickable margin-bottom-10" *ngIf="calendarId && userType !== 'participant'" (click)="backToCollection(class)">
-									< Back to class page </a> <p class="mat-display-1" style="margin-bottom: 20px !important;">{{class.title |
+									< Back to course page </a> <p class="mat-display-1" style="margin-bottom: 20px !important;">{{class.title |
 										titlecase}}
 										<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
 										<span *ngIf="!checkingEthereum && isOnEthereum  && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant"
@@ -168,12 +168,11 @@
 									Participation
 								</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length === 0"
-								 (click)="deleteClass()">Delete
-									Class
+								 (click)="deleteClass()">Delete Course
 								</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length > 0"
 								 (click)="cancelClass()">Cancel
-									Class
+									Course
 								</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined" (click)=" addParticipant()">Add
 									participant
@@ -228,7 +227,7 @@
 						</div>
 						<div *ngIf="userType==='public'" class="row Description margin-top-20 pre-wrapped">
 							<div class="col-xs-4">
-								<h3 *ngIf="userType === 'public'">Class overview</h3>
+								<h3 *ngIf="userType === 'public'">Course overview</h3>
 							</div>
 							<div class="col-xs-8">
 								<div>
@@ -354,7 +353,7 @@
 																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media"
 																	 src="{{envVariable.apiUrl+content.imageUrl}}/300" (error)="_collectionService.imgErrorHandler($event)">
 																	<video #videoContent width="100%" height="auto" *ngIf="content.type==='video'" class="itenary-media"
-																	 preload="metadata" poster="../../../assets/images/placeholder-image.jpg">
+																	 preload="metadata" (error)="_collectionService.imgErrorHandler($event)">
 																		<source src="{{envVariable.apiUrl+content.imageUrl}}">
 																	</video>
 																</div>
@@ -366,8 +365,7 @@
 																			<h3> {{content.title | titlecase}}</h3>
 																			<div>
 																				<span class="mat-caption" *ngIf="content.schedules[0].startTime !== undefined && content.type === 'online'">
-																					{{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm
-																					a'}} &nbsp;&nbsp;&nbsp;
+																					{{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm a'}} &nbsp;&nbsp;&nbsp;
 																					<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
 																				</span>
 																				{{_collectionService.getContentTypeFullName(content.type) | titlecase}}
@@ -411,7 +409,7 @@
 								<h3 *ngIf="comments === undefined">Discussion (0)</h3>
 								<form [formGroup]="chatForm" (ngSubmit)="postComment()">
 									<mat-form-field class="full-width margin-top-10 margin-bottom-10">
-										<input matInput type="text" #description1 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this class">
+										<input matInput type="text" #description1 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this course">
 										<mat-hint align="end">{{description1.value.length}} / 2000</mat-hint>
 									</mat-form-field>
 									<mat-checkbox [formControlName]="'isAnnouncement'" *ngIf="userType==='teacher'">Make Announcement</mat-checkbox>
@@ -428,7 +426,7 @@
 							<div class="col-md-12">
 								<div class="row lighterText" *ngIf="comments !== undefined && comments.length === 0">
 									<div class="col-md-12">
-										<div class="emptySectionText">Be the first one to start a discussion on this class..</div>
+										<div class="emptySectionText">Be the first one to start a discussion on this course..</div>
 									</div>
 								</div>
 								<div class="row" *ngFor="let comment of comments">
@@ -530,7 +528,7 @@
 												<div class="col-md-12">
 													<form [formGroup]="editCommentForm" (ngSubmit)="updateComment()">
 														<mat-form-field class="full-width margin-top-10">
-															<input matInput type="text" #description3 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this class">
+															<input matInput type="text" #description3 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this course">
 															<mat-hint align="end">{{description3.value.length}} / 2000</mat-hint>
 														</mat-form-field>
 														<mat-checkbox [formControlName]="'isAnnouncement'" *ngIf="userType==='teacher'">Make Announcement</mat-checkbox>
@@ -645,7 +643,7 @@
 									<div class="col-md-12">
 										<form [formGroup]="reviewForm" (ngSubmit)="postReview()">
 											<mat-form-field class="full-width margin-bottom-10">
-												<input matInput #description5 maxlength="2000" formControlName="description" placeholder="Describe your experience with this class">
+												<input matInput #description5 maxlength="2000" formControlName="description" placeholder="Describe your experience with this course">
 												<mat-hint align="end">{{description5.value.length}} / 2000</mat-hint>
 											</mat-form-field>
 											<span matTooltip="Have you given a star rating for this review?" [matTooltipDisabled]="isRatingReceived"
@@ -660,9 +658,8 @@
 								</div>
 								<div class="row lighterText" *ngIf="reviews.length === 0">
 									<div class="col-md-12">
-										<div class="emptySectionText" *ngIf="userType !== 'teacher'">Start by giving stars to this class..</div>
-										<div class="emptySectionText" *ngIf="userType === 'teacher'">Awaiting first review from participants of this
-											class..</div>
+										<div class="emptySectionText" *ngIf="userType !== 'teacher'">Start by giving stars to this course..</div>
+										<div class="emptySectionText" *ngIf="userType === 'teacher'">Awaiting first review from participants of this course..</div>
 									</div>
 								</div>
 								<div class="row">
@@ -727,7 +724,7 @@
 															 [cancel]="false"></p-rating>
 															<form [formGroup]="editReviewForm" (ngSubmit)="updateReview()">
 																<mat-form-field class="full-width">
-																	<input matInput #description6 maxlength="2000" formControlName="description" placeholder="Review this class">
+																	<input matInput #description6 maxlength="2000" formControlName="description" placeholder="Review this course">
 																	<mat-hint align="end">{{description6.value.length}} / 2000</mat-hint>
 																</mat-form-field>
 																<button [disabled]="!editReviewForm.valid" mat-raised-button color="primary">
@@ -898,7 +895,7 @@
 									<div class="row">
 										<div class="col-md-12">
 											<div class="emptySectionText">
-												Select one class cohort to view participants signed up for that batch.
+												Select one course cohort to view participants signed up for that batch.
 												<br>
 												<br>
 												<button mat-button class="mat-border-button" (click)="changeDates()">Select cohort</button>
@@ -1071,7 +1068,7 @@
 							<div>
 								<h3 style="display: inline-block;">Smart Certificate</h3>
 								<div class="margin-top-20">
-									You will receive this Smart Certificate immediately on completing this class.
+									You will receive this Smart Certificate immediately on completing this course.
 								</div>
 								<!-- <br> -->
 								<div class="row padding-top-20">
@@ -1172,7 +1169,7 @@
 					<div class="col-md-12">
 						<div class="row margin-bottom-20">
 							<div class="col-md-5">
-								<h3>Similar Classes</h3>
+								<h3>Similar Courses</h3>
 							</div>
 							<div class="col-md-2 pull-right" style="text-align: right">
 								<a [routerLink]="'/home/classes'">
@@ -1236,7 +1233,7 @@
 	</div>
 	<div class="row" *ngIf="!class && !loadingClass">
 		<div class="col-xs-12 center margin-top-100 lightText">
-			<div class="mat-display-2">this class was not found on our servers</div>
+			<div class="mat-display-2">this course was not found on our servers</div>
 		</div>
 	</div>
 </div>

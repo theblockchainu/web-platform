@@ -571,7 +571,6 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						console.log(res);
 						this.processData(res[0]);
 					} else {
-						this.loadingExperience = false;
 						delete query.where;
 						this.fetchById(query);
 					}
@@ -761,9 +760,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 
 		const first_name = this.contactUsForm.controls['first_name'].value;
 		const email = this.contactUsForm.controls['email'].value;
-		const subject = 'Experience: ' + this.experience.title;
-		const message = this.contactUsForm.controls['message'].value + ' Phone: ' + this.contactUsForm.controls['phone'].value
-			+ ' URL: ' + environment.clientUrl + this.router.url;
+		const subject = 'Workshop: ' + this.experience.title;
+		const message = '<b>' + this.contactUsForm.controls['message'].value + '</b><br><br>Phone: ' + this.contactUsForm.controls['phone'].value
+			+ '<br><br><div style="font-size: 11px;">Received from page: ' + environment.clientUrl + this.router.url + '</div>';
 		this._authenticationService.createGuestContacts(first_name, '', email, subject, message)
 			.subscribe(res => {
 				try {
