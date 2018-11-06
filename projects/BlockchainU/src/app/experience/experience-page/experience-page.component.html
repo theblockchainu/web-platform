@@ -51,8 +51,8 @@
 		<div class="row pending-actions center" *ngIf="experience.status === 'active' && calendarId === undefined && !hasUpcomingCohort()">
 			<div class="col-md-10 col-md-offset-1">
 				<span>This in-person workshop was run in the past but has no upcoming batches.
-					<span class="clickable" (click)="followCollectionToggle()" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{experience.type | titlecase}}">
-						&emsp; <i [class]="'fa-bell fa' + (isFollowing ? 's' : 'r')"></i>
+					<span class="clickable mat-body-2" style="padding-left: 15px;" (click)="followCollectionToggle()" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{experience.type | titlecase}}">
+						&emsp; <i [class]="'fa-bell fa' + (isFollowing ? 's' : 'r')"></i> Get notified of upcoming cohorts
 					</span>
 					<a href="javascript:void(0);" *ngIf="userType === 'teacher'" (click)="editCalendar()">Schedule one now?</a>
 				</span>
@@ -240,7 +240,7 @@
 								<b>{{_collectionService.getUpcomingCalendar(experience.calendars).endDate | extractTime:'Do MMMM YY'}}</b>
 							</div>
 							<div class="col-md-3 col-xs-3" style="text-align: right">
-								<button mat-button class="mat-border-button">View Dates</button>
+								<button mat-button class="mat-border-button" (click)="selectJoiningDates()">View Dates</button>
 							</div>
 						</div>
 						<div *ngIf="userType==='public'" class="row Description margin-top-20 pre-wrapped">

@@ -17,6 +17,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
+import {TitleCasePipe} from '@angular/common';
 
 @Component({
 	selector: 'app-guides',
@@ -78,7 +79,8 @@ export class GuidesComponent implements OnInit {
 		private titleService: Title,
 		private metaService: Meta,
 		private router: Router,
-		private activatedRoute: ActivatedRoute
+		private activatedRoute: ActivatedRoute,
+		private titlecasepipe: TitleCasePipe
 	) {
 		this.envVariable = environment;
 		this.userId = _cookieUtilsService.getValue('userId');
@@ -274,13 +276,13 @@ export class GuidesComponent implements OnInit {
 		if (this.selectedTopics.length < 1) {
 			query = {
 				'include': [
-					{ 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'participants', 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'guide' } } }
+					{ 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'participants', 'topics', 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'guide' } } }
 				]
 			};
 		} else {
 			query = {
 				'include': [
-					{ 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'participants', 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'guide' } } }
+					{ 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'participants', 'topics', 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'guide' } } }
 				],
 				'where': { or: this.selectedTopics }
 			};
@@ -327,6 +329,16 @@ export class GuidesComponent implements OnInit {
 											return;
 										}
 									});
+								}
+								const topics = [];
+								collection.topics.forEach(topicObj => {
+									topics.push(this.titlecasepipe.transform(topicObj.name));
+								});
+								if (topics.length > 0) {
+									collection.topics = topics;
+								} else {
+									topics.push('No topics selected');
+									collection.topics = topics;
 								}
 								if (hasActiveCalendar) {
 									guides.push(collection);

@@ -18,7 +18,7 @@
             {{peer.name}}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
-          <input placeholder="Select peers this story is visible to" #peerInput [formControl]="myControl" [matAutocomplete]="auto"
+          <input placeholder="Select users this story is visible to" #peerInput [formControl]="myControl" [matAutocomplete]="auto"
             [matChipInputFor]="chipList" [matChipInputAddOnBlur]="addOnBlur" />
         </mat-chip-list>
         <mat-autocomplete #auto="matAutocomplete">

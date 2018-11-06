@@ -287,7 +287,7 @@ export class CollectionService {
 			return moment() < moment(element.startDay);
 		});
 		let fillerWord = '';
-		if (contents[0]) {
+		if (contents[0] && currentCalendar) {
 			if (contents[0].type === 'online') {
 				fillerWord = 'activity';
 			} else if (contents[0].type === 'video') {
@@ -332,18 +332,22 @@ export class CollectionService {
 	 * @param calendars
 	 */
 	public getCurrentCalendar(calendars) {
-		calendars = calendars.sort((a, b) => {
-			if (moment(a.startDate) < moment(b.startDate)) {
-				return -1;
-			}
-			if (moment(a.startDate) > moment(b.startDate)) {
-				return 1;
-			}
-			return 0;
-		}).filter((element, index) => {
-			return moment() < moment(element.endDate);
-		});
-		return calendars[0];
+		if (calendars && calendars !== undefined) {
+			calendars = calendars.sort((a, b) => {
+				if (moment(a.startDate) < moment(b.startDate)) {
+					return -1;
+				}
+				if (moment(a.startDate) > moment(b.startDate)) {
+					return 1;
+				}
+				return 0;
+			}).filter((element, index) => {
+				return moment() < moment(element.endDate);
+			});
+			return calendars[0];
+		} else {
+			return null;
+		}
 	}
 
 	/**

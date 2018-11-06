@@ -325,7 +325,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.titleService.setTitle('Create Class');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Create new class'
+			content: 'Create a new course'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

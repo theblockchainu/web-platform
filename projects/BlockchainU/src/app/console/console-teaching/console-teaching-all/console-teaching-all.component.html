@@ -39,7 +39,7 @@
 						<button mat-button mat-raised-button [disabled]="!accountVerified" (click)="createClass()" class="pb-block clickable card-button"
 						 style="background: url('/assets/images/class_icon2.jpg');">
 							<div style="position: absolute; bottom: 0; padding: 3% 4%;; background: rgba(0,0,0,0.7); margin-left: -16px; width: 100%;">
-								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Class </span>
+								<span class="mat-subheading-1" style="font-size: 1.4rem; font-weight: 500;">Create a Course </span>
 								&emsp;
 								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
 								<br />
@@ -81,7 +81,7 @@
 								&emsp;
 								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
 								<br />
-								<span class="mat-caption lightText">Enable live sessions</span>
+								<span class="mat-caption lightText">Enable mentor sessions</span>
 							</div>
 						</button>
 					</span>
@@ -109,7 +109,7 @@
 								&emsp;
 								<i class="fa fa-arrow-right expansion-panel-header-icon" style="position: relative; top: 1px"></i>
 								<br />
-								<span class="mat-caption lightText">Create accreditations for teachers</span>
+								<span class="mat-caption lightText">Create accreditation for teachers</span>
 							</div>
 						</button>
 					</span>
@@ -264,8 +264,10 @@
 											</div>
 										</div>
 										<div style="margin-top: 15px;">
-											<span class="participantCount">{{collection.participants.length}} Participants </span> |
-											<span class="lightText">{{collection.maxSpots - collection.participants.length}} available </span>
+											<span class="participantCount">{{collection.participants.length}} Participants </span>
+											<span *ngIf="collection.maxSpots && collection.maxSpots > 0">|
+												<span class="lightText">{{collection.maxSpots - collection.participants.length}} available </span>
+											</span>
 										</div>
 										<div class="collectionTitle mat-body-2 clickable" (click)="_collectionService.openCollection(collection)">{{
 											collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
