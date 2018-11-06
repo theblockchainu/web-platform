@@ -147,7 +147,6 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	totalGyan = 0;
 	totalDuration = 0;
 	timelineStep = 16;
-	titleStep = 7;
 	exitAfterSave = false;
 	@ViewChild('certificateComponent') certificateComponent: CustomCertificateFormComponent;
 	defaultAssesment: any;
@@ -904,18 +903,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 	public submitExperience() {
 		this.busySavingData = true;
-		if (this.step === this.titleStep) {
-			this._collectionService.getUniqueURL(this.experience.value.title).subscribe(urlString => {
-				if (urlString) {
-					console.log(urlString);
+		this.checkStatusAndSubmit(this.experience, this.timeline, this.step);
 
-					this.experience.controls['customUrl'].patchValue(urlString);
-				}
-				this.checkStatusAndSubmit(this.experience, this.timeline, this.step);
-			});
-		} else {
-			this.checkStatusAndSubmit(this.experience, this.timeline, this.step);
-		}
 	}
 
 

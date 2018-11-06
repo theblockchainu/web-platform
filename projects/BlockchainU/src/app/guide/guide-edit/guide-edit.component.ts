@@ -147,7 +147,6 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	totalGyan = 0;
 	totalDuration = 0;
 	timelineStep = 16;
-	titleStep = 7;
 	exitAfterSave = false;
 	@ViewChild('certificateComponent') certificateComponent: CustomCertificateFormComponent;
 	defaultAssesment: any;
@@ -238,8 +237,7 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			status: 'draft',
 			academicGyan: '',
 			nonAcademicGyan: 1,
-			subCategory: '',
-			customUrl: ''
+			subCategory: ''
 		});
 
 		this.timeline = this._fb.group({
@@ -902,16 +900,8 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	public submitGuide() {
 		this.busySavingData = true;
-		if (this.step === this.titleStep) {
-			this._collectionService.getUniqueURL(this.guide.value.title).subscribe(urlString => {
-				if (urlString) {
-					this.guide.controls['customUrl'].patchValue(urlString);
-				}
-				this.checkStatusAndSubmit(this.guide, this.timeline, this.step);
-			});
-		} else {
-			this.checkStatusAndSubmit(this.guide, this.timeline, this.step);
-		}
+		this.checkStatusAndSubmit(this.guide, this.timeline, this.step);
+
 	}
 
 	public submitCertificate(certificate: any) {

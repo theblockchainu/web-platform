@@ -142,7 +142,6 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	certificateLoaded: boolean;
 	public certificateForm: FormGroup;
 	timelineStep = 16;
-	titleStep = 7;
 	@ViewChild('certificateComponent') certificateComponent: CustomCertificateFormComponent;
 	exitAfterSave = false;
 	public originalInterests = [];
@@ -234,8 +233,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			status: 'draft',
 			academicGyan: '',
 			nonAcademicGyan: 1,
-			subCategory: 'class',
-			customUrl: ''
+			subCategory: 'class'
 		});
 
 		this.timeline = this._fb.group({
@@ -887,16 +885,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	public submitClass() {
-		if (this.step === this.titleStep) {
-			this._collectionService.getUniqueURL(this.class.value.title).subscribe(urlString => {
-				if (urlString) {
-					this.class.controls['customUrl'].patchValue(urlString);
-				}
-				this.checkStatusAndSubmit(this.class, this.timeline, this.step);
-			});
-		} else {
-			this.checkStatusAndSubmit(this.class, this.timeline, this.step);
-		}
+		this.busySavingData = true;
+		this.checkStatusAndSubmit(this.class, this.timeline, this.step);
 	}
 
 	private checkStatusAndSubmit(data, timeline?, step?) {

@@ -1142,43 +1142,4 @@ export class CollectionService {
 				this.requestHeaderService.options);
 
 	}
-
-	public getUniqueURL(title: string): Observable<string> {
-		return new Observable(obs => {
-			this.generateURL(title).then((url) => {
-				obs.next(url);
-			});
-		});
-	}
-
-	private async generateURL(title: string): Promise<string> {
-		const titleUrl = title.replace(/ /g, '-');
-		let suffix = null;
-		let unique = false;
-		let finalUrl;
-		while (!unique) {
-			let testUrl = titleUrl;
-			if (suffix) {
-				testUrl += '-' + suffix.toString();
-			}
-			const query = {
-				'where': {
-					'customUrl': testUrl
-				}
-			};
-			const data = <any>await this.getAllCollections(query).pipe(first()).toPromise();
-			if (data && data.length > 0) {
-				if (suffix) {
-					suffix++;
-				} else {
-					suffix = 1;
-				}
-			} else {
-				unique = true;
-				finalUrl = testUrl;
-			}
-		}
-		return finalUrl;
-	}
-
 }
