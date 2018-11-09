@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, AfterViewInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -9,13 +9,15 @@ import { RequestHeaderService } from '../../_services/requestHeader/request-head
 import { ContentService } from '../../_services/content/content.service';
 import { timer } from 'rxjs';
 import { first } from 'rxjs/operators';
+declare var YT;
+
 @Component({
     selector: 'app-class-content-video',
     templateUrl: './class-content-video.component.html',
     styleUrls: ['./class-content-video.component.scss']
 })
 
-export class ClassContentVideoComponent implements OnInit {
+export class ClassContentVideoComponent implements OnInit, AfterViewInit {
 
     public lastIndex: number;
     public filesToUpload: number;
@@ -33,6 +35,9 @@ export class ClassContentVideoComponent implements OnInit {
     public attachments: any;
     public attachmentUrls = [];
     public loadingUploadedVideo: any;
+    public youtubeEmbed: boolean;
+    public videoId: string;
+    public player: any;
 
     constructor(
         private _fb: FormBuilder,
@@ -60,10 +65,76 @@ export class ClassContentVideoComponent implements OnInit {
         console.log(this.attachmentUrls);
     }
 
+    ngAfterViewInit() {
+        this.getIFRAME();
+        console.log('got i frame');
+
+    }
+
     ngOnInit(): void {
         const content = <FormArray>this.itenaryForm.controls.contents;
         this.lastIndex = this.lastIndex !== -1 ? this.lastIndex : content.controls.length - 1;
         this.resultData['data'] = this.lastIndex;
+        this.youtubeEmbed = false;
+        this.youtubeEmbed = this.itenaryForm.value.contents[this.lastIndex].youtubeId && this.itenaryForm.value.contents[this.lastIndex].youtubeId.length > 3;
+    }
+
+    private initYoutube(videoId: string) {
+        console.log('setting youtube');
+        const youtubeId = this.itenaryForm.value.contents[this.lastIndex].youtubeId;
+        if (youtubeId) {
+            this.player.loadVideoById(videoId, 0, 'large');
+        } else {
+            this.player = new YT.Player('ytplayer-' + this.lastIndex, {
+                height: '390',
+                width: '640',
+                videoId: videoId,
+                events: {
+                    'onError': (error) => {
+                        console.log(error);
+
+                    },
+                    'onReady': (event) => {
+                        console.log(event);
+                        console.log(event.target.getDuration());
+                        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+                        const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+                        contentForm.controls['videoLength'].patchValue(parseInt(event.target.getDuration(), 10));
+                    },
+                    'onStateChange': (event) => {
+                        console.log(event);
+                        console.log(event.target.getDuration());
+                        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+                        const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+                        contentForm.controls['videoLength'].patchValue(parseInt(event.target.getDuration(), 10));
+                    }
+                },
+                playerVars: {
+                    'autoplay': 1,
+                    'modestbranding': 1,
+                    'origin': 'http://localhost:8080'
+                },
+
+            });
+        }
+
+    }
+
+    private getIFRAME() {
+        const doc = (<any>window).document;
+        const playerApiScript = doc.createElement('script');
+        playerApiScript.type = 'text/javascript';
+        playerApiScript.src = 'http://www.youtube.com/iframe_api';
+        doc.body.appendChild(playerApiScript);
+        console.log('youtube loaded');
+        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+        const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+        const youtubeId = <FormArray>contentForm.controls.youtubeId;
+        console.log('youtubeId.valueChanges.subscribe');
+        youtubeId.valueChanges.subscribe(res => {
+            console.log(res);
+            this.initYoutube(res);
+        });
     }
 
     public imageUploadNew(url) {
@@ -120,6 +191,10 @@ export class ClassContentVideoComponent implements OnInit {
                 }
             });
 
+    }
+
+    onVideoReady(event: any) {
+        console.log(event);
     }
 
     addAttachmentUrl(url: string) {
@@ -214,9 +289,15 @@ export class ClassContentVideoComponent implements OnInit {
         contentForm.controls['videoLength'].patchValue(video.duration);
         this.loadingUploadedVideo = false;
     }
+    videoError(err) {
+        console.log(err);
+    }
 
-    videoError(event: any) {
-        console.log(event);
+    onYouTubeIframeAPIReady() {
+        // creates the player object
+        const ik_player = new YT.Player('ik_player_iframe');
+        console.log('Video API is loaded');
+        console.log(ik_player);
     }
 }
 

@@ -526,7 +526,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				startTime: [''],
 				endTime: ['']
 			}),
-			pending: ['']
+			pending: [''],
+			youtubeId: ['']
 		});
 	}
 
