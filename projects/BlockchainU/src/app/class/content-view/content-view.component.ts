@@ -108,7 +108,8 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 				startTime: [null],
 				endTime: [null]
 			}),
-			pending: ['']
+			pending: [''],
+			youtubeId: ['']
 		});
 	}
 
@@ -279,7 +280,7 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 					{
 						panelClass: 'responsive-dialog',
 						data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit },
-						disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh'
+						disableClose: true, hasBackdrop: true, width: '50vw', height: '100vh'
 					});
 				break;
 			default:

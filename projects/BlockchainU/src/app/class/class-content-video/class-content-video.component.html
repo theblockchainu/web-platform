@@ -10,13 +10,15 @@
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<div>
-				<div class="mat-display-1" style="margin-bottom: 20px;">{{getAddOrEditText()}} video activity for {{itenaryForm.value.date | date: 'MMM dd, y'}}</div>
+				<div class="mat-display-1" style="margin-bottom: 20px;">{{getAddOrEditText()}} video activity for
+					{{itenaryForm.value.date | date: 'MMM dd, y'}}</div>
 			</div>
 		</div>
 	</div>
 	<hr>
 	<div class="row">
 		<div class="col-md-12">
+			<div id="ytplayer-{{lastIndex}}"></div>
 		</div>
 	</div>
 	<div *ngIf="lastIndex>-1">
@@ -40,13 +42,13 @@
 									<mat-progress-bar mode="buffer"></mat-progress-bar>
 								</span>
 								<div class="col-md-4 embed-responsive embed-responsive-16by9 padding-left-0 pic delete imageContainer" [hidden]="loadingUploadedVideo">
-									<video style="max-height: 40vh;" controls #video preload="metadata" (loadedmetadata)="onMetadata($event, video)" (error)="videoError($event)">
+									<video style="max-height: 40vh;" controls #video preload="metadata" (loadedmetadata)="onMetadata($event, video)"
+									 (error)="videoError($event)">
 										<source src="{{envVariable.apiUrl + urlForVideo}}" type="video/mp4" crossorigin>
 									</video>
 									<mat-icon (click)="deleteFromContainer(urlForVideo, 'video')" class="delete-button">close</mat-icon>
 								</div>
 							</div>
-
 						</div>
 						<span *ngIf=" itenaryForm.value.contents[lastIndex] && itenaryForm.value.contents[lastIndex].videoLength">
 							Duration: {{itenaryForm.value.contents[lastIndex].videoLength }} Seconds
@@ -54,15 +56,26 @@
 					</div>
 					<div class="clearfix"></div>
 
+					<mat-checkbox [(ngModel)]="youtubeEmbed" [ngModelOptions]="{standalone: true}">Youtube Embed</mat-checkbox>
+
+					<div *ngIf="youtubeEmbed">
+						<mat-form-field class=" pb-block margin-top-20 margin-bot-20">
+							<span matPrefix>https://www.youtube.com/watch?v=</span>
+							<input matInput #youtubeVideoId formControlName="youtubeId" placeholder="NHffhGkpgFA">
+						</mat-form-field>
+						<div class="pb-block">
+							Duration:{{itenaryForm.value.contents[lastIndex].videoLength}}
+						</div>
+					</div>
 					<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
-						<textarea matInput #description maxlength="2000" rows="1" matTextareaAutosize formControlName="description" placeholder="What will we do?"
-						 [required]="true"></textarea>
+						<textarea matInput #description maxlength="2000" rows="1" matTextareaAutosize formControlName="description"
+						 placeholder="What will we do?" [required]="true"></textarea>
 						<mat-hint align="end">{{description.value.length}} / 2000</mat-hint>
 					</mat-form-field>
 
 					<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
-						<textarea matInput #prerequisites maxlength="1000" rows="1" matTextareaAutosize formControlName="prerequisites" placeholder="What do learners need to know?"
-						 [required]="true"></textarea>
+						<textarea matInput #prerequisites maxlength="1000" rows="1" matTextareaAutosize formControlName="prerequisites"
+						 placeholder="What do learners need to know?" [required]="true"></textarea>
 						<mat-hint align="end">{{prerequisites.value.length}} / 1000</mat-hint>
 					</mat-form-field>
 
@@ -81,7 +94,8 @@
 									<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
 								</div>
 								<mat-icon *ngIf="file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')" class="delete-file">close</mat-icon>
-								<video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc; position: relative;" preload="metadata">
+								<video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc; position: relative;"
+								 preload="metadata">
 									<source src="{{envVariable.apiUrl + file.url}}">
 								</video>
 								<mat-icon *ngIf="file.type.includes('video')" (click)="deleteFromContainer(file.url, '')" class="delete-button">close</mat-icon>
@@ -91,10 +105,12 @@
 				</div>
 			</div>
 			<mat-dialog-actions>
-				<span matTooltip="All mandatory fields need to be completed before saving" [matTooltipDisabled]=" title.value.length!==0  && description.value.length !== 0 && prerequisites.value.length !== 0 && urlForVideo">
-					<button mat-raised-button [mat-dialog-close]="getSaveDialogData()" color="primary" *ngIf="!isEdit" [disabled]="title.value.length === 0 || description.value.length === 0 || prerequisites.value.length === 0 || !urlForVideo">Save</button> &emsp;
+				<span matTooltip="All mandatory fields need to be completed before saving" [matTooltipDisabled]=" title.value.length!==0  && description.value.length !== 0 && prerequisites.value.length !== 0">
+					<button mat-raised-button [mat-dialog-close]="getSaveDialogData()" color="primary" *ngIf="!isEdit" [disabled]="title.value.length === 0 || description.value.length === 0 || prerequisites.value.length === 0 ">Save</button>
+					&emsp;
 				</span>
-				<button mat-raised-button [mat-dialog-close]="getEditDialogData()" color="primary" *ngIf="isEdit">Update</button> &emsp;
+				<button mat-raised-button [mat-dialog-close]="getEditDialogData()" color="primary" *ngIf="isEdit">Update</button>
+				&emsp;
 				<button mat-button [mat-dialog-close]="getDiscardDialogData()" *ngIf="!isEdit">Discard</button>
 				<button mat-button [mat-dialog-close]="getDeleteDialogData()" *ngIf="isEdit">Delete</button>
 			</mat-dialog-actions>

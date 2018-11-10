@@ -1261,7 +1261,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						calendarId: this.calendarId
 					},
 					panelClass: 'responsive-dialog',
-					width: '45vw',
+					width: '50vw',
 					height: '100vh'
 				});
 				break;

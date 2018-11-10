@@ -25,12 +25,12 @@
 				<a ddress mat-button disableRipple="true" class="clickable" [matMenuTriggerFor]="headerUserMenu">
 					<img *ngIf="!profile.picture_url" style="margin:0px" src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb">
 					<img *ngIf="profile.picture_url" style="margin:0px" src="{{envVariable.apiUrl + profile.picture_url + '/100'}}"
-					     alt="A" class="circle-thumb">
+					 alt="A" class="circle-thumb">
 				</a>
 				<mat-menu #headerUserMenu [overlapTrigger]="false">
 					<button mat-menu-item [routerLink]="['/profile', userId]">
 						<i class="fas fa-user lighterText"></i>&nbsp;&nbsp;&nbsp; {{profile.first_name | titlecase}}
-						                                       {{profile.last_name | titlecase}}
+						{{profile.last_name | titlecase}}
 					</button>
 					<button mat-menu-item *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].isAdmin" [routerLink]="['/console/admin']">
 						<i class="fas fa-lock lighterText"></i>&nbsp;&nbsp; Admin
@@ -83,24 +83,24 @@
 				<p>
 					We're Silicon Valley-based, experienced technical and business strategists who have had experience building
 					applications and consulting various enterprises & startups within the blockchain ecosystem.
-					
+
 					Our students learn to build applications and solutions that matter. More importantly, we help them vet out
 					their products for the market, and give them our industry resources to succeed.
-					
+
 					Currently active in 11 cities across 4 countries, we are actively expanding our online and offline footprint.
 					With over 1500 developers, we are one of the largest certified blockchain community in the world and work
 					with most leading blockchain companies including Consensys, AIKON, Digital Asset, EOS etc. as official
 					community, certification and education partners.
-					
+
 					At the core of Blockchain U is that we are the world’s first education platform built on the blockchain and
 					are powered by the one0x protocol and its KARMA knowledge coin.
 				</p>
 			</div>
-			
+
 			<div class="col-md-4 col-md-offset-1 text-img">
 				<img src="/assets/images/about-us/about-bg.jpg">
 			</div>
-		
+
 		</div>
 	</div>
 </section>
@@ -132,7 +132,7 @@
 					<div class="card-content">
 						<h3 class="title text-uppercase text-center">Sahil Parekh</h3>
 						<p class="designation text-center">Co-founder, CEO</p>
-					
+
 					</div>
 				</div>
 			</div>
@@ -180,7 +180,7 @@
 					<div class="card-content">
 						<h3 class="title text-uppercase text-center">Abhik Saha</h3>
 						<p class="designation text-center">Head of New Technologies</p>
-					
+
 					</div>
 				</div>
 			</div>
@@ -204,9 +204,6 @@
 			</div>
 			<div class="partner-cards">
 				<img src="/assets/images/partners/digital-asset.png">
-			</div>
-			<div class="partner-cards">
-				<img src="/assets/images/partners/dispatch.jpeg">
 			</div>
 		</div>
 		<div class="d-flex small-margin">
