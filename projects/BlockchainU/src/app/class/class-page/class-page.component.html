@@ -352,10 +352,13 @@
 																<div class="col-md-5">
 																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media"
 																	 src="{{envVariable.apiUrl+content.imageUrl}}/300" (error)="_collectionService.imgErrorHandler($event)">
-																	<video #videoContent width="100%" height="auto" *ngIf="content.type==='video'" class="itenary-media"
-																	 preload="metadata" (error)="_collectionService.imgErrorHandler($event)">
+																	<video #videoContent width="100%" height="auto" *ngIf="content.type==='video' && !content.youtubeId"
+																	 class="itenary-media" preload="metadata" (error)="_collectionService.imgErrorHandler($event)">
 																		<source src="{{envVariable.apiUrl+content.imageUrl}}">
 																	</video>
+																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type==='video' && content.youtubeId"
+																	 class="img-responsive itenary-media" [src]="'https://img.youtube.com/vi/'+content.youtubeId+'/0.jpg'| safe:'resourceUrl'"
+																	 (error)="_collectionService.imgErrorHandler($event)">
 																</div>
 															</a>
 															<div class="col-md-7">
@@ -365,7 +368,8 @@
 																			<h3> {{content.title | titlecase}}</h3>
 																			<div>
 																				<span class="mat-caption" *ngIf="content.schedules[0].startTime !== undefined && content.type === 'online'">
-																					{{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm a'}} &nbsp;&nbsp;&nbsp;
+																					{{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm
+																					a'}} &nbsp;&nbsp;&nbsp;
 																					<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
 																				</span>
 																				{{_collectionService.getContentTypeFullName(content.type) | titlecase}}
@@ -659,7 +663,8 @@
 								<div class="row lighterText" *ngIf="reviews.length === 0">
 									<div class="col-md-12">
 										<div class="emptySectionText" *ngIf="userType !== 'teacher'">Start by giving stars to this course..</div>
-										<div class="emptySectionText" *ngIf="userType === 'teacher'">Awaiting first review from participants of this course..</div>
+										<div class="emptySectionText" *ngIf="userType === 'teacher'">Awaiting first review from participants of this
+											course..</div>
 									</div>
 								</div>
 								<div class="row">
