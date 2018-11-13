@@ -86,4 +86,5 @@ export class AddParticipantDialogComponent implements OnInit {
 interface PeerObject {
 	id: string;
 	name: string;
+	scholarshipId: string;
 }

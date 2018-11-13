@@ -25,7 +25,7 @@ export class ConfirmDeleteAccountComponent implements OnInit {
 		if (this.password && this.password.length > 0) {
 			this.profileService.verifyPassword(this.data, this.password).subscribe(res => {
 				console.log(res);
-				if (!res || res === 'false') {
+				if (!res) {
 					this.matSnackbar.open('Wrong Password', 'Close', { duration: 3000 });
 				} else {
 					this.dialogRef.close(true);
