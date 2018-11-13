@@ -94,6 +94,17 @@ export class ProfileService {
 				;
 		}
 	}
+	
+	public verifyPassword(userId, password) {
+		if (userId) {
+			const body = {
+				userId: userId,
+				password: password
+			};
+			return this.http
+				.post(environment.apiUrl + '/api/peers/verifyPassword', body, this._requestHeaderService.options);
+		}
+	}
 
 	public setPassword(userId, newPassword) {
 		if (userId) {

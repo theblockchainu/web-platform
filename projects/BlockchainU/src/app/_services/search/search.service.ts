@@ -204,16 +204,16 @@ export class SearchService {
 				case 'collection':
 					switch (option.data.type) {
 						case 'class':
-							this.router.navigate(['/class', option.data.id]);
+							this.router.navigate(['/class', option.data.customUrl]);
 							break;
 						case 'experience':
-							this.router.navigate(['/experience', option.data.id]);
+							this.router.navigate(['/experience', option.data.customUrl]);
 							break;
 						case 'bounty':
-							this.router.navigate(['/bounty', option.data.id]);
+							this.router.navigate(['/bounty', option.data.customUrl]);
 							break;
 						case 'guide':
-							this.router.navigate(['/guide', option.data.id]);
+							this.router.navigate(['/guide', option.data.customUrl]);
 							break;
 						default:
 							this.router.navigate(['/console/dashboard']);

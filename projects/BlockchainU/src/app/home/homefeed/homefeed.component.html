@@ -93,14 +93,14 @@
 					</div>
 				</div>
 			</div>
-			<div class="row experience-feed">
+			<div class="row class-feed">
 				<div class="col-md-12">
 					<div class="row">
 						<div class="col-md-8">
-							<div class="mat-display-1 clickable" [routerLink]="'/home/bounties'">Reward Bounties</div>
+							<div class="mat-display-1 clickable" [routerLink]="'/home/classes'">Online Courses</div>
 						</div>
 						<div class="col-md-2 pull-right" style="text-align: right">
-							<a [routerLink]="'/home/bounties'">
+							<a [routerLink]="'/home/classes'">
 								<span class="mat-body-1">
 									See all
 									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
@@ -108,15 +108,15 @@
 							</a>
 						</div>
 					</div>
-					<div class="loading-container" [hidden]="!loadingBounties">
+					<div class="loading-container" [hidden]="!loadingClasses">
 						<ngx-loading [show]="true"></ngx-loading>
 					</div>
-					<div *ngIf="!loadingBounties" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
-						<div class="noDataContainer" *ngIf="bounties === undefined || bounties.length === 0">
-							There are no new active bounties to view right now.
+					<div *ngIf="!loadingClasses" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="classes === undefined || classes.length === 0">
+							There are no new active courses to view right now.
 						</div>
-						<div *ngFor="let bounty of bounties; let i = index;">
-							<app-bounty-card *ngIf="i < 5" [bounty]="bounty" (refresh)="onBountiesRefresh($event)"></app-bounty-card>
+						<div *ngFor="let class of classes; let i =index">
+							<app-class-card [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>
 						</div>
 					</div>
 				</div>
@@ -145,6 +145,34 @@
 						</div>
 						<div *ngFor="let guide of guides; let i = index;">
 							<app-guide-card *ngIf="i < 5" [guide]="guide" (refresh)="onGuideRefresh($event)"></app-guide-card>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row experience-feed">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8">
+							<div class="mat-display-1 clickable" [routerLink]="'/home/bounties'">Reward Bounties</div>
+						</div>
+						<div class="col-md-2 pull-right" style="text-align: right">
+							<a [routerLink]="'/home/bounties'">
+								<span class="mat-body-1">
+									See all
+									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loadingBounties">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loadingBounties" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="bounties === undefined || bounties.length === 0">
+							There are no new active bounties to view right now.
+						</div>
+						<div *ngFor="let bounty of bounties; let i = index;">
+							<app-bounty-card *ngIf="i < 5" [bounty]="bounty" (refresh)="onBountiesRefresh($event)"></app-bounty-card>
 						</div>
 					</div>
 				</div>
@@ -201,34 +229,6 @@
 						</div>
 						<div *ngFor="let community of communities; let i = index;">
 							<app-community-card *ngIf="i < 3" [community]="community" [cardsPerRow]="3" (refresh)="onCommunityRefresh($event)"></app-community-card>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row class-feed">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-md-8">
-							<div class="mat-display-1 clickable" [routerLink]="'/home/classes'">Online Courses</div>
-						</div>
-						<div class="col-md-2 pull-right" style="text-align: right">
-							<a [routerLink]="'/home/classes'">
-								<span class="mat-body-1">
-									See all
-									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
-								</span>
-							</a>
-						</div>
-					</div>
-					<div class="loading-container" [hidden]="!loadingClasses">
-						<ngx-loading [show]="true"></ngx-loading>
-					</div>
-					<div *ngIf="!loadingClasses" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
-						<div class="noDataContainer" *ngIf="classes === undefined || classes.length === 0">
-							There are no new active courses to view right now.
-						</div>
-						<div *ngFor="let class of classes; let i =index">
-							<app-class-card [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>
 						</div>
 					</div>
 				</div>
