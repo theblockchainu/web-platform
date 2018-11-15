@@ -43,7 +43,8 @@ export class AddParticipantDialogComponent implements OnInit {
 		this.selectedPeers.push(
 			{
 				id: data.id,
-				name: data.profiles[0].first_name + ' ' + data.profiles[0].last_name
+				name: data.profiles[0].first_name + ' ' + data.profiles[0].last_name,
+				scholarshipId: data.scholarships_joined[0].id
 			}
 		);
 		console.log(this.selectedPeers);
@@ -65,7 +66,7 @@ export class AddParticipantDialogComponent implements OnInit {
 		if (this.selectedPeers && this.selectedPeers.length > 0) {
 			let i = 0;
 			this.selectedPeers.forEach(peer => {
-				this._collectionService.addParticipant(this.data.collectionId, peer.id, this.data.calendarId).subscribe((response: any) => {
+				this._collectionService.addParticipant(this.data.collectionId, peer.id, this.data.calendarId, peer.scholarshipId).subscribe((response: any) => {
 					i++;
 					if (i === this.selectedPeers.length) {
 						this.matSnackBar.open('Added user as a participant to this cohort.', 'Close', { duration: 5000 });
@@ -85,4 +86,5 @@ export class AddParticipantDialogComponent implements OnInit {
 interface PeerObject {
 	id: string;
 	name: string;
+	scholarshipId: string;
 }

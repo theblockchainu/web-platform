@@ -78,7 +78,9 @@ export class AppComponent implements OnInit {
 			|| /^\/session\/.*\/edit\/./.test(url)
 			|| /^\/learning-path\/.*\/edit\/./.test(url)
 			|| /^\/about/.test(url)
-			|| /^\/digest\/.*./.test(url)
+			|| /^\/digest\/experiences/.test(url)
+			|| /^\/digest\/classes/.test(url)
+			|| /^\/digest\/peers/.test(url)
 			|| /^\/error/.test(url));
 
 		if (url === '/' || url === '/login') {

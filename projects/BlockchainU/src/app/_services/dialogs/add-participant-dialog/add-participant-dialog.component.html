@@ -29,10 +29,12 @@
 					<mat-option *ngFor="let option of searchOptions" [value]="" (click)="onSearchOptionClicked(option.data)">
 						<span>
 							<img src="{{envVariable.apiUrl+option.data.profiles[0].picture_url}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
-							     (error)="_collectionService.imgErrorHandler($event)" />
+							     (error)="_collectionService.userImgErrorHandler($event)" />
 						</span>
 						<span>
 							{{option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name | ucwords}}
+							<br>
+							{{option.data.profiles[0].headline | ucfirst}}
 						</span>
 					</mat-option>
 				</mat-autocomplete>

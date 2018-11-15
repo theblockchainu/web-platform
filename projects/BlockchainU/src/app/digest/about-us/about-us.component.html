@@ -25,12 +25,12 @@
 				<a ddress mat-button disableRipple="true" class="clickable" [matMenuTriggerFor]="headerUserMenu">
 					<img *ngIf="!profile.picture_url" style="margin:0px" src="/assets/images/user-placeholder.jpg" alt="A" class="circle-thumb">
 					<img *ngIf="profile.picture_url" style="margin:0px" src="{{envVariable.apiUrl + profile.picture_url + '/100'}}"
-					 alt="A" class="circle-thumb">
+					     alt="A" class="circle-thumb">
 				</a>
 				<mat-menu #headerUserMenu [overlapTrigger]="false">
 					<button mat-menu-item [routerLink]="['/profile', userId]">
 						<i class="fas fa-user lighterText"></i>&nbsp;&nbsp;&nbsp; {{profile.first_name | titlecase}}
-						{{profile.last_name | titlecase}}
+						                                       {{profile.last_name | titlecase}}
 					</button>
 					<button mat-menu-item *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].isAdmin" [routerLink]="['/console/admin']">
 						<i class="fas fa-lock lighterText"></i>&nbsp;&nbsp; Admin
@@ -83,24 +83,24 @@
 				<p>
 					We're Silicon Valley-based, experienced technical and business strategists who have had experience building
 					applications and consulting various enterprises & startups within the blockchain ecosystem.
-
+					
 					Our students learn to build applications and solutions that matter. More importantly, we help them vet out
 					their products for the market, and give them our industry resources to succeed.
-
+					
 					Currently active in 11 cities across 4 countries, we are actively expanding our online and offline footprint.
 					With over 1500 developers, we are one of the largest certified blockchain community in the world and work
 					with most leading blockchain companies including Consensys, AIKON, Digital Asset, EOS etc. as official
 					community, certification and education partners.
-
+					
 					At the core of Blockchain U is that we are the world’s first education platform built on the blockchain and
 					are powered by the one0x protocol and its KARMA knowledge coin.
 				</p>
 			</div>
-
+			
 			<div class="col-md-4 col-md-offset-1 text-img">
 				<img src="/assets/images/about-us/about-bg.jpg">
 			</div>
-
+		
 		</div>
 	</div>
 </section>
@@ -110,11 +110,68 @@
 		<h2 class="text-uppercase text-center">Our <span class="color-org">Advisors</span></h2>
 		<div class="row small-margin">
 			<div class="col-12 col-sm-4 col-md-3 small-padding">
+				<a href="https://www.linkedin.com/in/stevewatkins/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/steve.jpg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Steve Watkins</h3>
+							<p class="designation text-center">VP Program Development and Regulatory Affairs, Unitek College</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-12 col-sm-4 col-md-3 small-padding">
+				<a href="https://www.linkedin.com/in/olawiberg/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/olawiberg.jpeg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Ola Wiberg</h3>
+							<p class="designation text-center">Founder/CTO RealtyBits, Inc.</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-12 col-sm-4 col-md-3 small-padding">
+				<a href="https://www.linkedin.com/in/vinoth/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/vinothkumar.jpeg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Vinoth Kumar</h3>
+							<p class="designation text-center">Chief Solutions Architect, VISA</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-12 col-sm-4 col-md-3 small-padding">
+				<a href="https://www.linkedin.com/in/neeraj-kashyap-784035b8/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/neerajkashyap.jpeg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Neeraj Kashyap</h3>
+							<p class="designation text-center">Head of AI, Head of Blockchain, doc.ai</p>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+		<div class="row small-margin">
+			<div class="col-12 col-sm-4 col-md-3 small-padding">
+				<a href="https://www.linkedin.com/in/dalalrohan/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/rohandala.jpg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Rohan Dala</h3>
+							<p class="designation text-center">Launch Engineer, SpaceX</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-12 col-sm-4 col-md-3 small-padding">
 				<div class="custom-card">
-					<div class="card-image" style="background-image: url('/assets/images/profiles/steve.jpg');"></div>
+					<div class="card-image" style="background-image: url('/assets/images/profiles/paulafshar.JPG');"></div>
 					<div class="card-content">
-						<h3 class="title text-uppercase text-center">Steve Watkins</h3>
-						<p class="designation text-center">VP Program Development and Regulatory Affairs, Unitek College</p>
+						<h3 class="title text-uppercase text-center">Paul Afshar</h3>
+						<p class="designation text-center">Founder & Ex-CEO, Unitek College, USA</p>
 					</div>
 				</div>
 			</div>
@@ -127,62 +184,129 @@
 		<h2 class="text-uppercase text-center">Our <span class="color-org">Team</span></h2>
 		<div class="row small-margin">
 			<div class="col-12 col-sm-4 col-md-3 small-padding">
-				<div class="custom-card">
-					<div class="card-image" style="background-image: url('/assets/images/profiles/sahil.jpg');"></div>
-					<div class="card-content">
-						<h3 class="title text-uppercase text-center">Sahil Parekh</h3>
-						<p class="designation text-center">Co-founder, CEO</p>
-
+				<a href="https://www.linkedin.com/in/sahilparekh9090/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/sahilparekh.jpg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Sahil Parekh</h3>
+							<p class="designation text-center">Co-founder, CEO</p>
+						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 			<div class="col-12 col-sm-4 col-md-3 small-padding">
-				<div class="custom-card">
-					<div class="card-image" style="background-image: url('/assets/images/profiles/aakash.jpg');"></div>
-					<div class="card-content">
-						<h3 class="title text-uppercase text-center">Aakash Bansal</h3>
-						<p class="designation text-center">Co-founder, CTO</p>
+				<a href="https://www.linkedin.com/in/aakashbansal/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/aakashbansal.jpg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Aakash Bansal</h3>
+							<p class="designation text-center">Co-founder, CTO</p>
+						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 			<div class="col-12 col-sm-4 col-md-3 small-padding">
-				<div class="custom-card">
-					<div class="card-image" style="background-image: url('/assets/images/profiles/abhijeet.jpg');"></div>
-					<div class="card-content">
-						<h3 class="title text-uppercase text-center">Abhijeet</h3>
-						<p class="designation text-center">Head of Product</p>
+				<a href="https://www.linkedin.com/in/abhijeet1403/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/abhijeet.jpg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Abhijeet C</h3>
+							<p class="designation text-center">Head of Product</p>
+						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 			<div class="col-12 col-sm-4 col-md-3 small-padding">
-				<div class="custom-card">
-					<div class="card-image" style="background-image: url('/assets/images/profiles/harshit.jpg');"></div>
-					<div class="card-content">
-						<h3 class="title text-uppercase text-center">Harshit Jain</h3>
-						<p class="designation text-center">COO</p>
+				<a href="https://www.linkedin.com/in/harshit-jain-48244513a/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/harshit.jpg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Harshit Jain</h3>
+							<p class="designation text-center">COO</p>
+						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 		</div>
 		<div class="row small-margin">
 			<div class="col-12 col-sm-4 col-md-3 small-padding">
-				<div class="custom-card">
-					<div class="card-image" style="background-image: url('/assets/images/profiles/gnana.jpg');"></div>
-					<div class="card-content">
-						<h3 class="title text-uppercase text-center">Gnana Lakshmi</h3>
-						<p class="designation text-center">Head of Business Development</p>
+				<a href="https://www.linkedin.com/in/gyan-lakshmi/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/gnana.jpg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Gnana Lakshmi</h3>
+							<p class="designation text-center">Head of Business Development</p>
+						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 			<div class="col-12 col-sm-4 col-md-3 small-padding">
-				<div class="custom-card">
-					<div class="card-image" style="background-image: url('/assets/images/profiles/abheek.jpg');"></div>
-					<div class="card-content">
-						<h3 class="title text-uppercase text-center">Abhik Saha</h3>
-						<p class="designation text-center">Head of New Technologies</p>
-
+				<a href="https://www.linkedin.com/in/abhiksahaofficial/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/abheek.jpg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Abhik Saha</h3>
+							<p class="designation text-center">Head of New Technologies</p>
+						</div>
 					</div>
-				</div>
+				</a>
+			</div>
+			<div class="col-12 col-sm-4 col-md-3 small-padding">
+				<a href="https://www.linkedin.com/in/tadinada/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/venkateshtadinada.jpeg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Venkatesh Tadinada</h3>
+							<p class="designation text-center">Head of Operations, Europe</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-12 col-sm-4 col-md-3 small-padding">
+				<a href="https://www.linkedin.com/in/blacktechgenius/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/joshuaarmah.jpg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Joshua Armah</h3>
+							<p class="designation text-center">Academic Director</p>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+		<div class="row small-margin">
+			<div class="col-12 col-sm-4 col-md-3 small-padding">
+				<a href="https://www.linkedin.com/in/ketki-sen-0361314/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/ketkisen.jpeg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Ketki Sen</h3>
+							<p class="designation text-center">Head of Operations, Singapore</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-12 col-sm-4 col-md-3 small-padding">
+				<a href="https://www.linkedin.com/in/matiman/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/mathiasabdissa.jpeg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Mathias Abdissa</h3>
+							<p class="designation text-center">Business Development</p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-12 col-sm-4 col-md-3 small-padding">
+				<a href="https://www.linkedin.com/in/bama-venkatachalam-89623525/" target="_blank">
+					<div class="custom-card">
+						<div class="card-image" style="background-image: url('/assets/images/profiles/bamavenkatachalam.jpg');"></div>
+						<div class="card-content">
+							<h3 class="title text-uppercase text-center">Bama Venkatachalam</h3>
+							<p class="designation text-center">Instructor</p>
+						</div>
+					</div>
+				</a>
 			</div>
 		</div>
 	</div>
@@ -193,35 +317,65 @@
 		<h2 class="text-uppercase text-center">Our <span class="color-org">Partners</span></h2>
 		<!-- <p class="text-center">Microsoft Patch Management For Home Users </p> -->
 		<div class="d-flex small-margin mg-20">
-			<div class="partner-cards">
-				<img src="/assets/images/partners/ycenter.png">
-			</div>
-			<div class="partner-cards">
-				<img src="/assets/images/partners/aikon.png">
-			</div>
-			<div class="partner-cards">
-				<img src="/assets/images/partners/constellation.png">
-			</div>
-			<div class="partner-cards">
-				<img src="/assets/images/partners/digital-asset.png">
-			</div>
+			<a href="https://y-center.org" target="_blank">
+				<div class="partner-cards">
+					<img src="/assets/images/partners/ycenter.png">
+				</div>
+			</a>
+			<a href="https://aikon.com" target="_blank">
+				<div class="partner-cards">
+					<img src="/assets/images/partners/aikon.png">
+				</div>
+			</a>
+			<a href="https://www.constellationlabs.io" target="_blank">
+				<div class="partner-cards">
+					<img src="/assets/images/partners/constellation.png">
+				</div>
+			</a>
+			<a href="https://www.digitalasset.com" target="_blank">
+				<div class="partner-cards">
+					<img src="/assets/images/partners/digital-asset.png">
+				</div>
+			</a>
+			<a href="https://www.simplyvitalhealth.com" target="_blank">
+				<div class="partner-cards">
+					<img src="/assets/images/partners/simplyvitalhealth.png">
+				</div>
+			</a>
 		</div>
 		<div class="d-flex small-margin">
-			<div class="partner-cards">
-				<img src="/assets/images/partners/jio.png">
-			</div>
-			<div class="partner-cards">
-				<img src="/assets/images/partners/wework.png">
-			</div>
-			<div class="partner-cards">
-				<img src="/assets/images/partners/innov8.png">
-			</div>
-			<div class="partner-cards">
-				<img src="/assets/images/partners/yourstory.png">
-			</div>
-			<div class="partner-cards">
-				<img src="/assets/images/partners/chatur.png">
-			</div>
+			<a href="https://www.jio.com" target="_blank">
+				<div class="partner-cards">
+					<img src="/assets/images/partners/jio.png">
+				</div>
+			</a>
+			<a href="https://www.wework.com" target="_blank">
+				<div class="partner-cards">
+					<img src="/assets/images/partners/wework.png">
+				</div>
+			</a>
+			<a href="https://innov8.work" target="_blank">
+				<div class="partner-cards">
+					<img src="/assets/images/partners/innov8.png">
+				</div>
+			</a>
+			<a href="https://www.yourstory.com" target="_blank">
+				<div class="partner-cards">
+					<img src="/assets/images/partners/yourstory.png">
+				</div>
+			</a>
+			<a href="http://chaturideas.com" target="_blank">
+				<div class="partner-cards">
+					<img src="/assets/images/partners/chatur.png">
+				</div>
+			</a>
+		</div>
+		<div class="d-flex small-margin">
+			<a href="https://bumo.io" target="_blank">
+				<div class="partner-cards">
+					<img src="/assets/images/partners/bumo.jpg">
+				</div>
+			</a>
 		</div>
 		<!-- <div class="d-flex small-margin">
 		  <div class="partner-cards">
