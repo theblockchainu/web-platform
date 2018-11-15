@@ -72,7 +72,7 @@ export class ConsoleTeachingLearningPathComponent implements OnInit {
 		});
 
 		this._collectionService.getOwnedCollections(this.userId,
-			'{ "where": {"type":"learningPath"}, "include": ["calendars", "owners",' +
+			'{ "where": {"type":"learning-path"}, "include": ["calendars", "owners",' +
 			' {"participants": ["reviewsAboutYou", "ownedCollections", "profiles"]}, "topics", ' +
 			'{"contents":"schedules"}] }', (err, result) => {
 				if (err) {

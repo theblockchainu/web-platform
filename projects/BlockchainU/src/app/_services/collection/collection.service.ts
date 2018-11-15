@@ -655,6 +655,9 @@ export class CollectionService {
 			case 'guide':
 				this.router.navigate(['/guide', collection.id]);
 				break;
+			case 'learning-path':
+				this.router.navigate(['/learning-path', collection.id]);
+				break;
 			default:
 				break;
 		}
