@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
+    <form [formGroup]="reviewForm">
+      <h2 class="title">Review and submit</h2>
+      <div *ngIf="!isSubmitted">
+        <div style="margin-top:40px;">
+          <mat-checkbox value="val1" formControlName="standards"></mat-checkbox>
+          <span class="checkbox_label">You meet our
+            <a class="clickable" (click)="standards()">standards</a>.</span>
+        </div>
+        <div style="margin-top:20px;">
+          <mat-checkbox value="val2" formControlName="terms"></mat-checkbox>
+          <span class="checkbox_label">You agree to our
+            <a class="clickable" (click)="termsAndCondition()">terms and conditions</a>.</span>
+        </div>
+        <div class="row">
+          <div class="col-md-12 margin-top-60">
+            <button mat-button type="button" matStepperPrevious color="primary" class="mat-border-button">
+              Back
+            </button>
+            <span class="pull-right" matTooltip="You need to agree to The Blockchain University community terms to submit this learning path for approval"
+              [matTooltipDisabled]="reviewForm.value.standards && reviewForm.value.terms ">
+              <button mat-button color="primary" class="mat-border-button" (click)="submitForReview()" [disabled]="!(reviewForm.value.terms && reviewForm.value.standards)">
+                Submit for Review</button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div *ngIf="isSubmitted" style="margin-top: 70px;">
+      Your learning path has been submitted for review and is awaiting approval from The Blockchain University team.
+      <br>
+      <br> We maintain highest possible standards for all content shared on The Blockchain University platform.
+    </div>
+  </div>
+</div>

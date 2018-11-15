@@ -19,13 +19,15 @@ export class CollectionSubmitDialogComponent implements OnInit {
   ngOnInit() {
   }
 
-  public closeDialog() { 
+  public closeDialog() {
     this.dialogRef.close('close');
     if (this.data.type === 'class') {
       this.router.navigate(['console', 'teaching', this.data.type + 'es']);
     } else if (this.data.type === 'bounty') {
       this.router.navigate(['console', 'teaching', 'bounties']);
-    }    else {
+    } else if (this.data.type === 'learningPath') {
+      this.router.navigate(['console', 'teaching', 'learning-paths']);
+    } else {
       this.router.navigate(['console', 'teaching', this.data.type + 's']);
     }
   }

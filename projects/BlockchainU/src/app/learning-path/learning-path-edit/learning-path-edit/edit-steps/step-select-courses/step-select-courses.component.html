@@ -1,0 +1,83 @@
+<div class="row margin-bottom-30">
+  <div class="col-xs-10">
+    <h2 class="title">Add Courses to your learning path</h2>
+    <p class="subtitle">Give a detailed description to learners of what they will do in this learning path</p>
+  </div>
+</div>
+<div class="row margin-bottom-30">
+  <div class="col-xs-10">
+    <mat-accordion class="example-headers-align">
+      <mat-expansion-panel class="margin-bottom-30" *ngFor="let contentForm of courseArray.controls;let i=index;"
+        [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <span *ngIf="contentForm.value.title">
+              {{contentForm.value.title}}
+            </span>
+            <span *ngIf="!contentForm.value.title">
+              Course Name
+            </span>
+          </mat-panel-title>
+          <mat-panel-description>
+            <span *ngIf="contentForm.value.description">
+              {{contentForm.value.description}}
+            </span>
+            <span *ngIf="!contentForm.value.description">
+              Type Course Description and add link
+            </span>
+
+            <button (click)="delete(i)" mat-icon-button>
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <form [formGroup]="contentForm">
+          <div class="row">
+            <div class="col-xs-4">
+              <mat-form-field class="pb-block">
+                <input matInput formControlName="title" placeholder="Name">
+              </mat-form-field>
+            </div>
+
+            <div class="col-xs-5">
+              <mat-form-field class="pb-block">
+                <input matInput formControlName="imageUrl" placeholder="Course URL">
+              </mat-form-field>
+            </div>
+            <div class="col-xs-9">
+              <mat-form-field class="pb-block">
+                <textarea matInput formControlName="description" placeholder="Description"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+        <mat-action-row>
+          <button mat-button (click)="save(i)" color="primary">Save</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
+
+<div class="row margin-bottom-30">
+  <div class="col-xs-10 center">
+    <button (click)="addCourse()" mat-raised-button>Add Course</button>
+  </div>
+</div>
+
+<div class="row  margin-bottom-30">
+  <div class="col-xs-10">
+    <button mat-button type="button" matStepperPrevious color="primary" class="mat-border-button">
+      Back
+    </button>
+    {{courseArray.valid}}
+    <span class="pull-right" matTooltip="Add at least one course to continue" [matTooltipDisabled]="courseArray.controls.length>1">
+      <button matStepperNext type="button" mat-button color="primary" class="mat-border-button" [disabled]="courseArray.controls.length<1 || busySavingData">
+        <span *ngIf="!busySavingData">Next</span>
+        <span>
+          <ngx-loading [show]="busySavingData"></ngx-loading>
+        </span>
+      </button>
+    </span>
+  </div>
+</div>

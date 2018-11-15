@@ -233,7 +233,8 @@
 			</span>
 		</div>
 	</span>
-	<span mat-menu-item *ngIf="isAccountApproved && profile.peer[0].ethAddress && profile.peer[0].ethAddress.substring(0, 2) === '0x' && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
+	<span mat-menu-item *ngIf="isAccountApproved && profile.peer[0].ethAddress && profile.peer[0].ethAddress.substring(0, 2) === '0x' && isLoggedIn | async"
+	 [routerLink]="['console', 'account', 'wallet']">
 		<div class="col-xs-4">
 			<i class="fa fa-fire"></i> KARMA
 		</div>
@@ -271,6 +272,9 @@
 	</button>
 	<button mat-menu-item (click)="createClass()">
 		Create an online course
+	</button>
+	<button mat-menu-item [routerLink]="'/console/teaching/learning-paths'">
+		Create a learning path
 	</button>
 	<button mat-menu-item (click)="createSession()">
 		<span *ngIf="sessionId.length < 5">

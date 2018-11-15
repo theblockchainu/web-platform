@@ -1146,4 +1146,10 @@ export class CollectionService {
 				this.requestHeaderService.options);
 
 	}
+
+	public postContent(collectionId: string, content: any) {
+		return this.httpClient
+			.post(environment.apiUrl + '/api/collections/' + collectionId + '/contents', content,
+				this.requestHeaderService.options);
+	}
 }

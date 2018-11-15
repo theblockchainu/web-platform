@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
+    <h2 class="title">What topics does this learning path cover?</h2>
+    <p class="subtitle">Select topics that this learning path covers</p>
+    <br />
+    <div class="row">
+      <div class="col-sm-12 margin-bottom-30" *ngIf="topicArray.value">
+        <div class="row">
+          <div class="col-sm-12">
+            <app-multiselect-autocomplete (selectedOutput)="selected($event)" [preSelectedTopics]="topicArray.value"
+              [searchUrl]="searchTopicURL" [create]="true" [createURL]=createTopicURL [title]="placeholderStringTopic"
+              [maxSelection]="maxTopics" [minSelection]="1" [suggestedTopics]="suggestedTopics"></app-multiselect-autocomplete>
+          </div>
+        </div>
+        <div class="row">
+          <span class="col-sm-4" style="font-size: 12px; color: #777">{{maxTopicMsg}}</span>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:60px;">
+      <button mat-button type="button" matStepperPrevious color="primary" class="mat-border-button">
+        Back
+      </button>
+      <span class="pull-right" matTooltip="Add at least one interest to continue" [matTooltipDisabled]="topicArray.valid || interests.length>2">
+        <button (click)="submitInterests()" type="button" mat-button color="primary" class="mat-border-button"
+          [disabled]="!(topicArray.valid || interests.length>2) || busySavingData">
+          <span *ngIf="!busySavingData">Next</span>
+          <span>
+            <ngx-loading [show]="busySavingData"></ngx-loading>
+          </span>
+        </button>
+      </span>
+    </div>
+  </div>
+</div>

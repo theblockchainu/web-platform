@@ -88,10 +88,8 @@ import { PeerCardComponent } from './peer-card/peer-card.component';
 import { ClassCardComponent } from './class-card/class-card.component';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { AccreditationService } from '../_services/accreditation/accreditation.service';
-import { CustomCertificateFormComponent } from './custom-certificate-form/custom-certificate-form.component';
 import { CertificateService } from '../_services/certificate/certificate.service';
 import { SafePipe } from './safe-pipe/safe.pipe';
-import { UploadFileComponent } from './upload-file/upload-file.component';
 import { PromocodeService } from '../_services/promocode/promocode.service';
 import { LinkifyPipe } from './linkify-pipe/linkify.pipe';
 import { LMarkdownEditorModule } from 'ngx-markdown-editor';
@@ -99,6 +97,8 @@ import { GuideCardComponent } from './guide-card/guide-card.component';
 import { QuestionCardComponent } from './question-card/question-card.component';
 import { BountyCardComponent } from './bounty-card/bounty-card.component';
 import { PositionPipe } from './position-pipe/position.pipe';
+import { UploadFileModule } from './upload-file/upload-file.module';
+import { CustomCertificateFormModule } from '../_shared/custom-certificate-form/custom-certificate-form.module';
 @NgModule({
     imports: [
         CommonModule,
@@ -137,7 +137,8 @@ import { PositionPipe } from './position-pipe/position.pipe';
         MatChipsModule,
         MatMenuModule,
         MatDatepickerModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        UploadFileModule
     ],
     declarations: [
         ExtractTimePipe,
@@ -155,9 +156,7 @@ import { PositionPipe } from './position-pipe/position.pipe';
         CommunityCardComponent,
         PeerCardComponent,
         ClassCardComponent,
-        CustomCertificateFormComponent,
         SafePipe,
-        UploadFileComponent,
         LinkifyPipe,
         GuideCardComponent,
         QuestionCardComponent,
@@ -262,16 +261,16 @@ import { PositionPipe } from './position-pipe/position.pipe';
         PeerCardComponent,
         ClassCardComponent,
         AmazingTimePickerModule,
-        CustomCertificateFormComponent,
         SafePipe,
-        UploadFileComponent,
         SpinnerModule,
         LinkifyPipe,
         LMarkdownEditorModule,
         GuideCardComponent,
         QuestionCardComponent,
         BountyCardComponent,
-        PositionPipe
+        PositionPipe,
+        UploadFileModule,
+        CustomCertificateFormModule
     ]
 })
 export class SharedModule {

@@ -1,5 +1,5 @@
-<p-fileUpload auto="auto" *ngIf="!uploadingFile" #fubauto customUpload="true" (uploadHandler)="upload($event)" maxFileSize="1000000000"
-  chooseLabel="Browse" multiple="false">
+<p-fileUpload auto="auto" *ngIf="!uploadingFile" #fubauto customUpload="true" (uploadHandler)="upload($event)"
+  maxFileSize="1000000000" chooseLabel="Browse" multiple="false">
 </p-fileUpload>
 <span *ngIf="uploadingFile">
   <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
