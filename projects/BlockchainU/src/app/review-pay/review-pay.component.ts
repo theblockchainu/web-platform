@@ -728,6 +728,7 @@ export class ReviewPayComponent implements OnInit {
         this.discountCode.reset();
         this.discountCode.enable();
         delete this.codefound;
+		this.loadCCAvenueForm();
     }
 
     togglePromo() {
