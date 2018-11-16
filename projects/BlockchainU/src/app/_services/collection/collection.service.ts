@@ -655,6 +655,9 @@ export class CollectionService {
 			case 'guide':
 				this.router.navigate(['/guide', collection.id]);
 				break;
+			case 'learning-path':
+				this.router.navigate(['/learning-path', collection.id]);
+				break;
 			default:
 				break;
 		}
@@ -1145,5 +1148,11 @@ export class CollectionService {
 			.get(environment.apiUrl + '/api/collections/trending?filter=' + JSON.stringify(filter),
 				this.requestHeaderService.options);
 
+	}
+
+	public postContent(collectionId: string, content: any) {
+		return this.httpClient
+			.post(environment.apiUrl + '/api/collections/' + collectionId + '/contents', content,
+				this.requestHeaderService.options);
 	}
 }

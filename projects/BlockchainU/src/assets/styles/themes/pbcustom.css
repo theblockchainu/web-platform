@@ -24,9 +24,7 @@ b {
 	font-weight: 600 !important;
 }
 
-a,
-a:active,
-a:visited {
+a, a:active, a:visited {
 	color: #33bd9e;
 	text-decoration: none;
 }
@@ -116,10 +114,7 @@ strong {
 
 /* Scroll Bar custom Ends */
 
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
+input:focus, select:focus, textarea:focus, button:focus {
 	outline: none;
 }
 
@@ -151,11 +146,7 @@ mat-icon {
 
 /* Material Classes Starts*/
 
-.mat-caption,
-.mat-display-1,
-.mat-display-2,
-.mat-display-3,
-.mat-display-4 {
+.mat-caption, .mat-display-1, .mat-display-2, .mat-display-3, .mat-display-4 {
 	color: rgba(0, 0, 0, 0.7);
 }
 
@@ -167,7 +158,7 @@ mat-input-container .mat-has-icon {
 	padding-right: 36px;
 }
 
-mat-input-container .mat-has-icon > label {
+mat-input-container .mat-has-icon>label {
 	left: 36px;
 }
 
@@ -195,8 +186,7 @@ mat-sidenav a:hover {
 	width: 0.4em;
 }
 
-.scroll-box::-webkit-scrollbar,
-.scroll-box::-webkit-scrollbar-thumb {
+.scroll-box::-webkit-scrollbar, .scroll-box::-webkit-scrollbar-thumb {
 	overflow: visible;
 	border-radius: 4px;
 }
@@ -240,10 +230,7 @@ mat-subheader {
 	z-index: 1000 !important;
 }
 
-.mat-tab-group.mat-primary .mat-tab-label:focus,
-.mat-tab-group.mat-primary .mat-tab-link:focus,
-.mat-tab-nav-bar.mat-primary .mat-tab-label:focus,
-.mat-tab-nav-bar.mat-primary .mat-tab-link:focus {
+.mat-tab-group.mat-primary .mat-tab-label:focus, .mat-tab-group.mat-primary .mat-tab-link:focus, .mat-tab-nav-bar.mat-primary .mat-tab-label:focus, .mat-tab-nav-bar.mat-primary .mat-tab-link:focus {
 	background-color: #fff !important;
 }
 
@@ -279,8 +266,7 @@ mat-subheader {
 	font-size: 16px !important;
 	line-height: 22px !important;
 	letter-spacing: normal !important;
-	font-family: Cereal, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue,
-	sans-serif !important;
+	font-family: Cereal, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif !important;
 	text-transform: none !important;
 	font-weight: 800 !important;
 	padding: 12px 24px !important;
@@ -308,8 +294,7 @@ mat-subheader {
 	font-size: 16px !important;
 	line-height: 22px !important;
 	letter-spacing: normal !important;
-	font-family: Cereal, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue,
-	sans-serif !important;
+	font-family: Cereal, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif !important;
 	text-transform: none !important;
 	font-weight: 800 !important;
 	padding: 12px 24px !important;
@@ -408,9 +393,7 @@ mat-subheader {
 	font-size: 14px !important;
 }
 
-.mat-button.mat-raised.mat-twitter,
-.mat-button.mat-raised.mat-twitter:focus,
-.mat-button.mat-raised.mat-twitter:hover {
+.mat-button.mat-raised.mat-twitter, .mat-button.mat-raised.mat-twitter:focus, .mat-button.mat-raised.mat-twitter:hover {
 	color: #fff;
 	background: #00c7f7;
 	border-color: #00c7f7;
@@ -421,159 +404,120 @@ mat-subheader {
 	background-color: #fff;
 }
 
-.mat-facebook:focus,
-.mat-facebook:hover {
+.mat-facebook:focus, .mat-facebook:hover {
 	color: #fff !important;
 	background: #335397 !important;
 	border-color: #335397 !important;
 }
 
-.mat-google-plus,
-.mat-gplus {
+.mat-google-plus, .mat-gplus {
 	color: #000 !important;
 	background-color: #fff;
 }
 
-.mat-google-plus:focus,
-.mat-google-plus:hover,
-.mat-gplus:focus,
-.mat-gplus:hover {
+.mat-google-plus:focus, .mat-google-plus:hover, .mat-gplus:focus, .mat-gplus:hover {
 	color: #fff !important;
 	background: #dd4a38 !important;
 	border-color: #dd4a38 !important;
 }
 
-.mat-button.mat-raised.mat-instagram,
-.mat-button.mat-raised.mat-instagram:focus,
-.mat-button.mat-raised.mat-instagram:hover {
+.mat-button.mat-raised.mat-instagram, .mat-button.mat-raised.mat-instagram:focus, .mat-button.mat-raised.mat-instagram:hover {
 	color: #fff;
 	background: #82685a;
 	border-color: #82685a;
 }
 
-.mat-button.mat-raised.mat-vimeo,
-.mat-button.mat-raised.mat-vimeo:focus,
-.mat-button.mat-raised.mat-vimeo:hover {
+.mat-button.mat-raised.mat-vimeo, .mat-button.mat-raised.mat-vimeo:focus, .mat-button.mat-raised.mat-vimeo:hover {
 	color: #fff;
 	background: #63879c;
 	border-color: #63879c;
 }
 
-.mat-button.mat-raised.mat-flickr,
-.mat-button.mat-raised.mat-flickr:focus,
-.mat-button.mat-raised.mat-flickr:hover {
+.mat-button.mat-raised.mat-flickr, .mat-button.mat-raised.mat-flickr:focus, .mat-button.mat-raised.mat-flickr:hover {
 	color: #fff;
 	background: #0061db;
 	border-color: #0061db;
 }
 
-.mat-button.mat-raised.mat-github,
-.mat-button.mat-raised.mat-github:focus,
-.mat-button.mat-raised.mat-github:hover {
+.mat-button.mat-raised.mat-github, .mat-button.mat-raised.mat-github:focus, .mat-button.mat-raised.mat-github:hover {
 	color: #fff;
 	background: #3b3b3b;
 	border-color: #3b3b3b;
 }
 
-.mat-button.mat-raised.mat-pinterest,
-.mat-button.mat-raised.mat-pinterest:focus,
-.mat-button.mat-raised.mat-pinterest:hover {
+.mat-button.mat-raised.mat-pinterest, .mat-button.mat-raised.mat-pinterest:focus, .mat-button.mat-raised.mat-pinterest:hover {
 	color: #fff;
 	background: #bc2725;
 	border-color: #bc2725;
 }
 
-.mat-button.mat-raised.mat-tumblr,
-.mat-button.mat-raised.mat-tumblr:focus,
-.mat-button.mat-raised.mat-tumblr:hover {
+.mat-button.mat-raised.mat-tumblr, .mat-button.mat-raised.mat-tumblr:focus, .mat-button.mat-raised.mat-tumblr:hover {
 	color: #fff;
 	background: #586980;
 	border-color: #586980;
 }
 
-.mat-button.mat-raised.mat-linkedin,
-.mat-button.mat-raised.mat-linkedin:focus,
-.mat-button.mat-raised.mat-linkedin:hover {
+.mat-button.mat-raised.mat-linkedin, .mat-button.mat-raised.mat-linkedin:focus, .mat-button.mat-raised.mat-linkedin:hover {
 	color: #fff;
 	background: #018faf;
 	border-color: #018faf;
 }
 
-.mat-button.mat-raised.mat-dribble,
-.mat-button.mat-raised.mat-dribble:focus,
-.mat-button.mat-raised.mat-dribble:hover {
+.mat-button.mat-raised.mat-dribble, .mat-button.mat-raised.mat-dribble:focus, .mat-button.mat-raised.mat-dribble:hover {
 	color: #fff;
 	background: #ea73a0;
 	border-color: #ea73a0;
 }
 
-.mat-button.mat-raised.mat-stumbleupon,
-.mat-button.mat-raised.mat-stumbleupon:focus,
-.mat-button.mat-raised.mat-stumbleupon:hover {
+.mat-button.mat-raised.mat-stumbleupon, .mat-button.mat-raised.mat-stumbleupon:focus, .mat-button.mat-raised.mat-stumbleupon:hover {
 	color: #fff;
 	background: #ea4b24;
 	border-color: #ea4b24;
 }
 
-.mat-button.mat-raised.mat-lastfm,
-.mat-button.mat-raised.mat-lastfm:focus,
-.mat-button.mat-raised.mat-lastfm:hover {
+.mat-button.mat-raised.mat-lastfm, .mat-button.mat-raised.mat-lastfm:focus, .mat-button.mat-raised.mat-lastfm:hover {
 	color: #fff;
 	background: #b80638;
 	border-color: #b80638;
 }
 
-.mat-button.mat-raised.mat-evernote,
-.mat-button.mat-raised.mat-evernote:focus,
-.mat-button.mat-raised.mat-evernote:hover {
+.mat-button.mat-raised.mat-evernote, .mat-button.mat-raised.mat-evernote:focus, .mat-button.mat-raised.mat-evernote:hover {
 	color: #fff;
 	background: #3bab27;
 	border-color: #3bab27;
 }
 
-.mat-button.mat-raised.mat-skype,
-.mat-button.mat-raised.mat-skype:focus,
-.mat-button.mat-raised.mat-skype:hover {
+.mat-button.mat-raised.mat-skype, .mat-button.mat-raised.mat-skype:focus, .mat-button.mat-raised.mat-skype:hover {
 	color: #fff;
 	background: #12a5f4;
 	border-color: #12a5f4;
 }
 
-.mat-button.mat-raised.mat-soundcloud,
-.mat-button.mat-raised.mat-soundcloud:focus,
-.mat-button.mat-raised.mat-soundcloud:hover {
+.mat-button.mat-raised.mat-soundcloud, .mat-button.mat-raised.mat-soundcloud:focus, .mat-button.mat-raised.mat-soundcloud:hover {
 	color: #fff;
 	background: #06f;
 	border-color: #06f;
 }
 
-.mat-button.mat-raised.mat-behance,
-.mat-button.mat-raised.mat-behance:focus,
-.mat-button.mat-raised.mat-behance:hover {
+.mat-button.mat-raised.mat-behance, .mat-button.mat-raised.mat-behance:focus, .mat-button.mat-raised.mat-behance:hover {
 	color: #fff;
 	background: #b80638;
 	border-color: #b80638;
 }
 
-.mat-button.mat-raised.mat-rss,
-.mat-button.mat-raised.mat-rss:focus,
-.mat-button.mat-raised.mat-rss:hover {
+.mat-button.mat-raised.mat-rss, .mat-button.mat-raised.mat-rss:focus, .mat-button.mat-raised.mat-rss:hover {
 	color: #fff;
 	background: #f79638;
 	border-color: #f79638;
 }
 
-.mat-button.mat-raised.mat-youtube,
-.mat-button.mat-raised.mat-youtube:focus,
-.mat-button.mat-raised.mat-youtube:hover {
+.mat-button.mat-raised.mat-youtube, .mat-button.mat-raised.mat-youtube:focus, .mat-button.mat-raised.mat-youtube:hover {
 	color: #fff;
 	background: #cc181e;
 	border-color: #cc181e;
 }
 
-.mat-raised-button.mat-accent,
-.mat-fab.mat-accent,
-.mat-mini-fab.mat-accent {
+.mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
 	background-color: #ff6d71 !important;
 	color: white !important;
 }
@@ -585,18 +529,7 @@ mat-subheader {
 	min-height: 45px;
 } */
 
-.mat-raised-button.mat-primary[disabled],
-.mat-raised-button.mat-accent[disabled],
-.mat-raised-button.mat-warn[disabled],
-.mat-raised-button[disabled][disabled],
-.mat-fab.mat-primary[disabled],
-.mat-fab.mat-accent[disabled],
-.mat-fab.mat-warn[disabled],
-.mat-fab[disabled][disabled],
-.mat-mini-fab.mat-primary[disabled],
-.mat-mini-fab.mat-accent[disabled],
-.mat-mini-fab.mat-warn[disabled],
-.mat-mini-fab[disabled][disabled] {
+.mat-raised-button.mat-primary[disabled], .mat-raised-button.mat-accent[disabled], .mat-raised-button.mat-warn[disabled], .mat-raised-button[disabled][disabled], .mat-fab.mat-primary[disabled], .mat-fab.mat-accent[disabled], .mat-fab.mat-warn[disabled], .mat-fab[disabled][disabled], .mat-mini-fab.mat-primary[disabled], .mat-mini-fab.mat-accent[disabled], .mat-mini-fab.mat-warn[disabled], .mat-mini-fab[disabled][disabled] {
 	background-color: rgba(0, 0, 0, 0.12) !important;
 	color: rgba(0, 0, 0, 0.38) !important;
 }
@@ -816,20 +749,15 @@ h3.calendarTitle {
 	margin-right: 0px !important;
 }
 
-.calendar
-.cal-month-view
-.cal-day-cell.cal-out-month.cal-has-events
-.cal-day-number {
+.calendar .cal-month-view .cal-day-cell.cal-out-month.cal-has-events .cal-day-number {
 	margin-left: 10px;
 }
 
-.dateStyles label.mat-input-placeholder,
-.timeInput label.mat-input-placeholder {
+.dateStyles label.mat-input-placeholder, .timeInput label.mat-input-placeholder {
 	font-size: 16px !important;
 }
 
-.dateStyles input.mat-input-element,
-.timeInput input.mat-input-element {
+.dateStyles input.mat-input-element, .timeInput input.mat-input-element {
 	font-size: 18px !important;
 }
 
@@ -872,13 +800,11 @@ h3.calendarTitle {
 	display: none !important;
 }
 
-.ui-accordion
-.ui-accordion-header:not(.ui-state-active):not(.ui-state-disabled):hover {
+.ui-accordion .ui-accordion-header:not(.ui-state-active):not(.ui-state-disabled):hover {
 	background: #ffffff !important;
 }
 
-.ui-accordion .ui-accordion-header .fa-caret-right,
-.ui-accordion .ui-accordion-header .fa-caret-down {
+.ui-accordion .ui-accordion-header .fa-caret-right, .ui-accordion .ui-accordion-header .fa-caret-down {
 	display: none !important;
 }
 
@@ -917,7 +843,7 @@ h3.calendarTitle {
 	padding: 1em 0em !important;
 }
 
-.ui-fileupload-row > div {
+.ui-fileupload-row>div {
 	border: 1px solid #eee;
 }
 
@@ -1007,8 +933,7 @@ h3.calendarTitle {
 	height: 40px !important;
 }
 
-.circle-thumb img,
-.circle-thumb {
+.circle-thumb img, .circle-thumb {
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
@@ -1018,8 +943,7 @@ h3.calendarTitle {
 	object-fit: cover;
 }
 
-.circle-thumb-large img,
-.circle-thumb-large {
+.circle-thumb-large img, .circle-thumb-large {
 	width: 60px;
 	height: 60px;
 	border-radius: 50%;
@@ -1028,8 +952,7 @@ h3.calendarTitle {
 	border: 3px solid #ffffff;
 }
 
-.circle-thumb-overlap,
-.circle-thumb-overlap img {
+.circle-thumb-overlap, .circle-thumb-overlap img {
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
@@ -1090,9 +1013,7 @@ h3.calendarTitle {
 	position: relative;
 }
 
-.profile-header h2,
-.profile-header h4,
-.profile-header p {
+.profile-header h2, .profile-header h4, .profile-header p {
 	color: #fff;
 }
 
@@ -1214,7 +1135,7 @@ h3.calendarTitle {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.page-contact .contact-info-container > ul {
+.page-contact .contact-info-container>ul {
 	display: block;
 	margin: 0;
 	padding: 0;
@@ -1223,30 +1144,30 @@ h3.calendarTitle {
 	text-align: center;
 }
 
-.page-contact .contact-info-container > ul li {
+.page-contact .contact-info-container>ul li {
 	display: block;
 	border-top: 1px solid #e9e9e9;
 	padding: 20px;
 }
 
 @media (min-width: 992px) {
-	.page-contact .contact-info-container > ul li {
+	.page-contact .contact-info-container>ul li {
 		display: inline-block;
 		padding: 30px 20px;
 		border-top: 0;
 		border-right: 1px solid #e9e9e9;
 	}
-	.page-contact .contact-info-container > ul li:first-child {
+	.page-contact .contact-info-container>ul li:first-child {
 		border-left: 1px solid #e9e9e9;
 	}
 }
 
-.page-contact .contact-info-container > ul li > i {
+.page-contact .contact-info-container>ul li>i {
 	margin-right: 10px;
 	font-size: 22px;
 }
 
-.page-contact .contact-info-container > ul li a {
+.page-contact .contact-info-container>ul li a {
 	color: #767676;
 }
 
@@ -1403,9 +1324,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 
 /* Landing Page Ends */
 
-.footerButtons .mat-button-focus-overlay,
-.collectionContent .mat-button-focus-overlay,
-.topics-section .mat-button-focus-overlay {
+.footerButtons .mat-button-focus-overlay, .collectionContent .mat-button-focus-overlay, .topics-section .mat-button-focus-overlay {
 	background: none;
 }
 
@@ -1443,6 +1362,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
 .no-underline .mat-form-field-underline {
 	display: none !important;
 }
+
 .search-home .mat-form-field-wrapper {
 	padding-bottom: 0em !important;
 }
@@ -1488,11 +1408,7 @@ mat-input-container.mail-bg .mat-input-subscript-wrapper {
     display: none !important;
 } */
 
-.geoLocation
-.custom-autocomplete
-.custom-autocomplete__dropdown
-.currentlocation
-a {
+.geoLocation .custom-autocomplete .custom-autocomplete__dropdown .currentlocation a {
 	font-size: 0.9rem !important;
 }
 
@@ -1580,10 +1496,7 @@ a {
 
 /* Upload component */
 
-.ui-widget-header .ui-button,
-.ui-widget-content .ui-button,
-.ui-widget.ui-button,
-.ui-button {
+.ui-widget-header .ui-button, .ui-widget-content .ui-button, .ui-widget.ui-button, .ui-button {
 	border: 0px solid #1dad8d !important;
 	color: #ffffff;
 	background: #33bd9e !important;
@@ -1623,9 +1536,7 @@ a {
 	text-align: justify;
 }
 
-mat-datepicker-toggle.disableMD,
-mat-datepicker-toggle.disableMD button,
-mat-datepicker-toggle.disableMD .mat-icon-button {
+mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-datepicker-toggle.disableMD .mat-icon-button {
 	pointer-events: none !important;
 	color: grey !important;
 }
@@ -1923,7 +1834,7 @@ mat-datepicker-toggle.disableMD .mat-icon-button {
 	border-radius: 2px;
 }
 
-.chatbox > p {
+.chatbox>p {
 	position: absolute;
 	bottom: 0;
 }
@@ -2054,8 +1965,7 @@ mat-datepicker-toggle.disableMD .mat-icon-button {
 	height: 0px;
 }
 
-.show-small,
-.show-small-inline {
+.show-small, .show-small-inline {
 	display: none !important;
 }
 
@@ -2082,8 +1992,16 @@ mat-datepicker-toggle.disableMD .mat-icon-button {
 	width: max-content;
 }
 
-.hide-header .mat-horizontal-stepper-header-container {
+.hide-header .mat-step-header {
 	display: none !important;
+}
+
+.hide-content-vertical .mat-step .mat-vertical-content-container {
+	display: none !important;
+}
+
+.hide-vertical-line .mat-stepper-vertical-line::before {
+	display: none;
 }
 
 .welcome-feed-accordian .mat-expansion-panel-header {
@@ -2099,10 +2017,7 @@ mat-datepicker-toggle.disableMD .mat-icon-button {
 	background: #ff6d71 !important;
 }
 
-.verify-panel .mat-expansion-panel-header-title,
-.verify-panel .mat-expansion-panel-header-description,
-.verify-panel .mat-expansion-indicator::after,
-.verify-panel .expansion-panel-header-icon {
+.verify-panel .mat-expansion-panel-header-title, .verify-panel .mat-expansion-panel-header-description, .verify-panel .mat-expansion-indicator::after, .verify-panel .expansion-panel-header-icon {
 	color: #fff !important;
 }
 
@@ -2242,7 +2157,7 @@ MD-Editor Styling
 	background: #fff !important;
 }
 
-.md-editor-container .tool-bar .btn-group > .btn:first-child::before {
+.md-editor-container .tool-bar .btn-group>.btn:first-child::before {
 	background-color: #fff !important;
 }
 

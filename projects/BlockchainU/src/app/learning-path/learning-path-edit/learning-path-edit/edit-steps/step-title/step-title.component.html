@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
+    <form [formGroup]="titleForm" (ngSubmit)="submitLearningPath()">
+      <div class="row">
+        <div class="col-sm-12 margin-bottom-30">
+          <div class="form-group">
+            <h2 class="title">Title</h2>
+            <p class="subtitle">
+              Make it short and sweet
+            </p>
+            <br />
+            <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
+              <input matInput #title formControlName="title" maxlength="100" placeholder="Enter Name">
+              <mat-hint align="start">{{100 - title.value.length}} more characters allowed</mat-hint>
+              <mat-hint align="end">{{title.value.length}} / 100</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-sm-12 margin-bottom-30">
+          <div class="form-group">
+            <h2 class="title">Headline</h2>
+            <p class="subtitle">
+              Clearly describe your learning path in one short, catchy sentence.
+              <br /> Start with a verb that tells participants what they will do.
+            </p>
+            <br />
+            <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
+              <input matInput #headline formControlName="headline" maxlength="100" placeholder="Write headline">
+              <mat-hint align="start">{{100 - headline.value.length}} more characters allowed</mat-hint>
+              <mat-hint align="end">{{headline.value.length}} / 100</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:60px;">
+        <button mat-button type="button" matStepperPrevious color="primary" class="mat-border-button">
+          Back
+        </button>
+        <span class="pull-right" matTooltip="Please type in a headline to continue." [matTooltipDisabled]="titleForm.valid">
+          <button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="!titleForm.valid || busySavingData">
+            <span *ngIf="!busySavingData">Next</span>
+            <span>
+              <ngx-loading [show]="busySavingData"></ngx-loading>
+            </span>
+          </button>
+        </span>
+      </div>
+    </form>
+  </div>
+</div>

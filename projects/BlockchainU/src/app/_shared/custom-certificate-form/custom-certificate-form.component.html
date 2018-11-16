@@ -46,7 +46,8 @@
 					</div>
 					<div class="col-xs-6">
 						<mat-form-field [floatLabel]="'never'" class="dateStyles">
-							<input matInput [matDatepicker]="startDatePicker" (click)="startDatePicker.open()" [min]="today" placeholder="Date" [formControl]="expiryDate">
+							<input matInput [matDatepicker]="startDatePicker" (click)="startDatePicker.open()" [min]="today" placeholder="Date"
+							 [formControl]="expiryDate">
 							<mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
 							<mat-datepicker touchUi="true" startView="multi-year" [startAt]="today" #startDatePicker disabled="false"></mat-datepicker>
 						</mat-form-field>
@@ -138,7 +139,8 @@
 											<div class="col-xs-7">
 												<mat-form-field [floatLabel]="'never'" class="pb-block">
 													<mat-label>Text</mat-label>
-													<textarea matInput #description maxlength="2000" rows="1" maxRows="3" matTextareaAutosize formControlName="value" class="title"></textarea>
+													<textarea matInput #description maxlength="2000" rows="1" maxRows="3" matTextareaAutosize formControlName="value"
+													 class="title"></textarea>
 													<button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
 														<mat-icon>text_format</mat-icon>
 													</button>
@@ -209,7 +211,8 @@
 											<div class="col-xs-7">
 												<mat-form-field [floatLabel]="'never'" class="dateStyles pb-block">
 													<mat-label>Date</mat-label>
-													<input matInput [matDatepicker]="startDatePicker" (click)="startDatePicker.open()" placeholder="Start date" formControlName="value">
+													<input matInput [matDatepicker]="startDatePicker" (click)="startDatePicker.open()" placeholder="Start date"
+													 formControlName="value">
 													<mat-datepicker touchUi="true" #startDatePicker disabled="false"></mat-datepicker>
 													<button (click)="toggleExpansion(i)" matSuffix mat-icon-button>
 														<mat-icon>text_format</mat-icon>
@@ -713,7 +716,8 @@
                       'font-weight':(element.bold)?'bold':'normal',
                       'font-style':(element.italic)?'italic':'normal',
                       'text-decoration-line': (element.underline)?'underline':'none'
-                    }" style="width: 100%;
+                    }"
+									 style="width: 100%;
                     display: inline-block;">{{element.value}}</span>
 								</div>
 								<div *ngSwitchCase="'multi-line'">
@@ -724,7 +728,8 @@
                         'font-weight':(element.bold)?'bold':'normal',
                         'font-style':(element.italic)?'italic':'normal',
                         'text-decoration-line': (element.underline)?'underline':'none'
-                      }" style="width: 100%;
+                      }"
+									 style="width: 100%;
                       display: inline-block;">{{element.value}}</span>
 								</div>
 								<div *ngSwitchCase="'date'">
@@ -735,7 +740,8 @@
                         'font-weight':(element.bold)?'bold':'normal',
                         'font-style':(element.italic)?'italic':'normal',
                         'text-decoration-line': (element.underline)?'underline':'none'
-                      }" style="width: 100%;
+                      }"
+									 style="width: 100%;
                       display: inline-block;">{{element.value|date:'mediumDate'}}</span>
 								</div>
 								<div *ngSwitchCase="'email'">
@@ -746,7 +752,8 @@
                         'font-weight':(element.bold)?'bold':'normal',
                         'font-style':(element.italic)?'italic':'normal',
                         'text-decoration-line': (element.underline)?'underline':'none'
-                      }" style="width: 100%;
+                      }"
+									 style="width: 100%;
                       display: inline-block;">
 										<a href="mailto:{{element.value}}" target="_blank">{{element.value}}</a>
 									</span>
@@ -759,7 +766,8 @@
                         'font-weight':(element.bold)?'bold':'normal',
                         'font-style':(element.italic)?'italic':'normal',
                         'text-decoration-line': (element.underline)?'underline':'none'
-                      }" style="width: 100%;
+                      }"
+									 style="width: 100%;
                       display: inline-block;">
 										<a href="{{element.meta}}" target="_blank">{{element.value}}</a>
 									</span>
@@ -772,7 +780,8 @@
                         'font-weight':(element.bold)?'bold':'normal',
                         'font-style':(element.italic)?'italic':'normal',
                         'text-decoration-line': (element.underline)?'underline':'none'
-                      }" style="width: 100%;
+                      }"
+									 style="width: 100%;
                       display: inline-block;">{{element.value}}</span>
 								</div>
 								<div *ngSwitchCase="'variable'">
@@ -783,7 +792,8 @@
                         'font-weight':(element.bold)?'bold':'normal',
                         'font-style':(element.italic)?'italic':'normal',
                         'text-decoration-line': (element.underline)?'underline':'none'
-                      }" style="width: 100%;
+                      }"
+									 style="width: 100%;
                       display: inline-block;">
 										{{element.value}}
 									</span>
@@ -796,7 +806,8 @@
                         'font-weight':(element.bold)?'bold':'normal',
                         'font-style':(element.italic)?'italic':'normal',
                         'text-decoration-line': (element.underline)?'underline':'none'
-                      }" style="width: 100%;
+                      }"
+									 style="width: 100%;
                       display: inline-block;">
 										<img style="height: 100%; width: auto;" src="{{element.value}}">
 									</span>
@@ -837,42 +848,48 @@
 							<div style="padding: 1em 0;">
 								<div>
 									<div>
-										<span style="width: 100%; display: inline-block; font-size: 1.1em; text-align: left; font-weight: bold; font-style: normal; text-decoration-line: none;">SAMPLE CERTIFICATE</span>
+										<span style="width: 100%; display: inline-block; font-size: 1.1em; text-align: left; font-weight: bold; font-style: normal; text-decoration-line: none;">SAMPLE
+											CERTIFICATE</span>
 									</div>
 								</div>
 							</div>
 							<div style="padding: 1em 0;">
 								<div>
 									<div>
-										<span style="width: 100%; display: inline-block;  font-size: 1.5em; text-align: left; font-weight: normal; font-style: normal; text-decoration-line: none;">Create your own certificate with all the relevant details</span>
+										<span style="width: 100%; display: inline-block;  font-size: 1.5em; text-align: left; font-weight: normal; font-style: normal; text-decoration-line: none;">Create
+											your own certificate with all the relevant details</span>
 									</div>
 								</div>
 							</div>
 							<div style="padding: 1em 0;">
 								<div>
 									<div>
-										<span style="width: 100%; display: inline-block; font-size: 1.2em; text-align: left; font-weight: normal; font-style: normal; text-decoration-line: none;">This is a sample certificate. Please add more fields and start creating your own certificate.</span>
+										<span style="width: 100%; display: inline-block; font-size: 1.2em; text-align: left; font-weight: normal; font-style: normal; text-decoration-line: none;">This
+											is a sample certificate. Please add more fields and start creating your own certificate.</span>
 									</div>
 								</div>
 							</div>
 							<div style="padding: 1em 0;">
 								<div>
 									<div>
-										<span style="width: 100%; display: inline-block;  font-size: 1.3em; text-align: center; font-weight: normal; font-style: normal; text-decoration-line: none;">Sahil Parekh</span>
+										<span style="width: 100%; display: inline-block;  font-size: 1.3em; text-align: center; font-weight: normal; font-style: normal; text-decoration-line: none;">Sahil
+											Parekh</span>
 									</div>
 								</div>
 							</div>
 							<div style="padding: 1em 0;">
 								<div>
 									<div>
-										<span style="width: 100%; display: inline-block;  font-size: 1.2em; text-align: center; font-weight: normal; font-style: normal; text-decoration-line: none;">CEO, The Blockchain University</span>
+										<span style="width: 100%; display: inline-block;  font-size: 1.2em; text-align: center; font-weight: normal; font-style: normal; text-decoration-line: none;">CEO,
+											The Blockchain University</span>
 									</div>
 								</div>
 							</div>
 							<div style="padding: 1em 0;">
 								<div>
 									<div>
-										<span style="width: 100%; display: inline-block; font-size: 0.9em; text-align: center; font-weight: normal; font-style: italic; text-decoration-line: none;">This is sample certificate for educational purposes only</span>
+										<span style="width: 100%; display: inline-block; font-size: 0.9em; text-align: center; font-weight: normal; font-style: italic; text-decoration-line: none;">This
+											is sample certificate for educational purposes only</span>
 									</div>
 								</div>
 							</div>
