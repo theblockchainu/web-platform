@@ -1,0 +1,3 @@
+<div *ngIf="certificateForm.value.expiryDate && certificateForm.value.expiryDate.length>0">
+  <app-custom-certificate-form #certificateComponent [data]="certificateForm.value" (back)="back()" (next)="submitCertificate($event)"></app-custom-certificate-form>
+</div>

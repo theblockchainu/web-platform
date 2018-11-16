@@ -67,20 +67,23 @@
           </div>
           <div class="col-xs-6 margin-top-10">
             <mat-form-field class="pb-block">
-              <input matInput [matDatepicker]="validFrom" #fromDate formControlName="validFrom" (click)="validFrom.open()" placeholder="Choose a Start date">
+              <input matInput [matDatepicker]="validFrom" #fromDate formControlName="validFrom" (click)="validFrom.open()"
+                placeholder="Choose a Start date">
               <mat-datepicker-toggle matSuffix [for]="validFrom"></mat-datepicker-toggle>
               <mat-datepicker #validFrom></mat-datepicker>
             </mat-form-field>
           </div>
           <div class="col-xs-6 margin-top-10">
             <mat-form-field class="pb-block">
-              <input matInput [matDatepicker]="validTo" formControlName="validTo" (click)="validTo.open()" [min]="fromDate.value" placeholder="Choose a End date">
+              <input matInput [matDatepicker]="validTo" formControlName="validTo" (click)="validTo.open()" [min]="fromDate.value"
+                placeholder="Choose a End date">
               <mat-datepicker-toggle matSuffix [for]="validTo"></mat-datepicker-toggle>
               <mat-datepicker #validTo></mat-datepicker>
             </mat-form-field>
           </div>
           <div class="col-xs-12 margin-top-30">
-            <button type="button" [disabled]="!promoCodeForm.valid" matStepperNext class="pull-right" mat-raised-button color="accent">
+            <button type="button" [disabled]="!promoCodeForm.valid" matStepperNext class="pull-right" mat-raised-button
+              color="accent">
               Next
             </button>
           </div>
@@ -96,8 +99,8 @@
                 {{peer.name}}
                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
               </mat-chip>
-              <input placeholder="Select users this story is visible to" #peerInput [formControl]="myControl" [matAutocomplete]="auto"
-                [matChipInputFor]="chipList" [matChipInputAddOnBlur]="addOnBlur" />
+              <input placeholder="Select users this story is visible to" #peerInput [formControl]="myControl"
+                [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputAddOnBlur]="addOnBlur" />
             </mat-chip-list>
             <mat-autocomplete #auto="matAutocomplete">
               <mat-option *ngFor="let option of searchOptions" [value]="" (click)="onSearchOptionClicked(option)">
@@ -121,8 +124,8 @@
           <button matStepperPrevious mat-raised-button>
             Back
           </button>
-          <button (click)="submitForm()" [disabled]="!allPeer && selectedPeers.length<1" matStepperNext class="pull-right" mat-raised-button
-            color="accent">
+          <button (click)="submitForm()" [disabled]="(!allPeer && selectedPeers.length<1)||loadingData" matStepperNext
+            class="pull-right" mat-raised-button color="accent">
             Submit
           </button>
         </div>

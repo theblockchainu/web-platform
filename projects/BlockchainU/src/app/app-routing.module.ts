@@ -149,6 +149,10 @@ const routes: Routes = [
 		loadChildren: './guide/guide.module#GuideModule'
 	},
 	{
+		path: 'learning-path',
+		loadChildren: './learning-path/learning-path.module#LearningPathModule'
+	},
+	{
 		path: 'community',
 		loadChildren: './community/community.module#CommunityModule'
 	},

@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
+    <form [formGroup]="descriptionForm" (ngSubmit)="submitLearningPath()">
+      <div class="row">
+        <div class="col-sm-12">
+          <h2 class="title">What’s the learning path about?</h2>
+          <p class="subtitle">Give a detailed description to learners of what they will do in this learning path</p>
+          <button mat-raised-button type="button" (click)="insertImage()">Insert Image</button>
+          <md-editor [options]="editorOptions" formControlName="description" [height]="'360px'" maxlength="2000"></md-editor>
+        </div>
+      </div>
+      <div style="margin-top:60px;">
+        <button mat-button type="button" matStepperPrevious color="primary" class="mat-border-button">
+          Back
+        </button>
+        <span class="pull-right" matTooltip="Describe your learningPath in detail to continue" [matTooltipDisabled]="descriptionForm.value.description && descriptionForm.value.description.length !== 0">
+          <button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="(descriptionForm.value.description && descriptionForm.value.description.length == 0) || busySavingData">
+            <span *ngIf="!busySavingData">Next</span>
+            <span>
+              <ngx-loading [show]="busySavingData"></ngx-loading>
+            </span>
+          </button>
+        </span>
+      </div>
+    </form>
+  </div>
+</div>

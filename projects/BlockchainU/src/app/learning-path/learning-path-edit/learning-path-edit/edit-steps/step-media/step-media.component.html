@@ -1,0 +1,71 @@
+<div class="row">
+  <div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
+    <h2 class="title">Showcase your learning path</h2>
+    <p class="subtitle">
+      Give the world a taste of your learning path by showcasing captivating videos and/or photos
+    </p>
+    <div class="row padding-top-20">
+      <div class="col-md-8">
+        <div class="stepHeader margin-top-20">Upload an image for your cover</div>
+        <p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true"
+          (uploadHandler)="uploadImage($event)" maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
+          <ng-template pTemplate="toolbar">
+            <div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
+          </ng-template>
+        </p-fileUpload>
+        <h5>Max File Size
+          <b>10MB</b>
+        </h5>
+        <div *ngIf="mediaForm.value.imageUrls.length>0" class="pic delete">
+          <div *ngFor="let file of mediaForm.value.imageUrls" class="col-md-6 padding-left-0 imageContainer">
+            <img src="{{envVariable.apiUrl + file}}" width="150" style="border: 0.5px solid #ccc">
+            <mat-icon (click)="deleteFromContainer(file, 'image')" class="delete-button">close</mat-icon>
+          </div>
+        </div>
+        <div class="loading-container" [hidden]="!uploadingImage">
+          <ngx-loading [show]="true"></ngx-loading>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="stepHeader">Upload a video for cover</div>
+        <app-upload-file (uploaded)="addVideoUrl($event)"></app-upload-file>
+        <h5>Max File Size
+          <b>1000MB</b>
+        </h5>
+        <div *ngIf="mediaForm.value.videoUrls.length>0" class="profileVideo delete">
+          <div *ngFor="let file of mediaForm.value.videoUrls" class="col-md-6 padding-left-0 videoContainer">
+            <video controls width="150" class="uploaded_picture" style="border: 0.5px solid #ccc;" preload="metadata">
+              <source src="{{envVariable.apiUrl + file}}"> Your browser does not support the video tag.
+            </video>
+            <mat-icon (click)="deleteFromContainer(file, 'video')" class="delete-video">close</mat-icon>
+          </div>
+        </div>
+        <!-- <div class="loading-container" [hidden]="!uploadingVideo">
+              <ngx-loading [show]="true"></ngx-loading>
+            </div> -->
+      </div>
+    </div>
+    <div class="row padding-top-20">
+      <div class="col-md-12">
+        <div class="margin-top-60">
+          <button mat-button type="button" matStepperPrevious color="primary" class="mat-border-button">
+            Back
+          </button>
+          <span class="pull-right">
+            <span matTooltip="An image is mandatory to continue" [matTooltipDisabled]="urlForImages.length !== 0">
+              <button (click)="submitCollection()" mat-button color="primary" class="mat-border-button" [disabled]="!mediaForm.valid||  busySavingData"
+                type="Submit">
+                <span *ngIf="!busySavingData">Next</span>
+                <span>
+                  <ngx-loading [show]="busySavingData"></ngx-loading>
+                </span>
+              </button>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
