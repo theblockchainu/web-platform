@@ -1,52 +1,64 @@
 <div class="main-content">
-    <div class="row margin-top-70">
-        <div class="col-sm-offset-1 margin-top-20 center col-sm-4 col-xs-12">
-            <p class="mat-display-1 margin-bottom-20" style="color:black">Our Office</p>
-            <p class="mat-subheading-2" style="color:rgba(0,0,0,0.54)">4580 Auto Mall Parkway
-                <br> Fremont, CA, 94539</p>
-        </div>
-        <div class="col-sm-4 col-sm-offset-1 center col-xs-12">
-            <!--
-            <agm-map [latitude]="lat" [longitude]="lng">
-            <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-            </agm-map>-->
-            <img src="/assets/images/map.png">
-        </div>
-    </div>
-    <div class="row margin-top-50">
-        <div class="col-sm-offset-1 center col-sm-4 col-xs-12">
-            <p class="mat-display-1 margin-bottom-20" style="color:black">Contact Us</p>
-            <p class="mat-subheading-2" style="color:rgba(0,0,0,0.54)">Dont hesitate to reach out to us. We're
-                <br> always here for you :)</p>
-        </div>
-        <div class="center col-sm-offset-1 margin-bottom-50 col-sm-4 col-xs-10 col-xs-offset-1">
-            <form [formGroup]="contactUsForm">
-                <div class="row margin-bottom-100">
-                    <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
-                        <input matInput type="text" placeholder="First Name" formControlName="first_name">
-                    </mat-form-field>
-                    <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
-                        <input matInput type="text" placeholder="Last Name" formControlName="last_name">
-                    </mat-form-field>
-                    <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
-                        <input matInput type="text" placeholder="Email" formControlName="email">
-                    </mat-form-field>
-                    <mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
-                        <input matInput type="text" placeholder="Subject" formControlName="subject">
-                    </mat-form-field>
-                    <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
-                        <textarea matInput rows="1" matTextareaAutosize placeholder="Message" formControlName="message"></textarea>
-                    </mat-form-field>
-                    <div class="margin-bottom-20">
-                        <button mat-raised-button color="accent" class="btn-width vertical-bottom" style="padding: 6px !important;" type="submit"
-                            (click)="createGuestContacts()">
-                            <span class="txtcolor">Submit</span>
-                        </button>
-                        <br>
-                        <br>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+	<div class="row margin-top-70">
+		<div class="col-sm-offset-1 margin-top-20 center col-sm-4 col-xs-12">
+			<p class="mat-display-1 margin-bottom-20" style="color:black">Our Offices</p>
+			<div>
+				<div class="mat-subheading-2">
+					Global HQ
+				</div>
+				4580 Auto Mall Parkway
+				<br> Fremont, CA, 94539
+			</div>
+			<div class="margin-top-20">
+				<div class="mat-subheading-2">
+					India
+				</div>
+				30, Road 4, Sector 1/S
+				<br> New Panvel, Navi Mumbai 410206
+			</div>
+		</div>
+		<div class="col-sm-4 col-sm-offset-1 center col-xs-12">
+			<agm-map [streetViewControl]="false" [mapTypeControl]="false" [panControl]="false" [rotateControl]="false" [fitBounds]="true" [zoom]="1">
+				<agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+				<agm-marker [latitude]="latIndia" [longitude]="lngIndia"></agm-marker>
+			</agm-map>
+			<!--<img src="/assets/images/map.png">-->
+		</div>
+	</div>
+	<div class="row margin-top-50">
+		<div class="col-sm-offset-1 center col-sm-4 col-xs-12">
+			<p class="mat-display-1 margin-bottom-20" style="color:black">Contact Us</p>
+			<p class="mat-subheading-2" style="color:rgba(0,0,0,0.54)">Dont hesitate to reach out to us. We're
+				<br> always here for you :)</p>
+		</div>
+		<div class="center col-sm-offset-1 margin-bottom-50 col-sm-4 col-xs-10 col-xs-offset-1">
+			<form [formGroup]="contactUsForm">
+				<div class="row margin-bottom-100">
+					<mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
+						<input matInput type="text" placeholder="First Name" formControlName="first_name">
+					</mat-form-field>
+					<mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
+						<input matInput type="text" placeholder="Last Name" formControlName="last_name">
+					</mat-form-field>
+					<mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
+						<input matInput type="text" placeholder="Email" formControlName="email">
+					</mat-form-field>
+					<mat-form-field [floatLabel]="'always'" class="pb-block margin-bottom-30">
+						<input matInput type="text" placeholder="Subject" formControlName="subject">
+					</mat-form-field>
+					<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
+						<textarea matInput rows="1" matTextareaAutosize placeholder="Message" formControlName="message"></textarea>
+					</mat-form-field>
+					<div class="margin-bottom-20">
+						<button mat-raised-button color="accent" class="btn-width vertical-bottom" style="padding: 6px !important;" type="submit"
+						        (click)="createGuestContacts()">
+							<span class="txtcolor">Submit</span>
+						</button>
+						<br>
+						<br>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>

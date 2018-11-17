@@ -1,93 +1,93 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
-  <mat-toolbar color="white">
-    <span>
-      <a class="brand clickable" aria-label="The Blockchain University Homepage" [routerLink]="['/home','homefeed']">
-        <img src="/assets/images/bu-logo-color.png" alt="logo">
-      </a>
-    </span>
-    <button *ngIf="mobileQuery.matches" mat-icon-button (click)="snav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <h1 class="example-app-name"></h1>
-  </mat-toolbar>
-  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [opened]="!mobileQuery.matches" [fixedInViewport]="mobileQuery.matches"
-      fixedTopGap="56">
-      <mat-vertical-stepper [selectedIndex]="selectedIndex" (selectionChange)="selectionChange($event)" class="hide-content-vertical">
-        <mat-step>
-          <ng-template matStepLabel>THE BASICS</ng-template>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Topics</ng-template>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Learning Path Page</ng-template>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Title</ng-template>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Description</ng-template>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Peer Requirements</ng-template>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Medias</ng-template>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Certification</ng-template>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel> Learning Path </ng-template>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Select Courses</ng-template>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Review and Submit</ng-template>
-        </mat-step>
-      </mat-vertical-stepper>
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <div class="main-content">
-        <mat-vertical-stepper #stepper [selectedIndex]="selectedIndex" (selectionChange)="selectionChange($event)"
-          class="hide-header hide-vertical-line" [selectedIndex]="currentStep">
-          <mat-step>
-            <app-step-basic></app-step-basic>
-          </mat-step>
-          <mat-step>
-            <app-step-topic [topicArray]="topicArray" [stepper]="stepper"></app-step-topic>
-          </mat-step>
-          <mat-step>
-            <app-step-learning-path-page></app-step-learning-path-page>
-          </mat-step>
-          <mat-step>
-            <app-step-title [titleForm]="titleForm" [stepper]="stepper"></app-step-title>
-          </mat-step>
-          <mat-step>
-            <app-step-description [descriptionForm]="descriptionForm" [stepper]="stepper"></app-step-description>s
-          </mat-step>
-          <mat-step>
-            <app-step-requirements [requirementsForm]="requirementsForm" [stepper]="stepper"></app-step-requirements>
-          </mat-step>
-          <mat-step>
-            <app-step-media [mediaForm]="mediaForm" [stepper]="stepper"></app-step-media>
-          </mat-step>
-          <mat-step>
-            <app-step-certificate [certificateForm]="certificateForm" [stepper]="stepper"></app-step-certificate>
-          </mat-step>
-          <mat-step>
-            <app-step-learning-path></app-step-learning-path>
-          </mat-step>
-          <mat-step>
-            <app-step-select-courses [courseArray]="courseArray" [stepper]="stepper"></app-step-select-courses>
-          </mat-step>
-          <mat-step>
-            <app-step-review-submit [stepper]="stepper"></app-step-review-submit>
-          </mat-step>
-        </mat-vertical-stepper>
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+	<mat-toolbar color="white">
+		<span>
+			<a class="brand clickable" aria-label="The Blockchain University Homepage" [routerLink]="['/home','homefeed']">
+				<img src="/assets/images/bu-logo-color.png" alt="logo">
+			</a>
+		</span>
+		<button *ngIf="mobileQuery.matches" mat-icon-button (click)="snav.toggle()">
+			<mat-icon>menu</mat-icon>
+		</button>
+		<h1 class="example-app-name"></h1>
+	</mat-toolbar>
+	<mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+		<mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [opened]="!mobileQuery.matches" [fixedInViewport]="mobileQuery.matches"
+		             fixedTopGap="56">
+			<mat-vertical-stepper [selectedIndex]="selectedIndex" (selectionChange)="selectionChange($event)" class="hide-content-vertical">
+				<mat-step>
+					<ng-template matStepLabel>THE BASICS</ng-template>
+				</mat-step>
+				<mat-step>
+					<ng-template matStepLabel>Topics</ng-template>
+				</mat-step>
+				<mat-step>
+					<ng-template matStepLabel>Learning Path Page</ng-template>
+				</mat-step>
+				<mat-step>
+					<ng-template matStepLabel>Title</ng-template>
+				</mat-step>
+				<mat-step>
+					<ng-template matStepLabel>Description</ng-template>
+				</mat-step>
+				<mat-step>
+					<ng-template matStepLabel>Peer Requirements</ng-template>
+				</mat-step>
+				<mat-step>
+					<ng-template matStepLabel>Medias</ng-template>
+				</mat-step>
+				<mat-step>
+					<ng-template matStepLabel>Certification</ng-template>
+				</mat-step>
+				<mat-step>
+					<ng-template matStepLabel> Learning Path </ng-template>
+				</mat-step>
+				<mat-step>
+					<ng-template matStepLabel>Select Courses</ng-template>
+				</mat-step>
+				<mat-step>
+					<ng-template matStepLabel>Review and Submit</ng-template>
+				</mat-step>
+			</mat-vertical-stepper>
+		</mat-sidenav>
+		<mat-sidenav-content>
+			<div class="main-content">
+				<mat-vertical-stepper #stepper [selectedIndex]="selectedIndex" (selectionChange)="selectionChange($event)"
+				                      class="hide-header hide-vertical-line" [selectedIndex]="currentStep">
+					<mat-step>
+						<app-step-basic></app-step-basic>
+					</mat-step>
+					<mat-step>
+						<app-step-topic [topicArray]="topicArray" [stepper]="stepper"></app-step-topic>
+					</mat-step>
+					<mat-step>
+						<app-step-learning-path-page></app-step-learning-path-page>
+					</mat-step>
+					<mat-step>
+						<app-step-title [titleForm]="titleForm" [stepper]="stepper"></app-step-title>
+					</mat-step>
+					<mat-step>
+						<app-step-description [descriptionForm]="descriptionForm" [stepper]="stepper"></app-step-description>s
+					</mat-step>
+					<mat-step>
+						<app-step-requirements [requirementsForm]="requirementsForm" [stepper]="stepper"></app-step-requirements>
+					</mat-step>
+					<mat-step>
+						<app-step-media [mediaForm]="mediaForm" [stepper]="stepper"></app-step-media>
+					</mat-step>
+					<mat-step>
+						<app-step-certificate [certificateForm]="certificateForm" [stepper]="stepper"></app-step-certificate>
+					</mat-step>
+					<mat-step>
+						<app-step-learning-path></app-step-learning-path>
+					</mat-step>
+					<mat-step>
+						<app-step-select-courses [courseArray]="courseArray" [stepper]="stepper"></app-step-select-courses>
+					</mat-step>
+					<mat-step>
+						<app-step-review-submit [stepper]="stepper"></app-step-review-submit>
+					</mat-step>
+				</mat-vertical-stepper>
+			</div>
+		</mat-sidenav-content>
+	</mat-sidenav-container>
 </div>

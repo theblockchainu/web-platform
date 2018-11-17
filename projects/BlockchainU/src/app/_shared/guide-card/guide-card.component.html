@@ -25,14 +25,14 @@
 			{{guide.subCategory | titlecase}}
 		</div>
 		<div style="margin-top: 0px; margin-bottom: 3px;" *ngIf="guide.topics !== undefined && guide.topics.length > 0">
-			<span *ngIf="guide.topics.length<=1">
+			<span class="mat-caption" *ngIf="guide.topics.length<=1">
 				{{guide.topics}}
 			</span>
-			<span *ngIf="guide.topics.length>1">
+			<span class="mat-caption" *ngIf="guide.topics.length>1">
 				{{guide.topics | slice: 0:1}}
-				<b matTooltip="{{guide.topics}}">
+				<span matTooltip="{{guide.topics}}">
 					&nbsp;& {{guide.topics.length - 1}} more
-				</b>
+				</span>
 			</span>
 		</div>
 		<div class="mat-body-2" style="font-weight: 900; color: #333;">{{guide.title | titlecase}}</div>

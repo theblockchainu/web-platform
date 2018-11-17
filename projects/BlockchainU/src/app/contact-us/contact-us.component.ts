@@ -21,6 +21,8 @@ export class ContactComponent implements OnInit {
 	
 	lat = 37.508772;
 	lng = -121.960507;
+	latIndia = 18.998029;
+	lngIndia = 73.116636;
 	
 	constructor(public _fb: FormBuilder,
 				private authenticationService: AuthenticationService,

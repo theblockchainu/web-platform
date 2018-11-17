@@ -331,7 +331,7 @@
 							</div>
 							<div class="margin-bottom-10" *ngIf="userCountry === 'IN'">
 								<span class="text-grey">Tax</span>
-								<span class="pull-right">{{collection.price * guestCount * 0.18 | convertCurrency: collection.currency |async}}
+								<span class="pull-right">{{totalPrice * guestCount * 0.18 | convertCurrency: collection.currency | async}}
 								</span>
 							</div>
 							<div *ngIf="codefound" style="color:#33bd9e" class="margin-bottom-10 row">
