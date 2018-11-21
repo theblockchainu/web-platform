@@ -40,29 +40,29 @@
 			<span class="example-spacer"></span>
 			<span>
 				<!--<span class="header-progress-bar hide-small" *ngIf="profileCompletionObject  && profileCompletionObject.progress<80 && isEmailVerified && isLoggedIn | async"
-				 [matMenuTriggerFor]="profileCompletionMenu">
-					Complete Profile
-					<div style="line-height: 0rem;">
-						<mat-progress-bar mode="determinate" value="{{profileCompletionObject.progress}}" style="width:70%;display: inline-block"></mat-progress-bar>
-						<span style="margin-left:5px;font-size:10px">{{profileCompletionObject.progress}}%</span>
-					</div>
-				</span>-->
+					 [matMenuTriggerFor]="profileCompletionMenu">
+						Complete Profile
+						<div style="line-height: 0rem;">
+							<mat-progress-bar mode="determinate" value="{{profileCompletionObject.progress}}" style="width:70%;display: inline-block"></mat-progress-bar>
+							<span style="margin-left:5px;font-size:10px">{{profileCompletionObject.progress}}%</span>
+						</div>
+					</span>-->
 				<!--<button mat-button class="headerButtons hide-small" style="color: #33bd9e; font-weight: 600;" [routerLink]="['/console/teaching/experiences']"
-				 *ngIf="(isLoggedIn | async)">
-					<mat-icon style="top: 4px; font-size: 15px;">add</mat-icon>
-					New Workshop
-				</button>-->
+					 *ngIf="(isLoggedIn | async)">
+						<mat-icon style="top: 4px; font-size: 15px;">add</mat-icon>
+						New Workshop
+					</button>-->
 				<!--<button mat-button class="headerButtons hide-small" style="color: #33bd9e; font-weight: 600;" [routerLink]="['/console/teaching/sessions']"
-				 *ngIf="(isLoggedIn | async) && isEmailVerified && !isSessionApproved">
-					<mat-icon style="top: 4px; font-size: 15px;">add</mat-icon>
-					Configure Online Sessions
-				</button>-->
+					 *ngIf="(isLoggedIn | async) && isEmailVerified && !isSessionApproved">
+						<mat-icon style="top: 4px; font-size: 15px;">add</mat-icon>
+						Configure Online Sessions
+					</button>-->
 				<!-- <button mat-button class="headerButtons" *ngIf="!(isLoggedIn | async) || !isTeacher" [matMenuTriggerFor]="headerTeachMenu">
-					<span class="hide-small">
-						Become a Teach
-					</span>
-					<mat-icon class="show-small-inline">add_circle_outline</mat-icon>
-				</button> -->
+						<span class="hide-small">
+							Become a Teach
+						</span>
+						<mat-icon class="show-small-inline">add_circle_outline</mat-icon>
+					</button> -->
 				<button mat-button class="headerButtons" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async) && isAccountApproved">
 					<span class="hide-small">
 						Teach
@@ -79,13 +79,13 @@
 					<mat-icon>search</mat-icon>
 				</button>
 				<!-- <button mat-button class="headerButtons" #notificationsButton (click)="openNotificationsDialog()" *ngIf="(isLoggedIn | async) && isEmailVerified"
-				 matTooltip="Notifications">
-					<mat-icon *ngIf="!hasNewNotification">notifications_none</mat-icon>
-					<mat-icon *ngIf="hasNewNotification">notifications</mat-icon>
-				</button>
-				<div style="display: inline-block;" *ngIf="(isLoggedIn | async) && isEmailVerified">
-					<mat-icon class="notifDot" *ngIf="hasNewNotification">fiber_manual_record</mat-icon>
-				</div> -->
+					 matTooltip="Notifications">
+						<mat-icon *ngIf="!hasNewNotification">notifications_none</mat-icon>
+						<mat-icon *ngIf="hasNewNotification">notifications</mat-icon>
+					</button>
+					<div style="display: inline-block;" *ngIf="(isLoggedIn | async) && isEmailVerified">
+						<mat-icon class="notifDot" *ngIf="hasNewNotification">fiber_manual_record</mat-icon>
+					</div> -->
 				<button mat-button class="headerButtons" #messagesButton (click)="openMessagesDialog()" *ngIf="(isLoggedIn | async) && isAccountApproved">
 					<span class="hide-small">
 						Messages
@@ -118,19 +118,19 @@
 					 alt="A" class="circle-thumb">
 				</button>
 				<!-- <button mat-button class="headerButtons hide-small" [routerLink]="['/sign-up']" *ngIf="!(isLoggedIn | async)">
-					<b>Become a teacher</b>
-				</button> -->
+						<b>Become a teacher</b>
+					</button> -->
 				<!-- <a style="display: inline;" class="hide-small" href="http://blog.theblockchainu.com" *ngIf="!(isLoggedIn | async)">
-					<button class="headerButtons" mat-button>
-						Blog
-					</button>
-				</a> -->
+						<button class="headerButtons" mat-button>
+							Blog
+						</button>
+					</a> -->
 				<!--<button mat-button class="headerButtons" [routerLink]="['/home/homefeed']" *ngIf="!(isLoggedIn | async)">
-					Explore
-				</button>-->
+						Explore
+					</button>-->
 				<!--<a mat-button class="headerButtons" href="/signup.html" *ngIf="!(isLoggedIn | async)">
-					Sign Up
-				</a>-->
+						Sign Up
+					</a>-->
 				<button mat-button class="headerButtons" (click)="openSignup()" *ngIf="!(isLoggedIn | async)">
 					Sign up
 				</button>
@@ -166,33 +166,33 @@
 			</span>
 		</mat-toolbar-row>
 		<!-- <mat-toolbar-row class="show-small" style="border-top: 1px solid #ddd;">
-			<div style="display: flex; height: 100%; width: 100%;">
-				<button mat-button class="headerButtons" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)" style="text-align: left;">
-					<mat-icon class="headerNewActionButton">add_circle_outline</mat-icon>
-				</button>
-				<span class="header-progress-bar" *ngIf="isEmailVerified && !profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
-					Setup Karma Wallet
-					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
-						on one0x Blockchain
-					</div>
-				</span>
-				<span class="header-progress-bar" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['story', 'me']">
-					{{profile.peer[0].id | gyanBalance : 'fixed' | async}} GYAN
-					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300; position: relative; top: -7px;">
-						+ {{profile.peer[0].id | gyanBalance: 'floating' | async}} NEW
-					</div>
-				</span>
-				<span class="header-progress-bar" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
-					{{profile.peer[0].id | karmaBalance : 'peer' | async | currency : ' ' : ' ' : '1.0-0'}} KARMA
-					<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300; position: relative; top: -7px;">
-						{{profile.peer[0].id | karmaBalance : 'peer': 'USD' | async | currency: 'USD'}} USD
-					</div>
-				</span>
-				<button mat-button class="headerButtons" [routerLink]="['/sign-up']" *ngIf="!(isLoggedIn | async)">
-					Become a teacher
-				</button>
-			</div>
-		</mat-toolbar-row> -->
+				<div style="display: flex; height: 100%; width: 100%;">
+					<button mat-button class="headerButtons" [matMenuTriggerFor]="headerTeachMenu" *ngIf="(isLoggedIn | async)" style="text-align: left;">
+						<mat-icon class="headerNewActionButton">add_circle_outline</mat-icon>
+					</button>
+					<span class="header-progress-bar" *ngIf="isEmailVerified && !profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
+						Setup Karma Wallet
+						<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300;">
+							on one0x Blockchain
+						</div>
+					</span>
+					<span class="header-progress-bar" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['story', 'me']">
+						{{profile.peer[0].id | gyanBalance : 'fixed' | async}} GYAN
+						<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300; position: relative; top: -7px;">
+							+ {{profile.peer[0].id | gyanBalance: 'floating' | async}} NEW
+						</div>
+					</span>
+					<span class="header-progress-bar" *ngIf="isEmailVerified && profile.peer[0].ethAddress && isLoggedIn | async" [routerLink]="['console', 'account', 'wallet']">
+						{{profile.peer[0].id | karmaBalance : 'peer' | async | currency : ' ' : ' ' : '1.0-0'}} KARMA
+						<div style="line-height: 0.5rem; font-size: 11px; font-weight: 300; position: relative; top: -7px;">
+							{{profile.peer[0].id | karmaBalance : 'peer': 'USD' | async | currency: 'USD'}} USD
+						</div>
+					</span>
+					<button mat-button class="headerButtons" [routerLink]="['/sign-up']" *ngIf="!(isLoggedIn | async)">
+						Become a teacher
+					</button>
+				</div>
+			</mat-toolbar-row> -->
 	</mat-toolbar>
 </header>
 
@@ -239,9 +239,9 @@
 			<i class="fa fa-fire"></i> KARMA
 		</div>
 		<div class="col-xs-8 mat-body" style="margin-top: 12px;">
-			{{profile.peer[0].id | karmaBalance : 'peer' | async | convertCurrency : ' ' : ' ' : '1.0-0'}} &nbsp; &nbsp;
+			{{profile.peer[0].id | karmaBalance : 'peer' | async | currency : ' ' : ' ' : '1.0-0'}} &nbsp; &nbsp;
 			<span style="font-size: 0.7rem">
-				&#40;{{profile.peer[0].id | karmaBalance : 'peer': 'USD' | async | convertCurrency: 'USD'}} USD&#41;
+				&#40;{{profile.peer[0].id | karmaBalance : 'peer': 'USD' | async | currency: 'USD'}} USD&#41;
 			</span>
 		</div>
 	</span>
@@ -253,14 +253,14 @@
 
 <mat-menu #headerTeachMenu [overlapTrigger]="false">
 	<!-- <button mat-menu-item [routerLink]="['invite', '1']" class="mat-menu-item-colored">
-		<i class="fas fa-plus lighterText" style="color: #fff;"></i>&nbsp;&nbsp;&nbsp; Invite & Earn
-	</button> -->
+			<i class="fas fa-plus lighterText" style="color: #fff;"></i>&nbsp;&nbsp;&nbsp; Invite & Earn
+		</button> -->
 	<!--<button mat-menu-item [routerLink]="['/console/dashboard']" *ngIf="isTeacher">
-		<i class="fas fa-bars lighterText"></i>&nbsp;&nbsp;&nbsp; Dashboard
-	</button>-->
+			<i class="fas fa-bars lighterText"></i>&nbsp;&nbsp;&nbsp; Dashboard
+		</button>-->
 	<!--<button mat-menu-item [routerLink]="['/console/teaching/all']" *ngIf="isTeacher">
-		<i class="fas fa-chart-line lighterText"></i>&nbsp;&nbsp;&nbsp; Teaching Journey
-	</button>-->
+			<i class="fas fa-chart-line lighterText"></i>&nbsp;&nbsp;&nbsp; Teaching Journey
+		</button>-->
 	<button mat-menu-item [routerLink]="['/console/dashboard']">
 		Dashboard
 	</button>
@@ -291,20 +291,20 @@
 		Activities
 	</button>
 	<!-- <button mat-menu-item [routerLink]="['session', sessionId,'edit','10']" *ngIf="isSessionApproved && sessionId.length > 5">
-		 Available Hours
-	</button> -->
+			 Available Hours
+		</button> -->
 	<button mat-menu-item [routerLink]="['/console/inbox']">
 		Inbox
 	</button>
 	<!-- <button mat-menu-item (click)="openGenerateStoryDialog()" *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].ethAddress">
-		 New Knowledge Story
-	</button>
-	<button mat-menu-item [routerLink]="['console', 'profile', 'topics']">
-		 Add Topics
-	</button> -->
+			 New Knowledge Story
+		</button>
+		<button mat-menu-item [routerLink]="['console', 'profile', 'topics']">
+			 Add Topics
+		</button> -->
 	<!--<button mat-menu-item [routerLink]="['/console/calendar']" *ngIf="isTeacher">
-	  Calendar
-	</button>-->
+		  Calendar
+		</button>-->
 </mat-menu>
 
 <mat-menu #headerLearnMenu [overlapTrigger]="false">
@@ -315,30 +315,30 @@
 		Ask New Question
 	</button>
 	<!--
-	<button mat-menu-item [routerLink]="['/console/account/transactions']">
-		<i class="fas fa-history lighterText"></i>&nbsp;&nbsp;&nbsp; Transaction History
-	</button>
-	<button mat-menu-item [routerLink]="['/console/learning/bookmarks']">
-		<i class="fas fa-bookmark lighterText"></i>&nbsp;&nbsp; Bookmarks
-	</button>
-	<button mat-menu-item [routerLink]="['/console/learning/story']">
-		<i class="fas fa-user lighterText"></i>&nbsp;&nbsp;&nbsp; Knowledge Stories
-	</button>
-	<button mat-menu-item [routerLink]="['/console/learning/classes']">
-	  Classes
-	</button>
-	<button mat-menu-item [routerLink]="['/console/calendar']">
-	  Calendar
-	</button> -->
+		<button mat-menu-item [routerLink]="['/console/account/transactions']">
+			<i class="fas fa-history lighterText"></i>&nbsp;&nbsp;&nbsp; Transaction History
+		</button>
+		<button mat-menu-item [routerLink]="['/console/learning/bookmarks']">
+			<i class="fas fa-bookmark lighterText"></i>&nbsp;&nbsp; Bookmarks
+		</button>
+		<button mat-menu-item [routerLink]="['/console/learning/story']">
+			<i class="fas fa-user lighterText"></i>&nbsp;&nbsp;&nbsp; Knowledge Stories
+		</button>
+		<button mat-menu-item [routerLink]="['/console/learning/classes']">
+		  Classes
+		</button>
+		<button mat-menu-item [routerLink]="['/console/calendar']">
+		  Calendar
+		</button> -->
 </mat-menu>
 
 <mat-menu #headerUserMenu [overlapTrigger]="false">
 	<!-- <button mat-menu-item [routerLink]="['console', 'profile', 'verification']" class="mat-menu-item-colored" *ngIf="profile.peer && profile.peer.length > 0 && !profile.peer[0].accountVerified">
-		<i class="fa fa-question-circle-o" style="color: #fff;"></i>&nbsp;&nbsp;&nbsp; Verify Account >
-	</button>
-	<button mat-menu-item [routerLink]="['/console/dashboard']" class="mat-menu-item-colored" *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].accountVerified">
-		<i class="fas fa-database" style="color: #fff;"></i>&nbsp;&nbsp; Dashboard >
-	</button> -->
+			<i class="fa fa-question-circle-o" style="color: #fff;"></i>&nbsp;&nbsp;&nbsp; Verify Account >
+		</button>
+		<button mat-menu-item [routerLink]="['/console/dashboard']" class="mat-menu-item-colored" *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].accountVerified">
+			<i class="fas fa-database" style="color: #fff;"></i>&nbsp;&nbsp; Dashboard >
+		</button> -->
 	<button mat-menu-item [routerLink]="['/profile', userId]">
 		<i class="fas fa-user lighterText"></i>&nbsp;&nbsp;&nbsp; {{profile.first_name | titlecase}} {{profile.last_name |
 		titlecase}}
@@ -350,14 +350,14 @@
 		<i class="fas fa-pencil-alt lighterText"></i>&nbsp;&nbsp; Account Settings
 	</button>
 	<!-- <button mat-menu-item *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].ethAddress" [routerLink]="['/console/learning/story']">
-		<i class="far fa-address-book lighterText"></i>&nbsp;&nbsp; My Knowledge Stories
-	</button>
-	<button mat-menu-item [routerLink]="['/console/account/scholarships']">
-		<i class="fas fa-hand-holding-usd lighterText"></i>&nbsp;&nbsp; My Scholarships
-	</button> -->
+			<i class="far fa-address-book lighterText"></i>&nbsp;&nbsp; My Knowledge Stories
+		</button>
+		<button mat-menu-item [routerLink]="['/console/account/scholarships']">
+			<i class="fas fa-hand-holding-usd lighterText"></i>&nbsp;&nbsp; My Scholarships
+		</button> -->
 	<!--<button mat-menu-item [routerLink]="['/console/account/wallet']">
-		<i class="fas fa-fire lighterText"></i>&nbsp;&nbsp; Wallet
-	</button>-->
+			<i class="fas fa-fire lighterText"></i>&nbsp;&nbsp; Wallet
+		</button>-->
 	<button mat-menu-item (click)="authService.logout()">
 		<i class="fas fa-sign-out-alt lighterText"></i>&nbsp;&nbsp; Logout
 	</button>

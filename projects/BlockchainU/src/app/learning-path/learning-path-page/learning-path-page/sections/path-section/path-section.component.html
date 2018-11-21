@@ -1,5 +1,102 @@
-<div class="row">
+<div class="row" *ngIf="learningPath">
   <div class="col-xs-12">
-
+    <div class="featurette" id="about">
+      <div class="row padding-top-40">
+        <div class="col-md-12">
+          <div class="mat-h3 margin-bottom-20">
+            LEARNING PATH
+          </div>
+          <div class="qa-message-list" id="wallmessages">
+            <div class="message-item-wrapper" *ngFor="let content of learningPath.contents">
+              <div class="message-item">
+                <div class="message-inner">
+                  <div class="qa-message-content">
+                    <mat-card class="clickable" [routerLink]="['/'+content.courses[0].type+'/'+content.courses[0].customUrl]">
+                      <div class="row">
+                        <div class="col-md-3 center">
+                          <img class="course-image" src="{{envVariable.apiUrl+content.courses[0].imageUrls[0]+'/300'}}">
+                        </div>
+                        <div class="col-md-9">
+                          <div class="row">
+                            <div class="col-xs-12">
+                              <b>{{content.courses[0].type | uppercase}}</b> &middot;
+                              {{content.courses[0].totalHours}} Hours
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-12">
+                              <span class="mat-subheading-2">
+                                {{content.courses[0].title | titlecase}}
+                              </span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-12">
+                              <td-markdown [content]="content.courses[0].description | shorten: 200 : '  ...read more'"></td-markdown>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xs-12">
+                              <div class="clickable" style="display: inline-block; position: relative; top: 2px; vertical-align: top;">
+                                <app-profile-popup [peer]="content.courses[0].owners[0]"></app-profile-popup>
+                              </div>
+                              <div style="display: inline-block; margin-left: 10px; width: 85%;">
+                                <div class="row">
+                                  <div class="col-md-12 clickable" [routerLink]="'/profile/'+content.courses[0].owners[0].id">
+                                    <span *ngIf="content.courses[0].owners[0].profiles[0].first_name !== undefined">
+                                      {{content.courses[0].owners[0].profiles[0].first_name | titlecase }}
+                                      {{content.courses[0].owners[0].profiles[0].last_name | titlecase }}
+                                    </span>
+                                    <span *ngIf="content.courses[0].owners[0].profiles[0].first_name === undefined">
+                                      John Doe
+                                    </span>
+                                  </div>
+                                  <div class="col-md-12 mat-h5" *ngIf="content.courses[0].owners[0].profiles[0].headline">
+                                    {{content.courses[0].owners[0].profiles[0].headline}}
+                                  </div>
+                                  <div class="col-md-12 mat-h5" *ngIf="!content.courses[0].owners[0].profiles[0].headline">
+                                    New user
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-card>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div *ngIf="learningPath.isApproved && certificateHTML !== undefined && certificateHTML.length > 10">
+            <hr class="margin-top-30 margin-bottom-30">
+            <div>
+              <h3 style="display: inline-block;">Smart Certificate</h3>
+              <div class="margin-top-20">
+                You will receive this Smart Certificate immediately on completing this workshop.
+              </div>
+              <!-- <br> -->
+              <div class="row padding-top-20">
+                <div class="col-xs-12">
+                  <ngx-loading [show]="loadingCertificate"></ngx-loading>
+                  <div style="border: 1px solid #ccc; padding: 20px; border-radius: 4px;">
+                    <div #certificateDomHTML [innerHTML]="certificateHTML | safe: 'html'"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="margin-top-20 mat-caption lightText">
+                This certificate is issued on the blockchain & can be instantly verified by anyone.
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
