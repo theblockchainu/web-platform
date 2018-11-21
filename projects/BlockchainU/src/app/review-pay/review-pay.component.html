@@ -331,7 +331,7 @@
 							</div>
 							<div class="margin-bottom-10" *ngIf="userCountry === 'IN'">
 								<span class="text-grey">Tax</span>
-								<span class="pull-right">{{totalPrice * guestCount * 0.18 | convertCurrency: collection.currency | async}}
+								<span class="pull-right">{{taxAmount | convertCurrency: collection.currency | async}}
 								</span>
 							</div>
 							<div *ngIf="codefound" style="color:#33bd9e" class="margin-bottom-10 row">
@@ -353,7 +353,7 @@
 							<!--<a href="#" class="display-inline-block margin-bottom-10">Add coupon</a>-->
 							<div class="margin-bottom-10">
 								<span class="fw-bold">Total</span>
-								<span class="pull-right fw-bold">{{totalPrice | convertCurrency: collection.currency |async}}</span>
+								<span class="pull-right fw-bold">{{totalPrice + taxAmount | convertCurrency: collection.currency |async}}</span>
 							</div>
 							<a [hidden]="applyPromoCode" class="clickable" (click)="togglePromo()">Apply Promo Code</a>
 							<div class="row" *ngIf="collection.price && collection.price!==0 && applyPromoCode">
