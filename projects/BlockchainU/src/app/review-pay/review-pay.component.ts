@@ -64,8 +64,8 @@ export class ReviewPayComponent implements OnInit {
     public userCountry = 'USA';
     public discountCode: FormControl;
     public totalPrice: number;
-	public taxRate = 0.18;
-	public taxAmount: number;
+    public taxRate = 0.18;
+    public taxAmount: number;
     public codefound: any;
     public applyPromoCode = false;
     public ccavenueReady = false;
@@ -190,33 +190,33 @@ export class ReviewPayComponent implements OnInit {
                 });
                 this.card.mount('#card-element');
                 // FB Event Trigger
-				try {
-					if (fbq && fbq !== undefined) {
-						fbq('track', 'InitiateCheckout', {
-							currency: 'USD',
-							value: 0.0,
-							content_type: 'product',
-							content_ids: [this.collectionId],
-							content_name: this.collection.title,
-							content_category: this.collection.type
-						});
-					}
-				} catch (e) {
-					console.log(e);
-				}
+                try {
+                    if (fbq && fbq !== undefined) {
+                        fbq('track', 'InitiateCheckout', {
+                            currency: 'USD',
+                            value: 0.0,
+                            content_type: 'product',
+                            content_ids: [this.collectionId],
+                            content_name: this.collection.title,
+                            content_category: this.collection.type
+                        });
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
             }
         });
     }
-    
+
     private getTotalPrice(collection) {
-		if (this.userCountry && this.userCountry === 'IN') {
-			this.taxAmount = collection.price * this.taxRate;
-			return collection.price;
-		} else {
-			this.taxAmount = 0;
-			return collection.price;
-		}
-	}
+        if (this.userCountry && this.userCountry === 'IN') {
+            this.taxAmount = collection.price * this.taxRate;
+            return collection.price;
+        } else {
+            this.taxAmount = 0;
+            return collection.price;
+        }
+    }
 
     private loadStudentData() {
         const filter = {
@@ -319,7 +319,7 @@ export class ReviewPayComponent implements OnInit {
                 merchant_id: this.ccavenueMerchantId,
                 order_id: Date.now(),
                 currency: this.collection.currency,
-                amount: '' + this.totalPrice + this.taxAmount,
+                amount: '' + (this.totalPrice + this.taxAmount),
                 redirect_url: environment.apiUrl + '/api/transactions/ccavenueResponse',
                 cancel_url: environment.apiUrl + '/api/transactions/ccavenueResponse',
                 integration_type: 'iframe_normal',
@@ -422,18 +422,18 @@ export class ReviewPayComponent implements OnInit {
                             this.createSourceData.token = result.token.id;
                             this.paymentService.createSource(this.userId, this.custId, this.createSourceData).subscribe((res: any) => {
                                 if (res) {
-                                	try {
-										if (fbq && fbq !== undefined) {
-											fbq('track', 'AddPaymentInfo', {
-												currency: 'USD',
-												value: 0.0,
-												content_ids: [this.collectionId],
-												content_category: this.collection.type
-											});
-										}
-									} catch (e) {
-                                		console.log(e);
-									}
+                                    try {
+                                        if (fbq && fbq !== undefined) {
+                                            fbq('track', 'AddPaymentInfo', {
+                                                currency: 'USD',
+                                                value: 0.0,
+                                                content_ids: [this.collectionId],
+                                                content_category: this.collection.type
+                                            });
+                                        }
+                                    } catch (e) {
+                                        console.log(e);
+                                    }
                                     // console.log(JSON.stringify(res ));
                                     this.createChargeData.source = res.id;
                                     this.paymentService.createCharge(this.userId, this.collectionId, this.createChargeData).subscribe((resp: any) => {
@@ -527,20 +527,20 @@ export class ReviewPayComponent implements OnInit {
 
     public joinCollection() {
         // FB Event Trigger
-		try {
-			if (fbq && fbq !== undefined) {
-				fbq('track', 'Purchase', {
-					currency: this.collection.currency,
-					value: this.totalPrice + this.taxAmount,
-					content_type: 'product',
-					content_ids: [this.collectionId],
-					content_name: this.collection.title,
-					content_category: this.collection.type
-				});
-			}
-		} catch (e) {
-			console.log(e);
-		}
+        try {
+            if (fbq && fbq !== undefined) {
+                fbq('track', 'Purchase', {
+                    currency: this.collection.currency,
+                    value: this.totalPrice + this.taxAmount,
+                    content_type: 'product',
+                    content_ids: [this.collectionId],
+                    content_name: this.collection.title,
+                    content_category: this.collection.type
+                });
+            }
+        } catch (e) {
+            console.log(e);
+        }
         this._collectionService.addParticipant(this.collectionId, this.userId, this.collectionCalendarId, this.selectedScholarship, this.referrerId).subscribe((response: any) => {
             console.log(response);
             if (this.codefound && this.codefound.id.length > 5) {
@@ -709,18 +709,18 @@ export class ReviewPayComponent implements OnInit {
     updatePrice(codefound) {
         this.matSnackBar.open('Promo code successfully applied!', 'Close', { duration: 3000 });
         if (codefound.discountType === 'percentage') {
-			this.totalPrice = this.collection.price - (this.collection.price * codefound.discountValue / 100);
-			if (this.userCountry && this.userCountry === 'IN') {
-				this.taxAmount = this.totalPrice * this.taxRate;
-			}
-			this.loadCCAvenueForm();
+            this.totalPrice = this.collection.price - (this.collection.price * codefound.discountValue / 100);
+            if (this.userCountry && this.userCountry === 'IN') {
+                this.taxAmount = this.totalPrice * this.taxRate;
+            }
+            this.loadCCAvenueForm();
         } else if (codefound.discountType === 'absolute') {
             this.paymentService.convertCurrency(codefound.discountValue, codefound.discountCurrency, this.collection.currency).subscribe(convertedAmount => {
                 this.totalPrice = this.collection.price - convertedAmount.amount;
-				if (this.userCountry && this.userCountry === 'IN') {
-					this.taxAmount = this.totalPrice * this.taxRate;
-				}
-				this.loadCCAvenueForm();
+                if (this.userCountry && this.userCountry === 'IN') {
+                    this.taxAmount = this.totalPrice * this.taxRate;
+                }
+                this.loadCCAvenueForm();
             });
         }
         this.codefound = codefound;
@@ -732,7 +732,7 @@ export class ReviewPayComponent implements OnInit {
         this.discountCode.reset();
         this.discountCode.enable();
         delete this.codefound;
-		this.loadCCAvenueForm();
+        this.loadCCAvenueForm();
     }
 
     togglePromo() {
