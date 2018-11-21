@@ -641,10 +641,10 @@ export class CollectionService {
 		console.log(collection);
 		switch (collection.type) {
 			case 'class':
-				this.router.navigate(['/class', collection.id]);
+				this.router.navigate(['/class', collection.customUrl]);
 				break;
 			case 'experience':
-				this.router.navigate(['/experience', collection.id]);
+				this.router.navigate(['/experience', collection.customUrl]);
 				break;
 			case 'session':
 				this.router.navigate(['/session', collection.id]);
@@ -653,10 +653,10 @@ export class CollectionService {
 				this.router.navigate(['/bounty', collection.id]);
 				break;
 			case 'guide':
-				this.router.navigate(['/guide', collection.id]);
+				this.router.navigate(['/guide', collection.customUrl]);
 				break;
 			case 'learning-path':
-				this.router.navigate(['/learning-path', collection.id]);
+				this.router.navigate(['/learning-path', collection.customUrl]);
 				break;
 			default:
 				break;

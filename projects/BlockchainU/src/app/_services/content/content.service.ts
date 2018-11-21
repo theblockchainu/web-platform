@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { environment } from '../../../environments/environment';
-import { map } from 'rxjs/operators';
+import { map, flatMap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
 @Injectable()
 export class ContentService {
 
@@ -59,5 +60,46 @@ export class ContentService {
 
 	public patchContent(contentId, contentbody) {
 		return this.http.patch(environment.apiUrl + '/api/contents/' + contentId, contentbody, this.requestHeaderService.options);
+	}
+
+	public patchMatchingContents(indexedArray) {
+		const patchArray = [];
+		indexedArray.forEach(content => {
+			patchArray.push(
+				this.patchContent(content.id, content)
+			);
+		});
+		return forkJoin(patchArray);
+	}
+
+	public linkContentToCollection(contentId: string, collectionId: string) {
+		return this.http
+			.get(environment.apiUrl + '/api/contents/' + contentId +
+				'/courses', this.requestHeaderService.options)
+			.pipe(
+				flatMap((res: any) => {
+					const delinkRequestArray = [];
+					if (res.length > 0) {
+						console.log(res);
+						res.forEach(course => {
+							delinkRequestArray.push(
+								this.http.delete(environment.apiUrl + '/api/contents/' + contentId +
+									'/courses/rel/' + course.id, this.requestHeaderService.options)
+							);
+						});
+						return forkJoin(delinkRequestArray);
+					} else {
+						console.log('delinked');
+						return new Observable(observer => {
+							observer.next();
+						});
+					}
+				}), flatMap(res => {
+					return this.http
+						.put(environment.apiUrl + '/api/contents/' + contentId +
+							'/courses/rel/' + collectionId, {}, this.requestHeaderService.options);
+				})
+			);
+
 	}
 }

@@ -1,0 +1,65 @@
+<mat-card class="intro-card">
+  <div class="row" *ngIf="learningPath">
+    <div class="col-xs-9 left-section">
+      <div class="row">
+        <div class="col-xs-9" *ngIf="learningPath.topics">
+          <b>Technologies</b><span *ngFor="let topic of learningPath.topics">{{topic.name | titlecase}}</span>
+        </div>
+        <div class="col-xs-3">
+          <button mat-button class="pull-right">
+            Share
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <span class="mat-display-2">
+            {{learningPath.title | titlecase}}
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          {{learningPath.description}}
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col-xs-4">
+
+        </div>
+        <div class="col-xs-4">
+
+        </div>
+        <div class="col-xs-4">
+
+        </div>
+      </div> -->
+    </div>
+    <div class="col-xs-3 right-section">
+      <div class="row">
+        <div class="col-xs-12">
+          <span class="mat-subheading-1">
+            Learning Path Details
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <b *ngIf="learningPath.totalHours">{{learningPath.totalHours}}</b> hours of expert content
+        </div>
+        <div class="col-xs-12">
+          <b *ngIf="learningPath.collections">
+            {{learningPath.collections.length}}
+          </b> of learning content
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <button mat-raised-button color="primary">
+            Start Learning
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card>

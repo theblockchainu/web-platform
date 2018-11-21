@@ -5,8 +5,10 @@
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<div>
-				<div class="mat-display-1" *ngIf="mode === 'chooseDate' && userType === 'teacher'">Select a cohort to view specific details</div>
-				<div class="mat-display-1" *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When do you want to attend this {{collectionType}}?</div>
+				<div class="mat-display-1" *ngIf="mode === 'chooseDate' && userType === 'teacher'">Select a cohort to view specific
+					details</div>
+				<div class="mat-display-1" *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When
+					do you want to attend this {{collectionType}}?</div>
 				<div class="mat-display-1" *ngIf="mode === 'editDelete'">Existing {{collectionType}} cohorts</div>
 			</div>
 			<div *ngIf="mode === 'editDelete'" class="col-md-2 pull-left" style="padding-top:6px">
@@ -30,12 +32,13 @@
 							<div class="col-md-12">
 								<div class="margin-top-20 margin-bottom-20">
 									<span [ngClass]="{'mat-body-2': true, 'deleteText': itenaryObj.calendar.status === 'cancelled' }">
-										{{itenaryObj.calendar.startDate | date:'EEE, MMM d yyyy'}} to {{itenaryObj.calendar.endDate | date:'EEE, MMM d yyyy'}}
+										{{itenaryObj.calendar.startDate | date:'EEE, MMM d yyyy'}} to {{itenaryObj.calendar.endDate | date:'EEE, MMM
+										d yyyy'}}
 									</span>
-									<br>
+									<!-- <br>
 									<span [ngClass]="{'mat-caption': true, 'deleteText': itenaryObj.calendar.status === 'cancelled' }">
 										{{itenaryObj.participantCount}} participants
-									</span>
+									</span> -->
 								</div>
 							</div>
 							<div class="col-md-12">
@@ -51,17 +54,20 @@
 							<br>
 							<br>
 							<div class="col-md-12">
-								<button *ngIf="mode === 'chooseDate' && userId !== undefined && userId.length > 5" mat-button (click)="selectCohort(itenaryObj.calendar.id)" class="pb-block mat-border-button" [disabled]="(this.data.maxSeats - itenaryObj.participantCount <= 0 || accountApproved === 'false')" matTooltip="Please wait for your account to be approved before signing up." [matTooltipDisabled]="accountApproved === 'true'">
+								<button *ngIf="mode === 'chooseDate' && userId !== undefined && userId.length > 5" mat-button (click)="selectCohort(itenaryObj.calendar.id)"
+								 class="pb-block mat-border-button" [disabled]="(this.data.maxSeats - itenaryObj.participantCount <= 0 || accountApproved === 'false')"
+								 matTooltip="Please wait for your account to be approved before signing up." [matTooltipDisabled]="accountApproved === 'true'">
 									<div>Select this cohort</div>
-									<div class="mat-h5 lightText">{{this.data.maxSeats - itenaryObj.participantCount}} seats remaining</div>
+									<!-- <div class="mat-h5 lightText">{{this.data.maxSeats - itenaryObj.participantCount}} seats remaining</div> -->
 								</button>
-								<button *ngIf="mode === 'chooseDate' && (userId === undefined || userId.length <= 5)" mat-button (click)="selectCohort(itenaryObj.calendar.id)" class="pb-block mat-border-button" matTooltip="Sign up to join for this cohort.">
+								<button *ngIf="mode === 'chooseDate' && (userId === undefined || userId.length <= 5)" mat-button (click)="selectCohort(itenaryObj.calendar.id)"
+								 class="pb-block mat-border-button" matTooltip="Sign up to join for this cohort.">
 									<div>Sign up</div>
-									<div class="mat-h5 lightText">{{this.data.maxSeats - itenaryObj.participantCount}} seats remaining</div>
+									<!-- <div class="mat-h5 lightText">{{this.data.maxSeats - itenaryObj.participantCount}} seats remaining</div> -->
 								</button>
 								<span matTooltip="This cohort has a participant, so it cannot be deleted." [matTooltipDisabled]="itenaryObj.participantCount <= 0">
 									<button type="button" *ngIf="mode === 'editDelete'" mat-button color="warn" (click)="deleteCohort($event, itenaryObj.calendar.id)"
-									        [disabled]="itenaryObj.participantCount > 0" class="pb-block mat-border-button">Delete this cohort</button>
+									 [disabled]="itenaryObj.participantCount > 0" class="pb-block mat-border-button">Delete this cohort</button>
 								</span>
 							</div>
 						</div>
@@ -80,10 +86,11 @@
 									{{content.type | ucwords}} activity
 								</div>
 								<div>
-								   {{ content.title | titlecase}}
+									{{ content.title | titlecase}}
 								</div>
 								<div class="mat-caption">
-									{{content.schedules[0].startTime | extractTime:'hh:mm a'}} to {{content.schedules[content.schedules.length-1].endTime | extractTime:'h:mm a'}}
+									{{content.schedules[0].startTime | extractTime:'hh:mm a'}} to
+									{{content.schedules[content.schedules.length-1].endTime | extractTime:'h:mm a'}}
 								</div>
 							</div>
 							<div *ngIf="content.type === 'project'" style="margin: 3px 0px 10px 0px;">
@@ -91,19 +98,20 @@
 									{{content.type | ucwords}} activity
 								</div>
 								<div>
-								   {{ content.title | titlecase}}
+									{{ content.title | titlecase}}
 								</div>
 								<div class="mat-caption">
-									Entries open until {{calculateDate(itenary.startDate, content.schedules[content.schedules.length-1].endDay) | extractTime:'Do MMM'}}
+									Entries open until {{calculateDate(itenary.startDate, content.schedules[content.schedules.length-1].endDay) |
+									extractTime:'Do MMM'}}
 								</div>
 							</div>
 							<div *ngIf="content.type === 'video'" style="margin: 3px 0px 10px 0px;">
 								<div class="mat-caption lightText">
 									{{content.type | ucwords}} activity
 								</div>
-							    <div>
-								   {{ content.title | titlecase}}
-							    </div>
+								<div>
+									{{ content.title | titlecase}}
+								</div>
 								<div class="mat-caption">
 									Available all day
 								</div>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CollectionService } from '../../../../_services/collection/collection.service';
 import { map, retryWhen, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
@@ -15,6 +15,7 @@ export class EditService {
     public _collectionService: CollectionService,
     private matSnackBar: MatSnackBar,
     private _dialogsService: DialogsService,
+    private _fb: FormBuilder
   ) { }
 
   public submitCollection(collectionData: any) {
@@ -31,6 +32,23 @@ export class EditService {
           )
         )
       );
+  }
+
+  public initCourse(content?: any) {
+    const group = this._fb.group({
+      id: [''],
+      title: ['', [Validators.required]],
+      type: [''],
+      description: [''],
+      supplementUrls: this._fb.array([]),
+      imageUrl: [''],
+      prerequisites: [''],
+      contentIndex: ['']
+    });
+    if (content) {
+      group.patchValue(content);
+    }
+    return group;
   }
 
 }

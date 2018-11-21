@@ -74,7 +74,7 @@
 									<div [innerHTML]="answer.text | linkify | shorten:100:'... (read more)'"></div>
 								</div>
 								<div style="margin-top: 20px;" class="mat-caption lightText">
-									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer && question.peer[0] && question.peer[0].id === userId && answer.peer[0].id !== userId && !answer.accept && question.open">fiber_manual_record</mat-icon>
+									<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px; margin-left: 12px;" *ngIf="question.peer && question.peer[0] && question.peer[0].id === userId && answer.peer && answer.peer[0].id !== userId && !answer.accept && question.open">fiber_manual_record</mat-icon>
 									<a class="clickable acceptButton" *ngIf="answer.accept">
 										<span>
 											<i class="fa fa-check-circle"></i>&nbsp;&nbsp;&nbsp;
