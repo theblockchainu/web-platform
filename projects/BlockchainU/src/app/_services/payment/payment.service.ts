@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 import { environment } from '../../../environments/environment';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 @Injectable()
 export class PaymentService {
 	public key = 'userId';
@@ -132,11 +132,11 @@ export class PaymentService {
 					};
 				}
 
-			}, (err) => {
-				return {
+			}), catchError(err => {
+				return of({
 					amount: amount,
 					currency: from
-				};
+				});
 			}));
 		// }
 	}
@@ -170,7 +170,7 @@ export class PaymentService {
 	public getUserCountry() {
 		return this.http.get('https://ipapi.co/json');
 	}
-	
+
 	public getCCAvenueEncryptedRequest(body) {
 		return this.http.post(environment.apiUrl + '/api/transactions/ccavenueencryptdata', body, this._requestHeaderService.options);
 	}
