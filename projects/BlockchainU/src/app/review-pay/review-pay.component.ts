@@ -64,6 +64,8 @@ export class ReviewPayComponent implements OnInit {
     public userCountry = 'USA';
     public discountCode: FormControl;
     public totalPrice: number;
+	public taxRate = 0.18;
+	public taxAmount: number;
     public codefound: any;
     public applyPromoCode = false;
     public ccavenueReady = false;
@@ -208,8 +210,10 @@ export class ReviewPayComponent implements OnInit {
     
     private getTotalPrice(collection) {
 		if (this.userCountry && this.userCountry === 'IN') {
-			return collection.price * 1.18;
+			this.taxAmount = collection.price * this.taxRate;
+			return collection.price;
 		} else {
+			this.taxAmount = 0;
 			return collection.price;
 		}
 	}
@@ -315,7 +319,7 @@ export class ReviewPayComponent implements OnInit {
                 merchant_id: this.ccavenueMerchantId,
                 order_id: Date.now(),
                 currency: this.collection.currency,
-                amount: '' + this.totalPrice,
+                amount: '' + this.totalPrice + this.taxAmount,
                 redirect_url: environment.apiUrl + '/api/transactions/ccavenueResponse',
                 cancel_url: environment.apiUrl + '/api/transactions/ccavenueResponse',
                 integration_type: 'iframe_normal',
@@ -364,7 +368,7 @@ export class ReviewPayComponent implements OnInit {
     public processPayment(e: Event) {
         console.log('processing payment');
         this.savingData = true;
-        this.createChargeData.amount = this.totalPrice * 100;
+        this.createChargeData.amount = (this.totalPrice + this.taxAmount) * 100;
         e.preventDefault();
         if (this.payAtVenue) {
 
@@ -527,7 +531,7 @@ export class ReviewPayComponent implements OnInit {
 			if (fbq && fbq !== undefined) {
 				fbq('track', 'Purchase', {
 					currency: this.collection.currency,
-					value: this.totalPrice,
+					value: this.totalPrice + this.taxAmount,
 					content_type: 'product',
 					content_ids: [this.collectionId],
 					content_name: this.collection.title,
@@ -707,14 +711,14 @@ export class ReviewPayComponent implements OnInit {
         if (codefound.discountType === 'percentage') {
 			this.totalPrice = this.collection.price - (this.collection.price * codefound.discountValue / 100);
 			if (this.userCountry && this.userCountry === 'IN') {
-				this.totalPrice = this.totalPrice * 1.18;
+				this.taxAmount = this.totalPrice * this.taxRate;
 			}
 			this.loadCCAvenueForm();
         } else if (codefound.discountType === 'absolute') {
             this.paymentService.convertCurrency(codefound.discountValue, codefound.discountCurrency, this.collection.currency).subscribe(convertedAmount => {
                 this.totalPrice = this.collection.price - convertedAmount.amount;
 				if (this.userCountry && this.userCountry === 'IN') {
-					this.totalPrice = this.totalPrice * 1.18;
+					this.taxAmount = this.totalPrice * this.taxRate;
 				}
 				this.loadCCAvenueForm();
             });
