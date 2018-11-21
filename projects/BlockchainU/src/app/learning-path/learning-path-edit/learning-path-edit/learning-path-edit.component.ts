@@ -143,9 +143,8 @@ export class LearningPathEditComponent implements OnInit, OnDestroy {
       const query = {
         'include': [
           'topics',
-          'calendars',
           { 'participants': [{ 'profiles': ['work'] }] },
-          { 'owners': [{ 'profiles': ['phone_numbers'] }] },
+          { 'owners': ['profiles'] },
           {
             'relation': 'contents',
             'scope': {
@@ -153,8 +152,6 @@ export class LearningPathEditComponent implements OnInit, OnDestroy {
               'order': 'contentIndex ASC'
             }
           },
-          'payoutrules',
-          { 'assessment_models': ['assessment_na_rules', 'assessment_rules'] },
         ]
       };
       this._collectionService.getCollectionDetail(this.learningPathId, query)

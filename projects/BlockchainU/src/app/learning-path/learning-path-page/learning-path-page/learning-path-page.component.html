@@ -1,17 +1,17 @@
 <div class="main-content">
   <div class="row">
     <div class="col-xs-10  col-xs-offset-1 margin-top-10">
-      <app-intro-card></app-intro-card>
+      <app-intro-card [learningPath]="learningPath"></app-intro-card>
     </div>
   </div>
   <div class="row">
     <div class="col-xs-10 col-xs-offset-1">
-      <app-path-section></app-path-section>
+      <app-path-section [learningPath]="learningPath"></app-path-section>
     </div>
   </div>
   <div class="row">
     <div class="col-xs-10 col-xs-offset-1">
-      <app-techers-section></app-techers-section>
+      <app-teachers-section [learningPath]="learningPath"></app-teachers-section>
     </div>
   </div>
 </div>

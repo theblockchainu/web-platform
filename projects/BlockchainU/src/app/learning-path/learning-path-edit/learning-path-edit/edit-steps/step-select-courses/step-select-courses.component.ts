@@ -65,7 +65,7 @@ export class StepSelectCoursesComponent implements OnInit {
         flatMap((res: any) => {
           if (res && res.length === 1) {
             console.log(res);
-            collectionId = res.id;
+            collectionId = res[0].id;
             console.log(contentGroup.value);
             contentGroup.controls['title'].patchValue(res[0].title);
             if (contentGroup.value.id && contentGroup.value.id.length > 1) {
@@ -84,6 +84,7 @@ export class StepSelectCoursesComponent implements OnInit {
           return this._contentService.linkContentToCollection(contentGroup.value.id, collectionId);
         }))
         .subscribe(res => {
+          console.log(res);
           this.step = -1;
           this.busySavingData = false;
         }, err => {

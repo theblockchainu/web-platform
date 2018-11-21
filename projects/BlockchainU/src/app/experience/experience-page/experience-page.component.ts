@@ -930,7 +930,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			} else {
 				this.hasBookmarked = false;
 				response.forEach(bookmark => {
-					if (bookmark.peer[0].id === this.userId) {
+					if (bookmark.peer && bookmark.peer[0] && bookmark.peer[0].id === this.userId) {
 						this.hasBookmarked = true;
 						this.bookmark = bookmark;
 					}
