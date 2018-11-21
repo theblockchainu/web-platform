@@ -376,7 +376,7 @@
 													cohorts cancelled
 												</a>
 											</div>
-											<div class="collectionTitle mat-body-2 clickable" [routerLink]="'/learning-path/'+collection.id">{{
+											<div class="collectionTitle mat-body-2 clickable" [routerLink]="'/learning-path/'+collection.customUrl">{{
 												collection.title || 'No Title'| titlecase | shorten:20 :'...'}} </div>
 											<div class="collectionSubtitle clickable" [routerLink]="'/learning-path/'+collection.id">
 												{{ collection.itenaries.length}} Days | {{collection.contents.length}} Activity |

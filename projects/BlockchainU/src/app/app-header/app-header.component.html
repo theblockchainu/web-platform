@@ -239,9 +239,9 @@
 			<i class="fa fa-fire"></i> KARMA
 		</div>
 		<div class="col-xs-8 mat-body" style="margin-top: 12px;">
-			{{profile.peer[0].id | karmaBalance : 'peer' | async | currency : ' ' : ' ' : '1.0-0'}} &nbsp; &nbsp;
+			{{profile.peer[0].id | karmaBalance : 'peer' | async | convertCurrency : ' ' : ' ' : '1.0-0'}} &nbsp; &nbsp;
 			<span style="font-size: 0.7rem">
-				&#40;{{profile.peer[0].id | karmaBalance : 'peer': 'USD' | async | currency: 'USD'}} USD&#41;
+				&#40;{{profile.peer[0].id | karmaBalance : 'peer': 'USD' | async | convertCurrency: 'USD'}} USD&#41;
 			</span>
 		</div>
 	</span>

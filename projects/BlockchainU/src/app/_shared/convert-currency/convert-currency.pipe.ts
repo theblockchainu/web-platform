@@ -16,44 +16,50 @@ export class ConvertCurrencyPipe implements PipeTransform {
 	}
 
 	transform(amount: any, fromCurrency: string, cannotBeFree?: boolean): any {
-		if (fromCurrency === 'GYAN') {
-			return this._walletService.gyanToDollar(amount).pipe(map(
-				res => {
-					if (res && res['USD'] && res['USD'] !== 'NaN') {
-						return this._currencyPipe.transform(res['USD'], 'USD', 'symbol');
-					} else {
-						return this._currencyPipe.transform(0, 'USD', 'symbol');
-					}
-				}, err => {
-					return new Observable((observer) => {
-						observer.next('ERROR');
-					});
-				}
-			));
-		} else {
-			if (amount === 0 && !cannotBeFree) {
-				// create observable
-				return new Observable((observer) => {
-					observer.next('FREE');
-				});
-			} else {
-				return this._paymentService.convertCurrency(amount, fromCurrency).pipe(
-					map(
-						res => {
-							if (res && res.currency) {
-								return this._currencyPipe.transform(res.amount, res.currency.toUpperCase(), 'symbol', '1.0-0');
-							} else {
-								return this._currencyPipe.transform(amount, 'USD', 'symbol', '1.0-0');
-							}
-						}, err => {
-							return new Observable((observer) => {
-								observer.next('ERROR');
-							});
+		if (typeof amount === 'number') {
+			if (fromCurrency === 'GYAN') {
+				return this._walletService.gyanToDollar(amount).pipe(map(
+					res => {
+						if (res && res['USD'] && res['USD'] !== 'NaN') {
+							return this._currencyPipe.transform(res['USD'], 'USD', 'symbol');
+						} else {
+							return this._currencyPipe.transform(0, 'USD', 'symbol');
 						}
-					)
-				);
+					}, err => {
+						return new Observable((observer) => {
+							observer.next('ERROR');
+						});
+					}
+				));
+			} else {
+				if (amount === 0 && !cannotBeFree) {
+					// create observable
+					return new Observable((observer) => {
+						observer.next('FREE');
+					});
+				} else {
+					return this._paymentService.convertCurrency(amount, fromCurrency).pipe(
+						map(
+							res => {
+								if (res && res.currency) {
+									return this._currencyPipe.transform(res.amount, res.currency.toUpperCase(), 'symbol', '1.0-0');
+								} else {
+									return this._currencyPipe.transform(amount, 'USD', 'symbol', '1.0-0');
+								}
+							}, err => {
+								return new Observable((observer) => {
+									observer.next('ERROR');
+								});
+							}
+						)
+					);
+				}
 			}
+		} else {
+			return 'Connection ERROR';
 		}
+
+
 	}
 
 }
