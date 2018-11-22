@@ -20,7 +20,7 @@
           </mat-panel-title>
           <mat-panel-description>
             <span *ngIf="contentForm.value.description">
-              {{contentForm.value.description}}
+              {{contentForm.value.description | shorten: 50 : ' ...'}}
             </span>
             <span *ngIf="!contentForm.value.description">
               Type Course Description and add link
@@ -73,8 +73,7 @@
       Back
     </button>
     <span class="pull-right" matTooltip="Add at least one course to continue" [matTooltipDisabled]="courseArray.controls.length>1">
-      <button (click)="saveOrder()" type="button" mat-button color="primary" class="mat-border-button"
-        [disabled]="courseArray.controls.length<1 || busySavingData">
+      <button (click)="saveOrder()" type="button" mat-button color="primary" class="mat-border-button" [disabled]="courseArray.controls.length<1 || busySavingData">
         <span *ngIf="!busySavingData">Next</span>
         <span>
           <ngx-loading [show]="busySavingData"></ngx-loading>

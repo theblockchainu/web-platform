@@ -25,7 +25,7 @@ export class ShareDialogComponent implements OnInit {
 		private cookieUtilsService: CookieUtilsService) {
 		const userId = cookieUtilsService.getValue('userId');
 		this.envVariable = environment;
-		this.generatedUrl = environment.clientUrl + '/' + data.type + '/' + data.id;
+		this.generatedUrl = environment.clientUrl + '/' + data.type + '/' + data.customUrl;
 		if (data.cohortId) {
 			this.generatedUrl = this.generatedUrl + '/calendar/' + data.cohortId;
 		}

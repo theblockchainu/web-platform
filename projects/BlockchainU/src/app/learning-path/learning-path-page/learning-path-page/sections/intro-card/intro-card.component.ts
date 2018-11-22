@@ -72,4 +72,10 @@ export class IntroCardComponent implements OnChanges, OnInit {
     });
   }
 
+  share() {
+    this._dialogsService.shareCollection('learning-path',
+      this.learningPath.id, this.learningPath.title, this.learningPath.description, this.learningPath.headline,
+      this.learningPath.imageUrls[0], null, null, this.learningPath.customUrl).subscribe();
+  }
+
 }
