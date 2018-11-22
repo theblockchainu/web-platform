@@ -9,6 +9,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 export class TeachersSectionComponent implements OnChanges, OnInit {
   @Input() learningPath: any;
   private _learningPath: any;
+  loadingPeers: boolean;
 
   teachers: Array<any>;
 
@@ -25,6 +26,7 @@ export class TeachersSectionComponent implements OnChanges, OnInit {
   }
 
   createTeachersArray() {
+    this.loadingPeers = true;
     if (this.learningPath) {
       this.teachers = [];
       this.learningPath.contents.forEach(content => {
@@ -44,6 +46,7 @@ export class TeachersSectionComponent implements OnChanges, OnInit {
         }
       });
     }
+    this.loadingPeers = false;
   }
 
 }
