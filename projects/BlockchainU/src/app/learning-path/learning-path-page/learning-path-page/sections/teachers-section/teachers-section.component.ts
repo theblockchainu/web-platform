@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChildren, QueryList, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-teachers-section',
@@ -17,13 +17,14 @@ export class TeachersSectionComponent implements OnChanges, OnInit {
 
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    const learningPath: SimpleChange = changes.learningPath;
-    console.log('prev value: ', learningPath.previousValue);
-    console.log('got name: ', learningPath.currentValue);
-    // this._name = name.currentValue.toUpperCase();
-    console.log(changes);
-    console.log(this.learningPath);
+  ngOnChanges() {
+    this.createTeachersArray();
+  }
+
+  ngOnInit() {
+  }
+
+  createTeachersArray() {
     if (this.learningPath) {
       this.teachers = [];
       this.learningPath.contents.forEach(content => {
@@ -34,13 +35,15 @@ export class TeachersSectionComponent implements OnChanges, OnInit {
           });
         }
         content.courses[0].owners[0].topics = topics;
-        this.teachers.push(content.courses[0].owners[0]);
+        const found = this.teachers.findIndex(teacher => {
+          return teacher.id === content.courses[0].owners[0].id;
+        });
+        if (found === -1) {
+          this.teachers.push(content.courses[0].owners[0]);
+
+        }
       });
     }
-    console.log(this.teachers);
-  }
-
-  ngOnInit() {
   }
 
 }
