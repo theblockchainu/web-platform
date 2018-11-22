@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CollectionService } from '../../../_services/collection/collection.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+
 import { ActivatedRoute } from '@angular/router';
 import { first, flatMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+
 @Component({
   selector: 'app-learning-path-page',
   templateUrl: './learning-path-page.component.html',
@@ -15,10 +19,13 @@ export class LearningPathPageComponent implements OnInit {
   public learningPathUrl: string;
   private toOpenDialogName: string;
   private previewAs: boolean;
+  envVariable: any;
+  joined: boolean;
 
   constructor(
-    private _collectionService: CollectionService,
-    private activatedRoute: ActivatedRoute
+    public _collectionService: CollectionService,
+    private activatedRoute: ActivatedRoute,
+    private _cookieUtilsService: CookieUtilsService
   ) { }
 
   ngOnInit() {
@@ -50,7 +57,7 @@ export class LearningPathPageComponent implements OnInit {
       'include': [
         'topics',
         { 'participants': [{ 'profiles': ['work'] }] },
-        { 'owners': ['profiles', 'topics'] },
+        { 'owners': ['profiles', 'topicsTeaching'] },
         {
           'relation': 'contents',
           'scope': {
@@ -65,6 +72,8 @@ export class LearningPathPageComponent implements OnInit {
   }
 
   private initialiseVariables() {
+    this.envVariable = environment;
+    this.joined = false;
   }
 
   private fetchPathParams() {
@@ -90,8 +99,16 @@ export class LearningPathPageComponent implements OnInit {
   }
 
   private processData(data: any) {
-    console.log(data);
     this.learningPath = data[0];
+    const userId = this._cookieUtilsService.getValue('userId');
+    this.learningPath.participants.some((participant: any) => {
+      if (participant.id === userId) {
+        this.joined = true;
+        console.log('joined');
+
+        return true;
+      }
+    });
     return new Observable(obs => {
       obs.next();
     });

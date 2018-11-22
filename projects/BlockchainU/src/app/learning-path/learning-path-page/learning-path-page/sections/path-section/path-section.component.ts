@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, QueryList, ViewChildren } from '@angular/core';
 import { environment } from '../../../../../../environments/environment';
 import { CertificateService } from '../../../../../_services/certificate/certificate.service';
 
@@ -9,11 +9,14 @@ import { CertificateService } from '../../../../../_services/certificate/certifi
 })
 export class PathSectionComponent implements OnChanges, OnInit {
   @Input() learningPath: any;
+  @Input() joined: boolean;
   envVariable: any;
   certificateHTML: string;
   private certificateDomSubscription;
   loadingCertificate: boolean;
   @ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
+
+
 
   constructor(
     private _certificateService: CertificateService
@@ -24,13 +27,7 @@ export class PathSectionComponent implements OnChanges, OnInit {
   ngOnInit() {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    const learningPath: SimpleChange = changes.learningPath;
-    console.log('prev value: ', learningPath.previousValue);
-    console.log('got name: ', learningPath.currentValue);
-    // this._name = name.currentValue.toUpperCase();
-    console.log(changes);
-    console.log(this.learningPath);
+  ngOnChanges() {
     this.getCertificatetemplate();
   }
 

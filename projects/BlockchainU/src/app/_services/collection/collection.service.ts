@@ -595,9 +595,9 @@ export class CollectionService {
 	 collectionID:string,userId:string,calendarId:string   */
 	public addParticipant(collectionId: string, userId: string, calendarId?: string, scholarshipId?: string, referrerId?: string) {
 		const body = {
-			'calendarId': calendarId ? calendarId : '',
-			'scholarshipId': scholarshipId ? scholarshipId : '',
-			'referrerId': referrerId ? referrerId : ''
+			'calendarId': calendarId ? calendarId : false,
+			'scholarshipId': scholarshipId ? scholarshipId : false,
+			'referrerId': referrerId ? referrerId : false
 		};
 		console.log(body);
 		return this.httpClient
@@ -825,6 +825,10 @@ export class CollectionService {
 
 	public userImgErrorHandler(event) {
 		event.target.src = '/assets/images/user-placeholder.jpg';
+	}
+
+	public landscapeErrorHandler(event) {
+		event.target.src = '/assets/images/community-banner-bg.jpg';
 	}
 
 	/**
