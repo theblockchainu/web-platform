@@ -8,6 +8,7 @@ import { ExperienceContentProjectComponent } from '../experience-content-project
 import { ExperienceContentVideoComponent } from '../experience-content-video/experience-content-video.component';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { ExperienceContentInpersonComponent } from '../experience-content-inperson/experience-content-inperson.component';
+import { ExperienceContentQuizComponent } from '../experience-content-quiz/experience-content-quiz.component';
 import { environment } from '../../../environments/environment';
 
 declare var moment: any;
@@ -119,6 +120,14 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 				map_lat: [null],
 				map_lng: [null]
 			}),
+			questions: this._fb.array([this._fb.group({
+				question_text: [''],
+				marks: [0],
+				word_limit: [0],
+				options: [],
+				type: [''],
+				correct_answer: ['']
+			})]),
 			pending: ['']
 		});
 	}
@@ -272,6 +281,9 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 				break;
 			case 'video':
 				dialogRef = this.dialog.open(ExperienceContentVideoComponent, { panelClass: 'responsive-dialog', data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit }, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh' });
+				break;
+			case 'quiz':
+				dialogRef = this.dialog.open(ExperienceContentQuizComponent, { panelClass: 'responsive-dialog', data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit }, disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh' });
 				break;
 			default:
 				break;
