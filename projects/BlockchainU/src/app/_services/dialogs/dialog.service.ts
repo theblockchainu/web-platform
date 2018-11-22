@@ -444,7 +444,8 @@ export class DialogsService {
         }).afterClosed();
     }
 
-    public shareCollection(type: string, Id: string, title: string, description: string, headline: string, imageUrl: string, cohortId?: string, isTeacher?: boolean) {
+    public shareCollection(type: string, Id: string, title: string, description: string,
+        headline: string, imageUrl: string, cohortId?: string, isTeacher?: boolean, customUrl?: string) {
         return this.dialog.open(ShareDialogComponent,
             {
                 data: {
@@ -455,7 +456,8 @@ export class DialogsService {
                     description: description,
                     headline: headline,
                     image: imageUrl,
-                    isTeacher: isTeacher
+                    isTeacher: isTeacher,
+                    customUrl: customUrl
                 },
                 panelClass: 'responsive-dialog', width: '40vw'
             }
