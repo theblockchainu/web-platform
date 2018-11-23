@@ -9,6 +9,7 @@ import { RequestHeaderService } from '../../_services/requestHeader/request-head
 import { AddLocationDialogComponent } from '../add-location-dialog/add-location-dialog.component';
 import { environment } from '../../../environments/environment';
 import { DataSharingService } from '../../_services/data-sharing-service/data-sharing.service';
+
 @Component({
     selector: 'app-experience-content-quiz',
     templateUrl: './experience-content-quiz.component.html',
@@ -37,6 +38,7 @@ export class ExperienceContentQuizComponent implements OnInit {
     public usePreviousLocation: FormControl;
     public hasPreviousLocation: boolean;
     public previousLocations: Array<any>;
+    public questionArray: Array<FormGroup>;
 
     constructor(
         private _fb: FormBuilder,
@@ -68,6 +70,7 @@ export class ExperienceContentQuizComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.questionArray = [];
         const content = <FormArray>this.itenaryForm.controls.contents;
         this.lastIndex = this.lastIndex !== -1 ? this.lastIndex : content.controls.length - 1;
         this.resultData['data'] = this.lastIndex;
@@ -291,5 +294,33 @@ export class ExperienceContentQuizComponent implements OnInit {
             }
         });
     }
+
+    addQuestion() {
+        this.questionArray.push(
+            this.initcontentQuestion()
+        );
+    }
+
+    initcontentQuestion() {
+        return this._fb.group({
+            question_text: [''],
+            marks: [''],
+            word_limit: [''],
+            options: this._fb.array([]),
+            type: [''],
+            correct_answer: ['']
+        });
+    }
+
+    addOption(index: number) {
+        const questionForm = <FormGroup>this.questionArray[index];
+        const optionsFormArray = <FormArray>questionForm.controls['options'];
+        optionsFormArray.push(this.initOption());
+    }
+
+    initOption() {
+        return this._fb.control('');
+    }
+
 
 }

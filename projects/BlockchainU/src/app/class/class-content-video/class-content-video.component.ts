@@ -112,7 +112,7 @@ export class ClassContentVideoComponent implements OnInit, AfterViewInit {
                 playerVars: {
                     'autoplay': 1,
                     'modestbranding': 1,
-                    'origin': 'http://localhost:8080'
+                    'origin': environment.clientUrl
                 },
 
             });
@@ -124,7 +124,7 @@ export class ClassContentVideoComponent implements OnInit, AfterViewInit {
         const doc = (<any>window).document;
         const playerApiScript = doc.createElement('script');
         playerApiScript.type = 'text/javascript';
-        playerApiScript.src = 'http://www.youtube.com/iframe_api';
+        playerApiScript.src = 'https://www.youtube.com/iframe_api';
         doc.body.appendChild(playerApiScript);
         console.log('youtube loaded');
         const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
