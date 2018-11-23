@@ -18,6 +18,7 @@ export class IntroCardComponent implements OnChanges, OnInit {
   joining: boolean;
   @Input() joined: boolean;
   @Output() joinedChange = new EventEmitter<boolean>();
+  public maxLength: number;
 
   constructor(
     private _collectionService: CollectionService,
@@ -32,6 +33,7 @@ export class IntroCardComponent implements OnChanges, OnInit {
 
   ngOnInit() {
     this.envVariable = environment;
+    this.maxLength = 200;
   }
 
   private calculateLearningHours() {
@@ -77,5 +79,15 @@ export class IntroCardComponent implements OnChanges, OnInit {
       this.learningPath.id, this.learningPath.title, this.learningPath.description, this.learningPath.headline,
       this.learningPath.imageUrls[0], null, null, this.learningPath.customUrl).subscribe();
   }
+
+  public showAll(strLength) {
+    if (strLength > this.maxLength) {
+      this.maxLength = strLength;
+    } else {
+      this.maxLength = 200;
+    }
+  }
+
+
 
 }

@@ -80,7 +80,7 @@ export class LearningPathEditComponent implements OnInit, OnDestroy {
 
   private initiateForms() {
 
-    this.topicArray = this._fb.array([], Validators.minLength(3));
+    this.topicArray = this._fb.array([], Validators.minLength(1));
 
     this.titleForm = this._fb.group({
       title: ['', Validators.required],

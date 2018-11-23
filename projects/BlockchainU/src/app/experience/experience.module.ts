@@ -10,7 +10,7 @@ import { AppointmentCalendarComponent } from './appointment-calendar/appointment
 import { ExperienceContentInpersonComponent } from './experience-content-inperson/experience-content-inperson.component';
 import { AddLocationDialogComponent } from './add-location-dialog/add-location-dialog.component';
 import { DataSharingService } from '../_services/data-sharing-service/data-sharing.service';
-
+import { ExperienceContentQuizComponent } from './experience-content-quiz/experience-content-quiz.component';
 @NgModule({
     imports: [
         SharedModule,
@@ -24,10 +24,11 @@ import { DataSharingService } from '../_services/data-sharing-service/data-shari
         ExperienceContentProjectComponent,
         ExperienceContentVideoComponent,
         ExperienceContentInpersonComponent,
+        ExperienceContentQuizComponent,
         AddLocationDialogComponent],
     providers: [DataSharingService],
     bootstrap: [],
     entryComponents: [ExperienceContentProjectComponent,
-        ExperienceContentVideoComponent, ExperienceContentInpersonComponent, AddLocationDialogComponent]
+        ExperienceContentQuizComponent, ExperienceContentVideoComponent, ExperienceContentInpersonComponent, AddLocationDialogComponent]
 })
 export class ExperienceModule { }
