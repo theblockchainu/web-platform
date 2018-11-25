@@ -61,7 +61,6 @@ import { ExtractTimePipe } from './extract-time/extract-time.pipe';
 import { SocketService } from '../_services/socket/socket.service';
 import { ConvertCurrencyPipe } from './convert-currency/convert-currency.pipe';
 import { TrimPipe } from './trim/trim.pipe';
-import { ProfilePopupComponent } from './profile-popup/profile-popup.component';
 import { TextIconCarouselComponent } from './text-icon-carousel/text-icon-carousel.component';
 import { NgxGeoautocompleteModule } from 'ngx-geoautocomplete';
 import { AgmCoreModule } from '@agm/core';
@@ -74,7 +73,6 @@ import { TopicRowComponent } from './topic-row/topic-row.component';
 import { AssessmentService } from '../_services/assessment/assessment.service';
 import { WalletService } from '../_services/wallet/wallet.service';
 import { ScholarshipService } from '../_services/scholarship/scholarship.service';
-import { GyanBalancePipe } from './gyan-balance/gyan-balance.pipe';
 import { KarmaBalancePipe } from './karma-balance/karma-balance.pipe';
 import { KnowledgeStoryService } from '../_services/knowledge-story/knowledge-story.service';
 import { ClipboardModule } from 'ngx-clipboard';
@@ -84,12 +82,10 @@ import { ShortNumberPipe } from './short-number/short-number.pipe';
 import { RouterModule } from '@angular/router';
 import { ExperienceCardComponent } from './experience-card/experience-card.component';
 import { CommunityCardComponent } from './community-card/community-card.component';
-import { PeerCardComponent } from './peer-card/peer-card.component';
 import { ClassCardComponent } from './class-card/class-card.component';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { AccreditationService } from '../_services/accreditation/accreditation.service';
 import { CertificateService } from '../_services/certificate/certificate.service';
-import { SafePipe } from './safe-pipe/safe.pipe';
 import { PromocodeService } from '../_services/promocode/promocode.service';
 import { LinkifyPipe } from './linkify-pipe/linkify.pipe';
 import { LMarkdownEditorModule } from 'ngx-markdown-editor';
@@ -98,11 +94,17 @@ import { QuestionCardComponent } from './question-card/question-card.component';
 import { BountyCardComponent } from './bounty-card/bounty-card.component';
 import { PositionPipe } from './position-pipe/position.pipe';
 import { UploadFileModule } from './upload-file/upload-file.module';
-import { CustomCertificateFormModule } from '../_shared/custom-certificate-form/custom-certificate-form.module';
+import { CustomCertificateFormModule } from './custom-certificate-form/custom-certificate-form.module';
+import { ProfilePopupModule } from './profile-popup/profile-popup.module';
+import { GyanBalanceModule } from './gyan-balance/gyan-balance.module';
+import { PeerCardModule } from './peer-card/peer-card.module';
+import { SafePipeModule } from './safe-pipe/safe-pipe.module';
+
 @NgModule({
     imports: [
         CommonModule,
         FileUploadModule,
+        ProfilePopupModule,
         CalendarModule.forRoot(),
         FormsModule,
         RatingModule,
@@ -138,25 +140,25 @@ import { CustomCertificateFormModule } from '../_shared/custom-certificate-form/
         MatMenuModule,
         MatDatepickerModule,
         MatProgressBarModule,
-        UploadFileModule
+        UploadFileModule,
+        ProfilePopupModule,
+        GyanBalanceModule,
+        PeerCardModule,
+        SafePipeModule
     ],
     declarations: [
         ExtractTimePipe,
         ConvertCurrencyPipe,
-        ProfilePopupComponent,
         TrimPipe,
         TextIconCarouselComponent,
         TimeToNowPipe,
         TopicRowComponent,
-        GyanBalancePipe,
         KarmaBalancePipe,
         ConvertCryptoPipe,
         ShortNumberPipe,
         ExperienceCardComponent,
         CommunityCardComponent,
-        PeerCardComponent,
         ClassCardComponent,
-        SafePipe,
         LinkifyPipe,
         GuideCardComponent,
         QuestionCardComponent,
@@ -241,11 +243,9 @@ import { CustomCertificateFormModule } from '../_shared/custom-certificate-form/
         ExtractTimePipe,
         LoadingModule,
         ConvertCurrencyPipe,
-        GyanBalancePipe,
         KarmaBalancePipe,
         ConvertCryptoPipe,
         ShortNumberPipe,
-        ProfilePopupComponent,
         TrimPipe,
         TextIconCarouselComponent,
         NgxGeoautocompleteModule,
@@ -258,10 +258,8 @@ import { CustomCertificateFormModule } from '../_shared/custom-certificate-form/
         ShareModule,
         ExperienceCardComponent,
         CommunityCardComponent,
-        PeerCardComponent,
         ClassCardComponent,
         AmazingTimePickerModule,
-        SafePipe,
         SpinnerModule,
         LinkifyPipe,
         LMarkdownEditorModule,
@@ -270,7 +268,11 @@ import { CustomCertificateFormModule } from '../_shared/custom-certificate-form/
         BountyCardComponent,
         PositionPipe,
         UploadFileModule,
-        CustomCertificateFormModule
+        CustomCertificateFormModule,
+        ProfilePopupModule,
+        GyanBalanceModule,
+        PeerCardModule,
+        SafePipeModule
     ]
 })
 export class SharedModule {

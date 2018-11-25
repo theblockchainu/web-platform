@@ -6,7 +6,7 @@
     </p>
     <div class="row padding-top-20">
       <div class="col-md-8">
-        <div class="stepHeader margin-top-20">Upload an image for your cover</div>
+        <div class="stepHeader margin-top-20">Upload an image for your cover, make sure its landscape</div>
         <p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true"
           (uploadHandler)="uploadImage($event)" maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
           <ng-template pTemplate="toolbar">

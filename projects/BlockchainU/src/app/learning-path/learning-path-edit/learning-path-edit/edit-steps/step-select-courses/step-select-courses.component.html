@@ -15,33 +15,34 @@
               {{contentForm.value.title}}
             </span>
             <span *ngIf="!contentForm.value.title">
-              Course Name
+              Enter Course Url
             </span>
           </mat-panel-title>
           <mat-panel-description>
             <span *ngIf="contentForm.value.description">
-              {{contentForm.value.description}}
+              {{contentForm.value.description | shorten: 50 : ' ...'}}
             </span>
             <span *ngIf="!contentForm.value.description">
               Type Course Description and add link
             </span>
-
-            <button (click)="delete(i)" mat-icon-button>
-              <mat-icon>delete</mat-icon>
-            </button>
+            <span>
+              <button (click)="delete(i)" mat-icon-button>
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button (click)="up(i)" mat-icon-button>
+                <mat-icon>keyboard_arrow_up </mat-icon>
+              </button>
+              <button (click)="down(i)" mat-icon-button>
+                <mat-icon>keyboard_arrow_down </mat-icon>
+              </button>
+            </span>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <form [formGroup]="contentForm">
           <div class="row">
-            <div class="col-xs-4">
-              <mat-form-field class="pb-block">
-                <input matInput formControlName="title" placeholder="Name">
-              </mat-form-field>
-            </div>
-
             <div class="col-xs-5">
               <mat-form-field class="pb-block">
-                <input matInput formControlName="imageUrl" placeholder="Course URL">
+                <input matInput formControlName="imageUrl" placeholder="Course customurl">
               </mat-form-field>
             </div>
             <div class="col-xs-9">
@@ -52,7 +53,8 @@
           </div>
         </form>
         <mat-action-row>
-          <button mat-button (click)="save(i)" color="primary">Save</button>
+          <button mat-button [disabled]="busySavingData" (click)="save(i)" color="primary">Save</button>
+          <ngx-loading [show]="busySavingData"></ngx-loading>
         </mat-action-row>
       </mat-expansion-panel>
     </mat-accordion>
@@ -70,9 +72,8 @@
     <button mat-button type="button" matStepperPrevious color="primary" class="mat-border-button">
       Back
     </button>
-    {{courseArray.valid}}
     <span class="pull-right" matTooltip="Add at least one course to continue" [matTooltipDisabled]="courseArray.controls.length>1">
-      <button matStepperNext type="button" mat-button color="primary" class="mat-border-button" [disabled]="courseArray.controls.length<1 || busySavingData">
+      <button (click)="saveOrder()" type="button" mat-button color="primary" class="mat-border-button" [disabled]="courseArray.controls.length<1 || busySavingData">
         <span *ngIf="!busySavingData">Next</span>
         <span>
           <ngx-loading [show]="busySavingData"></ngx-loading>

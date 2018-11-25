@@ -80,7 +80,7 @@ export class LearningPathEditComponent implements OnInit, OnDestroy {
 
   private initiateForms() {
 
-    this.topicArray = this._fb.array([], Validators.minLength(3));
+    this.topicArray = this._fb.array([], Validators.minLength(1));
 
     this.titleForm = this._fb.group({
       title: ['', Validators.required],
@@ -143,12 +143,15 @@ export class LearningPathEditComponent implements OnInit, OnDestroy {
       const query = {
         'include': [
           'topics',
-          'calendars',
           { 'participants': [{ 'profiles': ['work'] }] },
-          { 'owners': [{ 'profiles': ['phone_numbers'] }] },
-          { 'contents': ['schedules', 'locations'] },
-          'payoutrules',
-          { 'assessment_models': ['assessment_na_rules', 'assessment_rules'] },
+          { 'owners': ['profiles'] },
+          {
+            'relation': 'contents',
+            'scope': {
+              'include': ['courses'],
+              'order': 'contentIndex ASC'
+            }
+          },
         ]
       };
       this._collectionService.getCollectionDetail(this.learningPathId, query)
@@ -228,26 +231,12 @@ export class LearningPathEditComponent implements OnInit, OnDestroy {
     if (res.contents && res.contents.length > 0) {
       res.contents.forEach(content => {
         this.courseArray.push(
-          this._fb.group(content)
+          this.editService.initCourse(content)
         );
       });
     }
 
   }
 
-  initCourse(content?: any) {
-    const group = this._fb.group({
-      id: [''],
-      title: ['', [Validators.required, Validators.minLength(10)]],
-      type: [''],
-      description: [''],
-      supplementUrls: this._fb.array([]),
-      imageUrl: [''],
-      prerequisites: ['']
-    });
-    if (content) {
-      group.patchValue(content);
-    }
-    return group;
-  }
+
 }

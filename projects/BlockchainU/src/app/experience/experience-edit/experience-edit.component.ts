@@ -128,7 +128,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			'calendars',
 			{ 'participants': [{ 'profiles': ['work'] }] },
 			{ 'owners': [{ 'profiles': ['phone_numbers'] }] },
-			{ 'contents': ['schedules', 'locations'] },
+			{ 'contents': ['schedules', 'locations', 'questions'] },
 			'payoutrules',
 			{ 'assessment_models': ['assessment_na_rules', 'assessment_rules'] },
 		]
@@ -517,6 +517,14 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				map_lat: [null],
 				map_lng: [null]
 			}),
+			questions: this._fb.array([this._fb.group({
+				question_text: [''],
+				marks: [0],
+				word_limit: [0],
+				options: [],
+				type: [''],
+				correct_answer: ['']
+			})]),
 			pending: ['']
 		});
 	}

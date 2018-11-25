@@ -4,7 +4,7 @@ import { CurrencyPipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { WalletService } from '../../_services/wallet/wallet.service';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 @Pipe({
 	name: 'convertCurrency'
 })
@@ -24,11 +24,10 @@ export class ConvertCurrencyPipe implements PipeTransform {
 					} else {
 						return this._currencyPipe.transform(0, 'USD', 'symbol');
 					}
-				}, err => {
-					return new Observable((observer) => {
-						observer.next('ERROR');
-					});
-				}
+				},
+				catchError(err => {
+					return this._currencyPipe.transform(0, 'USD', 'symbol');
+				})
 			));
 		} else {
 			if (amount === 0 && !cannotBeFree) {
@@ -45,12 +44,11 @@ export class ConvertCurrencyPipe implements PipeTransform {
 							} else {
 								return this._currencyPipe.transform(amount, 'USD', 'symbol', '1.0-0');
 							}
-						}, err => {
-							return new Observable((observer) => {
-								observer.next('ERROR');
-							});
 						}
-					)
+					),
+					catchError(err => {
+						return this._currencyPipe.transform(amount, 'USD', 'symbol', '1.0-0');
+					})
 				);
 			}
 		}

@@ -1,0 +1,19 @@
+.intro-card {
+  padding: 0;
+}
+
+.left-section {
+  padding: 50px;
+}
+
+.right-section {
+  padding: 50px;
+  border-left: #ddd6d6 solid 0.1px;
+}
+
+@media only screen and (max-width: 600px) {
+  right-section {
+    padding: 50px;
+    border-left: none;
+  }
+}

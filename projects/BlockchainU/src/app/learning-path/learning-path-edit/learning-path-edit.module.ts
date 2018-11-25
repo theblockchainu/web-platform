@@ -28,6 +28,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { FileUploadModule } from 'primeng/fileupload';
 import { UploadFileModule } from '../../_shared/upload-file/upload-file.module';
 import { CustomCertificateFormModule } from '../../_shared/custom-certificate-form/custom-certificate-form.module';
+import { NgPipesModule } from 'ngx-pipes';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -51,7 +53,8 @@ import { CustomCertificateFormModule } from '../../_shared/custom-certificate-fo
     UploadFileModule,
     CustomCertificateFormModule,
     MatInputModule,
-    MatExpansionModule
+    MatExpansionModule,
+    NgPipesModule
   ],
   providers: [EditService],
   declarations: [

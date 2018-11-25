@@ -23,7 +23,7 @@
       </button>
       <span class="pull-right" matTooltip="Add at least one interest to continue" [matTooltipDisabled]="topicArray.valid || interests.length>2">
         <button (click)="submitInterests()" type="button" mat-button color="primary" class="mat-border-button"
-          [disabled]="!(topicArray.valid || interests.length>2) || busySavingData">
+          [disabled]="!(topicArray.valid || interests.length>0) || busySavingData">
           <span *ngIf="!busySavingData">Next</span>
           <span>
             <ngx-loading [show]="busySavingData"></ngx-loading>

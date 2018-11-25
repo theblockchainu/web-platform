@@ -46,20 +46,20 @@ import { SharedModule } from './_shared/_shared.module';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 import { isPlatformBrowser } from '@angular/common';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-import {DigestModule} from './digest/digest.module';
+import { DigestModule } from './digest/digest.module';
 
 
 Raven
- 	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
- 	.install();
+	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
+	.install();
 
 Raven.setExtraContext({
- 	environment: (environment.production) ? 'production' : 'development'
+	environment: (environment.production) ? 'production' : 'development'
 });
 
 export class RavenErrorHandler implements ErrorHandler {
- 	handleError(err: any): void {
- 		Raven.captureException(err);
+	handleError(err: any): void {
+		Raven.captureException(err);
 	}
 }
 
@@ -123,14 +123,14 @@ export class RavenErrorHandler implements ErrorHandler {
 		}),
 		LandingPageModule,
 		SharedModule
-		],
+	],
 	providers: [
 		CookieService,
 		UcWordsPipe,
 		UcFirstPipe,
 		{
 			provide: ErrorHandler,
-		 	useClass: RavenErrorHandler
+			useClass: RavenErrorHandler
 		},
 		Title,
 		Meta

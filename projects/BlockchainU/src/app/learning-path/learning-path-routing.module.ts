@@ -10,7 +10,7 @@ const routes: Routes = [
         loadChildren: './learning-path-edit/learning-path-edit.module#LearningPathEditModule'
       },
       {
-        path: ':collectionId',
+        path: ':collectionCustomUrl',
         loadChildren: './learning-path-page/learning-path-page.module#LearningPathPageModule'
       }
 

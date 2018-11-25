@@ -5,8 +5,14 @@
         <div class="col-sm-12">
           <h2 class="title">What’s the learning path about?</h2>
           <p class="subtitle">Give a detailed description to learners of what they will do in this learning path</p>
-          <button mat-raised-button type="button" (click)="insertImage()">Insert Image</button>
-          <md-editor [options]="editorOptions" formControlName="description" [height]="'360px'" maxlength="2000"></md-editor>
+          <!-- <button mat-raised-button type="button" (click)="insertImage()">Insert Image</button> -->
+
+          <mat-form-field class="pb-block" hintLabel="Max 10 characters">
+            <textarea matInput formControlName="description" #input maxlength="400" placeholder="Enter the description"></textarea>
+            <mat-hint align="end">{{input.value?.length || 0}}/400</mat-hint>
+          </mat-form-field>
+
+          <!-- <md-editor [options]="editorOptions" formControlName="description" [height]="'360px'" maxlength="2000"></md-editor> -->
         </div>
       </div>
       <div style="margin-top:60px;">
