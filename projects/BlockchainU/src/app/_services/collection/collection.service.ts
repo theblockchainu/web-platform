@@ -115,6 +115,12 @@ export class CollectionService {
 			.get(environment.apiUrl + '/api/collections/' + id + '/ether?filter=' + filter, this.requestHeaderService.options);
 
 	}
+	
+	public getParticipantEthereumInfo(id: string, fk: string) {
+		return this.httpClient
+			.get(environment.apiUrl + '/api/collections/' + id + '/peers/' + fk + '/ether', this.requestHeaderService.options);
+		
+	}
 
 	public addToEthereum(id: string) {
 		const body = {};
