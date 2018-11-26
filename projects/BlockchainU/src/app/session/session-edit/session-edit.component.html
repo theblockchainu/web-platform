@@ -1,4 +1,5 @@
-<div style="background: #fff; padding: 0px; min-height: 100vh;" [class.main-content]="!mobileQuery.matches" [class.mobile-main-content]="mobileQuery.matches">
+<div style="background: #fff; padding: 0px; min-height: 100vh;" [class.main-content]="!mobileQuery.matches"
+ [class.mobile-main-content]="mobileQuery.matches">
 	<mat-toolbar color="white">
 		<span>
 			<a class="brand clickable" aria-label="The Blockchain University Homepage" [routerLink]="['/home','homefeed']">
@@ -40,7 +41,8 @@
 					</span> -->
 	</mat-toolbar>
 	<mat-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: scroll">
-		<mat-sidenav #snav [mode]="mobileQuery.matches === true ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" [opened]="!mobileQuery.matches">
+		<mat-sidenav #snav [mode]="mobileQuery.matches === true ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+		 [opened]="!mobileQuery.matches">
 			<app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
 		</mat-sidenav>
 		<!-- Page Content -->
@@ -50,19 +52,27 @@
 				<div class="row">
 					<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 						<h2 class="title">The Blockchain University Session Guidelines</h2>
-						<p class="subtitle">The Blockchain University is a platform dedicated to connecting people who are forward thinking,
-							passionate about education, and open-minded in general. We're pretty sure that each individual who joins our community
-							is a cool, high-caliber person with unique talents and knowledge to share. That said, we'd like to establish just
+						<p class="subtitle">The Blockchain University is a platform dedicated to connecting people who are forward
+							thinking,
+							passionate about education, and open-minded in general. We're pretty sure that each individual who joins our
+							community
+							is a cool, high-caliber person with unique talents and knowledge to share. That said, we'd like to establish
+							just
 							a few common-sense expectations so our platform can continue to be as high quality as possible.
 						</p>
 						<ul class="guideline-points text-grey">
-							<li>Respect others and their differences. Not everyone on The Blockchain University is going to have the same worldview,
-								and that's actually a good thing. It's how we can learn from each other. Keep all comments and observations fair,
+							<li>Respect others and their differences. Not everyone on The Blockchain University is going to have the same
+								worldview,
+								and that's actually a good thing. It's how we can learn from each other. Keep all comments and observations
+								fair,
 								controlled and as positive as possible.</li>
-							<li>Take your responsibilities seriously. Whether you sign up to learn or to teach (or both!), be sure to communicate
+							<li>Take your responsibilities seriously. Whether you sign up to learn or to teach (or both!), be sure to
+								communicate
 								with all your peers as necessary and always be on time to events.</li>
-							<li>You can't go wrong with the "golden rule." Treat everyone you meet on The Blockchain University with the same
-								basic courtesy and friendliness you'd like to be shown and you're pretty much good to go. Good vibes are infectious
+							<li>You can't go wrong with the "golden rule." Treat everyone you meet on The Blockchain University with the
+								same
+								basic courtesy and friendliness you'd like to be shown and you're pretty much good to go. Good vibes are
+								infectious
 								- everybody wins.
 							</li>
 						</ul>
@@ -82,9 +92,10 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">We are glad that you want to mentor other users</h2>
-							<p class="subtitle">Lets begin by updating your profile. We have imported all details that were already updated in
+							<p class="subtitle">Lets begin by updating your profile. We have imported all details that were already updated
+								in
 								your profile.</p>
-							<br/>
+							<br />
 							<form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
 								<div class="row">
 									<div class="col-sm-12 margin-bottom-30">
@@ -105,7 +116,8 @@
 										<div class="row">
 											<div class="col-sm-12">
 												<mat-form-field [floatLabel]="'auto'" class="pb-block" style="margin-bottom: 20px">
-													<input matInput #title formControlName="description" maxlength="2000" rows="1" matTextareaAutosize placeholder="And a short description about yourself">
+													<input matInput #title formControlName="description" maxlength="2000" rows="1" matTextareaAutosize
+													 placeholder="And a short description about yourself">
 													<mat-hint align="start">{{profileForm.controls['description'].value.length}} characters added</mat-hint>
 													<mat-hint align="end">{{profileForm.controls['description'].value.length}} / 2000</mat-hint>
 												</mat-form-field>
@@ -115,7 +127,8 @@
 								</div>
 								<div style="margin-top:60px;">
 									<button mat-button (click)=goto(1)>Back</button>
-									<span class="pull-right" matTooltip="A brief description about yourself is mandatory to continue" [matTooltipDisabled]="profileForm.controls['headline'].value.length !== 0 && profileForm.controls['description'].value.length !== 0  ">
+									<span class="pull-right" matTooltip="A brief description about yourself is mandatory to continue"
+									 [matTooltipDisabled]="profileForm.controls['headline'].value.length !== 0 && profileForm.controls['description'].value.length !== 0  ">
 										<button mat-raised-button color="accent" type="Submit" [disabled]="profileForm.controls['headline'].value.length === 0 || profileForm.controls['description'].value.length === 0  ">
 											<span *ngIf="!busyHost">Continue</span>
 											<span *ngIf="busyHost"> </span>
@@ -217,23 +230,27 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">Tell us more about yourself</h2>
-							<p class="subtitle margin-bottom-30">Update your students on where you are located and what languages you can speak</p>
+							<p class="subtitle margin-bottom-30">Update your students on where you are located and what languages you can
+								speak</p>
 							<ngxgeo-autocomplete class="geoLocation" required [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ngxgeo-autocomplete>
 							<div class="pb-block">
 								<agm-map [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"
-								 [usePanning]="true" [zoom]="14" [scrollwheel]="false" [disableDoubleClickZoom]="true" [zoomControl]="false" [streetViewControl]="false">
+								 [usePanning]="true" [zoom]="14" [scrollwheel]="false" [disableDoubleClickZoom]="true" [zoomControl]="false"
+								 [streetViewControl]="false">
 									<agm-marker [latitude]="profileForm.controls['location_lat'].value" [longitude]="profileForm.controls['location_lng'].value"></agm-marker>
 								</agm-map>
 							</div>
 							<div class="margin-top-30">
 								<h2 class="title">What languages can you teach in?</h2>
 							</div>
-							<p class="subtitle margin-bottom-30">You'll write your description in this language and students will expect you to
+							<p class="subtitle margin-bottom-30">You'll write your description in this language and students will expect you
+								to
 								speak it during sessions</p>
 							<form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
 								<div class="margin-top-20" formArrayName="other_languages" *ngFor="let control of profileForm.controls['other_languages']['controls']; let i=index">
 									<mat-form-field [floatLabel]="'auto'">
-										<input type="text" style="border-bottom: 0px;" placeholder="Select Language" matInput [formControlName]="i" [matAutocomplete]="auto">
+										<input type="text" style="border-bottom: 0px;" placeholder="Select Language" matInput [formControlName]="i"
+										 [matAutocomplete]="auto">
 									</mat-form-field>
 									<mat-autocomplete #auto="matAutocomplete">
 										<mat-option *ngFor="let language of filteredOptions" [value]="language.name">
@@ -264,7 +281,7 @@
 							<p class="subtitle">
 								Share your resume with learners to give them confidence on your teaching capabilities.
 							</p>
-							<br/>
+							<br />
 							<form [formGroup]="workForm" (ngSubmit)="saveWorkEducation()">
 								<div formArrayName="work" class="well well-lg">
 									<div class="mat-body-2" style="margin-bottom: 25px;">
@@ -307,7 +324,8 @@
 									Education
 								</div>
 								<div formArrayName="education">
-									<div *ngFor="let educationObj of workForm.controls['education']['controls']; let i = index" [formGroupName]="i" class="margin-bottom-30">
+									<div *ngFor="let educationObj of workForm.controls['education']['controls']; let i = index" [formGroupName]="i"
+									 class="margin-bottom-30">
 										<mat-form-field [floatLabel]="'auto'" style="margin-right:10px;" [ngClass]="{'customWidth30': true}">
 											<input matInput formControlName="degree" type="text" style="border-bottom: 0px;" placeholder="Degree">
 											<!-- <mat-error>This field is required</mat-error> -->
@@ -349,7 +367,8 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">Update your profile sections that users will see when booking sessions</h2>
-							<p class="subtitle">Write in a clear, straightforward and friendly way. We will give you tips on when to show off
+							<p class="subtitle">Write in a clear, straightforward and friendly way. We will give you tips on when to show
+								off
 								your personality and be more descriptive.</p>
 							<button mat-raised-button color="accent" (click)="nextStep()" class="margin-top-50">
 								Continue
@@ -372,9 +391,9 @@
 									<div class="col-sm-12 margin-bottom-30">
 										<div class="row">
 											<div class="col-sm-12">
-												<app-multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)" [preSelectedTopics]=interests
-												 [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic [maxSelection]=maxTopics
-												 [minSelection]="1"></app-multiselect-autocomplete>
+												<app-multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)"
+												 [preSelectedTopics]=interests [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
+												 [maxSelection]=maxTopics [minSelection]="1"></app-multiselect-autocomplete>
 											</div>
 										</div>
 										<div class="row">
@@ -404,7 +423,8 @@
 							<div class="margin-top-70">
 								<div class="row" *ngIf="!relTopics || relTopics.length === 0">
 									<div class="col-md-12 lightText">
-										You have not selected any topics to teach yet. Once you select a topic, you will be able to describe your experience in that topic here.
+										You have not selected any topics to teach yet. Once you select a topic, you will be able to describe your
+										experience in that topic here.
 									</div>
 								</div>
 								<div class="row" *ngFor="let topic of relTopics">
@@ -417,8 +437,8 @@
 										<i class="mdi mdi-close-circle mdiIcon darkColor pull-left" (click)="unfollowTopic('teaching', topic)" style="cursor: pointer;"></i>
 										<div class="topic-experience col-md-8">
 											<mat-form-field [floatLabel]="'always'" style="margin-bottom: 20px; width:100%" #experienceContainer>
-												<textarea matInput #experience name="experience" rows="1" matTextareaAutosize class="form-control" [(ngModel)]="topic.experience"
-												 placeholder="How much do you know this topic?" required></textarea>
+												<textarea matInput #experience name="experience" rows="1" matTextareaAutosize class="form-control"
+												 [(ngModel)]="topic.experience" placeholder="How much do you know this topic?" required></textarea>
 												<mat-error>This field is required</mat-error>
 												<mat-hint align="end">{{experience.value.length}} / 1000</mat-hint>
 											</mat-form-field>
@@ -442,11 +462,13 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">What will you provide? </h2>
-							<p class="subtitle">Let your participants know about specific items you would provide in your sessions. These could include
+							<p class="subtitle">Let your participants know about specific items you would provide in your sessions. These
+								could include
 								things like software licenses, or workstation or certification etc.</p>
 							<form class="margin-top-50" [formGroup]="provisionForm" (ngSubmit)="saveProvision()">
 								<div formArrayName="provisions">
-									<div *ngFor="let provisionObj of provisionForm.controls['provisions']['controls']; let i=index" [formGroupName]="i" class="margin-bottom-10">
+									<div *ngFor="let provisionObj of provisionForm.controls['provisions']['controls']; let i=index"
+									 [formGroupName]="i" class="margin-bottom-10">
 										<mat-form-field [floatLabel]="'auto'">
 											<input matInput style="border-bottom: 0px;" formControlName="text" type="text" placeholder="Food or Laptop or Webstorm License">
 										</mat-form-field>
@@ -470,7 +492,8 @@
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<h2 class="title">Set your availability</h2>
-							<p class="subtitle margin-bottom-60">Select all those 60 minute time slots when you will be available to take sessions
+							<p class="subtitle margin-bottom-60">Select all those 60 minute time slots when you will be available to take
+								sessions
 								with students. You can always keep adding more availability slots in the future.</p>
 							<!--<div class="margin-bottom-10">You can change the calendar click mode to either </div>
 							<mat-radio-group [(ngModel)]="calendarEvent">
@@ -480,9 +503,10 @@
 							<div class="margin-bottom-60"></div>-->
 							<div class="row">
 								<div class="col-xs-12">
-									<p-schedule [events]="events" [eventOverlap]="false" [defaultView]="'agendaWeek'" [editable]="true" (onDayClick)="handleDayClick($event)"
-									 (onEventClick)="handleEventClick($event)" (onEventDrop)="updateEvent($event)" (onEventResize)="updateEvent($event)"
-									 [height]="500" [allDaySlot]="false" [slotDuration]="'01:00:00'" [nowIndicator]="true" [scrollTime]="nowTime" [style]=""></p-schedule>
+									<p-schedule [events]="events" [eventOverlap]="false" [defaultView]="'agendaWeek'" [editable]="true"
+									 (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)" (onEventDrop)="updateEvent($event)"
+									 (onEventResize)="updateEvent($event)" [height]="500" [allDaySlot]="false" [slotDuration]="'01:00:00'"
+									 [nowIndicator]="true" [scrollTime]="nowTime" [style]=""></p-schedule>
 								</div>
 							</div>
 
@@ -500,7 +524,8 @@
 						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
 							<form [formGroup]="packageForm" (ngSubmit)="submitPackages()">
 								<h2 class="title">Set your pricing</h2>
-								<p class="subtitle">Setup a trial package and as many paid packages for your mentor sessions. Learners can only select
+								<p class="subtitle">Setup a trial package and as many paid packages for your mentor sessions. Learners can only
+									select
 									from within these packages when booking.</p>
 								<h3 class="margin-top-50">Trial Package</h3>
 								<div class="trialPackageContainer" formGroupName="trialPackage">
@@ -508,7 +533,8 @@
 									<div class="row">
 										<div class="col-md-4">
 											<mat-checkbox formControlName="isFree">Free</mat-checkbox>&emsp;
-											<span class="lightText mat-h6 padding-left-20" *ngIf="!packageForm.controls['trialPackage']['controls']['isFree'].value">--- OR
+											<span class="lightText mat-h6 padding-left-20" *ngIf="!packageForm.controls['trialPackage']['controls']['isFree'].value">---
+												OR
 												---
 											</span>
 										</div>
@@ -517,7 +543,8 @@
 										<div class="col-md-2 padding-left-0">
 											<mat-form-field class="pb-block" [floatLabel]="'never'">
 												<span matPrefix>
-													{{0 | currency: packageForm.controls['trialPackage']['controls']['currency'].value : 'symbol' | slice:0:1}} &nbsp;
+													{{0 | currency: packageForm.controls['trialPackage']['controls']['currency'].value : 'symbol' |
+													slice:0:1}} &nbsp;
 												</span>
 												<input type="number" matInput #price formControlName="price" placeholder="0" min="1" required>
 											</mat-form-field>
@@ -572,7 +599,8 @@
 											<div class="col-md-2 padding-left-0">
 												<mat-form-field class="pb-block" [floatLabel]="'never'">
 													<span matPrefix>
-														{{0 | currency: packageForm.controls['paidPackages']['controls'][i]['controls']['currency'].value : 'symbol' | slice:0:1}}
+														{{0 | currency: packageForm.controls['paidPackages']['controls'][i]['controls']['currency'].value :
+														'symbol' | slice:0:1}}
 														&nbsp;
 													</span>
 													<input type="number" matInput #price formControlName="price" placeholder="0" min="1" required>
@@ -653,7 +681,7 @@
 							<form class="margin-top-50" [formGroup]="preferencesForm" (ngSubmit)="savePreferences()">
 								<mat-radio-group formControlName="bookingProcess">
 									<mat-radio-button value="auto">Book Instantly</mat-radio-button>
-									<br/>
+									<br />
 									<mat-radio-button value="manual">Allow me to approve requests</mat-radio-button>
 								</mat-radio-group>
 								<button class="pull-right margin-top-100" mat-raised-button color="accent" type="submit">Continue</button>
@@ -734,7 +762,8 @@
 												<input type="tel" matInput #countryCode formControlName="countryCode" placeholder="Country Code" [readOnly]="true">
 											</mat-form-field>
 											<mat-form-field [floatLabel]="'auto'" class="pb-block" style="margin: 20px 0px;">
-												<input type="tel" matInput #phoneNo formControlName="phoneNo" placeholder="Phone number from profile" [readOnly]="true" disabled>
+												<input type="tel" matInput #phoneNo formControlName="phoneNo" placeholder="Phone number from profile"
+												 [readOnly]="true" disabled>
 												<mat-hint *ngIf="!isPhoneVerified">We will send the confirmation code on your mobile</mat-hint>
 												<mat-hint *ngIf="isPhoneVerified">Update your phone number from profile to change it for this session</mat-hint>
 											</mat-form-field>
@@ -743,7 +772,8 @@
 												Send Code as SMS
 											</button>
 											<button mat-raised-button #sendOtpButton color="accent" *ngIf="isPhoneVerified">
-												<mat-icon mat-prefix style="margin-top: -12px; margin-right: 5px; color: white;">check_circle</mat-icon> Phone
+												<mat-icon mat-prefix style="margin-top: -12px; margin-right: 5px; color: white;">check_circle</mat-icon>
+												Phone
 												Verified
 											</button>
 										</div>
@@ -814,7 +844,8 @@
 																</span>
 															</div>
 															<div class="col-md-3">
-																<b *ngIf="account.external_accounts.data[0].status">{{account.external_accounts.data[0].status | titlecase}}</b>
+																<b *ngIf="account.external_accounts.data[0].status">{{account.external_accounts.data[0].status |
+																	titlecase}}</b>
 																<b *ngIf="!account.external_accounts.data[0].status">Ready</b>
 															</div>
 															<div class="col-md-3">

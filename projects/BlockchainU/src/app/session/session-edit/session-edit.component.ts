@@ -21,6 +21,7 @@ import { ProfileService } from '../../_services/profile/profile.service';
 import { environment } from '../../../environments/environment';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { map, startWith, flatMap } from 'rxjs/operators';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
 	selector: 'app-session-edit',
 	templateUrl: './session-edit.component.html',
@@ -187,8 +188,7 @@ export class SessionEditComponent implements OnInit {
 		private location: Location,
 		public _profileService: ProfileService,
 		private media: MediaMatcher,
-		private cd: ChangeDetectorRef
-	) {
+		private cd: ChangeDetectorRef) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
 			this.sessionId = params['collectionId'];
@@ -528,6 +528,7 @@ export class SessionEditComponent implements OnInit {
 	}
 
 	private initializeSession() {
+		this.events = [];
 		if (this.sessionId) {
 			this._collectionService.getCollectionDetail(this.sessionId, this.query)
 				.subscribe((res: any) => {
