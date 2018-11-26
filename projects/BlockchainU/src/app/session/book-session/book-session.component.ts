@@ -9,6 +9,10 @@ import * as _ from 'lodash';
 import { MatSnackBar } from '@angular/material';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { DialogsService } from '../../_services/dialogs/dialog.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { map } from 'rxjs/operators';
 
 declare var Stripe: any;
 
@@ -23,6 +27,7 @@ export class BookSessionComponent implements OnInit {
 	public card: any;
 	public envVariable;
 	@ViewChild('cardForm', { read: ElementRef }) cardForm: ElementRef;
+	@ViewChild('paymentframe', { read: ElementRef }) paymentFrame: ElementRef;
 	public userId;
 	private teacherId: string;
 	public collection: any = {};
@@ -57,6 +62,23 @@ export class BookSessionComponent implements OnInit {
 	public contentId;
 	public desiredContent: any;
 	public selectedFormattedTime = '';
+	public loadingCountry = true;
+	public ccavenueMerchantId;
+	public ccavenueAccessCode;
+	public ccavenueEncRequest;
+	public ccavenueIframe;
+	public userCountry = 'USA';
+	public ccavenueReady = false;
+	public paymentStatus;
+	public statusMessage;
+	public failureMessage;
+	public addressForm: FormGroup;
+	public isBillingAddressAvailable = false;
+	public maxLength = 140;
+	private referrerId: string;
+	public student;
+	public emailVerified;
+	public burnAddress: string;
 
 	constructor(
 		private _cookieUtilsService: CookieUtilsService,
@@ -65,7 +87,11 @@ export class BookSessionComponent implements OnInit {
 		public profileService: ProfileService,
 		public paymentService: PaymentService,
 		private router: Router,
-		private snackBar: MatSnackBar
+		private snackBar: MatSnackBar,
+		private _dialogsService: DialogsService,
+		private sanitizer: DomSanitizer,
+		private matSnackBar: MatSnackBar,
+		private _fb: FormBuilder
 	) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
@@ -80,7 +106,20 @@ export class BookSessionComponent implements OnInit {
 				this.contentId = params['contentId'];
 			}
 		});
+
+		this.activatedRoute.queryParams.subscribe(params => {
+			if (params['paymentStatus']) {
+				this.paymentStatus = params['paymentStatus'];
+				this.statusMessage = params['statusMessage'];
+				this.failureMessage = params['failureMessage'];
+				console.log('Payment status: ' + this.paymentStatus);
+				this.actOnPaymentStatus();
+			}
+		});
+
 		this.userId = _cookieUtilsService.getValue('userId');
+		this.ccavenueAccessCode = environment.ccavenueAccessCode;
+		this.ccavenueMerchantId = environment.ccavenueMerchantId;
 	}
 
 	ngOnInit() {
@@ -114,14 +153,22 @@ export class BookSessionComponent implements OnInit {
 		this.availability = [];
 		this.step = (this.displayMode === 'request') ? 1 : 2;
 		this.cardDetails = {};
-		this.getPeerDetails();
+		this.getUserCountry();
 		this.initializeInputs();
+		this.getPeerDetails();
 		this.getAvailableSessions();
+
 		this.totalCost = new BehaviorSubject(0);
 		this.totalDuration = new BehaviorSubject(0);
 	}
 
 	private initializeInputs() {
+		this.addressForm = this._fb.group({
+			billing_address: ['', Validators.required],
+			billing_city: ['', Validators.required],
+			billing_state: ['', Validators.required],
+			billing_zip: ['', Validators.required]
+		});
 		const inputs = document.querySelectorAll('input.field');
 		Array.prototype.forEach.call(inputs, function (input) {
 			input.addEventListener('focus', function () {
@@ -140,6 +187,63 @@ export class BookSessionComponent implements OnInit {
 		});
 		this.card.mount('#card-element');
 	}
+
+	private loadStudentData() {
+		const filter = {
+			include: {
+				profiles: ['phone_numbers', 'billingaddress']
+			}
+		};
+		this.profileService.getPeerData(this.userId, filter).subscribe((peer: any) => {
+			if (peer) {
+				this.student = peer;
+				this.emailVerified = peer.emailVerified;
+				this.createSourceData.email = peer.email;
+				this.createChargeData.customer = peer.stripeCustId;
+				this.custId = peer.stripeCustId;
+				this.burnAddress = peer.ethAddress;
+				console.log(this.custId);
+
+				if (!this.emailVerified) {
+					this._dialogsService.openOnboardingDialog(true).subscribe((result: any) => {
+						// do nothing
+					});
+				}
+
+				if (this.student.profiles[0].billingaddress && this.student.profiles[0].billingaddress.length > 0) {
+					this.addressForm.controls.billing_address.patchValue(this.student.profiles[0].billingaddress[0].billing_address);
+					this.addressForm.controls.billing_city.patchValue(this.student.profiles[0].billingaddress[0].billing_city);
+					this.addressForm.controls.billing_state.patchValue(this.student.profiles[0].billingaddress[0].billing_state);
+					this.addressForm.controls.billing_zip.patchValue(this.student.profiles[0].billingaddress[0].billing_zip);
+					this.isBillingAddressAvailable = true;
+				}
+				if (this.paymentStatus !== undefined && this.paymentStatus !== null && !this.paymentStatus) {
+					this.actOnPaymentStatus();
+				}
+
+				// get all cards
+				this.paymentService.listAllCards(this.userId, this.custId).subscribe((cards: any) => {
+					this.loadingCards = false;
+					if (cards) {
+						this.listAllCards = cards.data;
+						console.log('listAllCards: ' + JSON.stringify(this.listAllCards));
+
+						if (this.listAllCards && this.listAllCards.length > 0) {
+							this.isCardExist = true;
+						}
+					} else {
+
+						this.loadingCards = false;
+
+					}
+				}, err => {
+					this.loadingCards = false;
+				});
+			}
+
+		});
+	}
+
 
 	/**
 	 * getAvailableSessions
@@ -221,6 +325,7 @@ export class BookSessionComponent implements OnInit {
 				});
 				this.updateSelectedData();
 			}
+			this.loadStudentData();
 		});
 	}
 
@@ -228,7 +333,7 @@ export class BookSessionComponent implements OnInit {
 	 * getPeerDetails
 	 */
 	public getPeerDetails() {
-		this.profileService.getPeerData(this.userId).subscribe((peer: any) => {
+		return this.profileService.getPeerData(this.userId).pipe(map((peer: any) => {
 			if (peer) {
 				this.createSourceData.email = peer.email;
 				this.createChargeData.customer = peer.stripeCustId;
@@ -245,8 +350,7 @@ export class BookSessionComponent implements OnInit {
 					}
 				});
 			}
-
-		});
+		}));
 	}
 
 	public processPayment(content: any) {
@@ -425,6 +529,7 @@ export class BookSessionComponent implements OnInit {
 
 
 	public bookSession() {
+		this.loadCCAvenueForm();
 		this.step++;
 	}
 
@@ -433,7 +538,9 @@ export class BookSessionComponent implements OnInit {
 	}
 
 	public joinSession(e?: Event) {
-		e.preventDefault();
+		if (e) {
+			e.preventDefault();
+		}
 		this.savingData = true;
 		if (this.displayMode === 'request') {
 			const selectedSlots: Array<any> = this.availability.filter(element => element.booked);
@@ -453,7 +560,17 @@ export class BookSessionComponent implements OnInit {
 				this.message = 'Registered for peer session. Redirecting...';
 				console.log('Join session response: ');
 				console.log(res);
-				this.processPayment(res);
+				this.paymentService.getUserCountry().subscribe(country => {
+					console.log(this.userCountry);
+					this.loadingCountry = false;
+					if (country['country'] === 'IN') {
+						this.router.navigate(['console', 'learning', 'sessions']);
+					} else {
+						this.processPayment(res);
+					}
+				}, err => {
+					console.log(err);
+				});
 			}, (err) => {
 				console.log(err);
 				this.savingData = false;
@@ -461,8 +578,19 @@ export class BookSessionComponent implements OnInit {
 			});
 		} else {
 			const contentArray = [];
-			contentArray.push(this.desiredContent);
-			this.processPayment(this.desiredContent);
+			this.paymentService.getUserCountry().subscribe(res => {
+				console.log(this.userCountry);
+				this.loadingCountry = false;
+				if (res['country'] === 'IN') {
+					this.router.navigate(['console', 'learning', 'sessions']);
+				} else {
+					contentArray.push(this.desiredContent);
+					this.processPayment(this.desiredContent);
+				}
+			}, err => {
+				console.log(err);
+			});
+
 		}
 	}
 
@@ -501,5 +629,121 @@ export class BookSessionComponent implements OnInit {
 		}
 		this.totalCost.next(totalCost);
 		this.totalDuration.next(totalDuration);
+	}
+
+	loadEvents(event) {
+		this.getAvailableSessions();
+	}
+
+	private getUserCountry() {
+		this.paymentService.getUserCountry().subscribe(res => {
+			this.userCountry = res['country'];
+			console.log(this.userCountry);
+			this.loadingCountry = false;
+		}, err => {
+			console.log(err);
+			this.loadingCountry = false;
+		});
+	}
+
+	private loadCCAvenueForm() {
+		console.log('Getting CC Aveneu form');
+		this.ccavenueReady = false;
+		console.log(this.userCountry);
+		console.log(this.paymentStatus);
+
+		console.log(this.isBillingAddressAvailable);
+
+		console.log(this.userCountry === 'IN' && this.paymentStatus === undefined && this.isBillingAddressAvailable);
+
+		// Get CC Avenue encrypted data if payment is being made in India
+		if (this.userCountry === 'IN' && this.paymentStatus === undefined && this.isBillingAddressAvailable) {
+			let studentPhoneNumber = '9999999999';
+			if (this.student.profiles[0].phone_numbers && this.student.profiles[0].phone_numbers.length > 0) {
+				studentPhoneNumber = this.student.profiles[0].phone_numbers[0].subscriber_number;
+			}
+
+			console.log('initialising body');
+
+			const body = {
+				merchant_id: this.ccavenueMerchantId,
+				order_id: Date.now(),
+				currency: 'INR',
+				amount: '' + this.totalCost.getValue(),
+				redirect_url: environment.apiUrl + '/api/transactions/ccavenueResponse',
+				cancel_url: environment.apiUrl + '/api/transactions/ccavenueResponse',
+				integration_type: 'iframe_normal',
+				language: 'en',
+				customer_identifier: this.student.email,
+				billing_name: this.student.profiles[0].first_name + ' ' + this.student.profiles[0].last_name,
+				billing_address: this.addressForm.value.billing_address,
+				billing_city: this.addressForm.value.billing_city,
+				billing_state: this.addressForm.value.billing_state,
+				billing_zip: this.addressForm.value.billing_zip,
+				billing_country: 'India',
+				billing_tel: studentPhoneNumber,
+				billing_email: this.student.email,
+				merchant_param1: '/session/book/' + this.session.id
+			};
+			console.log(body);
+			this.paymentService.getCCAvenueEncryptedRequest(body).subscribe(res => {
+				this.ccavenueEncRequest = res;
+				console.log('this.ccavenueEncRequest');
+				console.log(this.ccavenueEncRequest);
+				this.ccavenueIframe = this.sanitizer.bypassSecurityTrustHtml(this.ccavenueEncRequest);
+				this.ccavenueReady = true;
+			}, err => {
+				console.log(err);
+			});
+		}
+	}
+
+	public handleMessage(e) {
+		if (this.paymentFrame && e.data['newHeight'] !== undefined) {
+			document.getElementById('paymentFrame').setAttribute('height', e.data['newHeight'] + 'px');
+		}
+	}
+
+	private actOnPaymentStatus() {
+		if (this.paymentStatus !== undefined) {
+			this.savingData = true;
+			this.ccavenueReady = false;
+			if (this.userId === undefined || this.userId === null || this.userId.length < 5) {
+				this.userId = this._cookieUtilsService.getValue('userId');
+				console.log('Refreshed USER ID: ' + this.userId);
+			}
+			if (this.paymentStatus === 'Success') {
+				console.log('Payment success. Joining collection and redirecting.');
+				this.message = 'Payment successful. Redirecting...';
+				this.savingData = false;
+				this.joinSession();
+			} else {
+				console.log('Payment unsuccessful.');
+				const message = this.statusMessage && this.statusMessage.length > 0 && this.statusMessage !== 'null' ? this.statusMessage : 'An error occurred.';
+				this.matSnackBar.open(message, 'Retry')
+					.onAction().subscribe(res => {
+						this.router.navigate(['session', 'book', this.session.id]);
+						this.paymentStatus = undefined;
+						this.savingData = false;
+					});
+			}
+		}
+	}
+
+	public saveBillingAddress() {
+		this.savingData = true;
+		this.profileService.addBillingAddress(this.userId, this.student.profiles[0].id, this.addressForm.value).subscribe(res => {
+			if (res) {
+				this.isBillingAddressAvailable = true;
+				this.loadCCAvenueForm();
+			} else {
+				this.isBillingAddressAvailable = false;
+			}
+			this.savingData = false;
+		}, err => {
+			this.savingData = false;
+			this.isBillingAddressAvailable = false;
+			this.matSnackBar.open('Could not save billing address. Try again later.', 'OK', { duration: 5000 });
+		});
 	}
 }
