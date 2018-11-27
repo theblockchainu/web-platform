@@ -294,7 +294,8 @@ export class SessionEditComponent implements OnInit {
 					duration: 60,
 					sessionCount: 1,
 					cancellationPolicy: '3 Days',
-					isFree: false
+					isFree: false,
+					isAvailable: true
 				}),
 				paidPackages: this._fb.array([
 				])
@@ -1365,11 +1366,13 @@ export class SessionEditComponent implements OnInit {
 
 	public submitPackages() {
 		const packagesArray = [];
-		if (this.packageForm.value.trialPackage.isFree) {
-			this.packageForm.value.trialPackage.price = 0;
+		if (this.packageForm.value.trialPackage.isAvailable) {
+			if (this.packageForm.value.trialPackage.isFree) {
+				this.packageForm.value.trialPackage.price = 0;
+			}
+			delete this.packageForm.value.trialPackage.isFree;
+			packagesArray.push(this.packageForm.value.trialPackage);
 		}
-		delete this.packageForm.value.trialPackage.isFree;
-		packagesArray.push(this.packageForm.value.trialPackage);
 		this.packageForm.value.paidPackages.map(packageObj => {
 			if (packageObj.isFree) {
 				packageObj.price = 0;

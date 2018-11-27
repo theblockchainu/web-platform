@@ -958,13 +958,19 @@ export class CollectionService {
 		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/availability', body, this.requestHeaderService.options);
 	}
 
+	private randomIdGenerator() {
+		return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+	}
+
 	public postAvailability(userId: string, collectionId: string, availabilities: Array<any>, approval: boolean, packageId: string) {
 		const contentObjs = [];
+		const paymentBatchId = this.randomIdGenerator();
 		availabilities.forEach(() => {
 			contentObjs.push({
 				type: 'session',
 				title: 'Peer Session',
-				sessionIsApproved: approval
+				sessionIsApproved: approval,
+				paymentBatch: paymentBatchId
 			});
 		});
 		const availabilityLinkRequestArray = [];
@@ -1003,8 +1009,11 @@ export class CollectionService {
 				flatMap(res => {
 					return forkJoin(packageLinkRequestArray);
 				}),
-				flatMap(res => {
-					return contentArray;
+				map(res => {
+					return {
+						contentArray: contentArray,
+						paymentBatchId: paymentBatchId
+					};
 				}));
 	}
 
