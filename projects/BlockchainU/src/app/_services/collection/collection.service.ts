@@ -929,12 +929,17 @@ export class CollectionService {
 			);
 	}
 
-	public postPreferences(collectionId: string, body: any) {
-		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/preferences', this.requestHeaderService.options)
+	public patchPreferences(collectionId: string, body: any) {
+		return this.httpClient.get(environment.apiUrl + '/api/collections/' + collectionId + '/preferences', this.requestHeaderService.options)
 			.pipe(
-				flatMap(res => {
-					return this.httpClient
-						.post(environment.apiUrl + '/api/collections/' + collectionId + '/preferences', body, this.requestHeaderService.options);
+				flatMap((preferences: any) => {
+					if (preferences && preferences.length > 0) {
+						console.log(preferences);
+						return this.httpClient.patch(environment.apiUrl + '/api/preferences/' + preferences[0].id, body, this.requestHeaderService.options);
+					} else {
+						return this.httpClient
+							.post(environment.apiUrl + '/api/collections/' + collectionId + '/preferences', body, this.requestHeaderService.options);
+					}
 				})
 			);
 	}
@@ -958,13 +963,19 @@ export class CollectionService {
 		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/availability', body, this.requestHeaderService.options);
 	}
 
+	private randomIdGenerator() {
+		return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+	}
+
 	public postAvailability(userId: string, collectionId: string, availabilities: Array<any>, approval: boolean, packageId: string) {
 		const contentObjs = [];
+		const paymentBatchId = this.randomIdGenerator();
 		availabilities.forEach(() => {
 			contentObjs.push({
 				type: 'session',
 				title: 'Peer Session',
-				sessionIsApproved: approval
+				sessionIsApproved: approval,
+				paymentBatch: paymentBatchId
 			});
 		});
 		const availabilityLinkRequestArray = [];
@@ -1003,8 +1014,11 @@ export class CollectionService {
 				flatMap(res => {
 					return forkJoin(packageLinkRequestArray);
 				}),
-				flatMap(res => {
-					return contentArray;
+				map(res => {
+					return {
+						contentArray: contentArray,
+						paymentBatchId: paymentBatchId
+					};
 				}));
 	}
 
@@ -1159,4 +1173,9 @@ export class CollectionService {
 			.post(environment.apiUrl + '/api/collections/' + collectionId + '/contents', content,
 				this.requestHeaderService.options);
 	}
+
+	public getPreferences(filter) {
+		return this.httpClient.get(environment.apiUrl + '/api/preferences?filter=' + JSON.stringify(filter), this.requestHeaderService.options);
+	}
+
 }
