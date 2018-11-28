@@ -929,12 +929,17 @@ export class CollectionService {
 			);
 	}
 
-	public postPreferences(collectionId: string, body: any) {
-		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/preferences', this.requestHeaderService.options)
+	public patchPreferences(collectionId: string, body: any) {
+		return this.httpClient.get(environment.apiUrl + '/api/collections/' + collectionId + '/preferences', this.requestHeaderService.options)
 			.pipe(
-				flatMap(res => {
-					return this.httpClient
-						.post(environment.apiUrl + '/api/collections/' + collectionId + '/preferences', body, this.requestHeaderService.options);
+				flatMap((preferences: any) => {
+					if (preferences && preferences.length > 0) {
+						console.log(preferences);
+						return this.httpClient.patch(environment.apiUrl + '/api/preferences/' + preferences[0].id, body, this.requestHeaderService.options);
+					} else {
+						return this.httpClient
+							.post(environment.apiUrl + '/api/collections/' + collectionId + '/preferences', body, this.requestHeaderService.options);
+					}
 				})
 			);
 	}
@@ -1168,4 +1173,9 @@ export class CollectionService {
 			.post(environment.apiUrl + '/api/collections/' + collectionId + '/contents', content,
 				this.requestHeaderService.options);
 	}
+
+	public getPreferences(filter) {
+		return this.httpClient.get(environment.apiUrl + '/api/preferences?filter=' + JSON.stringify(filter), this.requestHeaderService.options);
+	}
+
 }

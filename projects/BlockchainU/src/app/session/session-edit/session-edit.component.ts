@@ -188,7 +188,8 @@ export class SessionEditComponent implements OnInit {
 		private location: Location,
 		public _profileService: ProfileService,
 		private media: MediaMatcher,
-		private cd: ChangeDetectorRef) {
+		private cd: ChangeDetectorRef,
+		private matSnackbar: MatSnackBar) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
 			this.sessionId = params['collectionId'];
@@ -1401,12 +1402,40 @@ export class SessionEditComponent implements OnInit {
 	}
 
 	public savePreferences() {
-		this._collectionService.postPreferences(this.sessionId, this.preferencesForm.value).subscribe(res => {
-			this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems, {
-				preferenceObject: res
-			});
-			this.nextStep();
+		const query = {
+			where: {
+				customUrl: this.preferencesForm.value.customUrl
+			},
+			include: [
+				{ 'collections': 'owners' }
+			]
+		};
+		this._collectionService.getPreferences(query).subscribe((preferences: any) => {
+			console.log(preferences);
+			if (preferences.length > 0) {
+				console.log(preferences[0].collections[0].owners[0].id);
+				console.log(this.userId);
+				
+				if (preferences[0].collections[0].owners[0].id === this.userId) {
+					this._collectionService.patchPreferences(this.sessionId, this.preferencesForm.value).subscribe(res => {
+						this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems, {
+							preferenceObject: res
+						});
+						this.nextStep();
+					});
+				} else {
+					this.matSnackbar.open('Custom url already present', 'close', { duration: 3000 });
+				}
+			} else {
+				this._collectionService.patchPreferences(this.sessionId, this.preferencesForm.value).subscribe(res => {
+					this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems, {
+						preferenceObject: res
+					});
+					this.nextStep();
+				});
+			}
 		});
+
 	}
 
 	public updateEvent(eventHandle) {
