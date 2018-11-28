@@ -129,7 +129,7 @@ export class BookSessionComponent implements OnInit {
 							{
 								'id': availabilityItem.id,
 								'start': moment.utc(availabilityItem.startDateTime).local(),
-								'end': moment.utc(availabilityItem.startDateTime).local().add(60, 'minutes'),
+								'end': moment.utc(availabilityItem.startDateTime).local().add(30, 'minutes'),
 								'color': 'rgb(51,189,158)',
 								'className': 'fsCalendarEvent',
 								'title': 'Available'
@@ -143,7 +143,7 @@ export class BookSessionComponent implements OnInit {
 									{
 										'id': availabilityItem.id,
 										'start': moment.utc(availabilityItem.startDateTime).local(),
-										'end': moment.utc(availabilityItem.startDateTime).local().add(60, 'minutes'),
+										'end': moment.utc(availabilityItem.startDateTime).local().add(30, 'minutes'),
 										'color': 'rgb(255, 107, 113)',
 										'className': 'fsCalendarEvent',
 										'title': 'Approved',
@@ -203,7 +203,7 @@ export class BookSessionComponent implements OnInit {
 
 	private cancel(eventHandle, index) {
 		if (this.selectedPackageIndex) {
-			const numberOfSlots = this.packages[this.selectedPackageIndex].duration / 60;
+			const numberOfSlots = this.packages[this.selectedPackageIndex].duration / 30;
 			for (let i = index; i < Math.min(index + numberOfSlots, this.availability.length - 1); i++) {
 				const temp = _.cloneDeep(this.availability[i]);
 				temp.booked = false;
@@ -224,7 +224,7 @@ export class BookSessionComponent implements OnInit {
 
 	private book(eventHandle, index) {
 		if (this.selectedPackageIndex && this.packages[this.selectedPackageIndex].type === 'paid') {
-			const numberOfSlots = this.packages[this.selectedPackageIndex].duration / 60;
+			const numberOfSlots = this.packages[this.selectedPackageIndex].duration / 30;
 			let assignable = true;
 			let notAssignableReason = 'Cannot select these slots. Try other slots';
 			for (let i = index; i < (index + numberOfSlots); i++) {
@@ -254,7 +254,7 @@ export class BookSessionComponent implements OnInit {
 				});
 			}
 		} else if (this.selectedPackageIndex && this.packages[this.selectedPackageIndex].type === 'trial') {
-			const numberOfSlots = this.packages[this.selectedPackageIndex].duration / 60;
+			const numberOfSlots = this.packages[this.selectedPackageIndex].duration / 30;
 			let assignable = true;
 			for (let i = index; i < (index + numberOfSlots); i++) {
 				if (this.availability[i]) {
@@ -357,7 +357,7 @@ export class BookSessionComponent implements OnInit {
 			const selectedPackage = this.packages[this.selectedPackageIndex];
 			this.availability.forEach(element => {
 				if (element.booked) {
-					totalDuration += 60;
+					totalDuration += 30;
 					bookedSlots.push(element);
 				}
 			});

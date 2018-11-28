@@ -291,7 +291,7 @@ export class SessionEditComponent implements OnInit {
 					type: 'trial',
 					price: 0,
 					currency: 'USD',
-					duration: 60,
+					duration: 30,
 					sessionCount: 1,
 					cancellationPolicy: '3 Days',
 					isFree: false,
@@ -486,6 +486,7 @@ export class SessionEditComponent implements OnInit {
 		};
 
 		this.availableDurations = [
+			{ value: 30, text: '30 min' },
 			{ value: 60, text: '1 hour' },
 			{ value: 120, text: '2 hour' },
 			{ value: 180, text: '3 hour' },
@@ -726,7 +727,7 @@ export class SessionEditComponent implements OnInit {
 						'editable': !(element.contents && element.contents.length > 0),
 						'className': 'fsCalendarEvent',
 						'start': moment.utc(element.startDateTime).local().format('YYYY-MM-DDTHH:mm:ss.sssZ'),
-						'end': moment.utc(element.startDateTime).local().add(60, 'minutes').format('YYYY-MM-DDTHH:mm:ss.sssZ'),
+						'end': moment.utc(element.startDateTime).local().add(30, 'minutes').format('YYYY-MM-DDTHH:mm:ss.sssZ'),
 						'color': (element.contents && element.contents.length > 0) ? 'rgb(255,107,113)' : 'rgb(51,189,158)',
 						'booked': (element.contents && element.contents.length > 0)
 					}
@@ -1296,7 +1297,7 @@ export class SessionEditComponent implements OnInit {
 			const event = {
 				'id': this.events.length,
 				'start': e.date.toISOString(),
-				'end': e.date.add(60, 'minutes').toISOString(),
+				'end': e.date.add(30, 'minutes').toISOString(),
 				'color': 'rgb(51,189,158)',
 				'title': 'Available',
 				'className': 'fsCalendarEvent',
@@ -1335,10 +1336,10 @@ export class SessionEditComponent implements OnInit {
 		// Add new availability
 		const availability = [];
 		this.newEvents.forEach(event => {
-			const numberOfslots = (moment(event.end).diff(moment(event.start), 'minutes') / 60);
+			const numberOfslots = (moment(event.end).diff(moment(event.start), 'minutes') / 30);
 			for (let i = 0; i < numberOfslots; i++) {
 				availability.push({
-					'startDateTime': moment(event.start).add(i * 60, 'minutes').utc().toISOString()
+					'startDateTime': moment(event.start).add(i * 30, 'minutes').utc().toISOString()
 				});
 			}
 		});
@@ -1357,7 +1358,7 @@ export class SessionEditComponent implements OnInit {
 			type: 'paid',
 			price: packageObj !== undefined ? packageObj.price : 0,
 			currency: packageObj !== undefined ? packageObj.currency : 'USD',
-			duration: packageObj !== undefined ? packageObj.duration : 60,
+			duration: packageObj !== undefined ? packageObj.duration : 30,
 			sessionCount: packageObj !== undefined ? packageObj.sessionCount : 1,
 			cancellationPolicy: packageObj !== undefined ? packageObj.cancellationPolicy : '3 Days',
 			isFree: packageObj !== undefined && packageObj.price === 0
