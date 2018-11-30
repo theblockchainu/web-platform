@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
@@ -6,7 +6,6 @@ import { ContentService } from '../../_services/content/content.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import * as _ from 'lodash';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
-import { AddLocationDialogComponent } from '../add-location-dialog/add-location-dialog.component';
 import { environment } from '../../../environments/environment';
 import { DataSharingService } from '../../_services/data-sharing-service/data-sharing.service';
 
@@ -38,7 +37,13 @@ export class ExperienceContentQuizComponent implements OnInit {
     public usePreviousLocation: FormControl;
     public hasPreviousLocation: boolean;
     public previousLocations: Array<any>;
-    public questionArray: Array<FormGroup>;
+    public questionArray;
+    public questionTypes = [
+		{name: 'Short Answer', value: 'short-text'},
+		{name: 'Long Answer', value: 'long-text'},
+		{name: 'Single Choice', value: 'single-choice'}
+	];
+	
 
     constructor(
         private _fb: FormBuilder,
@@ -57,6 +62,7 @@ export class ExperienceContentQuizComponent implements OnInit {
         this.isEdit = inputData.isEdit;
         this.contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
         this.contentForm = <FormGroup>this.contentsFArray.controls[this.lastIndex];
+		this.questionArray = <FormArray>this.contentForm.controls['questions'];
         console.log('contentform');
         console.log(this.contentForm);
         this.image = this.contentForm.controls['imageUrl'];
@@ -70,7 +76,11 @@ export class ExperienceContentQuizComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.questionArray = [];
+    	if (this.questionArray.length === 0) {
+			this.questionArray.push(
+				this.initcontentQuestion()
+			);
+		}
         const content = <FormArray>this.itenaryForm.controls.contents;
         this.lastIndex = this.lastIndex !== -1 ? this.lastIndex : content.controls.length - 1;
         this.resultData['data'] = this.lastIndex;
@@ -150,7 +160,7 @@ export class ExperienceContentQuizComponent implements OnInit {
      * @returns {any}
      */
     getEditDialogData() {
-        console.log('changing result data to save');
+        // console.log('changing result data to save');
         this.resultData['status'] = 'edit';
         return JSON.stringify(this.resultData);
     }
@@ -264,37 +274,6 @@ export class ExperienceContentQuizComponent implements OnInit {
             ;
     }
 
-    public openAddLocationDialog() {
-        let dialogRef1: any;
-        dialogRef1 = this.dialog.open(AddLocationDialogComponent,
-            {
-                data: {
-                    locationForm: _.cloneDeep(this.contentForm.controls.location),
-                    contentFormArray: _.cloneDeep(this.contentsFArray),
-                    contentForm: _.cloneDeep(this.contentForm),
-                    isEdit: this.isEdit
-                }, panelClass: 'responsive-dialog',
-                disableClose: true,
-                hasBackdrop: true,
-                width: '45vw',
-                height: '100vh'
-            }
-        );
-        dialogRef1.afterClosed().subscribe((result) => {
-            // do something here
-            if (result !== undefined) {
-                const resultJson = JSON.parse(result);
-                if (resultJson.status === 'save') {
-                    this.contentForm.controls.location.patchValue(resultJson.locationForm);
-                } else if (resultJson.status === 'edit') {
-                    this.contentForm.controls.location.patchValue(resultJson.locationForm);
-                } else {
-                    // do nothing
-                }
-            }
-        });
-    }
-
     addQuestion() {
         this.questionArray.push(
             this.initcontentQuestion()
@@ -304,16 +283,16 @@ export class ExperienceContentQuizComponent implements OnInit {
     initcontentQuestion() {
         return this._fb.group({
             question_text: [''],
-            marks: [''],
-            word_limit: [''],
+            marks: 1,
+            word_limit: 1000,
             options: this._fb.array([]),
-            type: [''],
-            correct_answer: ['']
+            type: ['short-text'],
+            correct_answer: 0
         });
     }
 
     addOption(index: number) {
-        const questionForm = <FormGroup>this.questionArray[index];
+        const questionForm = <FormGroup>this.questionArray.controls[index];
         const optionsFormArray = <FormArray>questionForm.controls['options'];
         optionsFormArray.push(this.initOption());
     }
@@ -321,6 +300,39 @@ export class ExperienceContentQuizComponent implements OnInit {
     initOption() {
         return this._fb.control('');
     }
+    
+    questionTypeChange(event, index) {
+    	switch (event.value) {
+			case 'long-text':
+				this.questionArray.controls[index].controls['word_limit'].setValue(5000);
+				break;
+			case 'short-text':
+				this.questionArray.controls[index].controls['word_limit'].setValue(1000);
+				break;
+			case 'single-choice':
+				this.addOption(index);
+				this.questionArray.controls[index].controls['word_limit'].setValue(1000);
+				break;
+			default:
+				break;
+		}
+	}
+	
+	setCorrectAnswer(event, questionIndex, optionIndex) {
+    	this.questionArray.controls[questionIndex].controls['correct_answer'].setValue('' + event.value);
+	}
 
+	removeQuestion(index) {
+    	this.questionArray.removeAt(index);
+	}
+	
+	removeOption(questionIndex, optionIndex) {
+		this.questionArray.controls[questionIndex].controls['options'].removeAt(optionIndex);
+	}
+	
+	checkCorrectAnswer(questionIndex, optionIndex) {
+    	console.log('correct answer: ' + this.questionArray.controls[questionIndex].controls['correct_answer'] + ', optionIndex: ' + optionIndex);
+    	return this.questionArray.controls[questionIndex].controls['correct_answer'] === optionIndex.toString();
+	}
 
 }

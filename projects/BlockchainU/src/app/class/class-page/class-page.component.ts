@@ -43,6 +43,7 @@ import { ContentOnlineComponent } from './content-online/content-online.componen
 import { UcWordsPipe } from 'ngx-pipes';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { ProfileService } from '../../_services/profile/profile.service';
+import {ContentQuizComponent} from './content-quiz/content-quiz.component';
 declare var FB: any;
 declare var fbq: any;
 
@@ -261,14 +262,15 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.recommendations = {
 			collections: []
 		};
-		this.dateClicked = false;
-		this.checkingEthereum = true;
 		this.today = moment();
+		this.checkingEthereum = true;
 		this.isOnEthereum = false;
 		this.view = 'month';
+		this.dateClicked = false;
 		this.viewDate = new Date();
 		this.refresh = new Subject();
-		this.events = [];
+		this.events = [
+		];
 		this.activeDayIsOpen = true;
 		this.loadingSimilarClasses = true;
 		this.loadingComments = true;
@@ -277,7 +279,10 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.inviteLink = '';
 		this.loadingClass = true;
 		this.loadingReviews = true;
+		this.accountApproved = 'false';
+		this.inviteLink = '';
 		this.isFollowing = false;
+		
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.classId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
 				location.reload();
@@ -293,6 +298,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 			if (params['referredBy']) {
 				this._collectionService.saveRefferedBY(params['referredBy']);
+			} else {
+				this._cookieUtilsService.deleteValue('referrerId');
 			}
 		});
 		this.userId = this._cookieUtilsService.getValue('userId');
@@ -523,17 +530,30 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				'topics',
 				'calendars',
 				'views',
-				'peersFollowing',
-				{ 'participants': [{ 'profiles': ['work'] }] },
+				{ 'participants': [
+						{ 'profiles': ['work'] }
+					]
+				},
 				{ 'owners': [{ 'profiles': ['work'] }] },
 				{
-					'contents': ['locations', 'schedules', { 'rsvps': 'peer' },
-						{ 'views': 'peer' }, {'submissions': [{ 'upvotes': 'peer' },
-								{ 'peer': 'profiles' }]
-						}]
+					'contents': [
+							'locations',
+							'schedules',
+							{ 'questions': {'answers': { 'peer': 'profiles'}}},
+							{ 'rsvps': 'peer' },
+							{ 'views': 'peer' },
+							{'submissions': [
+									{ 'upvotes': 'peer' },
+									{ 'peer': 'profiles' }
+								]
+						}
+					]
 				},
 				'rooms',
-				{ 'assessment_models': [{ 'assessment_na_rules': { 'assessment_result': 'assessees' } }, { 'assessment_rules': { 'assessment_result': 'assessees' } }] }
+				'peersFollowing',
+				{ 'assessment_models': [
+						{ 'assessment_na_rules': { 'assessment_result': 'assessees' } },
+						{ 'assessment_rules': { 'assessment_result': 'assessees' } }] }
 			],
 			'relInclude': 'calendarId',
 			'where': {
@@ -685,7 +705,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					});
 				});
 			} else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
-				const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
+				this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
 			}
 			this.recordStartView();
 		} else {
@@ -991,7 +1011,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				);
 			}
 		});
-		
 	}
 	
 	gotoEdit() {
@@ -1248,6 +1267,25 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				});
 				break;
 			}
+			case 'quiz':
+			{
+				const dialogRef = this.dialog.open(ContentQuizComponent, {
+					data: {
+						content: content,
+						startDate: startDate,
+						endDate: endDate,
+						userType: this.userType,
+						collectionId: this.classId,
+						collection: this.class,
+						calendarId: this.calendarId,
+						participants: this.participants
+					},
+					panelClass: 'responsive-dialog',
+					width: '45vw',
+					height: '100vh'
+				});
+				break;
+			}
 			case 'video':
 			{
 				const dialogRef = this.dialog.open(ContentVideoComponent, {
@@ -1261,7 +1299,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						calendarId: this.calendarId
 					},
 					panelClass: 'responsive-dialog',
-					width: '50vw',
+					width: '45vw',
 					height: '100vh'
 				});
 				break;
@@ -1316,7 +1354,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		endMoment.minutes(endTime.minutes());
 		
 		if (startMoment.diff(currentMoment, 'minutes') < 0) {
-			content.timetoSession = 'Completed ' + endMoment.fromNow();
+			content.timetoSession = 'Ended ' + endMoment.fromNow();
 		} else {
 			content.timetoSession = 'We will remind you ' + startMoment.fromNow();
 		}
@@ -1591,7 +1629,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.participants = [];
 		this.loadingParticipants = true;
 		const query = {
-			'relInclude': 'calendarId',
+			'relInclude': ['calendarId', 'referrerId'],
 			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections', 'certificates']
 		};
 		let isCurrentUserParticipant = false;
@@ -1878,6 +1916,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public openAssessmentDialog() {
 		this.dialogsService.studentAssessmentDialog(
 			{
+				'collection': this.class,
 				'participants': this.participants,
 				'assessment_models': this.class.assessment_models,
 				'academicGyan': this.class.academicGyan,
@@ -1957,21 +1996,25 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 	
 	private getCertificatetemplate() {
-		this.certificateService.getCertificateTemplate(this.classId).subscribe((res: any) => {
-			if (res !== undefined && res !== null) {
-				this.certificateHTML = res.certificateHTML;
-				this.certificateDomSubscription = this.certificateDomHTML.changes.subscribe(elem => {
-					if (elem['first']) {
-						const image = elem['first'].nativeElement.children[0].children[0].children[1].children[0];
-						image.src = '/assets/images/theblockchainu-qr.png';
-					}
-				});
-			}
-			this.loadingCertificate = false;
-		});
+		try {
+			this.certificateService.getCertificateTemplate(this.classId).subscribe((res: any) => {
+				if (res !== undefined && res !== null) {
+					this.certificateHTML = res.certificateHTML;
+					this.certificateDomSubscription = this.certificateDomHTML.changes.subscribe(elem => {
+						if (elem['first']) {
+							const image = elem['first'].nativeElement.children[0].children[0].children[1].children[0];
+							image.src = '/assets/images/theblockchainu-qr.png';
+						}
+					});
+				}
+				this.loadingCertificate = false;
+			});
+		} catch (e) {
+			console.log(e);
+		}
 	}
 	
-	public getGyanForRule(gyanPercent, totalGyan) {
+	public getGyanForRule(gyanPercent, totalGyan){
 		return Math.floor((gyanPercent / 100) * totalGyan);
 	}
 	
@@ -1995,7 +2038,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					console.log('added');
 					console.log(res);
 					this.isFollowing = true;
-					this.snackBar.open('Class Subscribed', 'close', { duration: 3000 });
+					this.snackBar.open('Course Subscribed', 'close', { duration: 3000 });
 				}, (err) => {
 					console.log(err);
 				});
@@ -2004,7 +2047,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					console.log('deleted');
 					console.log(res);
 					this.isFollowing = false;
-					this.snackBar.open('Class unsubscribed', 'close', { duration: 3000 });
+					this.snackBar.open('Course unsubscribed', 'close', { duration: 3000 });
 				}, (err) => {
 					console.log(err);
 				});

@@ -67,7 +67,7 @@
 				</div>
 			</div>
 
-			<div *ngIf="data.content.youtubeId">
+			<div *ngIf="data.content.youtubeId && userType !== 'public'">
 				<iframe id="player" type="text/html" width="640" height="390" [src]="'http://www.youtube.com/embed/'+data.content.youtubeId+'?enablejsapi=1&origin='+envVariable.clientUrl | safe:'resourceUrl'"
 				 frameborder="0"></iframe>
 			</div>

@@ -19,25 +19,25 @@ import { environment } from '../../../environments/environment';
 	// Every Angular template is first compiled by the browser before Angular runs it's compiler
 	templateUrl: './experience-content.component.html',
 	styleUrls: ['./experience-content.component.scss']
-
+	
 })
 
 export class ExperienceContentComponent implements OnInit, AfterViewInit {
 	@Input()
 	public myForm: FormGroup;
-
+	
 	@Input()
 	public collection: any;
-
+	
 	@Input()
 	public status: string;
-
+	
 	@Input()
 	public calendar: any;
-
+	
 	@Output()
 	days = new EventEmitter<any>();
-
+	
 	public envVariable;
 	constructor(
 		public authenticationService: AuthenticationService,
@@ -53,15 +53,15 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 	) {
 		this.envVariable = environment;
 	}
-
+	
 	ngOnInit() {
 		this.myForm.addControl('itenary', this._fb.array([this.initItenary()]));
 	}
-
+	
 	ngAfterViewInit() {
 		this.cd.detectChanges();
 	}
-
+	
 	initItenary() {
 		return this._fb.group({
 			date: [null],
@@ -69,27 +69,27 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 			contents: this._fb.array([])
 		});
 	}
-
+	
 	addItenary() {
 		this.checkExperienceActive();
 	}
-
+	
 	removeItenary(i: number) {
 		const itenaries = <FormArray>this.myForm.controls.itenary;
 		const itenaryGroup = <FormGroup>itenaries.controls[i];
 		const contents = <Array<any>>itenaryGroup.value.contents;
-
+		
 		let deleteIndex = 0;
-
+		
 		while (deleteIndex !== contents.length) {
 			this.http.delete(environment.apiUrl + '/api/contents/' + contents[deleteIndex].id, this.requestHeaderService.options)
-				;
+			;
 			deleteIndex++;
 		}
 		itenaries.removeAt(i);
 		this.days.emit(itenaries);
 	}
-
+	
 	save(myForm: FormGroup) {
 		console.log(myForm.value);
 	}
@@ -101,7 +101,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 		const start = moment(startDate);
 		return current.diff(start, 'days');
 	}
-
+	
 	checkExperienceActive() {
 		if (this.collection.status === 'active') {
 			this.showDialogForActiveExperience(false);
@@ -111,11 +111,11 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 			this.days.emit(itenaries);
 		}
 	}
-
+	
 	reload(collectionId, step) {
 		window.location.href = '/experience/' + collectionId + '/edit/' + step;
 	}
-
+	
 	private executeSubmitExperience(collection) {
 		const calendars = collection.calendars;
 		const timeline = collection.contents;
@@ -128,13 +128,13 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 				let collectionId;
 				if (result.isNewInstance) {
 					collectionId = result.id;
-					this.reload(collectionId, 13);
+					this.reload(collectionId, 16);
 				} else {
 					window.location.reload();
 				}
 			});
 	}
-
+	
 	showDialogForActiveExperience(isContent) {
 		this._dialogsService.openCollectionCloneDialog({ type: 'experience' })
 			.subscribe((result) => {
@@ -148,7 +148,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 				}
 			});
 	}
-
+	
 	saveTriggered(event, i) {
 		if (event.action === 'add') {
 			// Show cloning warning since collection is active
@@ -165,7 +165,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 			} else {
 				this.postContent(event, i);
 			}
-
+			
 		} else if (event.action === 'update') {
 			if (this.collection.status === 'active') {
 				this._dialogsService.openCollectionCloneDialog({ type: 'experience' })
@@ -218,7 +218,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 			console.log('unhandledEvent Triggered');
 		}
 	}
-
+	
 	postContent(event, i) {
 		let collectionId;
 		const itenaryObj = this.myForm.value.itenary[i];
@@ -226,20 +226,22 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 		const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
 		const schedule = contentObj.schedule;
 		const location = contentObj.location;
+		const questions = contentObj.questions;
 		delete schedule.id;
 		delete contentObj.id;
 		delete contentObj.schedule;
 		delete contentObj.location;
 		delete contentObj.pending;
-
+		delete contentObj.questions;
+		
 		let contentId;
 		const itenary = <FormArray>this.myForm.controls.itenary;
 		const form = <FormGroup>itenary.controls[i];
 		const contentsArray = <FormArray>form.controls.contents;
 		const contentGroup = <FormGroup>contentsArray.controls[event.value];
-
-		if (contentObj.type === 'project' || contentObj.type === 'video') {
-			if (contentObj.type === 'video') {
+		
+		if (contentObj.type === 'project' || contentObj.type === 'video' || (contentObj.type === 'quiz' && !contentObj.isTimeBound)) {
+			if (contentObj.type === 'video' || contentObj.type === 'quiz') {
 				schedule.endDay = 0;
 			} else {
 				const endDate = new Date(schedule.endDay);
@@ -247,26 +249,17 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 			}
 			schedule.startTime = new Date(0, 0, 0, 1, 0, 0, 0);
 			schedule.endTime = new Date(0, 0, 0, 1, 0, 0, 0);
-		} else if (contentObj.type === 'online' || contentObj.type === 'in-person') {
-			/*const startTimeArr = schedule.startTime.toString().split(':');
-			const startHour = startTimeArr[0];
-			const startMin = startTimeArr[1];
-			schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);*/
+		} else if (contentObj.type === 'online' || contentObj.type === 'in-person' || (contentObj.type === 'quiz' && contentObj.isTimeBound)) {
 			schedule.startTime = moment('01-02-1990 ' + schedule.startTime + ':00').format();
-
-			/*const endTimeArr = schedule.endTime.toString().split(':');
-			const endHour = endTimeArr[0];
-			const endMin = endTimeArr[1];
-			schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);*/
 			schedule.endTime = moment('01-02-1990 ' + schedule.endTime + ':00').format();
 			schedule.endDay = 0;
 		}
 		schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
-
+		
 		this.http.post(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents', contentObj, this.requestHeaderService.options)
 			.subscribe((response: any) => {
 				const result = response;
-
+				
 				if (result.isNewInstance) {
 					collectionId = result.id;
 					result.contents.forEach((content) => {
@@ -278,44 +271,50 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 					contentId = result.id;
 				}
 				contentGroup.controls.id.setValue(contentId);
-
+				
 				this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.requestHeaderService.options)
 					.subscribe((resp: any) => {
 						if (resp.status === 200) {
-							const Itenary = <FormArray>this.myForm.controls.itenary;
-							const Form = <FormGroup>Itenary.controls[i];
-							const ContentsArray = <FormArray>Form.controls.contents;
-							const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
-							ContentGroup.controls.pending.setValue(false);
-							Form.controls['startDay'].patchValue(resp.startDay);
+							contentGroup.controls.pending.setValue(false);
+							form.controls['startDay'].patchValue(resp.startDay);
 						}
 						if (collectionId) {
-							this.reload(collectionId, 13);
+							this.reload(collectionId, 16);
 						}
 					})
-					;
-
+				;
+				
 				// Add a location to this content
 				if (location !== undefined) {
 					this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/location', location, this.requestHeaderService.options)
 						.subscribe((resp: any) => {
 							if (resp.status === 200) {
-								const Itenary = <FormArray>this.myForm.controls.itenary;
-								const Form = <FormGroup>Itenary.controls[i];
-								const ContentsArray = <FormArray>Form.controls.contents;
-								const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
-								ContentGroup.controls.pending.setValue(false);
+								contentGroup.controls.pending.setValue(false);
 							}
 							if (collectionId) {
-								this.reload(collectionId, 13);
+								this.reload(collectionId, 16);
 							}
 						})
-						;
+					;
+				}
+				
+				// Add questions to this content
+				if (questions !== undefined && questions.length > 0) {
+					this.http.post(environment.apiUrl + '/api/contents/' + contentId + '/questions', questions, this.requestHeaderService.options)
+						.subscribe((resp: any) => {
+							if (resp.status === 200) {
+								contentGroup.controls.pending.setValue(false);
+							}
+							if (collectionId) {
+								this.reload(collectionId, 16);
+							}
+						})
+					;
 				}
 			})
-			;
+		;
 	}
-
+	
 	patchContent(event, i) {
 		let collectionId;
 		const itenary = <FormArray>this.myForm.controls.itenary;
@@ -324,42 +323,36 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 		const contentGroup = <FormGroup>contentsArray.controls[event.value];
 		const ContentSchedule = <FormGroup>contentGroup.controls.schedule;
 		contentGroup.controls.pending.setValue(true);
-
+		
 		const itenaryObj = this.myForm.value.itenary[i];
 		const scheduleDate = itenaryObj.date;
 		const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
 		const schedule = contentObj.schedule;
 		const location = contentObj.location;
+		const questions = contentObj.questions;
 		delete schedule.id;
 		let contentId = contentObj.id;
 		delete contentObj.id;
 		delete contentObj.schedule;
 		delete contentObj.location;
 		delete contentObj.pending;
+		delete contentObj.questions;
 		if (contentObj.type === 'project') {
 			const endDay = new Date(schedule.endDay);
 			schedule.endDay = endDay;
 		}
-		if (contentObj.type === 'online' || contentObj.type === 'in-person' || contentObj.type === 'video') {
+		if (contentObj.type === 'online' || contentObj.type === 'in-person' || contentObj.type === 'video' || contentObj.type === 'quiz') {
 			schedule.endDay = 0;
 		}
 		schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
 		if (schedule.startTime === '') {
 			schedule.startTime = new Date(0, 0, 0, 1, 0, 0, 0);
 		} else {
-			/*const startTimeArr = schedule.startTime.toString().split(':');
-			const startHour = startTimeArr[0];
-			const startMin = startTimeArr[1];
-			schedule.startTime = new Date(0, 0, 0, startHour, startMin, 0, 0);*/
 			schedule.startTime = moment('01-02-1990 ' + schedule.startTime + ':00').format();
 		}
 		if (schedule.endTime === '') {
 			schedule.endTime = new Date(0, 0, 0, 23, 0, 0, 0);
 		} else {
-			/*const endTimeArr = schedule.endTime.toString().split(':');
-			const endHour = endTimeArr[0];
-			const endMin = endTimeArr[1];
-			schedule.endTime = new Date(0, 0, 0, endHour, endMin, 0, 0);*/
 			schedule.endTime = moment('01-02-1990 ' + schedule.endTime + ':00').format();
 		}
 		this.http.put(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, contentObj, this.requestHeaderService.options)
@@ -373,35 +366,47 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 						}
 					});
 				}
+				
+				// Edit a schedule of this content
 				this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.requestHeaderService.options)
 					.subscribe((resp: any) => {
 						if (resp.status === 200) {
 							contentGroup.controls.pending.setValue(false);
 						}
-					})
-					;
-
+						if (collectionId) {
+							this.reload(collectionId, 16);
+						}
+					});
+				
 				// Edit a location of this content
 				if (location !== undefined) {
 					this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/location', location, this.requestHeaderService.options)
 						.subscribe((resp: any) => {
 							if (resp.status === 200) {
-								const Itenary = <FormArray>this.myForm.controls.itenary;
-								const Form = <FormGroup>Itenary.controls[i];
-								const ContentsArray = <FormArray>Form.controls.contents;
-								const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
-								ContentGroup.controls.pending.setValue(false);
+								contentGroup.controls.pending.setValue(false);
 							}
-						})
-						;
+							if (collectionId) {
+								this.reload(collectionId, 16);
+							}
+						});
 				}
-				if (collectionId) {
-					this.reload(collectionId, 13);
+				
+				// Edit questions of this content
+				console.log(questions);
+				if (questions !== undefined && questions.length > 0) {
+					this._collectionService.updateContentQuestions(contentId, questions)
+						.subscribe((resp: any) => {
+							if (resp.status === 200) {
+								contentGroup.controls.pending.setValue(false);
+							}
+							if (collectionId) {
+								this.reload(collectionId, 16);
+							}
+						});
 				}
-			})
-			;
+			});
 	}
-
+	
 	deleteContent(eventIndex, index) {
 		const itenaryObj = this.myForm.value.itenary[index];
 		const scheduleDate = itenaryObj.date;
@@ -415,7 +420,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 						const result = response;
 						if (result.isNewInstance) {
 							collectionId = result.id;
-							this.reload(collectionId, 13);
+							this.reload(collectionId, 16);
 						} else {
 							const itenary = <FormArray>this.myForm.controls.itenary;
 							const form = <FormGroup>itenary.controls[index];
@@ -429,7 +434,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 						contentsArray.removeAt(eventIndex);
 					}
 				})
-				;
+			;
 		} else {
 			const contentArray = itenaryObj.contents;
 			contentArray.forEach(content => {
@@ -439,7 +444,7 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 							const result = response;
 							if (result && result.isNewInstance) {
 								collectionId = result.id;
-								this.reload(collectionId, 13);
+								this.reload(collectionId, 16);
 							} else {
 								const itenary = <FormArray>this.myForm.controls.itenary;
 							}
@@ -447,19 +452,19 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 							const itenary = <FormArray>this.myForm.controls.itenary;
 						}
 					})
-					;
+				;
 			});
 		}
 	}
-
+	
 	getCalendarStartDate() {
 		return new Date(this.calendar.startDate);
 	}
-
+	
 	getCalendarEndDate() {
 		return new Date(this.calendar.endDate);
 	}
-
+	
 	getSelectedItineraryDates() {
 		const selectedDates = [];
 		const itineraries = <FormArray>this.myForm.controls.itenary;
@@ -470,5 +475,5 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 		});
 		return selectedDates;
 	}
-
+	
 }

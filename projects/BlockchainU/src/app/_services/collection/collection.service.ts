@@ -181,6 +181,7 @@ export class CollectionService {
 		delete collection.createdAt;
 		delete collection.isApproved;
 		delete collection.isCanceled;
+		delete collection.options;
 		delete collection.status;
 		delete collection.updatedAt;
 		return collection;
@@ -1164,5 +1165,26 @@ export class CollectionService {
 		return this.httpClient
 			.post(environment.apiUrl + '/api/collections/' + collectionId + '/contents', content,
 				this.requestHeaderService.options);
+	}
+	
+	public updateContentQuestions(contentId, questions: any) {
+		if (!(questions.length > 0)) {
+			console.log('User not logged in');
+		} else {
+			return this.httpClient.delete(environment.apiUrl + '/api/contents/' + contentId + '/questions', this.requestHeaderService.options)
+				.pipe(
+					flatMap(
+						(response: any) => {
+							return this.httpClient
+								.post(environment.apiUrl + '/api/contents/' + contentId + '/questions', this.sanitize(questions), this.requestHeaderService.options);
+						}
+					)
+				);
+		}
+	}
+	
+	public postAnswers(questionId: string, answer: any) {
+		return this.httpClient
+			.post(environment.apiUrl + '/api/content_questions/' + questionId + '/answers', answer, this.requestHeaderService.options);
 	}
 }

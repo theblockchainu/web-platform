@@ -12,6 +12,8 @@ import {VgOverlayPlayModule} from 'videogular2/overlay-play';
 import {VgControlsModule} from 'videogular2/controls';
 import {VgBufferingModule} from 'videogular2/buffering';
 import {VgCoreModule} from 'videogular2/core';
+import { ClassContentQuizComponent } from './class-content-quiz/class-content-quiz.component';
+import {DataSharingService} from '../_services/data-sharing-service/data-sharing.service';
 @NgModule({
     imports: [
         SharedModule,
@@ -28,10 +30,11 @@ import {VgCoreModule} from 'videogular2/core';
         AppointmentCalendarComponent,
         ClassContentOnlineComponent,
         ClassContentProjectComponent,
-        ClassContentVideoComponent
+        ClassContentVideoComponent,
+        ClassContentQuizComponent
     ],
-    providers: [],
+    providers: [DataSharingService],
     bootstrap: [],
-    entryComponents: [ClassContentOnlineComponent, ClassContentProjectComponent, ClassContentVideoComponent]
+    entryComponents: [ClassContentOnlineComponent, ClassContentProjectComponent, ClassContentVideoComponent, ClassContentQuizComponent]
 })
 export class ClassModule { }
