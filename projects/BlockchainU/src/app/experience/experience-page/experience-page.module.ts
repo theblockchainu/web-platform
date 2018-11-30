@@ -14,6 +14,7 @@ import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
 import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
 import { CovalentMarkdownModule } from '@covalent/markdown';
+import { ContentQuizComponent } from './content-quiz/content-quiz.component';
 
 @NgModule({
 	imports: [
@@ -34,8 +35,8 @@ import { CovalentMarkdownModule } from '@covalent/markdown';
 		VgBufferingModule,
 		CovalentMarkdownModule
 	],
-	declarations: [ExperiencePageComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
-	bootstrap: [ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
+	declarations: [ExperiencePageComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent, ContentQuizComponent],
+	bootstrap: [ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent, ContentQuizComponent],
 	providers: [ProjectSubmissionService]
 
 })

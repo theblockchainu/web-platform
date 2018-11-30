@@ -1,6 +1,6 @@
 <div class="main-content">
 	<div class="row" [hidden]="!loadingClass">
-		<div class="col-xs-2 col-xs-offset-4">
+		<div class="col-xs-2 col-xs-offset-1">
 			<div class="loading-container">
 				<ngx-loading [show]="true"></ngx-loading>
 			</div>
@@ -225,6 +225,22 @@
 								</mat-chip-list>
 							</div>
 						</div>
+						<div class="row margin-top-40 upcomingCohortBox" *ngIf="userType === 'public' && class.subCategory === 'instructor led' && _collectionService.getUpcomingCalendar(experience.calendars)">
+							<div class="col-md-1 col-xs-1">
+								<i class="fa fa-info-circle lightText"></i>
+							</div>
+							<div class="col-md-8 col-xs-8">
+								Next cohort starts
+								{{_collectionService.getDaysBetween(_collectionService.getUpcomingCalendar(class.calendars).startDate,
+								today)}}
+								<br>
+								<b>{{_collectionService.getUpcomingCalendar(class.calendars).startDate | extractTime:'Do MMMM YY'}}</b> -
+								<b>{{_collectionService.getUpcomingCalendar(class.calendars).endDate | extractTime:'Do MMMM YY'}}</b>
+							</div>
+							<div class="col-md-3 col-xs-3" style="text-align: right">
+								<button mat-button class="mat-border-button" (click)="selectJoiningDates()">View Dates</button>
+							</div>
+						</div>
 						<div *ngIf="userType==='public'" class="row Description margin-top-20 pre-wrapped">
 							<div class="col-xs-4">
 								<h3 *ngIf="userType === 'public'">Course overview</h3>
@@ -337,11 +353,9 @@
 													<div class="qa-message-content">
 														<div style="top: -5px; position: relative;">
 															<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined">
-																{{itenary.startDate
-																| date:'EEEE, d MMMM'}} </div>
+																{{itenary.startDate | date:'EEEE, d MMMM'}} </div>
 															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length > 1">{{add1ToIndex(itenary.startDay)}}</div>
-															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate
-																| date:'EEEE, d MMMM'}}</div>
+															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate | date:'EEEE, d MMMM'}}</div>
 														</div>
 														<div (mouseover)="showViewTime(content)" (mouseout)="hideViewTime(content)" [ngClass]="{'row':true, 'timelineRowItem': true, 'timeRowItemProgress': content.views !== undefined && content.views.length > 0 && userType === 'participant'}"
 														 *ngFor="let content of itenary.contents">
@@ -350,12 +364,13 @@
 															</div>
 															<a style="cursor:pointer;color:rgba(0,0,0,0.87)" (click)="openDialog(content, itenary.startDate, itenary.endDate)">
 																<div class="col-md-5">
-																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video'" class="img-responsive itenary-media"
+																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video' && content.type !== 'quiz'" class="img-responsive itenary-media"
 																	 src="{{envVariable.apiUrl+content.imageUrl}}/300" (error)="_collectionService.imgErrorHandler($event)">
 																	<video #videoContent width="100%" height="auto" *ngIf="content.type==='video' && !content.youtubeId"
 																	 class="itenary-media" preload="metadata" (error)="_collectionService.imgErrorHandler($event)">
 																		<source src="{{envVariable.apiUrl+content.imageUrl}}">
 																	</video>
+																	<img *ngIf="content.type === 'quiz'" style="width: auto; border: 0.5px solid #eee;" class="img-responsive itenary-media" src="/assets/images/community-banner-bg.jpg">
 																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type==='video' && content.youtubeId"
 																	 class="img-responsive itenary-media" [src]="'https://img.youtube.com/vi/'+content.youtubeId+'/0.jpg'| safe:'resourceUrl'"
 																	 (error)="_collectionService.imgErrorHandler($event)">
@@ -367,15 +382,17 @@
 																		<div class="col-md-12">
 																			<h3> {{content.title | titlecase}}</h3>
 																			<div>
-																				<span class="mat-caption" *ngIf="content.schedules[0].startTime !== undefined && content.type === 'online'">
-																					{{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm
-																					a'}} &nbsp;&nbsp;&nbsp;
+																				<span class="mat-caption" *ngIf="content.schedules[0].startTime !== undefined && (content.type === 'online' || (content.isTimeBound && content.type === 'quiz'))">
+																					{{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm a'}} &nbsp;&nbsp;&nbsp;
 																					<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
 																				</span>
 																				{{_collectionService.getContentTypeFullName(content.type) | titlecase}}
 																			</div>
 																		</div>
-																		<div *ngIf="userType === 'public' || content.type !== 'online'" class="col-md-12 margin-top-10 textJustify">
+																		<div *ngIf="content.type === 'quiz' && content.questions" class="col-md-12 margin-top-10 textJustify">
+																			<span class="pre-wrapped">{{content.questions.length}} Questions</span>
+																		</div>
+																		<div *ngIf="userType === 'public' || (content.type !== 'online' && content.type !== 'quiz')" class="col-md-12 margin-top-10 textJustify">
 																			<span class="pre-wrapped">{{content.description | shorten: 115 : '...'}}</span>
 																		</div>
 																	</div>
@@ -388,8 +405,7 @@
 																</div>
 																<div class="row margin-top-10">
 																	<div class="col-md-12" *ngIf="userType !=='participant' && userType !== 'teacher'">
-																		<a href="javascript:void(0);" (click)="openDialog(content, itenary.startDate, itenary.endDate)">See
-																			details</a>
+																		<a href="javascript:void(0);" (click)="openDialog(content, itenary.startDate, itenary.endDate)">See details</a>
 																	</div>
 																</div>
 															</div>
@@ -871,18 +887,19 @@
 							</div>
 						</div>
 						<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId === undefined">
-							<h3 class="margin-bottom-20">Participants ({{allParticipants ? allParticipants.length : '0'}})</h3>
+							<h3 class="margin-bottom-20">All Participants ({{allParticipants ? allParticipants.length : '0'}})</h3>
 							<div>
 								<div class="loading-container" [hidden]="!loadingParticipants">
 									<ngx-loading [show]="true"></ngx-loading>
 								</div>
 								<div *ngFor="let participant of allParticipants; let i=index">
-									<div class="row" *ngIf="participant.profiles && i<4">
+									<div class="row margin-bottom-10" *ngIf="participant.profiles && i<4">
 										<div class="col-md-2 vcenter clickable">
 											<app-profile-popup [peer]="participant"></app-profile-popup>
 										</div>
 										<div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
 											{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
+											<br>
 											<span *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="lightText">{{participant.profiles[0].headline}}</span>
 										</div>
 									</div>
@@ -900,7 +917,7 @@
 									<div class="row">
 										<div class="col-md-12">
 											<div class="emptySectionText">
-												Select one course cohort to view participants signed up for that batch.
+												Select one cohort to view participants signed up for that batch.
 												<br>
 												<br>
 												<button mat-button class="mat-border-button" (click)="changeDates()">Select cohort</button>
@@ -966,8 +983,8 @@
 							<div [ngClass]="{'clickedDate' : true, 'displayNone' : !dateClicked, 'displayBlock': dateClicked}">
 								<div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
 									<span class="cal-day-badge"></span>
-									<span>{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate |
-										date:'d MMM' }})
+									<span>
+									{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d MMM' }})
 									</span>
 								</div>
 								<div class="margin-top-10 margin-bottom-10">
@@ -1032,9 +1049,8 @@
 									<div class="col-xs-8">
 										<div class="row">
 											<div class="col-md-12">
-												<h2 style="display: inline-block; margin-bottom: -1px;">{{class.price | convertCurrency: class.currency
-													|async}}</h2>
-												&nbsp; per person
+												<h2 style="display: inline-block; margin-bottom: -1px;">{{class.price | convertCurrency: class.currency |async}}
+												</h2>&nbsp; per person
 												<br />
 												<p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating>
 												&nbsp;&nbsp;
@@ -1059,7 +1075,7 @@
 									</div>
 									<div class="col-xs-4" style="padding-top: 9px;">
 										<span>
-											<button mat-raised-button (click)="selectJoiningDates()" color="primary">Join Now</button>
+											<button mat-raised-button (click)="selectJoiningDates()" color="primary">Enroll Now</button>
 										</span>
 										<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this class">
 											<button mat-raised-button color="primary" [disabled]="true">See Dates</button>
@@ -1174,7 +1190,7 @@
 					<div class="col-md-12">
 						<div class="row margin-bottom-20">
 							<div class="col-md-5">
-								<h3>Similar Courses</h3>
+								<h3>Similar Online Courses</h3>
 							</div>
 							<div class="col-md-2 pull-right" style="text-align: right">
 								<a [routerLink]="'/home/classes'">
@@ -1229,7 +1245,7 @@
 		</div>
 		<div class="col-xs-4" style="padding-top: 9px;">
 			<span>
-				<button mat-raised-button (click)="selectJoiningDates()" color="primary">Join Now</button>
+				<button mat-raised-button (click)="selectJoiningDates()" color="primary">Enroll Now</button>
 			</span>
 			<!--<span *ngIf="userId === undefined || userId.length <= 5" matTooltip="Create an account now to join this class">
 				<button mat-raised-button color="primary" [disabled]="true">See Dates</button>
@@ -1238,7 +1254,7 @@
 	</div>
 	<div class="row" *ngIf="!class && !loadingClass">
 		<div class="col-xs-12 center margin-top-100 lightText">
-			<div class="mat-display-2">this course was not found on our servers</div>
+			<div class="mat-display-2">this online course was not found on our servers</div>
 		</div>
 	</div>
 </div>

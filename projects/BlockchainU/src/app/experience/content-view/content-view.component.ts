@@ -70,7 +70,7 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 
 	datePickerFilter = (d: Date): boolean => {
 		return !this.selectedItineraryDates.some(selectedDate => moment(d).format('YYYY-MM-DD') === moment(selectedDate).format('YYYY-MM-DD'));
-	}
+	};
 
 	addContent(contentType: string) {
 		console.log('Adding Content');
@@ -103,6 +103,8 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 			notes: [''],
 			imageUrl: [''],
 			prerequisites: [''],
+			successMessage: [''],
+			isTimeBound: [false],
 			schedule: this._fb.group({
 				startDay: [''],
 				endDay: [null],
@@ -120,14 +122,7 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 				map_lat: [null],
 				map_lng: [null]
 			}),
-			questions: this._fb.array([this._fb.group({
-				question_text: [''],
-				marks: [0],
-				word_limit: [0],
-				options: [],
-				type: [''],
-				correct_answer: ['']
-			})]),
+			questions: this._fb.array([]),
 			pending: ['']
 		});
 	}

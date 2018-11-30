@@ -7,9 +7,9 @@
 					DAY {{itenaryId + 1}}
 				</a>
 				<input *ngIf="!envVariable.production" matInput #dateInput [matDatepicker]="startDatePicker" formControlName="date"
-				 [hidden]="true" [min]="collectionStartDate" [max]="collectionEndDate">
+				       [hidden]="true" [min]="collectionStartDate" [max]="collectionEndDate">
 				<input *ngIf="envVariable.production" matInput #dateInput [matDatepicker]="startDatePicker" formControlName="date"
-				 [hidden]="true" [min]="collectionStartDate" [max]="collectionEndDate" [matDatepickerFilter]="datePickerFilter">
+				       [hidden]="true" [min]="collectionStartDate" [max]="collectionEndDate" [matDatepickerFilter]="datePickerFilter">
 				<a *ngIf="!itenaryForm.value.date" style="cursor: pointer;border-bottom:1px dotted gray;" (click)="startDatePicker.open()">({{showItineraryDate(itenaryForm.value.date)}})</a>
 				<a *ngIf="itenaryForm.value.date" style="border-bottom:1px dotted gray;">({{itenaryForm.value.date| date}})</a>
 				<mat-datepicker #startDatePicker [startAt]="collectionStartDate" touchUi="true"></mat-datepicker>
@@ -26,7 +26,7 @@
 					keyboard_arrow_up
 				</mat-icon>
 				<span style="font-size:14px">Please give a calendar date to this day so we know where to place it in your
-					timeline...</span>
+				                             timeline...</span>
 			</div>
 		</div>
 	</div>
@@ -41,16 +41,16 @@
 						<div class="col-md-3" style="padding-left: 0px; margin-right: 10px;" (click)="findAndOpenDialog(i)">
 							<img *ngIf="!Content.value.imageUrl" src="/assets/images/placeholder-image.jpg" style="width: 140px;">
 							<img *ngIf="Content.value.imageUrl  && Content.value.type !== 'video'" src="{{envVariable.apiUrl + Content.value.imageUrl}}/500"
-							 (error)="imgErrorHandler($event)" style="width: 140px;">
+							     (error)="imgErrorHandler($event)" style="width: 140px;">
 							<video *ngIf="Content.value.imageUrl && Content.value.type === 'video'" width="100%" class="center-block itenary-media"
-							 preload="metadata" poster="../../../assets/images/placeholder-image.jpg" controls>
+							       preload="metadata" poster="../../../assets/images/placeholder-image.jpg" controls>
 								<source src="{{envVariable.apiUrl + Content.value.imageUrl}}" type="video/mp4">
 							</video>
 							<!-- <video *ngIf="Content.value.imageUrl && Content.value.type === 'video'" id="video" src="{{envVariable.apiUrl + Content.value.imageUrl}}" type="video/mp4" controls></video> -->
 						</div>
 						<div class="col-md-7" (click)="findAndOpenDialog(i)">
 							<div class="content-title">{{Content.value.title | titlecase}}</div>
-							<div *ngIf="Content.value.type === 'online' || Content.value.type === 'in-person'" class="content-subtitle">{{getContentTimeRange(Content)}}</div>
+							<div *ngIf="Content.value.type === 'online' || Content.value.type === 'in-person' || (Content.value.type === 'quiz' && Content.value.isTimeBound)" class="content-subtitle">{{getContentTimeRange(Content)}}</div>
 							<div *ngIf="Content.value.type === 'project'" class="content-subtitle">Deadline: {{getDeadline(Content)}}</div>
 							<div *ngIf="Content.value.type === 'in-person'" class="content-subtitle">
 								<span *ngIf="Content.controls.location.controls.apt_suite.value">#{{Content.controls.location.controls.apt_suite.value}}
@@ -60,14 +60,14 @@
 								<span *ngIf="Content.controls.location.controls.city.value">{{Content.controls.location.controls.city.value}}</span>
 							</div>
 							<span></span>
-							<div class="content-type subtitle">{{_collectionService.getContentTypeFullName(Content.value.type) | titlecase
-								}}</div>
+							<div class="content-type subtitle">{{_collectionService.getContentTypeFullName(Content.value.type) | titlecase}}</div>
+							<div *ngIf="Content.value.type === 'quiz' && Content.controls.questions" class="mat-caption">{{Content.controls.questions.length}} Questions</div>
 						</div>
 						<div class="col-md-2">
 							<mat-icon class="pull-right" *ngIf="itenaryForm.controls['contents'].controls.length > 0" (click)="removeContent(i)"
-							 style="font-size: 16px; color: #777777;">close</mat-icon>
+							          style="font-size: 16px; color: #777777;">close</mat-icon>
 							<mat-icon class="pull-right" *ngIf="itenaryForm.controls['contents'].controls.length > 0" (click)="findAndOpenDialog(i)"
-							 style="font-size: 16px; color: #777777;">mode_edit</mat-icon>
+							          style="font-size: 16px; color: #777777;">mode_edit</mat-icon>
 						</div>
 					</mat-list-item>
 				</mat-list>
@@ -101,6 +101,12 @@
 						<button mat-button type="button" (click)="addContent('project'); findAndOpenDialog(-1);">
 							<mat-icon color="primary" style="font-size: 20px">add_circle</mat-icon>
 							Project Activity
+						</button>&emsp;
+					</div>
+					<div class="col-md-3 col-xs-6">
+						<button mat-button type="button" (click)="addContent('quiz'); findAndOpenDialog(-1);">
+							<mat-icon color="primary" style="font-size: 20px">add_circle</mat-icon>
+							Quiz Activity
 						</button>&emsp;
 					</div>
 				</div>
