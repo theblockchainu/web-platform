@@ -146,15 +146,45 @@ export class ProfileComponent implements OnInit {
 		this.maxLength = 140;
 		this.blankCardArray = [4, 3, 2, 1, 0];
 		this.getPeerData();
-		this.getProfileData();
-		this.getKnowledgeStories();
 	}
 
 	public getPeerData() {
 		this._profileService.getPeerNode(this.urluserId).subscribe((result: any) => {
-			this.peerObj = result;
+			if (result) {
+				this.peerObj = result;
+				this.getProfileData();
+				this.getKnowledgeStories();
+			} else {
+				this.getDataFromCustomURL();
+			}
+		}, err => {
+			this.getDataFromCustomURL();
 		});
 	}
+
+	private getDataFromCustomURL() {
+		const query = {
+			where: {
+				customUrl: this.urluserId
+			},
+			include: [{ 'collections': 'owners' }]
+		};
+		this._collectionService.getPreferences(query).subscribe((res: any) => {
+			if (res && res.length > 0) {
+				console.log(res);
+				const preference = res[0];
+				this.peerObj = preference.collections[0].owners[0];
+				this.urluserId = this.peerObj.id;
+				this.getProfileData();
+				this.getKnowledgeStories();
+			} else {
+				console.log('Not Found');
+			}
+		}, err => {
+			console.log('Not Found');
+		});
+	}
+
 	private getIdentities() {
 		this._profileService.getSocialIdentities(this.queryForSocialIdentities, this.urluserId).subscribe(
 			(result) => {

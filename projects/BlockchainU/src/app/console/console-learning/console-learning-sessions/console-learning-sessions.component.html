@@ -8,7 +8,7 @@
 <div class="row">
 	<div class="col-md-12 margin-top-10" *ngIf="loaded">
 		<div #noContentView *ngIf="upcomingSessions.length === 0 && ongoingSessions.length === 0 && pastSessions.length === 0 && notApproved.length === 0"
-		     class="center" style="margin-top: 10%">
+		 class="center" style="margin-top: 10%">
 			<div class="lightText">
 				You have not enrolled for any mentor sessions
 				<br>
@@ -40,8 +40,9 @@
 											</div>
 										</div>
 										<div class="teacherName">
-                      <span>Session with {{session.collections[0].owners[0].profiles[0].first_name + ' ' + session.collections[0].owners[0].profiles[0].last_name}}
-                      </span>
+											<span>Session with {{session.collections[0].owners[0].profiles[0].first_name + ' ' +
+												session.collections[0].owners[0].profiles[0].last_name}}
+											</span>
 										</div>
 										<div class="teacherHeadline">
 											<span>{{session.collections[0].owners[0].profiles[0].headline}} </span>
@@ -61,11 +62,13 @@
 									<mat-card-footer class="cardFooter">
 										<button mat-button (click)="joinLiveSession(session)" *ngIf="session.isPaidFor">Join</button>
 										<button mat-button (click)="joinLiveSession(session)" *ngIf="!session.isPaidFor && session.pendingAmount === 0">Join</button>
-										<button mat-button (click)="makePayment(session)" class="mat-error" *ngIf="!session.isPaidFor && session.paymentPossible && session.pendingAmount > 0">Payment Overdue</button>
+										<button mat-button (click)="makePayment(session)" class="mat-error" *ngIf="!session.isPaidFor && session.paymentPossible && session.pendingAmount > 0">Payment
+											Overdue</button>
 									</mat-card-footer>
 								</mat-card>
 								<mat-menu #ongoingCardMenu>
-									<button *ngIf="session.collections" [routerLink]="'/profile/'+session.collections[0].owners[0].id" mat-menu-item>
+									<button *ngIf="session.collections" [routerLink]="'/profile/'+session.collections[0].owners[0].id"
+									 mat-menu-item>
 										Message Teacher
 									</button>
 								</mat-menu>
@@ -86,8 +89,9 @@
 											</div>
 										</div>
 										<div class="teacherName">
-                      <span>Session with {{session.collections[0].owners[0].profiles[0].first_name + ' ' + session.collections[0].owners[0].profiles[0].last_name}}
-                      </span>
+											<span>Session with {{session.collections[0].owners[0].profiles[0].first_name + ' ' +
+												session.collections[0].owners[0].profiles[0].last_name}}
+											</span>
 										</div>
 										<div class="teacherHeadline">
 											<span>{{session.collections[0].owners[0].profiles[0].headline}}</span>
@@ -105,9 +109,13 @@
 									</mat-card-content>
 									<br>
 									<mat-card-footer class="cardFooter">
-										<button mat-button (click)="makePayment(session)" *ngIf="!session.isPaidFor && session.paymentPossible && session.pendingAmount !== 0">Pay {{session.pendingAmount | convertCurrency: session.pendingAmountCurrency | async}} in {{session.pendingPaymentTime}}</button>
-										<button mat-button *ngIf="!session.isPaidFor && session.paymentPossible && session.pendingAmount === 0">Free Session Confirmed</button>
-										<button mat-button class="mat-error" (click)="makePayment(session)" *ngIf="!session.isPaidFor && !session.paymentPossible">Payment of {{session.pendingAmount | convertCurrency: session.pendingAmountCurrency | async}} overdue</button>
+										<button mat-button (click)="makePayment(session)" *ngIf="!session.isPaidFor && session.paymentPossible && session.pendingAmount !== 0">Pay
+											{{session.pendingAmount | convertCurrency: session.pendingAmountCurrency | async}} in
+											{{session.pendingPaymentTime}}</button>
+										<button mat-button *ngIf="!session.isPaidFor && session.paymentPossible && session.pendingAmount === 0">Free
+											Session Confirmed</button>
+										<button mat-button class="mat-error" (click)="makePayment(session)" *ngIf="!session.isPaidFor && !session.paymentPossible">Payment
+											of {{session.pendingAmount | convertCurrency: session.pendingAmountCurrency | async}} overdue</button>
 										<button mat-button (click)="openTransactions()" *ngIf="session.isPaidFor">View Receipt</button>
 									</mat-card-footer>
 								</mat-card>
@@ -115,7 +123,8 @@
 									<!-- <button mat-menu-item>
 										Cancel
 									  </button> -->
-									<button *ngIf="session.collections" [routerLink]="'/profile/'+session.collections[0].owners[0].id" mat-menu-item>
+									<button *ngIf="session.collections" [routerLink]="'/profile/'+session.collections[0].owners[0].id"
+									 mat-menu-item>
 										Message Teacher
 									</button>
 								</mat-menu>
@@ -145,19 +154,20 @@
 										</div>
 									</div>
 									<span *ngIf="session.collections">
-					                    <div class="collectionParticipantImageCarousel">
-						                    <div class="circle-thumb-big">
-							                    <app-profile-popup style="margin-left: -15px;" [peer]="session.collections[0].owners[0]"></app-profile-popup>
-						                    </div>
-					                    </div>
-					                    <div class="teacherName">
-						                    <span>Session with {{session.collections[0].owners[0].profiles[0].first_name + ' ' + session.collections[0].owners[0].profiles[0].last_name}}
-						                    </span>
-					                    </div>
+										<div class="collectionParticipantImageCarousel">
+											<div class="circle-thumb-big">
+												<app-profile-popup style="margin-left: -15px;" [peer]="session.collections[0].owners[0]"></app-profile-popup>
+											</div>
+										</div>
+										<div class="teacherName">
+											<span>Session with {{session.collections[0].owners[0].profiles[0].first_name + ' ' +
+												session.collections[0].owners[0].profiles[0].last_name}}
+											</span>
+										</div>
 										<div class="upcomingEventTime margin-top-30">
-					                        {{session.startTime |extractTime:'Do MMM, h a'}} to {{session.endTime |extractTime:'h a'}}
-					                    </div>
-                                    </span>
+											{{session.startTime |extractTime:'Do MMM, h a'}} to {{session.endTime |extractTime:'h a'}}
+										</div>
+									</span>
 									<div class="upcomingEventLabel pink margin-bottom-40" [ngClass]="{'mat-error': session.sessionIsRejected}">
 										{{session.sessionIsRejected ? 'Rejected by teacher' : 'Awaiting teacher approval'}}
 									</div>
@@ -167,7 +177,8 @@
 								</mat-card-content>
 							</mat-card>
 							<mat-menu #unapprovedCardMenu>
-								<button *ngIf="session.collections" [routerLink]="'/profile/'+session.collections[0].owners[0].id" mat-menu-item>
+								<button *ngIf="session.collections" [routerLink]="'/profile/'+session.collections[0].owners[0].id"
+								 mat-menu-item>
 									Message Teacher
 								</button>
 								<button *ngIf="session.collections" (click)="cancelSessionRequest(session)" mat-menu-item>
@@ -178,8 +189,8 @@
 					</div>
 				</div>
 			</div>
-			<br/>
-			<br/>
+			<br />
+			<br />
 		</div>
 		<div *ngIf="pastSessions.length > 0">
 			<div style="display:inline;">
@@ -204,8 +215,9 @@
 										</div>
 									</div>
 									<div class="teacherName">
-                    <span>Session with {{session.collections[0].owners[0].profiles[0].first_name + ' ' + session.collections[0].owners[0].profiles[0].last_name}}
-                    </span>
+										<span>Session with {{session.collections[0].owners[0].profiles[0].first_name + ' ' +
+											session.collections[0].owners[0].profiles[0].last_name}}
+										</span>
 									</div>
 									<div class="teacherHeadline">
 										<span>{{session.collections[0].owners[0].profiles[0].headline | ucwords}}</span>
@@ -226,7 +238,8 @@
 								<!-- <button mat-menu-item>
 										Cancel
 									  </button> -->
-								<button *ngIf="session.collections" [routerLink]="'/profile/'+session.collections[0].owners[0].id" mat-menu-item>
+								<button *ngIf="session.collections" [routerLink]="'/profile/'+session.collections[0].owners[0].id"
+								 mat-menu-item>
 									Message Teacher
 								</button>
 							</mat-menu>

@@ -887,6 +887,10 @@ export class CollectionService {
 			);
 	}
 
+	public getPreferences(filter) {
+		return this.httpClient.get(environment.apiUrl + '/api/preferences?filter=' + JSON.stringify(filter), this.requestHeaderService.options);
+	}
+
 	public updateAvailability(collectionId: string, body: any) {
 		return this.httpClient.delete(environment.apiUrl + '/api/collections/' + collectionId + '/availability', this.requestHeaderService.options)
 			.pipe(

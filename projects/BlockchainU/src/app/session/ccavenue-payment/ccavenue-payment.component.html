@@ -1,0 +1,50 @@
+<!--CC Avenue Billing address form-->
+<div class="row" [hidden]="isBillingAddressAvailable">
+  <div class="col-md-12 margin-top-10">
+    <div class="title margin-bottom-20">Let's start with your billing address</div>
+    <form [formGroup]="addressForm" (ngSubmit)="saveBillingAddress()" class="margin-bottom-20">
+      <div class="row">
+        <div class="col-md-12">
+          <mat-form-field [floatLabel]="'auto'" class="pb-block margin-bottom-20">
+            <textarea matInput rows="1" formControlName="billing_address" #headline maxlength="100" type="text"
+              placeholder="Billing Address" required></textarea>
+            <mat-error>This field is required</mat-error>
+            <mat-hint align="start">Like 4200 Hunter Place, Fremont, CA</mat-hint>
+            <mat-hint align="end">{{addressForm.value.billing_address.length}} / 200</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field [floatLabel]="'auto'" class="pb-block margin-bottom-10 margin-top-10">
+            <input matInput formControlName="billing_city" type="text" placeholder="Billing City" required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field [floatLabel]="'auto'" class="pb-block margin-bottom-10 margin-top-10">
+            <input matInput formControlName="billing_state" type="text" placeholder="Billing State" required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field [floatLabel]="'auto'" class="pb-block margin-bottom-10 margin-top-10">
+            <input matInput formControlName="billing_zip" type="text" placeholder="Billing Zipcode" required>
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row margin-top-20">
+        <div class="col-md-12">
+          <button type="submit" class="pb-block" mat-raised-button color="primary" [disabled]="savingData || !addressForm.valid">Continue
+            to payment</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!--Load CC Avenue Payment Iframe-->
+<div [hidden]="!isBillingAddressAvailable" class="margin-top-20 margin-bottom-10" [innerHTML]="ccavenueIframe"
+  (window:message)="handleMessage($event)">
+  <iframe #paymentframe height="600px" width="100%"></iframe>
+</div>
