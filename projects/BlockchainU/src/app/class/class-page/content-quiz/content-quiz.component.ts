@@ -119,7 +119,7 @@ export class ContentQuizComponent implements OnInit {
 									pendingEvaluation: 0
 								};
 								if (question.type === 'single-choice') {
-									if (answer.answer === question.correct_answer) {
+									if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
 										submissionEntry.correctAnswers++;
 									} else {
 										submissionEntry.wrongAnswers++;
