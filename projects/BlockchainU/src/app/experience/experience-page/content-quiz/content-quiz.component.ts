@@ -95,7 +95,7 @@ export class ContentQuizComponent implements OnInit {
 							if (_.find(this.submissionArray, function(o) { return o.peerId === answer.peer[0].id; })) {
 								_.find(this.submissionArray, function(o) { return o.peerId === answer.peer[0].id; }).questionsAnswered++;
 								if (question.type === 'single-choice') {
-									if (answer.answer === question.correct_answer) {
+									if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
 										_.find(this.submissionArray, function (o) {
 											return o.peerId === answer.peer[0].id;
 										}).correctAnswers++;
@@ -120,7 +120,7 @@ export class ContentQuizComponent implements OnInit {
 									pendingEvaluation: 0
 								};
 								if (question.type === 'single-choice') {
-									if (answer.answer === question.correct_answer) {
+									if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
 										submissionEntry.correctAnswers++;
 									} else {
 										submissionEntry.wrongAnswers++;
