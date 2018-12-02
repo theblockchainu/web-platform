@@ -220,17 +220,8 @@ export class HomefeedComponent implements OnInit {
 	}
 
 	fetchClasses() {
-		const query = {
-			'include': [
-				{ 'owners': ['reviewsAboutYou', 'profiles'] },
-				'participants',
-				'calendars',
-				{ 'bookmarks': 'peer' }
-			],
-			'where': { 'type': 'class' }
-		};
 		this.loadingClasses = true;
-		this._collectionService.fetchTrendingCollections(query).subscribe(
+		this._collectionService.fetchTrendingCollections('class').subscribe(
 			(collections: any) => {
 				this.loadingClasses = false;
 				this.classes = collections;
@@ -241,18 +232,8 @@ export class HomefeedComponent implements OnInit {
 	}
 
 	private fetchExperiences() {
-		const query = {
-			'include':
-				[{ 'owners': ['reviewsAboutYou', 'profiles'] },
-					'participants',
-					'calendars', { 'bookmarks': 'peer' }, {
-					'contents':
-						['schedules', 'locations']
-				}],
-			'where': { 'type': 'experience' }
-		};
 		this.loadingExperiences = true;
-		this._collectionService.fetchTrendingCollections(query).subscribe(
+		this._collectionService.fetchTrendingCollections('experience').subscribe(
 			(collections: any) => {
 				console.log(collections);
 
@@ -265,18 +246,8 @@ export class HomefeedComponent implements OnInit {
 	}
 
 	private fetchBounties() {
-		const query = {
-			'include':
-				[{ 'owners': ['reviewsAboutYou', 'profiles'] },
-					'participants',
-					'rewards',
-					'calendars', { 'bookmarks': 'peer' }, {
-					'contents':
-						['schedules']
-				}], 'where': { 'type': 'bounty' }
-		};
 		this.loadingBounties = true;
-		this._collectionService.fetchTrendingCollections(query).subscribe(
+		this._collectionService.fetchTrendingCollections('bounty').subscribe(
 			(collections: any) => {
 				this.loadingBounties = false;
 				this.bounties = collections;
@@ -287,16 +258,8 @@ export class HomefeedComponent implements OnInit {
 	}
 
 	private fetchGuides() {
-		const query = {
-			'include':
-				[{ 'owners': ['reviewsAboutYou', 'profiles'] },
-					'participants',
-					'topics',
-					'calendars', { 'bookmarks': 'peer' }
-				], 'where': { 'type': 'guide' }
-		};
 		this.loadingGuides = true;
-		this._collectionService.fetchTrendingCollections(query).subscribe(
+		this._collectionService.fetchTrendingCollections('guide').subscribe(
 			(collections: any) => {
 				this.guides = [];
 				collections.forEach(collection => {
