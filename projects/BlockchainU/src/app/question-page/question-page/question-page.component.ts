@@ -133,6 +133,12 @@ export class QuestionPageComponent implements OnInit {
 					}
 				}
 			}
+		} else {
+			if (this.question.peer && this.question.peer.id === this.userId) {
+				this.userType = 'owner';
+			} else {
+				this.userType = 'participant';
+			}
 		}
 	}
 	

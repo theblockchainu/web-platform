@@ -13,30 +13,30 @@ import { VgControlsModule } from 'videogular2/controls';
 import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
 import { CovalentMarkdownModule } from '@covalent/markdown';
+import { ContentQuizComponent } from './content-quiz/content-quiz.component';
 
 @NgModule({
-  imports: [
-    ClassPageRoutingModule,
-    CommonModule,
-    SharedModule,
-    LoadingModule.forRoot({
-      animationType: ANIMATION_TYPES.threeBounce,
-      backdropBackgroundColour: 'rgba(0,0,0,0)',
-      backdropBorderRadius: '0px',
-      primaryColour: '#33bd9e',
-      secondaryColour: '#ff5b5f',
-      tertiaryColour: '#ff6d71'
-    }),
-    VgCoreModule,
-    VgControlsModule,
-    VgOverlayPlayModule,
-    VgBufferingModule,
-    CovalentMarkdownModule
-  ],
-
-  declarations: [ClassPageComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent],
-  bootstrap: [ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent],
-  providers: [ProjectSubmissionService]
-
+	imports: [
+		ClassPageRoutingModule,
+		CommonModule,
+		SharedModule,
+		LoadingModule.forRoot({
+			animationType: ANIMATION_TYPES.threeBounce,
+			backdropBackgroundColour: 'rgba(0,0,0,0)',
+			backdropBorderRadius: '0px',
+			primaryColour: '#33bd9e',
+			secondaryColour: '#ff5b5f',
+			tertiaryColour: '#ff6d71'
+		}),
+		VgCoreModule,
+		VgControlsModule,
+		VgOverlayPlayModule,
+		VgBufferingModule,
+		CovalentMarkdownModule
+	],
+	declarations: [ClassPageComponent, ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, ContentQuizComponent],
+	bootstrap: [ContentOnlineComponent, ContentVideoComponent, ContentProjectComponent, ContentQuizComponent],
+	providers: [ProjectSubmissionService]
+	
 })
 export class ClassPageModule { }

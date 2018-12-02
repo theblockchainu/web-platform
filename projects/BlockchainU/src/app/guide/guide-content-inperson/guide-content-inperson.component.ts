@@ -145,7 +145,7 @@ export class GuideContentInpersonComponent implements OnInit {
      * @returns {any}
      */
     getEditDialogData() {
-        console.log('changing result data to save');
+        //console.log('changing result data to save');
         this.resultData['status'] = 'edit';
         return JSON.stringify(this.resultData);
     }

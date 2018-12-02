@@ -9,6 +9,7 @@ import { ClassContentProjectComponent } from '../class-content-project/class-con
 import { ClassContentVideoComponent } from '../class-content-video/class-content-video.component';
 import { CollectionService } from '../../_services/collection/collection.service';
 import { environment } from '../../../environments/environment';
+import {ClassContentQuizComponent} from "../class-content-quiz/class-content-quiz.component";
 
 declare var moment: any;
 
@@ -31,10 +32,10 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 	public collectionEndDate: any;
 	@Input()
 	public classStatus: string;
-
+	
 	@Output()
 	triggerSave: EventEmitter<any> = new EventEmitter<any>();
-
+	
 	public tempForm: FormGroup;
 	public lastIndex: number;
 	public dontAllow: true;
@@ -43,7 +44,7 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 	public filesToUpload: number;
 	public filesUploaded: number;
 	public envVariable;
-
+	
 	constructor(
 		private _fb: FormBuilder,
 		private http: HttpClient,
@@ -57,20 +58,20 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 		this.countryPickerService.getCountries()
 			.subscribe((countries: any) => this.countries = countries);
 	}
-
+	
 	ngOnInit() {
 		const content = <FormArray>this.itenaryForm.controls.contents;
 		this.lastIndex = content.controls.length - 1;
 	}
-
+	
 	ngAfterViewInit() {
 		this.cd.detectChanges();
 	}
-
+	
 	datePickerFilter = (d: Date): boolean => {
 		return !this.selectedItineraryDates.some(selectedDate => moment(d).format('YYYY-MM-DD') === moment(selectedDate).format('YYYY-MM-DD'));
 	}
-
+	
 	addContent(contentType: string) {
 		console.log('Adding Content');
 		const contentArray = <FormArray>this.itenaryForm.controls['contents'];
@@ -81,14 +82,14 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 		console.log(contentObject);
 		this.addIndex();
 	}
-
+	
 	deleteDay(itenaryId) {
 		this.triggerSave.emit({
 			action: 'deleteDay',
 			value: itenaryId
 		});
 	}
-
+	
 	initContent() {
 		return this._fb.group({
 			id: [''],
@@ -102,17 +103,20 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 			notes: [''],
 			imageUrl: [''],
 			prerequisites: [''],
+			successMessage: [''],
+			isTimeBound: [false],
 			schedule: this._fb.group({
 				startDay: [''],
 				endDay: [null],
 				startTime: [null],
 				endTime: [null]
 			}),
+			questions: this._fb.array([]),
 			pending: [''],
 			youtubeId: ['']
 		});
 	}
-
+	
 	removeContentForm(i: number) {
 		console.log('Discarding Form Content');
 		const control = <FormArray>this.itenaryForm.controls['contents'];
@@ -120,7 +124,7 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 		this.resetIndex();
 		this.resetProgressBar();
 	}
-
+	
 	removeContent(i: number) {
 		console.log('Discarding Content from database');
 		this.triggerSave.emit({
@@ -134,13 +138,13 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 	addIndex() {
 		this.lastIndex++;
 	}
-
+	
 	resetIndex() {
 		this.lastIndex--;
 	}
-
+	
 	saveTempForEditDate(content, index) {
-
+		
 		const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
 		const contentForm = <FormGroup>contentsFArray.controls[index];
 		contentForm.patchValue(content);
@@ -150,9 +154,9 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 		});
 		console.log('updated!');
 		this.resetProgressBar();
-
+		
 	}
-
+	
 	saveContent(lastIndex) {
 		this.triggerSave.emit({
 			action: 'add',
@@ -161,12 +165,12 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 		console.log('saved!');
 		this.resetProgressBar();
 	}
-
+	
 	resetProgressBar() {
 		delete this.filesToUpload;
 		delete this.filesUploaded;
 	}
-
+	
 	editContent(index) {
 		this.triggerSave.emit({
 			action: 'update',
@@ -175,7 +179,7 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 		console.log('updated!');
 		this.resetProgressBar();
 	}
-
+	
 	resetNewUrls(event) {
 		console.log(event);
 		const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
@@ -184,7 +188,7 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 		supplementUrls.reset();
 		this.resetProgressBar();
 	}
-
+	
 	resetEditUrls(event) {
 		const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
 		const contentForm = <FormGroup>contentsFArray.controls[this.editIndex];
@@ -192,18 +196,18 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 		supplementUrls.reset();
 		this.resetProgressBar();
 	}
-
+	
 	itemNewRemoved(event) {
 		delete this.filesToUpload;
 		this.filesUploaded = 0;
 	}
-
+	
 	itemEditRemoved(event) {
 		delete this.filesToUpload;
 		this.filesUploaded = 0;
 		// this.deleteFromContainer(event);
 	}
-
+	
 	triggerContentUpdate(form) {
 		const date = moment(form.controls.date.value).toDate();
 		const contentArray = <FormArray>form.controls['contents'].controls;
@@ -214,7 +218,7 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 			this.saveTempForEditDate(contentArray[i], i);
 		}
 	}
-
+	
 	getContentTimeRange(content) {
 		// console.log('Start time is: ' + content.controls.schedule.controls.startTime.value);
 		let startTime, endTime;
@@ -227,11 +231,11 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 		}
 		return startTime + ' - ' + endTime;
 	}
-
+	
 	getDeadline(content) {
 		return moment.utc(content.controls.schedule.controls.endDay.value).local().format('DD MMM');
 	}
-
+	
 	public showItineraryDate(date) {
 		if (date) {
 			return moment(date).format('MM/DD/YYYY');
@@ -239,7 +243,7 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 			return 'Select a calendar date';
 		}
 	}
-
+	
 	/**
 	 * Open dialog for creating new online content
 	 */
@@ -283,10 +287,17 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 						disableClose: true, hasBackdrop: true, width: '50vw', height: '100vh'
 					});
 				break;
+			case 'quiz':
+				dialogRef = this.dialog.open(ClassContentQuizComponent,
+					{
+						panelClass: 'responsive-dialog',
+						data: { itenaryForm: this.itenaryForm, index: index, isEdit: isEdit },
+						disableClose: true, hasBackdrop: true, width: '45vw', height: '100vh' });
+				break;
 			default:
 				break;
 		}
-
+		
 		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result !== undefined) {
 				console.log(result);
@@ -305,7 +316,7 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 			}
 		});
 	}
-
+	
 	getCollectionStartDate() {
 		if (this.collectionStartDate !== undefined) {
 			return new Date(this.collectionStartDate);
@@ -313,7 +324,7 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 			return new Date(2000, 0, 1);
 		}
 	}
-
+	
 	getCollectionEndDate() {
 		if (this.collectionEndDate !== undefined) {
 			return new Date(this.collectionEndDate);
@@ -321,9 +332,9 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 			return new Date(2020, 0, 1);
 		}
 	}
-
+	
 	imgErrorHandler(event) {
 		event.target.src = '/assets/images/placeholder-image.jpg';
 	}
-
+	
 }

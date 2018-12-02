@@ -50,7 +50,7 @@
 						</div>
 						<div class="col-md-7" (click)="findAndOpenDialog(i)">
 							<div class="content-title">{{Content.value.title | titlecase}}</div>
-							<div *ngIf="Content.value.type === 'online' || Content.value.type === 'in-person'" class="content-subtitle">{{getContentTimeRange(Content)}}</div>
+							<div *ngIf="Content.value.type === 'online' || Content.value.type === 'in-person' || (Content.value.type === 'quiz' && Content.value.isTimeBound)" class="content-subtitle">{{getContentTimeRange(Content)}}</div>
 							<div *ngIf="Content.value.type === 'project'" class="content-subtitle">Deadline: {{getDeadline(Content)}}</div>
 							<div *ngIf="Content.value.type === 'in-person'" class="content-subtitle">
 								<span *ngIf="Content.controls.location.controls.apt_suite.value">#{{Content.controls.location.controls.apt_suite.value}}
@@ -60,8 +60,8 @@
 								<span *ngIf="Content.controls.location.controls.city.value">{{Content.controls.location.controls.city.value}}</span>
 							</div>
 							<span></span>
-							<div class="content-type subtitle">{{_collectionService.getContentTypeFullName(Content.value.type) | titlecase
-								}}</div>
+							<div class="content-type subtitle">{{_collectionService.getContentTypeFullName(Content.value.type) | titlecase }}</div>
+							<div *ngIf="Content.value.type === 'quiz' && Content.controls.questions" class="mat-caption">{{Content.controls.questions.length}} Questions</div>
 						</div>
 						<div class="col-md-2">
 							<mat-icon class="pull-right" *ngIf="itenaryForm.controls['contents'].controls.length > 0" (click)="removeContent(i)"

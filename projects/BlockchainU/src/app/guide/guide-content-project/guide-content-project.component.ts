@@ -154,8 +154,8 @@ export class GuideContentProjectComponent implements OnInit {
 	 * @returns {any}
 	 */
 	getSaveDialogData() {
-		console.log('changing result data to save');
-		console.log(this.resultData);
+		//console.log('changing result data to save');
+		//console.log(this.resultData);
 		this.resultData['status'] = 'save';
 		return JSON.stringify(this.resultData);
 	}
@@ -174,8 +174,8 @@ export class GuideContentProjectComponent implements OnInit {
 	 * @returns {any}
 	 */
 	getEditDialogData() {
-		console.log('changing result data to save');
-		console.log(this.resultData);
+		//console.log('changing result data to save');
+		//console.log(this.resultData);
 		this.resultData['status'] = 'edit';
 		return JSON.stringify(this.resultData);
 	}

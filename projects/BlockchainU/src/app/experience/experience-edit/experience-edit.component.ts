@@ -451,6 +451,29 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		}
 		console.log(itenary);
 	}
+	
+	setContentQuestion(question) {
+		return this._fb.group({
+			question_text: [question.question_text],
+			marks: [question.marks],
+			word_limit: [question.word_limit],
+			options: this._fb.array(this.initOption(question.options)),
+			type: [question.type],
+			correct_answer: [question.correct_answer],
+			isRequired: [question.isRequired]
+		});
+	}
+	
+	initOption(options) {
+		if (options) {
+			const optionArray = [];
+			options.forEach(option => {
+				optionArray.push(this._fb.control(option));
+			});
+			return optionArray;
+		}
+		return [];
+	}
 
 	/**
 	 * assignFormValues
@@ -460,6 +483,13 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			if (value.hasOwnProperty(key) && form.controls[key]) {
 				if (form.controls[key] instanceof FormGroup) {
 					this.assignFormValues(<FormGroup>form.controls[key], value[key]);
+				} else if (form.controls[key] instanceof FormArray) {
+					const control = <FormArray>form.controls[key];
+					value[key].forEach(keyItem => {
+						if (key === 'questions') {
+							control.push(this.setContentQuestion(keyItem));
+						}
+					});
 				} else {
 					if (key === 'startTime' || key === 'endTime') {
 						form.controls[key].patchValue(this.extractTime(value[key]));
@@ -499,6 +529,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			notes: [''],
 			imageUrl: [''],
 			prerequisites: [''],
+			successMessage: [''],
+			isTimeBound: [false],
 			schedule: this._fb.group({
 				id: [''],
 				startDay: [''],
@@ -517,14 +549,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				map_lat: [null],
 				map_lng: [null]
 			}),
-			questions: this._fb.array([this._fb.group({
-				question_text: [''],
-				marks: [0],
-				word_limit: [0],
-				options: [],
-				type: [''],
-				correct_answer: ['']
-			})]),
+			questions: this._fb.array([]),
 			pending: ['']
 		});
 	}

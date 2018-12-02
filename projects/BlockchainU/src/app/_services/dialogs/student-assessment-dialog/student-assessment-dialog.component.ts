@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import {Router} from '@angular/router';
 import {environment} from '../../../../environments/environment';
 import {AssessmentService} from '../../assessment/assessment.service';
+import {CollectionService} from '../../collection/collection.service';
 
 @Component({
 	selector: 'app-student-assessment-dialog',
@@ -20,6 +21,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 		private router: Router,
 		private snackBar: MatSnackBar,
 		private assessmentService: AssessmentService,
+		private collectionService: CollectionService,
 		private _fb: FormBuilder) { }
 
 	ngOnInit() {
@@ -40,6 +42,19 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			let engagementResult = '';
 			let commitmentResult = '';
 			participant.hasCertificate = false;
+			participant.isOnEthereum = false;
+			
+			// Check participation on blockchain
+			participant.hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
+			this.collectionService.getParticipantEthereumInfo(this.data.collection.id, participant.ethAddress)
+				.subscribe(res => {
+					if (res && res[6] && res[6] !== '0') {
+						participant.isOnEthereum = true;
+					}
+			}, err => {
+					participant.isOnEthereum = false;
+				});
+			
 			if (participant.certificates) {
 				participant.certificates.forEach(certificate => {
 					if (certificate && certificate.stringifiedJSON && certificate.stringifiedJSON.length > 0) {
