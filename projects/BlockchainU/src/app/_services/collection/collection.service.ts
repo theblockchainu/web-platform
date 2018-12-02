@@ -1161,10 +1161,12 @@ export class CollectionService {
 		this.cookieUtilsService.setValue('referrerId', referrerId);
 	}
 
-	public fetchTrendingCollections(filter: any) {
+	public fetchTrendingCollections(type: string) {
 		return this.httpClient
-			.get(environment.apiUrl + '/api/collections/trending?filter=' + JSON.stringify(filter),
-				this.requestHeaderService.options);
+			.get(environment.apiUrl + '/api/collections/trending?type=' + type,
+				this.requestHeaderService.options).pipe(map((collections: Array<any>) => {
+					return collections.map(item => JSON.parse(item));
+				}));
 
 	}
 
