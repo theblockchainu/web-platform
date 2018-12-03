@@ -273,7 +273,7 @@
 	<button mat-menu-item (click)="createClass()">
 		Create an online course
 	</button>
-	<button mat-menu-item [routerLink]="'/console/teaching/learning-paths'">
+	<button mat-menu-item [routerLink]="'/console/teaching/learning-paths'" *ngIf="profile.peer && profile.peer.length > 0 && profile.peer[0].isAdmin">
 		Create a learning path
 	</button>
 	<button mat-menu-item (click)="createSession()">
@@ -285,7 +285,7 @@
 		</span>
 	</button>
 	<button mat-menu-item [routerLink]="['/console/teaching/bounties']">
-		Create a Bounty
+		Create a Reward Bounty
 	</button>
 	<button mat-menu-item [routerLink]="['/console/teaching/all']">
 		Activities
