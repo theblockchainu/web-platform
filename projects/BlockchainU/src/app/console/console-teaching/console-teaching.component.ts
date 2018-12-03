@@ -26,6 +26,7 @@ export class ConsoleTeachingComponent implements OnInit {
     public accountVerified: boolean;
     public session: any;
     public profile: any;
+    public isAdmin: boolean;
     constructor(
         private activatedRoute: ActivatedRoute,
         public router: Router,
@@ -50,11 +51,13 @@ export class ConsoleTeachingComponent implements OnInit {
 
     loadPage() {
         this.loaded = false;
+        this.isAdmin = false;
         this.accountVerified = (this._cookieUtilsService.getValue('accountApproved') === 'true');
         this.getSessions();
         if (this.userId) {
-            this._profileService.getProfileData(this.userId, {}).subscribe(res => {
+            this._profileService.getProfileData(this.userId, {include: 'peer'}).subscribe(res => {
                 this.profile = res[0];
+                this.isAdmin = this.profile.peer[0].isAdmin;
             });
         }
     }
@@ -215,7 +218,7 @@ export class ConsoleTeachingComponent implements OnInit {
     }
 
     public editSessions() {
-        this.router.navigateByUrl('/session/' + this.session.id + '/edit/' + 1);
+        this.router.navigateByUrl('/session/' + this.session.id + '/edit/' + 10);
     }
 
     public createAccreditation() {

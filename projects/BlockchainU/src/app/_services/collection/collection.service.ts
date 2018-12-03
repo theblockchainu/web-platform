@@ -127,6 +127,12 @@ export class CollectionService {
 		return this.httpClient
 			.post(environment.apiUrl + '/api/collections/' + id + '/ether', body, this.requestHeaderService.options);
 	}
+	
+	public addParticipantToEthereum(id: string, participantId: string) {
+		const body = {};
+		return this.httpClient
+			.post(environment.apiUrl + '/api/collections/' + id + '/peers/' + participantId + '/ether', body, this.requestHeaderService.options);
+	}
 
 	/**
 	 * postCollection

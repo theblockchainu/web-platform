@@ -11,55 +11,50 @@
 				In-person Workshops
 			</mat-list-item>
 			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/guides'" [class.bold]="getActiveTab() === 'guides'">
-				Guides
+				Learning Guides
 			</mat-list-item>
 			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/sessions'" [class.bold]="getActiveTab() === 'sessions'">
-				Sessions
+				Mentor Sessions
 			</mat-list-item>
 			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/accreditations'" [class.bold]="getActiveTab() === 'accreditations'">
 				Accreditations
 			</mat-list-item>
 			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/bounties'" [class.bold]="getActiveTab() === 'bounty'">
-				Bounties
+				Reward Bounties
 			</mat-list-item>
-			<mat-list-item [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/learning-paths'" [class.bold]="getActiveTab() === 'learingPaths'">
+			<mat-list-item *ngIf="isAdmin" [class.mat-list-item-focus]="false" [routerLink]="'/console/teaching/learning-paths'" [class.bold]="getActiveTab() === 'learingPaths'">
 				Learning Paths
 			</mat-list-item>
 			<mat-list-item *ngIf="getActiveTab() === 'classes' ">
 				<span matTooltip="Please wait for your account to be verified before creating a new course." [matTooltipDisabled]="accountVerified">
-					<button mat-raised-button (click)="createClass()" [disabled]="!accountVerified" color="primary">New Course</button>
+					<button mat-raised-button (click)="createClass()" [disabled]="!accountVerified" color="primary">New Online Course</button>
 				</span>
 			</mat-list-item>
 			<mat-list-item *ngIf="getActiveTab() === 'accreditations' ">
 				<span matTooltip="Please wait for your account to be verified before creating a new accreditation."
 				 [matTooltipDisabled]="accountVerified">
-					<button mat-raised-button (click)="createAccreditation()" [disabled]="!accountVerified" color="primary">New
-						Accreditation</button>
+					<button mat-raised-button (click)="createAccreditation()" [disabled]="!accountVerified" color="primary">New Accreditation</button>
 				</span>
 			</mat-list-item>
 			<mat-list-item *ngIf="activeTab === 'experiences'">
 				<span matTooltip="Please wait for your account to be verified before creating a new workshop." [matTooltipDisabled]="accountVerified">
-					<button mat-raised-button (click)="createExperience()" [disabled]="!accountVerified" color="primary">New
-						Workshop</button>
+					<button mat-raised-button (click)="createExperience()" [disabled]="!accountVerified" color="primary">New In-person Workshop</button>
 				</span>
 			</mat-list-item>
 			<mat-list-item *ngIf="activeTab === 'bounties'">
 				<span matTooltip="Please wait for your account to be verified before creating a new bounty." [matTooltipDisabled]="accountVerified">
-					<button mat-raised-button (click)="createBounty()" [disabled]="!accountVerified" color="primary">New
-						Bounty</button>
+					<button mat-raised-button (click)="createBounty()" [disabled]="!accountVerified" color="primary">New Reward Bounty</button>
 				</span>
 			</mat-list-item>
 			<mat-list-item *ngIf="activeTab === 'guides'">
 				<span matTooltip="Please wait for your account to be verified before creating a new guide." [matTooltipDisabled]="accountVerified">
-					<button mat-raised-button (click)="createGuide()" [disabled]="!accountVerified" color="primary">New
-						Guide</button>
+					<button mat-raised-button (click)="createGuide()" [disabled]="!accountVerified" color="primary">New Learning Guide</button>
 				</span>
 			</mat-list-item>
-			<mat-list-item *ngIf="activeTab === 'learning-paths'">
+			<mat-list-item *ngIf="activeTab === 'learning-paths' && isAdmin">
 				<span matTooltip="Please wait for your account to be verified before creating a new leadxning path."
 				 [matTooltipDisabled]="accountVerified">
-					<button mat-raised-button (click)="createLearningPaths()" [disabled]="!accountVerified" color="primary">New
-						Learning Path</button>
+					<button mat-raised-button (click)="createLearningPaths()" [disabled]="!accountVerified" color="primary">New Learning Path</button>
 				</span>
 			</mat-list-item>
 			<mat-list-item *ngIf="getActiveTab() === 'sessions'">
@@ -67,7 +62,7 @@
 				 [matTooltipDisabled]="accountVerified">
 					<button mat-raised-button [disabled]="!accountVerified" color="primary" (click)="enableSessions()" *ngIf="session === undefined">
 						<span>
-							Enable Peer Sessions
+							Enable Mentor Sessions
 						</span>
 					</button>
 					<button mat-raised-button *ngIf="session && session.status === 'draft'" (click)="editSessions()" [disabled]="!accountVerified"
@@ -79,7 +74,7 @@
 					<button mat-raised-button *ngIf="session && session.status === 'active'" (click)="editSessions()" [disabled]="!accountVerified"
 					 color="primary">
 						<span>
-							Edit Session Preferences
+							Add Session Availability
 						</span>
 					</button>
 					<button mat-raised-button *ngIf="session && session.status === 'submitted'" (click)="editSessions()" [disabled]="!accountVerified || (session && session.status === 'submitted')"

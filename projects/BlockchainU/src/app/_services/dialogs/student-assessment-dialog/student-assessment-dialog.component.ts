@@ -43,12 +43,13 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			let commitmentResult = '';
 			participant.hasCertificate = false;
 			participant.isOnEthereum = false;
+			participant.savingOnEthereum = false;
 			
 			// Check participation on blockchain
 			participant.hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
 			this.collectionService.getParticipantEthereumInfo(this.data.collection.id, participant.ethAddress)
 				.subscribe(res => {
-					if (res && res[6] && res[6] !== '0') {
+					if (res && res.result === true) {
 						participant.isOnEthereum = true;
 					}
 			}, err => {
@@ -168,6 +169,22 @@ export class StudentAssessmentDialogComponent implements OnInit {
 				}
 			}, err => {
 				this.snackBar.open('Cannot re-issue certificate. No backup available.', 'DISMISS', {duration: 5000});
+			});
+	}
+	
+	public addParticipantToBlockchain(participant) {
+		participant.savingOnEthereum = true;
+		this.collectionService.addParticipantToEthereum(this.data.collection.id, participant.id)
+			.subscribe(res => {
+				if (res) {
+					console.log(res);
+					participant.isOnEthereum = true;
+					participant.savingOnEthereum = false;
+				}
+			}, err => {
+				console.log(err);
+				participant.isOnEthereum = false;
+				participant.savingOnEthereum = false;
 			});
 	}
 
