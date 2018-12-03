@@ -84,7 +84,7 @@ export class ConsoleTeachingSessionComponent implements OnInit {
 			if (sessionInstance.availabilities && sessionInstance.availabilities.length > 0 && sessionInstance.packages && sessionInstance.packages.length > 0) {
 				const availabilities = sessionInstance.availabilities.sort((calEventa, calEventb) => (moment(calEventa.startDateTime).isAfter(moment(calEventb.startDateTime)) ? 1 : -1));
 				const startTime = moment(availabilities[0].startDateTime).local();
-				const endTime = moment(availabilities[availabilities.length - 1].startDateTime).local().add(60, 'minutes');
+				const endTime = moment(availabilities[availabilities.length - 1].startDateTime).local().add(30, 'minutes');
 				const now = moment();
 				sessionInstance.isPaidFor = false;
 				if (sessionInstance.payments && sessionInstance.payments.length > 0) {

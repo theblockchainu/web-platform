@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef, Renderer2, OnDestroy } from '@angular/core';
 import * as Video from 'twilio-video';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { TwilioServicesService } from '../../twlio_services/twilio-services.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CookieUtilsService } from '../../cookieUtils/cookie-utils.service';
@@ -41,7 +41,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
     private router: Router,
     private _titleCase: TitleCasePipe
   ) {
-      this.envVariable = environment;
+    this.envVariable = environment;
     this.userId = cookieUtilsService.getValue('userId');
   }
 
@@ -181,13 +181,17 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   }
 
   private recordSessionEnd() {
-    this.startedView.viewer = {
-      id: this.userId
-    };
-    this.startedView.endTime = new Date();
-    this._socketService.sendEndView(this.startedView);
+    if (this.startedView) {
+      this.startedView.viewer = {
+        id: this.userId
+      };
+      this.startedView.endTime = new Date();
+      this._socketService.sendEndView(this.startedView);
+    }
     this._socketService.listenForViewEnded().subscribe(endedView => {
-      delete this.startedView;
+      if (this.startedView) {
+        delete this.startedView;
+      }
       console.log(endedView);
     });
   }

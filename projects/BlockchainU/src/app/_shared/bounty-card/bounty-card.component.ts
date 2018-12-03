@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnChanges } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
@@ -11,7 +11,7 @@ import * as moment from 'moment';
 	templateUrl: './bounty-card.component.html',
 	styleUrls: ['./bounty-card.component.scss']
 })
-export class BountyCardComponent implements OnInit {
+export class BountyCardComponent implements OnInit, OnChanges {
 
 	public envVariable;
 	public userId;
@@ -30,6 +30,9 @@ export class BountyCardComponent implements OnInit {
 	}
 
 	ngOnInit() {
+	}
+
+	ngOnChanges() {
 		let highestReward: any;
 		if (this.bounty.rewards && this.bounty.rewards.length > 0) {
 			for (let index = 0; index < this.bounty.rewards.length; index++) {
@@ -41,8 +44,9 @@ export class BountyCardComponent implements OnInit {
 			}
 			this.bounty.highestReward = highestReward;
 		}
-		this.getTime();
-		console.log(this.bounty.highestReward);
+		if (this.bounty) {
+			this.getTime();
+		}
 	}
 
 	public getTime() {

@@ -106,7 +106,7 @@ export class ConsoleLearningSessionsComponent implements OnInit {
 					sessionInstance.paymentPossible = moment(sessionInstance.updatedAt).add(1, 'day').diff(moment()) > 0;
 				}
 				const startTime = moment(availabilities[0].startDateTime).local();
-				const endTime = moment(availabilities[availabilities.length - 1].startDateTime).local().add(60, 'minutes');
+				const endTime = moment(availabilities[availabilities.length - 1].startDateTime).local().add(30, 'minutes');
 				const now = moment();
 				sessionInstance.startTime = startTime.toDate();
 				sessionInstance.endTime = endTime.toDate();
@@ -127,7 +127,7 @@ export class ConsoleLearningSessionsComponent implements OnInit {
 	}
 	
 	public getEndTime(time: string): string {
-		return moment(time).add(60, 'minutes').toISOString();
+		return moment(time).add(30, 'minutes').toISOString();
 	}
 	
 	/**
