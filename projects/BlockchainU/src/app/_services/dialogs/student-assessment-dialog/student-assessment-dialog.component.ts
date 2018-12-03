@@ -49,12 +49,10 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			participant.hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
 			this.collectionService.getParticipantEthereumInfo(this.data.collection.id, participant.ethAddress)
 				.subscribe(res => {
-					if (res && res['result'] === true) {
-						participant.isOnEthereum = true;
-					} else {
-						participant.isOnEthereum = true;
-					}
+					console.log(res);
+					participant.isOnEthereum = res && res['result'] === true;
 			}, err => {
+					console.log(err);
 					participant.isOnEthereum = false;
 				});
 			
@@ -118,6 +116,8 @@ export class StudentAssessmentDialogComponent implements OnInit {
 					engagement_result: [{ value: engagementResult, disabled: isParticipantEngagementAssessed }],
 					commitment_result: [{ value: commitmentResult, disabled: isParticipantCommitmentAssessed }],
 					isAssessed: isParticipantAssessed,
+					isOnEthereum: participant.isOnEthereum,
+					savingOnEthereum: participant.savingOnEthereum,
 					hasCertificate: participant.hasCertificate,
 					certificateId: participant.certificateId,
 					assessmentId: participantAssessmentId
@@ -175,18 +175,18 @@ export class StudentAssessmentDialogComponent implements OnInit {
 	}
 	
 	public addParticipantToBlockchain(participant) {
-		participant.savingOnEthereum = true;
+		participant.controls['savingOnEthereum'].patchValue(true);
 		this.collectionService.addParticipantToEthereum(this.data.collection.id, participant.id)
 			.subscribe(res => {
 				if (res) {
 					console.log(res);
-					participant.isOnEthereum = true;
-					participant.savingOnEthereum = false;
+					participant.controls['isOnEthereum'].patchValue(true);
+					participant.controls['savingOnEthereum'].patchValue(false);
 				}
 			}, err => {
 				console.log(err);
-				participant.isOnEthereum = false;
-				participant.savingOnEthereum = false;
+				participant.controls['isOnEthereum'].patchValue(false);
+				participant.controls['savingOnEthereum'].patchValue(false);
 			});
 	}
 

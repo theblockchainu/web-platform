@@ -24,11 +24,11 @@
 						<h3 [ngClass]="{'lighterText': participant.value.isAssessed === true}">
 							{{participant.value.name | ucwords}}
 							<span *ngIf="participant.value.isOnEthereum && !participant.value.savingOnEthereum" matTooltip="Verified participation by one0x : {{participant.value.ethAddress}}"
-							      style="padding-left: 15px; position: relative; top: -7px;">&emsp;
+							      style="padding-left: 15px; position: relative; top: -2px;">&emsp;
 								<i class="fa fa-globe" style="color: #ff6d71; font-size: 14px;"></i>
 							</span>
-							<span *ngIf="!participant.value.isOnEthereum && !participant.value.savingOnEthereum" matTooltip="Failed participation on blockchain : {{participant.value.ethAddress}}. Click to retry participation."
-							      style="padding-left: 15px; position: relative; top: -7px;" (click)="addParticipantToBlockchain(participant.value)">&emsp;
+							<span class="clickable" *ngIf="!participant.value.isOnEthereum && !participant.value.savingOnEthereum" matTooltip="Failed participation on blockchain : {{participant.value.ethAddress}}. Click to retry participation."
+							      style="padding-left: 15px; position: relative; top: -2px;" (click)="addParticipantToBlockchain(participant)">&emsp;
 								<i class="fa fa-refresh" style="color: red; font-size: 14px;"></i>
 							</span>
 							<span *ngIf="participant.value.savingOnEthereum" matTooltip="Adding participant information to one0x blockchain..."
