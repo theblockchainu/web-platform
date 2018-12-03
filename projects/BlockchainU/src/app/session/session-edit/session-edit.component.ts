@@ -1413,7 +1413,7 @@ export class SessionEditComponent implements OnInit {
 		this._collectionService.getPreferences(query).subscribe((preferences: any) => {
 			console.log(preferences);
 			if (preferences.length > 0) {
-				if (preferences[0].collections[0].owners[0].id === this.userId) {
+				if (preferences[0].collections[0] && preferences[0].collections[0].owners[0].id === this.userId) {
 					this.savePreferences();
 				} else {
 					this.matSnackbar.open('Custom url already present', 'close', { duration: 3000 });
