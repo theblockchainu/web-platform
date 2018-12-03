@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {environment} from '../../../../environments/environment';
 import {AssessmentService} from '../../assessment/assessment.service';
 import {CollectionService} from '../../collection/collection.service';
+import * as _ from 'lodash';
 
 @Component({
 	selector: 'app-student-assessment-dialog',
@@ -33,6 +34,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 	private loadData() {
 		const participantsInitArray = [];
 		this.pendingParticipants = false;
+		let i = 0;
 		this.data.participants.forEach(participant => {
 			let isParticipantAssessed = false;
 			let isParticipantEngagementAssessed = false;
@@ -43,16 +45,38 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			let commitmentResult = '';
 			participant.hasCertificate = false;
 			participant.isOnEthereum = false;
+			participant.savingOnEthereum = true;
 			
 			// Check participation on blockchain
 			participant.hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
 			this.collectionService.getParticipantEthereumInfo(this.data.collection.id, participant.ethAddress)
 				.subscribe(res => {
-					if (res && res[6] && res[6] !== '0') {
-						participant.isOnEthereum = true;
+					console.log(res);
+					if (res && res['result'] === true) {
+						if (this.assessmentForm && this.assessmentForm.controls) {
+							_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['isOnEthereum'].patchValue(true);
+						} else {
+							participant.isOnEthereum = true;
+						}
+					} else {
+						if (this.assessmentForm && this.assessmentForm.controls) {
+							_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['isOnEthereum'].patchValue(false);
+						} else {
+							participant.isOnEthereum = false;
+						}
 					}
+					_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['savingOnEthereum'].patchValue(false);
+					i++;
+					
 			}, err => {
-					participant.isOnEthereum = false;
+					console.log(err);
+					if (this.assessmentForm && this.assessmentForm.controls) {
+						_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['isOnEthereum'].patchValue(false);
+					} else {
+						participant.isOnEthereum = false;
+					}
+					_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['savingOnEthereum'].patchValue(false);
+					i++;
 				});
 			
 			if (participant.certificates) {
@@ -115,9 +139,12 @@ export class StudentAssessmentDialogComponent implements OnInit {
 					engagement_result: [{ value: engagementResult, disabled: isParticipantEngagementAssessed }],
 					commitment_result: [{ value: commitmentResult, disabled: isParticipantCommitmentAssessed }],
 					isAssessed: isParticipantAssessed,
+					isOnEthereum: participant.isOnEthereum,
+					savingOnEthereum: participant.savingOnEthereum,
 					hasCertificate: participant.hasCertificate,
 					certificateId: participant.certificateId,
-					assessmentId: participantAssessmentId
+					assessmentId: participantAssessmentId,
+					ethAddress: participant.ethAddress
 				})
 			);
 		});
@@ -168,6 +195,22 @@ export class StudentAssessmentDialogComponent implements OnInit {
 				}
 			}, err => {
 				this.snackBar.open('Cannot re-issue certificate. No backup available.', 'DISMISS', {duration: 5000});
+			});
+	}
+	
+	public addParticipantToBlockchain(participant) {
+		participant.controls['savingOnEthereum'].patchValue(true);
+		this.collectionService.addParticipantToEthereum(this.data.collection.id, participant.id)
+			.subscribe(res => {
+				if (res) {
+					console.log(res);
+					participant.controls['isOnEthereum'].patchValue(true);
+					participant.controls['savingOnEthereum'].patchValue(false);
+				}
+			}, err => {
+				console.log(err);
+				participant.controls['isOnEthereum'].patchValue(false);
+				participant.controls['savingOnEthereum'].patchValue(false);
 			});
 	}
 
