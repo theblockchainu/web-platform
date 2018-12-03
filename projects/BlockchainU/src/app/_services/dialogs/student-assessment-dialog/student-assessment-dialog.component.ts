@@ -33,6 +33,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 	private loadData() {
 		const participantsInitArray = [];
 		this.pendingParticipants = false;
+		let i = 0;
 		this.data.participants.forEach(participant => {
 			let isParticipantAssessed = false;
 			let isParticipantEngagementAssessed = false;
@@ -50,7 +51,21 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			this.collectionService.getParticipantEthereumInfo(this.data.collection.id, participant.ethAddress)
 				.subscribe(res => {
 					console.log(res);
-					participant.isOnEthereum = res && res['result'] === true;
+					if (res && res['result'] === true) {
+						if (this.assessmentForm && this.assessmentForm.controls) {
+							this.assessmentForm.controls['participants'].controls[i].controls['isOnEthereum'].patchValue(true);
+						} else {
+							participant.isOnEthereum = true;
+						}
+					} else {
+						if (this.assessmentForm && this.assessmentForm.controls) {
+							this.assessmentForm.controls['participants'].controls[i].controls['isOnEthereum'].patchValue(false);
+						} else {
+							participant.isOnEthereum = false;
+						}
+					}
+					i++;
+					
 			}, err => {
 					console.log(err);
 					participant.isOnEthereum = false;
