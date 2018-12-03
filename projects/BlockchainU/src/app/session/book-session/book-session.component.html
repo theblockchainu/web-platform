@@ -31,15 +31,13 @@
 						</div>
 						<span *ngIf="bookingProcess === 'auto'" class="pull-right" matTooltip="Select a package and your preferred time slot to continue"
 						 [matTooltipDisabled]="selectedPackageIndex && totalDuration.getValue()>0">
-							<button *ngIf="bookingProcess === 'auto'" mat-raised-button color="accent" (click)="joinSession($event)"
-							 [disabled]="!selectedPackageIndex || totalDuration.getValue() === 0">
+							<button mat-raised-button color="accent" (click)="joinSession($event)" [disabled]="!selectedPackageIndex || totalDuration.getValue() === 0">
 								Proceed to payment
 							</button>
 						</span>
 						<span *ngIf="bookingProcess === 'manual'" class="pull-right" matTooltip="The teacher has requested to approve every session request before final confirmation. Teachers have 24 hours to respond to requests."
 						 [matTooltipDisabled]="selectedPackageIndex && totalDuration.getValue()>0">
-							<button *ngIf="bookingProcess === 'manual'" mat-raised-button color="accent" (click)="joinSession($event)"
-							 [disabled]="!selectedPackageIndex || totalDuration.getValue() === 0">
+							<button mat-raised-button color="accent" (click)="joinSession($event)" [disabled]="!selectedPackageIndex || totalDuration.getValue() === 0">
 								Send request
 							</button>
 						</span>
