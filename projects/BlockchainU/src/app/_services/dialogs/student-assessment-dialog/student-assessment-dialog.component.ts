@@ -49,7 +49,9 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			participant.hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
 			this.collectionService.getParticipantEthereumInfo(this.data.collection.id, participant.ethAddress)
 				.subscribe(res => {
-					if (res && res.result === true) {
+					if (res && res['result'] === true) {
+						participant.isOnEthereum = true;
+					} else {
 						participant.isOnEthereum = true;
 					}
 			}, err => {
