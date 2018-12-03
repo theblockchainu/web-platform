@@ -44,7 +44,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			let commitmentResult = '';
 			participant.hasCertificate = false;
 			participant.isOnEthereum = false;
-			participant.savingOnEthereum = false;
+			participant.savingOnEthereum = true;
 			
 			// Check participation on blockchain
 			participant.hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
@@ -64,6 +64,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 							participant.isOnEthereum = false;
 						}
 					}
+					this.assessmentForm['controls']['participants']['controls'][i]['controls']['savingOnEthereum'].patchValue(false);
 					i++;
 					
 			}, err => {
@@ -135,7 +136,8 @@ export class StudentAssessmentDialogComponent implements OnInit {
 					savingOnEthereum: participant.savingOnEthereum,
 					hasCertificate: participant.hasCertificate,
 					certificateId: participant.certificateId,
-					assessmentId: participantAssessmentId
+					assessmentId: participantAssessmentId,
+					ethAddress: participant.ethAddress
 				})
 			);
 		});
