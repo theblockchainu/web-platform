@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {environment} from '../../../../environments/environment';
 import {AssessmentService} from '../../assessment/assessment.service';
 import {CollectionService} from '../../collection/collection.service';
+import * as _ from 'lodash';
 
 @Component({
 	selector: 'app-student-assessment-dialog',
@@ -53,23 +54,29 @@ export class StudentAssessmentDialogComponent implements OnInit {
 					console.log(res);
 					if (res && res['result'] === true) {
 						if (this.assessmentForm && this.assessmentForm.controls) {
-							this.assessmentForm['controls']['participants']['controls'][i]['controls']['isOnEthereum'].patchValue(true);
+							_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['isOnEthereum'].patchValue(true);
 						} else {
 							participant.isOnEthereum = true;
 						}
 					} else {
 						if (this.assessmentForm && this.assessmentForm.controls) {
-							this.assessmentForm['controls']['participants']['controls'][i]['controls']['isOnEthereum'].patchValue(false);
+							_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['isOnEthereum'].patchValue(false);
 						} else {
 							participant.isOnEthereum = false;
 						}
 					}
-					this.assessmentForm['controls']['participants']['controls'][i]['controls']['savingOnEthereum'].patchValue(false);
+					_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['savingOnEthereum'].patchValue(false);
 					i++;
 					
 			}, err => {
 					console.log(err);
-					participant.isOnEthereum = false;
+					if (this.assessmentForm && this.assessmentForm.controls) {
+						_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['isOnEthereum'].patchValue(false);
+					} else {
+						participant.isOnEthereum = false;
+					}
+					_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['savingOnEthereum'].patchValue(false);
+					i++;
 				});
 			
 			if (participant.certificates) {
