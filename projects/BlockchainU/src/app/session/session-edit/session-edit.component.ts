@@ -1401,7 +1401,7 @@ export class SessionEditComponent implements OnInit {
 		paidpckg.removeAt(index);
 	}
 
-	public savePreferences() {
+	public saveCustomUrl() {
 		const query = {
 			where: {
 				customUrl: this.preferencesForm.value.customUrl
@@ -1413,16 +1413,8 @@ export class SessionEditComponent implements OnInit {
 		this._collectionService.getPreferences(query).subscribe((preferences: any) => {
 			console.log(preferences);
 			if (preferences.length > 0) {
-				console.log(preferences[0].collections[0].owners[0].id);
-				console.log(this.userId);
-				
 				if (preferences[0].collections[0].owners[0].id === this.userId) {
-					this._collectionService.patchPreferences(this.sessionId, this.preferencesForm.value).subscribe(res => {
-						this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems, {
-							preferenceObject: res
-						});
-						this.nextStep();
-					});
+					this.savePreferences();
 				} else {
 					this.matSnackbar.open('Custom url already present', 'close', { duration: 3000 });
 				}
@@ -1436,6 +1428,17 @@ export class SessionEditComponent implements OnInit {
 			}
 		});
 
+	}
+
+	savePreferences() {
+		this._collectionService.patchPreferences(this.sessionId, this.preferencesForm.value).subscribe(res => {
+			this.sidebarMenuItems = this._leftSideBarService.updateSessionMenu(this.sidebarMenuItems, {
+				preferenceObject: res
+			});
+			this.nextStep();
+		}, err => {
+			this.matSnackbar.open('An Error occured', 'close', { duration: 3000 });
+		});
 	}
 
 	public updateEvent(eventHandle) {
