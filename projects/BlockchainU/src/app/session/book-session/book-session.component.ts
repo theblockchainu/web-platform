@@ -165,7 +165,7 @@ export class BookSessionComponent implements OnInit {
 			if (res.provisions.length > 0) {
 				this.provisions = res.provisions;
 			}
-			if (res.preferences) {
+			if (res.preferences && res.preferences.length > 0) {
 				this.bookingProcess = res.preferences[0].bookingProcess;
 			}
 			// Autofill values for direct payment mode

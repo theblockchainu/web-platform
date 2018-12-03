@@ -225,7 +225,8 @@
 								</mat-chip-list>
 							</div>
 						</div>
-						<div class="row margin-top-40 upcomingCohortBox" *ngIf="userType === 'public' && class.subCategory === 'instructor led' && _collectionService.getUpcomingCalendar(experience.calendars)">
+						<div class="row margin-top-40 upcomingCohortBox" *ngIf="userType === 'public' && class.subCategory === 'instructor led' 
+						&& _collectionService.getUpcomingCalendar(class.calendars)">
 							<div class="col-md-1 col-xs-1">
 								<i class="fa fa-info-circle lightText"></i>
 							</div>
@@ -355,7 +356,8 @@
 															<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined">
 																{{itenary.startDate | date:'EEEE, d MMMM'}} </div>
 															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length > 1">{{add1ToIndex(itenary.startDay)}}</div>
-															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate | date:'EEEE, d MMMM'}}</div>
+															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate
+																| date:'EEEE, d MMMM'}}</div>
 														</div>
 														<div (mouseover)="showViewTime(content)" (mouseout)="hideViewTime(content)" [ngClass]="{'row':true, 'timelineRowItem': true, 'timeRowItemProgress': content.views !== undefined && content.views.length > 0 && userType === 'participant'}"
 														 *ngFor="let content of itenary.contents">
@@ -364,13 +366,14 @@
 															</div>
 															<a style="cursor:pointer;color:rgba(0,0,0,0.87)" (click)="openDialog(content, itenary.startDate, itenary.endDate)">
 																<div class="col-md-5">
-																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video' && content.type !== 'quiz'" class="img-responsive itenary-media"
-																	 src="{{envVariable.apiUrl+content.imageUrl}}/300" (error)="_collectionService.imgErrorHandler($event)">
+																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type!=='video' && content.type !== 'quiz'"
+																	 class="img-responsive itenary-media" src="{{envVariable.apiUrl+content.imageUrl}}/300" (error)="_collectionService.imgErrorHandler($event)">
 																	<video #videoContent width="100%" height="auto" *ngIf="content.type==='video' && !content.youtubeId"
 																	 class="itenary-media" preload="metadata" (error)="_collectionService.imgErrorHandler($event)">
 																		<source src="{{envVariable.apiUrl+content.imageUrl}}">
 																	</video>
-																	<img *ngIf="content.type === 'quiz'" style="width: auto; border: 0.5px solid #eee;" class="img-responsive itenary-media" src="/assets/images/community-banner-bg.jpg">
+																	<img *ngIf="content.type === 'quiz'" style="width: auto; border: 0.5px solid #eee;" class="img-responsive itenary-media"
+																	 src="/assets/images/community-banner-bg.jpg">
 																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type==='video' && content.youtubeId"
 																	 class="img-responsive itenary-media" [src]="'https://img.youtube.com/vi/'+content.youtubeId+'/0.jpg'| safe:'resourceUrl'"
 																	 (error)="_collectionService.imgErrorHandler($event)">
@@ -383,7 +386,8 @@
 																			<h3> {{content.title | titlecase}}</h3>
 																			<div>
 																				<span class="mat-caption" *ngIf="content.schedules[0].startTime !== undefined && (content.type === 'online' || (content.isTimeBound && content.type === 'quiz'))">
-																					{{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm a'}} &nbsp;&nbsp;&nbsp;
+																					{{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm
+																					a'}} &nbsp;&nbsp;&nbsp;
 																					<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
 																				</span>
 																				{{_collectionService.getContentTypeFullName(content.type) | titlecase}}
@@ -405,7 +409,8 @@
 																</div>
 																<div class="row margin-top-10">
 																	<div class="col-md-12" *ngIf="userType !=='participant' && userType !== 'teacher'">
-																		<a href="javascript:void(0);" (click)="openDialog(content, itenary.startDate, itenary.endDate)">See details</a>
+																		<a href="javascript:void(0);" (click)="openDialog(content, itenary.startDate, itenary.endDate)">See
+																			details</a>
 																	</div>
 																</div>
 															</div>
@@ -984,7 +989,8 @@
 								<div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
 									<span class="cal-day-badge"></span>
 									<span>
-									{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d MMM' }})
+										{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d
+										MMM' }})
 									</span>
 								</div>
 								<div class="margin-top-10 margin-bottom-10">
@@ -1049,7 +1055,8 @@
 									<div class="col-xs-8">
 										<div class="row">
 											<div class="col-md-12">
-												<h2 style="display: inline-block; margin-bottom: -1px;">{{class.price | convertCurrency: class.currency |async}}
+												<h2 style="display: inline-block; margin-bottom: -1px;">{{class.price | convertCurrency: class.currency
+													|async}}
 												</h2>&nbsp; per person
 												<br />
 												<p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating>
