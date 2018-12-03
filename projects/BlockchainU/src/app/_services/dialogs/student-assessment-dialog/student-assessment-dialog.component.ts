@@ -53,13 +53,13 @@ export class StudentAssessmentDialogComponent implements OnInit {
 					console.log(res);
 					if (res && res['result'] === true) {
 						if (this.assessmentForm && this.assessmentForm.controls) {
-							this.assessmentForm.controls['participants'].controls[i].controls['isOnEthereum'].patchValue(true);
+							this.assessmentForm['controls']['participants']['controls'][i]['controls']['isOnEthereum'].patchValue(true);
 						} else {
 							participant.isOnEthereum = true;
 						}
 					} else {
 						if (this.assessmentForm && this.assessmentForm.controls) {
-							this.assessmentForm.controls['participants'].controls[i].controls['isOnEthereum'].patchValue(false);
+							this.assessmentForm['controls']['participants']['controls'][i]['controls']['isOnEthereum'].patchValue(false);
 						} else {
 							participant.isOnEthereum = false;
 						}
