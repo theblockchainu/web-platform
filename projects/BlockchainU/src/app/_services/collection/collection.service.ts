@@ -654,10 +654,18 @@ export class CollectionService {
 		console.log(collection);
 		switch (collection.type) {
 			case 'class':
-				this.router.navigate(['/class', collection.customUrl]);
+				if (collection.customUrl && collection.customUrl.length > 0) {
+					this.router.navigate(['/class', collection.customUrl]);
+				} else {
+					this.router.navigate(['/class', collection.id]);
+				}
 				break;
 			case 'experience':
-				this.router.navigate(['/experience', collection.customUrl]);
+				if (collection.customUrl && collection.customUrl.length > 0) {
+					this.router.navigate(['/experience', collection.customUrl]);
+				} else {
+					this.router.navigate(['/experience', collection.id]);
+				}
 				break;
 			case 'session':
 				this.router.navigate(['/session', collection.id]);
@@ -666,10 +674,18 @@ export class CollectionService {
 				this.router.navigate(['/bounty', collection.id]);
 				break;
 			case 'guide':
-				this.router.navigate(['/guide', collection.customUrl]);
+				if (collection.customUrl && collection.customUrl.length > 0) {
+					this.router.navigate(['/guide', collection.customUrl]);
+				} else {
+					this.router.navigate(['/guide', collection.id]);
+				}
 				break;
 			case 'learning-path':
-				this.router.navigate(['/learning-path', collection.customUrl]);
+				if (collection.customUrl && collection.customUrl.length > 0) {
+					this.router.navigate(['/learning-path', collection.customUrl]);
+				} else {
+					this.router.navigate(['/learning-path', collection.id]);
+				}
 				break;
 			default:
 				break;

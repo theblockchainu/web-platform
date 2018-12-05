@@ -4,6 +4,7 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { environment } from '../../../environments/environment';
 declare var fbq: any;
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-class-card',
@@ -29,6 +30,21 @@ export class ClassCardComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.getTime();
+	}
+	
+	public getTime() {
+		if (this._collectionService.getCurrentCalendar(this.class.calendars)) {
+			const startMoment = moment(this._collectionService.getCurrentCalendar(this.class.calendars).startDate);
+			const endMoment = moment(this._collectionService.getCurrentCalendar(this.class.calendars).endDate);
+			this.class.startsIn = moment().to(startMoment);
+			this.class.startDiff = startMoment.diff(moment());
+			this.class.endsIn = moment().to(endMoment);
+		} else {
+			this.class.startsIn = '';
+			this.class.startDiff = '';
+			this.class.endsIn = '';
+		}
 	}
 
 	public toggleClassBookmark(_class) {

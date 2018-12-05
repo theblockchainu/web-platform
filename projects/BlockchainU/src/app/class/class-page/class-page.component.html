@@ -225,7 +225,7 @@
 								</mat-chip-list>
 							</div>
 						</div>
-						<div class="row margin-top-40 upcomingCohortBox" *ngIf="userType === 'public' && class.subCategory === 'instructor led' 
+						<div class="row margin-top-40 upcomingCohortBox" *ngIf="userType === 'public' && class.subCategory === 'instructor led'
 						&& _collectionService.getUpcomingCalendar(class.calendars)">
 							<div class="col-md-1 col-xs-1">
 								<i class="fa fa-info-circle lightText"></i>
@@ -373,7 +373,7 @@
 																		<source src="{{envVariable.apiUrl+content.imageUrl}}">
 																	</video>
 																	<img *ngIf="content.type === 'quiz'" style="width: auto; border: 0.5px solid #eee;" class="img-responsive itenary-media"
-																	 src="/assets/images/community-banner-bg.jpg">
+																	 src="/assets/images/quizcover.jpg">
 																	<img style="width: auto; border: 0.5px solid #eee;" *ngIf="content.type==='video' && content.youtubeId"
 																	 class="img-responsive itenary-media" [src]="'https://img.youtube.com/vi/'+content.youtubeId+'/0.jpg'| safe:'resourceUrl'"
 																	 (error)="_collectionService.imgErrorHandler($event)">
