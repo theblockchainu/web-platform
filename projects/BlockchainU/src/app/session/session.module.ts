@@ -9,12 +9,19 @@ import { BookSessionComponent } from './book-session/book-session.component';
 import { ProcessSessionPaymentComponent } from './process-session-payment/process-session-payment.component';
 import { StripePaymentComponent } from './stripe-payment/stripe-payment.component';
 import { CcavenuePaymentComponent } from './ccavenue-payment/ccavenue-payment.component';
+import { LiveSessionComponent } from './live-session/live-session.component';
 @NgModule({
   imports: [
     CommonModule,
     SessionRoutingModule,
     SharedModule
   ],
-  declarations: [SessionEditComponent, BookSessionComponent, ProcessSessionPaymentComponent, StripePaymentComponent, CcavenuePaymentComponent]
+  declarations: [
+    SessionEditComponent,
+    BookSessionComponent,
+    ProcessSessionPaymentComponent,
+    StripePaymentComponent,
+    CcavenuePaymentComponent,
+    LiveSessionComponent]
 })
 export class SessionModule { }

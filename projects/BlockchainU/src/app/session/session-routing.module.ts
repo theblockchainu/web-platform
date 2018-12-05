@@ -4,6 +4,7 @@ import { SessionEditComponent } from './session-edit/session-edit.component';
 import { AuthGuardService } from '../_services/auth-guard/auth-guard.service';
 import { BookSessionComponent } from './book-session/book-session.component';
 import { ProcessSessionPaymentComponent } from './process-session-payment/process-session-payment.component';
+import {  LiveSessionComponent} from './live-session/live-session.component';
 const routes: Routes = [
   {
     path: '',
@@ -28,6 +29,16 @@ const routes: Routes = [
         component: SessionEditComponent,
         canActivate: [AuthGuardService]
       },
+      {
+        path: 'room/:contentId',
+        component: LiveSessionComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'room/:contentId/:calendarId',
+        component: LiveSessionComponent,
+        canActivate: [AuthGuardService]
+      }
 
     ]
   }

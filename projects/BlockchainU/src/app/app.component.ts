@@ -66,8 +66,8 @@ export class AppComponent implements OnInit {
 			|| /^\/guide\/.*\/edit\/./.test(url)
 			|| /^\/guide\/.*./.test(url)
 			|| /^\/session\/.*\/edit\/./.test(url)
-			|| /^\/learning-path\/.*\/edit\/./.test(url));
-
+			|| /^\/learning-path\/.*\/edit\/./.test(url)
+			|| /\/session\/room\/.*./.test(url));
 	}
 
 	modifyHeader(url) {
@@ -81,8 +81,8 @@ export class AppComponent implements OnInit {
 			|| /^\/digest\/experiences/.test(url)
 			|| /^\/digest\/classes/.test(url)
 			|| /^\/digest\/peers/.test(url)
-			|| /^\/error/.test(url));
-
+			|| /^\/error/.test(url)
+			|| /\/session\/room\/.*./.test(url));
 		if (url === '/' || url === '/login') {
 			this.showHeader = false;
 		}

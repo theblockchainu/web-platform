@@ -5,7 +5,7 @@ import { CollectionService } from '../../../_services/collection/collection.serv
 import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
 import * as moment from 'moment';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 @Component({
 	selector: 'app-console-teaching-session',
 	templateUrl: './console-teaching-session.component.html',
@@ -13,7 +13,7 @@ import {environment} from '../../../../environments/environment';
 })
 
 export class ConsoleTeachingSessionComponent implements OnInit {
-	
+
 	public loaded: boolean;
 	public activeTab: string;
 	public userId;
@@ -39,12 +39,12 @@ export class ConsoleTeachingSessionComponent implements OnInit {
 		});
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.loaded = false;
 		this.fetchCollections();
 	}
-	
+
 	private fetchCollections() {
 		this.loaded = false;
 		const filter = {
@@ -55,7 +55,7 @@ export class ConsoleTeachingSessionComponent implements OnInit {
 					scope: {
 						include: [
 							'availabilities',
-							{'peers': 'profiles'},
+							{ 'peers': 'profiles' },
 							'packages',
 							'payments'
 						],
@@ -78,7 +78,7 @@ export class ConsoleTeachingSessionComponent implements OnInit {
 			this.loaded = true;
 		});
 	}
-	
+
 	private filterSessions(contents: Array<any>) {
 		contents.forEach(sessionInstance => {
 			if (sessionInstance.availabilities && sessionInstance.availabilities.length > 0 && sessionInstance.packages && sessionInstance.packages.length > 0) {
@@ -117,39 +117,40 @@ export class ConsoleTeachingSessionComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public joinSession(session: any) {
 		console.log(session);
 	}
-	
+
 	public approveSession(session: any) {
 		this._collectionService.approveSessionJoinRequest(session.id).subscribe(res => {
 			this.fetchCollections();
 		});
 	}
-	
+
 	public rejectSession(session: any) {
 		this._collectionService.rejectSessionJoinRequest(session.id).subscribe(res => {
 			this.fetchCollections();
 		});
 	}
-	
+
 	/**
 	 * joinLiveSession
 	 */
 	public joinLiveSession(session: any) {
-		const data = {
-			roomName: session.id,
-			teacher: this.teacher,
-			content: session,
-			participants: session.peers
-		};
-		this.dialogsService.startLiveSession(data).subscribe((result: any) => {
-		});
+		this.router.navigate(['session', 'room', session.id]);
+		// const data = {
+		// 	roomName: session.id,
+		// 	teacher: this.teacher,
+		// 	content: session,
+		// 	participants: session.peers
+		// };
+		// this.dialogsService.startLiveSession(data).subscribe((result: any) => {
+		// });
 	}
-	
+
 	public openTransactions() {
 		this.router.navigate(['console', 'account', 'transactions']);
 	}
-	
+
 }

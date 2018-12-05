@@ -52,6 +52,7 @@
     "@ngx-share/core": "^6.0.1",
     "@types/core-js": "^2.5.0",
     "@types/google.analytics": "0.0.39",
+    "@types/twilio-video": "^2.0.2",
     "amazing-time-picker": "^1.5.3",
     "angular-calendar": "^0.25.2",
     "angularx-qrcode": "^1.2.2",
@@ -80,7 +81,7 @@
     "rxjs-tslint": "^0.1.5",
     "ts-loader": "^4.4.2",
     "ts-node": "^7.0.0",
-    "twilio-video": "^1.13.1",
+    "twilio-video": "^2.0.0-beta4",
     "videogular2": "^6.3.0",
     "zone.js": "^0.8.26"
   },

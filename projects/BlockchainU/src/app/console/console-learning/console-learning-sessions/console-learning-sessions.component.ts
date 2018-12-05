@@ -6,9 +6,9 @@ import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.
 import { ProfileService } from '../../../_services/profile/profile.service';
 import * as moment from 'moment';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
-import { environment} from '../../../../environments/environment';
-import {ContentService} from '../../../_services/content/content.service';
-import {MatSnackBar} from '@angular/material';
+import { environment } from '../../../../environments/environment';
+import { ContentService } from '../../../_services/content/content.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
 	selector: 'app-console-learning-sessions',
@@ -16,7 +16,7 @@ import {MatSnackBar} from '@angular/material';
 	styleUrls: ['./console-learning-sessions.component.scss', '../../console.component.scss']
 })
 export class ConsoleLearningSessionsComponent implements OnInit {
-	
+
 	public loaded: boolean;
 	public activeTab: string;
 	public userId;
@@ -44,11 +44,11 @@ export class ConsoleLearningSessionsComponent implements OnInit {
 		});
 		this.userId = _cookieUtilsService.getValue('userId');
 	}
-	
+
 	ngOnInit() {
 		this.refreshData();
 	}
-	
+
 	private refreshData() {
 		this.loaded = false;
 		this.pastSessions = [];
@@ -73,14 +73,14 @@ export class ConsoleLearningSessionsComponent implements OnInit {
 				'profiles'
 			]
 		};
-		
+
 		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
 			this.participant = res;
 			this.filterSessions(res.contents);
 			this.loaded = true;
 		});
 	}
-	
+
 	private filterSessions(contents: Array<any>) {
 		contents.forEach(sessionInstance => {
 			if (sessionInstance.availabilities && sessionInstance.availabilities.length > 0 && sessionInstance.packages && sessionInstance.packages.length > 0) {
@@ -125,36 +125,37 @@ export class ConsoleLearningSessionsComponent implements OnInit {
 		});
 		this.loaded = true;
 	}
-	
+
 	public getEndTime(time: string): string {
 		return moment(time).add(30, 'minutes').toISOString();
 	}
-	
+
 	/**
 	 * joinLiveSession
 	 */
 	public joinLiveSession(session: any) {
-		const data = {
-			roomName: session.id,
-			teacher: session.collections[0].owners[0],
-			content: session,
-			participants: [this.participant]
-		};
-		this.dialogsService.startLiveSession(data).subscribe((result: any) => {
-		});
+		this.router.navigate(['session', 'room', session.id]);
+		// const data = {
+		// 	roomName: session.id,
+		// 	teacher: session.collections[0].owners[0],
+		// 	content: session,
+		// 	participants: [this.participant]
+		// };
+		// this.dialogsService.startLiveSession(data).subscribe((result: any) => {
+		// });
 	}
-	
+
 	public makePayment(session: any) {
 		this.router.navigate(['session', 'book', session.collections[0].owners[0].id, 'payment', session.id]);
 	}
-	
+
 	public cancelSessionRequest(session: any) {
 		this._contentService.deleteContent(session.id).subscribe(res => {
 			this.refreshData();
-			this.snackBar.open('Your peer session request has been cancelled. The teacher has been informed.', 'Ok', { duration: 5000});
+			this.snackBar.open('Your peer session request has been cancelled. The teacher has been informed.', 'Ok', { duration: 5000 });
 		});
 	}
-	
+
 	public openTransactions() {
 		this.router.navigate(['console', 'account', 'transactions']);
 	}

@@ -324,7 +324,11 @@ export class BookSessionComponent implements OnInit {
 					this.savingData = false;
 					this.contentArray = res.contentArray;
 					this.paymentBatchId = res.paymentBatchId;
-					this.bookSession();
+					if (approval && this.packages[this.selectedPackageIndex].price > 0) {
+						this.bookSession();
+					} else {
+						this.router.navigate(['console', 'learning', 'sessions']);
+					}
 				}, (err) => {
 					console.log(err);
 					this.savingData = false;

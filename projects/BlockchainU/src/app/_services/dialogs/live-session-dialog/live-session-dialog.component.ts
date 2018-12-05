@@ -8,6 +8,8 @@ import { SocketService } from '../../socket/socket.service';
 import { Router } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 
+declare var chrome;
+
 @Component({
   selector: 'app-live-session-dialog',
   templateUrl: './live-session-dialog.component.html',
@@ -26,6 +28,9 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   public localVideoTrack: any;
   public localParticipantId: string;
   public envVariable;
+  public screenTrack;
+  public sharingScreen: boolean;
+
   @ViewChild('mainStream') mainStream: ElementRef;
   @ViewChild('otherStream') otherStream: ElementRef;
   @ViewChild('localStream') localStream: ElementRef;
@@ -51,6 +56,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
       this.registeredParticipantMapObj[participant.id] = participant;
     });
     this.mainLoading = true;
+    this.sharingScreen = false;
     this._twilioServicesService.getToken().subscribe(
       (result: any) => {
         this.token = result.token;
@@ -62,8 +68,70 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.unShareScreen();
     this.recordSessionEnd();
   }
+
+
+  private isFirefox() {
+    // @ts-ignore: Media source support
+    const mediaSourceSupport = !!navigator.mediaDevices.getSupportedConstraints().mediaSource;
+    const matchData = navigator.userAgent.match('/Firefox/(d)/');
+    let firefoxVersion = 0;
+    if (matchData && matchData[1]) {
+      firefoxVersion = parseInt(matchData[1], 10);
+    }
+    return mediaSourceSupport && firefoxVersion >= 52;
+  }
+
+  private isChrome() {
+    return 'chrome' in window;
+  }
+
+  private canScreenShare() {
+    return this.isFirefox() || this.isChrome();
+  }
+
+  private getUserScreen() {
+    const extensionId = 'ommmoafgldpmnmmncooncpkhjhkfhppb';
+    if (!this.canScreenShare()) {
+      window.open('https://chrome.google.com/webstore/detail/screen-share-by-blockchai/phcmeinnkegahjhnemhnjkaoenkjoage', '_blank');
+      return;
+    }
+    if (this.isChrome()) {
+      return new Promise((resolve, reject) => {
+        const request = {
+          sources: ['screen']
+        };
+        chrome.runtime.sendMessage(extensionId, request, response => {
+          if (response && response.type === 'success') {
+            resolve({ streamId: response.streamId });
+          } else {
+            reject(new Error('Could not get stream'));
+          }
+        });
+      }).then(response => {
+        return navigator.mediaDevices.getUserMedia({
+          video: {
+            // @ts-ignore: Media source support
+            mandatory: {
+              chromeMediaSource: 'desktop',
+              // @ts-ignore: Media source support
+              chromeMediaSourceId: response.streamId
+            }
+          }
+        });
+      });
+    } else if (this.isFirefox()) {
+      return navigator.mediaDevices.getUserMedia({
+        video: {
+          // @ts-ignore: Media source support
+          mediaSource: 'screen'
+        }
+      });
+    }
+  }
+
 
   private createRoom() {
     Video.connect(this.token, {
@@ -78,7 +146,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
       console.log('Connected to Room "%s"', this.room.name);
       this.setUpLocalParticipant();
       this.setUpRemoteParticipants();
-    }, (error) => {
+    }).catch((error) => {
       console.error('Unable to connect to Room: ' + error.message);
     });
   }
@@ -137,6 +205,7 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
       }
     }
     remoteParticipant.on('trackAdded', track => {
+      console.log('track' + track);
       if (track.kind === 'video') {
         track.on('disabled', remoteVideoTrack => {
           console.log('Participant ' + remoteParticipant.identity + ' disabled video');
@@ -336,6 +405,40 @@ export class LiveSessionDialogComponent implements OnInit, OnDestroy {
       } else {
         this.renderer.removeChild(this.otherStream, el);
       }
+    }
+  }
+
+  shareScreen() {
+    this.getUserScreen().then((stream) => {
+      this.screenTrack = new Video.LocalVideoTrack(stream.getVideoTracks()[0]);
+      this.screenTrack.once('stopped', () => {
+        this.room.localParticipant.removeTrack(this.screenTrack);
+      });
+      this.room.localParticipant.publishTrack(this.screenTrack);
+      // this.screenTrack = stream.getVideoTracks()[0];
+      // this.room.localParticipant.publishTrack(this.screenTrack);
+      // this.replaceTrack(this.room.localParticipant, this.screenTrack);
+      console.log(this.room.localParticipant.tracks);
+      // this.setUpLocalParticipant();
+      this.sharingScreen = true;
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
+  unShareScreen() {
+    if (this.screenTrack) {
+      this.room.localParticipant.unpublishTrack(this.screenTrack);
+      this.screenTrack = null;
+      this.sharingScreen = false;
+    }
+  }
+
+  toggleScreenShare() {
+    if (this.screenTrack) {
+      this.unShareScreen();
+    } else {
+      this.shareScreen();
     }
   }
 

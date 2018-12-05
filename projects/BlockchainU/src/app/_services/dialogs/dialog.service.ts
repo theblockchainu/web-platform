@@ -335,13 +335,13 @@ export class DialogsService {
      */
     public startLiveSession(data: any) {
         let dialogRef5: MatDialogRef<LiveSessionDialogComponent>;
-
         dialogRef5 = this.dialog.open(LiveSessionDialogComponent, {
             panelClass: 'my-full-screen-dialog',
             width: '100vw',
             height: '100vh',
             maxWidth: '100%',
-            data: data
+            data: data,
+            hasBackdrop: false
         });
         return dialogRef5.afterClosed();
     }

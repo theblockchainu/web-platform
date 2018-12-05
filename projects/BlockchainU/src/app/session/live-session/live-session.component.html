@@ -1,5 +1,11 @@
 <div class="videoDialog">
-  <div class="mainStream" #mainStream>
+  <div *ngIf="!loaded">
+    <ngx-loading [show]="true"></ngx-loading>
+  </div>
+  <div class="center padding-top-50" *ngIf="loaded && !room">
+    <h3>Session Not Found!</h3>
+  </div>
+  <div class="mainStream" [hidden]="!(loaded && room)" #mainStream>
     <div *ngIf="room" class="buttonBar">
       <div *ngIf="localAudioTrack && localVideoTrack" class="call-action-buttons">
         <div class="session_actions">
@@ -8,32 +14,32 @@
           </button>
         </div>
         <div class="session_actions">
-          <button mat-fab (click)="toggleAudio()">
+          <button mat-fab (click)="toggleLocalAudio()">
             <mat-icon *ngIf="localAudioTrack.isEnabled">mic</mat-icon>
             <mat-icon *ngIf="!localAudioTrack.isEnabled">mic_off</mat-icon>
           </button>
         </div>
         <div class="session_actions">
-          <button mat-fab (click)="toggleVideo()">
+          <button mat-fab (click)="toggleLocalVideo()">
             <mat-icon *ngIf="localVideoTrack.isEnabled">videocam</mat-icon>
             <mat-icon *ngIf="!localVideoTrack.isEnabled">videocam_off</mat-icon>
           </button>
         </div>
         <div class="session_actions">
-          <button mat-fab (click)="toggleScreenShare()">
+          <button mat-fab (click)="toggleLocalScreenShare()">
             <mat-icon *ngIf="screenTrack">stop_screen_share</mat-icon>
             <mat-icon *ngIf="!screenTrack">screen_share</mat-icon>
           </button>
         </div>
       </div>
     </div>
-    <div class="bottomBar" [hidden]="isTeacherView">
+    <div class="bottomBar" [hidden]="isTeacher">
       <div class="otherStream" #otherStream>
       </div>
       <div class="localStream" #localStream>
       </div>
     </div>
-    <div class="bottomBar" [hidden]="!isTeacherView">
+    <div class="bottomBar" [hidden]="!isTeacher">
       <div class="otherStreamTeacher" #otherStreamTeacher>
       </div>
     </div>
