@@ -145,7 +145,7 @@ export class ContentQuizComponent implements OnInit {
 			this.data.content.questions.forEach(question => {
 				if (question.answers) {
 					question.answers.forEach(answer => {
-						if (answer.peer[0].id === this.userId) {
+						if (answer.peer && answer.peer[0].id === this.userId) {
 							this.hasAnswered = true;
 							this.answeredDate = moment(answer.createdAt).format('Do MMM YY');
 							question.myAnswer = answer;

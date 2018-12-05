@@ -605,6 +605,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	private processData(res: any) {
+		console.log('PROCESSING DATA');
 		this.class = res;
 		this.classId = this.class.id;
 		this.inviteLink = environment.clientUrl + '/class/' + this.class.id;

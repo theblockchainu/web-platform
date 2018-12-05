@@ -47,7 +47,7 @@
 				</span>
 			</div>
 		</div>
-		<div class="row pending-actions center" *ngIf="class.status === 'active' && calendarId === undefined && !hasUpcomingCohort()">
+		<div class="row pending-actions center" *ngIf="class.subCategory !== 'self paced' && class.status === 'active' && calendarId === undefined && !hasUpcomingCohort()">
 			<div class="col-md-10 col-md-offset-1">
 				<span>This online course was run in the past but has no upcoming batches.
 					<span class="clickable mat-body-2" (click)="followCollectionToggle()" style="padding-left: 15px;" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{class.type | titlecase}}">
