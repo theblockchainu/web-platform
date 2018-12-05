@@ -48,7 +48,7 @@
 						<b>What is this quiz about?</b>
 					</div>
 					<br>
-					<p class="pre-wrapped alignJustify">{{data.content.description | trim | ucfirst | linkify }}</p>
+					<div class="pre-wrapped alignJustify" [innerHTML]="data.content.description | trim | ucfirst | linkify "></div>
 					<div *ngIf="attachmentUrls.length" class="pic delete">
 						<hr style="margin-top: 0px;">
 						<div>
@@ -56,9 +56,9 @@
 						</div>
 						<br>
 						<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
-							<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
+							<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="200" style="border: 0.5px solid #ccc">
 							<div *ngIf="file.type.includes('application')" class="uploaded_file">
-								<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
+								<a href="{{envVariable.apiUrl + file.url}}" target="_blank" class="uploaded_file_text">{{file.originalFilename}}</a>
 							</div>
 						</div>
 					</div>

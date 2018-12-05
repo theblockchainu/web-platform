@@ -50,11 +50,16 @@
 						<div class="continueLearning-card" *ngFor="let collection of ongoingArray; let i =index">
 							<a *ngIf="i<3" [routerLink]="'/' + collection.type + '/'+collection.id+'/calendar/' + getLearnerCalendar(collection).id + '/' + getLearnerUpcomingEvent(collection).id">
 								<div class="">
-									<img class="continueLearning-thumb" src="{{envVariable.apiUrl+getLearnerUpcomingEvent(collection).imageUrl + '/500'}}"
+									<img class="continueLearning-thumb" *ngIf="envVariable.apiUrl+getLearnerUpcomingEvent(collection).type!=='video'" src="{{envVariable.apiUrl+getLearnerUpcomingEvent(collection).imageUrl + '/500'}}"
 									 alt="collectionImg" (error)="_collectionService.imgErrorHandler($event)">
+									<img class="continueLearning-thumb" *ngIf="envVariable.apiUrl+getLearnerUpcomingEvent(collection).type==='video' && envVariable.apiUrl+getLearnerUpcomingEvent(collection).youtubeId"
+									     [src]="'https://img.youtube.com/vi/'+ envVariable.apiUrl+getLearnerUpcomingEvent(collection).youtubeId + '/0.jpg'| safe:'resourceUrl'"
+									     (error)="_collectionService.imgErrorHandler($event)">
+									<video class="continueLearning-thumb" #videoContent width="100%" height="auto" *ngIf="envVariable.apiUrl+getLearnerUpcomingEvent(collection).type==='video' && !envVariable.apiUrl+getLearnerUpcomingEvent(collection).youtubeId" preload="metadata" (error)="_collectionService.imgErrorHandler($event)">
+										<source src="{{envVariable.apiUrl+envVariable.apiUrl+getLearnerUpcomingEvent(collection).imageUrl}}">
+									</video>
 								</div>
-								<div class="mat-body-2" style="margin-top: 0px;">{{collection.type | titlecase}} : {{collection.title |
-									titlecase}}
+								<div class="mat-body-2" style="margin-top: 0px;">{{collection.type | titlecase}} : {{collection.title | titlecase}}
 								</div>
 								<div style="margin-top: 0px;">Recent {{getLearnerUpcomingEvent(collection).type}}
 									{{getLearnerUpcomingEvent(collection).fillerWord}}:

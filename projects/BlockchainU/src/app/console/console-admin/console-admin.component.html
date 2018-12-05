@@ -34,16 +34,13 @@
 												{{collection.type | ucfirst}}
 											</div>
 											<div class="cohortDate" style="padding-top: 10px" *ngIf="collection.calendars && collection.calendars[0]">
-												<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate
-													|extractTime:'Do
-													MMM' }}</span>
+												<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
 											</div>
 											<div class="cohortDate" style="padding-top: 10px" *ngIf="!collection.calendars || !collection.calendars[0]">
 												<span>No dates selected</span>
 											</div>
 											<br>
-											<div class="clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No
-												Title' | titlecase | shorten:20 :'...'}} </div>
+											<div class="clickable" (click)="_collectionService.openCollection(collection)">{{ collection.title || 'No Title' | titlecase | shorten:20 :'...'}} </div>
 											<div class="mat-caption">
 												{{collection.submittedAt | extractTime : 'Do MMM, YYYY'}}
 											</div>

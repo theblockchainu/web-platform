@@ -2094,15 +2094,19 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	private sortAssessmentRules() {
 		if (this.experience.assessment_models && this.experience.assessment_models.length > 0) {
 			const assessmentRulesUnsorted = <Array<any>>this.experience.assessment_models[0].assessment_rules;
-			this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
-				if (a.value > b.value) {
-					return 1;
-				} else if (a.value === b.value) {
-					return 0;
-				} else {
-					return -1;
-				}
-			});
+			if (assessmentRulesUnsorted) {
+				this.assessmentRules = assessmentRulesUnsorted.sort((a, b) => {
+					if (a.value > b.value) {
+						return 1;
+					} else if (a.value === b.value) {
+						return 0;
+					} else {
+						return -1;
+					}
+				});
+			} else {
+				this.assessmentRules = [];
+			}
 		}
 	}
 	
