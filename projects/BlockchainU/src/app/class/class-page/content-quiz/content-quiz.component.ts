@@ -120,9 +120,7 @@ export class ContentQuizComponent implements OnInit {
 									}
 								}
 							} else {
-								let questions = _.clone(this.data.content.questions);
-								this.checkHasAnswered(questions, answer.peer[0].id);
-								questions = this.evaluateMyAnswers(questions);
+								const questions = _.clone(this.data.content.questions);
 								const submissionEntry = {
 									position: this.submissionArray.length + 1,
 									peerId: answer.peer[0].id,
@@ -156,7 +154,12 @@ export class ContentQuizComponent implements OnInit {
 					});
 				}
 			});
-			console.log(this.submissionArray);
+			// Work on the submission array to mark user's answer for each question and whether the answer is correct
+			this.submissionArray.forEach(submission => {
+				this.checkHasAnswered(submission.questions, submission.peerId);
+				submission.questions = this.evaluateMyAnswers(submission.questions);
+				submission.answeredDate = this.getAnsweredDate(submission.questions);
+			});
 			this.loadingSubmissions = false;
 		} else {
 			this.loadingSubmissions = false;
