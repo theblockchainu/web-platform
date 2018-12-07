@@ -84,7 +84,7 @@
                             <mat-icon style="color:grey;font-size:20px">phone</mat-icon>
                         </a>
                     </div>
-					<div class="mat-caption clickable" *ngIf="selectedRoom.collection && selectedRoom.collection.length > 0" (click)="_collectionService.viewExperience(selectedRoom.collection[0])">View {{selectedRoom.collection[0].type | titlecase }}</div>
+					<div class="mat-caption clickable" *ngIf="selectedRoom.collection && selectedRoom.collection.length > 0" (click)="_collectionService.openCollection(selectedRoom.collection[0])">View {{selectedRoom.collection[0].type | titlecase }}</div>
 					<div class="mat-caption" *ngIf="selectedRoom.type === 'peer'">Private Conversation</div>
 				</div>
 				<div class="center padding-top-20" #scrollMe *ngIf="selectedRoom.messages && selectedRoom.messages.length > 0" style="max-height: 54vh; min-height: 54vh; overflow-y: scroll;">

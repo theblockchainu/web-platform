@@ -67,12 +67,12 @@
 							<h5>Max File Size
 								<b>1000MB</b>
 							</h5>
-							<div *ngIf="attachmentUrls.length" class="pic delete">
+							<div *ngIf="attachmentUrls.length" class="row pic delete">
 								<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
 									<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc; position: relative;">
 									<mat-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'file')" class="delete-image">close</mat-icon>
 									<div *ngIf="file.type.includes('application')" class="uploaded_file">
-										<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
+										<a class="uploaded_file_text" href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
 									</div>
 									<mat-icon *ngIf="file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')" class="delete-file">close</mat-icon>
 									<video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
@@ -125,7 +125,7 @@
 									</mat-form-field>
 									<!--If question type is single-choice -->
 									<div formArrayName="options">
-										<mat-radio-group [value]="question.value.correct_answer">
+										<mat-radio-group [value]="'' + question.value.correct_answer">
 											<div class="row" *ngFor="let option of question.controls['options'].controls; let j=index">
 												<div class="col-xs-1">
 													<div class="pb-block" style="padding-top: 20px;">

@@ -220,7 +220,7 @@
 											</div>
 										</mat-card-content>
 										<mat-card-actions>
-											<button mat-raised-button (click)="consoleLearningComponent.viewExperience(collection)">View Details</button>
+											<button mat-raised-button (click)="_collectionService.openCollection(collection)">View Details</button>
 										</mat-card-actions>
 										<p class="upcomingEventLabel" *ngIf="consoleLearningComponent.peerHasReview(collection)">
 											{{collection.owners[0].profiles[0].first_name}} gave you a review

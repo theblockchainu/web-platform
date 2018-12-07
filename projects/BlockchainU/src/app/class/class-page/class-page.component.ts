@@ -148,6 +148,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public result;
 	public comments: Array<any>;
 	private today: any;
+	public answeredDate;
 
 	// Calendar Start
 	public dateClicked: boolean;
@@ -643,6 +644,19 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					}
 				});
 			}
+			
+			if (contentObj.questions && contentObj.questions.length > 0) {
+				contentObj.questions.forEach(question => {
+					if (question.answers) {
+						question.answers.forEach(answer => {
+							if (answer.peer && this.userId === answer.peer[0].id) {
+								contentObj['hasAnswered'] = true;
+								contentObj['answeredDate'] = moment(answer.createdAt).format('Do MMM, YYYY');
+							}
+						});
+					}
+				});
+			}
 		});
 		// Scan through all the start-day-groups of contents
 		// Calculate the calendar start and end date of each content group
@@ -886,6 +900,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
+	
 	public showAll(strLength) {
 		if (strLength > this.maxLength) {
 			this.maxLength = strLength;
