@@ -1,14 +1,32 @@
 <div mat-dialog-content class="dialog-container">
-  <div class="mat-display-1">You are editing an approved {{data.type|titlecase}}</div>
-  <div>
-    <div style="margin-top: 50px; margin-bottom: 40px;">
-      Your {{data.type}} was previously approved
-      <br>
-      <br> Because of this change, your {{data.type}} will have to be submitted for The Blockchain University approval again. New students will not be able to sign up until this {{data.type}} is approved.
-    </div>
-  </div>
-  <mat-dialog-actions>
-    <button mat-raised-button [mat-dialog-close]="'accept'" color="accent">OK, Save Changes</button> &emsp;
-    <button mat-raised-button [mat-dialog-close]="'reject'">No, Discard Changes</button>
-  </mat-dialog-actions>
+	<div class="mat-display-1">You are editing an approved {{data.type|titlecase}}</div>
+	<div>
+		<div style="margin-top: 50px; margin-bottom: 40px;">
+			Your {{data.type}} was previously approved
+			<br>
+			<br>
+			Because of this change, your {{data.type}} will have to be submitted for Blockchain University approval again. New students will not be able to sign up until this {{data.type}} is approved.
+			<br><br>
+			<div class="mat-border-button" style="padding: 10px;">
+				<ul>
+					<li>
+						Editing an active {{data.type}} is not permitted on Blockchain University.
+					</li>
+					<li>
+						This action will lead to creating a new copy of the {{data.type}}.
+					</li>
+					<li>
+						All existing participants will stay in the old {{data.type}}.
+					</li>
+					<li>
+						If you no longer wish to continue with the existing {{data.type}}, you must cancel that {{data.type}} manually and ask existing participants to re-join the new copy.
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<mat-dialog-actions>
+		<button mat-raised-button [mat-dialog-close]="'accept'" color="accent">OK, Save Changes</button> &emsp;
+		<button mat-raised-button [mat-dialog-close]="'reject'">No, Discard Changes</button>
+	</mat-dialog-actions>
 </div>

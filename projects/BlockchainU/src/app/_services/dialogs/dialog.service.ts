@@ -65,6 +65,7 @@ import { AddImageDialogComponent } from './add-image-dialog/add-image-dialog.com
 import { AskQuestionDialogComponent } from './ask-question-dialog/ask-question-dialog.component';
 import { SubmissionReviewDialogComponent } from './submission-review-dialog/submission-review-dialog.component';
 import { WinnerDialogComponent } from './winner-dialog/winner-dialog.component';
+import {ViewQuizSubmissionComponent} from './view-quiz-submission/view-quiz-submission.component';
 @Injectable()
 export class DialogsService {
 
@@ -162,6 +163,21 @@ export class DialogsService {
         });
         return dialogRef.afterClosed();
     }
+	
+	public openViewQuizSubmissionDialog(content: any) {
+		let dialogRef: MatDialogRef<ViewQuizSubmissionComponent>;
+		
+		dialogRef = this.dialog.open(ViewQuizSubmissionComponent, {
+			panelClass: 'responsive-dialog',
+			width: '45vw',
+			height: '100vh',
+			disableClose: true,
+			data: {
+				content: content
+			}
+		});
+		return dialogRef.afterClosed();
+	}
 
     public openFollowTopicDialog(type, inputs) {
         let dialogRef5: MatDialogRef<MultiselectTopicDialogComponent>;

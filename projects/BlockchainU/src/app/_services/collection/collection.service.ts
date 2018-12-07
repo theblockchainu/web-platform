@@ -452,31 +452,10 @@ export class CollectionService {
 	}
 
 	/**
-	 *  Class
-	 */
-	public viewClass(collection) {
-		this.router.navigate(['class', collection.id]);
-	}
-
-	/**
-	 * viewExperience
-	 */
-	public viewExperience(collection) {
-		this.router.navigate(['experience', collection.id]);
-	}
-
-	/**
 	 * viewCollection
 	 */
 	public viewCollection(collection) {
-		this.router.navigate([collection.type, collection.id]);
-	}
-
-	/**
-	 * viewSession
-	 */
-	public viewSession(collection) {
-		this.router.navigate(['session', collection.id]);
+		this.openCollection(collection);
 	}
 
 	/**
@@ -1226,7 +1205,19 @@ export class CollectionService {
 			.post(environment.apiUrl + '/api/content_questions/' + questionId + '/answers', answer, this.requestHeaderService.options);
 	}
 	
+	public notifyOwnerForQuizSubmission(questionId: string) {
+		return this.httpClient
+			.post(environment.apiUrl + '/api/content_questions/' + questionId + '/notifyOwner', {}, this.requestHeaderService.options);
+	}
+	
 	public getPreferences(filter) {
 		return this.httpClient.get(environment.apiUrl + '/api/preferences?filter=' + JSON.stringify(filter), this.requestHeaderService.options);
+	}
+	
+	/**
+	 * patchAnswer
+	 */
+	public patchAnswer(answerId: string, body: any) {
+		return this.httpClient.patch(environment.apiUrl + '/api/content_answers/' + answerId, body, this.requestHeaderService.options);
 	}
 }
