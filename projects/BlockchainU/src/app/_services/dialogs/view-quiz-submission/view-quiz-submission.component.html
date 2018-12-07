@@ -37,8 +37,8 @@
 							<div class="col-xs-12">
 								<div class="row margin-top-10 margin-bottom-10">
 									<div class="col-xs-12">
-										<button class="greenButton" mat-button color="primary" *ngIf="question.value.isCorrect">+ {{question.value.marks}} marks</button>
-										<button class="redButton" mat-button color="error" *ngIf="question.value.isWrong">Incorrect answer</button>
+										<button class="greenButton" mat-button color="primary" *ngIf="question.value.isCorrect && !question.value.isWrong">+ {{question.value.marks}} marks</button>
+										<button class="redButton" mat-button color="error" *ngIf="question.value.isWrong && !question.value.isCorrect">Incorrect answer</button>
 										<button mat-mini-fab color="primary" *ngIf="!question.value.isWrong && !question.value.isCorrect" (click)="markAsCorrect(i)" [disabled]="savingData"><i class="fa fa-check"></i></button>
 										<button mat-mini-fab color="accent" *ngIf="!question.value.isWrong && !question.value.isCorrect" (click)="markAsIncorrect(i)" style="margin-left: 10px;" [disabled]="savingData"><i class="fa fa-close"></i></button>
 									</div>

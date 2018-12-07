@@ -67,10 +67,14 @@ export class AboutUsComponent implements OnInit {
 		});
 	}
 	private setTags() {
-		this.titleService.setTitle('About Blockchain University');
+		this.titleService.setTitle('Blockchain courses in Mumbai, Bangalore');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'About Blockchain University'
+			content: 'Blockchain courses in Mumbai, Bangalore'
+		});
+		this.metaService.updateTag({
+			property: 'description',
+			content: 'Our students learn to build applications and solutions that matter. More importantly, we help them vet out their products for the market, and give them our industry resources to succeed'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
