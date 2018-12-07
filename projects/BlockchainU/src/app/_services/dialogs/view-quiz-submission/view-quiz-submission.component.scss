@@ -1,0 +1,31 @@
+.questionBox {
+	border: 1px solid #eeeeee;
+	padding: 15px;
+}
+
+.questionBoxCorrect {
+	border: 1px solid #33bd9e;
+	padding: 15px;
+}
+
+.questionBoxWrong {
+	border: 1px solid #ff6d71;
+	padding: 15px;
+}
+
+.greenButton {
+	background: #33bd9e;
+	color: #ffffff;
+}
+
+.redButton {
+	background: #ff6d71;
+	color: #ffffff;
+}
+
+.submissionResultCountBox {
+	border: 1px solid #ddd;
+	padding: 1px 7px;
+	border-radius: 4px;
+	margin-right: 10px;
+}
