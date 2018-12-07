@@ -189,13 +189,17 @@ export class ContentQuizComponent implements OnInit {
 				if (question.type === 'single-choice') {
 					if (question.myAnswer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(question.myAnswer.answer, 10)) {
 						question.isCorrect = true;
+						question.isWrong = false;
 					} else {
+						question.isCorrect = false;
 						question.isWrong = true;
 					}
 				} else {
 					if (question.myAnswer.isEvaluated && question.myAnswer.marks === question.marks) {
 						question.isCorrect = true;
+						question.isWrong = false;
 					} else if (question.myAnswer.isEvaluated && question.myAnswer.marks === 0) {
+						question.isCorrect = false;
 						question.isWrong = true;
 					}
 				}

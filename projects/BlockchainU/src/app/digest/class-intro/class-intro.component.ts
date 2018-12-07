@@ -79,10 +79,14 @@ export class ClassIntroComponent implements OnInit {
 		});
 	}
 	private setTags() {
-		this.titleService.setTitle('Classes');
+		this.titleService.setTitle('Blockchain training in Mumbai, Pune, Bangalore');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'The Blockchain University Classes'
+			content: 'Blockchain training in Mumbai, Pune, Bangalore'
+		});
+		this.metaService.updateTag({
+			property: 'description',
+			content: 'The Blockchain University Online Courses are self paced or instructor led online classes designed and led by peers from our global community. While not everyone can attend our in-person learning workshops, they should have access to the same experience online.'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
