@@ -286,6 +286,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.classId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
+				console.log('**** RELOADING PAGE');
 				location.reload();
 			}
 			this.classId = params['collectionId'];
@@ -1301,8 +1302,15 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 							participants: this.participants
 						},
 						panelClass: 'responsive-dialog',
+						disableClose: true,
 						width: '45vw',
 						height: '100vh'
+					});
+					dialogRef.afterClosed().subscribe(res => {
+						if (res) {
+							content.hasAnswered = true;
+							content.answeredDate = moment().format('Do MMM, YYYY');
+						}
 					});
 					break;
 				}

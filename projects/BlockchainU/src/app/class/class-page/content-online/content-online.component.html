@@ -82,8 +82,7 @@
 						<mat-hint align="end">{{description1.value.length}} / 2000</mat-hint>
 					</mat-form-field>
 					<span matTooltip="Invalid input!" [matTooltipDisabled]="chatForm.valid">
-
-						<button mat-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right" tabindex="-1">Post</button>
+						<button mat-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right margin-top-20" tabindex="-1">Post</button>
 					</span>
 				</form>
 			</div>
@@ -149,8 +148,7 @@
 										<mat-hint align="end">{{description2.value.length}} / 2000</mat-hint>
 									</mat-form-field>
 									<span matTooltip="Invalid input!" [matTooltipDisabled]="replyForm.valid">
-
-										<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary" tabindex="-1">Post</button>
+										<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right margin-top-20" color="primary" tabindex="-1">Post</button>
 									</span>
 								</form>
 							</div>

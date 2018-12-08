@@ -77,7 +77,7 @@ export class ContentQuizComponent implements OnInit {
 	
 	ngOnInit() {
 		this.showSuccessMessage = false;
-		this.checkHasAnswered(this.data.content.questions, this.userId);
+		this.data.content.questions = this.checkHasAnswered(this.data.content.questions, this.userId);
 		this.initializeForms();
 		this.processSubmissions();
 		this.getDiscussions();
@@ -120,7 +120,7 @@ export class ContentQuizComponent implements OnInit {
 									}
 								}
 							} else {
-								const questions = _.clone(this.data.content.questions);
+								const questions = _.cloneDeep(this.data.content.questions);
 								const submissionEntry = {
 									position: this.submissionArray.length + 1,
 									peerId: answer.peer[0].id,
@@ -156,10 +156,12 @@ export class ContentQuizComponent implements OnInit {
 			});
 			// Work on the submission array to mark user's answer for each question and whether the answer is correct
 			this.submissionArray.forEach(submission => {
-				this.checkHasAnswered(submission.questions, submission.peerId);
+				const formattedQuestions = this.checkHasAnswered(submission.questions, submission.peerId);
+				submission.questions = formattedQuestions;
 				submission.questions = this.evaluateMyAnswers(submission.questions);
 				submission.answeredDate = this.getAnsweredDate(submission.questions);
 			});
+			console.log(this.submissionArray);
 			this.loadingSubmissions = false;
 		} else {
 			this.loadingSubmissions = false;
@@ -167,23 +169,25 @@ export class ContentQuizComponent implements OnInit {
 	}
 	
 	private checkHasAnswered(questions, userId) {
+		console.log('Checking own answers for user: ' + userId);
 		if (questions) {
 			questions.forEach(question => {
+				let myAnswer = null;
 				if (question.answers) {
 					question.answers.forEach(answer => {
-						if (answer.peer && answer.peer[0].id === userId) {
-							question.myAnswer = answer;
+						if (answer.peer !== undefined && answer.peer[0].id === userId) {
+							myAnswer = answer;
 							if (userId === this.userId) {
 								this.hasAnswered = true;
 								this.answeredDate = moment(answer.createdAt).format('Do MMM YY');
 							}
-							return answer;
 						}
 					});
 				}
+				question['myAnswer'] = myAnswer;
 			});
 		}
-		return false;
+		return questions;
 	}
 	
 	private evaluateMyAnswers(questions) {
