@@ -6,17 +6,17 @@
 			<img class="peer-recommendation-thumb" *ngIf="!peer.profiles[0].picture_url" src="/assets/images/user-placeholder.jpg"
 			 alt="{{peer.profiles[0].first_name + ' ' + peer.profiles[0].last_name}}" (error)="_collectionService.userImgErrorHandler($event)">
 		</div>
-		<div style="margin-top: 3px; text-transform: uppercase;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name
-			| titlecase}} {{peer.profiles[0].last_name | titlecase}}
+		<div style="margin-top: 3px; text-transform: uppercase;" class="mat-body-2" *ngIf="peer.profiles[0].first_name !== undefined">{{peer.profiles[0].first_name | titlecase}} {{peer.profiles[0].last_name | titlecase}}
 		</div>
 		<div style="margin-top: 3px; text-transform: uppercase;" class="mat-body-2" *ngIf="peer.profiles[0].first_name === undefined">John
 			Doe
 		</div>
-		<div *ngIf="peer.ethAddress && peer.ethAddress.substring(0, 2) === '0x'">
-			<i class="fab fa-ethereum"></i> {{peer.id | gyanBalance : 'fixed' | async}} Gyan
+		<div *ngIf="peer.ethAddress && peer.ethAddress.substring(0, 2) === '0x'" matTooltip="{{peer.ethAddress}}">
+			<i class="fab fa-ethereum"></i> {{peer.id | gyanBalance : 'fixed'|async}} Gyan
 		</div>
 		<div *ngIf="!peer.ethAddress || peer.ethAddress.substring(0, 2) !== '0x'">
-			<i class="fab fa-ethereum"></i> 0 Gyan</div>
+			<i class="fab fa-ethereum"></i> 0 Gyan
+		</div>
 		<div class="col-sm-12 padding-left-0">
 			<span *ngIf="peer.topics.length<=1">
 				{{peer.topics}}
