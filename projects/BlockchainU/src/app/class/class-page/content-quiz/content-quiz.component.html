@@ -1,7 +1,7 @@
 <div mat-dialog-content class="dialog-container">
 	<div class="row">
 		<div class="col-md-12 collectionContent">
-			<button disableRipple mat-button style="min-width: 30px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+			<button disableRipple mat-button style="min-width: 30px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close(false)">
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<div class="mat-display-1" style="margin-bottom: 20px;" *ngIf="data.content">
@@ -35,7 +35,7 @@
 			</div>
 			<div class="row margin-top-20">
 				<div class="col-xs-12">
-					<button mat-button mat-raised-button color="primary" class="clickable" (click)="dialogRef.close()">
+					<button mat-button mat-raised-button color="primary" class="clickable" (click)="dialogRef.close(true)">
 						Close
 					</button>
 				</div>

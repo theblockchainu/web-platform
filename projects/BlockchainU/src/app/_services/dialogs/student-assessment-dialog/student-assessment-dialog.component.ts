@@ -34,7 +34,6 @@ export class StudentAssessmentDialogComponent implements OnInit {
 	private loadData() {
 		const participantsInitArray = [];
 		this.pendingParticipants = false;
-		let i = 0;
 		this.data.participants.forEach(participant => {
 			let isParticipantAssessed = false;
 			let isParticipantEngagementAssessed = false;
@@ -52,31 +51,29 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			this.collectionService.getParticipantEthereumInfo(this.data.collection.id, participant.ethAddress)
 				.subscribe(res => {
 					console.log(res);
+					const resultParticipantFormGroup = this.assessmentForm && this.assessmentForm.controls ? _.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['ethAddress'].value.toLowerCase() === res['participantId'] ) : undefined;
 					if (res && res['result'] === true) {
-						if (this.assessmentForm && this.assessmentForm.controls) {
-							_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['isOnEthereum'].patchValue(true);
-						} else {
-							participant.isOnEthereum = true;
+						participant.isOnEthereum = true;
+						if (resultParticipantFormGroup) {
+							resultParticipantFormGroup['controls']['isOnEthereum'].patchValue(true);
+							resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
 						}
 					} else {
-						if (this.assessmentForm && this.assessmentForm.controls) {
-							_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['isOnEthereum'].patchValue(false);
-						} else {
-							participant.isOnEthereum = false;
+						participant.isOnEthereum = false;
+						if (resultParticipantFormGroup) {
+							resultParticipantFormGroup['controls']['isOnEthereum'].patchValue(false);
+							resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
 						}
 					}
-					_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['savingOnEthereum'].patchValue(false);
-					i++;
 					
 			}, err => {
 					console.log(err);
-					if (this.assessmentForm && this.assessmentForm.controls) {
-						_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['isOnEthereum'].patchValue(false);
-					} else {
-						participant.isOnEthereum = false;
+					const resultParticipantFormGroup = this.assessmentForm && this.assessmentForm.controls ? _.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['ethAddress'].value.toLowerCase() === err['participantId']) : undefined;
+					participant.isOnEthereum = false;
+					if (resultParticipantFormGroup) {
+						resultParticipantFormGroup['controls']['isOnEthereum'].patchValue(false);
+						resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
 					}
-					_.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['id'] === participant.id)['controls']['savingOnEthereum'].patchValue(false);
-					i++;
 				});
 			
 			if (participant.certificates) {
@@ -200,7 +197,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 	
 	public addParticipantToBlockchain(participant) {
 		participant.controls['savingOnEthereum'].patchValue(true);
-		this.collectionService.addParticipantToEthereum(this.data.collection.id, participant.id)
+		this.collectionService.addParticipantToEthereum(this.data.collection.id, participant.value.id)
 			.subscribe(res => {
 				if (res) {
 					console.log(res);
