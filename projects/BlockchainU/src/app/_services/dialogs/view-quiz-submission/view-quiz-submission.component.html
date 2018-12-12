@@ -17,15 +17,17 @@
 				<div class="row margin-bottom-20">
 					<div class="col-xs-12">
 						<div class="row">
-							<div class="col-md-8">
+							<div class="col-md-9">
 								This quiz was submitted on {{data.content.answeredDate}}
 								<br><br>
 								<span class="submissionResultCountBox" matTooltip="Correct answers"><i class="fa fa-check-circle-o margin-right-10" style="color: #33bd9e; font-size: 12px; position: relative; top: -2px;"></i><b>{{data.content.correctAnswers}}</b></span>
 								<span class="submissionResultCountBox" matTooltip="Incorrect answers"><i class="fa fa-close margin-left-10 margin-right-10" style="color: red; font-size: 12px; position: relative; top: -2px;"></i><b>{{data.content.wrongAnswers}}</b></span>
 								<span class="submissionResultCountBox" matTooltip="Answers pending manual evaluation"><i class="fa fa-refresh margin-left-10 margin-right-10" style="color: #aaaaaa; font-size: 12px; position: relative; top: -2px;"></i><b>{{data.content.pendingEvaluation}}</b></span>
 							</div>
-							<div class="col-md-4" style="text-align: right">
+							<div class="col-md-3" style="text-align: center">
 								<app-profile-popup [peer]="data.content.peer" [size]="'large'"></app-profile-popup>
+								<br><br>
+								<button mat-button class="mat-border-button" (click)="openMessageDialog(data.content.peer)">Message</button>
 							</div>
 						</div>
 					</div>

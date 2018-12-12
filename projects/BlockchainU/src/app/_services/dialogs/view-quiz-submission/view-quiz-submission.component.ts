@@ -5,6 +5,7 @@ import {environment} from '../../../../environments/environment';
 import {CollectionService} from '../../collection/collection.service';
 import {ProfileService} from '../../profile/profile.service';
 import {FormBuilder, Validators} from '@angular/forms';
+import {MessageParticipantDialogComponent} from '../message-participant-dialog/message-participant-dialog.component';
 
 @Component({
   selector: 'app-view-quiz-submission',
@@ -148,6 +149,14 @@ export class ViewQuizSubmissionComponent implements OnInit {
 				});
 		}
 		
+	}
+	
+	public openMessageDialog(peer) {
+		this.dialog.open(MessageParticipantDialogComponent, {
+			data: peer,
+			panelClass: 'responsive-dialog', width: '50vw',
+			height: '60vh'
+		}).afterClosed();
 	}
 
 }

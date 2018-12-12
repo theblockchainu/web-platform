@@ -88,7 +88,7 @@
 							<!-- Name Column -->
 							<ng-container matColumnDef="peerName">
 								<mat-header-cell *matHeaderCellDef> Participant Name </mat-header-cell>
-								<mat-cell *matCellDef="let element"> {{element.peerName}} </mat-cell>
+								<mat-cell *matCellDef="let element" matTooltip="Click to view {{element.peerName}}'s submission and evaluate it."> {{element.peerName}} </mat-cell>
 							</ng-container>
 							
 							<!-- Answers Column -->
