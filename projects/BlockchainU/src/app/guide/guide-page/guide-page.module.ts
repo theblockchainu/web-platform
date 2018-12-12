@@ -14,6 +14,7 @@ import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
 import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
 import { CovalentMarkdownModule } from '@covalent/markdown';
+import { CorestackService } from '../../_services/corestack/corestack.service';
 
 @NgModule({
 	imports: [
@@ -34,9 +35,10 @@ import { CovalentMarkdownModule } from '@covalent/markdown';
 		VgBufferingModule,
 		CovalentMarkdownModule
 	],
-	declarations: [GuidePageComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
+	declarations: [GuidePageComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent,
+		ShowRSVPPopupComponent],
 	bootstrap: [ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
-	providers: [ProjectSubmissionService]
+	providers: [ProjectSubmissionService, CorestackService]
 
 })
 export class GuidePageModule { }

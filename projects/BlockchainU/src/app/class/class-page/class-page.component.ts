@@ -147,7 +147,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public recommendations: any;
 	public result;
 	public comments: Array<any>;
-	private today: any;
+	public today: any;
 
 	// Calendar Start
 	public dateClicked: boolean;

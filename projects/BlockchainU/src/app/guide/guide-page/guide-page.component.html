@@ -608,11 +608,43 @@
 					</div>
 
 					<!--RIGHT SIDEBAR-->
-					<div class="col-md-5 col-md-offset-1 right-content right-content-sticky hide-small">
+					<div class="col-md-6  col-xs-12 right-content right-content-sticky hide-small">
 						<!--CODE LAB-->
-						<div *ngIf="userType==='participant' || userType === 'teacher'">
-							<iframe style="height:-webkit-fill-available;width: -webkit-fill-available" src="https://blockc.westus2.cloudapp.azure.com:3000/">
-							</iframe>
+						<div *ngIf="userType==='participant' || userType === 'teacher' && lab_details">
+							<div class="row">
+								<div class="col-xs-12">
+									<button *ngFor="let access_detail of lab_details;let i=index" mat-button (click)="gotoTab(i)">{{access_detail.application_name
+										|titlecase}}</button>
+								</div>
+							</div>
+							<div *ngFor="let access_detail of lab_details;let i=index" [hidden]="selectedTab!==i">
+								<div class="row">
+									<div class="col-xs-12">
+										<div *ngIf="access_detail.auth_url !== undefined">
+											<button mat-icon-button (click)="refreshPage(i)">
+												<mat-icon>refresh</mat-icon>
+											</button>
+											<iframe id="iframe-{{i}}" style="height:76vh;width: -webkit-fill-available" [src]="access_detail.auth_url| safe:'resourceUrl'">
+											</iframe>
+										</div>
+										<div *ngIf="access_detail.auth_url == undefined">
+											<div class="row" *ngFor="let lab of lab_details">
+												<div class="col-xs-10 col-xs-offset-1">
+													<div class="row" *ngFor="let item of lab | keyvalue">
+														<div class="col-xs-12">
+															{{item.key | titlecase}} : {{item.value}}
+														</div>
+														<br>
+													</div>
+													<br>
+													<br>
+												</div>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="row" *ngIf="userType === 'public'">
 							<div class="col-md-12">
