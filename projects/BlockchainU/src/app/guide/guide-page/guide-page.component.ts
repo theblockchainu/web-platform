@@ -40,6 +40,8 @@ import { AssessmentService } from '../../_services/assessment/assessment.service
 import { UcWordsPipe } from 'ngx-pipes';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { ProfileService } from '../../_services/profile/profile.service';
+import { CorestackService } from '../../_services/corestack/corestack.service';
+import { first } from 'rxjs/operators';
 declare var FB: any;
 declare var fbq: any;
 
@@ -193,7 +195,10 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	loadingCertificate: boolean;
 	public assessmentRules: Array<any>;
 	public contactUsForm: FormGroup;
+	corestack_student: any;
+	lab_details: Array<any>;
 	@ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
+	selectedTab: number;
 
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -213,7 +218,8 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		private _assessmentService: AssessmentService,
 		private ucwords: UcWordsPipe,
 		private certificateService: CertificateService,
-		private _profileService: ProfileService
+		private _profileService: ProfileService,
+		private _corestackService: CorestackService
 		// private location: Location
 	) {
 		this.envVariable = environment;
@@ -277,6 +283,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.loadingReviews = true;
 		this.accountApproved = 'false';
 		this.inviteLink = '';
+		this.selectedTab = 0;
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.guideId !== params['collectionId'])) {
 				location.reload();
@@ -431,7 +438,13 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				'views',
 				{ 'participants': [{ 'profiles': ['work'] }] },
 				{ 'owners': [{ 'profiles': ['work'] }] },
-				'rooms'
+				'rooms',
+				{
+					relation: 'corestackStudents',
+					where: {
+						student_id: this.userId
+					}
+				}
 			],
 			'where': {
 				'customUrl': this.guideId
@@ -440,11 +453,13 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 
 		if (this.guideId) {
 			this._collectionService.getAllCollections(query)
+				.pipe(first())
 				.subscribe((res: any) => {
 					if (res && res.length > 0) {
 						console.log(res);
 						this.processData(res[0]);
 					} else {
+						console.log('!res && res.length< 0');
 						this.loadingGuide = false;
 						delete query.where;
 						this.fetchById(query);
@@ -515,6 +530,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.getBookmarks();
 		this.setUpCarousel();
 		this.getEthereumInfo();
+		this.getCorestackInfo();
 		if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
 			const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
 			snackBarRef.onAction().subscribe();
@@ -523,9 +539,23 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.recordStartView();
 	}
 
+	private getCorestackInfo() {
+		if (this.guide.corestackStudents && this.guide.corestackStudents.length > 0) {
+			this.corestack_student = this.guide.corestackStudents[0];
+			this.startCodeLab();
+		}
+	}
+
+	private startCodeLab() {
+		this._corestackService.getAccessDetails
+			(this.corestack_student.student_id, this.corestack_student.course_id).subscribe((res: any) => {
+				console.log(res);
+				this.lab_details = res;
+			});
+	}
+
 	public createGuestContacts() {
 		console.log('Submitting request');
-
 		const first_name = this.contactUsForm.controls['first_name'].value;
 		const email = this.contactUsForm.controls['email'].value;
 		const subject = 'Guide: ' + this.guide.title;
@@ -956,10 +986,12 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		const query = {
 			'include': [
 				{
-					'relation': 'collections', 'scope': {
+					'relation': 'collections',
+					'scope': {
 						'include':
 							[{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', 'participants',
-							{ 'contents': 'locations' }], 'where': { 'type': 'guide' }
+							{ 'contents': 'locations' }],
+						'where': { 'type': 'guide' }
 					}
 				}
 			]
@@ -1515,6 +1547,17 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	public openShareDialog() {
 		this.dialogsService.shareCollection(this.guide.type, this.guide.id, this.guide.title, this.guide.description, this.guide.headline, environment.apiUrl + this.guide.imageUrls[0]
 			, null, this.userType === 'teacher');
+	}
+
+	gotoTab(index: number) {
+		if (this.selectedTab !== index) {
+			this.selectedTab = index;
+		}
+	}
+
+	refreshPage(index: number) {
+		const iframeElement = <HTMLIFrameElement>document.getElementById('iframe-' + index);
+		iframeElement.src += '';
 	}
 
 }

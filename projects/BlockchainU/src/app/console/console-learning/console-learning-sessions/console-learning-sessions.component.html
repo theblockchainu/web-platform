@@ -47,7 +47,8 @@
 										<div class="teacherHeadline">
 											<span>{{session.collections[0].owners[0].profiles[0].headline}} </span>
 										</div>
-										<div class="collectionTitle">{{session.packages[0].duration}} minute session</div>
+										<div class="collectionTitle">{{session.availabilities.length | numberToWords |
+											titlecase}} {{session.packages[0].duration}} minute session</div>
 										<p class="upcomingEventLabel green">
 											On going
 										</p>
@@ -55,7 +56,7 @@
 											Started {{session.startTime |timeToNow}}
 										</div>
 										<div class="upcomingEventTime">
-											{{session.startTime |extractTime:'Do MMM, h a'}} to {{session.endTime |extractTime:'h a'}}
+											{{session.startTime |extractTime:'Do MMM, h:mm a'}} to {{session.endTime |extractTime:'h:mm a'}}
 										</div>
 									</mat-card-content>
 									<br>
@@ -96,7 +97,10 @@
 										<div class="teacherHeadline">
 											<span>{{session.collections[0].owners[0].profiles[0].headline}}</span>
 										</div>
-										<div class="collectionTitle">{{session.packages[0].duration}} minute session</div>
+										<div class="collectionTitle">
+											{{session.availabilities.length | numberToWords |
+											titlecase}}
+											{{session.packages[0].duration}} minute session</div>
 										<p class="upcomingEventLabel pink">
 											Upcoming
 										</p>
@@ -165,7 +169,7 @@
 											</span>
 										</div>
 										<div class="upcomingEventTime margin-top-30">
-											{{session.startTime |extractTime:'Do MMM, h a'}} to {{session.endTime |extractTime:'h a'}}
+											{{session.startTime |extractTime:'Do MMM, h:mm a'}} to {{session.endTime |extractTime:'h:mm a'}}
 										</div>
 									</span>
 									<div class="upcomingEventLabel pink margin-bottom-40" [ngClass]="{'mat-error': session.sessionIsRejected}">
@@ -222,7 +226,8 @@
 									<div class="teacherHeadline">
 										<span>{{session.collections[0].owners[0].profiles[0].headline | ucwords}}</span>
 									</div>
-									<div class="collectionTitle">{{session.packages[0].duration}} minute session</div>
+									<div class="collectionTitle">{{session.availabilities.length | numberToWords |
+										titlecase}} {{session.packages[0].duration}} minute session</div>
 									<p class="upcomingEventLabel">
 										Past
 									</p>
@@ -230,7 +235,7 @@
 										Ended {{session.endTime|timeToNow}}
 									</div>
 									<div class="upcomingEventTime">
-										{{session.startTime |extractTime:'Do MMM, h a'}} to {{session.endTime |extractTime:'h a'}}
+										{{session.startTime |extractTime:'Do MMM, h:mm a'}} to {{session.endTime |extractTime:'h:mm a'}}
 									</div>
 								</mat-card-content>
 							</mat-card>

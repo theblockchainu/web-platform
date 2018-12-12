@@ -264,6 +264,8 @@ export class ReviewPayComponent implements OnInit {
                             this.isCardExist = true;
                         }
                     }
+                }, err => {
+                    this.loadingCards = false;
                 });
             }
 
