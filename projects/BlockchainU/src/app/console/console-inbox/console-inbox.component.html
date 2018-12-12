@@ -96,7 +96,12 @@
 							{{message.createdAtLocal}}
 						</div>
 						<div *ngIf="message.type==='system' || message.peer === undefined || message.peer.length === 0" class="center margin-top-10 mat-caption lightText">
-							<i class="fa fa-sign-in" aria-hidden="true" style="padding-right:10px"></i>{{message.text}}
+							<div *ngIf="message.peer && message.peer.length > 0" (click)="_profileService.viewProfile(message.peer[0])">
+								<i class="fa fa-sign-in" aria-hidden="true" style="padding-right:10px"></i>{{message.text}}
+							</div>
+							<div *ngIf="!message.peer || message.peer.length === 0">
+								<i class="fa fa-sign-in" aria-hidden="true" style="padding-right:10px"></i>{{message.text}}
+							</div>
 						</div>
 						<div *ngIf="message.type==='user' && message.peer !== undefined && message.peer.length !== 0" class="mat-caption">
                             <div (click)="_profileService.viewProfile(message.peer[0])" [ngClass]="{'col-md-1': true, 'clickable': true, 'review-thumb': true, 'pull-left': message.peer && message.peer.length > 0 && message.peer[0].id !== userId, 'pull-right': message.peer && message.peer.length > 0 && message.peer[0].id === userId}">
