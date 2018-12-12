@@ -52,7 +52,7 @@ export class LearningPathPageComponent implements OnInit {
 	fetchData() {
 		const query = {
 			'where': {
-				'customUrl': this.learningPathUrl
+				'or': [{'customUrl': this.learningPathUrl}, {'id': this.learningPathUrl}]
 			},
 			'include': [
 				'topics',
@@ -101,7 +101,7 @@ export class LearningPathPageComponent implements OnInit {
 	private processData(data: any) {
 		this.learningPath = data[0];
 		const userId = this._cookieUtilsService.getValue('userId');
-		if (this.learningPath.participants) {
+		if (this.learningPath && this.learningPath.participants) {
 			this.learningPath.participants.some((participant: any) => {
 				if (participant.id === userId) {
 					this.joined = true;

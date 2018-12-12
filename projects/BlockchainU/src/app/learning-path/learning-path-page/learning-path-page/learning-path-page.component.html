@@ -1,24 +1,24 @@
 <div class="main-content" *ngIf="!learningPath">
-  <div class="page-center">
-    <ngx-loading [show]="true"></ngx-loading>
-  </div>
+	<div class="page-center">
+		<ngx-loading [show]="true"></ngx-loading>
+	</div>
 </div>
 
 <div class="main-content" *ngIf="learningPath">
-  <div class="row">
-    <img src="{{envVariable?.apiUrl + learningPath?.imageUrls[0]}}" class="background-image" alt="logo" (error)="_collectionService.landscapeErrorHandler($event)">
-    <div class="col-xs-10  col-xs-offset-1" style="margin-top: 200px;">
-      <app-intro-card [learningPath]="learningPath" [(joined)]="joined"></app-intro-card>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-10 col-xs-offset-1">
-      <app-path-section [learningPath]="learningPath" [joined]="joined"></app-path-section>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-10 col-xs-offset-1">
-      <app-teachers-section [learningPath]="learningPath"></app-teachers-section>
-    </div>
-  </div>
+	<div class="row">
+		<img src="{{envVariable?.apiUrl + learningPath?.imageUrls[0]}}" class="background-image" alt="logo" (error)="_collectionService.landscapeErrorHandler($event)">
+		<div class="col-xs-10  col-xs-offset-1" style="margin-top: 200px;">
+			<app-intro-card [learningPath]="learningPath" [(joined)]="joined"></app-intro-card>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-10 col-xs-offset-1">
+			<app-path-section [learningPath]="learningPath" [joined]="joined"></app-path-section>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-10 col-xs-offset-1">
+			<app-teachers-section [learningPath]="learningPath"></app-teachers-section>
+		</div>
+	</div>
 </div>
