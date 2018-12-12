@@ -189,12 +189,10 @@ export class ProfileService {
 	public getGyanBalance(userId, type = 'floating', convertTo = 'GYAN') {
 		if (type === 'fixed') {
 			return this.http
-				.get(environment.apiUrl + '/api/peers/' + userId + '/fixedGyanBalance?convertTo=' + convertTo, this._requestHeaderService.options)
-				;
+				.get(environment.apiUrl + '/api/peers/' + userId + '/fixedGyanBalance?convertTo=' + convertTo, this._requestHeaderService.options);
 		} else {
 			return this.http
-				.get(environment.apiUrl + '/api/peers/' + userId + '/floatingGyanBalance?convertTo=' + convertTo, this._requestHeaderService.options)
-				;
+				.get(environment.apiUrl + '/api/peers/' + userId + '/floatingGyanBalance?convertTo=' + convertTo, this._requestHeaderService.options);
 		}
 	}
 

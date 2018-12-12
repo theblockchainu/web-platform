@@ -87,7 +87,7 @@ export class ClassContentVideoComponent implements OnInit, AfterViewInit {
         } else {
             this.player = new YT.Player('ytplayer-' + this.lastIndex, {
                 height: '390',
-                width: '640',
+                width: '100%',
                 videoId: videoId,
                 events: {
                     'onError': (error) => {

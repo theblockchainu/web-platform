@@ -60,10 +60,13 @@
 			</div>
 			<br>
 			<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
-				<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
+				<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="200" style="border: 0.5px solid #ccc">
 				<video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
 					<source src="{{envVariable.apiUrl + file.url}}">
 				</video>
+				<div *ngIf="file.type.includes('application')" class="uploaded_file">
+					<a href="{{envVariable.apiUrl + file.url}}" target="_blank" class="uploaded_file_text">{{file.originalFilename}}</a>
+				</div>
 			</div>
 		</div>
 		<!--DISCUSSION THREAD-->
@@ -79,8 +82,7 @@
 						<mat-hint align="end">{{description1.value.length}} / 2000</mat-hint>
 					</mat-form-field>
 					<span matTooltip="Invalid input!" [matTooltipDisabled]="chatForm.valid">
-
-						<button mat-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right" tabindex="-1">Post</button>
+						<button mat-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right margin-top-20" tabindex="-1">Post</button>
 					</span>
 				</form>
 			</div>
@@ -146,8 +148,7 @@
 										<mat-hint align="end">{{description2.value.length}} / 2000</mat-hint>
 									</mat-form-field>
 									<span matTooltip="Invalid input!" [matTooltipDisabled]="replyForm.valid">
-
-										<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right" color="primary" tabindex="-1">Post</button>
+										<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right margin-top-20" color="primary" tabindex="-1">Post</button>
 									</span>
 								</form>
 							</div>

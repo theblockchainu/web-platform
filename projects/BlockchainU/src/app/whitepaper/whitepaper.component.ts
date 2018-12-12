@@ -26,10 +26,14 @@ export class WhitepaperComponent implements OnInit {
 	}
 
 	private setTags() {
-		this.titleService.setTitle('White Paper');
+		this.titleService.setTitle('Blockchain developer in Mumbai, Pune, Hyderabad');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'one0x White Paper'
+			content: 'Blockchain developer in Mumbai, Pune, Hyderabad'
+		});
+		this.metaService.updateTag({
+			property: 'description',
+			content: 'With over 1500 developers, we are one of the largest certified blockchain community in the world and work with most leading blockchain companies including Consensys, AIKON, Digital Asset, EOS etc. as official community, certification and education partners'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

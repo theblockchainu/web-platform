@@ -79,10 +79,14 @@ export class ExperienceIntroComponent implements OnInit {
 		});
 	}
 	private setTags() {
-		this.titleService.setTitle('Experiencees');
+		this.titleService.setTitle('Best blockchain workshop in Mumbai, hyderabad');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'The Blockchain University Experiencees'
+			content: 'Best blockchain workshop in Mumbai, hyderabad'
+		});
+		this.metaService.updateTag({
+			property: 'description',
+			content: 'The Blockchain University In-person Workshops are interactive workshops designed and led by peers from our global community. While not everyone can attend our in-person learning experiences, they should have access to the same experience online'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',

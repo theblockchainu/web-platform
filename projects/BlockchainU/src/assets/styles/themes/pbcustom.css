@@ -347,6 +347,11 @@ mat-subheader {
 	padding-bottom: 0.7em !important;
 }
 
+.uploaded_file_text {
+	display: table-cell;
+	vertical-align: middle;
+}
+
 .mat-toolbar-tools {
 	font-size: 20px;
 	letter-spacing: 0.005em;

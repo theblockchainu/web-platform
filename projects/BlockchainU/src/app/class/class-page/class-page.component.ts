@@ -147,7 +147,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public recommendations: any;
 	public result;
 	public comments: Array<any>;
-	public today: any;
+	private today: any;
+	public answeredDate;
 
 	// Calendar Start
 	public dateClicked: boolean;
@@ -285,6 +286,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.classId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
+				console.log('**** RELOADING PAGE');
 				location.reload();
 			}
 			this.classId = params['collectionId'];
@@ -605,6 +607,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	private processData(res: any) {
+		console.log('PROCESSING DATA');
 		this.class = res;
 		this.classId = this.class.id;
 		this.inviteLink = environment.clientUrl + '/class/' + this.class.id;
@@ -639,6 +642,19 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						if (this.userId === submission.peer[0].id) {
 							this.peerHasSubmission = true;
 						}
+					}
+				});
+			}
+			
+			if (contentObj.questions && contentObj.questions.length > 0) {
+				contentObj.questions.forEach(question => {
+					if (question.answers) {
+						question.answers.forEach(answer => {
+							if (answer.peer && this.userId === answer.peer[0].id) {
+								contentObj['hasAnswered'] = true;
+								contentObj['answeredDate'] = moment(answer.createdAt).format('Do MMM, YYYY');
+							}
+						});
 					}
 				});
 			}
@@ -885,6 +901,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
+	
 	public showAll(strLength) {
 		if (strLength > this.maxLength) {
 			this.maxLength = strLength;
@@ -1285,8 +1302,15 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 							participants: this.participants
 						},
 						panelClass: 'responsive-dialog',
+						disableClose: true,
 						width: '45vw',
 						height: '100vh'
+					});
+					dialogRef.afterClosed().subscribe(res => {
+						if (res) {
+							content.hasAnswered = true;
+							content.answeredDate = moment().format('Do MMM, YYYY');
+						}
 					});
 					break;
 				}

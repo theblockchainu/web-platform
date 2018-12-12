@@ -452,31 +452,10 @@ export class CollectionService {
 	}
 
 	/**
-	 *  Class
-	 */
-	public viewClass(collection) {
-		this.router.navigate(['class', collection.id]);
-	}
-
-	/**
-	 * viewExperience
-	 */
-	public viewExperience(collection) {
-		this.router.navigate(['experience', collection.id]);
-	}
-
-	/**
 	 * viewCollection
 	 */
 	public viewCollection(collection) {
-		this.router.navigate([collection.type, collection.id]);
-	}
-
-	/**
-	 * viewSession
-	 */
-	public viewSession(collection) {
-		this.router.navigate(['session', collection.id]);
+		this.openCollection(collection);
 	}
 
 	/**
@@ -654,10 +633,18 @@ export class CollectionService {
 		console.log(collection);
 		switch (collection.type) {
 			case 'class':
-				this.router.navigate(['/class', collection.customUrl]);
+				if (collection.customUrl && collection.customUrl.length > 0) {
+					this.router.navigate(['/class', collection.customUrl]);
+				} else {
+					this.router.navigate(['/class', collection.id]);
+				}
 				break;
 			case 'experience':
-				this.router.navigate(['/experience', collection.customUrl]);
+				if (collection.customUrl && collection.customUrl.length > 0) {
+					this.router.navigate(['/experience', collection.customUrl]);
+				} else {
+					this.router.navigate(['/experience', collection.id]);
+				}
 				break;
 			case 'session':
 				this.router.navigate(['/session', collection.id]);
@@ -666,10 +653,18 @@ export class CollectionService {
 				this.router.navigate(['/bounty', collection.id]);
 				break;
 			case 'guide':
-				this.router.navigate(['/guide', collection.customUrl]);
+				if (collection.customUrl && collection.customUrl.length > 0) {
+					this.router.navigate(['/guide', collection.customUrl]);
+				} else {
+					this.router.navigate(['/guide', collection.id]);
+				}
 				break;
 			case 'learning-path':
-				this.router.navigate(['/learning-path', collection.customUrl]);
+				if (collection.customUrl && collection.customUrl.length > 0) {
+					this.router.navigate(['/learning-path', collection.customUrl]);
+				} else {
+					this.router.navigate(['/learning-path', collection.id]);
+				}
 				break;
 			default:
 				break;
@@ -1210,7 +1205,19 @@ export class CollectionService {
 			.post(environment.apiUrl + '/api/content_questions/' + questionId + '/answers', answer, this.requestHeaderService.options);
 	}
 	
+	public notifyOwnerForQuizSubmission(questionId: string) {
+		return this.httpClient
+			.post(environment.apiUrl + '/api/content_questions/' + questionId + '/notifyOwner', {}, this.requestHeaderService.options);
+	}
+	
 	public getPreferences(filter) {
 		return this.httpClient.get(environment.apiUrl + '/api/preferences?filter=' + JSON.stringify(filter), this.requestHeaderService.options);
+	}
+	
+	/**
+	 * patchAnswer
+	 */
+	public patchAnswer(answerId: string, body: any) {
+		return this.httpClient.patch(environment.apiUrl + '/api/content_answers/' + answerId, body, this.requestHeaderService.options);
 	}
 }

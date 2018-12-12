@@ -136,7 +136,7 @@
                 "complete": false
             },
             {
-                "title": "Payments",
+                "title": "Payouts",
                 "step": 18,
                 "active": false,
                 "visible": false,

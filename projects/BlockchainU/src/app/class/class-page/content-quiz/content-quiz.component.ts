@@ -37,6 +37,7 @@ export class ContentQuizComponent implements OnInit {
 	public showSuccessMessage = false;
 	public answeredDate;
 	public loadingSubmissions = true;
+	public savingData = false;
 	public submissionArray = [];
 	public displayedSubmissionTableColumns = ['peerName', 'questionsAnswered'];
 	
@@ -76,7 +77,7 @@ export class ContentQuizComponent implements OnInit {
 	
 	ngOnInit() {
 		this.showSuccessMessage = false;
-		this.checkHasAnswered();
+		this.data.content.questions = this.checkHasAnswered(this.data.content.questions, this.userId);
 		this.initializeForms();
 		this.processSubmissions();
 		this.getDiscussions();
@@ -104,11 +105,22 @@ export class ContentQuizComponent implements OnInit {
 										}).wrongAnswers++;
 									}
 								} else {
-									_.find(this.submissionArray, function (o) {
-										return o.peerId === answer.peer[0].id;
-									}).pendingEvaluation++;
+									if (answer.isEvaluated && answer.marks === question.marks) {
+										_.find(this.submissionArray, function (o) {
+											return o.peerId === answer.peer[0].id;
+										}).correctAnswers++;
+									} else if (answer.isEvaluated && answer.marks === 0) {
+										_.find(this.submissionArray, function (o) {
+											return o.peerId === answer.peer[0].id;
+										}).wrongAnswers++;
+									} else {
+										_.find(this.submissionArray, function (o) {
+											return o.peerId === answer.peer[0].id;
+										}).pendingEvaluation++;
+									}
 								}
 							} else {
+								const questions = _.cloneDeep(this.data.content.questions);
 								const submissionEntry = {
 									position: this.submissionArray.length + 1,
 									peerId: answer.peer[0].id,
@@ -116,7 +128,10 @@ export class ContentQuizComponent implements OnInit {
 									questionsAnswered: 1,
 									correctAnswers: 0,
 									wrongAnswers: 0,
-									pendingEvaluation: 0
+									pendingEvaluation: 0,
+									answeredDate: this.getAnsweredDate(questions),
+									questions: questions,
+									peer: answer.peer[0]
 								};
 								if (question.type === 'single-choice') {
 									if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
@@ -125,13 +140,26 @@ export class ContentQuizComponent implements OnInit {
 										submissionEntry.wrongAnswers++;
 									}
 								} else {
-									submissionEntry.pendingEvaluation++;
+									if (answer.isEvaluated && answer.marks === question.marks) {
+										submissionEntry.correctAnswers++;
+									} else if (answer.isEvaluated && answer.marks === 0) {
+										submissionEntry.wrongAnswers++;
+									} else {
+										submissionEntry.pendingEvaluation++;
+									}
 								}
 								this.submissionArray.push(submissionEntry);
 							}
 						}
 					});
 				}
+			});
+			// Work on the submission array to mark user's answer for each question and whether the answer is correct
+			this.submissionArray.forEach(submission => {
+				const formattedQuestions = this.checkHasAnswered(submission.questions, submission.peerId);
+				submission.questions = formattedQuestions;
+				submission.questions = this.evaluateMyAnswers(submission.questions);
+				submission.answeredDate = this.getAnsweredDate(submission.questions);
 			});
 			console.log(this.submissionArray);
 			this.loadingSubmissions = false;
@@ -140,20 +168,58 @@ export class ContentQuizComponent implements OnInit {
 		}
 	}
 	
-	private checkHasAnswered() {
-		if (this.data.content.questions) {
-			this.data.content.questions.forEach(question => {
+	private checkHasAnswered(questions, userId) {
+		console.log('Checking own answers for user: ' + userId);
+		if (questions) {
+			questions.forEach(question => {
+				let myAnswer = null;
 				if (question.answers) {
 					question.answers.forEach(answer => {
-						if (answer.peer[0].id === this.userId) {
-							this.hasAnswered = true;
-							this.answeredDate = moment(answer.createdAt).format('Do MMM YY');
-							question.myAnswer = answer;
-							return;
+						if (answer.peer !== undefined && answer.peer[0].id === userId) {
+							myAnswer = answer;
+							if (userId === this.userId) {
+								this.hasAnswered = true;
+								this.answeredDate = moment(answer.createdAt).format('Do MMM YY');
+							}
 						}
 					});
 				}
+				question['myAnswer'] = myAnswer;
 			});
+		}
+		return questions;
+	}
+	
+	private evaluateMyAnswers(questions) {
+		questions.forEach(question => {
+			if (question.myAnswer) {
+				if (question.type === 'single-choice') {
+					if (question.myAnswer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(question.myAnswer.answer, 10)) {
+						question.isCorrect = true;
+						question.isWrong = false;
+					} else {
+						question.isCorrect = false;
+						question.isWrong = true;
+					}
+				} else {
+					if (question.myAnswer.isEvaluated && question.myAnswer.marks === question.marks) {
+						question.isCorrect = true;
+						question.isWrong = false;
+					} else if (question.myAnswer.isEvaluated && question.myAnswer.marks === 0) {
+						question.isCorrect = false;
+						question.isWrong = true;
+					}
+				}
+			}
+		});
+		return questions;
+	}
+	
+	private getAnsweredDate(questions) {
+		if (questions.length > 0 && questions[0] && questions[0].myAnswer) {
+			return moment(questions[0].myAnswer.createdAt).format('Do MMM, YYYY');
+		} else {
+			return '';
 		}
 	}
 	
@@ -386,6 +452,7 @@ export class ContentQuizComponent implements OnInit {
 	}
 	
 	public submitAnswers() {
+		this.savingData = true;
 		console.log(this.answerArray.value);
 		let i = 0, j = 0;
 		this.answerArray.controls.forEach(answer => {
@@ -395,18 +462,38 @@ export class ContentQuizComponent implements OnInit {
 						j++;
 						if (j === this.totalRequiredQuestions) {
 							this.showSuccessMessage = true;
+							this.savingData = false;
+							this._collectionService.notifyOwnerForQuizSubmission(this.questionArray.controls[0].value.id)
+								.subscribe(res1 => {
+									if (res && res['result'] === 'success') {
+										console.log('Notified owner of new submission');
+									}
+								}, err => {
+									console.log('Could not notify owner of new submission. Err: ' + err);
+								});
 						}
 					}, err => {
 						j++;
 						if (j === this.totalRequiredQuestions) {
 							this.snackBar.open('Error submitting your answers. Please try again!', 'OK', {duration: 3000});
+							this.savingData = false;
 						}
 					});
 			} else {
 				console.log('Not answered. Skipping this question.');
+				this.savingData = false;
 			}
 			i++;
 		});
+	}
+	
+	public openQuizSubmission(element) {
+		this.dialogsService.openViewQuizSubmissionDialog(element)
+			.subscribe(res => {
+				if (res) {
+					element = res;
+				}
+			});
 	}
 
 }
