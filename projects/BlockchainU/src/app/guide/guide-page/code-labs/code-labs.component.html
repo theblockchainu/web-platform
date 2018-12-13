@@ -1,0 +1,38 @@
+<div #codeContainer>
+  <div class="row">
+    <div class="col-xs-12">
+      <mat-button-toggle-group (change)="gotoTab($event)">
+        <mat-button-toggle value="code">
+          <mat-icon>code</mat-icon>Code
+        </mat-button-toggle>
+        <mat-button-toggle value="compile">
+          <mat-icon>tab</mat-icon>Compile
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="floating-button" mat-fab [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="refreshPage()">
+          <mat-icon>refresh</mat-icon> Refresh page
+        </button>
+        <button mat-menu-item (click)="openBottomSheet()">
+          <mat-icon>vpn_key</mat-icon> Accounts
+        </button>
+      </mat-menu>
+      <div [hidden]="selectedTab!=='code'" *ngIf="ice_coder_settings">
+        <iframe id="iframe-ice-coder" style="height:76vh;width: -webkit-fill-available" [src]="ice_coder_settings.auth_url| safe:'resourceUrl'">
+        </iframe>
+      </div>
+      <div [hidden]="selectedTab!=='compile'" *ngIf="terminal_settings">
+        <iframe id="iframe-terminal" style="height:76vh;width: -webkit-fill-available" [src]="terminal_settings.auth_url| safe:'resourceUrl'">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</div>

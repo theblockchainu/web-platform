@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar, MatButtonToggleChange } from '@angular/material';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Title, Meta } from '@angular/platform-browser';
@@ -439,12 +439,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				{ 'participants': [{ 'profiles': ['work'] }] },
 				{ 'owners': [{ 'profiles': ['work'] }] },
 				'rooms',
-				{
-					relation: 'corestackStudents',
-					where: {
-						student_id: this.userId
-					}
-				}
+				'corestackStudents'
 			],
 			'where': {
 				'customUrl': this.guideId
@@ -541,8 +536,15 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 
 	private getCorestackInfo() {
 		if (this.guide.corestackStudents && this.guide.corestackStudents.length > 0) {
-			this.corestack_student = this.guide.corestackStudents[0];
-			this.startCodeLab();
+			this.guide.corestackStudents.some(student => {
+				if (student.student_id === this.userId) {
+					this.corestack_student = student;
+					return true;
+				}
+			});
+			if (this.corestack_student) {
+				this.startCodeLab();
+			}
 		}
 	}
 
@@ -1547,17 +1549,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	public openShareDialog() {
 		this.dialogsService.shareCollection(this.guide.type, this.guide.id, this.guide.title, this.guide.description, this.guide.headline, environment.apiUrl + this.guide.imageUrls[0]
 			, null, this.userType === 'teacher');
-	}
-
-	gotoTab(index: number) {
-		if (this.selectedTab !== index) {
-			this.selectedTab = index;
-		}
-	}
-
-	refreshPage(index: number) {
-		const iframeElement = <HTMLIFrameElement>document.getElementById('iframe-' + index);
-		iframeElement.src += '';
 	}
 
 }
