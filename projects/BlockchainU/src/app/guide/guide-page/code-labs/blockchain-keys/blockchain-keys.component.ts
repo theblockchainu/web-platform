@@ -8,6 +8,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class BlockchainKeysComponent implements OnInit {
 
+  keysArray: Array<KeyObject>;
+
   constructor(
     public dialogRef: MatDialogRef<BlockchainKeysComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
@@ -15,6 +17,22 @@ export class BlockchainKeysComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.data);
+    this.keysArray = [];
+    for (const key in this.data) {
+      if (this.data.hasOwnProperty(key)) {
+        this.keysArray.push(
+          {
+            publicKey: key,
+            privateKey: this.data[key]
+          }
+        );
+      }
+    }
   }
 
+}
+
+interface KeyObject {
+  publicKey: string;
+  privateKey: string;
 }

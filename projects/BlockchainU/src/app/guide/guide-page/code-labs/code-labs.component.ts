@@ -91,10 +91,8 @@ export class CodeLabsComponent implements OnInit, OnChanges {
   openBottomSheet() {
     this.matDialog.open(BlockchainKeysComponent, {
       data: this.keys,
-      position: {
-        right: '50vh'
-      },
-      backdropClass: 'invisible-backdrop'
+      width: '75vw',
+      // backdropClass: 'invisible-backdrop'
     });
   }
 
