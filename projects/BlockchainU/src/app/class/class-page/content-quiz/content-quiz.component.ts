@@ -39,7 +39,7 @@ export class ContentQuizComponent implements OnInit {
 	public answeredDate;
 	public loadingSubmissions = true;
 	public savingData = false;
-	public submissionArray = [];
+	public submissionArray;
 	public displayedSubmissionTableColumns = ['peerName', 'questionsAnswered'];
 	
 	@ViewChild(MatTable) table: MatTable<any>;
