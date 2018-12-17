@@ -44,6 +44,8 @@ import { UcWordsPipe } from 'ngx-pipes';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { ContentQuizComponent } from './content-quiz/content-quiz.component';
+import {Observable} from 'rxjs';
+import { first, flatMap } from 'rxjs/operators';
 declare var FB: any;
 declare var fbq: any;
 
@@ -95,7 +97,7 @@ export class MyCalendarUtils extends CalendarUtils {
 	]
 })
 export class ClassPageComponent implements OnInit, OnDestroy {
-
+	
 	public classId: string;
 	public envVariable;
 	public userId;
@@ -109,7 +111,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public busyDiscussion: boolean;
 	public busyReview: boolean;
 	public busyReply: boolean;
-	public initialLoad: boolean;
 	public loggedInUser;
 	public isReadonly: boolean;
 	public noOfReviews: number;
@@ -149,7 +150,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public comments: Array<any>;
 	private today: any;
 	public answeredDate;
-
+	
 	// Calendar Start
 	public dateClicked: boolean;
 	public clickedDate;
@@ -159,6 +160,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public clickedCohortEndDate;
 	public eventsForTheDay: any;
 	public toOpenDialogName;
+	private allowedDialogNames = ['paymentSuccess', 'assessment'];
 	public checkingEthereum: boolean;
 	public isOnEthereum: boolean;
 	public previewAs: string;
@@ -185,7 +187,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public loadingSimilarClasses: boolean;
 	public loadingComments: boolean;
 	public loadingParticipants: boolean;
-	public loadingClass: boolean;
+	public loadingClass = true;
 	public loadingReviews: boolean;
 	public accountApproved: any;
 	public carouselBanner: any;
@@ -195,41 +197,39 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public contactUsForm: FormGroup;
 	public isFollowing: boolean;
 	@ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
-
+	
 	objectKeys = Object.keys;
-
+	
 	constructor(public router: Router,
-		private activatedRoute: ActivatedRoute,
-		private _cookieUtilsService: CookieUtilsService,
-		public _collectionService: CollectionService,
-		public _contentService: ContentService,
-		public _topicService: TopicService,
-		private _commentService: CommentService,
-		private _fb: FormBuilder,
-		private dialog: MatDialog,
-		private dialogsService: DialogsService,
-		private snackBar: MatSnackBar,
-		private _socketService: SocketService,
-		private _authenticationService: AuthenticationService,
-		private titleService: Title,
-		private metaService: Meta,
-		private _assessmentService: AssessmentService,
-		private ucwords: UcWordsPipe,
-		private certificateService: CertificateService,
-		private _profileService: ProfileService
-		// private location: Location
+				private activatedRoute: ActivatedRoute,
+				private _cookieUtilsService: CookieUtilsService,
+				public _collectionService: CollectionService,
+				public _contentService: ContentService,
+				public _topicService: TopicService,
+				private _commentService: CommentService,
+				private _fb: FormBuilder,
+				private dialog: MatDialog,
+				private dialogsService: DialogsService,
+				private snackBar: MatSnackBar,
+				private _socketService: SocketService,
+				private _authenticationService: AuthenticationService,
+				private titleService: Title,
+				private metaService: Meta,
+				private _assessmentService: AssessmentService,
+				private ucwords: UcWordsPipe,
+				private certificateService: CertificateService,
+				private _profileService: ProfileService
 	) {
 		this.envVariable = environment;
 	}
-
+	
 	ngOnInit() {
+		// Subscribe to login listener and refresh page when user logs in.
 		this._authenticationService.isLoginSubject.subscribe(res => {
-			console.log('Initializing Page');
-			this.initializePage();
+				this.initializePage();
 		});
-		this.initializePage();
 	}
-
+	
 	ngOnDestroy() {
 		if (this.startedView) {
 			this.startedView.viewer = {
@@ -242,14 +242,88 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-
+	
 	initializePage() {
+		
+		// Close all existing dialogs
+		this.dialogsService.closeAll();
+		
+		console.log('Initializing Page');
+		this.initializeGlobalVariables();
+		this.setValuesFromCookies();
+		this.setValuesFromRouteParameters()
+			.pipe(
+				flatMap(res => {
+					return this.initializeForms();
+				}),
+				flatMap(res => {
+					return this.setContactFormValues(res);
+				}),
+				flatMap(res => {
+					return this.fetchData();
+				}),
+				flatMap(res => {
+					return this.processData(res);
+				})
+			)
+			.subscribe( res => {
+				this.initialised = true;
+			});
+	}
+	
+	private fetchData() {
+		this.loadingCertificate = true;
+		this.allParticipants = [];
+		this.allItenaries = [];
+		const query = {
+			'include': [
+				'topics',
+				'calendars',
+				'views',
+				{
+					'participants': [
+						{ 'profiles': ['work'] }
+					]
+				},
+				{ 'owners': [{ 'profiles': ['work'] }] },
+				{
+					'contents': [
+						'locations',
+						'schedules',
+						{ 'questions': { 'answers': { 'peer': 'profiles' } } },
+						{ 'rsvps': 'peer' },
+						{ 'views': 'peer' },
+						{
+							'submissions': [
+								{ 'upvotes': 'peer' },
+								{ 'peer': 'profiles' }
+							]
+						}
+					]
+				},
+				'rooms',
+				'peersFollowing',
+				{
+					'assessment_models': [
+						{ 'assessment_na_rules': { 'assessment_result': 'assessees' } },
+						{ 'assessment_rules': { 'assessment_result': 'assessees' } }]
+				}
+			],
+			'relInclude': 'calendarId',
+			'where': {
+				'or': [{'customUrl': this.classId}, {'id': this.classId}]
+			}
+		};
+		
+		return this._collectionService.getAllCollections(query);
+	}
+	
+	private initializeGlobalVariables() {
 		this.newUserRating = 0;
 		this.isViewTimeHidden = true;
 		this.busyDiscussion = false;
 		this.busyReview = false;
 		this.busyReply = false;
-		this.initialLoad = true;
 		this.isReadonly = true;
 		this.noOfReviews = 3;
 		this.initialised = false;
@@ -283,34 +357,6 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.accountApproved = 'false';
 		this.inviteLink = '';
 		this.isFollowing = false;
-
-		this.activatedRoute.params.subscribe(params => {
-			if (this.initialised && (this.classId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
-				console.log('**** RELOADING PAGE');
-				location.reload();
-			}
-			this.classId = params['collectionId'];
-			this.calendarId = params['calendarId'];
-			this.toOpenDialogName = params['dialogName'];
-		});
-		this.activatedRoute.queryParams.subscribe(params => {
-			if (params['previewAs']) {
-				this.previewAs = params['previewAs'];
-				console.log('Previewing as ' + this.previewAs);
-			}
-			if (params['referredBy']) {
-				this._collectionService.saveRefferedBY(params['referredBy']);
-			} else {
-				this._cookieUtilsService.deleteValue('referrerId');
-			}
-		});
-		this.userId = this._cookieUtilsService.getValue('userId');
-		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
-
-		this.initialised = true;
-		this.initializeForms();
-		this.initializeClass();
-		this.initialLoad = false;
 		this.eventsForTheDay = {};
 		this.carouselBanner = {
 			grid: { xs: 1, sm: 1, md: 1, lg: 1, all: 0 },
@@ -325,14 +371,47 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			touch: true
 		};
 	}
-
+	
+	private setValuesFromRouteParameters() {
+		return this.activatedRoute.params.pipe(
+			first(),
+			flatMap(params => {
+				/*if (this.initialised && (this.classId !== params['collectionId'] || this.calendarId !== params['calendarId'])) {
+					console.log('**** RELOADING PAGE');
+					location.reload();
+				}*/
+				this.classId = params['collectionId'];
+				this.calendarId = params['calendarId'];
+				this.toOpenDialogName = params['dialogName'];
+				return this.activatedRoute.queryParams;
+			}),
+			flatMap(params => {
+				if (params['previewAs']) {
+					this.previewAs = params['previewAs'];
+				}
+				if (params['referredBy']) {
+					this._collectionService.saveRefferedBY(params['referredBy']);
+				} else {
+					this._cookieUtilsService.deleteValue('referrerId');
+				}
+				return new Observable(obs => {
+					obs.next();
+				});
+			}));
+	}
+	
+	private setValuesFromCookies() {
+		this.userId = this._cookieUtilsService.getValue('userId');
+		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
+	}
+	
 	refreshView(): void {
 		this.refresh.next();
 	}
-
+	
 	dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
 		this.eventsForTheDay = {};
-
+		
 		if (events.length === 0) {
 			this.dateClicked = false;
 			return;
@@ -380,11 +459,13 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		}
 	}
-
-	// Modal
+	
+	/**
+	 * Open Dialog to manage cohorts
+	 */
 	public editCalendar() {
 		const sortedCalendar = this.sort(this.class.calendars, 'startDate', 'endDate');
-
+		
 		this.dialogsService
 			.editCalendar({ id: this.classId, type: this.class.type, name: this.class.title },
 				this.class.contents, this.class.calendars, this.allItenaries, this.allParticipants,
@@ -394,7 +475,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				if (res) {
 					this.result = res;
 					if (this.result.calendarsSaved === 'calendarsSaved') {
-						this.initializeClass();
+						this.initializePage();
 					}
 					if (this.result.cohortDeleted) {
 						this.refreshView();
@@ -402,7 +483,10 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-
+	
+	/**
+	 * Set the current user's type
+	 */
 	private initializeUserType() {
 		if (this.class) {
 			if (this.previewAs) {
@@ -437,12 +521,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			if (this.userType === 'public' || this.userType === 'teacher') {
 				this.initializeAllItenaries();
 			}
-
+			
 			this.loadingClass = false;
-
+			
 		}
 	}
-
+	
 	private initializeAllItenaries() {
 		this.events = [];
 		this.allItenaries = [];
@@ -499,7 +583,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		}
 		this.refreshView();
 	}
-
+	
 	private processContent(key) {
 		const contentObj = this.itenariesObj[key];
 		const self = this;
@@ -522,218 +606,153 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		}
 		return contentObj;
 	}
-
-	private initializeClass() {
-		this.loadingCertificate = true;
-		this.allParticipants = [];
-		this.allItenaries = [];
-		const query = {
-			'include': [
-				'topics',
-				'calendars',
-				'views',
-				{
-					'participants': [
-						{ 'profiles': ['work'] }
-					]
-				},
-				{ 'owners': [{ 'profiles': ['work'] }] },
-				{
-					'contents': [
-						'locations',
-						'schedules',
-						{ 'questions': { 'answers': { 'peer': 'profiles' } } },
-						{ 'rsvps': 'peer' },
-						{ 'views': 'peer' },
-						{
-							'submissions': [
-								{ 'upvotes': 'peer' },
-								{ 'peer': 'profiles' }
-							]
-						}
-					]
-				},
-				'rooms',
-				'peersFollowing',
-				{
-					'assessment_models': [
-						{ 'assessment_na_rules': { 'assessment_result': 'assessees' } },
-						{ 'assessment_rules': { 'assessment_result': 'assessees' } }]
-				}
-			],
-			'relInclude': 'calendarId',
-			'where': {
-				'customUrl': this.classId
-			}
-		};
-
-		if (this.classId) {
-			this._collectionService.getAllCollections(query)
-				.subscribe((res: any) => {
-					if (res && res.length > 0) {
-						console.log(res);
-						this.processData(res[0]);
-					} else {
-						delete query.where;
-						this.fetchById(query);
-					}
-				},
-					err => {
-						console.log('error');
-						delete query.where;
-						this.fetchById(query);
-					}
-				);
-		} else {
-			console.log('NO COLLECTION');
-		}
-	}
-
-	private fetchById(query: any) {
-		this._collectionService.getCollectionDetail(this.classId, query)
-			.subscribe((res: any) => {
-				if (res) {
-					console.log(res);
-					this.processData(res);
-				} else {
-					this.loadingClass = false;
-				}
-			},
-				err => {
-					this.loadingClass = false;
-					console.log('error');
-				}
-			);
-	}
-
+	
 	private processData(res: any) {
-		console.log('PROCESSING DATA');
-		this.class = res;
-		this.classId = this.class.id;
-		this.inviteLink = environment.clientUrl + '/class/' + this.class.id;
-		this.setTags();
-		this.setCurrentCalendar();
-		try {
-			if (fbq && fbq !== undefined) {
-				fbq('track', 'ViewContent', {
-					currency: 'USD',
-					value: 0.0,
-					content_type: 'product',
-					content_ids: [this.classId]
-				});
-			}
-		} catch (e) {
-			console.log(e);
-		}
-		this.itenariesObj = {};
-		this.itenaryArray = [];
-		// Scan through all contents and group them under their respective start days.
-		// Also scan through all contents and check if the user has made submission for a project.
-		this.class.contents.forEach(contentObj => {
-			if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
-				this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
-			} else {
-				this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
-			}
-
-			if (contentObj.submissions && contentObj.submissions.length > 0) {
-				contentObj.submissions.forEach(submission => {
-					if (submission.peer) {
-						if (this.userId === submission.peer[0].id) {
-							this.peerHasSubmission = true;
-						}
-					}
-				});
-			}
-			
-			if (contentObj.questions && contentObj.questions.length > 0) {
-				contentObj.questions.forEach(question => {
-					if (question.answers) {
-						question.answers.forEach(answer => {
-							if (answer.peer && this.userId === answer.peer[0].id) {
-								contentObj['hasAnswered'] = true;
-								contentObj['answeredDate'] = moment(answer.createdAt).format('Do MMM, YYYY');
-							}
-						});
-					}
-				});
-			}
-		});
-		// Scan through all the start-day-groups of contents
-		// Calculate the calendar start and end date of each content group
-		// Sort the contents inside a group based on their start times
-		// Format the start time and end time of each of the individual content in that group
-		// Calculate the viewing metrics of each individual content
-		// Set hasRSVPd toggle on each of the content
-		// Create an object for the content group with properties: startDay, startDate, endDate and array of contents.
-		// Add content group to itinerary array
-		for (const key in this.itenariesObj) {
-			if (this.itenariesObj.hasOwnProperty(key)) {
-				let startDate, endDate;
-				if (this.currentCalendar) {
-					startDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
-					endDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
-				} else {
-					startDate = this._collectionService.calculateDate(this.class.calendars[0].startDate, key);
-					endDate = this._collectionService.calculateDate(this.class.calendars[0].startDate, key);
+		if (res && res.length > 0) {
+			console.log('PROCESSING DATA');
+			this.class = res[0];
+			this.classId = this.class.id;
+			this.inviteLink = environment.clientUrl + '/class/' + this.class.id;
+			this.setTags();
+			this.setCurrentCalendar();
+			try {
+				if (fbq && fbq !== undefined) {
+					fbq('track', 'ViewContent', {
+						currency: 'USD',
+						value: 0.0,
+						content_type: 'product',
+						content_ids: [this.classId]
+					});
 				}
-				this.itenariesObj[key].sort(function (a, b) {
-					return moment(a.schedules[0].startTime).diff(moment(b.schedules[0].startTime));
-				});
-				this.itenariesObj[key].forEach(content => {
-					if (content.schedules[0].startTime !== undefined) {
-						content.schedules[0].startTime = startDate.format().toString().split('T')[0] +
-							'T' + content.schedules[0].startTime.split('T')[1];
-						content.schedules[0].endTime = startDate.format().toString().split('T')[0] +
-							'T' + content.schedules[0].endTime.split('T')[1];
-					}
-				});
-				this.setContentViews(this.itenariesObj[key]);
-				const contentObj = this.processContent(key);
-				const itenary = {
-					startDay: key,
-					startDate: startDate,
-					endDate: endDate,
-					contents: contentObj
-				};
-				this.itenaryArray.push(itenary);
+			} catch (e) {
+				console.log(e);
 			}
-		}
-		// Sort itinerary array in ascending order of content group start days.
-		this.itenaryArray.sort(function (a, b) {
-			return parseFloat(a.startDay) - parseFloat(b.startDay);
-		});
-		if (this.class && this.class.owners && this.class.owners.length > 0) {
-			this.getEthereumInfo();
-			this.initializeUserType();
-			this.calculateTotalHours();
-			this.getCertificatetemplate();
-			this.fixTopics();
-			this.getReviews();
-			this.getRecommendations();
-			this.getParticipants();
-			this.getDiscussions();
-			this.getBookmarks();
-			this.setUpCarousel();
-			this.checkIfFollowing();
-			if (this.toOpenDialogName !== undefined && this.toOpenDialogName !== 'paymentSuccess') {
-				this.itenaryArray.forEach(itinerary => {
-					itinerary.contents.forEach(content => {
-						if (content.id === this.toOpenDialogName) {
-							this.openDialog(content, itinerary.startDate, itinerary.endDate);
+			this.itenariesObj = {};
+			this.itenaryArray = [];
+			// Scan through all contents and group them under their respective start days.
+			// Also scan through all contents and check if the user has made submission for a project.
+			this.class.contents.forEach(contentObj => {
+				if (this.itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
+					this.itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
+				} else {
+					this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
+				}
+				
+				if (contentObj.submissions && contentObj.submissions.length > 0) {
+					contentObj.submissions.forEach(submission => {
+						if (submission.peer) {
+							if (this.userId === submission.peer[0].id) {
+								this.peerHasSubmission = true;
+							}
 						}
 					});
-				});
-			} else if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
-				this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
+				}
+				
+				if (contentObj.questions && contentObj.questions.length > 0) {
+					contentObj.questions.forEach(question => {
+						if (question.answers) {
+							question.answers.forEach(answer => {
+								if (answer.peer && this.userId === answer.peer[0].id) {
+									contentObj['hasAnswered'] = true;
+									contentObj['answeredDate'] = moment(answer.createdAt).format('Do MMM, YYYY');
+								}
+							});
+						}
+					});
+				}
+			});
+			// Scan through all the start-day-groups of contents
+			// Calculate the calendar start and end date of each content group
+			// Sort the contents inside a group based on their start times
+			// Format the start time and end time of each of the individual content in that group
+			// Calculate the viewing metrics of each individual content
+			// Set hasRSVPd toggle on each of the content
+			// Create an object for the content group with properties: startDay, startDate, endDate and array of contents.
+			// Add content group to itinerary array
+			for (const key in this.itenariesObj) {
+				if (this.itenariesObj.hasOwnProperty(key)) {
+					let startDate, endDate;
+					if (this.currentCalendar) {
+						startDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
+						endDate = this._collectionService.calculateDate(this.currentCalendar.startDate, key);
+					} else {
+						startDate = this._collectionService.calculateDate(this.class.calendars[0].startDate, key);
+						endDate = this._collectionService.calculateDate(this.class.calendars[0].startDate, key);
+					}
+					this.itenariesObj[key].sort(function (a, b) {
+						return moment(a.schedules[0].startTime).diff(moment(b.schedules[0].startTime));
+					});
+					this.itenariesObj[key].forEach(content => {
+						if (content.schedules[0].startTime !== undefined) {
+							content.schedules[0].startTime = startDate.format().toString().split('T')[0] +
+								'T' + content.schedules[0].startTime.split('T')[1];
+							content.schedules[0].endTime = startDate.format().toString().split('T')[0] +
+								'T' + content.schedules[0].endTime.split('T')[1];
+						}
+					});
+					this.setContentViews(this.itenariesObj[key]);
+					const contentObj = this.processContent(key);
+					const itenary = {
+						startDay: key,
+						startDate: startDate,
+						endDate: endDate,
+						contents: contentObj
+					};
+					this.itenaryArray.push(itenary);
+				}
 			}
-			this.recordStartView();
+			// Sort itinerary array in ascending order of content group start days.
+			this.itenaryArray.sort(function (a, b) {
+				return parseFloat(a.startDay) - parseFloat(b.startDay);
+			});
+			if (this.class && this.class.owners && this.class.owners.length > 0) {
+				this.getEthereumInfo();
+				this.initializeUserType();
+				this.calculateTotalHours();
+				this.getCertificatetemplate();
+				this.fixTopics();
+				this.getReviews();
+				this.getRecommendations();
+				this.getParticipants();
+				this.getDiscussions();
+				this.getBookmarks();
+				this.setUpCarousel();
+				this.checkIfFollowing();
+				if (this.toOpenDialogName !== undefined && !_.find(this.allowedDialogNames, name => name === this.toOpenDialogName)) {
+					this.itenaryArray.forEach(itinerary => {
+						itinerary.contents.forEach(content => {
+							if (content.id === this.toOpenDialogName) {
+								this.openDialog(content, itinerary.startDate, itinerary.endDate);
+								return;
+							}
+						});
+					});
+				} else if (this.toOpenDialogName !== undefined && _.find(this.allowedDialogNames, name => name === this.toOpenDialogName)) {
+					this.openCustomDialog(this.toOpenDialogName);
+				}
+				this.recordStartView();
+			} else {
+				this.snackBar.open('This online course has either been deleted or flagged.', 'OK', {duration: 5000});
+				this.router.navigate(['home', 'classes']);
+			}
 		} else {
-			this.snackBar.open('This online course has either been deleted or flagged.', 'OK', { duration: 5000 });
-			this.router.navigate(['home', 'classes']);
+			this.loadingClass = false;
+		}
+		return new Observable(obs => {
+			obs.next();
+		});
+	}
+	
+	private openCustomDialog(dialogName) {
+		switch (dialogName) {
+			case 'paymentSuccess':
+				this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
+				break;
+			case 'assessment':
+				this.openAssessmentDialog();
 		}
 	}
-
+	
 	private getEthereumInfo() {
 		this._collectionService.getCollectionEthereumInfo(this.classId, {})
 			.subscribe(res => {
@@ -743,7 +762,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-
+	
 	private checkIfFollowing() {
 		if (this.class.peersFollowing && this.class.peersFollowing.length > 0) {
 			this.class.peersFollowing.some(peer => {
@@ -756,10 +775,10 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-
+	
 	public createGuestContacts() {
 		console.log('Submitting request');
-
+		
 		const first_name = this.contactUsForm.controls['first_name'].value;
 		const email = this.contactUsForm.controls['email'].value;
 		const subject = 'Online Course: ' + this.class.title;
@@ -785,7 +804,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				this.snackBar.open('Error in sending mail', 'Close', { duration: 3000 });
 			});
 	}
-
+	
 	private setTags() {
 		this.titleService.setTitle(this.ucwords.transform(this.class.title));
 		this.metaService.updateTag({
@@ -835,13 +854,13 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			content: this.class.id
 		});
 	}
-
+	
 	private setUpCarousel() {
 		if (this.class.imageUrls && this.class.imageUrls.length > 0) {
 			this.carouselImages = this.class.imageUrls.map(url => environment.apiUrl + url);
 		}
 	}
-
+	
 	private recordStartView() {
 		// Send start view msg on socket
 		const view = {
@@ -861,7 +880,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.startedView = startedView;
 		});
 	}
-
+	
 	private getReviews() {
 		this.loadingReviews = true;
 		let query = {};
@@ -909,7 +928,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.maxLength = 140;
 		}
 	}
-
+	
 	private getBookmarks() {
 		const query = {
 			'include': [
@@ -936,7 +955,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	private getDiscussions() {
 		this.loadingComments = true;
 		const query = {
@@ -975,11 +994,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	private fixTopics() {
 		this.topicFix = _.uniqBy(this.class.topics, 'id');
 	}
-
+	
 	private initializeForms() {
 		this.chatForm = this._fb.group({
 			description: ['', Validators.required],
@@ -992,11 +1011,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			collectionId: this.classId,
 			collectionCalendarId: this.calendarId,
 		});
-
+		
 		const filter = {
 			'include': [{ 'profiles': ['phone_numbers'] }]
 		};
-
+		
 		this.contactUsForm = this._fb.group(
 			{
 				first_name: ['', Validators.required],
@@ -1006,38 +1025,46 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				phone: ['']
 			}
 		);
-
-		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
-			if (res && res.profiles && res.profiles.length > 0) {
-				const userPhone = res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0 ? '+'
-					+ res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '';
-				this.contactUsForm = this._fb.group(
-					{
-						first_name: [res.profiles[0].first_name, Validators.required],
-						email: [res.email, Validators.required],
-						subject: [''],
-						message: ['', Validators.required],
-						phone: [userPhone]
-					}
-				);
-			} else {
-				this.contactUsForm = this._fb.group(
-					{
-						first_name: ['', Validators.required],
-						email: ['', Validators.required],
-						subject: [''],
-						message: ['', Validators.required],
-						phone: ['']
-					}
-				);
-			}
+		
+		return this._profileService.getPeerData(this.userId, filter);
+	}
+	
+	private setContactFormValues(res) {
+		// If user exists, setup his contact form
+		if (res && res.profiles && res.profiles.length > 0) {
+			
+			const userPhone = res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0 ? '+'
+				+ res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '';
+			
+			this.contactUsForm = this._fb.group(
+				{
+					first_name: [res.profiles[0].first_name, Validators.required],
+					email: [res.email, Validators.required],
+					subject: [''],
+					message: ['', Validators.required],
+					phone: [userPhone]
+				}
+			);
+		} else {
+			this.contactUsForm = this._fb.group(
+				{
+					first_name: ['', Validators.required],
+					email: ['', Validators.required],
+					subject: [''],
+					message: ['', Validators.required],
+					phone: ['']
+				}
+			);
+		}
+		return new Observable(obs => {
+			obs.next();
 		});
 	}
-
+	
 	gotoEdit() {
 		this.router.navigate(['class', this.classId, 'edit', this.class.stage ? this.class.stage : '1']);
 	}
-
+	
 	public setCurrentCalendar() {
 		if (this.calendarId) {
 			const calendarIndex = this.class.calendars.findIndex(calendar => {
@@ -1052,9 +1079,9 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			console.log('Calendar id not found');
 		}
 	}
-
+	
 	/**
-	 * changeDates
+	 * Open Dialog to select a particular cohort
 	 */
 	public changeDates() {
 		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.class.type, this.class.maxSpots, this.accountApproved, this.userId)
@@ -1064,7 +1091,19 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-
+	
+	/**
+	 * Open Dialog to select a particular cohort and then open its assessment dialog.
+	 */
+	public changeDatesForAssessment() {
+		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.class.type, this.class.maxSpots, this.accountApproved, this.userId)
+			.subscribe((result: any) => {
+				if (result) {
+					this.router.navigate(['class', this.classId, 'calendar', result, 'assessment']);
+				}
+			});
+	}
+	
 	/**
 	 * cancelClass
 	 */
@@ -1075,7 +1114,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	/**
 	 * dropoutClass
 	 */
@@ -1086,7 +1125,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	public cancelCohort() {
 		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res: any) => {
 			if (res) {
@@ -1096,7 +1135,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			console.log(err);
 		});
 	}
-
+	
 	public deleteCohort() {
 		this.dialogsService.openDeleteCohort(this.calendarId).subscribe(res => {
 			if (res) {
@@ -1104,7 +1143,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	/**
 	 * deleteClass
 	 */
@@ -1115,9 +1154,9 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
-
-
+	
+	
+	
 	/**
 	 * postComment
 	 */
@@ -1133,7 +1172,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	/**
 	 * saveBookmark
 	 */
@@ -1184,7 +1223,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.dialogsService.openSignup('/class/' + this.class.id);
 		}
 	}
-
+	
+	
 	/**
 	 * calculateTotalHours
 	 */
@@ -1197,12 +1237,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
 				totalLength += parseInt(contentLength, 10);
 			} else if (content.type === 'video') {
-
+			
 			}
 		});
 		this.totalDuration = totalLength.toString();
 	}
-
+	
 	/**
 	 * isLive
 	 */
@@ -1212,16 +1252,16 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		const endMoment = startMoment.clone();
 		endMoment.add(content.schedules[0].endDay, 'day');
 		const currentMoment = moment();
-
+		
 		const startTime = moment(content.schedules[0].startTime);
 		const endTime = moment(content.schedules[0].endTime);
-
+		
 		startMoment.hours(startTime.hours());
 		startMoment.minutes(startTime.minutes());
-
+		
 		endMoment.hours(endTime.hours());
 		endMoment.minutes(endTime.minutes());
-
+		
 		if (currentMoment.isBetween(startMoment, endMoment)) {
 			content.isLive = true;
 			return true;
@@ -1230,8 +1270,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			return false;
 		}
 	}
-
-
+	
+	
 	public getContentCount(type: string) {
 		let count = 0;
 		for (const content of this.class.contents) {
@@ -1241,7 +1281,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		}
 		return count;
 	}
-
+	
 	/**
 	 * toggleReviews
 	 */
@@ -1252,18 +1292,18 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.noOfReviews = 3;
 		}
 	}
-
+	
 	viewParticipants() {
 		this.dialogsService.viewParticipantstDialog(
 			this.participants,
 			this.classId,
 			this.userType).subscribe();
 	}
-
+	
 	viewAllParticipants() {
 		this.dialogsService.viewParticipantstDialog(this.allParticipants, this.classId, this.userType).subscribe();
 	}
-
+	
 	/**
 	 * openDialog
 	 content:any   */
@@ -1271,97 +1311,97 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.modalContent = content;
 		switch (content.type) {
 			case 'online':
-				{
-					const dialogRef = this.dialog.open(ContentOnlineComponent, {
-						data: {
-							content: content,
-							startDate: startDate,
-							endDate: endDate,
-							userType: this.userType,
-							collectionId: this.classId,
-							collection: this.class,
-							calendarId: this.calendarId
-						},
-						panelClass: 'responsive-dialog',
-						width: '45vw',
-						height: '100vh'
-					});
-					break;
-				}
+			{
+				const dialogRef = this.dialog.open(ContentOnlineComponent, {
+					data: {
+						content: content,
+						startDate: startDate,
+						endDate: endDate,
+						userType: this.userType,
+						collectionId: this.classId,
+						collection: this.class,
+						calendarId: this.calendarId
+					},
+					panelClass: 'responsive-dialog',
+					width: '45vw',
+					height: '100vh'
+				});
+				break;
+			}
 			case 'quiz':
-				{
-					const dialogRef = this.dialog.open(ContentQuizComponent, {
-						data: {
-							content: content,
-							startDate: startDate,
-							endDate: endDate,
-							userType: this.userType,
-							collectionId: this.classId,
-							collection: this.class,
-							calendarId: this.calendarId,
-							participants: this.participants
-						},
-						panelClass: 'responsive-dialog',
-						disableClose: true,
-						width: '45vw',
-						height: '100vh'
-					});
-					dialogRef.afterClosed().subscribe(res => {
-						if (res) {
-							content.hasAnswered = true;
-							content.answeredDate = moment().format('Do MMM, YYYY');
-						}
-					});
-					break;
-				}
+			{
+				const dialogRef = this.dialog.open(ContentQuizComponent, {
+					data: {
+						content: content,
+						startDate: startDate,
+						endDate: endDate,
+						userType: this.userType,
+						collectionId: this.classId,
+						collection: this.class,
+						calendarId: this.calendarId,
+						participants: this.participants
+					},
+					panelClass: 'responsive-dialog',
+					disableClose: true,
+					width: '45vw',
+					height: '100vh'
+				});
+				dialogRef.afterClosed().subscribe(res => {
+					if (res) {
+						content.hasAnswered = true;
+						content.answeredDate = moment().format('Do MMM, YYYY');
+					}
+				});
+				break;
+			}
 			case 'video':
-				{
-					const dialogRef = this.dialog.open(ContentVideoComponent, {
-						data: {
-							content: content,
-							startDate: startDate,
-							endDate: endDate,
-							userType: this.userType,
-							collectionId: this.classId,
-							collection: this.class,
-							calendarId: this.calendarId
-						},
-						panelClass: 'responsive-dialog',
-						width: '45vw',
-						height: '100vh'
-					});
-					break;
-				}
+			{
+				const dialogRef = this.dialog.open(ContentVideoComponent, {
+					data: {
+						content: content,
+						startDate: startDate,
+						endDate: endDate,
+						userType: this.userType,
+						collectionId: this.classId,
+						collection: this.class,
+						calendarId: this.calendarId
+					},
+					panelClass: 'responsive-dialog',
+					width: '45vw',
+					height: '100vh'
+				});
+				break;
+			}
 			case 'project':
-				{
-					const dialogRef = this.dialog.open(ContentProjectComponent, {
-						data: {
-							content: content,
-							startDate: startDate,
-							endDate: endDate,
-							userType: this.userType,
-							peerHasSubmission: this.peerHasSubmission,
-							collectionId: this.classId,
-							collection: this.class,
-							calendarId: this.calendarId
-						},
-						panelClass: 'responsive-dialog',
-						width: '45vw',
-						height: '100vh'
-					});
-					dialogRef.afterClosed().subscribe(res => {
-						if (res) {
-							this.initializePage();
-						}
-					});
-					break;
-				}
+			{
+				const dialogRef = this.dialog.open(ContentProjectComponent, {
+					data: {
+						content: content,
+						startDate: startDate,
+						endDate: endDate,
+						userType: this.userType,
+						peerHasSubmission: this.peerHasSubmission,
+						collectionId: this.classId,
+						collection: this.class,
+						calendarId: this.calendarId
+					},
+					panelClass: 'responsive-dialog',
+					width: '45vw',
+					height: '100vh'
+				});
+				dialogRef.afterClosed().subscribe(res => {
+					if (res) {
+						this.initializePage();
+					}
+				});
+				break;
+			}
 			default:
 				break;
 		}
-
+		
 	}
-
+	
 	/**
 	 * timetoSession
 	 content:any   */
@@ -1371,23 +1411,23 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		const endMoment = startMoment.clone();
 		endMoment.add(content.schedules[0].endDay, 'day');
 		const currentMoment = moment();
-
+		
 		const startTime = moment(content.schedules[0].startTime);
 		const endTime = moment(content.schedules[0].endTime);
-
+		
 		startMoment.hours(startTime.hours());
 		startMoment.minutes(startTime.minutes());
-
+		
 		endMoment.hours(endTime.hours());
 		endMoment.minutes(endTime.minutes());
-
+		
 		if (startMoment.diff(currentMoment, 'minutes') < 0) {
 			content.timetoSession = 'Ended ' + endMoment.fromNow();
 		} else {
 			content.timetoSession = 'We will remind you ' + startMoment.fromNow();
 		}
 	}
-
+	
 	/**
 	 * getRecommendations
 	 */
@@ -1399,7 +1439,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					'relation': 'collections', 'scope': {
 						'include':
 							[{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', 'participants',
-							{ 'contents': 'locations' }], 'where': { 'type': 'class' }
+								{ 'contents': 'locations' }], 'where': { 'type': 'class' }
 					}
 				}
 			]
@@ -1439,12 +1479,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	/**
 	 * selectJoiningDates
 	 */
 	public selectJoiningDates() {
-
+		
 		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.class.type, this.class.maxSpots, this.accountApproved, this.userId)
 			.subscribe((result: any) => {
 				if (result) {
@@ -1458,27 +1498,27 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-
+	
 	private extractTime(dateString: string) {
 		const time = moment.utc(dateString).local().format('HH:mm:ss');
 		return time;
 	}
-
+	
 	public viewDetails(key) {
 		this.router.navigate(['class', this.classId, 'calendar', key]);
 	}
-
+	
 	public openEventDialog(calendarId, eventId) {
 		this.router.navigate(['class', this.classId, 'calendar', calendarId, eventId]);
 	}
-
+	
 	public createReplyForm(comment: any) {
 		this.replyingToCommentId = comment.id;
 		this.replyForm = this._fb.group({
 			description: ''
 		});
 	}
-
+	
 	/**
 	 * postReply
 	 */
@@ -1495,7 +1535,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	/**
 	 * deleteReply
 	 */
@@ -1508,7 +1548,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	/**
 	 * deleteComment
 	 */
@@ -1521,7 +1561,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	/**
 	 * deleteReview
 	 */
@@ -1534,7 +1574,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	/**
 	 * handleRate
 	 */
@@ -1542,11 +1582,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.reviewForm.controls['score'].setValue(event.value);
 		this.isRatingReceived = true;
 	}
-
+	
 	public updateRating(event) {
 		this.editReviewForm.controls['score'].setValue(event.value);
 	}
-
+	
 	/**
 	 * postReview
 	 */
@@ -1564,7 +1604,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	public updateReview() {
 		this.busyReview = true;
 		const reviewBody = this.editReviewForm.value;
@@ -1584,7 +1624,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	public updateComment() {
 		this.busyDiscussion = true;
 		const commentBody = this.editCommentForm.value;
@@ -1603,7 +1643,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	public updateReply() {
 		this.busyReply = true;
 		const replyBody = this.editReplyForm.value;
@@ -1622,7 +1662,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	addCommentUpvote(comment: any) {
 		this._commentService.addCommentUpvote(comment.id, {}).subscribe(
 			response => {
@@ -1637,7 +1677,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	addReplyUpvote(reply: any) {
 		this._commentService.addReplyUpvote(reply.id, {}).subscribe(
 			response => {
@@ -1652,7 +1692,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	public getParticipants() {
 		this.participants = [];
 		this.loadingParticipants = true;
@@ -1683,12 +1723,15 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					this.router.navigate(['class', this.classId, 'calendar', currentUserParticipatingCalendar]);
 				}
 				this.loadingParticipants = false;
+				return new Observable(obs => {
+					obs.next();
+				});
 			}, (err) => {
 				console.log(err);
 			}
 		);
 	}
-
+	
 	public hasUpvoted(upvotes) {
 		let result = false;
 		if (upvotes !== undefined) {
@@ -1704,11 +1747,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		}
 		return result;
 	}
-
+	
 	public isMyComment(comment) {
 		return comment.peer && comment.peer.length > 0 && comment.peer[0].id === this.userId;
 	}
-
+	
 	public hasReviewed(reviews) {
 		let result = false;
 		reviews.forEach(review => {
@@ -1718,17 +1761,17 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		});
 		return result;
 	}
-
+	
 	public isMyReview(review) {
 		return review.peer[0].id === this.userId;
 	}
-
+	
 	public hasCohortEnded() {
 		const cohortEndDate = moment(this.currentCalendar.endDate);
 		const currentDate = moment();
 		return cohortEndDate.diff(currentDate) > 0;
 	}
-
+	
 	public hasLiveCohort() {
 		let result = false;
 		this.class.calendars.forEach(calendar => {
@@ -1744,7 +1787,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		});
 		return result;
 	}
-
+	
 	public hasUpcomingCohort() {
 		let result = false;
 		this.class.calendars.forEach(calendar => {
@@ -1757,7 +1800,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		});
 		return result;
 	}
-
+	
 	public shareOnFb() {
 		FB.ui({
 			method: 'share_open_graph',
@@ -1776,17 +1819,17 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		}, function (response) {
 		});
 	}
-
+	
 	public shareOnTwitter() {
 		// TODO twitter sharing code
 	}
-
+	
 	public hasDatePassed(date) {
 		const eventDate = moment(date);
 		const currentDate = moment();
 		return (this.calendarId !== undefined && eventDate.diff(currentDate, 'seconds') < 0) && this.oneDay();
 	}
-
+	
 	public setContentViews(contents) {
 		contents.forEach(content => {
 			if (content.type !== 'project' && content.views !== undefined) {
@@ -1821,35 +1864,35 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	public showViewTime(content) {
 		if (this.userType === 'participant') {
 			content.isViewTimeHidden = false;
 		}
 	}
-
+	
 	public hideViewTime(content) {
 		if (this.userType === 'participant') {
 			content.isViewTimeHidden = true;
 		}
 	}
-
+	
 	public openVerificationPage() {
 		this.router.navigate(['console', 'profile', 'verification']);
 	}
-
+	
 	public openLoginPage() {
 		this.router.navigate(['login']);
 	}
-
+	
 	public openSignup(returnTo) {
 		this.dialogsService.openSignup(returnTo).subscribe();
 	}
-
+	
 	public openProfilePage(peerId) {
 		this.router.navigate(['profile', peerId]);
 	}
-
+	
 	public openInviteFriendsDialog() {
 		this.dialogsService.inviteFriends(this.class);
 	}
@@ -1866,38 +1909,38 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.dialogsService.startLiveSession(data).subscribe((result: any) => {
 		});
 	}
-
+	
 	private sort(calendars, param1, param2) {
 		return _.sortBy(calendars, [param1, param2]);
 	}
-
-
+	
+	
 	scrollToDiscussion() {
 		const el = document.getElementById('discussionTarget');
 		el.scrollIntoView();
 	}
-
+	
 	add1ToIndex(index) {
 		return 'Day ' + (+index + 1);
 	}
-
+	
 	oneDay() {
 		return true;
 		// return this.itenaryArray.length > 1;
 	}
-
+	
 	displayNone() {
 		return 'display: none';
 	}
-
+	
 	public parseTitle(title) {
 		return title.split(':');
 	}
-
+	
 	public backToCollection(collection) {
 		this.router.navigate([collection.type, collection.id]);
 	}
-
+	
 	public editReview(review: any) {
 		this.editReviewForm = this._fb.group({
 			description: [review.description, Validators.required],
@@ -1909,7 +1952,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		});
 		this.newUserRating = review.score;
 	}
-
+	
 	public editComment(comment: any) {
 		this.editCommentForm = this._fb.group({
 			description: [comment.description, Validators.required],
@@ -1917,20 +1960,20 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			id: comment.id
 		});
 	}
-
+	
 	public editReply(reply: any) {
 		this.editReplyForm = this._fb.group({
 			description: reply.description,
 			id: reply.id
 		});
 	}
-
+	
 	public isCancelable() {
 		if (this.currentCalendar) {
 			return moment(this.currentCalendar.endDate) > this.today;
 		}
 	}
-
+	
 	public openGroupChat() {
 		if (this.class.rooms && this.class.rooms.length > 0) {
 			this.router.navigate(['console', 'inbox', this.class.rooms[0].id]);
@@ -1940,7 +1983,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-
+	
 	public openAssessmentDialog() {
 		this.dialogsService.studentAssessmentDialog(
 			{
@@ -1948,7 +1991,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				'participants': this.participants,
 				'assessment_models': this.class.assessment_models,
 				'academicGyan': this.class.academicGyan,
-				'nonAcademicGyan': this.class.nonAcademicGyan
+				'nonAcademicGyan': this.class.nonAcademicGyan,
+				'quizContents': this.filterQuizContents(this.itenaryArray)
 			}
 		).subscribe(dialogSelection => {
 			let assessmentEngagementRule, assessmentCommitmentRule;
@@ -1976,38 +2020,38 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					}
 				});
 				this._assessmentService.submitAssessment(assessmentArray).subscribe((result: any) => {
-					this.initializeClass();
+					this.initializePage();
 					this.snackBar.open('Your assessment has been submitted. Students will be informed over email.', 'Ok', { duration: 5000 });
 				});
 			}
 		});
 	}
-
+	
 	public onClassRefresh(event) {
 		if (event) {
 			this.getRecommendations();
 		}
 	}
-
+	
 	public getPredictedGyanEarn(collection) {
 		const participantCount = collection.participants ? collection.participants.length : 0;
 		return (collection.academicGyan + collection.nonAcademicGyan) * participantCount;
 	}
-
+	
 	public openMessageDialog(peer) {
 		this.dialogsService.messageParticipant(peer).subscribe((result: any) => {
 		});
 	}
-
+	
 	public addToEthereum() {
 		this._collectionService.addToEthereum(this.classId)
 			.subscribe(res => {
-				this.initializeClass();
+				this.initializePage();
 			}, err => {
 				this.snackBar.open('Could not add to one0x Blockchain. Try again later.', 'Ok', { duration: 5000 });
 			});
 	}
-
+	
 	private sortAssessmentRules() {
 		if (this.class.assessment_models && this.class.assessment_models.length > 0 && this.class.assessment_models[0].assessment_rules) {
 			const assessmentRulesUnsorted = <Array<any>>this.class.assessment_models[0].assessment_rules;
@@ -2022,7 +2066,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-
+	
 	private getCertificatetemplate() {
 		try {
 			this.certificateService.getCertificateTemplate(this.classId).subscribe((res: any) => {
@@ -2041,11 +2085,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			console.log(e);
 		}
 	}
-
+	
 	public getGyanForRule(gyanPercent, totalGyan) {
 		return Math.floor((gyanPercent / 100) * totalGyan);
 	}
-
+	
 	public addParticipant() {
 		this.dialogsService.addParticipant(this.classId, this.calendarId).subscribe(res => {
 			if (res) {
@@ -2053,13 +2097,13 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	public openShareDialog() {
 		this.dialogsService.shareCollection(this.class.type, this.class.id, this.class.title,
 			this.class.description, this.class.headline, environment.apiUrl + this.class.imageUrls[0]
 			, this.calendarId, this.userType === 'teacher');
 	}
-
+	
 	public followCollectionToggle() {
 		if (this.userId && this.userId.length > 5) {
 			if (!this.isFollowing) {
@@ -2085,7 +2129,19 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.dialogsService.openSignup('/class/' + this.class.id);
 		}
 	}
-
+	
+	private filterQuizContents(itineraryDaysArray) {
+		const quizContents = [];
+		itineraryDaysArray.forEach(itineraryDay => {
+			itineraryDay.contents.forEach(content => {
+				if (content.type === 'quiz') {
+					quizContents.push(content);
+				}
+			});
+		});
+		return quizContents;
+	}
+	
 }
 
 interface AssessmentResult {

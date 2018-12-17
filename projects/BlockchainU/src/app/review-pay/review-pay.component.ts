@@ -64,7 +64,7 @@ export class ReviewPayComponent implements OnInit {
     public userCountry = 'USA';
     public discountCode: FormControl;
     public totalPrice: number;
-    public taxRate = 0.18;
+    public taxRate = 0.00;
     public taxAmount: number;
     public codefound: any;
     public applyPromoCode = false;
