@@ -131,7 +131,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	public loadingSimilarGuides: boolean;
 	public loadingComments: boolean;
 	public loadingParticipants: boolean;
-	public loadingGuide: boolean;
+	public loadingGuide = true;
 	public loadingReviews: boolean;
 	public accountApproved: string;
 	public inviteLink: string;
@@ -199,6 +199,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	lab_details: Array<any>;
 	@ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
 	selectedTab: number;
+	loadingCodeLab: boolean;
 
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -247,6 +248,8 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	}
 
 	initializePage() {
+		this.guide = null;
+		this.loadingGuide = true;
 		this.newUserRating = 0;
 		this.isViewTimeHidden = true;
 		this.busyDiscussion = false;
@@ -279,11 +282,11 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.loadingSimilarGuides = true;
 		this.loadingComments = true;
 		this.loadingParticipants = true;
-		this.loadingGuide = true;
 		this.loadingReviews = true;
 		this.accountApproved = 'false';
 		this.inviteLink = '';
 		this.selectedTab = 0;
+		this.loadingCodeLab = true;
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.guideId !== params['collectionId'])) {
 				location.reload();
@@ -424,7 +427,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 					this.userType = 'public';
 				}
 			}
-			this.loadingGuide = false;
 		}
 	}
 
@@ -455,7 +457,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 						this.processData(res[0]);
 					} else {
 						console.log('!res && res.length< 0');
-						this.loadingGuide = false;
 						delete query.where;
 						this.fetchById(query);
 					}
@@ -477,8 +478,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				if (res) {
 					console.log(res);
 					this.processData(res);
-				} else {
-					this.loadingGuide = false;
 				}
 			},
 				err => {
@@ -501,6 +500,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	private processData(res: any) {
 		console.log(res);
 		this.guide = res;
+		this.loadingGuide = false;
 		this.guideId = this.guide.id;
 		this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
 		this.setTags();
@@ -539,11 +539,14 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 			this.guide.corestackStudents.some(student => {
 				if (student.student_id === this.userId) {
 					this.corestack_student = student;
+					console.log(this.corestack_student);
 					return true;
 				}
 			});
-			if (this.corestack_student) {
+			if (this.corestack_student && this.corestack_student.student_course_status === 'active') {
 				this.startCodeLab();
+			} else {
+				this.loadingCodeLab = false;
 			}
 		}
 	}
@@ -551,8 +554,14 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	private startCodeLab() {
 		this._corestackService.getAccessDetails
 			(this.corestack_student.student_id, this.corestack_student.course_id).subscribe((res: any) => {
+				console.log('res');
 				console.log(res);
 				this.lab_details = res;
+				this.loadingCodeLab = false;
+			}, err => {
+				console.log('err');
+				this.loadingCodeLab = false;
+				console.log(err);
 			});
 	}
 

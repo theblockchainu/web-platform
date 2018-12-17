@@ -1,4 +1,4 @@
-<div #codeContainer>
+<div class="code-lab" #codeContainer>
   <div class="row">
     <div class="col-xs-12">
       <mat-button-toggle-group (change)="gotoTab($event)">
@@ -21,16 +21,19 @@
         <button mat-menu-item (click)="refreshPage()">
           <mat-icon>refresh</mat-icon> Refresh page
         </button>
+        <button mat-menu-item (click)="openLoginInfo()">
+          <mat-icon>account_circle</mat-icon> Credentials
+        </button>
         <button mat-menu-item (click)="openBottomSheet()">
           <mat-icon>vpn_key</mat-icon> Accounts
         </button>
       </mat-menu>
       <div [hidden]="selectedTab!=='code'" *ngIf="ice_coder_settings">
-        <iframe id="iframe-ice-coder" style="height:76vh;width: -webkit-fill-available" [src]="ice_coder_settings.auth_url| safe:'resourceUrl'">
+        <iframe id="iframe-ice-coder" style="height:83vh;width: -webkit-fill-available" [src]="ice_coder_settings.auth_url| safe:'resourceUrl'">
         </iframe>
       </div>
       <div [hidden]="selectedTab!=='compile'" *ngIf="terminal_settings">
-        <iframe id="iframe-terminal" style="height:76vh;width: -webkit-fill-available" [src]="terminal_settings.auth_url| safe:'resourceUrl'">
+        <iframe id="iframe-terminal" style="height:83vh;width: -webkit-fill-available" [src]="terminal_settings.auth_url| safe:'resourceUrl'">
         </iframe>
       </div>
     </div>
