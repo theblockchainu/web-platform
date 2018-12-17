@@ -4,24 +4,24 @@ import { ClassPageComponent } from './class-page.component';
 import { AuthGuardService } from '../../_services/auth-guard/auth-guard.service';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: ClassPageComponent
-  },
-  {
-    path: 'calendar/:calendarId',
-    component: ClassPageComponent,
-    canActivateChild: [AuthGuardService]
-  },
-  {
-    path: 'calendar/:calendarId/:dialogName',
-    component: ClassPageComponent,
-    canActivateChild: [AuthGuardService]
-  }
+	{
+		path: 'calendar/:calendarId',
+		component: ClassPageComponent,
+		canActivateChild: [AuthGuardService]
+	},
+	{
+		path: 'calendar/:calendarId/:dialogName',
+		component: ClassPageComponent,
+		canActivateChild: [AuthGuardService]
+	},
+	{
+		path: '',
+		component: ClassPageComponent
+	}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forChild(routes)],
+	exports: [RouterModule]
 })
 export class ClassPageRoutingModule { }

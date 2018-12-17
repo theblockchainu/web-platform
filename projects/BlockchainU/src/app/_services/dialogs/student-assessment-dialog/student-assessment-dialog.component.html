@@ -35,6 +35,28 @@
 								<ngx-loading style="position: relative; top: 15px; left: -8px;" [show]="true"></ngx-loading>
 							</div>
 						</h3>
+						<div class="row" *ngIf="!loadingQuizSubmissions && contentWiseSubmissionArray && contentWiseSubmissionArray.length > 0">
+							<div class="col-xs-12">
+								<button mat-button class="mat-border-button" disabled>
+									Quiz Results
+								</button>
+							</div>
+							<div class="col-xs-12 margin-top-20" *ngFor="let submissionObject of contentWiseSubmissionArray; let i = index;">
+								<div class="mat-body-2">
+									{{i + 1}}. {{submissionObject.quizTitle | titlecase | shorten: 20: '...'}}
+								</div>
+								<div class="row margin-top-10 clickable" *ngFor="let element of filterMySubmissions(submissionObject.quizSubmissions, participant.value.id)">
+									<div class="col-xs-12" (click)="openQuizSubmission(element)">
+										<span class="submissionResultCountBox" matTooltip="Correct answers"><i class="fa fa-check-circle-o margin-right-10" style="color: #33bd9e; font-size: 12px;"></i><b>{{element.correctAnswers}}</b></span>
+										<span class="submissionResultCountBox" matTooltip="Incorrect answers"><i class="fa fa-close margin-left-10 margin-right-10" style="color: red; font-size: 12px;"></i><b>{{element.wrongAnswers}}</b></span>
+										<span class="submissionResultCountBox" matTooltip="Answers pending manual evaluation"><i class="fa fa-refresh margin-left-10 margin-right-10" style="color: #aaaaaa; font-size: 12px;"></i><b>{{element.pendingEvaluation}}</b></span>
+									</div>
+								</div>
+								<div class="mat-caption margin-top-20" *ngIf="!filterMySubmissions(submissionObject.quizSubmissions, participant.value.id)">
+									Pending submission
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="col-xs-4">
 						<mat-form-field>
