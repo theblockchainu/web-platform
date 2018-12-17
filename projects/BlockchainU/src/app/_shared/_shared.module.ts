@@ -2,35 +2,35 @@ import { NgModule } from '@angular/core';
 import { CommonModule, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-	MatChipsModule,
-	MatDialogModule,
-	MatMenuModule,
-	MatButtonModule,
-	MatCardModule,
-	MatToolbarModule,
-	MatIconModule,
-	MatProgressBarModule,
-	MatListModule,
-	MatTabsModule,
-	MatTableModule,
-	MatInputModule,
-	MatCheckboxModule,
-	MatSidenavModule,
-	MatSelectModule,
-	MatDatepickerModule,
-	MatGridListModule,
-	MatRadioModule,
-	MatNativeDateModule,
-	MatSliderModule,
-	MatProgressSpinnerModule,
-	MatExpansionModule,
-	MatSnackBarModule,
-	MatAutocompleteModule,
-	MatTooltipModule,
-	MatStepperModule,
-	MatFormFieldModule,
-	MatButtonToggleModule, MatSlideToggleModule
+    MatChipsModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatListModule,
+    MatTabsModule,
+    MatTableModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatSidenavModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatGridListModule,
+    MatRadioModule,
+    MatNativeDateModule,
+    MatSliderModule,
+    MatProgressSpinnerModule,
+    MatExpansionModule,
+    MatSnackBarModule,
+    MatAutocompleteModule,
+    MatTooltipModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatButtonToggleModule, MatSlideToggleModule
 } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
 import {
     FileUploadModule, ScheduleModule, DialogModule,
     CheckboxModule, LightboxModule, RatingModule,
@@ -99,6 +99,7 @@ import { ProfilePopupModule } from './profile-popup/profile-popup.module';
 import { GyanBalanceModule } from './gyan-balance/gyan-balance.module';
 import { PeerCardModule } from './peer-card/peer-card.module';
 import { SafePipeModule } from './safe-pipe/safe-pipe.module';
+import { NumberToWordsPipe } from './number-to-words/number-to-word.pipe';
 
 @NgModule({
     imports: [
@@ -135,7 +136,7 @@ import { SafePipeModule } from './safe-pipe/safe-pipe.module';
         MatInputModule,
         MatSelectModule,
         MatButtonToggleModule,
-		MatSlideToggleModule,
+        MatSlideToggleModule,
         MatCardModule,
         MatChipsModule,
         MatMenuModule,
@@ -164,8 +165,8 @@ import { SafePipeModule } from './safe-pipe/safe-pipe.module';
         GuideCardComponent,
         QuestionCardComponent,
         BountyCardComponent,
-        PositionPipe
-    ],
+        PositionPipe,
+        NumberToWordsPipe],
     providers: [
         CollectionService,
         CountryPickerService,
@@ -196,7 +197,8 @@ import { SafePipeModule } from './safe-pipe/safe-pipe.module';
         UcWordsPipe,
         AccreditationService,
         CertificateService,
-        PromocodeService
+        PromocodeService,
+        NumberToWordsPipe
     ],
     exports: [
         CommonModule,
@@ -237,7 +239,7 @@ import { SafePipeModule } from './safe-pipe/safe-pipe.module';
         MatSliderModule,
         MatAutocompleteModule,
         MatProgressSpinnerModule,
-		MatSlideToggleModule,
+        MatSlideToggleModule,
         MatExpansionModule,
         MatSnackBarModule,
         MatTooltipModule,
@@ -274,7 +276,8 @@ import { SafePipeModule } from './safe-pipe/safe-pipe.module';
         ProfilePopupModule,
         GyanBalanceModule,
         PeerCardModule,
-        SafePipeModule
+        SafePipeModule,
+        NumberToWordsPipe
     ]
 })
 export class SharedModule {

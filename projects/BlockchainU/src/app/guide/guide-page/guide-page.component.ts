@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar, MatButtonToggleChange } from '@angular/material';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Title, Meta } from '@angular/platform-browser';
@@ -40,6 +40,8 @@ import { AssessmentService } from '../../_services/assessment/assessment.service
 import { UcWordsPipe } from 'ngx-pipes';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { ProfileService } from '../../_services/profile/profile.service';
+import { CorestackService } from '../../_services/corestack/corestack.service';
+import { first } from 'rxjs/operators';
 declare var FB: any;
 declare var fbq: any;
 
@@ -129,7 +131,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	public loadingSimilarGuides: boolean;
 	public loadingComments: boolean;
 	public loadingParticipants: boolean;
-	public loadingGuide: boolean;
+	public loadingGuide = true;
 	public loadingReviews: boolean;
 	public accountApproved: string;
 	public inviteLink: string;
@@ -193,7 +195,11 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	loadingCertificate: boolean;
 	public assessmentRules: Array<any>;
 	public contactUsForm: FormGroup;
+	corestack_student: any;
+	lab_details: Array<any>;
 	@ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
+	selectedTab: number;
+	loadingCodeLab: boolean;
 
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -213,7 +219,8 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		private _assessmentService: AssessmentService,
 		private ucwords: UcWordsPipe,
 		private certificateService: CertificateService,
-		private _profileService: ProfileService
+		private _profileService: ProfileService,
+		private _corestackService: CorestackService
 		// private location: Location
 	) {
 		this.envVariable = environment;
@@ -241,6 +248,8 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	}
 
 	initializePage() {
+		this.guide = null;
+		this.loadingGuide = true;
 		this.newUserRating = 0;
 		this.isViewTimeHidden = true;
 		this.busyDiscussion = false;
@@ -273,10 +282,11 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.loadingSimilarGuides = true;
 		this.loadingComments = true;
 		this.loadingParticipants = true;
-		this.loadingGuide = true;
 		this.loadingReviews = true;
 		this.accountApproved = 'false';
 		this.inviteLink = '';
+		this.selectedTab = 0;
+		this.loadingCodeLab = true;
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.guideId !== params['collectionId'])) {
 				location.reload();
@@ -417,7 +427,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 					this.userType = 'public';
 				}
 			}
-			this.loadingGuide = false;
 		}
 	}
 
@@ -431,7 +440,8 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				'views',
 				{ 'participants': [{ 'profiles': ['work'] }] },
 				{ 'owners': [{ 'profiles': ['work'] }] },
-				'rooms'
+				'rooms',
+				'corestackStudents'
 			],
 			'where': {
 				'customUrl': this.guideId
@@ -440,12 +450,13 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 
 		if (this.guideId) {
 			this._collectionService.getAllCollections(query)
+				.pipe(first())
 				.subscribe((res: any) => {
 					if (res && res.length > 0) {
 						console.log(res);
 						this.processData(res[0]);
 					} else {
-						this.loadingGuide = false;
+						console.log('!res && res.length< 0');
 						delete query.where;
 						this.fetchById(query);
 					}
@@ -467,8 +478,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				if (res) {
 					console.log(res);
 					this.processData(res);
-				} else {
-					this.loadingGuide = false;
 				}
 			},
 				err => {
@@ -491,6 +500,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	private processData(res: any) {
 		console.log(res);
 		this.guide = res;
+		this.loadingGuide = false;
 		this.guideId = this.guide.id;
 		this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
 		this.setTags();
@@ -515,6 +525,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.getBookmarks();
 		this.setUpCarousel();
 		this.getEthereumInfo();
+		this.getCorestackInfo();
 		if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
 			const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
 			snackBarRef.onAction().subscribe();
@@ -523,9 +534,39 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.recordStartView();
 	}
 
+	private getCorestackInfo() {
+		if (this.guide.corestackStudents && this.guide.corestackStudents.length > 0) {
+			this.guide.corestackStudents.some(student => {
+				if (student.student_id === this.userId) {
+					this.corestack_student = student;
+					console.log(this.corestack_student);
+					return true;
+				}
+			});
+			if (this.corestack_student && this.corestack_student.student_course_status === 'active') {
+				this.startCodeLab();
+			} else {
+				this.loadingCodeLab = false;
+			}
+		}
+	}
+
+	private startCodeLab() {
+		this._corestackService.getAccessDetails
+			(this.corestack_student.student_id, this.corestack_student.course_id).subscribe((res: any) => {
+				console.log('res');
+				console.log(res);
+				this.lab_details = res;
+				this.loadingCodeLab = false;
+			}, err => {
+				console.log('err');
+				this.loadingCodeLab = false;
+				console.log(err);
+			});
+	}
+
 	public createGuestContacts() {
 		console.log('Submitting request');
-
 		const first_name = this.contactUsForm.controls['first_name'].value;
 		const email = this.contactUsForm.controls['email'].value;
 		const subject = 'Guide: ' + this.guide.title;
@@ -956,10 +997,12 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		const query = {
 			'include': [
 				{
-					'relation': 'collections', 'scope': {
+					'relation': 'collections',
+					'scope': {
 						'include':
 							[{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', 'participants',
-							{ 'contents': 'locations' }], 'where': { 'type': 'guide' }
+							{ 'contents': 'locations' }],
+						'where': { 'type': 'guide' }
 					}
 				}
 			]

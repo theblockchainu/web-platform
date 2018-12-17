@@ -1,8 +1,11 @@
 <div class="main-content">
 	<div class="row">
-		<div class="col-xs-2 col-xs-offset-1">
+		<div class="col-xs-2 col-xs-offset-1 center">
 			<div class="loading-container padding-top-50" [hidden]="!loadingGuide">
 				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div class="col-xs-12 center margin-top-100 lightText" *ngIf="!guide && !loadingGuide">
+				<div class="mat-display-2">this guide was not found on our servers</div>
 			</div>
 		</div>
 	</div>
@@ -608,108 +611,139 @@
 					</div>
 
 					<!--RIGHT SIDEBAR-->
-					<div class="col-md-5 col-md-offset-1 right-content right-content-sticky hide-small">
+					<div class="col-md-6  col-xs-12 right-content right-content-sticky hide-small">
 						<!--CODE LAB-->
 						<div *ngIf="userType==='participant' || userType === 'teacher'">
-							<iframe style="height:-webkit-fill-available;width: -webkit-fill-available" src="https://blockc.westus2.cloudapp.azure.com:3000/">
-							</iframe>
+							<div *ngIf="!loadingCodeLab &&  lab_details && lab_details.length>0">
+								<app-code-labs [lab_details]="lab_details"></app-code-labs>
+							</div>
+							<div *ngIf="!loadingCodeLab && (!lab_details || lab_details.length>0)">
+								<div class="row padding-top-100">
+									<div class="col-md-10 col-md-offset-1 center" *ngIf="corestack_student && corestack_student.student_course_status==='registered'">
+										<h2>
+											Please wait while your lab is being provisioned.
+										</h2>
+										<p>
+											If you've just joined the lab please wait for atleast 10 minutes for us to provision your system. You'll be
+											notified via email once your lab is ready
+										</p>
+									</div>
+									<div class="col-md-10 col-md-offset-1 center" *ngIf="!corestack_student || corestack_student.student_course_status!=='registered'">
+										<h2>
+											We're having some trouble setting up your codelab.
+										</h2>
+										<p>
+											If it's a free course try unenrolling and re-enrolling to the course. If that doesn't works please contact
+											support.
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="row padding-top-100" *ngIf="loadingCodeLab">
+								<div class="col-xs-12 center">
+									<ngx-loading [show]="loadingCodeLab"></ngx-loading>
+								</div>
+							</div>
 						</div>
-						<div class="row" *ngIf="userType === 'public'">
-							<div class="col-md-12">
-								<!--&lt;!&ndash;HEADLINE&ndash;&gt;
-								<div class="row padding-top-20">
-									<div class="col-md-12">
-										<h3>
-											{{guide.headline | titlecase}}
-										</h3>
-									</div>
-								</div>
-								<hr style="margin-bottom: 10px;">-->
+						<div class="row" *ngIf="userType ==='public'">
+							<div class="col-md-10 col-md-offset-1">
 								<div class="row">
-									<div class="col-md-12 padding-top-20">
-										<div class="mat-display-2">
-											Introducing
-											<br>
-											Code Labs
-										</div>
-									</div>
 									<div class="col-md-12">
-										<div class="mat-body-2">
-											Highlights:
+										<!--&lt;!&ndash;HEADLINE&ndash;&gt;
+										<div class="row padding-top-20">
+											<div class="col-md-12">
+												<h3>
+													{{guide.headline | titlecase}}
+												</h3>
+											</div>
 										</div>
-										<ul>
-											<li>No need for complex setups to start learning blockchain coding.</li>
-											<li>Write code in your browser and see results instantly.</li>
-											<li>Share your code with peers and get reviews from the community.</li>
-										</ul>
+										<hr style="margin-bottom: 10px;">-->
+										<div class="row">
+											<div class="col-md-12 padding-top-20">
+												<div class="mat-display-2">
+													Introducing
+													<br>
+													Code Labs
+												</div>
+											</div>
+											<div class="col-md-12">
+												<div class="mat-body-2">
+													Highlights:
+												</div>
+												<ul>
+													<li>No need for complex setups to start learning blockchain coding.</li>
+													<li>Write code in your browser and see results instantly.</li>
+													<li>Share your code with peers and get reviews from the community.</li>
+												</ul>
+											</div>
+										</div>
+										<hr style="margin-bottom: 10px;">
+										<!--PRICE SECTION-->
+										<div class="row" *ngIf="userType === 'public'">
+											<div class="col-xs-8">
+												<div class="row">
+													<div class="col-md-12">
+														<h2 style="display: inline-block; margin-bottom: -1px;">{{guide.price | convertCurrency:guide.currency |
+															async}}
+														</h2> &nbsp; per person
+														<br />
+														<p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating>
+														&nbsp;&nbsp;
+														<span *ngIf="reviews" style="font-weight: 400; float: left; margin-left: 10px;">{{reviews.length}}
+															reviews</span>
+														<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
+													</div>
+													<div class="col-md-12">
+														<!-- <span matTooltip="Earn up to {{guide.academicGyan + guide.nonAcademicGyan}} Gyan from this guide" style="font-weight: 700; vertical-align: middle;">
+															Earn
+															<i class="fab fa-ethereum lightText"></i> {{guide.academicGyan + guide.nonAcademicGyan}}
+														</span> -->
+														<!--<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
+														<span matTooltip="KARMA required to be burned for participation" style="font-weight: 700; vertical-align: middle;">
+															<i class="fas fa-fire lightText"></i> {{(guide.academicGyan + guide.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async | shortNumber}}
+														</span>
+														<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
+														<span class="mat-border-button gyanBubbleCard" style="margin-left: 0px !important;" matTooltip="Pending payout {{getPredictedGyanEarn(guide) | convertCurrency : 'GYAN' | async}} ({{getPredictedGyanEarn(guide)}} GYAN) in 7 days">
+															<div style="font-size: 11px;">{{getPredictedGyanEarn(guide) | convertCurrency : 'GYAN' | async}}</div>
+														</span>-->
+													</div>
+												</div>
+											</div>
+											<div class="col-xs-4" style="padding-top: 9px; text-align: right">
+												<span>
+													<button mat-raised-button (click)="signUp()" color="primary">Start Lab</button>
+												</span>
+											</div>
+										</div>
 									</div>
 								</div>
-								<hr style="margin-bottom: 10px;">
-								<!--PRICE SECTION-->
-								<div class="row" *ngIf="userType === 'public'">
-									<div class="col-xs-8">
-										<div class="row">
-											<div class="col-md-12">
-												<h2 style="display: inline-block; margin-bottom: -1px;">{{guide.price | convertCurrency:guide.currency |
-													async}}
-												</h2> &nbsp; per person
-												<br />
-												<p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating>
-												&nbsp;&nbsp;
-												<span *ngIf="reviews" style="font-weight: 400; float: left; margin-left: 10px;">{{reviews.length}}
-													reviews</span>
-												<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
-											</div>
-											<div class="col-md-12">
-												<!-- <span matTooltip="Earn up to {{guide.academicGyan + guide.nonAcademicGyan}} Gyan from this guide" style="font-weight: 700; vertical-align: middle;">
-													Earn
-													<i class="fab fa-ethereum lightText"></i> {{guide.academicGyan + guide.nonAcademicGyan}}
-												</span> -->
-												<!--<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
-												<span matTooltip="KARMA required to be burned for participation" style="font-weight: 700; vertical-align: middle;">
-													<i class="fas fa-fire lightText"></i> {{(guide.academicGyan + guide.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async | shortNumber}}
-												</span>
-												<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
-												<span class="mat-border-button gyanBubbleCard" style="margin-left: 0px !important;" matTooltip="Pending payout {{getPredictedGyanEarn(guide) | convertCurrency : 'GYAN' | async}} ({{getPredictedGyanEarn(guide)}} GYAN) in 7 days">
-													<div style="font-size: 11px;">{{getPredictedGyanEarn(guide) | convertCurrency : 'GYAN' | async}}</div>
-												</span>-->
-											</div>
-										</div>
+								<hr class="margin-top-10 margin-bottom-10">
+								<div class="row" style="color: #777777">
+									<div class="col-xs-4" style="cursor: pointer;">
+										<a (click)="openShareDialog()">Invite friends</a>
 									</div>
-									<div class="col-xs-4" style="padding-top: 9px; text-align: right">
-										<span>
-											<button mat-raised-button (click)="signUp()" color="primary">Start Lab</button>
+									<div class="col-xs-4 clickable" (click)="saveBookmark()" style="cursor: pointer;">
+										<ngx-loading [show]="bookmarking"></ngx-loading>
+										<span [hidden]="bookmarking">
+											<mat-icon [ngClass]="{'hasBookmarked': hasBookmarked}" style="font-size: 1rem; top: 2px;">bookmark</mat-icon>
+											<span *ngIf="!hasBookmarked">Save</span>
+											<span *ngIf="hasBookmarked">Saved</span>
 										</span>
 									</div>
+									<div class="col-xs-4" style="text-align: right; font-size: 18px;">
+										<a shareButton="facebook" href="javascript:;" [url]="inviteLink">
+											<i class="fab fa-facebook-square"></i>
+										</a>&nbsp;
+										<a shareButton="linkedin" href="javascript:;" [url]="inviteLink">
+											<i class="fab fa-linkedin"></i>
+										</a>&nbsp;
+										<a shareButton="twitter" href="javascript:;" [url]="inviteLink">
+											<i class="fab fa-twitter-square"></i>
+										</a>
+									</div>
 								</div>
-							</div>
-						</div>
-						<hr class="margin-top-10 margin-bottom-10" *ngIf="userType === 'public'">
-						<div class="row" style="color: #777777" *ngIf="userType === 'public'">
-							<div class="col-xs-4" style="cursor: pointer;">
-								<a (click)="openShareDialog()">Invite friends</a>
-							</div>
-							<div class="col-xs-4 clickable" (click)="saveBookmark()" style="cursor: pointer;">
-								<ngx-loading [show]="bookmarking"></ngx-loading>
-								<span [hidden]="bookmarking">
-									<mat-icon [ngClass]="{'hasBookmarked': hasBookmarked}" style="font-size: 1rem; top: 2px;">bookmark</mat-icon>
-									<span *ngIf="!hasBookmarked">Save</span>
-									<span *ngIf="hasBookmarked">Saved</span>
-								</span>
-							</div>
-							<div class="col-xs-4" style="text-align: right; font-size: 18px;">
-								<a shareButton="facebook" href="javascript:;" [url]="inviteLink">
-									<i class="fab fa-facebook-square"></i>
-								</a>&nbsp;
-								<a shareButton="linkedin" href="javascript:;" [url]="inviteLink">
-									<i class="fab fa-linkedin"></i>
-								</a>&nbsp;
-								<a shareButton="twitter" href="javascript:;" [url]="inviteLink">
-									<i class="fab fa-twitter-square"></i>
-								</a>
-							</div>
-						</div>
-						<!--<div class="row" *ngIf="userType === 'public'">
+
+								<!--<div class="row">
 							<div class="col-md-12">
 								<hr class="margin-top-10 margin-bottom-10">
 								<div class="row">
@@ -734,7 +768,7 @@
 								<hr class="margin-top-10 margin-bottom-10">
 							</div>
 						</div>-->
-						<!--<div class="row padding-top-20 padding-bottom-20" *ngIf="userType === 'public'">
+								<!--<div class="row padding-top-20 padding-bottom-20" *ngIf="userType === 'public'">
 							<div class="col-xs-12">
 								<h2>Want to know more?</h2>
 								<div class="lightText">Drop us a message and we'll get back immediately.</div>
@@ -777,11 +811,13 @@
 								</form>
 							</div>
 						</div> -->
-						<hr class="margin-top-10 margin-bottom-10">
-						<div class="row margin-bottom-20" *ngIf="userType === 'public'">
-							<div class="col-xs-12">
-								<i class="fa fa-headphones"></i>&nbsp;&nbsp; 24x7 support at
-								<a class="pull-right" href="tel:+917021517299">+91 7021-517-299</a>
+								<hr class="margin-top-10 margin-bottom-10">
+								<div class="row margin-bottom-20">
+									<div class="col-xs-12">
+										<i class="fa fa-headphones"></i>&nbsp;&nbsp; 24x7 support at
+										<a class="pull-right" href="tel:+917021517299">+91 7021-517-299</a>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -826,8 +862,5 @@
 				<button mat-raised-button color="primary" [disabled]="true">See Dates</button>
 			</span>-->
 		</div>
-	</div>
-	<div *ngIf="!loadingGuide && !guide" class="center padding-top-50">
-		<h1>Not Found</h1>
 	</div>
 </div>
