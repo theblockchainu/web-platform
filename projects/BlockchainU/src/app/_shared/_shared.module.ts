@@ -3,7 +3,6 @@ import { CommonModule, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
     MatChipsModule,
-    MatDialogModule,
     MatMenuModule,
     MatButtonModule,
     MatCardModule,
@@ -31,6 +30,7 @@ import {
     MatFormFieldModule,
     MatButtonToggleModule, MatSlideToggleModule
 } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
 import {
     FileUploadModule, ScheduleModule, DialogModule,
     CheckboxModule, LightboxModule, RatingModule,

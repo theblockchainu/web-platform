@@ -15,6 +15,11 @@ import { VgBufferingModule } from 'videogular2/buffering';
 import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
 import { CovalentMarkdownModule } from '@covalent/markdown';
 import { CorestackService } from '../../_services/corestack/corestack.service';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { CodeLabsComponent } from './code-labs/code-labs.component';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { BlockchainKeysComponent } from './code-labs/blockchain-keys/blockchain-keys.component';
+import { MatDialogRef } from '@angular/material';
 
 @NgModule({
 	imports: [
@@ -33,12 +38,18 @@ import { CorestackService } from '../../_services/corestack/corestack.service';
 		VgControlsModule,
 		VgOverlayPlayModule,
 		VgBufferingModule,
-		CovalentMarkdownModule
+		CovalentMarkdownModule,
+		MatButtonToggleModule,
+		MatBottomSheetModule
 	],
 	declarations: [GuidePageComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent,
-		ShowRSVPPopupComponent],
+		ShowRSVPPopupComponent,
+		CodeLabsComponent,
+		BlockchainKeysComponent,
+	],
 	bootstrap: [ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
-	providers: [ProjectSubmissionService, CorestackService]
+	providers: [ProjectSubmissionService, CorestackService, { provide: MatDialogRef, useValue: {} }],
+	entryComponents: [BlockchainKeysComponent]
 
 })
 export class GuidePageModule { }
