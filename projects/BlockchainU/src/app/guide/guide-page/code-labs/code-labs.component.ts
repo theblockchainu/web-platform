@@ -3,6 +3,8 @@ import { MatButtonToggleChange, MatBottomSheet } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
 import { CorestackService } from '../../../_services/corestack/corestack.service';
 import { BlockchainKeysComponent } from './blockchain-keys/blockchain-keys.component';
+import { LabCredentialsComponent } from './lab-credentials/lab-credentials.component';
+
 
 @Component({
   selector: 'app-code-labs',
@@ -92,6 +94,27 @@ export class CodeLabsComponent implements OnInit, OnChanges {
     this.matDialog.open(BlockchainKeysComponent, {
       data: this.keys,
       width: '75vw',
+      // backdropClass: 'invisible-backdrop'
+    });
+  }
+
+  openLoginInfo() {
+    let userAccessDetails;
+    switch (this.selectedTab) {
+      case 'code':
+        console.log('refresh ice coder');
+        userAccessDetails = this.ice_coder_settings;
+        break;
+      case 'compile':
+        userAccessDetails = this.ice_coder_settings;
+        break;
+      default:
+        break;
+    }
+
+    this.matDialog.open(LabCredentialsComponent, {
+      data: userAccessDetails,
+      width: '30vw'
       // backdropClass: 'invisible-backdrop'
     });
   }

@@ -20,6 +20,7 @@ import { CodeLabsComponent } from './code-labs/code-labs.component';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { BlockchainKeysComponent } from './code-labs/blockchain-keys/blockchain-keys.component';
 import { MatDialogRef } from '@angular/material';
+import { LabCredentialsComponent } from './code-labs/lab-credentials/lab-credentials.component';
 
 @NgModule({
 	imports: [
@@ -46,10 +47,11 @@ import { MatDialogRef } from '@angular/material';
 		ShowRSVPPopupComponent,
 		CodeLabsComponent,
 		BlockchainKeysComponent,
+		LabCredentialsComponent,
 	],
 	bootstrap: [ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
 	providers: [ProjectSubmissionService, CorestackService, { provide: MatDialogRef, useValue: {} }],
-	entryComponents: [BlockchainKeysComponent]
+	entryComponents: [BlockchainKeysComponent, LabCredentialsComponent]
 
 })
 export class GuidePageModule { }

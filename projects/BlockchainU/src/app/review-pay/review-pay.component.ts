@@ -392,7 +392,7 @@ export class ReviewPayComponent implements OnInit {
                 .subscribe(res => {
                     this.matSnackBar.open('Your request to pay at the venue has been received. We\'ll get back to you once it has been approved.', 'Close', { duration: 5000 });
                     this.savingData = false;
-                    this.router.navigate([this.collection.type, this.collectionId]);
+                    this.router.navigate([this.collection.type, this.collection.customUrl]);
                 }, err => {
                     this.matSnackBar.open('Error in sending mail', 'Close', { duration: 3000 });
                 });
@@ -549,17 +549,17 @@ export class ReviewPayComponent implements OnInit {
                 this.profileService.linkPromoCode(this.userId, this.codefound.id).subscribe(
                     res => {
                         if (this.collectionCalendarId) {
-                            this.router.navigate([this.collection.type, this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+                            this.router.navigate([this.collection.type, this.collection.customUrl, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
                         } else {
-                            this.router.navigate([this.collection.type, this.collectionId, 'paymentSuccess']);
+                            this.router.navigate([this.collection.type, this.collection.customUrl, 'paymentSuccess']);
                         }
                     }
                 );
             } else {
                 if (this.collectionCalendarId) {
-                    this.router.navigate([this.collection.type, this.collectionId, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+                    this.router.navigate([this.collection.type, this.collection.customUrl, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
                 } else {
-                    this.router.navigate([this.collection.type, this.collectionId, 'paymentSuccess']);
+                    this.router.navigate([this.collection.type, this.collection.customUrl, 'paymentSuccess']);
                 }
             }
         }, err => {
