@@ -63,6 +63,8 @@ export class IndexComponent implements OnInit {
 	public guides: Array<any>;
 	public loadingGuides = false;
 	public popularSearches = [];
+	loadingLearningPaths: boolean;
+	learningPaths: Array<any>;
 
 	constructor(
 		private authenticationService: AuthenticationService,
@@ -123,7 +125,34 @@ export class IndexComponent implements OnInit {
 		this.fetchBounties();
 		this.fetchPeers();
 		this.initialiseSearchService();
-		this.fetchBounties();
+		this.fetchLearningPath();
+	}
+
+	private fetchLearningPath() {
+		this.loadingLearningPaths = true;
+		this._collectionService.fetchTrendingCollections('learning-path').subscribe(
+			(collections: any) => {
+				console.log('collections');
+				console.log(collections);
+				this.learningPaths = [];
+				collections.forEach(collection => {
+					const topics = [];
+					collection.topics.forEach(topicObj => {
+						topics.push(this.titlecasepipe.transform(topicObj.name));
+					});
+					if (topics.length > 0) {
+						collection.topics = topics;
+					} else {
+						topics.push('No topics selected');
+						collection.topics = topics;
+					}
+					this.learningPaths.push(collection);
+				});
+				this.loadingLearningPaths = false;
+			}, (err) => {
+				console.log(err);
+			}
+		);
 	}
 
 	public onGuideRefresh(event) {

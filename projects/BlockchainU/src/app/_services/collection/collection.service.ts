@@ -115,11 +115,11 @@ export class CollectionService {
 			.get(environment.apiUrl + '/api/collections/' + id + '/ether?filter=' + filter, this.requestHeaderService.options);
 
 	}
-	
+
 	public getParticipantEthereumInfo(id: string, fk: string) {
 		return this.httpClient
 			.get(environment.apiUrl + '/api/collections/' + id + '/peers/' + fk + '/ether', this.requestHeaderService.options);
-		
+
 	}
 
 	public addToEthereum(id: string) {
@@ -127,7 +127,7 @@ export class CollectionService {
 		return this.httpClient
 			.post(environment.apiUrl + '/api/collections/' + id + '/ether', body, this.requestHeaderService.options);
 	}
-	
+
 	public addParticipantToEthereum(id: string, participantId: string) {
 		const body = {};
 		return this.httpClient
@@ -1173,6 +1173,7 @@ export class CollectionService {
 		return this.httpClient
 			.get(environment.apiUrl + '/api/collections/trending?type=' + type,
 				this.requestHeaderService.options).pipe(map((collections: Array<any>) => {
+					console.log(collections);
 					return collections.map(item => JSON.parse(item));
 				}));
 
@@ -1183,7 +1184,7 @@ export class CollectionService {
 			.post(environment.apiUrl + '/api/collections/' + collectionId + '/contents', content,
 				this.requestHeaderService.options);
 	}
-	
+
 	public updateContentQuestions(contentId, questions: any) {
 		if (!(questions.length > 0)) {
 			console.log('User not logged in');
@@ -1199,21 +1200,21 @@ export class CollectionService {
 				);
 		}
 	}
-	
+
 	public postAnswers(questionId: string, answer: any) {
 		return this.httpClient
 			.post(environment.apiUrl + '/api/content_questions/' + questionId + '/answers', answer, this.requestHeaderService.options);
 	}
-	
+
 	public notifyOwnerForQuizSubmission(questionId: string) {
 		return this.httpClient
 			.post(environment.apiUrl + '/api/content_questions/' + questionId + '/notifyOwner', {}, this.requestHeaderService.options);
 	}
-	
+
 	public getPreferences(filter) {
 		return this.httpClient.get(environment.apiUrl + '/api/preferences?filter=' + JSON.stringify(filter), this.requestHeaderService.options);
 	}
-	
+
 	/**
 	 * patchAnswer
 	 */

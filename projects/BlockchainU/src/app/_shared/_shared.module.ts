@@ -100,6 +100,7 @@ import { GyanBalanceModule } from './gyan-balance/gyan-balance.module';
 import { PeerCardModule } from './peer-card/peer-card.module';
 import { SafePipeModule } from './safe-pipe/safe-pipe.module';
 import { NumberToWordsPipe } from './number-to-words/number-to-word.pipe';
+import { LearningPathCardComponent } from './learning-path-card/learning-path-card.component';
 
 @NgModule({
     imports: [
@@ -166,7 +167,8 @@ import { NumberToWordsPipe } from './number-to-words/number-to-word.pipe';
         QuestionCardComponent,
         BountyCardComponent,
         PositionPipe,
-        NumberToWordsPipe],
+        NumberToWordsPipe,
+        LearningPathCardComponent],
     providers: [
         CollectionService,
         CountryPickerService,
@@ -277,7 +279,8 @@ import { NumberToWordsPipe } from './number-to-words/number-to-word.pipe';
         GyanBalanceModule,
         PeerCardModule,
         SafePipeModule,
-        NumberToWordsPipe
+        NumberToWordsPipe,
+        LearningPathCardComponent
     ]
 })
 export class SharedModule {
