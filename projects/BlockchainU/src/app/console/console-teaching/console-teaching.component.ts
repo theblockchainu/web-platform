@@ -99,7 +99,7 @@ export class ConsoleTeachingComponent implements OnInit {
 
     public createLearningPaths() {
         this._collectionService.postCollection(this.userId, 'learning-path').subscribe((learnignPathObject: any) => {
-            this.router.navigate(['learning-path', learnignPathObject.id, 'edit', 1]);
+            this.router.navigate(['learning-path', learnignPathObject.id, 'edit', 0]);
         });
     }
 

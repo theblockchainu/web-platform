@@ -140,6 +140,18 @@
 		</div>
 	</section>
 
+
+	<section class="unique-experience spacing">
+		<div class="container">
+			<h2 class="section-title  pb-0">Choose your learning path</h2>
+			<div class="row">
+				<div class="col-12 col-sm-6" *ngFor="let learningPath of learningPaths">
+					<app-learning-path-card [learningPath]='learningPath'></app-learning-path-card>
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<section class="introducing-experience spacing">
 		<div class="container">
 			<h2 class="section-title">Introducing In-Person Workshops </h2>
@@ -251,7 +263,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<section class="classes-anywhere spacing">
 		<div class="container">
 			<h2 class="section-title">Introducing Online Courses</h2>
@@ -271,7 +283,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<section class="experience-around-world top-rated-classes spacing">
 		<div class="container">
 			<div class="row">
@@ -320,7 +332,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<section class="guide-around-world spacing">
 		<div class="container">
 			<div class="row">
@@ -470,48 +482,6 @@
 			</div>
 		</div>
 	</section>
-
-	<!--<section class="unique-experience spacing">
-		<div class="container">
-			<h2 class="section-title  pb-0">Experiences in the spotlight</h2>
-			<div class="row">
-				<div class="col-12 col-sm-6">
-					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{topic: 'technology'}">
-						<div class="card-image rounded-6px">
-							<div class="card-image-content text-center">
-								<span class="image-heading">Technology</span>
-							</div>
-							<img src="/assets/images/technology-card.jpg" alt="landscape1">
-						</div>
-						<div class="card-content">
-							<p class="tags text-uppercase">
-								<span>10+ experiences</span>
-							</p>
-							<p class="title mat-body-2">Get up to speed</p>
-							<p>Learn about blockchain technologies that are changing the world</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-12 col-sm-6">
-					<div class="custom-card clickable" [routerLink]="'/home/experiences'" [queryParams]="{topic: 'finance'}">
-						<div class="card-image rounded-6px">
-							<div class="card-image-content text-center">
-								<span class="image-heading">Finance</span>
-							</div>
-							<img src="/assets/images/language-card.jpg" alt="landscape2">
-						</div>
-						<div class="card-content">
-							<p class="tags text-uppercase">
-								<span>10+ experiences</span>
-							</p>
-							<p class="title mat-body-2">Economics of the new internet</p>
-							<p>Pick from within our collection of non technical tracks like finance and blockchain solution architecture</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>-->
 
 	<!--<section class="experience-spotlight classes-spotlight spacing">
 		<div class="container">

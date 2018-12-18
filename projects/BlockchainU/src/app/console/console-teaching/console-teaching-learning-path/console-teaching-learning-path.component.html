@@ -114,7 +114,7 @@
 										<button mat-menu-item (click)="cancelCollection(collection)">
 											Cancel
 										</button>
-										<button mat-menu-item [routerLink]="'/learning-path/'+collection.id+'/edit/2'">
+										<button mat-menu-item [routerLink]="'/learning-path/'+collection.id+'/edit/0'">
 											Edit Learning Path
 										</button>
 										<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
@@ -209,7 +209,7 @@
 										<button mat-menu-item (click)="_dialogService.viewPromoCodeDialog(collection.id)">
 											View Promo Codes
 										</button>
-										<button mat-menu-item [routerLink]="'/learning-path/'+collection.id+'/edit/1'">
+										<button mat-menu-item [routerLink]="'/learning-path/'+collection.id+'/edit/0'">
 											Edit Learning Path
 										</button>
 									</mat-menu>
@@ -277,7 +277,7 @@
 										<button mat-menu-item (click)="deleteCollection(collection)">
 											Delete
 										</button>
-										<button mat-menu-item [routerLink]="'/learning-path/'+collection.id+'/edit/1'">
+										<button mat-menu-item [routerLink]="'/learning-path/'+collection.id+'/edit/0'">
 											View Learning Path
 										</button>
 									</mat-menu>
