@@ -9,6 +9,7 @@ import { CommunitiesComponent } from './communities/communities.component';
 import { GuidesComponent } from './guides/guides.component';
 import { QuestionsComponent } from './questions/questions.component';
 import { BountiesComponent } from './bounties/bounties.component';
+import { LearningPathComponent } from './learning-path/learning-path.component';
 const routes: Routes = [
 	{
 		path: '',
@@ -41,9 +42,14 @@ const routes: Routes = [
 	{
 		path: 'peers',
 		component: PeersComponent
-	}, {
+	},
+	{
 		path: 'bounties',
 		component: BountiesComponent
+	},
+	{
+		path: 'learning-path',
+		component: LearningPathComponent
 	}
 ];
 
