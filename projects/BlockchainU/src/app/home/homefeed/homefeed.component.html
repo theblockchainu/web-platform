@@ -50,17 +50,21 @@
 						<div class="continueLearning-card" *ngFor="let collection of ongoingArray; let i =index">
 							<a *ngIf="i<3" [routerLink]="'/' + collection.type + '/'+collection.id+'/calendar/' + getLearnerCalendar(collection).id + '/' + getLearnerUpcomingEvent(collection).id">
 								<div class="">
-									<img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).type!=='video' && getLearnerUpcomingEvent(collection).type!=='quiz'" src="{{envVariable.apiUrl+getLearnerUpcomingEvent(collection).imageUrl + '/500'}}"
-									 alt="collectionImg" (error)="_collectionService.imgErrorHandler($event)">
+									<img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).type!=='video' && getLearnerUpcomingEvent(collection).type!=='quiz'"
+									 src="{{envVariable.apiUrl+getLearnerUpcomingEvent(collection).imageUrl + '/500'}}" alt="collectionImg"
+									 (error)="_collectionService.imgErrorHandler($event)">
 									<img class="continueLearning-thumb" *ngIf="getLearnerUpcomingEvent(collection).type==='video' && getLearnerUpcomingEvent(collection).youtubeId"
-									     [src]="'https://img.youtube.com/vi/'+ getLearnerUpcomingEvent(collection).youtubeId + '/0.jpg'| safe:'resourceUrl'"
-									     (error)="_collectionService.imgErrorHandler($event)">
-									<video class="continueLearning-thumb" #videoContent width="100%" height="auto" *ngIf="getLearnerUpcomingEvent(collection).type==='video' && !getLearnerUpcomingEvent(collection).youtubeId" preload="metadata" (error)="_collectionService.imgErrorHandler($event)">
+									 [src]="'https://img.youtube.com/vi/'+ getLearnerUpcomingEvent(collection).youtubeId + '/0.jpg'| safe:'resourceUrl'"
+									 (error)="_collectionService.imgErrorHandler($event)">
+									<video class="continueLearning-thumb" #videoContent width="100%" height="auto" *ngIf="getLearnerUpcomingEvent(collection).type==='video' && !getLearnerUpcomingEvent(collection).youtubeId"
+									 preload="metadata" (error)="_collectionService.imgErrorHandler($event)">
 										<source src="{{envVariable.apiUrl+getLearnerUpcomingEvent(collection).imageUrl}}">
 									</video>
-									<img *ngIf="getLearnerUpcomingEvent(collection).type === 'quiz'" style="width: auto; border: 0.5px solid #eee;" class="continueLearning-thumb" src="/assets/images/quizcover.jpg">
+									<img *ngIf="getLearnerUpcomingEvent(collection).type === 'quiz'" style="width: auto; border: 0.5px solid #eee;"
+									 class="continueLearning-thumb" src="/assets/images/quizcover.jpg">
 								</div>
-								<div class="mat-body-2" style="margin-top: 0px;">{{collection.type | titlecase}} : {{collection.title | titlecase}}
+								<div class="mat-body-2" style="margin-top: 0px;">{{collection.type | titlecase}} : {{collection.title |
+									titlecase}}
 								</div>
 								<div style="margin-top: 0px;">Recent {{getLearnerUpcomingEvent(collection).type}}
 									{{getLearnerUpcomingEvent(collection).fillerWord}}:
@@ -71,6 +75,36 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="row experience-feed">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8">
+							<div class="mat-display-1 clickable" [routerLink]="'/home/learning-path'">Choose your learning path</div>
+						</div>
+						<div class="col-md-2 pull-right" style="text-align: right">
+							<a [routerLink]="'/home//learning-path'">
+								<span class="mat-body-1">
+									See all
+									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loadingExperiences">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loadingExperiences" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
+							There are no new active workshops to view right now.
+						</div>
+						<div *ngFor="let learningPath of learningPaths">
+							<app-learning-path-card [learningPath]='learningPath'></app-learning-path-card>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="row experience-feed">
 				<div class="col-md-12">
 					<div class="row">
@@ -99,6 +133,7 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="row class-feed">
 				<div class="col-md-12">
 					<div class="row">

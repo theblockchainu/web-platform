@@ -17,6 +17,7 @@ import { SelectDurationComponentComponent } from './dialogs/select-duration-comp
 import { GuidesComponent } from './guides/guides.component';
 import { QuestionsComponent } from './questions/questions.component';
 import { BountiesComponent } from './bounties/bounties.component';
+import { LearningPathComponent } from './learning-path/learning-path.component';
 
 @NgModule({
 	imports: [
@@ -37,7 +38,8 @@ import { BountiesComponent } from './bounties/bounties.component';
 		SelectDurationComponentComponent,
 		GuidesComponent,
 		QuestionsComponent,
-		BountiesComponent
+		BountiesComponent,
+		LearningPathComponent
 	],
 	providers: [],
 	bootstrap: [SelectTopicsComponent, SelectPriceComponent, SelectDurationComponentComponent]

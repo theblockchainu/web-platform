@@ -1,19 +1,21 @@
-<div class="custom-card clickable" [routerLink]="[ '/learning-path/', learningPath.customUrl]">
-  <div class="card-image rounded-6px">
-    <div class="card-image-content text-center">
-      <span class="image-heading">{{learningPath.title | titlecase }}</span>
-    </div>
+<div class="col-sm-6">
+  <div class="custom-card clickable" [routerLink]="[ '/learning-path/', learningPath.customUrl]">
+    <div class="card-image rounded-6px">
+      <div class="card-image-content text-center">
+        <span class="image-heading">{{learningPath.title | titlecase }}</span>
+      </div>
 
-    <img *ngIf="learningPath.imageUrls && learningPath.imageUrls.length>0" [src]="envVariable.apiUrl+ learningPath.imageUrls[0] + '/300'"
-      alt="landscape1">
-    <img *ngIf="!learningPath.imageUrls || learningPath.imageUrls.length<=0" src="/assets/images/technology-card.jpg"
-      alt="landscape1">
-  </div>
-  <div class="card-content">
-    <!-- <p class="tags text-uppercase">
-      <span>({{learningPath.contents.length}}) Courses</span>
-    </p> -->
-    <!-- <p class="title mat-body-2">Get up to speed</p> -->
-    <p>{{learningPath.headline | titlecase | shorten: 70: '...'}}</p>
+      <img *ngIf="learningPath.imageUrls && learningPath.imageUrls.length>0" [src]="envVariable.apiUrl+ learningPath.imageUrls[0] + '/300'"
+        alt="landscape1">
+      <img *ngIf="!learningPath.imageUrls || learningPath.imageUrls.length<=0" src="/assets/images/technology-card.jpg"
+        alt="landscape1">
+    </div>
+    <div class="card-content">
+      <!-- <p class="tags text-uppercase">
+        <span>({{learningPath.contents.length}}) Courses</span>
+      </p> -->
+      <!-- <p class="title mat-body-2">Get up to speed</p> -->
+      <p>{{learningPath.headline | titlecase | shorten: 70: '...'}}</p>
+    </div>
   </div>
 </div>
