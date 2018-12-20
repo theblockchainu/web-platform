@@ -15,7 +15,17 @@
         <span>({{learningPath.contents.length}}) Courses</span>
       </p> -->
       <!-- <p class="title mat-body-2">Get up to speed</p> -->
-      <p>{{learningPath.headline | titlecase | shorten: 70: '...'}}</p>
+
+      <p>
+        <span *ngIf="totalHours<1">
+          {{totalHours * 60 | number :'1.0-0'}} Minutes
+        </span>
+        <span *ngIf="totalHours>=1">
+          {{totalHours | number :'1.0-0'}} Hours
+        </span>
+
+        &nbsp; &nbsp; &#183; &nbsp; &nbsp;{{learningPath.headline | titlecase | shorten: 70:
+        '...'}}</p>
     </div>
   </div>
 </div>

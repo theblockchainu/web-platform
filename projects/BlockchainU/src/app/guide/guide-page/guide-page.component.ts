@@ -200,6 +200,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	@ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
 	selectedTab: number;
 	loadingCodeLab: boolean;
+	totalHours: number;
 
 	constructor(public router: Router,
 		private activatedRoute: ActivatedRoute,
@@ -503,6 +504,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.loadingGuide = false;
 		this.guideId = this.guide.id;
 		this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
+		this.totalHours = this._collectionService.calculateDuration(this.guide.description.length);
 		this.setTags();
 		try {
 			if (fbq && fbq !== undefined) {

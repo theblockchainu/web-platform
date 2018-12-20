@@ -147,7 +147,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public recommendations: any;
 	public result;
 	public comments: Array<any>;
-	private today: any;
+	today: any;
 	public answeredDate;
 
 	// Calendar Start
@@ -645,7 +645,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					}
 				});
 			}
-			
+
 			if (contentObj.questions && contentObj.questions.length > 0) {
 				contentObj.questions.forEach(question => {
 					if (question.answers) {
@@ -901,7 +901,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	public showAll(strLength) {
 		if (strLength > this.maxLength) {
 			this.maxLength = strLength;

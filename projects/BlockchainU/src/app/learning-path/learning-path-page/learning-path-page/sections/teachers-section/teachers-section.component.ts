@@ -31,22 +31,22 @@ export class TeachersSectionComponent implements OnChanges, OnInit {
       this.teachers = [];
       this.learningPath.contents.forEach(content => {
         const topics = [];
-        if (content.courses[0].owners[0].topicsTeaching) {
+        if (content.courses[0] && content.courses[0].owners && content.courses[0].owners[0]
+          && content.courses[0].owners[0].topicsTeaching) {
           content.courses[0].owners[0].topicsTeaching.forEach(topicObj => {
             topics.push(topicObj.name);
           });
-        }
-        content.courses[0].owners[0].topics = topics;
-        const found = this.teachers.findIndex(teacher => {
-          return teacher.id === content.courses[0].owners[0].id;
-        });
-        if (found === -1) {
-          this.teachers.push(content.courses[0].owners[0]);
+          content.courses[0].owners[0].topics = topics;
+          const found = this.teachers.findIndex(teacher => {
+            return teacher.id === content.courses[0].owners[0].id;
+          });
+          if (found === -1) {
+            this.teachers.push(content.courses[0].owners[0]);
 
+          }
         }
       });
     }
     this.loadingPeers = false;
   }
-
 }

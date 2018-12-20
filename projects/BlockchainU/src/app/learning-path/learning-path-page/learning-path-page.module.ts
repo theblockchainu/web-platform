@@ -14,6 +14,9 @@ import { ProfilePopupModule } from '../../_shared/profile-popup/profile-popup.mo
 import { SharedModule } from '../../_shared/shared-module/shared.module';
 import { PeerCardModule } from '../../_shared/peer-card/peer-card.module';
 import { SafePipeModule } from '../../_shared/safe-pipe/safe-pipe.module';
+import { RatingModule } from 'primeng/rating';
+import { FormsModule } from '@angular/forms';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -27,7 +30,9 @@ import { SafePipeModule } from '../../_shared/safe-pipe/safe-pipe.module';
     ProfilePopupModule,
     SharedModule,
     PeerCardModule,
-    SafePipeModule
+    SafePipeModule,
+    RatingModule,
+    FormsModule
   ],
   declarations: [LearningPathPageComponent, IntroCardComponent, PathSectionComponent, TeachersSectionComponent]
 })

@@ -38,8 +38,16 @@ export class IntroCardComponent implements OnChanges, OnInit {
 
   private calculateLearningHours() {
     this.totalHours = 0;
+    console.log(this.learningPath);
     this.learningPath.contents.forEach(content => {
-      this.totalHours += content.courses[0].totalHours;
+      if (content.courses && content.courses.length > 0) {
+        if (content.courses[0].type === 'guide') {
+          const guideHours = this._collectionService.calculateDuration(content.courses[0].description.length);
+          console.log('guideHours' + guideHours);
+          this.totalHours += guideHours;
+        }
+        this.totalHours += content.courses[0].totalHours;
+      }
     });
   }
 
@@ -58,7 +66,7 @@ export class IntroCardComponent implements OnChanges, OnInit {
         if (res) {
           this.join();
         } else {
-          this.matSnackBar.open('You need to signup or sign in to join this learning path');
+          this.matSnackBar.open('You need to signup or sign in to join this learning path', 'close', { duration: 3000 });
           this.joining = false;
         }
       });
