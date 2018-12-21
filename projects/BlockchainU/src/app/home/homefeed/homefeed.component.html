@@ -83,7 +83,7 @@
 							<div class="mat-display-1 clickable" [routerLink]="'/home/learning-path'">Choose your learning path</div>
 						</div>
 						<div class="col-md-2 pull-right" style="text-align: right">
-							<a [routerLink]="'/home//learning-path'">
+							<a [routerLink]="['/home','learning-path']">
 								<span class="mat-body-1">
 									See all
 									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
@@ -91,11 +91,11 @@
 							</a>
 						</div>
 					</div>
-					<div class="loading-container" [hidden]="!loadingExperiences">
+					<div class="loading-container" [hidden]="!loadingLearningPaths">
 						<ngx-loading [show]="true"></ngx-loading>
 					</div>
-					<div *ngIf="!loadingExperiences" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
-						<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
+					<div *ngIf="!loadingLearningPaths" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="learningPaths === undefined || learningPaths.length === 0">
 							There are no new active workshops to view right now.
 						</div>
 						<div *ngFor="let learningPath of learningPaths">

@@ -106,7 +106,12 @@
 														<div class="col-md-12 mat-h5 lightText" style="margin-top: -4px;">
 															{{guide.createdAt | date: 'd MMM, y'}}&nbsp;&nbsp;&nbsp;
 															<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
-															2 min read
+															<span *ngIf="totalHours<1">
+																{{totalHours * 60 | number :'1.0-0'}} Minutes
+															</span>
+															<span *ngIf="totalHours>=1">
+																{{totalHours | number :'1.0-0'}} Hours
+															</span> read
 														</div>
 													</div>
 												</div>

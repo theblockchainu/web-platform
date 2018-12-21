@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnChanges } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../../_services/collection/collection.service';
@@ -10,9 +10,10 @@ declare var fbq: any;
   templateUrl: './learning-path-card.component.html',
   styleUrls: ['./learning-path-card.component.scss']
 })
-export class LearningPathCardComponent implements OnInit {
-  public envVariable;
-  public userId;
+export class LearningPathCardComponent implements OnInit, OnChanges {
+  envVariable: any;
+  userId: string;
+  totalHours: number;
 
   @Input() learningPath: any;
   @Input() cardsPerRow = 2;
@@ -27,6 +28,26 @@ export class LearningPathCardComponent implements OnInit {
   ngOnInit() {
     this.envVariable = environment;
     this.userId = this._cookieUtilsService.getValue('userId');
+  }
+
+  ngOnChanges() {
+    this.calculateLearningHours();
+  }
+
+  private calculateLearningHours() {
+    this.totalHours = 0;
+    console.log(this.learningPath);
+    this.learningPath.contents.forEach(content => {
+      if (content.courses && content.courses.length > 0) {
+        if (content.courses[0].type === 'guide') {
+          const guideHours = this._collectionService.calculateDuration(content.courses[0].description.length);
+          console.log('guideHours' + guideHours);
+          this.totalHours += guideHours;
+        } else {
+          this.totalHours += content.courses[0].totalHours;
+        }
+      }
+    });
   }
 
 }

@@ -15,7 +15,20 @@
         <span>({{learningPath.contents.length}}) Courses</span>
       </p> -->
       <!-- <p class="title mat-body-2">Get up to speed</p> -->
-      <p>{{learningPath.headline | titlecase | shorten: 70: '...'}}</p>
+
+      <span class="mat-body-2">
+        {{learningPath.contents.length}} items of learning content <mat-icon style="font-size: 5px; top: -3px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
+        <span *ngIf="totalHours<1">
+          {{totalHours * 60 | number :'1.0-0'}} Minutes
+        </span>
+        <span *ngIf="totalHours>=1">
+          {{totalHours | number :'1.0-0'}} Hours
+        </span> of commitment
+      </span>
+      <br>
+      <span>
+        {{learningPath.headline | titlecase}}
+      </span>
     </div>
   </div>
 </div>

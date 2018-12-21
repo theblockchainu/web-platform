@@ -10,9 +10,9 @@
             </p>
             <br />
             <mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
-              <input matInput #title formControlName="title" maxlength="100" placeholder="Enter Name">
-              <mat-hint align="start">{{100 - title.value.length}} more characters allowed</mat-hint>
-              <mat-hint align="end">{{title.value.length}} / 100</mat-hint>
+              <input matInput #title formControlName="title" maxlength="50" placeholder="Enter Name">
+              <mat-hint align="start">{{50 - title.value.length}} more characters allowed</mat-hint>
+              <mat-hint align="end">{{title.value.length}} / 50</mat-hint>
             </mat-form-field>
           </div>
         </div>
