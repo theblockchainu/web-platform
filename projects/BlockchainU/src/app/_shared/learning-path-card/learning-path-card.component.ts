@@ -43,8 +43,9 @@ export class LearningPathCardComponent implements OnInit, OnChanges {
           const guideHours = this._collectionService.calculateDuration(content.courses[0].description.length);
           console.log('guideHours' + guideHours);
           this.totalHours += guideHours;
+        } else {
+          this.totalHours += content.courses[0].totalHours;
         }
-        this.totalHours += content.courses[0].totalHours;
       }
     });
   }

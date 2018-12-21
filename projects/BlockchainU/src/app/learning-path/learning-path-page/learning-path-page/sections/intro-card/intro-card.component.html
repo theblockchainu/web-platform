@@ -64,9 +64,10 @@
             </b> of expert content
           </div>
           <div class="col-xs-12 padding-top-20">
-            <b *ngIf="learningPath.contents">
-              {{learningPath.contents.length}} items
-            </b> of learning content
+            <span *ngIf="objectTypeArray && objectTypeArray.length>0">
+              <span *ngFor="let objectType of objectTypeArray;let i = index">
+                <span *ngIf="i !== 0">, </span> <b>{{objectType.count}}</b> {{objectType.type| titlecase}}</span>
+            </span>
           </div>
         </div>
         <div class="row padding-top-20">

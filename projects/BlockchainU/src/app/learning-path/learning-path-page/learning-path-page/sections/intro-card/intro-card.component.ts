@@ -18,8 +18,11 @@ export class IntroCardComponent implements OnChanges, OnInit {
   joining: boolean;
   @Input() joined: boolean;
   @Output() joinedChange = new EventEmitter<boolean>();
-  public maxLength: number;
-
+  maxLength: number;
+  objectTypeArray: Array<{
+    type: string,
+    count: number
+  }>;
   constructor(
     private _collectionService: CollectionService,
     private _cookieUtilsService: CookieUtilsService,
@@ -28,7 +31,7 @@ export class IntroCardComponent implements OnChanges, OnInit {
 
 
   ngOnChanges() {
-    this.calculateLearningHours();
+    this.calculateLearningData();
   }
 
   ngOnInit() {
@@ -36,9 +39,11 @@ export class IntroCardComponent implements OnChanges, OnInit {
     this.maxLength = 200;
   }
 
-  private calculateLearningHours() {
+  private calculateLearningData() {
     this.totalHours = 0;
     console.log(this.learningPath);
+    const collectionTypeMap = new Map<string, number>();
+    this.objectTypeArray = [];
     this.learningPath.contents.forEach(content => {
       if (content.courses && content.courses.length > 0) {
         if (content.courses[0].type === 'guide') {
@@ -48,7 +53,21 @@ export class IntroCardComponent implements OnChanges, OnInit {
         }
         this.totalHours += content.courses[0].totalHours;
       }
+      if (collectionTypeMap.has(content.courses[0].type)) {
+        let currentIndex = collectionTypeMap.get(content.courses[0].type);
+        currentIndex++;
+        collectionTypeMap.set(content.courses[0].type, currentIndex);
+      } else {
+        collectionTypeMap.set(content.courses[0].type, 1);
+      }
     });
+    collectionTypeMap.forEach((val, key) => {
+      this.objectTypeArray.push({
+        type: this._collectionService.getCollectionContentType(key),
+        count: val
+      });
+    });
+
   }
 
   join() {

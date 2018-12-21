@@ -53,13 +53,8 @@ export class PathSectionComponent implements OnChanges, OnInit {
       // add duration to guides and bounties
       if (learningPathContent.courses && learningPathContent.courses.length > 0) {
         const collection = learningPathContent.courses[0];
-        console.log(collection);
-
         if (collection.bookmarks) {
           collection.bookmarks.forEach(bookmark => {
-            console.log('bookmark');
-            console.log(bookmark);
-            console.log(this.userId);
             if (bookmark.peer && bookmark.peer.length > 0 && this.userId === bookmark.peer[0].id) {
               collection.bookmarkId = bookmark.id;
               console.log('Bookmark Added');
@@ -95,14 +90,13 @@ export class PathSectionComponent implements OnChanges, OnInit {
           collection.lat = lat;
           collection.lng = lng;
         }
-        if (!(collection.type === 'guide' || collection.type === 'bounty')) {
+        if (!(collection.type === 'guide')) {
           const startMoment = moment(this._collectionService.getCurrentCalendar(collection.calendars).startDate);
           const endMoment = moment(this._collectionService.getCurrentCalendar(collection.calendars).endDate);
           collection.startsIn = moment().to(startMoment);
           collection.startDiff = startMoment.diff(moment());
           collection.endsIn = moment().to(endMoment);
           collection.endDiff = endMoment.diff(moment());
-
           // Calculate Duration
           let totalLength = 0;
           if (collection.contents) {
@@ -150,14 +144,20 @@ export class PathSectionComponent implements OnChanges, OnInit {
     this.loadingCertificate = true;
     if (this.learningPath) {
       this._certificateService.getCertificateTemplate(this.learningPath.id).subscribe((res: any) => {
+        console.log('certificate');
+        console.log(res);
         if (res !== null && res !== undefined) {
-          this.certificateHTML = res.certificateHTML;
-          this.certificateDomSubscription = this.certificateDomHTML.changes.subscribe(elem => {
-            if (elem['first']) {
-              const image = elem['first'].nativeElement.children[0].children[0].children[1].children[0];
-              image.src = '/assets/images/theblockchainu-qr.png';
-            }
-          });
+          const formData = JSON.parse(res.formData);
+          console.log(formData.groupArray);
+          if (formData.groupArray.length > 0) {
+            this.certificateHTML = res.certificateHTML;
+            this.certificateDomSubscription = this.certificateDomHTML.changes.subscribe(elem => {
+              if (elem['first']) {
+                const image = elem['first'].nativeElement.children[0].children[0].children[1].children[0];
+                image.src = '/assets/images/theblockchainu-qr.png';
+              }
+            });
+          }
         }
         this.loadingCertificate = false;
       });
