@@ -29,19 +29,19 @@
 						<input matInput #title formControlName="title" placeholder="Video Title">
 					</mat-form-field>
 
-					<div class="form-group">
+					<div class="form-group margin-bottom-20">
 						<label>Upload Video:</label>
 						<div class="upload-image-section imageHolder">
 							<app-upload-file (uploaded)="imageUploadNew($event)"></app-upload-file>
 							<h5>Max File Size
-								<b>1000MB</b>
+								<b>1000MB</b>. Allowed file types <b>.mp4, .mov, .mpeg</b>
 							</h5>
-							<div *ngIf="urlForVideo">
+							<div class="row margin-top-20" *ngIf="urlForVideo">
 								<span [hidden]="!loadingUploadedVideo">
 									<span>Fetching Video</span>
 									<mat-progress-bar mode="buffer"></mat-progress-bar>
 								</span>
-								<div class="col-md-4 embed-responsive embed-responsive-16by9 padding-left-0 pic delete imageContainer" [hidden]="loadingUploadedVideo">
+								<div class="col-md-11 embed-responsive embed-responsive-16by9 padding-left-0 pic delete imageContainer">
 									<video style="max-height: 40vh;" controls #video preload="metadata" (loadedmetadata)="onMetadata($event, video)"
 									 (error)="videoError($event)">
 										<source src="{{envVariable.apiUrl + urlForVideo}}" type="video/mp4" crossorigin>
@@ -56,7 +56,7 @@
 					</div>
 					<div class="clearfix"></div>
 
-					<mat-checkbox [(ngModel)]="youtubeEmbed" [ngModelOptions]="{standalone: true}">Youtube Embed</mat-checkbox>
+					<mat-checkbox [(ngModel)]="youtubeEmbed" [ngModelOptions]="{standalone: true}">Embed a Youtube Video instead?</mat-checkbox>
 
 					<div *ngIf="youtubeEmbed">
 						<mat-form-field class=" pb-block margin-top-20 margin-bot-20">
