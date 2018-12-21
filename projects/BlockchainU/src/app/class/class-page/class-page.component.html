@@ -385,7 +385,8 @@
 																			<h3> {{content.title | titlecase}}</h3>
 																			<div>
 																				<span class="mat-caption" *ngIf="content.schedules[0].startTime !== undefined && (content.type === 'online' || (content.isTimeBound && content.type === 'quiz'))">
-																					{{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm a'}} &nbsp;&nbsp;&nbsp;
+																					{{content.schedules[0].startTime | date: 'h:mm a'}} - {{content.schedules[0].endTime | date: 'h:mm
+																					a'}} &nbsp;&nbsp;&nbsp;
 																					<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
 																				</span>
 																				{{_collectionService.getContentTypeFullName(content.type) | titlecase}}
@@ -414,7 +415,8 @@
 																</div>
 																<div class="row margin-top-10">
 																	<div class="col-md-12" *ngIf="userType !=='participant' && userType !== 'teacher'">
-																		<a href="javascript:void(0);" (click)="openDialog(content, itenary.startDate, itenary.endDate)">See details</a>
+																		<a href="javascript:void(0);" (click)="openDialog(content, itenary.startDate, itenary.endDate)">See
+																			details</a>
 																	</div>
 																</div>
 															</div>

@@ -340,13 +340,30 @@ export class CollectionService {
 		return contentType + ' ' + fillerWord;
 	}
 
+	public getCollectionContentType(type: string) {
+		switch (type) {
+			case 'class':
+				return 'Online Course';
+			case 'experience':
+				return 'In-person Workshop';
+			case 'bounty':
+				return 'Reward Bounty';
+			case 'guide':
+				return 'Learning Guide';
+			default:
+				return 'Collection';
+		}
+	}
+
+
 	/**
 	 * Get the current active calendar of this collection
 	 * @param calendars
 	 */
 	public getCurrentCalendar(calendars) {
+		const now = moment();
 		if (calendars && calendars !== undefined) {
-			calendars = calendars.sort((a, b) => {
+			const sortedCalendars = calendars.sort((a, b) => {
 				if (moment(a.startDate) < moment(b.startDate)) {
 					return -1;
 				}
@@ -354,10 +371,12 @@ export class CollectionService {
 					return 1;
 				}
 				return 0;
-			}).filter((element, index) => {
-				return moment() < moment(element.endDate);
 			});
-			return calendars[0];
+			const filteredCalendars = sortedCalendars.filter((element, index) => {
+				return now < moment(element.endDate);
+			});
+			console.log(calendars);
+			return (filteredCalendars.length > 0) ? filteredCalendars[0] : sortedCalendars[0];
 		} else {
 			return null;
 		}
@@ -1221,4 +1240,9 @@ export class CollectionService {
 	public patchAnswer(answerId: string, body: any) {
 		return this.httpClient.patch(environment.apiUrl + '/api/content_answers/' + answerId, body, this.requestHeaderService.options);
 	}
+
+	public calculateDuration(descriptionLength: number) {
+		return descriptionLength / 6000;
+	}
+
 }

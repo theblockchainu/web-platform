@@ -36,6 +36,10 @@
   color: #fff;
 }
 
+.message-item-last:before {
+  display: none !important;
+}
+
 .message-item-ticked:after {
   background: #33bd93;
   border-radius: 50%;
@@ -152,4 +156,9 @@
 
 .right-section {
   border-left: 0.2px solid;
+}
+
+.circle-thumb {
+  width: 50px !important;
+  height: 50px !important;
 }

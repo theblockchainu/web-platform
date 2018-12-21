@@ -13,7 +13,7 @@ import { environment } from '../../../../environments/environment';
 	styleUrls: ['./learning-path-page.component.scss']
 })
 export class LearningPathPageComponent implements OnInit {
-	
+
 	public learningPath: any;
 	public learningPathId: string;
 	public learningPathUrl: string;
@@ -21,17 +21,17 @@ export class LearningPathPageComponent implements OnInit {
 	private previewAs: boolean;
 	envVariable: any;
 	joined: boolean;
-	
+
 	constructor(
 		public _collectionService: CollectionService,
 		private activatedRoute: ActivatedRoute,
 		private _cookieUtilsService: CookieUtilsService
 	) { }
-	
+
 	ngOnInit() {
 		this.setup();
 	}
-	
+
 	setup() {
 		this.initialiseVariables();
 		this.fetchPathParams()
@@ -47,12 +47,12 @@ export class LearningPathPageComponent implements OnInit {
 				console.log('Page Data Loaded');
 			});
 	}
-	
-	
+
+
 	fetchData() {
 		const query = {
 			'where': {
-				'or': [{'customUrl': this.learningPathUrl}, {'id': this.learningPathUrl}]
+				'or': [{ 'customUrl': this.learningPathUrl }, { 'id': this.learningPathUrl }]
 			},
 			'include': [
 				'topics',
@@ -61,21 +61,29 @@ export class LearningPathPageComponent implements OnInit {
 				{
 					'relation': 'contents',
 					'scope': {
-						'include': [{ 'courses': [{ 'owners': ['profiles'] }] }],
+						'include': [
+							{
+								'courses': [
+									{ 'owners': ['profiles', 'reviewsAboutYou'] },
+									'reviews',
+									{ 'contents': ['schedules', 'locations'] },
+									'calendars',
+									{ 'bookmarks': ['peer'] }
+								]
+							}],
 						'order': 'contentIndex ASC'
 					}
 				},
 			]
-			
 		};
 		return this._collectionService.getAllCollections(query);
 	}
-	
+
 	private initialiseVariables() {
 		this.envVariable = environment;
 		this.joined = false;
 	}
-	
+
 	private fetchPathParams() {
 		return this.activatedRoute.params.pipe(
 			first(),
@@ -97,7 +105,7 @@ export class LearningPathPageComponent implements OnInit {
 				});
 			}));
 	}
-	
+
 	private processData(data: any) {
 		this.learningPath = data[0];
 		const userId = this._cookieUtilsService.getValue('userId');
@@ -116,5 +124,5 @@ export class LearningPathPageComponent implements OnInit {
 			obs.next();
 		});
 	}
-	
+
 }
