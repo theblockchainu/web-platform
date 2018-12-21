@@ -20,7 +20,7 @@ import { CodeLabsComponent } from './code-labs/code-labs.component';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { BlockchainKeysComponent } from './code-labs/blockchain-keys/blockchain-keys.component';
 import { MatDialogRef } from '@angular/material';
-import { LabCredentialsComponent } from './code-labs/lab-credentials/lab-credentials.component';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
 	imports: [
@@ -41,17 +41,17 @@ import { LabCredentialsComponent } from './code-labs/lab-credentials/lab-credent
 		VgBufferingModule,
 		CovalentMarkdownModule,
 		MatButtonToggleModule,
-		MatBottomSheetModule
+		MatBottomSheetModule,
+		ClipboardModule
 	],
 	declarations: [GuidePageComponent, ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent,
 		ShowRSVPPopupComponent,
 		CodeLabsComponent,
 		BlockchainKeysComponent,
-		LabCredentialsComponent,
 	],
 	bootstrap: [ContentVideoComponent, ContentProjectComponent, ContentInpersonComponent, ShowRSVPPopupComponent],
 	providers: [ProjectSubmissionService, CorestackService, { provide: MatDialogRef, useValue: {} }],
-	entryComponents: [BlockchainKeysComponent, LabCredentialsComponent]
+	entryComponents: [BlockchainKeysComponent]
 
 })
 export class GuidePageModule { }

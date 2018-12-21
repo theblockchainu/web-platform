@@ -9,32 +9,49 @@
           <mat-icon>tab</mat-icon>Compile
         </mat-button-toggle>
       </mat-button-toggle-group>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <button class="floating-button" mat-fab [matMenuTriggerFor]="menu">
+      <button class="pull-right" mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="refreshPage()">
           <mat-icon>refresh</mat-icon> Refresh page
         </button>
-        <button mat-menu-item (click)="openLoginInfo()">
-          <mat-icon>account_circle</mat-icon> Credentials
-        </button>
         <button mat-menu-item (click)="openBottomSheet()">
           <mat-icon>vpn_key</mat-icon> Accounts
         </button>
       </mat-menu>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
       <div [hidden]="selectedTab!=='code'" *ngIf="ice_coder_settings">
         <iframe id="iframe-ice-coder" style="height:83vh;width: -webkit-fill-available" [src]="ice_coder_settings.auth_url| safe:'resourceUrl'">
         </iframe>
+        <div class="credentials-box">
+          <mat-form-field class="clickable" appearance="outline" [ngxClipboard]="iceUsername" (cbOnSuccess)="onCopySuccess('Username')">
+            <mat-label>Username</mat-label>
+            <input #iceUsername matInput [readOnly]="true" value="{{ice_coder_settings.username}}">
+          </mat-form-field>
+          <mat-form-field class="clickable" appearance="outline" [ngxClipboard]="icePassword" (cbOnSuccess)="onCopySuccess('Password')">
+            <mat-label>Outline form field</mat-label>
+            <input #icePassword matInput [readOnly]="true" value="{{ice_coder_settings.password}}">
+          </mat-form-field>
+        </div>
       </div>
       <div [hidden]="selectedTab!=='compile'" *ngIf="terminal_settings">
         <iframe id="iframe-terminal" style="height:83vh;width: -webkit-fill-available" [src]="terminal_settings.auth_url| safe:'resourceUrl'">
         </iframe>
+        <div class="credentials-box">
+          <mat-form-field class="clickable" appearance="outline" [ngxClipboard]="terminalUsername" (cbOnSuccess)="onCopySuccess('Username')">
+            <mat-label>Username</mat-label>
+            <input #terminalUsername matInput [readOnly]="true" value="{{terminal_settings.username}}">
+          </mat-form-field>
+          <mat-form-field class="clickable" appearance="outline" [ngxClipboard]="terminalPassword" (cbOnSuccess)="onCopySuccess('Password')">
+            <mat-label>Outline form field</mat-label>
+            <input #terminalPassword matInput [readOnly]="true" value="{{terminal_settings.password}}">
+          </mat-form-field>
+        </div>
       </div>
     </div>
   </div>
