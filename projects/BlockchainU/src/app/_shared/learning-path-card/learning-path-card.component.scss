@@ -28,7 +28,7 @@
 	opacity: 1;
 	filter: alpha(opacity=100);
 }
-.card-image-content {
+.card-image-content1 {
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -83,10 +83,10 @@
 .custom-card .card-image img {
 	min-height: 320px;
 }
-.custom-card .card-image .card-image-content .image-heading {
+.custom-card .card-image .card-image-content1 .image-heading {
 	font-family: "CircularSemiBold", sans-serif;
 	font-size: 60px;
-	color: rgba(255, 255, 255, 0.8);
+	color: rgba(255, 255, 255, 0.9);
 	letter-spacing: 1.5px;
 	position: relative;
 	display: table-cell;
