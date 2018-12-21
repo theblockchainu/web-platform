@@ -31,13 +31,13 @@
 				<span>This cohort has ended. You can still add a review and participate in discussions</span>
 			</div>
 		</div>
-		<div class="row pending-actions center" *ngIf="(class && class.assessment_models && class.assessment_models.length>0 && class.assessment_models[0].type && userType === class.assessment_models[0].type.toLowerCase())">
+		<!--<div class="row pending-actions center" *ngIf="(class && class.assessment_models && class.assessment_models.length>0 && class.assessment_models[0].type && userType === class.assessment_models[0].type.toLowerCase())">
 			<div class="col-md-10 col-md-offset-1">
 				<span class="mat-body-2">
 					<a href="javascript:void(0);" (click)="openAssessmentDialog()">Assess your students and issue Smart Certificates</a>
 				</span>
 			</div>
-		</div>
+		</div>-->
 		<div class="row upcoming-actions center" *ngIf="(class.status === 'active' && calendarId === undefined && hasLiveCohort() && userType === 'teacher')">
 			<div class="col-md-10 col-md-offset-1">
 				<span>The cohort of
@@ -356,8 +356,7 @@
 															<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined">
 																{{itenary.startDate | date:'EEEE, d MMMM'}} </div>
 															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length > 1">{{add1ToIndex(itenary.startDay)}}</div>
-															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate
-																| date:'EEEE, d MMMM'}}</div>
+															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate | date:'EEEE, d MMMM'}}</div>
 														</div>
 														<div (mouseover)="showViewTime(content)" (mouseout)="hideViewTime(content)" [ngClass]="{'row':true, 'timelineRowItem': true, 'timeRowItemProgress': content.views !== undefined && content.views.length > 0 && userType === 'participant'}"
 														 *ngFor="let content of itenary.contents">
@@ -452,7 +451,7 @@
 									</button>
 								</form>
 							</div>
-							<div class="loading-container" [hidden]="!loadingComments && !initialLoad">
+							<div class="loading-container" [hidden]="!loadingComments && !loadingClass">
 								<ngx-loading [show]="true"></ngx-loading>
 							</div>
 							<div class="col-md-12">
@@ -655,7 +654,7 @@
 						</div>
 						<hr *ngIf="(userType==='teacher' || userType==='participant') && comments !== undefined && comments.length === 0">
 						<!--REVIEWS-->
-						<div class="loading-container" [hidden]="!loadingReviews && !initialLoad">
+						<div class="loading-container" [hidden]="!loadingReviews && !loadingClass">
 							<ngx-loading [show]="true"></ngx-loading>
 						</div>
 						<div class="row Reviews" *ngIf="reviews !== undefined">
@@ -732,8 +731,7 @@
 																	<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
 																		<div>
 																			<div>
-																				<span class="clickable" style="font-weight: 500" (click)="openProfilePage(review.peer[0].id)">{{review.peer[0].profiles[0].first_name
-																					+ ' ' + review.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+																				<span class="clickable" style="font-weight: 500" (click)="openProfilePage(review.peer[0].id)">{{review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
 																			</div>
 																		</div>
 																		<div class="">
@@ -863,7 +861,7 @@
 							<hr class="margin-top-10 margin-bottom-10">
 						</div>
 						<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined">
-							<h3 class="margin-bottom-20">Participants ({{participants ? participants.length : '0'}})</h3>
+							<h3 class="margin-bottom-20">Cohort Participants ({{participants ? participants.length : '0'}})</h3>
 							<div>
 								<div class="loading-container" [hidden]="!loadingParticipants">
 									<ngx-loading [show]="true"></ngx-loading>
@@ -894,6 +892,11 @@
 												participants
 											</a>
 										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<button mat-button class="mat-border-button" *ngIf="(calendarId && class && class.assessment_models && class.assessment_models.length>0 && class.assessment_models[0].type && userType === class.assessment_models[0].type.toLowerCase())" (click)="openAssessmentDialog()">Issue Certificates</button>
 									</div>
 								</div>
 							</div>
@@ -929,10 +932,12 @@
 									<div class="row">
 										<div class="col-md-12">
 											<div class="emptySectionText">
-												Select one cohort to view participants signed up for that batch.
+												<!--Select one cohort to view participants signed up for that batch.
 												<br>
-												<br>
-												<button mat-button class="mat-border-button" (click)="changeDates()">Select cohort</button>
+												<br>-->
+												<button mat-button class="mat-border-button" (click)="changeDates()">Filter by cohort</button> &emsp;
+												<button mat-button class="mat-border-button" style="margin-left: 15px;" *ngIf="!calendarId" (click)="changeDatesForAssessment()">Issue Certificates</button>
+												<button mat-button class="mat-border-button" style="margin-left: 15px;" *ngIf="(calendarId && class && class.assessment_models && class.assessment_models.length>0 && class.assessment_models[0].type && userType === class.assessment_models[0].type.toLowerCase())" (click)="openAssessmentDialog()">Issue Certificates</button>
 											</div>
 										</div>
 									</div>
@@ -996,8 +1001,7 @@
 								<div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
 									<span class="cal-day-badge"></span>
 									<span>
-										{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d
-										MMM' }})
+										{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d MMM' }})
 									</span>
 								</div>
 								<div class="margin-top-10 margin-bottom-10">
@@ -1062,8 +1066,7 @@
 									<div class="col-xs-8">
 										<div class="row">
 											<div class="col-md-12">
-												<h2 style="display: inline-block; margin-bottom: -1px;">{{class.price | convertCurrency: class.currency
-													|async}}
+												<h2 style="display: inline-block; margin-bottom: -1px;">{{class.price | convertCurrency: class.currency |async}}
 												</h2>&nbsp; per person
 												<br />
 												<p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating>

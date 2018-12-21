@@ -10,6 +10,7 @@ import {CookieUtilsService} from '../../../_services/cookieUtils/cookie-utils.se
 import {Router} from '@angular/router';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import {AssessmentService} from '../../../_services/assessment/assessment.service';
 
 @Component({
   selector: 'app-content-quiz',
@@ -38,7 +39,7 @@ export class ContentQuizComponent implements OnInit {
 	public answeredDate;
 	public loadingSubmissions = true;
 	public savingData = false;
-	public submissionArray = [];
+	public submissionArray;
 	public displayedSubmissionTableColumns = ['peerName', 'questionsAnswered'];
 	
 	@ViewChild(MatTable) table: MatTable<any>;
@@ -50,6 +51,7 @@ export class ContentQuizComponent implements OnInit {
 		private _fb: FormBuilder,
 		private _commentService: CommentService,
 		private _cookieUtilsService: CookieUtilsService,
+		private _assessmentService: AssessmentService,
 		private dialogsService: DialogsService,
 		private contentService: ContentService,
 		private snackBar: MatSnackBar,
@@ -79,93 +81,14 @@ export class ContentQuizComponent implements OnInit {
 		this.showSuccessMessage = false;
 		this.data.content.questions = this.checkHasAnswered(this.data.content.questions, this.userId);
 		this.initializeForms();
-		this.processSubmissions();
+		this._assessmentService.processQuizSubmissions(this.data.content)
+			.subscribe(res => {
+				this.loadingSubmissions = false;
+				this.submissionArray = res;
+			}, error1 => {
+				this.loadingSubmissions = false;
+			});
 		this.getDiscussions();
-	}
-	
-	private processSubmissions() {
-		this.loadingSubmissions = true;
-		this.submissionArray = [];
-		if (this.data.content.questions) {
-			this.data.content.questions.forEach(question => {
-				if (question.answers) {
-					question.answers.forEach(answer => {
-						if (answer.peer) {
-							// If the answer is by a peer who already has an entry in this array
-							if (_.find(this.submissionArray, function(o) { return o.peerId === answer.peer[0].id; })) {
-								_.find(this.submissionArray, function(o) { return o.peerId === answer.peer[0].id; }).questionsAnswered++;
-								if (question.type === 'single-choice') {
-									if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
-										_.find(this.submissionArray, function (o) {
-											return o.peerId === answer.peer[0].id;
-										}).correctAnswers++;
-									} else {
-										_.find(this.submissionArray, function (o) {
-											return o.peerId === answer.peer[0].id;
-										}).wrongAnswers++;
-									}
-								} else {
-									if (answer.isEvaluated && answer.marks === question.marks) {
-										_.find(this.submissionArray, function (o) {
-											return o.peerId === answer.peer[0].id;
-										}).correctAnswers++;
-									} else if (answer.isEvaluated && answer.marks === 0) {
-										_.find(this.submissionArray, function (o) {
-											return o.peerId === answer.peer[0].id;
-										}).wrongAnswers++;
-									} else {
-										_.find(this.submissionArray, function (o) {
-											return o.peerId === answer.peer[0].id;
-										}).pendingEvaluation++;
-									}
-								}
-							} else {
-								const questions = _.cloneDeep(this.data.content.questions);
-								const submissionEntry = {
-									position: this.submissionArray.length + 1,
-									peerId: answer.peer[0].id,
-									peerName: answer.peer[0].profiles[0].first_name + ' ' + answer.peer[0].profiles[0].last_name,
-									questionsAnswered: 1,
-									correctAnswers: 0,
-									wrongAnswers: 0,
-									pendingEvaluation: 0,
-									answeredDate: this.getAnsweredDate(questions),
-									questions: questions,
-									peer: answer.peer[0]
-								};
-								if (question.type === 'single-choice') {
-									if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
-										submissionEntry.correctAnswers++;
-									} else {
-										submissionEntry.wrongAnswers++;
-									}
-								} else {
-									if (answer.isEvaluated && answer.marks === question.marks) {
-										submissionEntry.correctAnswers++;
-									} else if (answer.isEvaluated && answer.marks === 0) {
-										submissionEntry.wrongAnswers++;
-									} else {
-										submissionEntry.pendingEvaluation++;
-									}
-								}
-								this.submissionArray.push(submissionEntry);
-							}
-						}
-					});
-				}
-			});
-			// Work on the submission array to mark user's answer for each question and whether the answer is correct
-			this.submissionArray.forEach(submission => {
-				const formattedQuestions = this.checkHasAnswered(submission.questions, submission.peerId);
-				submission.questions = formattedQuestions;
-				submission.questions = this.evaluateMyAnswers(submission.questions);
-				submission.answeredDate = this.getAnsweredDate(submission.questions);
-			});
-			console.log(this.submissionArray);
-			this.loadingSubmissions = false;
-		} else {
-			this.loadingSubmissions = false;
-		}
 	}
 	
 	private checkHasAnswered(questions, userId) {
@@ -188,39 +111,6 @@ export class ContentQuizComponent implements OnInit {
 			});
 		}
 		return questions;
-	}
-	
-	private evaluateMyAnswers(questions) {
-		questions.forEach(question => {
-			if (question.myAnswer) {
-				if (question.type === 'single-choice') {
-					if (question.myAnswer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(question.myAnswer.answer, 10)) {
-						question.isCorrect = true;
-						question.isWrong = false;
-					} else {
-						question.isCorrect = false;
-						question.isWrong = true;
-					}
-				} else {
-					if (question.myAnswer.isEvaluated && question.myAnswer.marks === question.marks) {
-						question.isCorrect = true;
-						question.isWrong = false;
-					} else if (question.myAnswer.isEvaluated && question.myAnswer.marks === 0) {
-						question.isCorrect = false;
-						question.isWrong = true;
-					}
-				}
-			}
-		});
-		return questions;
-	}
-	
-	private getAnsweredDate(questions) {
-		if (questions.length > 0 && questions[0] && questions[0].myAnswer) {
-			return moment(questions[0].myAnswer.createdAt).format('Do MMM, YYYY');
-		} else {
-			return '';
-		}
 	}
 	
 	private initializeForms() {

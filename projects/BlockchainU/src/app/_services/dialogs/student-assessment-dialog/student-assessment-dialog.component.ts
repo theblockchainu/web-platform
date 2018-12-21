@@ -1,11 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
+import {Component, OnInit, Inject, ViewChild} from '@angular/core';
+import {MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatTable, MatDialog} from '@angular/material';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {Router} from '@angular/router';
 import {environment} from '../../../../environments/environment';
 import {AssessmentService} from '../../assessment/assessment.service';
 import {CollectionService} from '../../collection/collection.service';
 import * as _ from 'lodash';
+import {ViewQuizSubmissionComponent} from '../view-quiz-submission/view-quiz-submission.component';
 
 @Component({
 	selector: 'app-student-assessment-dialog',
@@ -16,19 +17,24 @@ export class StudentAssessmentDialogComponent implements OnInit {
 
 	public assessmentForm: FormGroup;
 	public pendingParticipants = false;
+	public loadingQuizSubmissions = true;
+	public contentWiseSubmissionArray = [];
+	public displayedSubmissionTableColumns = ['questionsAnswered'];
+	
+	@ViewChild(MatTable) table: MatTable<any>;
 
 	constructor(public dialogRef: MatDialogRef<StudentAssessmentDialogComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		private router: Router,
+		private dialog: MatDialog,
 		private snackBar: MatSnackBar,
 		private assessmentService: AssessmentService,
 		private collectionService: CollectionService,
 		private _fb: FormBuilder) { }
 
 	ngOnInit() {
-		
-		console.log(this.data);
 		this.loadData();
+		this.loadQuizAssessments();
 	}
 	
 	private loadData() {
@@ -150,6 +156,25 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			participants: this._fb.array(participantsInitArray)
 		});
 	}
+	
+	private loadQuizAssessments() {
+		this.loadingQuizSubmissions = true;
+		this.contentWiseSubmissionArray = [];
+		if (this.data.quizContents && this.data.quizContents.length > 0) {
+			this.data.quizContents.forEach(quizContent => {
+				this.assessmentService.processQuizSubmissions(quizContent)
+					.subscribe(res => {
+						const submissionObject = {
+							quizId: quizContent.id,
+							quizTitle: quizContent.title,
+							quizSubmissions: res
+						};
+						this.loadingQuizSubmissions = false;
+						this.contentWiseSubmissionArray.push(submissionObject);
+					});
+			});
+		}
+	}
 
 	public getGyanForRule(gyanPercent, totalGyan) {
 		if (!gyanPercent || !totalGyan) {
@@ -208,6 +233,32 @@ export class StudentAssessmentDialogComponent implements OnInit {
 				console.log(err);
 				participant.controls['isOnEthereum'].patchValue(false);
 				participant.controls['savingOnEthereum'].patchValue(false);
+			});
+	}
+	
+	public filterMySubmissions(submissions, userId) {
+		return _.filter(submissions, (s) => {
+			return s.peerId === userId;
+		});
+	}
+	
+	public openQuizSubmission(element) {
+		let dialogRef: MatDialogRef<ViewQuizSubmissionComponent>;
+		
+		dialogRef = this.dialog.open(ViewQuizSubmissionComponent, {
+			panelClass: 'responsive-dialog',
+			width: '45vw',
+			height: '100vh',
+			disableClose: true,
+			data: {
+				content: element
+			}
+		});
+		dialogRef.afterClosed()
+			.subscribe(res => {
+				if (res) {
+					element = res;
+				}
 			});
 	}
 

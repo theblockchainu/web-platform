@@ -12,7 +12,7 @@ import { map, take } from 'rxjs/operators';
 export class AuthenticationService {
 	public envVariable;
 	public userId;
-	isLoginSubject = new BehaviorSubject<boolean>(this.hasToken());
+	public isLoginSubject = new BehaviorSubject<boolean>(this.hasToken());
 
 	constructor(private http: HttpClient,
 		private _cookieUtilsService: CookieUtilsService,

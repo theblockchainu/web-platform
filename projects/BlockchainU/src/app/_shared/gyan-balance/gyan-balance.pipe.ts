@@ -24,7 +24,7 @@ export class GyanBalancePipe implements PipeTransform {
 			if (convertTo === 'USD') {
 				return this._profileService.getPotentialKarmaRewards(userId, convertTo).pipe(
 					map((val: any) => {
-						if (typeof val === 'number' && typeof val === 'string') {
+						if (typeof val === 'number' || typeof val === 'string') {
 							return val;
 						} else {
 							return 0;
@@ -40,7 +40,7 @@ export class GyanBalancePipe implements PipeTransform {
 			}
 			return this._profileService.getGyanBalance(userId, type).pipe(
 				map((val: any) => {
-					if (typeof val === 'number' && typeof val === 'string') {
+					if (typeof val === 'number' || typeof val === 'string') {
 						return val;
 					} else {
 						return 0;
