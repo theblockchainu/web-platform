@@ -1,10 +1,8 @@
 import { Component, OnInit, Input, ViewChild, ViewContainerRef, OnChanges } from '@angular/core';
-import { MatButtonToggleChange, MatBottomSheet } from '@angular/material';
+import { MatButtonToggleChange, MatBottomSheet, MatSnackBar } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
 import { CorestackService } from '../../../_services/corestack/corestack.service';
 import { BlockchainKeysComponent } from './blockchain-keys/blockchain-keys.component';
-import { LabCredentialsComponent } from './lab-credentials/lab-credentials.component';
-
 
 @Component({
   selector: 'app-code-labs',
@@ -23,7 +21,8 @@ export class CodeLabsComponent implements OnInit, OnChanges {
   constructor(
     private bottomSheet: MatBottomSheet,
     private corestackService: CorestackService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -98,25 +97,9 @@ export class CodeLabsComponent implements OnInit, OnChanges {
     });
   }
 
-  openLoginInfo() {
-    let userAccessDetails;
-    switch (this.selectedTab) {
-      case 'code':
-        console.log('refresh ice coder');
-        userAccessDetails = this.ice_coder_settings;
-        break;
-      case 'compile':
-        userAccessDetails = this.ice_coder_settings;
-        break;
-      default:
-        break;
-    }
-
-    this.matDialog.open(LabCredentialsComponent, {
-      data: userAccessDetails,
-      width: '30vw'
-      // backdropClass: 'invisible-backdrop'
+  public onCopySuccess(field: string) {
+    this.snackBar.open(field + ' copied to clipboard', 'Close', {
+      duration: 5000
     });
   }
-
 }
