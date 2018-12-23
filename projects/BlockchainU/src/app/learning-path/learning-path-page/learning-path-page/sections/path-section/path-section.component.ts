@@ -5,6 +5,7 @@ import { CollectionService } from '../../../../../_services/collection/collectio
 import * as moment from 'moment';
 import { CookieUtilsService } from '../../../../../_services/cookieUtils/cookie-utils.service';
 import { MatSnackBar } from '@angular/material';
+import { DialogsService } from '../../../../../_services/dialogs/dialog.service';
 declare var fbq;
 @Component({
   selector: 'app-path-section',
@@ -30,7 +31,8 @@ export class PathSectionComponent implements OnChanges, OnInit {
     private _certificateService: CertificateService,
     private _collectionService: CollectionService,
     private _cookieService: CookieUtilsService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private _dialogService: DialogsService
   ) {
     this.envVariable = environment;
   }
@@ -123,6 +125,7 @@ export class PathSectionComponent implements OnChanges, OnInit {
 
         // get Content fullname
         collection.typeFullName = this._collectionService.getCollectionContentType(collection.type);
+        collection.subCategoryFullName = this._collectionService.getContentTypeFullName(collection.subCategory);
 
         learningPathContent.courses[0] = collection;
       }
@@ -208,7 +211,7 @@ export class PathSectionComponent implements OnChanges, OnInit {
         });
       }
     } else {
-      // this.dialogsService.openSignup('/experience/' + this.experience.id);
+      this._dialogService.openSignup('/learning-path/' + this.learningPath.id);
     }
   }
 
