@@ -8,3 +8,16 @@
   background: #ffffff !important;
   padding-top: 2vh;
 }
+
+.credentials-box {
+  z-index: 2;
+  position: absolute;
+  bottom: 3vh;
+  background: white;
+  left: 20vh;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 75px;
+  padding-top: 5px;
+}
