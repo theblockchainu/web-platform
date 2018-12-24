@@ -11,43 +11,45 @@ declare var fbq: any;
 	styleUrls: ['./learning-path-card.component.scss']
 })
 export class LearningPathCardComponent implements OnInit, OnChanges {
-	envVariable: any;
-	userId: string;
-	totalHours: number;
-	
-	@Input() learningPath: any;
-	@Input() cardsPerRow = 2;
-	@Output() refresh = new EventEmitter<any>();
-	
-	constructor(
-		private _cookieUtilsService: CookieUtilsService,
-		public _collectionService: CollectionService,
-		public _dialogsService: DialogsService
-	) { }
-	
-	ngOnInit() {
-		this.envVariable = environment;
-		this.userId = this._cookieUtilsService.getValue('userId');
-	}
-	
-	ngOnChanges() {
-		this.calculateLearningHours();
-	}
-	
-	private calculateLearningHours() {
-		this.totalHours = 0;
-		console.log(this.learningPath);
-		this.learningPath.contents.forEach(content => {
-			if (content.courses && content.courses.length > 0) {
-				if (content.courses[0].type === 'guide') {
-					const guideHours = this._collectionService.calculateDuration(content.courses[0].description.length);
-					console.log('guideHours' + guideHours);
-					this.totalHours += guideHours;
-				} else {
-					this.totalHours += content.courses[0].totalHours;
-				}
-			}
-		});
-	}
-	
+  envVariable: any;
+  userId: string;
+
+  @Input() learningPath: any;
+  @Input() cardsPerRow = 2;
+  @Output() refresh = new EventEmitter<any>();
+
+  constructor(
+    private _cookieUtilsService: CookieUtilsService,
+    public _collectionService: CollectionService,
+    public _dialogsService: DialogsService
+  ) { }
+
+  ngOnInit() {
+    this.envVariable = environment;
+    this.userId = this._cookieUtilsService.getValue('userId');
+  }
+
+  ngOnChanges() {
+    if (!this.learningPath.totalHours) {
+      this.calculateLearningHours();
+    }
+  }
+
+  private calculateLearningHours() {
+    let totalHours = 0;
+    console.log(this.learningPath);
+    this.learningPath.contents.forEach(content => {
+      if (content.courses && content.courses.length > 0) {
+        if (content.courses[0].type === 'guide') {
+          const guideHours = this._collectionService.calculateDuration(content.courses[0].description.length);
+          console.log('guideHours' + guideHours);
+          totalHours += guideHours;
+        } else {
+          totalHours += content.courses[0].totalHours;
+        }
+      }
+    });
+    this.learningPath.totalHours = totalHours;
+  }
+
 }
