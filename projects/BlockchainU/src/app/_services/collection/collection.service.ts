@@ -1244,7 +1244,8 @@ export class CollectionService {
 	}
 
 	public calculateDuration(descriptionLength: number) {
-		return descriptionLength / 6000;
+		// in Hours
+		return parseFloat((descriptionLength / 72000).toFixed(2)); // word per minute considering 6 char per word and 200 word per minute
 	}
 
 }
