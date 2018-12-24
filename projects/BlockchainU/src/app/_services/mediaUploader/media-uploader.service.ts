@@ -37,7 +37,7 @@ export class MediaUploaderService {
 
 	public getUploadURL(file: File) {
 		return this.http.post(environment.apiUrl + '/api/media/getUploadUrl', {
-			name: file.name,
+			name: file.name.replace(/\W/g, ''),
 			ext: file.type.split('/')[1]
 		}, this.requestHeaderService.mediaOptions);
 	}

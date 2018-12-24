@@ -336,6 +336,8 @@ export class CollectionService {
 			fillerWord = 'session';
 		} else if (contentType === 'project') {
 			fillerWord = 'submission';
+		} else if (contentType === 'lab') {
+			return 'Code Labs';
 		}
 		return contentType + ' ' + fillerWord;
 	}
