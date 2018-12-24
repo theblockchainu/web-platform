@@ -144,10 +144,11 @@ export class ClassContentVideoComponent implements OnInit, AfterViewInit {
         const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
         const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
         contentForm.controls['imageUrl'].patchValue(url);
-        timer(10000).subscribe(res => {
+        timer(20000).subscribe(res => {
             console.log('Waiting over');
             if (this.loadingUploadedVideo) {
-                this.deleteFromContainer(url, 'video');
+            	console.log('Could not load video in 20 seconds. Time to delete the uploaded file');
+                // this.deleteFromContainer(url, 'video');
                 this.matSnackBar.open('Media format error: Please make sure you are using the specified format and the video has all the metadata and retry uploading. If error persists please contact us.', 'Close');
             }
         });

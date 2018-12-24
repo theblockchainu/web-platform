@@ -30,20 +30,19 @@
 					</mat-form-field>
 
 					<div class="form-group margin-bottom-20">
-						<label>Upload Video:</label>
+						<label>Upload A Video File</label>
 						<div class="upload-image-section imageHolder">
 							<app-upload-file (uploaded)="imageUploadNew($event)"></app-upload-file>
-							<h5>Max File Size
+							<h5 class="margin-top-10">Max File Size
 								<b>1000MB</b>. Allowed file types <b>.mp4, .mov, .mpeg</b>
 							</h5>
 							<div class="row margin-top-20" *ngIf="urlForVideo">
-								<span [hidden]="!loadingUploadedVideo">
+								<div [hidden]="!loadingUploadedVideo" class="col-md-12 margin-bottom-20">
 									<span>Fetching Video</span>
 									<mat-progress-bar mode="buffer"></mat-progress-bar>
-								</span>
-								<div class="col-md-11 embed-responsive embed-responsive-16by9 padding-left-0 pic delete imageContainer">
-									<video style="max-height: 40vh;" controls #video preload="metadata" (loadedmetadata)="onMetadata($event, video)"
-									 (error)="videoError($event)">
+								</div>
+								<div class="col-md-11 embed-responsive embed-responsive-16by9 pic delete imageContainer">
+									<video style="max-height: 40vh;" controls #video preload="metadata" (loadedmetadata)="onMetadata($event, video)" (error)="videoError($event)">
 										<source src="{{envVariable.apiUrl + urlForVideo}}" type="video/mp4" crossorigin>
 									</video>
 									<mat-icon (click)="deleteFromContainer(urlForVideo, 'video')" class="delete-button">close</mat-icon>
