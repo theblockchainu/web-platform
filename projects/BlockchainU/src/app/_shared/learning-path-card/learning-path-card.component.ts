@@ -6,9 +6,9 @@ import { DialogsService } from '../../_services/dialogs/dialog.service';
 declare var fbq: any;
 
 @Component({
-	selector: 'app-learning-path-card',
-	templateUrl: './learning-path-card.component.html',
-	styleUrls: ['./learning-path-card.component.scss']
+  selector: 'app-learning-path-card',
+  templateUrl: './learning-path-card.component.html',
+  styleUrls: ['./learning-path-card.component.scss']
 })
 export class LearningPathCardComponent implements OnInit, OnChanges {
   envVariable: any;
@@ -50,6 +50,8 @@ export class LearningPathCardComponent implements OnInit, OnChanges {
       }
     });
     this.learningPath.totalHours = totalHours;
+    console.log('this.learningPath.totalHours' + this.learningPath.totalHours);
   }
+
 
 }

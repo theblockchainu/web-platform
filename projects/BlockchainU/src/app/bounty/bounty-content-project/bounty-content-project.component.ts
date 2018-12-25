@@ -123,7 +123,8 @@ export class BountyContentProjectComponent implements OnInit {
 			;
 	}
 
-	imageUploadNew(url) {
+	imageUploadNew(uploadedObject) {
+		const url = uploadedObject.url;
 		this.urlForVideo = url;
 		const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
 		const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];

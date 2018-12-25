@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 import { RequestHeaderService } from '../../_services/requestHeader/request-header.service';
 import { ContentService } from '../../_services/content/content.service';
 import { timer } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, map, catchError } from 'rxjs/operators';
 declare var YT;
 
 @Component({
@@ -137,21 +137,23 @@ export class ClassContentVideoComponent implements OnInit, AfterViewInit {
         });
     }
 
-    public imageUploadNew(url) {
-        console.log(url);
-        this.urlForVideo = url;
-        this.loadingUploadedVideo = true;
-        const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
-        const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
-        contentForm.controls['imageUrl'].patchValue(url);
-        timer(20000).subscribe(res => {
-            console.log('Waiting over');
-            if (this.loadingUploadedVideo) {
-            	console.log('Could not load video in 20 seconds. Time to delete the uploaded file');
-                // this.deleteFromContainer(url, 'video');
-                this.matSnackBar.open('Media format error: Please make sure you are using the specified format and the video has all the metadata and retry uploading. If error persists please contact us.', 'Close');
-            }
-        });
+    public imageUploadNew(uploadedObject) {
+        console.log(uploadedObject);
+        const url = uploadedObject.url;
+        this.mediaUploader
+            .getDownloadUrl(uploadedObject.name)
+            .subscribe(res => {
+                console.log(res);
+                this.urlForVideo = res;
+                this.loadingUploadedVideo = true;
+                const contentsFArray = <FormArray>this.itenaryForm.controls['contents'];
+                const contentForm = <FormGroup>contentsFArray.controls[this.lastIndex];
+                contentForm.controls['imageUrl'].patchValue(url);
+            }, err => {
+                console.log('err');
+                console.log(err);
+            });
+
     }
 
     deleteFromContainer(fileUrl, fileType) {
@@ -290,6 +292,7 @@ export class ClassContentVideoComponent implements OnInit, AfterViewInit {
         contentForm.controls['videoLength'].patchValue(video.duration);
         this.loadingUploadedVideo = false;
     }
+
     videoError(err) {
         console.log(err);
     }

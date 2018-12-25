@@ -2,25 +2,26 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { flatMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 @Component({
 	selector: 'app-upload-file',
 	templateUrl: './upload-file.component.html',
 	styleUrls: ['./upload-file.component.scss']
 })
 export class UploadFileComponent implements OnInit {
-	
+
 	public uploadingFile: boolean;
 	public uploadProgress: number;
-	
+
 	@Output() uploaded = new EventEmitter<any>();
-	
+
 	constructor(
 		private mediaUploader: MediaUploaderService
 	) { }
-	
+
 	ngOnInit() {
 	}
-	
+
 	upload(event) {
 		this.uploadingFile = true;
 		for (const file of event.files) {
@@ -55,7 +56,7 @@ export class UploadFileComponent implements OnInit {
 						url: downloadUrl
 					};
 					this.mediaUploader.uploadMedia(mediaBody).subscribe((res: any) => {
-						this.uploaded.next(res.url);
+						this.uploaded.next(res);
 						this.uploadingFile = false;
 					});
 				}
@@ -65,5 +66,5 @@ export class UploadFileComponent implements OnInit {
 			});
 		}
 	}
-	
+
 }

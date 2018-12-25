@@ -10,6 +10,8 @@ import { environment } from '../../../../environments/environment';
 import { VgAPI } from 'videogular2/core';
 import { ContentService } from '../../../_services/content/content.service';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
+import { MediaUploaderService } from '../../../_services/mediaUploader/media-uploader.service';
+
 @Component({
 	selector: 'app-content-video',
 	templateUrl: './content-video.component.html',
@@ -29,6 +31,7 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 	public attachmentUrls = [];
 	public duration = 0;
 	public envVariable;
+	videoDownloadUrl: string;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -41,7 +44,8 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 		private router: Router,
 		// private deviceService: DeviceDetectorService,
 		private contentService: ContentService,
-		private dialogsService: DialogsService
+		private dialogsService: DialogsService,
+		private mediaUploaderService: MediaUploaderService
 	) {
 		this.envVariable = environment;
 		this.userType = data.userType;
@@ -55,9 +59,21 @@ export class ContentVideoComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		console.log(this.data);
 		this.initializeForms();
 		this.getDiscussions();
+		this.getVideoUrl();
 		this.duration = Math.round(this.data.content.videoLength / 60);
+	}
+
+	getVideoUrl() {
+		const urlArray = this.data.content.imageUrl.split('/');
+		const filename = urlArray[urlArray.length - 1];
+		this.mediaUploaderService.getDownloadUrl(filename).subscribe((res: any) => {
+			this.videoDownloadUrl = res;
+		}, err => {
+			console.log(err);
+		});
 	}
 
 	ngOnDestroy() {

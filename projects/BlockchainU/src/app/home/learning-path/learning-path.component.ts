@@ -277,13 +277,46 @@ export class LearningPathComponent implements OnInit {
 		if (this.selectedTopics.length < 1) {
 			query = {
 				'include': [
-					{ 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'participants', 'topics', 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'learning-path' } } }
+					{
+						'relation': 'collections', 'scope':
+						{
+							'include': [{
+								'owners':
+									['reviewsAboutYou', 'profiles']
+							}, 'participants', 'topics', 'calendars',
+							{ 'bookmarks': 'peer' },
+							{
+								'relation': 'contents',
+								'scope': {
+									'include': [{ 'courses': [{ 'owners': ['profiles'] }] }],
+									'order': 'contentIndex ASC'
+								}
+							}
+							],
+							'where': { 'type': 'learning-path' }
+						}
+					}
 				]
 			};
 		} else {
 			query = {
 				'include': [
-					{ 'relation': 'collections', 'scope': { 'include': [{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'participants', 'topics', 'calendars', { 'bookmarks': 'peer' }, { 'contents': ['schedules', 'locations'] }], 'where': { 'type': 'learning-path' } } }
+					{
+						'relation': 'collections',
+						'scope': {
+							'include':
+								[{ 'owners': ['reviewsAboutYou', 'profiles'] },
+									'participants', 'topics', 'calendars', { 'bookmarks': 'peer' },
+								{
+									'relation': 'contents',
+									'scope': {
+										'include': [{ 'courses': [{ 'owners': ['profiles'] }] }],
+										'order': 'contentIndex ASC'
+									}
+								}],
+							'where': { 'type': 'learning-path' }
+						}
+					}
 				],
 				'where': { or: this.selectedTopics }
 			};

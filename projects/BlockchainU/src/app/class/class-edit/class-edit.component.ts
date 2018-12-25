@@ -954,7 +954,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			});
 		});
-		console.log('totalLength' + totalLength);
+		// console.log('totalLength' + totalLength);
 		this.totalDuration = parseFloat((totalLength / 3600).toFixed(2));
 		this.totalGyan = this.totalDuration;
 		this.class.controls['academicGyan'].patchValue(totalLength);
