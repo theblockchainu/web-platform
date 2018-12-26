@@ -57,4 +57,8 @@ export class MediaUploaderService {
 		return this.http.delete(environment.apiUrl + fileUrl, this.requestHeaderService.options);
 	}
 
+	getDownloadUrl(fileName: string) {
+		return this.http.get(environment.apiUrl + '/api/media/getDownloadUrl/' + fileName, this.requestHeaderService.options);
+	}
+
 }

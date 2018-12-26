@@ -42,8 +42,9 @@
 									<mat-progress-bar mode="buffer"></mat-progress-bar>
 								</div>
 								<div class="col-md-11 embed-responsive embed-responsive-16by9 pic delete imageContainer">
-									<video style="max-height: 40vh;" controls #video preload="metadata" (loadedmetadata)="onMetadata($event, video)" (error)="videoError($event)">
-										<source src="{{envVariable.apiUrl + urlForVideo}}" type="video/mp4" crossorigin>
+									<video style="max-height: 40vh;" controls #video preload="metadata" (loadedmetadata)="onMetadata($event, video)"
+									 (error)="videoError($event)">
+										<source [src]="urlForVideo | safe:'resourceUrl'" type="video/mp4" crossorigin>
 									</video>
 									<mat-icon (click)="deleteFromContainer(urlForVideo, 'video')" class="delete-button">close</mat-icon>
 								</div>
