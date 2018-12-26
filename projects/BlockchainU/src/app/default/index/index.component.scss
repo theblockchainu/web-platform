@@ -399,7 +399,8 @@ a.explore-tile .tile-content h3 {
 	left: 0;
 	right: 0;
 	display: table;
-	height: 320px;
+	height:	-webkit-fill-available;
+	width: -webkit-fill-available;
 	vertical-align: middle;
 	z-index: 2;
 }
@@ -488,8 +489,9 @@ a.explore-tile .tile-content h3 {
 	font-size: 36px;
 	color: rgba(255, 255, 255, 1);
 	letter-spacing: -2.5px;
-	top: calc(50% - 10px);
-	position: relative;
+	display: table-cell;
+	vertical-align: middle;
+	line-height: 1;
 }
 
 .peers-teaching .custom-card .card-image {
