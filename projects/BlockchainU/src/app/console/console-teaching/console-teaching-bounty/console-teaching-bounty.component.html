@@ -123,6 +123,9 @@
 										<button mat-menu-item (click)="_dialogService.viewPromoCodeDialog(collection.id)">
 											View Promo Codes
 										</button>
+										<button mat-menu-item (click)="cloneCollection(collection.id)">
+											Clone
+										</button>
 									</mat-menu>
 									<mat-card-actions *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).hasStarted">
 										<button mat-raised-button [routerLink]="['/bounty',collection.id]">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
@@ -210,6 +213,9 @@
 										<button mat-menu-item [routerLink]="['/bounty',collection.id,'edit','1']">
 											Edit Bounty
 										</button>
+										<button mat-menu-item (click)="cloneCollection(collection.id)">
+											Clone
+										</button>
 									</mat-menu>
 									<mat-card-actions *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).hasStarted">
 										<button mat-raised-button [routerLink]="['/bounty',collection.id]">{{_collectionService.getUpcomingEvent(collection).upcomingEventButtonText}}</button>
@@ -279,6 +285,9 @@
 										<button mat-menu-item [routerLink]="['/bounty',collection.id]">
 											View Bounty
 										</button>
+										<button mat-menu-item (click)="cloneCollection(collection.id)">
+											Clone
+										</button>
 									</mat-menu>
 								</div>
 								<div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'submitted'">
@@ -321,6 +330,9 @@
 										</button>
 										<button mat-menu-item [routerLink]="['/bounty',collection.id]">
 											View Bounty
+										</button>
+										<button mat-menu-item (click)="cloneCollection(collection.id)">
+											Clone
 										</button>
 									</mat-menu>
 								</div>
@@ -398,6 +410,9 @@
 											</button>
 											<button mat-menu-item (click)="_dialogService.viewPromoCodeDialog(collection.id)">
 												View Promo Codes
+											</button>
+											<button mat-menu-item (click)="cloneCollection(collection.id)">
+												Clone
 											</button>
 										</mat-menu>
 										<mat-card-actions>

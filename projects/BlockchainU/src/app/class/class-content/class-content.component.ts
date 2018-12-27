@@ -126,14 +126,14 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 		const body = collection;
 		this._collectionService.patchCollection(collection.id, body).subscribe(
 			(response: any) => {
-				const result = response;
-				let collectionId;
-				if (result.isNewInstance) {
-					collectionId = result.id;
-					this.reload(collectionId, 16);
-				} else {
-					window.location.reload();
-				}
+				// const result = response;
+				// let collectionId;
+				// if (result.isNewInstance) {
+				// 	collectionId = result.id;
+				// 	this.reload(collectionId, 16);
+				// } else {
+				// 	window.location.reload();
+				// }
 			});
 	}
 	
@@ -289,16 +289,16 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 								if (resp1.status === 200) {
 									contentGroup.controls.pending.setValue(false);
 								}
-								if (collectionId) {
-									this.reload(collectionId, 16);
-								}
+								// if (collectionId) {
+								// 	this.reload(collectionId, 16);
+								// }
 							})
 						;
 					}
 					
-					if (collectionId) {
-						this.reload(collectionId, 16);
-					}
+					// if (collectionId) {
+					// 	this.reload(collectionId, 16);
+					// }
 				}
 			);
 	}
@@ -370,9 +370,9 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 								if (resp1.status === 200) {
 									contentGroup.controls.pending.setValue(false);
 								}
-								if (collectionId) {
-									this.reload(collectionId, 16);
-								}
+								// if (collectionId) {
+								// 	this.reload(collectionId, 16);
+								// }
 							});
 					}
 				}
@@ -390,15 +390,15 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 				.subscribe((response: any) => {
 					if (response !== null) {
 						const result = response;
-						if (result.isNewInstance) {
-							collectionId = result.id;
-							this.reload(collectionId, 16);
-						} else {
+						// if (result.isNewInstance) {
+						// 	collectionId = result.id;
+						// 	this.reload(collectionId, 16);
+						// } else {
 							const itenary = <FormArray>this.myForm.controls.itenary;
 							const form = <FormGroup>itenary.controls[index];
 							const contentsArray = <FormArray>form.controls.contents;
 							contentsArray.removeAt(eventIndex);
-						}
+						// }
 					} else {
 						const itenary = <FormArray>this.myForm.controls.itenary;
 						const form = <FormGroup>itenary.controls[index];
@@ -413,12 +413,12 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 					.subscribe((response: any) => {
 						if (response !== null) {
 							const result = response;
-							if (result && result.isNewInstance) {
-								collectionId = result.id;
-								this.reload(collectionId, 16);
-							} else {
+							// if (result && result.isNewInstance) {
+							// 	collectionId = result.id;
+							// 	this.reload(collectionId, 16);
+							// } else {
 								const itenary = <FormArray>this.myForm.controls.itenary;
-							}
+							// }
 						} else {
 							const itenary = <FormArray>this.myForm.controls.itenary;
 						}

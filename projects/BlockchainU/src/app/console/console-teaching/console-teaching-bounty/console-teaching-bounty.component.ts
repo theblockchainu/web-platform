@@ -237,4 +237,17 @@ export class ConsoleTeachingBountyComponent implements OnInit {
 		});
 	}
 
+	/**
+	 * cloneCollection
+	 */
+	public cloneCollection(collectionId: string) {
+		this._collectionService.cloneCollection(collectionId)
+			.subscribe(res => {
+				this.fetchData();
+				this.snackBar.open('Bounty Cloned', 'Close', { duration: 3000 });
+			}, err => {
+				console.log(err);
+				this.snackBar.open('An error occured', 'Close', { duration: 3000 });
+			});
+	}
 }

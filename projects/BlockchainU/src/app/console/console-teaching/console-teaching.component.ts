@@ -55,7 +55,7 @@ export class ConsoleTeachingComponent implements OnInit {
         this.accountVerified = (this._cookieUtilsService.getValue('accountApproved') === 'true');
         this.getSessions();
         if (this.userId) {
-            this._profileService.getProfileData(this.userId, {include: 'peer'}).subscribe(res => {
+            this._profileService.getProfileData(this.userId, { include: 'peer' }).subscribe(res => {
                 this.profile = res[0];
                 this.isAdmin = this.profile.peer[0].isAdmin;
             });
@@ -167,7 +167,7 @@ export class ConsoleTeachingComponent implements OnInit {
         collection.contents.forEach(content => {
             max++;
             const currentCalendar = this._collectionService.getCurrentCalendar(collection.calendars);
-            if (currentCalendar !== undefined) {
+            if (currentCalendar !== undefined && content.schedules) {
                 const contentStartDate = moment(currentCalendar.startDate).add(content.schedules[0].startDay, 'days');
                 const contentEndDate = contentStartDate.add(content.schedules[0].endDay, 'days');
                 switch (content.type) {
