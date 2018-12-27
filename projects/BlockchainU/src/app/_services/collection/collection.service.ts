@@ -289,10 +289,10 @@ export class CollectionService {
 		const calendars = collection.calendars;
 		const currentCalendar = this.getCurrentCalendar(calendars);
 		contents.sort((a, b) => {
-			if (a.schedules[0].startDay < b.schedules[0].startDay) {
+			if (a.schedules && b.schedules && a.schedules[0].startDay < b.schedules[0].startDay) {
 				return -1;
 			}
-			if (a.schedules[0].startDay > b.schedules[0].startDay) {
+			if (a.schedules && b.schedules && a.schedules[0].startDay > b.schedules[0].startDay) {
 				return 1;
 			}
 			return 0;
@@ -310,8 +310,8 @@ export class CollectionService {
 			} else if (contents[0].type === 'project') {
 				fillerWord = 'submission';
 			}
-			const contentStartDate = moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days');
-			const timeToStart = contentStartDate.diff(moment(), 'days');
+			const contentStartDate = (contents[0].schedules) ? moment(currentCalendar.startDate).add(contents[0].schedules[0].startDay, 'days') : null;
+			const timeToStart = contentStartDate ? contentStartDate.diff(moment(), 'days') : -1;
 			contents[0].timeToStart = timeToStart;
 			contents[0].fillerWord = fillerWord;
 			contents[0].hasStarted = false;
@@ -873,10 +873,12 @@ export class CollectionService {
 		const itenariesObj = {};
 		const itenaryArray = [];
 		_class.contents.forEach(contentObj => {
-			if (itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
-				itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
-			} else {
-				itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
+			if (contentObj.schedules) {
+				if (itenariesObj.hasOwnProperty(contentObj.schedules[0].startDay)) {
+					itenariesObj[contentObj.schedules[0].startDay].push(contentObj);
+				} else {
+					itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
+				}
 			}
 		});
 		console.log(itenariesObj);
@@ -1246,6 +1248,13 @@ export class CollectionService {
 	public calculateDuration(descriptionLength: number) {
 		// in Hours
 		return parseFloat((descriptionLength / 72000).toFixed(2)); // word per minute considering 6 char per word and 200 word per minute
+	}
+
+	/**
+	 * cloneCollection
+	 */
+	public cloneCollection(collectionId: string) {
+		return this.httpClient.post(environment.apiUrl + '/api/collections/clone/' + collectionId, {}, this.requestHeaderService.options);
 	}
 
 }
