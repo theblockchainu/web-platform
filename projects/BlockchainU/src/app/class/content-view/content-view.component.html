@@ -41,10 +41,10 @@
 						<div class="col-md-3" style="padding-left: 0px; margin-right: 10px;" (click)="findAndOpenDialog(i)">
 							<img *ngIf="Content.value.type !== 'video' && Content.value.type !== 'quiz'" src="{{envVariable.apiUrl + Content.value.imageUrl}}/500"
 							     (error)="imgErrorHandler($event)" style="width: 140px;">
-							<video *ngIf="Content.value.imageUrl && Content.value.type === 'video' && !Content.value.youtubeId" width="100%" class="center-block itenary-media"
-							       preload="metadata">
+							<video *ngIf="Content.value.imageUrl && Content.value.type === 'video' && !Content.value.youtubeId" width="100%" class="center-block itenary-media" preload="metadata" poster="../../../assets/images/community-banner-bg.jpg">
 								<source src="{{envVariable.apiUrl + Content.value.imageUrl}}" type="video/mp4">
 							</video>
+							<img *ngIf="!Content.value.imageUrl && Content.value.type === 'video' && !Content.value.youtubeId" style="width: 140px;" src="/assets/images/placeholder-image.jpg">
 							<img *ngIf="Content.value.type === 'quiz'" style="width: 140px;" src="/assets/images/quizcover.jpg">
 							<img style="width: 140px;" *ngIf="Content.value.type==='video' && Content.value.youtubeId" [src]="'https://img.youtube.com/vi/'+Content.value.youtubeId+'/0.jpg'| safe:'resourceUrl'" (error)="imgErrorHandler($event)">
 						</div>

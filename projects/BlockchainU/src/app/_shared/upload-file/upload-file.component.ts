@@ -1,8 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import { MediaUploaderService } from '../../_services/mediaUploader/media-uploader.service';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { flatMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 @Component({
 	selector: 'app-upload-file',
 	templateUrl: './upload-file.component.html',
@@ -13,6 +12,7 @@ export class UploadFileComponent implements OnInit {
 	public uploadingFile: boolean;
 	public uploadProgress: number;
 
+	@Input() allowedTypes = '*';
 	@Output() uploaded = new EventEmitter<any>();
 
 	constructor(

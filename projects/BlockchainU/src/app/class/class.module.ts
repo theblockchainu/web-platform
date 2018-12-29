@@ -14,6 +14,7 @@ import {VgBufferingModule} from 'videogular2/buffering';
 import {VgCoreModule} from 'videogular2/core';
 import { ClassContentQuizComponent } from './class-content-quiz/class-content-quiz.component';
 import {DataSharingService} from '../_services/data-sharing-service/data-sharing.service';
+import {MatVideoModule} from 'mat-video';
 @NgModule({
     imports: [
         SharedModule,
@@ -22,6 +23,7 @@ import {DataSharingService} from '../_services/data-sharing-service/data-sharing
 		VgControlsModule,
 		VgOverlayPlayModule,
 		VgBufferingModule,
+		MatVideoModule,
 	],
     declarations: [
         ClassEditComponent,
