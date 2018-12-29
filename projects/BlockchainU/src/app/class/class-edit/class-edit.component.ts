@@ -542,15 +542,18 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public getContents(contents) {
 		const itenaries = {};
 		for (const contentObj of contents) {
-			contentObj.schedule = contentObj.schedules[0];
-			delete contentObj.schedules;
-			if (itenaries.hasOwnProperty(contentObj.schedule.startDay)) {
-				itenaries[contentObj.schedule.startDay].push(contentObj);
-			} else {
-				itenaries[contentObj.schedule.startDay] = [contentObj];
-				this.itenariesForMenu.push(contentObj.schedule.startDay);
+			if (contentObj.schedules) {
+				contentObj.schedule = contentObj.schedules[0];
+				delete contentObj.schedules;
+				if (itenaries.hasOwnProperty(contentObj.schedule.startDay)) {
+					itenaries[contentObj.schedule.startDay].push(contentObj);
+				} else {
+					itenaries[contentObj.schedule.startDay] = [contentObj];
+					this.itenariesForMenu.push(contentObj.schedule.startDay);
+				}
 			}
 		}
+
 		if (this.sidebarMenuItems) {
 			this.sidebarMenuItems[2]['submenu'] = [];
 			let i = 1;
@@ -918,6 +921,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.dialogsService.openCollectionCloneDialog({ type: 'class' })
 				.subscribe((result) => {
 					if (result === 'accept') {
+						this.class.controls['status'].patchValue('draft');
+						this.classData.status = 'draft';
 						this.executeSubmitClass(data, timeline, this.step);
 					} else if (result === 'reject') {
 						this.router.navigate(['/console/teaching/classes']);
@@ -994,12 +999,12 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			(response: any) => {
 				const result = response;
 				let collectionId;
-				if (result.isNewInstance) {
-					this.class.controls.status.setValue(result.status);
-					collectionId = result.id;
-				} else {
+				// if (result.isNewInstance) {
+				// 	this.class.controls.status.setValue(result.status);
+				// 	collectionId = result.id;
+				// } else {
 					collectionId = this.classId;
-				}
+				// }
 				result.topics = this.classData.topics;
 				result.contents = this.classData.contents;
 				result.owners = this.classData.owners;

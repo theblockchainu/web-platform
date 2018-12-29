@@ -451,7 +451,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		}
 		console.log(itenary);
 	}
-	
+
 	setContentQuestion(question) {
 		return this._fb.group({
 			question_text: [question.question_text],
@@ -463,7 +463,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			isRequired: [question.isRequired]
 		});
 	}
-	
+
 	initOption(options) {
 		if (options) {
 			const optionArray = [];
@@ -970,6 +970,8 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 			this.dialogsService.openCollectionCloneDialog({ type: 'experience' })
 				.subscribe((result) => {
 					if (result === 'accept') {
+						this.experience.controls['status'].patchValue('draft');
+						this.experienceData.status = 'draft';
 						this.executeSubmitExperience(data, timeline, this.step);
 					} else if (result === 'reject') {
 						this.router.navigate(['/console/teaching/experiences']);

@@ -126,12 +126,12 @@ export class GuideContentComponent implements OnInit, AfterViewInit {
 			(response: any) => {
 				const result = response;
 				let collectionId;
-				if (result.isNewInstance) {
-					collectionId = result.id;
-					this.reload(collectionId, 13);
-				} else {
-					window.location.reload();
-				}
+				// if (result.isNewInstance) {
+				// 	collectionId = result.id;
+				// 	this.reload(collectionId, 13);
+				// } else {
+				// 	window.location.reload();
+				// }
 			});
 	}
 
@@ -289,9 +289,9 @@ export class GuideContentComponent implements OnInit, AfterViewInit {
 							ContentGroup.controls.pending.setValue(false);
 							Form.controls['startDay'].patchValue(resp.startDay);
 						}
-						if (collectionId) {
-							this.reload(collectionId, 13);
-						}
+						// if (collectionId) {
+						// 	this.reload(collectionId, 13);
+						// }
 					})
 					;
 
@@ -306,9 +306,9 @@ export class GuideContentComponent implements OnInit, AfterViewInit {
 								const ContentGroup = <FormGroup>ContentsArray.controls[event.value];
 								ContentGroup.controls.pending.setValue(false);
 							}
-							if (collectionId) {
-								this.reload(collectionId, 13);
-							}
+							// if (collectionId) {
+							// 	this.reload(collectionId, 13);
+							// }
 						})
 						;
 				}
@@ -395,9 +395,9 @@ export class GuideContentComponent implements OnInit, AfterViewInit {
 						})
 						;
 				}
-				if (collectionId) {
-					this.reload(collectionId, 13);
-				}
+				// if (collectionId) {
+				// 	this.reload(collectionId, 13);
+				// }
 			})
 			;
 	}
@@ -413,15 +413,15 @@ export class GuideContentComponent implements OnInit, AfterViewInit {
 				.subscribe((response: any) => {
 					if (response !== null) {
 						const result = response;
-						if (result.isNewInstance) {
-							collectionId = result.id;
-							this.reload(collectionId, 13);
-						} else {
+						// if (result.isNewInstance) {
+						// 	collectionId = result.id;
+						// 	this.reload(collectionId, 13);
+						// } else {
 							const itenary = <FormArray>this.myForm.controls.itenary;
 							const form = <FormGroup>itenary.controls[index];
 							const contentsArray = <FormArray>form.controls.contents;
 							contentsArray.removeAt(eventIndex);
-						}
+						// }
 					} else {
 						const itenary = <FormArray>this.myForm.controls.itenary;
 						const form = <FormGroup>itenary.controls[index];
@@ -437,12 +437,12 @@ export class GuideContentComponent implements OnInit, AfterViewInit {
 					.subscribe((response: any) => {
 						if (response !== null) {
 							const result = response;
-							if (result && result.isNewInstance) {
-								collectionId = result.id;
-								this.reload(collectionId, 13);
-							} else {
+							// if (result && result.isNewInstance) {
+							// 	collectionId = result.id;
+							// 	this.reload(collectionId, 13);
+							// } else {
 								const itenary = <FormArray>this.myForm.controls.itenary;
-							}
+							// }
 						} else {
 							const itenary = <FormArray>this.myForm.controls.itenary;
 						}
