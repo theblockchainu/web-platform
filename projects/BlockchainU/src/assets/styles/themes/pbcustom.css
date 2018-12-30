@@ -2174,6 +2174,21 @@ MD-Editor Styling
 	margin-top: -4px;
 }
 
+.ui-fileupload-buttonbar .ui-button {
+	background: #ffffff !important;
+	color: #333 !important;
+	border: 2px solid #333 !important;
+}
+
+.ui-fileupload-buttonbar .ui-button .ui-button-icon-left {
+	top: 1px !important;
+	padding-right: 5px !important;
+}
+
+.videoplayer .video {
+	max-height: 70vh !important;
+}
+
 /* Extra small devices (phones, 600px and down) */
 
 @media only screen and (max-width: 600px) {
