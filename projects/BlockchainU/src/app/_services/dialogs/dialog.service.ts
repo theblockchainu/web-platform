@@ -67,6 +67,10 @@ import { SubmissionReviewDialogComponent } from './submission-review-dialog/subm
 import { WinnerDialogComponent } from './winner-dialog/winner-dialog.component';
 import { ViewQuizSubmissionComponent } from './view-quiz-submission/view-quiz-submission.component';
 import { ShowRSVPPopupComponent } from './show-rsvp-participants-dialog/show-rsvp-dialog.component';
+import { ContentOnlineDialogComponent } from './content-online-dialog/content-online-dialog.component';
+import { ContentQuizDialogComponent } from './content-quiz-dialog/content-quiz-dialog.component';
+import { ContentVideoDialogComponent } from './content-video-dialog/content-video-dialog.component';
+import { ContentProjectDialogComponent } from './content-project-dialog/content-project-dialog.component';
 @Injectable()
 export class DialogsService {
 
@@ -794,6 +798,90 @@ export class DialogsService {
             panelClass: 'responsive-dialog',
             width: '45vw',
             height: '90vh'
+        }).afterClosed();
+    }
+
+    /**
+     * onlineContentDialog
+     */
+    public onlineContentDialog(content: any, startDate: any, endDate: any, userType: string, collection: any, calendarId: string) {
+        return this.dialog.open(ContentOnlineDialogComponent, {
+            data: {
+                content: content,
+                startDate: startDate,
+                endDate: endDate,
+                userType: userType,
+                collectionId: collection.id,
+                collection: collection,
+                calendarId: calendarId
+            },
+            panelClass: 'responsive-dialog',
+            width: '45vw',
+            height: '100vh'
+        }).afterClosed();
+    }
+
+    /**
+     * quizContentDialog
+     */
+    public quizContentDialog(content: any, startDate: any, endDate: any, userType: string, collection: any,
+        calendarId: string, participants: Array<any>) {
+        return this.dialog.open(ContentQuizDialogComponent, {
+            data: {
+                content: content,
+                startDate: startDate,
+                endDate: endDate,
+                userType: userType,
+                collectionId: collection.id,
+                collection: collection,
+                calendarId: calendarId,
+                participants: participants
+            },
+            panelClass: 'responsive-dialog',
+            disableClose: true,
+            width: '45vw',
+            height: '100vh'
+        }).afterClosed();
+
+    }
+
+    /**
+     * videoContentDialog
+     */
+    public videoContentDialog(content: any, startDate: any, endDate: any, userType: string, collection: any,
+        calendarId: string) {
+        return this.dialog.open(ContentVideoDialogComponent, {
+            data: {
+                content: content,
+                startDate: startDate,
+                endDate: endDate,
+                userType: userType,
+                collectionId: collection.id,
+                collection: collection,
+                calendarId: calendarId
+            },
+            panelClass: 'responsive-dialog',
+            width: '45vw',
+            height: '100vh'
+        }).afterClosed();
+    }
+
+    public projectContentDialog(content: any, startDate: any, endDate: any, userType: string,
+        peerHasSubmission: boolean, collection: any, calendarId: string) {
+        return this.dialog.open(ContentProjectDialogComponent, {
+            data: {
+                content: content,
+                startDate: startDate,
+                endDate: endDate,
+                userType: userType,
+                peerHasSubmission: peerHasSubmission,
+                collectionId: collection.id,
+                collection: collection,
+                calendarId: calendarId
+            },
+            panelClass: 'responsive-dialog',
+            width: '45vw',
+            height: '100vh'
         }).afterClosed();
     }
 

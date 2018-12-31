@@ -15,6 +15,7 @@ import { environment } from '../../../../environments/environment';
 	templateUrl: './content-online.component.html',
 	styleUrls: ['./content-online.component.scss']
 })
+
 export class ContentOnlineComponent implements OnInit {
 
 	public userType = 'public';

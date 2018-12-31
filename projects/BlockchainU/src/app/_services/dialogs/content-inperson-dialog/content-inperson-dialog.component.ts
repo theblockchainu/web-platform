@@ -9,7 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 export class ContentInpersonDialogComponent implements OnInit {
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: InputData,
     public dialogRef: MatDialogRef<ContentInpersonDialogComponent>,
     private dialog: MatDialog
   ) { }
@@ -17,4 +17,13 @@ export class ContentInpersonDialogComponent implements OnInit {
   ngOnInit() {
   }
 
+}
+
+interface InputData {
+  content: any;
+  startDate: any;
+  endDate: any;
+  userType: string;
+  collection: any;
+  calendarId: string;
 }
