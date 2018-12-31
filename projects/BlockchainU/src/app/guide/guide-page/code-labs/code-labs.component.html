@@ -34,8 +34,12 @@
             <input #iceUsername matInput [readOnly]="true" value="{{ice_coder_settings.username}}">
           </mat-form-field>
           <mat-form-field class="clickable" appearance="outline" [ngxClipboard]="icePassword" (cbOnSuccess)="onCopySuccess('Password')">
-            <mat-label>Outline form field</mat-label>
+            <mat-label>Password</mat-label>
             <input #icePassword matInput [readOnly]="true" value="{{ice_coder_settings.password}}">
+          </mat-form-field>
+          <mat-form-field class="clickable" appearance="outline" [ngxClipboard]="iceUrl" (cbOnSuccess)="onCopySuccess('VM URL')">
+            <mat-label>VM URL</mat-label>
+            <input #iceUrl matInput [readOnly]="true" value="{{ice_coder_settings.auth_url}}">
           </mat-form-field>
         </div>
       </div>
@@ -48,8 +52,12 @@
             <input #terminalUsername matInput [readOnly]="true" value="{{terminal_settings.username}}">
           </mat-form-field>
           <mat-form-field class="clickable" appearance="outline" [ngxClipboard]="terminalPassword" (cbOnSuccess)="onCopySuccess('Password')">
-            <mat-label>Outline form field</mat-label>
+            <mat-label>Password</mat-label>
             <input #terminalPassword matInput [readOnly]="true" value="{{terminal_settings.password}}">
+          </mat-form-field>
+          <mat-form-field class="clickable" appearance="outline" [ngxClipboard]="terminalUrl" (cbOnSuccess)="onCopySuccess('VM URL')">
+            <mat-label>VM URL</mat-label>
+            <input #terminalUrl matInput [readOnly]="true" value="{{terminal_settings.auth_url}}">
           </mat-form-field>
         </div>
       </div>
