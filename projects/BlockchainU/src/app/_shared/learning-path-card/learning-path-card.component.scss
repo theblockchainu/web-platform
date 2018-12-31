@@ -2,7 +2,7 @@
   margin-bottom: 10px;
   margin-top: 10px;
   cursor: pointer;
-  min-height: 405px;
+  min-height: 340px;
 }
 .custom-card .card-image {
   display: block;
@@ -19,7 +19,7 @@
   border-radius: 4px;
 }
 .custom-card .card-image img {
-  min-height: 250px;
+  min-height: 210px;
   width: 100%;
   opacity: 0.8;
   filter: alpha(opacity=80);
@@ -35,7 +35,7 @@
   left: 0;
   right: 0;
   display: table;
-  height: 320px;
+  height: 210px;
   vertical-align: middle;
   z-index: 2;
   width: 100%;
@@ -79,10 +79,10 @@
   margin-top: 10px;
 }
 .custom-card .card-image {
-  height: 320px;
+  height: 210px;
 }
 .custom-card .card-image img {
-  min-height: 320px;
+  min-height: 210px;
 }
 .custom-card .card-image .card-image-content1 .image-heading {
   font-family: "CircularSemiBold", sans-serif;
