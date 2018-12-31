@@ -46,6 +46,7 @@ import { ProfileService } from '../../_services/profile/profile.service';
 import { ContentQuizComponent } from './content-quiz/content-quiz.component';
 import { Observable } from 'rxjs';
 import { first, flatMap } from 'rxjs/operators';
+import { Location } from '@angular/common';
 declare var FB: any;
 declare var fbq: any;
 
@@ -218,7 +219,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		private _assessmentService: AssessmentService,
 		private ucwords: UcWordsPipe,
 		private certificateService: CertificateService,
-		private _profileService: ProfileService
+		private _profileService: ProfileService,
+		private location: Location
 	) {
 		this.envVariable = environment;
 	}
@@ -746,6 +748,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	private openCustomDialog(dialogName) {
 		switch (dialogName) {
 			case 'paymentSuccess':
+				this.location.go('/class/' + this.classId + '/calendar/' + this.calendarId);
 				this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
 				break;
 			case 'assessment':

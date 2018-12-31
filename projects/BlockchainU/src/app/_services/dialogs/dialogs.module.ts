@@ -78,6 +78,11 @@ import { SubmissionReviewDialogComponent } from './submission-review-dialog/subm
 import { GenericPromptDialogComponent } from './generic-prompt-dialog/generic-prompt-dialog.component';
 import { WinnerDialogComponent } from './winner-dialog/winner-dialog.component';
 import { ViewQuizSubmissionComponent } from './view-quiz-submission/view-quiz-submission.component';
+import { ContentInpersonDialogComponent } from './content-inperson-dialog/content-inperson-dialog.component';
+import { ContentOnlineDialogComponent } from './content-online-dialog/content-online-dialog.component';
+import { ContentProjectDialogComponent } from './content-project-dialog/content-project-dialog.component';
+import { ContentQuizDialogComponent } from './content-quiz-dialog/content-quiz-dialog.component';
+import { ContentVideoDialogComponent } from './content-video-dialog/content-video-dialog.component';
 
 @NgModule({
 	imports: [
@@ -134,7 +139,12 @@ import { ViewQuizSubmissionComponent } from './view-quiz-submission/view-quiz-su
 		SubmissionReviewDialogComponent,
 		GenericPromptDialogComponent,
 		WinnerDialogComponent,
-		ViewQuizSubmissionComponent
+		ViewQuizSubmissionComponent,
+		ContentInpersonDialogComponent,
+		ContentOnlineDialogComponent,
+		ContentProjectDialogComponent,
+		ContentQuizDialogComponent,
+		ContentVideoDialogComponent
 	],
 	providers: [
 		DialogsService,

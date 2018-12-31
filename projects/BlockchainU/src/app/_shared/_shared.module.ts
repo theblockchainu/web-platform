@@ -101,6 +101,11 @@ import { PeerCardModule } from './peer-card/peer-card.module';
 import { SafePipeModule } from './safe-pipe/safe-pipe.module';
 import { NumberToWordsPipe } from './number-to-words/number-to-word.pipe';
 import { LearningPathCardComponent } from './learning-path-card/learning-path-card.component';
+import { ContentInpersonComponent } from './content-views/content-inperson/content-inperson.component';
+import { ContentOnlineComponent } from './content-views/content-online/content-online.component';
+import { ContentProjectComponent } from './content-views/content-project/content-project.component';
+import { ContentQuizComponent } from './content-views/content-quiz/content-quiz.component';
+import { ContentVideoComponent } from './content-views/content-video/content-video.component';
 
 @NgModule({
     imports: [
@@ -168,7 +173,13 @@ import { LearningPathCardComponent } from './learning-path-card/learning-path-ca
         BountyCardComponent,
         PositionPipe,
         NumberToWordsPipe,
-        LearningPathCardComponent],
+        LearningPathCardComponent,
+        ContentInpersonComponent,
+        ContentOnlineComponent,
+        ContentProjectComponent,
+        ContentQuizComponent,
+        ContentVideoComponent
+    ],
     providers: [
         CollectionService,
         CountryPickerService,
@@ -280,7 +291,12 @@ import { LearningPathCardComponent } from './learning-path-card/learning-path-ca
         PeerCardModule,
         SafePipeModule,
         NumberToWordsPipe,
-        LearningPathCardComponent
+        LearningPathCardComponent,
+        ContentInpersonComponent,
+        ContentOnlineComponent,
+        ContentProjectComponent,
+        ContentQuizComponent,
+        ContentVideoComponent
     ]
 })
 export class SharedModule {
