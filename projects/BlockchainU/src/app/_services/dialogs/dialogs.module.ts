@@ -154,22 +154,25 @@ import { ContentVideoDialogComponent } from './content-video-dialog/content-vide
 	],
 	entryComponents: [
 		SignupComponentDialogComponent, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent,
-		MultiselectTopicDialogComponent
-		, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent,
-		VerifyPhoneDialogComponent
-		, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent, CancelCollectionDialogComponent,
-		ExitCollectionDialogComponent, DeleteCollectionDialogComponent,
-		EditCalendarDialogComponent, AddTopicDialogComponent, AddLanguageDialogComponent, ViewConflictDialogComponent, SelectDateDialogComponent,
-		CollectionCloneDialogComponent, CollectionSubmitDialogComponent, SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent,
-		CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
-		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent,
-		EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent,
-		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent, RequestCommunityDialogComponent,
-		ScholarshipDialogComponent, GenerateKnowledgeStoryComponent, RequestKnowledgeStoryComponent, ConfirmPasswordDialogComponent,
-		AddViewerDialogComponent, GyanPromptComponent, AddCommunityDialogComponent, CreateAccreditationDialogComponent, SelectFieldDialogComponent,
-		CertificateVerificationComponent, TermsAndConditionsDialogComponent, CollectionStandardsDialogComponent, OnboardingDialogComponent, AddPromoCodeDialogComponent,
-		ViewPromocodeDialogComponent, AddParticipantDialogComponent, ConfirmDeleteAccountComponent, AddImageDialogComponent, AskQuestionDialogComponent, SubmissionReviewDialogComponent
-		, GenericPromptDialogComponent, WinnerDialogComponent, ViewQuizSubmissionComponent
+		MultiselectTopicDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent,
+		VideoDialogComponent, VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent,
+		ProfilePopupCardComponent, CancelCollectionDialogComponent, ExitCollectionDialogComponent,
+		DeleteCollectionDialogComponent, EditCalendarDialogComponent, AddTopicDialogComponent, AddLanguageDialogComponent,
+		ViewConflictDialogComponent, SelectDateDialogComponent, CollectionCloneDialogComponent,
+		CollectionSubmitDialogComponent, SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent,
+		InviteFriendsDialogComponent, CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent,
+		RateParticipantComponent, ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent,
+		DateConflictDialogComponent, EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent,
+		ViewParticipantsComponent, StudentAssessmentDialogComponent, GyanTransactionsDialogComponent,
+		RequestCommunityDialogComponent, ScholarshipDialogComponent, GenerateKnowledgeStoryComponent,
+		RequestKnowledgeStoryComponent, ConfirmPasswordDialogComponent, AddViewerDialogComponent, GyanPromptComponent,
+		AddCommunityDialogComponent, CreateAccreditationDialogComponent, SelectFieldDialogComponent,
+		CertificateVerificationComponent, TermsAndConditionsDialogComponent, CollectionStandardsDialogComponent,
+		OnboardingDialogComponent, AddPromoCodeDialogComponent, ViewPromocodeDialogComponent,
+		AddParticipantDialogComponent, ConfirmDeleteAccountComponent, AddImageDialogComponent, AskQuestionDialogComponent,
+		SubmissionReviewDialogComponent, GenericPromptDialogComponent, WinnerDialogComponent, ViewQuizSubmissionComponent,
+		ContentInpersonDialogComponent, ContentOnlineDialogComponent, ContentProjectDialogComponent,
+		ContentQuizDialogComponent, ContentVideoDialogComponent
 	],
 })
 export class DialogsModule { }

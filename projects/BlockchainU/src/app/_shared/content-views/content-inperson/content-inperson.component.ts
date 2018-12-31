@@ -44,12 +44,11 @@ export class ContentInpersonComponent implements OnInit, OnChanges {
 	}
 
 	ngOnInit() {
+		this.envVariable = environment;
 		this.initializeForms();
-		this.getDiscussions();
 	}
 
 	ngOnChanges() {
-		this.envVariable = environment;
 		this.userType = this.data.userType;
 		this.experienceId = this.data.collectionId;
 		this.userId = this._cookieUtilsService.getValue('userId');
@@ -66,7 +65,9 @@ export class ContentInpersonComponent implements OnInit, OnChanges {
 			this.lat = parseFloat(this.data.content.locations[0].map_lat);
 			this.lng = parseFloat(this.data.content.locations[0].map_lng);
 		}
+		this.getDiscussions();
 	}
+
 	private initializeForms() {
 		this.chatForm = this._fb.group({
 			description: ['', Validators.required]

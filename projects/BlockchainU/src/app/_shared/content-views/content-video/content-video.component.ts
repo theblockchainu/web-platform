@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommentService } from '../../../_services/comment/comment.service';
@@ -16,6 +16,9 @@ import { ContentService } from '../../../_services/content/content.service';
 	styleUrls: ['./content-video.component.scss']
 })
 export class ContentVideoComponent implements OnInit, OnDestroy {
+
+	@Input() data: any;
+
 
 	public userType = 'public';
 	public experienceId = '';

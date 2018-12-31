@@ -1,5 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, OnInit, Inject, Input, OnChanges } from '@angular/core';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommentService } from '../../../_services/comment/comment.service';
@@ -16,7 +15,9 @@ import { environment } from '../../../../environments/environment';
 	styleUrls: ['./content-online.component.scss']
 })
 
-export class ContentOnlineComponent implements OnInit {
+export class ContentOnlineComponent implements OnInit, OnChanges {
+
+	@Input() data: any;
 
 	public userType = 'public';
 	public classId = '';
@@ -31,8 +32,6 @@ export class ContentOnlineComponent implements OnInit {
 
 	constructor(
 		public _collectionService: CollectionService,
-		@Inject(MAT_DIALOG_DATA) public data: any,
-		public dialogRef: MatDialogRef<ContentOnlineComponent>,
 		private _fb: FormBuilder,
 		private _commentService: CommentService,
 		private _cookieUtilsService: CookieUtilsService,
@@ -40,23 +39,26 @@ export class ContentOnlineComponent implements OnInit {
 		private contentService: ContentService,
 		private router: Router
 	) {
+	}
+
+	ngOnInit() {
 		this.envVariable = environment;
-		this.userType = data.userType;
-		this.classId = data.collectionId;
-		this.userId = _cookieUtilsService.getValue('userId');
-		data.content.supplementUrls.forEach(file => {
+		this.userId = this._cookieUtilsService.getValue('userId');
+		this.initializeForms();
+	}
+
+	ngOnChanges() {
+		this.userType = this.data.userType;
+		this.classId = this.data.collectionId;
+		this.data.content.supplementUrls.forEach(file => {
 			this.contentService.getMediaObject(file).subscribe((res: any) => {
 				this.attachmentUrls.push(res[0]);
 			});
 		});
-		const startMoment = moment(data.content.schedules[0].startTime);
-		const endMoment = moment(data.content.schedules[0].endTime);
+		const startMoment = moment(this.data.content.schedules[0].startTime);
+		const endMoment = moment(this.data.content.schedules[0].endTime);
 		const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
 		this.duration = parseInt(contentLength, 10);
-	}
-
-	ngOnInit() {
-		this.initializeForms();
 		this.getDiscussions();
 	}
 

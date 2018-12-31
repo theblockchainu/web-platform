@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { ProjectSubmissionService } from '../../../_services/project-submission/project-submission.service';
 import * as moment from 'moment';
@@ -10,12 +10,16 @@ import { SocketService } from '../../../_services/socket/socket.service';
 import { CollectionService } from '../../../_services/collection/collection.service';
 import { DialogsService } from '../../../_services/dialogs/dialog.service';
 import { environment } from '../../../../environments/environment';
+
 @Component({
 	selector: 'app-content-project',
 	templateUrl: './content-project.component.html',
 	styleUrls: ['./content-project.component.scss']
 })
 export class ContentProjectComponent implements OnInit {
+
+	@Input() data: any;
+
 
 	public noImage = 'assets/images/no-image.jpg';
 	public defaultProfileUrl = '/assets/images/avatar.png';

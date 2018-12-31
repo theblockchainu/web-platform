@@ -106,6 +106,10 @@ import { ContentOnlineComponent } from './content-views/content-online/content-o
 import { ContentProjectComponent } from './content-views/content-project/content-project.component';
 import { ContentQuizComponent } from './content-views/content-quiz/content-quiz.component';
 import { ContentVideoComponent } from './content-views/content-video/content-video.component';
+import { VgOverlayPlayModule } from 'videogular2/overlay-play';
+import { VgControlsModule } from 'videogular2/controls';
+import { VgBufferingModule } from 'videogular2/buffering';
+import { VgCoreModule } from 'videogular2/core';
 
 @NgModule({
     imports: [
@@ -152,7 +156,11 @@ import { ContentVideoComponent } from './content-views/content-video/content-vid
         ProfilePopupModule,
         GyanBalanceModule,
         PeerCardModule,
-        SafePipeModule
+        SafePipeModule,
+        VgCoreModule,
+        VgControlsModule,
+        VgOverlayPlayModule,
+        VgBufferingModule,
     ],
     declarations: [
         ExtractTimePipe,
