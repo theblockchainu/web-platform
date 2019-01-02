@@ -120,8 +120,8 @@
 														<span class="clickable" style="margin-right: 15px;" (click)="saveBookmark()">
 															<ngx-loading [show]="bookmarking"></ngx-loading>
 															<span [hidden]="bookmarking">
-																<i class="fa fa-bookmark" *ngIf="!hasBookmarked"></i>
-																<i class="fa fa-bookmark hasBookmarked" *ngIf="hasBookmarked"></i>
+																<mat-icon *ngIf="!hasBookmarked">bookmark_border</mat-icon>
+																<mat-icon class="hasBookmarked" *ngIf="hasBookmarked">bookmark</mat-icon>
 															</span>
 														</span>
 														<span class="clickable" (click)="openShareDialog()">
