@@ -17,6 +17,10 @@ export class ContentProjectDialogComponent implements OnInit {
   ngOnInit() {
   }
 
+  exitDialog(val) {
+    this.dialogRef.close(val);
+  }
+
 }
 
 interface InputData {

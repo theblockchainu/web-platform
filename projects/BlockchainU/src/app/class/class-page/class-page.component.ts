@@ -1773,7 +1773,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				const thisUserView = [];
 				let totalUserViewTime = 0;
 				content.views.forEach(view => {
-					if (view.peer[0].id === this.userId && view.endTime !== undefined) {
+					if (view.peer && view.peer[0].id === this.userId && view.endTime !== undefined) {
 						thisUserView.push(view);
 						const startTime = moment(view.startTime);
 						const endTime = moment(view.endTime);

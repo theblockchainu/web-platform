@@ -71,6 +71,7 @@ import { ContentOnlineDialogComponent } from './content-online-dialog/content-on
 import { ContentQuizDialogComponent } from './content-quiz-dialog/content-quiz-dialog.component';
 import { ContentVideoDialogComponent } from './content-video-dialog/content-video-dialog.component';
 import { ContentProjectDialogComponent } from './content-project-dialog/content-project-dialog.component';
+import { ContentInpersonDialogComponent } from './content-inperson-dialog/content-inperson-dialog.component';
 @Injectable()
 export class DialogsService {
 
@@ -878,6 +879,25 @@ export class DialogsService {
                 collectionId: collection.id,
                 collection: collection,
                 calendarId: calendarId
+            },
+            panelClass: 'responsive-dialog',
+            width: '45vw',
+            height: '100vh'
+        }).afterClosed();
+    }
+
+    public inPersonContentDialog(content: any, startDate: any, endDate: any, userType: string,
+        collection: any, calendarId: string, participants: Array<any>) {
+        return this.dialog.open(ContentInpersonDialogComponent, {
+            data: {
+                content: content,
+                startDate: startDate,
+                endDate: endDate,
+                userType: userType,
+                collectionId: collection.id,
+                collection: collection,
+                calendarId: calendarId,
+                participants: participants
             },
             panelClass: 'responsive-dialog',
             width: '45vw',

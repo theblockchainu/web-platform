@@ -15,7 +15,7 @@ import { environment } from '../../../../environments/environment';
 	styleUrls: ['./content-online.component.scss']
 })
 
-export class ContentOnlineComponent implements OnInit, OnChanges {
+export class ContentOnlineComponent implements OnInit {
 
 	@Input() data: any;
 
@@ -44,10 +44,8 @@ export class ContentOnlineComponent implements OnInit, OnChanges {
 	ngOnInit() {
 		this.envVariable = environment;
 		this.userId = this._cookieUtilsService.getValue('userId');
-		this.initializeForms();
-	}
+		console.log('Online data changed');
 
-	ngOnChanges() {
 		this.userType = this.data.userType;
 		this.classId = this.data.collectionId;
 		this.data.content.supplementUrls.forEach(file => {
@@ -60,7 +58,9 @@ export class ContentOnlineComponent implements OnInit, OnChanges {
 		const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
 		this.duration = parseInt(contentLength, 10);
 		this.getDiscussions();
+		this.initializeForms();
 	}
+
 
 	private initializeForms() {
 		this.chatForm = this._fb.group({

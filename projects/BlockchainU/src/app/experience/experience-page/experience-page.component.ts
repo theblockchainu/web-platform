@@ -9,9 +9,6 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { CollectionService } from '../../_services/collection/collection.service';
 import { ContentService } from '../../_services/content/content.service';
 import { CommentService } from '../../_services/comment/comment.service';
-import { ContentVideoComponent } from './content-video/content-video.component';
-import { ContentProjectComponent } from './content-project/content-project.component';
-import { ShowRSVPPopupComponent } from './show-rsvp-participants-dialog/show-rsvp-dialog.component';
 import {
 	startOfDay,
 	endOfDay,
@@ -35,7 +32,6 @@ import {
 import { CustomDateFormatter } from '../../_services/dialogs/edit-calendar-dialog/custom-date-formatter.provider';
 import { DialogsService } from '../../_services/dialogs/dialog.service';
 import { TopicService } from '../../_services/topic/topic.service';
-import { ContentInpersonComponent } from './content-inperson/content-inperson.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AuthenticationService } from '../../_services/authentication/authentication.service';
 import { environment } from '../../../environments/environment';
@@ -44,7 +40,6 @@ import { AssessmentService } from '../../_services/assessment/assessment.service
 import { UcWordsPipe } from 'ngx-pipes';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { ProfileService } from '../../_services/profile/profile.service';
-import { ContentQuizComponent } from './content-quiz/content-quiz.component';
 import { Location } from '@angular/common';
 declare var FB: any;
 declare var fbq: any;
@@ -1276,23 +1271,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		}
 		attendies = _.filter(attendies, function (o) { return o.hasRSVPd; });
 		// TODO: view all RSVPs for this content
-		const dialogRef = this.dialog.open(ShowRSVPPopupComponent, {
-			data: {
-				userType: userType,
-				contentId: content.id,
-				attendies: attendies,
-				experience: this.experienceId
-			},
-			panelClass: 'responsive-dialog',
-			width: '45vw',
-			height: '90vh'
-		});
-
-		dialogRef.afterClosed().subscribe((result: any) => {
-			if (result) {
-				location.reload();
-			}
-		});
+		this.dialogsService.showRSVP(userType, content, attendies, this.experienceId)
+			.subscribe((result: any) => {
+				if (result) {
+					location.reload();
+				}
+			});
 	}
 
 	public getDirections(content) {
@@ -1357,85 +1341,29 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.modalContent = content;
 		switch (content.type) {
 			case 'in-person':
-				{
-					const dialogRef = this.dialog.open(ContentInpersonComponent, {
-						data: {
-							content: content,
-							startDate: startDate,
-							endDate: endDate,
-							userType: this.userType,
-							collectionId: this.experienceId,
-							collection: this.experience,
-							calendarId: this.calendarId,
-							participants: this.participants
-						},
-						panelClass: 'responsive-dialog',
-						width: '45vw',
-						height: '100vh'
-					});
-					break;
-				}
+				this.dialogsService.inPersonContentDialog(content, startDate, endDate, this.userType, this.experience,
+					this.calendarId, this.participants);
+				break;
 			case 'quiz':
-				{
-					const dialogRef = this.dialog.open(ContentQuizComponent, {
-						data: {
-							content: content,
-							startDate: startDate,
-							endDate: endDate,
-							userType: this.userType,
-							collectionId: this.experienceId,
-							collection: this.experience,
-							calendarId: this.calendarId,
-							participants: this.participants
-						},
-						panelClass: 'responsive-dialog',
-						width: '45vw',
-						height: '100vh'
+				this.dialogsService.quizContentDialog(content, startDate, endDate, this.userType, this.experience, this.calendarId, this.participants)
+					.subscribe(res => {
+						if (res) {
+							content.hasAnswered = true;
+							content.answeredDate = moment().format('Do MMM, YYYY');
+						}
 					});
-					break;
-				}
+				break;
 			case 'video':
-				{
-					const dialogRef = this.dialog.open(ContentVideoComponent, {
-						data: {
-							content: content,
-							startDate: startDate,
-							endDate: endDate,
-							userType: this.userType,
-							collectionId: this.experienceId,
-							collection: this.experience,
-							calendarId: this.calendarId
-						},
-						panelClass: 'responsive-dialog',
-						width: '45vw',
-						height: '100vh'
-					});
-					break;
-				}
+				this.dialogsService.videoContentDialog(content, startDate, endDate, this.userType, this.experience, this.calendarId);
+				break;
 			case 'project':
-				{
-					const dialogRef = this.dialog.open(ContentProjectComponent, {
-						data: {
-							content: content,
-							startDate: startDate,
-							endDate: endDate,
-							userType: this.userType,
-							peerHasSubmission: this.peerHasSubmission,
-							collectionId: this.experienceId,
-							collection: this.experience,
-							calendarId: this.calendarId
-						},
-						panelClass: 'responsive-dialog',
-						width: '45vw',
-						height: '100vh'
-					});
-					dialogRef.afterClosed().subscribe(res => {
+				this.dialogsService.projectContentDialog(content, startDate, endDate, this.userType, this.peerHasSubmission,
+					this.experience, this.calendarId).subscribe(res => {
 						if (res) {
 							this.initializePage();
 						}
 					});
-					break;
-				}
+				break;
 			default:
 				break;
 		}

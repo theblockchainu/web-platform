@@ -1,24 +1,25 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {CollectionService} from '../../../_services/collection/collection.service';
-import {ContentService} from '../../../_services/content/content.service';
-import {DialogsService} from '../../../_services/dialogs/dialog.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {environment} from '../../../../environments/environment';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar, MatTable} from '@angular/material';
-import {ShowRSVPPopupComponent} from '../show-rsvp-participants-dialog/show-rsvp-dialog.component';
-import {CommentService} from '../../../_services/comment/comment.service';
-import {CookieUtilsService} from '../../../_services/cookieUtils/cookie-utils.service';
-import {Router} from '@angular/router';
+import { Component, Inject, OnInit, ViewChild, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { CollectionService } from '../../../_services/collection/collection.service';
+import { ContentService } from '../../../_services/content/content.service';
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from '../../../../environments/environment';
+import { MatSnackBar, MatTable } from '@angular/material';
+import { CommentService } from '../../../_services/comment/comment.service';
+import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.service';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'app-content-quiz',
-  templateUrl: './content-quiz.component.html',
-  styleUrls: ['./content-quiz.component.scss']
+	selector: 'app-content-quiz',
+	templateUrl: './content-quiz.component.html',
+	styleUrls: ['./content-quiz.component.scss']
 })
 export class ContentQuizComponent implements OnInit {
-	
+
+	@Input() data: any;
+
 	public userType = 'public';
 	public experienceId = '';
 	public chatForm: FormGroup;
@@ -40,49 +41,47 @@ export class ContentQuizComponent implements OnInit {
 	public loadingSubmissions = true;
 	public submissionArray = [];
 	public displayedSubmissionTableColumns = ['peerName', 'questionsAnswered'];
-	
+
 	@ViewChild(MatTable) table: MatTable<any>;
-	
+	@Output() exitDialog: EventEmitter<boolean> = new EventEmitter<boolean>();
+
 	constructor(
 		public _collectionService: CollectionService,
-		@Inject(MAT_DIALOG_DATA) public data: any,
-		public dialogRef: MatDialogRef<ContentQuizComponent>,
 		private _fb: FormBuilder,
 		private _commentService: CommentService,
 		private _cookieUtilsService: CookieUtilsService,
 		private dialogsService: DialogsService,
 		private contentService: ContentService,
 		private snackBar: MatSnackBar,
-		private dialog: MatDialog,
 		private router: Router
 	) {
+	}
+
+	ngOnInit() {
 		this.envVariable = environment;
-		this.userType = data.userType;
-		this.experienceId = data.collectionId;
-		this.userId = _cookieUtilsService.getValue('userId');
-		data.content.supplementUrls.forEach(file => {
+		this.userId = this._cookieUtilsService.getValue('userId');
+		this.showSuccessMessage = false;
+		this.userType = this.data.userType;
+		this.experienceId = this.data.collectionId;
+		this.data.content.supplementUrls.forEach(file => {
 			this.contentService.getMediaObject(file).subscribe((res: any) => {
 				this.attachmentUrls.push(res[0]);
 			});
 		});
-		const startMoment = moment(data.content.schedules[0].startTime);
-		const endMoment = moment(data.content.schedules[0].endTime);
+		const startMoment = moment(this.data.content.schedules[0].startTime);
+		const endMoment = moment(this.data.content.schedules[0].endTime);
 		const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
 		this.duration = parseInt(contentLength, 10);
-		if (data.content.locations && data.content.locations.length > 0) {
-			this.lat = parseFloat(data.content.locations[0].map_lat);
-			this.lng = parseFloat(data.content.locations[0].map_lng);
+		if (this.data.content.locations && this.data.content.locations.length > 0) {
+			this.lat = parseFloat(this.data.content.locations[0].map_lat);
+			this.lng = parseFloat(this.data.content.locations[0].map_lng);
 		}
-	}
-	
-	ngOnInit() {
-		this.showSuccessMessage = false;
 		this.checkHasAnswered();
 		this.initializeForms();
 		this.processSubmissions();
 		this.getDiscussions();
 	}
-	
+
 	private processSubmissions() {
 		this.loadingSubmissions = true;
 		this.submissionArray = [];
@@ -92,8 +91,8 @@ export class ContentQuizComponent implements OnInit {
 					question.answers.forEach(answer => {
 						if (answer.peer) {
 							// If the answer is by a peer who already has an entry in this array
-							if (_.find(this.submissionArray, function(o) { return o.peerId === answer.peer[0].id; })) {
-								_.find(this.submissionArray, function(o) { return o.peerId === answer.peer[0].id; }).questionsAnswered++;
+							if (_.find(this.submissionArray, function (o) { return o.peerId === answer.peer[0].id; })) {
+								_.find(this.submissionArray, function (o) { return o.peerId === answer.peer[0].id; }).questionsAnswered++;
 								if (question.type === 'single-choice') {
 									if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
 										_.find(this.submissionArray, function (o) {
@@ -140,7 +139,7 @@ export class ContentQuizComponent implements OnInit {
 			this.loadingSubmissions = false;
 		}
 	}
-	
+
 	private checkHasAnswered() {
 		if (this.data.content.questions) {
 			this.data.content.questions.forEach(question => {
@@ -157,7 +156,7 @@ export class ContentQuizComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	private initializeForms() {
 		this.chatForm = this._fb.group({
 			description: ['', Validators.required]
@@ -181,7 +180,7 @@ export class ContentQuizComponent implements OnInit {
 			});
 		}
 	}
-	
+
 	setContentQuestion(question) {
 		return this._fb.group({
 			id: [question.id],
@@ -194,35 +193,35 @@ export class ContentQuizComponent implements OnInit {
 			isRequired: [question.isRequired]
 		});
 	}
-	
+
 	setContentAnswer(answer, isRequired) {
 		if (isRequired) {
 			this.totalRequiredQuestions++;
 			return this._fb.group({
-				answer: [{value: answer.answer, disabled: answer.answer.length > 0}, Validators.required],
+				answer: [{ value: answer.answer, disabled: answer.answer.length > 0 }, Validators.required],
 				isEvaluated: [answer.isEvaluated],
 				marks: [answer.marks]
 			});
 		} else {
 			return this._fb.group({
-				answer: [{value: answer.answer, disabled: answer.answer.length > 0}],
+				answer: [{ value: answer.answer, disabled: answer.answer.length > 0 }],
 				isEvaluated: [answer.isEvaluated],
 				marks: [answer.marks]
 			});
 		}
 	}
-	
+
 	initOption(options) {
 		if (options) {
 			const optionArray = [];
 			options.forEach(option => {
-				optionArray.push(this._fb.control({value: option, disabled: true}));
+				optionArray.push(this._fb.control({ value: option, disabled: true }));
 			});
 			return optionArray;
 		}
 		return [];
 	}
-	
+
 	/**
 	 * postComment
 	 */
@@ -236,14 +235,14 @@ export class ContentQuizComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public createReplyForm(comment: any) {
 		this.replyingToCommentId = comment.id;
 		this.replyForm = this._fb.group({
 			description: ''
 		});
 	}
-	
+
 	/**
 	 * postReply
 	 */
@@ -257,7 +256,7 @@ export class ContentQuizComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	private getDiscussions() {
 		const query = {
 			'include': [
@@ -294,7 +293,7 @@ export class ContentQuizComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	addCommentUpvote(comment: any) {
 		this._commentService.addCommentUpvote(comment.id, {}).subscribe(
 			response => {
@@ -309,7 +308,7 @@ export class ContentQuizComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	addReplyUpvote(reply: any) {
 		this._commentService.addReplyUpvote(reply.id, {}).subscribe(
 			response => {
@@ -324,7 +323,7 @@ export class ContentQuizComponent implements OnInit {
 			}
 		);
 	}
-	
+
 	public hasUpvoted(upvotes) {
 		let result = false;
 		if (upvotes !== undefined) {
@@ -340,15 +339,15 @@ export class ContentQuizComponent implements OnInit {
 		}
 		return result;
 	}
-	
+
 	public isMyComment(comment) {
 		return comment.peer[0].id === this.userId;
 	}
-	
+
 	public openProfilePage(peerId) {
 		this.router.navigate(['profile', peerId]);
 	}
-	
+
 	rsvpContent(contentId) {
 		this.contentService.createRSVP(contentId, this.data.calendarId)
 			.subscribe((response: any) => {
@@ -356,7 +355,7 @@ export class ContentQuizComponent implements OnInit {
 				this.data.content.hasRSVPd = true;
 			});
 	}
-	
+
 	cancelRSVP(content) {
 		console.log(content);
 		this.contentService.deleteRSVP(content.rsvpId)
@@ -365,7 +364,7 @@ export class ContentQuizComponent implements OnInit {
 				this.data.content.hasRSVPd = false;
 			});
 	}
-	
+
 	public viewRSVPs(content, userType) {
 		let attendies = this.data.participants;
 		if (content.rsvps) {
@@ -384,35 +383,23 @@ export class ContentQuizComponent implements OnInit {
 		}
 		attendies = _.filter(attendies, function (o) { return o.hasRSVPd; });
 		// TODO: view all RSVPs for this content
-		const dialogRef = this.dialog.open(ShowRSVPPopupComponent, {
-			data: {
-				userType: userType,
-				contentId: content.id,
-				attendies: attendies,
-				experience: this.experienceId
-			},
-			panelClass: 'responsive-dialog',
-			width: '45vw',
-			height: '90vh'
-		});
-		
-		dialogRef.afterClosed().subscribe((result: any) => {
+		this.dialogsService.showRSVP(userType, content, attendies, this.experienceId).subscribe((result: any) => {
 			if (result) {
 				location.reload();
 			}
 		});
 	}
-	
+
 	public getDirections(content) {
 		// TODO: get directions to this content location
 	}
-	
+
 	public hasDatePassed(date) {
 		const eventDate = moment(date);
 		const currentDate = moment();
 		return (this.data.calendarId !== undefined && eventDate.diff(currentDate, 'seconds') < 0);
 	}
-	
+
 	/**
 	 * isLive
 	 */
@@ -422,16 +409,16 @@ export class ContentQuizComponent implements OnInit {
 		const endMoment = startMoment.clone();
 		endMoment.add(content.schedules[0].endDay, 'day');
 		const currentMoment = moment();
-		
+
 		const startTime = moment(content.schedules[0].startTime);
 		const endTime = moment(content.schedules[0].endTime);
-		
+
 		startMoment.hours(startTime.hours());
 		startMoment.minutes(startTime.minutes());
-		
+
 		endMoment.hours(endTime.hours());
 		endMoment.minutes(endTime.minutes());
-		
+
 		if (currentMoment.isBetween(startMoment, endMoment)) {
 			content.isLive = true;
 			return true;
@@ -439,7 +426,7 @@ export class ContentQuizComponent implements OnInit {
 			return false;
 		}
 	}
-	
+
 	public submitAnswers() {
 		console.log(this.answerArray.value);
 		let i = 0, j = 0;
@@ -454,7 +441,7 @@ export class ContentQuizComponent implements OnInit {
 					}, err => {
 						j++;
 						if (j === this.totalRequiredQuestions) {
-							this.snackBar.open('Error submitting your answers. Please try again!', 'OK', {duration: 3000});
+							this.snackBar.open('Error submitting your answers. Please try again!', 'OK', { duration: 3000 });
 						}
 					});
 			} else {
@@ -462,6 +449,11 @@ export class ContentQuizComponent implements OnInit {
 			}
 			i++;
 		});
+	}
+
+	exit() {
+		this.exitDialog.next();
+		this.exitDialog.complete();
 	}
 
 }

@@ -1,38 +1,33 @@
-<div mat-dialog-content class="dialog-container">
-	<div class="row">
-		<div class="col-md-12 collectionContent">
-			<button disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
-				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
-			</button>
-			<button mat-stroked-button class="pull-right" *ngIf="userType==='teacher' || userType==='participant'" color="primary">Open
-				in
-				Standalone Mode</button>
-		</div>
-		<div class="col-md-12">
-			<div class="mat-display-1" style="margin-bottom: 20px;" *ngIf="data.content">
-				{{data.content.title | titlecase}}
-			</div>
-		</div>
-		<div class="col-md-10" style="padding-top: 15px;">
-			<span class="mat-body-2">{{duration}} mins {{_collectionService.getContentTypeFullName(data.content.type)}}</span>
-			<br /> Taught by
-			<a [routerLink]="['/profile',data.collection.owners[0]]">{{data.collection.owners[0].profiles[0].first_name |
-				ucwords}}</a>
-		</div>
-		<div class="col-md-2" style="text-align: right">
-			<img (click)="openProfilePage(data.collection.owners[0].id)" *ngIf="!data.collection.owners[0].profiles[0].picture_url"
-			 src="/assets/images/avatar.png" alt="A" class="clickable circle-thumb margin-top-5" style="width: 70px; height: 70px;">
-			<img (click)="openProfilePage(data.collection.owners[0].id)" *ngIf="data.collection.owners[0].profiles[0].picture_url"
-			 src="{{envVariable.apiUrl+ data.collection.owners[0].profiles[0].picture_url}}" class="clickable circle-thumb margin-top-5"
-			 alt="dp" style="width: 70px; height: 70px;">
+<div class="row">
+	<div class="col-md-12 collectionContent">
+		<button mat-stroked-button class="pull-right" *ngIf="userType==='teacher' || userType==='participant'" color="primary">Open
+			in
+			Standalone Mode</button>
+	</div>
+	<div class="col-md-12">
+		<div class="mat-display-1" style="margin-bottom: 20px;" *ngIf="data.content">
+			{{data.content.title | titlecase}}
 		</div>
 	</div>
-	<hr>
-	<div class="mat-dialog-focus-trap"></div>
-	<div *ngIf="data.content">
-		<div class="row">
-			<div class="col-md-12 embed-responsive embed-responsive-16by9">
-				<vg-player (onPlayerReady)="onPlayerReady($event)" *ngIf="userType !== 'public'">
+	<div class="col-md-10" style="padding-top: 15px;">
+		<span class="mat-body-2">{{duration}} mins {{_collectionService.getContentTypeFullName(data.content.type)}}</span>
+		<br /> Taught by
+		<a [routerLink]="['/profile',data.collection.owners[0]]">{{data.collection.owners[0].profiles[0].first_name |
+			ucwords}}</a>
+	</div>
+	<div class="col-md-2" style="text-align: right">
+		<img (click)="openProfilePage(data.collection.owners[0].id)" *ngIf="!data.collection.owners[0].profiles[0].picture_url"
+		 src="/assets/images/avatar.png" alt="A" class="clickable circle-thumb margin-top-5" style="width: 70px; height: 70px;">
+		<img (click)="openProfilePage(data.collection.owners[0].id)" *ngIf="data.collection.owners[0].profiles[0].picture_url"
+		 src="{{envVariable.apiUrl+ data.collection.owners[0].profiles[0].picture_url}}" class="clickable circle-thumb margin-top-5"
+		 alt="dp" style="width: 70px; height: 70px;">
+	</div>
+</div>
+<hr>
+<div *ngIf="data.content">
+	<div class="row">
+		<div class="col-md-12 embed-responsive embed-responsive-16by9">
+			<!-- <vg-player (onPlayerReady)="onPlayerReady($event)" *ngIf="userType !== 'public'">
 					<vg-overlay-play></vg-overlay-play>
 					<vg-buffering></vg-buffering>
 
@@ -59,179 +54,180 @@
 					 crossorigin>
 						<source src="{{envVariable.apiUrl+data.content.imageUrl}}" type="video/mp4">
 					</video>
-				</vg-player>
-			</div>
+				</vg-player> -->
+			<mat-video #video [autoplay]="false" [preload]="true" [fullscreen]="true" [download]="false" color="accent" spinner="dot">
+				<source *ngIf="videoDownloadUrl" matVideoSource [src]="videoDownloadUrl  | safe:'resourceUrl'" type="video/mp4">
+			</mat-video>
 		</div>
-		<!-- <div class="row margin-top-20">
+	</div>
+	<!-- <div class="row margin-top-20">
 		  <hr>
 		  <div class="col-md-12">
 			<h3>{{data.content.title | titlecase}}</h3>
 		  </div>
 		</div> -->
-		<div class="row margin-top-20">
-			<div class="col-md-12">
-				<p class="pre-wrapped">{{data.content.description | trim | ucfirst | linkify}}</p>
-			</div>
+	<div class="row margin-top-20">
+		<div class="col-md-12">
+			<p class="pre-wrapped">{{data.content.description | trim | ucfirst | linkify}}</p>
 		</div>
-		<div *ngIf="attachmentUrls.length" class="pic delete">
-			<hr style="margin-top:0px;">
-			<div>
-				<b>Supplemental Materials</b>
+	</div>
+	<div *ngIf="attachmentUrls.length" class="pic delete">
+		<hr style="margin-top:0px;">
+		<div>
+			<b>Supplemental Materials</b>
+		</div>
+		<br>
+		<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
+			<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
+			<div *ngIf="file.type.includes('application')" class="uploaded_file">
+				<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
 			</div>
-			<br>
-			<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
-				<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
-				<div *ngIf="file.type.includes('application')" class="uploaded_file">
-					<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
+			<video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
+				<source src="{{envVariable.apiUrl + file.url}}">
+			</video>
+		</div>
+	</div>
+	<!--DISCUSSION THREAD-->
+	<div class="row Discussion margin-top-20" *ngIf="userType==='teacher' || userType==='participant'">
+		<hr style="margin-top:0px;width:95%">
+		<div class="col-md-12 margin-bottom-20">
+			<b *ngIf="comments !== undefined">Discussion ({{comments.length}})</b>
+			<b *ngIf="comments === undefined">Discussion (0)</b>
+			<form [formGroup]="chatForm" (ngSubmit)="postComment()">
+				<mat-form-field class="full-width">
+					<input matInput type="text" #description1 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this activity"
+					 tabindex="-1">
+					<mat-hint align="end">{{description1.value.length}} / 2000</mat-hint>
+				</mat-form-field>
+				<span matTooltip="Invalid input!" [matTooltipDisabled]="chatForm.valid">
+					<button mat-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right margin-top-20" tabindex="-1">Post</button>
+				</span>
+			</form>
+		</div>
+		<div class="col-md-12">
+			<div class="row lighterText" *ngIf="comments !== undefined && comments.length === 0">
+				<div class="col-md-12">
+					<div class="emptySectionText">Be the first one to start a discussion on this activity..</div>
 				</div>
-				<video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
-					<source src="{{envVariable.apiUrl + file.url}}">
-				</video>
 			</div>
-		</div>
-		<!--DISCUSSION THREAD-->
-		<div class="row Discussion margin-top-20" *ngIf="userType==='teacher' || userType==='participant'">
-			<hr style="margin-top:0px;width:95%">
-			<div class="col-md-12 margin-bottom-20">
-				<b *ngIf="comments !== undefined">Discussion ({{comments.length}})</b>
-				<b *ngIf="comments === undefined">Discussion (0)</b>
-				<form [formGroup]="chatForm" (ngSubmit)="postComment()">
-					<mat-form-field class="full-width">
-						<input matInput type="text" #description1 maxlength="2000" formControlName="description" placeholder="Post your thoughts on this activity"
-						 tabindex="-1">
-						<mat-hint align="end">{{description1.value.length}} / 2000</mat-hint>
-					</mat-form-field>
-					<span matTooltip="Invalid input!" [matTooltipDisabled]="chatForm.valid">
-						<button mat-raised-button color="primary" [disabled]="!chatForm.valid" class="pull-right margin-top-20" tabindex="-1">Post</button>
-					</span>
-				</form>
-			</div>
-			<div class="col-md-12">
-				<div class="row lighterText" *ngIf="comments !== undefined && comments.length === 0">
-					<div class="col-md-12">
-						<div class="emptySectionText">Be the first one to start a discussion on this activity..</div>
+			<div class="margin-top-30"></div>
+			<div class="row margin-top-10" *ngFor="let comment of comments; let i=index;">
+				<div>
+					<div class="col-md-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
+						<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer; font-size: 38px; left: -10px;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
+						<mat-icon *ngIf="hasUpvoted(comment.upvotes)" style="font-size: 38px; left: -10px;">arrow_drop_up</mat-icon>
+						<div>
+							{{comment.upvotes.length}}
+						</div>
 					</div>
-				</div>
-				<div class="margin-top-30"></div>
-				<div class="row margin-top-10" *ngFor="let comment of comments; let i=index;">
-					<div>
-						<div class="col-md-1 margin-top-10" style="text-align: center; color: #cccccc;" [ngClass]="{'hasUpvoted': !!hasUpvoted(comment.upvotes)}">
-							<mat-icon *ngIf="!hasUpvoted(comment.upvotes)" style="cursor: pointer; font-size: 38px; left: -10px;" (click)="addCommentUpvote(comment)">arrow_drop_up</mat-icon>
-							<mat-icon *ngIf="hasUpvoted(comment.upvotes)" style="font-size: 38px; left: -10px;">arrow_drop_up</mat-icon>
-							<div>
-								{{comment.upvotes.length}}
-							</div>
-						</div>
-						<div class="col-md-11">
-							<button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuComment" style="float: right; margin-right: 15px; margin-top: 15px;"
-							 tabindex="-1">
-								<mat-icon style="color: #cccccc">more_vert</mat-icon>
+					<div class="col-md-11">
+						<button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuComment" style="float: right; margin-right: 15px; margin-top: 15px;"
+						 tabindex="-1">
+							<mat-icon style="color: #cccccc">more_vert</mat-icon>
+						</button>
+						<mat-menu #menuComment="matMenu">
+							<button *ngIf="userType==='participant'" mat-menu-item>
+								<mat-icon>flag</mat-icon>
+								<span>Flag</span>
 							</button>
-							<mat-menu #menuComment="matMenu">
-								<button *ngIf="userType==='participant'" mat-menu-item>
-									<mat-icon>flag</mat-icon>
-									<span>Flag</span>
-								</button>
-								<button *ngIf="userType==='teacher' || isMyComment(comment)" mat-menu-item>
-									<mat-icon>delete</mat-icon>
-									<span>Delete</span>
-								</button>
-							</mat-menu>
-							<div class="mat-body-1">{{comment.description}}</div>
-							<div style="margin-top: 10px;" class="" *ngIf="comment.peer.length>0">
-								<div style="float: left; margin-left: 15px;">
-									<img *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
-									<img *ngIf="comment.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ comment.peer[0].profiles[0].picture_url}}"
-									 class="circle-thumb margin-top-5" alt="dp">
-								</div>
-								<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
+							<button *ngIf="userType==='teacher' || isMyComment(comment)" mat-menu-item>
+								<mat-icon>delete</mat-icon>
+								<span>Delete</span>
+							</button>
+						</mat-menu>
+						<div class="mat-body-1">{{comment.description}}</div>
+						<div style="margin-top: 10px;" class="" *ngIf="comment.peer.length>0">
+							<div style="float: left; margin-left: 15px;">
+								<img *ngIf="!comment.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
+								<img *ngIf="comment.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ comment.peer[0].profiles[0].picture_url}}"
+								 class="circle-thumb margin-top-5" alt="dp">
+							</div>
+							<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
+								<div>
 									<div>
-										<div>
-											<span style="font-weight: 500">{{comment.peer[0].profiles[0].first_name}}
-												{{comment.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
-										</div>
-									</div>
-									<div class="">
-										<span class="lighterText">{{comment.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
+										<span style="font-weight: 500">{{comment.peer[0].profiles[0].first_name}}
+											{{comment.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
 									</div>
 								</div>
+								<div class="">
+									<span class="lighterText">{{comment.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
+								</div>
 							</div>
-							<div style="margin-top: 10px;" *ngIf="!(replyForm && replyingToCommentId===comment.id)">
-								<a href="javascript:void(0);" (click)="createReplyForm(comment)">
-									<mat-icon style="top: 5px;">reply</mat-icon> Reply
-								</a>
-							</div>
-							<div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -25px;">
-								<form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
-									<img src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
-									<mat-form-field style="margin-left: 15px; width: 88%;">
-										<input matInput type="text" #description2 maxlength="2000" formControlName="description" placeholder="Reply to above comment..."
-										 tabindex="-1">
-										<mat-hint align="end">{{description2.value.length}} / 2000</mat-hint>
-									</mat-form-field>
-									<span matTooltip="Invalid input!" [matTooltipDisabled]="replyForm.valid">
-										<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right margin-top-20" color="primary"
-										 tabindex="-1">Post</button>
-									</span>
-								</form>
-							</div>
-							<div class="col-md-11 col-md-offset-1 margin-top-10">
-								<div class="row margin-top-20" *ngFor="let reply of comment.replies">
-									<button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuReply" style="float: right; margin-right: 15px; margin-top: 15px;"
+						</div>
+						<div style="margin-top: 10px;" *ngIf="!(replyForm && replyingToCommentId===comment.id)">
+							<a href="javascript:void(0);" (click)="createReplyForm(comment)">
+								<mat-icon style="top: 5px;">reply</mat-icon> Reply
+							</a>
+						</div>
+						<div class="col-md-11 col-md-offset-1 margin-top-30" *ngIf="replyForm && replyingToCommentId===comment.id" style="margin-left: -25px;">
+							<form [formGroup]="replyForm" (ngSubmit)="postReply(comment)">
+								<img src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
+								<mat-form-field style="margin-left: 15px; width: 88%;">
+									<input matInput type="text" #description2 maxlength="2000" formControlName="description" placeholder="Reply to above comment..."
 									 tabindex="-1">
-										<mat-icon style="color: #cccccc;">more_vert</mat-icon>
+									<mat-hint align="end">{{description2.value.length}} / 2000</mat-hint>
+								</mat-form-field>
+								<span matTooltip="Invalid input!" [matTooltipDisabled]="replyForm.valid">
+									<button [disabled]="!replyForm.valid" mat-raised-button class="pull-right margin-top-20" color="primary"
+									 tabindex="-1">Post</button>
+								</span>
+							</form>
+						</div>
+						<div class="col-md-11 col-md-offset-1 margin-top-10">
+							<div class="row margin-top-20" *ngFor="let reply of comment.replies">
+								<button *ngIf="userType !== 'public'" mat-icon-button [matMenuTriggerFor]="menuReply" style="float: right; margin-right: 15px; margin-top: 15px;"
+								 tabindex="-1">
+									<mat-icon style="color: #cccccc;">more_vert</mat-icon>
+								</button>
+								<mat-menu #menuReply="matMenu">
+									<button *ngIf="userType==='participant'" mat-menu-item>
+										<mat-icon>flag</mat-icon>
+										<span>Flag</span>
 									</button>
-									<mat-menu #menuReply="matMenu">
-										<button *ngIf="userType==='participant'" mat-menu-item>
-											<mat-icon>flag</mat-icon>
-											<span>Flag</span>
-										</button>
-										<button *ngIf="userType==='teacher' || isMyComment(reply)" mat-menu-item>
-											<mat-icon>delete</mat-icon>
-											<span>Delete</span>
-										</button>
-									</mat-menu>
-									<div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px;"
-									 [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
-										<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer; font-size: 38px; left: -10px;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
-										<mat-icon *ngIf="hasUpvoted(reply.upvotes)" style="cursor: pointer; font-size: 38px; left: -10px;">arrow_drop_up</mat-icon>
-										<div>
-											<span *ngIf="reply.upvotes !== undefined">{{reply.upvotes.length}}</span>
-											<span *ngIf="reply.upvotes === undefined">0</span>
-										</div>
+									<button *ngIf="userType==='teacher' || isMyComment(reply)" mat-menu-item>
+										<mat-icon>delete</mat-icon>
+										<span>Delete</span>
+									</button>
+								</mat-menu>
+								<div style="text-align: center; display: inline-block; color: #cccccc; vertical-align: top; margin-right: 25px;margin-top: 10px;  margin-left: -60px;"
+								 [ngClass]="{'hasUpvoted': !!hasUpvoted(reply.upvotes)}">
+									<mat-icon *ngIf="!hasUpvoted(reply.upvotes)" style="cursor: pointer; font-size: 38px; left: -10px;" (click)="addReplyUpvote(reply)">arrow_drop_up</mat-icon>
+									<mat-icon *ngIf="hasUpvoted(reply.upvotes)" style="cursor: pointer; font-size: 38px; left: -10px;">arrow_drop_up</mat-icon>
+									<div>
+										<span *ngIf="reply.upvotes !== undefined">{{reply.upvotes.length}}</span>
+										<span *ngIf="reply.upvotes === undefined">0</span>
 									</div>
-									<div style="display: inline-block">
-										<div class="mat-body-1">{{reply.description}}</div>
-										<div class="" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
-											<div style="float: left; margin-left: 15px;">
-												<img *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
-												<img *ngIf="reply.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ reply.peer[0].profiles[0].picture_url}}"
-												 class="circle-thumb margin-top-5" alt="dp">
-											</div>
-											<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
+								</div>
+								<div style="display: inline-block">
+									<div class="mat-body-1">{{reply.description}}</div>
+									<div class="" style="margin-top: 10px;" *ngIf="reply.peer && reply.peer.length>0">
+										<div style="float: left; margin-left: 15px;">
+											<img *ngIf="!reply.peer[0].profiles[0].picture_url" src="/assets/images/avatar.png" alt="A" class="circle-thumb margin-top-5">
+											<img *ngIf="reply.peer[0].profiles[0].picture_url" src="{{envVariable.apiUrl+ reply.peer[0].profiles[0].picture_url}}"
+											 class="circle-thumb margin-top-5" alt="dp">
+										</div>
+										<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
+											<div>
 												<div>
-													<div>
-														<span style="font-weight: 500">{{reply.peer[0].profiles[0].first_name}}
-															{{reply.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
-													</div>
+													<span style="font-weight: 500">{{reply.peer[0].profiles[0].first_name}}
+														{{reply.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
 												</div>
-												<div class="">
-													<span class="lighterText">{{reply.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
-												</div>
+											</div>
+											<div class="">
+												<span class="lighterText">{{reply.createdAt |extractTime:'Do MMMM, YYYY'}}</span>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-md-12">
-							<hr *ngIf="i !== (comments.length - 1)" class="margin-top-30">
-							<div *ngIf="i === (comments.length - 1)" class="margin-top-30"></div>
-						</div>
+					</div>
+					<div class="col-md-12">
+						<hr *ngIf="i !== (comments.length - 1)" class="margin-top-30">
+						<div *ngIf="i === (comments.length - 1)" class="margin-top-30"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="mat-dialog-focus-trap"></div>
 </div>

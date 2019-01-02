@@ -17,13 +17,13 @@
       <!-- <p class="title mat-body-2">Get up to speed</p> -->
 
       <span class="mat-body-2">
-        {{learningPath.contents.length}} items of learning content <mat-icon style="font-size: 5px; top: -3px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
+        {{learningPath.contents.length}} items <mat-icon style="font-size: 5px; top: -3px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
         <span *ngIf="learningPath.totalHours<1">
           {{learningPath.totalHours * 60 | number :'1.0-0'}} Minutes
         </span>
         <span *ngIf="learningPath.totalHours>=1">
           {{learningPath.totalHours | number :'1.0-0'}} Hours
-        </span> of commitment
+        </span>
       </span>
       <br>
       <span>

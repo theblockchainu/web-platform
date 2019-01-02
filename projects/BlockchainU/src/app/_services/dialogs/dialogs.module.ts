@@ -18,10 +18,6 @@ import { VerifyEmailDialogComponent } from './verify-email-dialog/verify-email-d
 import { IdPolicyDialogComponent } from './id-policy-dialog/id-policy-dialog.component';
 import { VideoDialogComponent } from './video-dialog/video-dialog.component';
 import { VerifyPhoneDialogComponent } from './verify-phone-dialog/verify-phone-dialog.component';
-import { VgCoreModule } from 'videogular2/core';
-import { VgControlsModule } from 'videogular2/controls';
-import { VgOverlayPlayModule } from 'videogular2/overlay-play';
-import { VgBufferingModule } from 'videogular2/buffering';
 import { CollectionGridDialogComponent } from './collection-grid-dialog/collection-grid-dialog.component';
 import { ProfilePopupCardComponent } from './profile-popup-card/profile-popup-card.component';
 import { ExitCollectionDialogComponent } from './exit-collection-dialog/exit-collection-dialog.component';
@@ -90,10 +86,6 @@ import { ContentVideoDialogComponent } from './content-video-dialog/content-vide
 		FormsModule,
 		ReactiveFormsModule,
 		SharedModule,
-		VgCoreModule,
-		VgControlsModule,
-		VgOverlayPlayModule,
-		VgBufferingModule,
 		ClipboardModule,
 		RouterModule
 	],

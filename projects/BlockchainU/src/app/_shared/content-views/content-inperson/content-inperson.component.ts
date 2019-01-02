@@ -15,7 +15,7 @@ import { DialogsService } from '../../../_services/dialogs/dialog.service';
 	templateUrl: './content-inperson.component.html',
 	styleUrls: ['./content-inperson.component.scss']
 })
-export class ContentInpersonComponent implements OnInit, OnChanges {
+export class ContentInpersonComponent implements OnInit {
 
 	@Input() data: any;
 
@@ -39,16 +39,12 @@ export class ContentInpersonComponent implements OnInit, OnChanges {
 		private _cookieUtilsService: CookieUtilsService,
 		private contentService: ContentService,
 		private router: Router,
-		private _dialogService: DialogsService
 	) {
 	}
 
 	ngOnInit() {
+		console.log('in person data changed');
 		this.envVariable = environment;
-		this.initializeForms();
-	}
-
-	ngOnChanges() {
 		this.userType = this.data.userType;
 		this.experienceId = this.data.collectionId;
 		this.userId = this._cookieUtilsService.getValue('userId');
@@ -66,6 +62,7 @@ export class ContentInpersonComponent implements OnInit, OnChanges {
 			this.lng = parseFloat(this.data.content.locations[0].map_lng);
 		}
 		this.getDiscussions();
+		this.initializeForms();
 	}
 
 	private initializeForms() {

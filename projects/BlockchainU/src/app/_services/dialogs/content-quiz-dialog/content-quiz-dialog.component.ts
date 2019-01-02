@@ -17,6 +17,10 @@ export class ContentQuizDialogComponent implements OnInit {
   ngOnInit() {
   }
 
+  exitDialog(val) {
+    this.dialogRef.close(val);
+  }
+
 }
 
 interface InputData {
