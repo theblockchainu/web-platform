@@ -1,111 +1,114 @@
 <div class="row">
-  <div class="col-md-12 margin-top-20">
-    <div *ngIf="!loaded" class="loading-container">
-      <ngx-loading [show]="true"></ngx-loading>
-    </div>
-  </div>
+	<div class="col-md-12 margin-top-20">
+		<div *ngIf="!loaded" class="loading-container">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
 </div>
 <div class="row">
-  <div class="col-md-12 margin-top-10" *ngIf="loaded">
-    <div #noContentView *ngIf="bookmarks.length === 0" class="center" style="margin-top: 10%">
-      <div class="lightText">
-        You do not have any bookmarks
-        <br>
-        <br> Start by bookmarking an
-        <a color="default" [routerLink]="'/home/classes'">Online Course </a> or
-        <a color="default" [routerLink]="'/home/experiences'">In-person Workshop </a>
-      </div>
-    </div>
-    <div *ngIf="bookmarks.length > 0">
-      <div style="display:inline;">
-        <h2>Bookmarks</h2>
-      </div>
-      <div class="row">
-        <div style="margin-top:20px;" class="col-md-12">
-          <div class="row">
-            <div *ngFor="let bookmark of bookmarks">
-                <div *ngIf="bookmark.collection && bookmark.collection.length > 0">
-                    <ng-template #topicName>{{bookmark.collection[0].topics[0].name | titlecase}}</ng-template>
-                    <ng-template #noTopicText>No Topics</ng-template>
-                    <div class="col-md-4" style="margin-top: 20px;">
-                        <mat-card style="text-align: center; padding: 20px;">
-                            <mat-card-content>
-                                <div style="text-align: right">
-                                    <div class="pull-right">
-                                        <a [matMenuTriggerFor]="bookmarkCardMenu" style="text-align: right; padding: 0px">
-                                            <mat-icon>more_vert</mat-icon>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="collectionParticipantImageCarousel" *ngIf="bookmark.collection !== undefined && bookmark.collection.length > 0">
-                                    <div class="circle-thumb-big" *ngFor="let owner of bookmark.collection[0].owners">
-                                        <app-profile-popup [peer]="owner"></app-profile-popup>
-                                    </div>
-                                </div>
-                                <div class="teacherName" (click)="openProfile(bookmark.collection[0].owners[0])">
-                      <span class="mat-body-1 clickable">{{bookmark.collection[0].type | ucfirst}} by {{bookmark.collection[0].owners[0].profiles[0].first_name
-                        + ' ' + bookmark.collection[0].owners[0].profiles[0].last_name | ucwords}}
-                      </span>
-                                </div>
-                                <div class="teacherHeadline">
-                                    <span>{{bookmark.collection[0].owners[0].profiles[0].headline | ucwords}} </span>
-                                </div>
-                                <div class="collectionTitle mat-body-2 clickable" (click)="openCollection(bookmark.collection[0])">{{ bookmark.collection[0].title || 'No Title' | ucwords }} </div>
-                                <div class="collectionSubtitle">
-                                    {{ bookmark.collection[0].calendars.length }} Days | {{bookmark.collection[0].contents.length}} Activity |
-                                    <span *ngIf="bookmark.collection[0].topics.length > 0; then topicName else noTopicText"></span>
-                                </div>
-                                <div *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).timeToStart===0">
-                                    <p class="upcomingEventLabel">
-                                        Ongoing
-                                    </p>
-                                    <div class="upcomingEventTitle">
-                                        {{ consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).title | ucwords }}
-                                    </div>
-                                    <div class="upcomingEventTime">
-                                        {{ consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).type | ucfirst }}{{' ' + consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).fillerWord
-                                        + ' today'}}
-                                    </div>
-                                </div>
-                                <div *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).timeToStart>0">
-                                    <p class="upcomingEventLabel">
-                                        Up Next
-                                    </p>
-                                    <div class="upcomingEventTitle">
-                                        {{ consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).title }}
-                                    </div>
-                                    <div class="upcomingEventTime">
-                                        {{ consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).type | ucfirst }}{{' ' + consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).fillerWord
-                                        + ' in ' + consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).timeToStart +
-                                        ' Days' }}
-                                    </div>
-                                </div>
-                                <div *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).timeToStart<0">
-
-                                    <div class="upcomingEventTitle">
-                                        There are no ongoing or upcoming cohorts for this {{bookmark.collection[0].type}}
-                                    </div>
-                                </div>
-                            </mat-card-content>
-                            <mat-card-actions *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).hasStarted">
-                                <button mat-raised-button>{{consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).upcomingEventButtonText}}</button>
-                            </mat-card-actions>
-                            <br>
-                            <br>
-                        </mat-card>
-                    </div>
-                    <mat-menu #bookmarkCardMenu>
-                        <button mat-menu-item (click)="deleteBookmark(bookmark)">
-                            Delete bookmark
-                        </button>
-                    </mat-menu>
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br>
-      <br>
-    </div>
-  </div>
+	<div class="col-md-12 margin-top-10" *ngIf="loaded">
+		<div #noContentView *ngIf="bookmarks.length === 0" class="center" style="margin-top: 10%">
+			<div class="lightText">
+				You do not have any bookmarks
+				<br>
+				<br> Start by bookmarking an
+				<a color="default" [routerLink]="'/home/classes'">Online Course </a> or
+				<a color="default" [routerLink]="'/home/experiences'">In-person Workshop </a>
+			</div>
+		</div>
+		<div *ngIf="bookmarks.length > 0">
+			<div style="display:inline;">
+				<h2>Bookmarks</h2>
+			</div>
+			<div class="row">
+				<div style="margin-top:20px;" class="col-md-12">
+					<div class="row">
+						<div *ngFor="let bookmark of bookmarks">
+							<div *ngIf="bookmark.collection && bookmark.collection.length > 0">
+								<ng-template #topicName>  |  {{bookmark.collection[0].topics[0].name | titlecase}}</ng-template>
+								<ng-template #noTopicText>  |  No Topics</ng-template>
+								<div class="col-md-4" style="margin-top: 20px;">
+									<mat-card style="text-align: center; padding: 20px;">
+										<mat-card-content>
+											<div style="text-align: right">
+												<div class="pull-right">
+													<a [matMenuTriggerFor]="bookmarkCardMenu" style="text-align: right; padding: 0px">
+														<mat-icon>more_vert</mat-icon>
+													</a>
+												</div>
+											</div>
+											<div style="text-align: center">
+												<div class="pull-left">
+													<mat-chip-list class="cardTypeChip">
+														<mat-chip class="smallChip" [color]="'accent'">{{bookmark.collection[0].type | titlecase}}</mat-chip>
+													</mat-chip-list>
+												</div>
+											</div>
+											<div class="collectionParticipantImageCarousel" *ngIf="bookmark.collection !== undefined && bookmark.collection.length > 0">
+												<div class="circle-thumb-big" *ngFor="let owner of bookmark.collection[0].owners">
+													<app-profile-popup [peer]="owner"></app-profile-popup>
+												</div>
+											</div>
+											<div class="teacherName" (click)="openProfile(bookmark.collection[0].owners[0])">
+												<span class="mat-body-1 clickable">Taught by {{bookmark.collection[0].owners[0].profiles[0].first_name + ' ' + bookmark.collection[0].owners[0].profiles[0].last_name | ucwords}}
+												</span>
+											</div>
+											<div class="teacherHeadline">
+												<span>{{bookmark.collection[0].owners[0].profiles[0].headline | ucwords}} </span>
+											</div>
+											<div class="collectionTitle mat-body-2 clickable" (click)="openCollection(bookmark.collection[0])">{{ bookmark.collection[0].title || 'No Title' | ucwords }} </div>
+											<div class="collectionSubtitle">
+												<span *ngIf="bookmark.collection[0].calendars">{{ bookmark.collection[0].calendars.length }} Days</span>
+												<span *ngIf="bookmark.collection[0].contents">  | {{bookmark.collection[0].contents.length}} Activity</span>
+												<span *ngIf="bookmark.collection[0].topics.length > 0; then topicName else noTopicText"></span>
+											</div>
+											<div *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).timeToStart===0">
+												<p class="upcomingEventLabel">
+													Ongoing
+												</p>
+												<div class="upcomingEventTitle">
+													{{ consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).title | ucwords }}
+												</div>
+												<div class="upcomingEventTime">
+													{{ consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).type | ucfirst }}{{' ' + consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).fillerWord + ' today'}}
+												</div>
+											</div>
+											<div *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).timeToStart>0">
+												<p class="upcomingEventLabel">
+													Up Next
+												</p>
+												<div class="upcomingEventTitle">
+													{{ consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).title }}
+												</div>
+												<div class="upcomingEventTime">
+													{{ consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).type | ucfirst }}{{' ' + consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).fillerWord + ' in ' + consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).timeToStart + ' Days' }}
+												</div>
+											</div>
+											<div *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).timeToStart<0">
+												<div class="upcomingEventTitle">
+													There are no ongoing or upcoming cohorts for this {{bookmark.collection[0].type}}
+												</div>
+											</div>
+										</mat-card-content>
+										<mat-card-actions *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).hasStarted">
+											<button mat-raised-button>{{consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).upcomingEventButtonText}}</button>
+										</mat-card-actions>
+										<br>
+										<br>
+									</mat-card>
+								</div>
+								<mat-menu #bookmarkCardMenu>
+									<button mat-menu-item (click)="deleteBookmark(bookmark)">
+										Delete bookmark
+									</button>
+								</mat-menu>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
+		</div>
+	</div>
 </div>

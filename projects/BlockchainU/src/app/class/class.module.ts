@@ -9,14 +9,14 @@ import { ClassContentVideoComponent } from './class-content-video/class-content-
 import { ContentViewComponent } from './content-view/content-view.component';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
 import { ClassContentQuizComponent } from './class-content-quiz/class-content-quiz.component';
-import { DataSharingService } from '../_services/data-sharing-service/data-sharing.service';
-
+import {DataSharingService} from '../_services/data-sharing-service/data-sharing.service';
+import {MatVideoModule} from 'mat-video';
 @NgModule({
     imports: [
         SharedModule,
         ClassRoutingModule,
-
-    ],
+		MatVideoModule,
+	],
     declarations: [
         ClassEditComponent,
         ClassContentComponent,

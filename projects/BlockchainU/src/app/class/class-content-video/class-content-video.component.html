@@ -28,43 +28,46 @@
 					<mat-form-field class="pb-block margin-top-20 margin-bot-20">
 						<input matInput #title formControlName="title" placeholder="Video Title">
 					</mat-form-field>
-
-					<div class="form-group margin-bottom-20">
-						<label>Upload A Video File</label>
-						<div class="upload-image-section imageHolder">
-							<app-upload-file (uploaded)="imageUploadNew($event)"></app-upload-file>
-							<h5 class="margin-top-10">Max File Size
-								<b>1000MB</b>. Allowed file types <b>.mp4, .mov, .mpeg</b>
-							</h5>
-							<div class="row margin-top-20" *ngIf="urlForVideo">
-								<div [hidden]="!loadingUploadedVideo" class="col-md-12 margin-bottom-20">
-									<span>Fetching Video</span>
-									<mat-progress-bar mode="buffer"></mat-progress-bar>
-								</div>
-								<div class="col-md-11 embed-responsive embed-responsive-16by9 pic delete imageContainer">
-									<video style="max-height: 40vh;" controls #video preload="metadata" (loadedmetadata)="onMetadata($event, video)"
-									 (error)="videoError($event)">
-										<source [src]="urlForVideo | safe:'resourceUrl'" type="video/mp4" crossorigin>
-									</video>
-									<mat-icon (click)="deleteFromContainer(urlForVideo, 'video')" class="delete-button">close</mat-icon>
+					<div class="row" *ngIf="!signedUrlForStreaming">
+						<div class="col-md-12">
+							<div class="form-group margin-bottom-20">
+								<label>Upload A Video File</label>
+								<div class="upload-image-section imageHolder">
+									<app-upload-file (uploaded)="loadUploadedVideo($event)" [allowedTypes]="'.mp4,.mov,.mpeg'"></app-upload-file>
+									<h5 class="margin-top-10">Max File Size
+										<b>1000MB</b>. Allowed file types <b>.mp4, .mov, .mpeg</b>
+									</h5>
 								</div>
 							</div>
 						</div>
-						<span *ngIf=" itenaryForm.value.contents[lastIndex] && itenaryForm.value.contents[lastIndex].videoLength">
-							Duration: {{itenaryForm.value.contents[lastIndex].videoLength }} Seconds
-						</span>
 					</div>
-					<div class="clearfix"></div>
-
+					<div class="row margin-top-20">
+						<div [hidden]="!loadingUploadedVideo" class="col-md-12 margin-bottom-20">
+							<div class="margin-bottom-10">Fetching your video...</div>
+							<mat-progress-bar mode="buffer"></mat-progress-bar>
+						</div>
+						<div [hidden]="loadingUploadedVideo || !signedUrlForStreaming">
+							<div class="col-md-11 embed-responsive embed-responsive-16by9 pic delete imageContainer">
+								<mat-video #video [autoplay]="false" [preload]="true" [fullscreen]="true" [download]="false" color="accent" spinner="dot">
+									<source *ngIf="signedUrlForStreaming" matVideoSource src="{{signedUrlForStreaming}}" type="video/mp4">
+								</mat-video>
+								<mat-icon (click)="deleteMedia(secureVideoUrl, 'video')" class="delete-button">close</mat-icon>
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-md-12 mat-caption margin-bottom-20" *ngIf=" itenaryForm.value.contents[lastIndex] && itenaryForm.value.contents[lastIndex].videoLength">
+								Video Length: {{itenaryForm.value.contents[lastIndex].videoLength }} Seconds
+							</div>
+						</div>
+					</div>
 					<mat-checkbox [(ngModel)]="youtubeEmbed" [ngModelOptions]="{standalone: true}">Embed a Youtube Video instead?</mat-checkbox>
 
 					<div *ngIf="youtubeEmbed">
-						<mat-form-field class=" pb-block margin-top-20 margin-bot-20">
+						<mat-form-field class=" pb-block margin-top-20 margin-bottom-10">
 							<span matPrefix>https://www.youtube.com/watch?v=</span>
 							<input matInput #youtubeVideoId formControlName="youtubeId" placeholder="NHffhGkpgFA">
 						</mat-form-field>
-						<div class="pb-block">
-							Duration:{{itenaryForm.value.contents[lastIndex].videoLength}}
+						<div class="pb-block mat-caption margin-bottom-20">
+							Video Length: {{itenaryForm.value.contents[lastIndex].videoLength}}
 						</div>
 					</div>
 					<mat-form-field class="pb-block margin-top-20 margin-bottom-20">
@@ -89,16 +92,16 @@
 						<div *ngIf="attachmentUrls.length" class="pic delete">
 							<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
 								<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
-								<mat-icon *ngIf="file.type.includes('image')" (click)="deleteFromContainer(file.url, 'file')" class="delete-image">close</mat-icon>
+								<mat-icon *ngIf="file.type.includes('image')" (click)="deleteMedia(file.url, 'file')" class="delete-image">close</mat-icon>
 								<div *ngIf="file.type.includes('application')" class="uploaded_file">
 									<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
 								</div>
-								<mat-icon *ngIf="file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')" class="delete-file">close</mat-icon>
+								<mat-icon *ngIf="file.type.includes('application')" (click)="deleteMedia(file.url, 'file')" class="delete-file">close</mat-icon>
 								<video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc; position: relative;"
 								 preload="metadata">
 									<source src="{{envVariable.apiUrl + file.url}}">
 								</video>
-								<mat-icon *ngIf="file.type.includes('video')" (click)="deleteFromContainer(file.url, '')" class="delete-button">close</mat-icon>
+								<mat-icon *ngIf="file.type.includes('video')" (click)="deleteMedia(file.url, 'file')" class="delete-button">close</mat-icon>
 							</div>
 						</div>
 					</div>

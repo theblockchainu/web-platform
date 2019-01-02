@@ -57,8 +57,7 @@
 											<div class="teacherHeadline">
 												<span>{{collection.owners[0].profiles[0].headline}} </span>
 											</div>
-											<div class="collectionTitle mat-body-2 clickable" (click)="openCollection(collection)">{{ collection.title
-												|| 'No Title' | ucwords }} </div>
+											<div class="collectionTitle mat-body-2 clickable" (click)="openCollection(collection)">{{ collection.title || 'No Title' | ucwords }} </div>
 											<mat-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></mat-progress-bar>
 											<div class="collectionSubtitle">
 												{{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Activity
@@ -86,8 +85,7 @@
 												</div>
 												<div class="upcomingEventTime">
 													{{ consoleLearningComponent.getLearnerUpcomingEvent(collection).type | ucfirst }}
-													{{consoleLearningComponent.getLearnerUpcomingEvent(collection).fillerWord
-													+ ' in ' + consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart + ' days' }}
+													{{consoleLearningComponent.getLearnerUpcomingEvent(collection).fillerWord + ' in ' + consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart + ' days' }}
 												</div>
 											</div>
 											<div *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart < 0">
@@ -99,8 +97,7 @@
 												</div>
 												<div class="upcomingEventTime">
 													{{ consoleLearningComponent.getLearnerUpcomingEvent(collection).type | ucfirst }}
-													{{consoleLearningComponent.getLearnerUpcomingEvent(collection).fillerWord
-													+ ' was ' + -(consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart) + ' days ago' }}
+													{{consoleLearningComponent.getLearnerUpcomingEvent(collection).fillerWord + ' was ' + -(consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart) + ' days ago' }}
 												</div>
 											</div>
 										</mat-card-content>
@@ -142,15 +139,13 @@
 												</div>
 											</div>
 											<div class="teacherName">
-												<span class="mat-body-1 clickable">Taught by {{collection.owners[0].profiles[0].first_name + ' ' +
-													collection.owners[0].profiles[0].last_name}}
+												<span class="mat-body-1 clickable">Taught by {{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}}
 												</span>
 											</div>
 											<div class="teacherHeadline">
 												<span>{{collection.owners[0].profiles[0].headline}} </span>
 											</div>
-											<div class="collectionTitle mat-body-2 clickable" (click)="openCollection(collection)">{{ collection.title
-												|| 'No Title' | ucwords }} </div>
+											<div class="collectionTitle mat-body-2 clickable" (click)="openCollection(collection)">{{ collection.title || 'No Title' | ucwords }} </div>
 											<div class="lighterText">
 												Booked {{consoleLearningComponent.getDaysBetween(collection.updatedAt, now)}}
 											</div>
@@ -180,8 +175,7 @@
 												</div>
 												<div class="upcomingEventTime">
 													{{ consoleLearningComponent.getLearnerUpcomingEvent(collection).type | ucfirst }}
-													{{consoleLearningComponent.getLearnerUpcomingEvent(collection).fillerWord
-													+ ' in ' + consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart + ' days' }}
+													{{consoleLearningComponent.getLearnerUpcomingEvent(collection).fillerWord + ' in ' + consoleLearningComponent.getLearnerUpcomingEvent(collection).timeToStart + ' days' }}
 												</div>
 											</div>
 										</mat-card-content>
@@ -237,15 +231,13 @@
 												</div>
 											</div>
 											<div class="teacherName" (click)="openProfile(collection.owners[0])">
-												<span class="mat-body-1 clickable">Taught by {{collection.owners[0].profiles[0].first_name + ' ' +
-													collection.owners[0].profiles[0].last_name}}
+												<span class="mat-body-1 clickable">Taught by {{collection.owners[0].profiles[0].first_name + ' ' + collection.owners[0].profiles[0].last_name}}
 												</span>
 											</div>
 											<div class="teacherHeadline">
 												<span>{{collection.owners[0].profiles[0].headline}} </span>
 											</div>
-											<div class="mat-body-2 clickable" style="margin-top: 30px; margin-bottom: 30px" (click)="openCollection(collection)">{{
-												collection.title || 'No Title' | ucwords }} </div>
+											<div class="mat-body-2 clickable" style="margin-top: 30px; margin-bottom: 30px" (click)="openCollection(collection)">{{collection.title || 'No Title' | ucwords }} </div>
 											<mat-progress-bar mode="determinate" value="{{consoleLearningComponent.getProgressValue(collection)}}"></mat-progress-bar>
 											<div class="collectionSubtitle">
 												{{ consoleLearningComponent.getThisCollectionDate(collection) }} | {{collection.contents.length}} Activity
