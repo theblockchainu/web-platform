@@ -43,6 +43,10 @@ export class ContentInpersonComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.setUpContent();
+	}
+
+	private setUpContent() {
 		console.log('in person data changed');
 		this.envVariable = environment;
 		this.userType = this.data.userType;
