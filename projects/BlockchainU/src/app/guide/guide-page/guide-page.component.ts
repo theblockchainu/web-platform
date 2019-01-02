@@ -1566,7 +1566,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	}
 
 	public openShareDialog() {
-		this.dialogsService.shareCollection(this.guide.type, this.guide.id, this.guide.title, this.guide.description, this.guide.headline, environment.apiUrl + this.guide.imageUrls[0], null, this.userType === 'teacher');
+		this.dialogsService.shareCollection(this.guide.type, this.guide.id, this.guide.title, this.guide.description, this.guide.headline, environment.apiUrl + this.guide.imageUrls[0], null, this.userType === 'teacher', this.guideId);
 	}
 
 }
