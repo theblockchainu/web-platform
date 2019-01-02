@@ -533,11 +533,11 @@ h3 {
   position: fixed;
   right: 0;
   top: 0;
-  padding-top: 8vh;
+  padding-top: 56px;
   background: #f5f5f5;
   z-index: 5;
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
 
 .message-item-wrapper-one-day:last-child::after {
