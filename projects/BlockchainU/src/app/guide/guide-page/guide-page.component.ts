@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatDialog, MatSnackBar, MatButtonToggleChange } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Title, Meta } from '@angular/platform-browser';
@@ -41,9 +41,8 @@ import { UcWordsPipe } from 'ngx-pipes';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { CorestackService } from '../../_services/corestack/corestack.service';
-import { first } from 'rxjs/operators';
-import {Observable} from "rxjs/index";
-import {flatMap} from "tslint/lib/utils";
+import { first, flatMap } from 'rxjs/operators';
+import {Observable} from 'rxjs';
 declare var FB: any;
 declare var fbq: any;
 
@@ -507,7 +506,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				if (res) {
 					this.result = res;
 					if (this.result.calendarsSaved === 'calendarsSaved') {
-						this.initializeGuide();
+						this.initializePage();
 					}
 					if (this.result.cohortDeleted) {
 						this.refreshView();
@@ -1534,7 +1533,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	public addToEthereum() {
 		this._collectionService.addToEthereum(this.guideId)
 			.subscribe(res => {
-				this.initializeGuide();
+				this.initializePage();
 			}, err => {
 				this.snackBar.open('Could not add to one0x Blockchain. Try again later.', 'Ok', { duration: 5000 });
 			});
