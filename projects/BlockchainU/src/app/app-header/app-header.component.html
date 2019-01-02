@@ -93,7 +93,7 @@
 					<mat-icon class="show-small-inline">chat</mat-icon>
 				</button>
 				<div style="display: inline-block;" *ngIf="(isLoggedIn | async) && isAccountApproved">
-					<mat-icon style="padding-left: 10px;" class="notifDot" *ngIf="hasNewMessage || hasNewNotification">fiber_manual_record</mat-icon>
+					<mat-icon style="padding-left: 10px; font-size: 10px;" class="notifDot" *ngIf="hasNewMessage || hasNewNotification">fiber_manual_record</mat-icon>
 				</div>
 				<button mat-button class="headerButtons hide-small" (click)="openBlog()" *ngIf="!(isLoggedIn | async)">
 					Blog
