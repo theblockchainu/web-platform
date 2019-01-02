@@ -42,6 +42,8 @@ import { CertificateService } from '../../_services/certificate/certificate.serv
 import { ProfileService } from '../../_services/profile/profile.service';
 import { CorestackService } from '../../_services/corestack/corestack.service';
 import { first } from 'rxjs/operators';
+import {Observable} from "rxjs/index";
+import {flatMap} from "tslint/lib/utils";
 declare var FB: any;
 declare var fbq: any;
 
@@ -107,7 +109,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	public busyDiscussion: boolean;
 	public busyReview: boolean;
 	public busyReply: boolean;
-	public initialLoad: boolean;
 	public isReadonly: boolean;
 	public noOfReviews: number;
 	private initialised: boolean;
@@ -222,7 +223,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		private certificateService: CertificateService,
 		private _profileService: ProfileService,
 		private _corestackService: CorestackService
-		// private location: Location
 	) {
 		this.envVariable = environment;
 	}
@@ -248,7 +248,56 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	initializePage() {
+	public initializePage() {
+		
+		// Close all existing dialogs
+		this.dialogsService.closeAll();
+		
+		console.log('Initializing Page');
+		this.initializeGlobalVariables();
+		this.setValuesFromCookies();
+		this.setValuesFromRouteParameters()
+			.pipe(
+				flatMap(res => {
+					return this.initializeForms();
+				}),
+				flatMap(res => {
+					return this.setContactFormValues(res);
+				}),
+				flatMap(res => {
+					return this.fetchData();
+				}),
+				flatMap(res => {
+					return this.processData(res);
+				})
+			)
+			.subscribe(res => {
+				this.initialised = true;
+			});
+	}
+	
+	private fetchData() {
+		this.loadingCertificate = true;
+		this.allParticipants = [];
+		this.allItenaries = [];
+		const query = {
+			'include': [
+				'topics',
+				'views',
+				{ 'participants': [{ 'profiles': ['work'] }] },
+				{ 'owners': [{ 'profiles': ['work'] }] },
+				'rooms',
+				'corestackStudents'
+			],
+			'where': {
+				'or': [{ 'customUrl': this.guideId }, { 'id': this.guideId }]
+			}
+		};
+		
+		return this._collectionService.getAllCollections(query);
+	}
+	
+	private initializeGlobalVariables() {
 		this.guide = null;
 		this.loadingGuide = true;
 		this.newUserRating = 0;
@@ -256,7 +305,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.busyDiscussion = false;
 		this.busyReview = false;
 		this.busyReply = false;
-		this.initialLoad = true;
 		this.isReadonly = true;
 		this.noOfReviews = 3;
 		this.initialised = false;
@@ -277,8 +325,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.dateClicked = false;
 		this.viewDate = new Date();
 		this.refresh = new Subject();
-		this.events = [
-		];
+		this.events = [];
 		this.activeDayIsOpen = true;
 		this.loadingSimilarGuides = true;
 		this.loadingComments = true;
@@ -288,29 +335,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.inviteLink = '';
 		this.selectedTab = 0;
 		this.loadingCodeLab = true;
-		this.activatedRoute.params.subscribe(params => {
-			if (this.initialised && (this.guideId !== params['collectionId'])) {
-				location.reload();
-			}
-			this.guideId = params['collectionId'];
-			this.toOpenDialogName = params['dialogName'];
-		});
-		this.activatedRoute.queryParams.subscribe(params => {
-			if (params['previewAs']) {
-				this.previewAs = params['previewAs'];
-				console.log('Previewing as ' + this.previewAs);
-			}
-			if (params['referredBy']) {
-				this._collectionService.saveRefferedBY(params['referredBy']);
-			}
-		});
-		this.userId = this._cookieUtilsService.getValue('userId');
-		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
-
-		this.initialised = true;
-		this.initializeGuide();
-		this.initializeForms();
-		this.initialLoad = false;
 		this.eventsForTheDay = {};
 		this.carouselBanner = {
 			grid: { xs: 1, sm: 1, md: 1, lg: 1, all: 0 },
@@ -325,11 +349,100 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 			touch: true
 		};
 	}
-
+	
+	private setValuesFromCookies() {
+		this.userId = this._cookieUtilsService.getValue('userId');
+		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
+	}
+	
+	private setValuesFromRouteParameters() {
+		return this.activatedRoute.params.pipe(
+			first(),
+			flatMap(params => {
+				this.guideId = params['collectionId'];
+				this.toOpenDialogName = params['dialogName'];
+				return this.activatedRoute.queryParams;
+			}),
+			flatMap(params => {
+				if (params['previewAs']) {
+					this.previewAs = params['previewAs'];
+				}
+				if (params['referredBy']) {
+					this._collectionService.saveRefferedBY(params['referredBy']);
+				} else {
+					this._cookieUtilsService.deleteValue('referrerId');
+				}
+				return new Observable(obs => {
+					obs.next();
+				});
+			}));
+	}
+	
+	private initializeForms() {
+		this.chatForm = this._fb.group({
+			description: ['', Validators.required],
+			isAnnouncement: [false]
+		});
+		this.reviewForm = this._fb.group({
+			description: ['', Validators.required],
+			like: '',
+			score: '',
+			collectionId: this.guideId
+		});
+		
+		const filter = {
+			'include': [{ 'profiles': ['phone_numbers'] }]
+		};
+		
+		this.contactUsForm = this._fb.group(
+			{
+				first_name: ['', Validators.required],
+				email: ['', Validators.required],
+				subject: [''],
+				message: ['', Validators.required],
+				phone: ['']
+			}
+		);
+		
+		return this._profileService.getPeerData(this.userId, filter);
+	}
+	
+	private setContactFormValues(res) {
+		// If user exists, setup his contact form
+		if (res && res.profiles && res.profiles.length > 0) {
+			
+			const userPhone = res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0 ? '+'
+				+ res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '';
+			
+			this.contactUsForm = this._fb.group(
+				{
+					first_name: [res.profiles[0].first_name, Validators.required],
+					email: [res.email, Validators.required],
+					subject: [''],
+					message: ['', Validators.required],
+					phone: [userPhone]
+				}
+			);
+		} else {
+			this.contactUsForm = this._fb.group(
+				{
+					first_name: ['', Validators.required],
+					email: ['', Validators.required],
+					subject: [''],
+					message: ['', Validators.required],
+					phone: ['']
+				}
+			);
+		}
+		return new Observable(obs => {
+			obs.next();
+		});
+	}
+	
 	refreshView(): void {
 		this.refresh.next();
 	}
-
+	
 	dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
 		this.eventsForTheDay = {};
 
@@ -410,7 +523,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 			} else {
 				for (const owner of this.guide.owners) {
 					if (owner.id === this.userId) {
-						console.log('ownerId:' + owner.id + ' userId:' + this.userId);
 						this.userType = 'teacher';
 						this.sortAssessmentRules();
 						break;
@@ -428,64 +540,8 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 					this.userType = 'public';
 				}
 			}
+			this.loadingGuide = false;
 		}
-	}
-
-	private initializeGuide() {
-		this.loadingCertificate = true;
-		this.allParticipants = [];
-		this.allItenaries = [];
-		const query = {
-			'include': [
-				'topics',
-				'views',
-				{ 'participants': [{ 'profiles': ['work'] }] },
-				{ 'owners': [{ 'profiles': ['work'] }] },
-				'rooms',
-				'corestackStudents'
-			],
-			'where': {
-				'customUrl': this.guideId
-			}
-		};
-
-		if (this.guideId) {
-			this._collectionService.getAllCollections(query)
-				.pipe(first())
-				.subscribe((res: any) => {
-					if (res && res.length > 0) {
-						console.log(res);
-						this.processData(res[0]);
-					} else {
-						console.log('!res && res.length< 0');
-						delete query.where;
-						this.fetchById(query);
-					}
-				},
-					err => {
-						console.log('error');
-						delete query.where;
-						this.fetchById(query);
-					}
-				);
-		} else {
-			console.log('NO COLLECTION');
-		}
-	}
-
-	fetchById(query: any) {
-		this._collectionService.getCollectionDetail(this.guideId, query)
-			.subscribe((res: any) => {
-				if (res) {
-					console.log(res);
-					this.processData(res);
-				}
-			},
-				err => {
-					this.loadingGuide = false;
-					console.log('error');
-				}
-			);
 	}
 
 	private getEthereumInfo() {
@@ -499,41 +555,47 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	}
 
 	private processData(res: any) {
-		console.log(res);
-		this.guide = res;
-		this.loadingGuide = false;
-		this.guideId = this.guide.id;
-		this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
-		this.totalHours = this._collectionService.calculateDuration(this.guide.description.length);
-		this.setTags();
-		try {
-			if (fbq && fbq !== undefined) {
-				fbq('track', 'ViewContent', {
-					currency: 'USD',
-					value: 0.0,
-					content_type: 'product',
-					content_ids: [this.guideId]
-				});
+		if (res && res.length > 0) {
+			console.log('PROCESSING DATA');
+			this.guide = res[0];
+			this.guideId = this.guide.id;
+			this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
+			this.totalHours = this._collectionService.calculateDuration(this.guide.description.length);
+			this.setTags();
+			try {
+				if (fbq && fbq !== undefined) {
+					fbq('track', 'ViewContent', {
+						currency: 'USD',
+						value: 0.0,
+						content_type: 'product',
+						content_ids: [this.guideId]
+					});
+				}
+			} catch (e) {
+				console.log(e);
 			}
-		} catch (e) {
-			console.log(e);
+			this.getEthereumInfo();
+			this.initializeUserType();
+			this.fixTopics();
+			this.getReviews();
+			this.getRecommendations();
+			this.getParticipants();
+			this.getDiscussions();
+			this.getBookmarks();
+			this.setUpCarousel();
+			this.getCorestackInfo();
+			if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
+				const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
+				snackBarRef.onAction().subscribe();
+				this.router.navigate(['guide', this.guideId]);
+			}
+			this.recordStartView();
+		} else {
+			this.loadingGuide = false;
 		}
-		this.initializeUserType();
-		this.fixTopics();
-		this.getReviews();
-		this.getRecommendations();
-		this.getParticipants();
-		this.getDiscussions();
-		this.getBookmarks();
-		this.setUpCarousel();
-		this.getEthereumInfo();
-		this.getCorestackInfo();
-		if (this.toOpenDialogName !== undefined && this.toOpenDialogName === 'paymentSuccess') {
-			const snackBarRef = this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
-			snackBarRef.onAction().subscribe();
-			this.router.navigate(['guide', this.guideId]);
-		}
-		this.recordStartView();
+		return new Observable(obs => {
+			obs.next();
+		});
 	}
 
 	private getCorestackInfo() {
@@ -774,59 +836,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 
 	private fixTopics() {
 		this.topicFix = _.uniqBy(this.guide.topics, 'id');
-	}
-
-	private initializeForms() {
-		this.chatForm = this._fb.group({
-			description: ['', Validators.required],
-			isAnnouncement: [false]
-		});
-		this.reviewForm = this._fb.group({
-			description: ['', Validators.required],
-			like: '',
-			score: '',
-			collectionId: this.guideId
-		});
-
-		const filter = {
-			'include': [{ 'profiles': ['phone_numbers'] }]
-		};
-
-		this.contactUsForm = this._fb.group(
-			{
-				first_name: ['', Validators.required],
-				email: ['', Validators.required],
-				subject: [''],
-				message: ['', Validators.required],
-				phone: ['']
-			}
-		);
-
-		this._profileService.getPeerData(this.userId, filter).subscribe(res => {
-			if (res && res.profiles && res.profiles.length > 0) {
-				const userPhone = res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0 ? '+'
-					+ res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '';
-				this.contactUsForm = this._fb.group(
-					{
-						first_name: [res.profiles[0].first_name, Validators.required],
-						email: [res.email, Validators.required],
-						subject: [''],
-						message: ['', Validators.required],
-						phone: [userPhone]
-					}
-				);
-			} else {
-				this.contactUsForm = this._fb.group(
-					{
-						first_name: ['', Validators.required],
-						email: ['', Validators.required],
-						subject: [''],
-						message: ['', Validators.required],
-						phone: ['']
-					}
-				);
-			}
-		});
 	}
 
 	gotoEdit() {
@@ -1558,8 +1567,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	}
 
 	public openShareDialog() {
-		this.dialogsService.shareCollection(this.guide.type, this.guide.id, this.guide.title, this.guide.description, this.guide.headline, environment.apiUrl + this.guide.imageUrls[0]
-			, null, this.userType === 'teacher');
+		this.dialogsService.shareCollection(this.guide.type, this.guide.id, this.guide.title, this.guide.description, this.guide.headline, environment.apiUrl + this.guide.imageUrls[0], null, this.userType === 'teacher');
 	}
 
 }

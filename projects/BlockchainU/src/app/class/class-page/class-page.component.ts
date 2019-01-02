@@ -344,8 +344,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.dateClicked = false;
 		this.viewDate = new Date();
 		this.refresh = new Subject();
-		this.events = [
-		];
+		this.events = [];
 		this.activeDayIsOpen = true;
 		this.loadingSimilarClasses = true;
 		this.loadingComments = true;
@@ -518,6 +517,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					}
 				}
 			}
+			
 			if (this.userType === 'public' || this.userType === 'teacher') {
 				this.initializeAllItenaries();
 			}

@@ -15,7 +15,7 @@
 								<span [matMenuTriggerFor]="menu">
 									<i *ngIf="ownerView && !globalStory" class="lightText mat-caption fa fa-cog clickable"></i>&nbsp;&nbsp;&nbsp;</span>
 								<span (click)="shareDialog()">
-									<i *ngIf="ownerView && !globalStory" class="lightText mat-caption fa fa-share clickable"></i>
+									<i *ngIf="ownerView && !globalStory" style="position: relative; top: 5px;" class="lightText mat-caption material-icons clickable">share</i>
 								</span>
 								<mat-menu #menu="matMenu">
 									<button (click)="deleteStory()" mat-menu-item *ngIf="!globalStory">Delete Story</button>
