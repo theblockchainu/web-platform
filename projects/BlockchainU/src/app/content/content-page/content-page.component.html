@@ -1,3 +1,9 @@
-<p>
-  content-page works!
-</p>
+<div class="main-content">
+  <div [ngSwitch]="data.type">
+    <app-content-inperson [data]="data" *ngSwitchCase="'in-person'"></app-content-inperson>
+    <app-content-online [data]="data" *ngSwitchCase="'online'"></app-content-online>
+    <app-content-project [data]="data" (exitDialog)="exitDialog($event)" *ngSwitchCase="'project'"></app-content-project>
+    <app-content-quiz [data]="data" (exitDialog)="exitDialog($event)" *ngSwitchCase="'quiz'"></app-content-quiz>
+    <app-content-video [data]="data" *ngSwitchCase="'video'"></app-content-video>
+  </div>
+</div>

@@ -6,7 +6,7 @@
         <mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
       </button>
       <button mat-stroked-button class="pull-right" *ngIf="data.userType ==='teacher' || data.userType==='participant'"
-        color="primary">Standalone Mode</button>
+        color="primary" (click)="openContent()">Standalone Mode</button>
     </div>
   </div>
   <div class="row">
