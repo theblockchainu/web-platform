@@ -1,58 +1,61 @@
 <div class="code-lab" #codeContainer>
-  <div class="row">
-    <div class="col-xs-12">
-      <mat-button-toggle-group (change)="gotoTab($event)">
-        <mat-button-toggle value="code">
-          <mat-icon>code</mat-icon>Code
-        </mat-button-toggle>
-        <mat-button-toggle value="compile">
-          <mat-icon>tab</mat-icon>Compile
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-      <button class="pull-right" mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="refreshPage()">
-          <mat-icon>refresh</mat-icon> Refresh page
-        </button>
-        <button mat-menu-item (click)="openBottomSheet()">
-          <mat-icon>vpn_key</mat-icon> Accounts
-        </button>
-      </mat-menu>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <div [hidden]="selectedTab!=='code'" *ngIf="ice_coder_settings">
-        <iframe id="iframe-ice-coder" style="height:83vh;width: -webkit-fill-available" [src]="ice_coder_settings.auth_url| safe:'resourceUrl'">
-        </iframe>
-        <div class="credentials-box">
-          <mat-form-field class="clickable" appearance="outline" [ngxClipboard]="iceUsername" (cbOnSuccess)="onCopySuccess('Username')">
-            <mat-label>Username</mat-label>
-            <input #iceUsername matInput [readOnly]="true" value="{{ice_coder_settings.username}}">
-          </mat-form-field>
-          <mat-form-field class="clickable" appearance="outline" [ngxClipboard]="icePassword" (cbOnSuccess)="onCopySuccess('Password')">
-            <mat-label>Outline form field</mat-label>
-            <input #icePassword matInput [readOnly]="true" value="{{ice_coder_settings.password}}">
-          </mat-form-field>
-        </div>
-      </div>
-      <div [hidden]="selectedTab!=='compile'" *ngIf="terminal_settings">
-        <iframe id="iframe-terminal" style="height:83vh;width: -webkit-fill-available" [src]="terminal_settings.auth_url| safe:'resourceUrl'">
-        </iframe>
-        <div class="credentials-box">
-          <mat-form-field class="clickable" appearance="outline" [ngxClipboard]="terminalUsername" (cbOnSuccess)="onCopySuccess('Username')">
-            <mat-label>Username</mat-label>
-            <input #terminalUsername matInput [readOnly]="true" value="{{terminal_settings.username}}">
-          </mat-form-field>
-          <mat-form-field class="clickable" appearance="outline" [ngxClipboard]="terminalPassword" (cbOnSuccess)="onCopySuccess('Password')">
-            <mat-label>Outline form field</mat-label>
-            <input #terminalPassword matInput [readOnly]="true" value="{{terminal_settings.password}}">
-          </mat-form-field>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="row">
+		<div class="col-xs-12">
+			<mat-button-toggle-group (change)="gotoTab($event)">
+				<mat-button-toggle class="mat-border-button" style="margin-right: 10px; margin-bottom: 8px;" value="code">
+					<mat-icon style="padding-right: 10px;">code</mat-icon>Code
+				</mat-button-toggle>
+				<mat-button-toggle class="mat-border-button" style="margin-bottom: 8px;" value="compile">
+					<mat-icon style="padding-right: 10px;">tab</mat-icon>Compile & Deploy
+				</mat-button-toggle>
+			</mat-button-toggle-group>
+			<button class="pull-right" mat-icon-button [matMenuTriggerFor]="menu">
+				<mat-icon>menu</mat-icon>
+			</button>
+			<button class="pull-right" mat-icon-button (click)="refreshPage()">
+				<mat-icon>refresh</mat-icon>
+			</button>
+			<mat-menu #menu="matMenu">
+				<button mat-menu-item (click)="refreshPage()">
+					<mat-icon>refresh</mat-icon> Reload Tab
+				</button>
+				<button mat-menu-item (click)="openBottomSheet()">
+					<mat-icon>vpn_key</mat-icon> Wallet Accounts
+				</button>
+			</mat-menu>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-xs-12">
+			<div [hidden]="selectedTab!=='code'" *ngIf="ice_coder_settings">
+				<iframe id="iframe-ice-coder" style="height:83vh;width: -webkit-fill-available" [src]="ice_coder_settings.auth_url| safe:'resourceUrl'">
+				</iframe>
+				<div class="credentials-box">
+					<mat-form-field class="clickable margin-right-10" appearance="outline" [ngxClipboard]="iceUsername" (cbOnSuccess)="onCopySuccess('Username')">
+						<mat-label>Username</mat-label>
+						<input #iceUsername matInput [readOnly]="true" value="{{ice_coder_settings.username}}">
+					</mat-form-field>
+					<mat-form-field class="clickable" appearance="outline" [ngxClipboard]="icePassword" (cbOnSuccess)="onCopySuccess('Password')">
+						<mat-label>Password</mat-label>
+						<input #icePassword matInput [readOnly]="true" value="{{ice_coder_settings.password}}">
+					</mat-form-field>
+				</div>
+			</div>
+			<div [hidden]="selectedTab!=='compile'" *ngIf="terminal_settings">
+				<iframe id="iframe-terminal" style="height:83vh;width: -webkit-fill-available" [src]="terminal_settings.auth_url| safe:'resourceUrl'">
+				</iframe>
+				<div class="credentials-box">
+					<mat-form-field class="clickable" appearance="outline" [ngxClipboard]="terminalUsername" (cbOnSuccess)="onCopySuccess('Username')">
+						<mat-label>Username</mat-label>
+						<input #terminalUsername matInput [readOnly]="true" value="{{terminal_settings.username}}">
+					</mat-form-field>
+					<mat-form-field class="clickable" appearance="outline" [ngxClipboard]="terminalPassword" (cbOnSuccess)="onCopySuccess('Password')">
+						<mat-label>Password</mat-label>
+						<input #terminalPassword matInput [readOnly]="true" value="{{terminal_settings.password}}">
+					</mat-form-field>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

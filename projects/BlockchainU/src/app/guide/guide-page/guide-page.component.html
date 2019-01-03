@@ -618,7 +618,7 @@
 					<!--RIGHT SIDEBAR-->
 					<div class="col-md-6  col-xs-12 right-content right-content-sticky hide-small">
 						<!--CODE LAB-->
-						<div *ngIf="userType==='participant' || userType === 'teacher'">
+						<div *ngIf="userType==='participant' || userType === 'teacher'" style="position: fixed; right: 0; width: 50%;">
 							<div *ngIf="!loadingCodeLab &&  lab_details && lab_details.length>0">
 								<app-code-labs [lab_details]="lab_details"></app-code-labs>
 							</div>
