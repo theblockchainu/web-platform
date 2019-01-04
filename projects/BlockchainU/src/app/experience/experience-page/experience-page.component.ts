@@ -760,7 +760,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		};
 		this._scholarshipService.fetchScholarships(query)
 			.subscribe(res => {
-				if (res && res.length > 0) {
+				if (res && res[0] !== undefined) {
 					this.globalScholarshipId = res[0].id;
 				}
 			}, err => {
