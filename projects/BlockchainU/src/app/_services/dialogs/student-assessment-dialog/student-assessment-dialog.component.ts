@@ -56,7 +56,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			
 			// Check participation on blockchain
 			participant.hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
-			if (participant.hasEthereumAddress && this.data.globalScholarshipId) {
+			/*if (participant.hasEthereumAddress && this.data.globalScholarshipId) {
 				this.collectionService.getParticipantScholarshipInfo(this.data.globalScholarshipId, participant.ethAddress)
 					.subscribe(res => {
 						console.log(res);
@@ -86,7 +86,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 					});
 			} else {
 				participant.isScholarshipOnEthereum = false;
-			}
+			}*/
 			
 			if (participant.certificates) {
 				participant.certificates.forEach(certificate => {
