@@ -46,6 +46,7 @@ import { ProfileService } from '../../_services/profile/profile.service';
 import { ContentQuizComponent } from './content-quiz/content-quiz.component';
 import { Observable } from 'rxjs';
 import { first, flatMap } from 'rxjs/operators';
+import {ScholarshipService} from '../../_services/scholarship/scholarship.service';
 declare var FB: any;
 declare var fbq: any;
 
@@ -165,6 +166,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public isOnEthereum: boolean;
 	public previewAs: string;
 	public view: string;
+	public globalScholarshipId: string;
 	public activityMapping:
 		{ [k: string]: string } = { '=0': 'No activity', '=1': 'One activity', 'other': '# activities' };
 	public hourMapping:
@@ -213,6 +215,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		private snackBar: MatSnackBar,
 		private _socketService: SocketService,
 		private _authenticationService: AuthenticationService,
+		private _scholarshipService: ScholarshipService,
 		private titleService: Title,
 		private metaService: Meta,
 		private _assessmentService: AssessmentService,
@@ -224,6 +227,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		this.fetchScholarships();
 		// Subscribe to login listener and refresh page when user logs in.
 		this._authenticationService.isLoginSubject.subscribe(res => {
 			this.initializePage();
@@ -741,6 +745,23 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		return new Observable(obs => {
 			obs.next();
 		});
+	}
+	
+	private fetchScholarships() {
+		const query = {
+			where: {
+				type: 'public'
+			}
+		};
+		this._scholarshipService.fetchScholarships(query)
+			.subscribe(res => {
+				if (res && res.length > 0) {
+					this.globalScholarshipId = res[0].id;
+				}
+			}, err => {
+				console.log(err);
+				this.globalScholarshipId = null;
+			});
 	}
 
 	private openCustomDialog(dialogName) {
@@ -2029,7 +2050,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				'assessment_models': this.class.assessment_models,
 				'academicGyan': this.class.academicGyan,
 				'nonAcademicGyan': this.class.nonAcademicGyan,
-				'quizContents': this.filterQuizContents(this.itenaryArray)
+				'quizContents': this.filterQuizContents(this.itenaryArray),
+				'globalScholarshipId': this.globalScholarshipId
 			}
 		).subscribe(dialogSelection => {
 			let assessmentEngagementRule, assessmentCommitmentRule;
