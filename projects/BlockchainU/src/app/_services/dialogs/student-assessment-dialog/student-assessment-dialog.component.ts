@@ -180,7 +180,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 					this.participantsInitArray.forEach(participant => {
 						// If this participant exists in the returned blockchain list
 						const hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
-						if (hasEthereumAddress && _.some(res.participants, ethParticipant => ethParticipant.toLowerCase() === participant.value.ethAddress.toLowerCase())) {
+						if (hasEthereumAddress && _.some(res['participants'], ethParticipant => ethParticipant.toLowerCase() === participant.value.ethAddress.toLowerCase())) {
 							participant['controls']['isOnEthereum'].patchValue(true);
 						}
 					});
