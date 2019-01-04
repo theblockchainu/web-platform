@@ -988,14 +988,23 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	}
 
 	viewParticipants() {
-		this.dialogsService.viewParticipantstDialog(
+		let chatRoomId;
+		if (this.guide.rooms && this.guide.rooms.length > 0) {
+			chatRoomId = this.guide.rooms[0].id;
+		}
+		this.dialogsService.viewParticipantsDialog(
 			this.participants,
 			this.guideId,
-			this.userType).subscribe();
+			this.userType,
+			chatRoomId).subscribe();
 	}
 
 	viewAllParticipants() {
-		this.dialogsService.viewParticipantstDialog(this.allParticipants, this.guideId).subscribe();
+		let chatRoomId;
+		if (this.guide.rooms && this.guide.rooms.length > 0) {
+			chatRoomId = this.guide.rooms[0].id;
+		}
+		this.dialogsService.viewParticipantsDialog(this.allParticipants, this.guideId, this.userType, chatRoomId).subscribe();
 	}
 
 
@@ -1284,8 +1293,35 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this.participants = [];
 		this.loadingParticipants = true;
 		const query = {
-			'relInclude': 'calendarId',
-			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections']
+			'relInclude': ['calendarId', 'referrerId', 'scholarshipId', 'joinedDate'],
+			'include': [
+				{'profiles': 'phone_numbers'},
+				'reviewsAboutYou',
+				'ownedCollections',
+				'certificates',
+				{'promoCodesApplied': [
+						{
+							'relation': 'collections',
+							'scope': {
+								'where': {
+									'or': [{ 'customUrl': this.guideId }, { 'id': this.guideId }]
+								}
+							}
+						}
+					]
+				},
+				{'transactions': [
+						{
+							'relation': 'collections',
+							'scope': {
+								'where': {
+									'or': [{ 'customUrl': this.guideId }, { 'id': this.guideId }]
+								}
+							}
+						}
+					]
+				}
+			]
 		};
 		this._collectionService.getParticipants(this.guideId, query).subscribe(
 			(response: any) => {

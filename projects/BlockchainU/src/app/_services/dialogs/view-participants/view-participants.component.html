@@ -1,4 +1,5 @@
 <div mat-dialog-content class="dialog-container">
+	<div class="mat-dialog-focus-trap"></div>
 	<div class="row">
 		<div class="col-md-12 collectionContent">
 			<button disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
@@ -9,6 +10,12 @@
 			</div>
 		</div>
 	</div>
+	<div class="row" *ngIf="data.userType === 'teacher'">
+		<div class="col-md-12">
+			<button *ngIf="data.chatRoomId && data.chatRoomId.length > 0" mat-button class="mat-border-button" (click)="openInbox()">Send Message</button>
+			<button style="margin-left: 10px;" mat-button class="mat-border-button" (click)="exportAsExcel()">Download</button>
+		</div>
+	</div>
 	<hr>
 	<div *ngIf="data.participants.length === 0">
 		<span class="mat-caption">No students have signed-up yet.</span>
@@ -17,19 +24,17 @@
 		<div class="row margin-bottom-20" *ngFor="let participant of data.participants">
 			<div *ngIf="participant.profiles">
 				<div class="col-md-1 vcenter">
-					<img src="{{envVariable.apiUrl+participant.profiles[0].picture_url}}/100" style="margin-left: 0px;" class="circle-thumb"
-					 alt="dp" (error)="_collectionService.imgErrorHandler($event)">
+					<app-profile-popup [peer]="participant"></app-profile-popup>
 				</div>
-				<div class="col-md-6 vcenter">
+				<div class="col-md-6 vcenter clickable" [routerLink]="['profile', participant.id]" (click)="dialogRef.close()">
 					<b>{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name | ucwords }}</b>
 					<br />
-					<span *ngIf="participant.profiles[0].headline" class="mat-caption lightText">{{participant.profiles[0].headline |
-						ucwords}}</span>
+					<span *ngIf="participant.profiles[0].headline" class="mat-caption lightText">{{participant.profiles[0].headline | ucwords}}</span>
 				</div>
 				<div class="col-md-3 vcenter">
 					<div *ngIf="data.userType === 'teacher'">
 						<div>Source</div>
-						<div class="mat-caption lightText">{{participant.referrerId ? participant.referrerId : 'Direct'}}</div>
+						<div class="mat-caption lightText">{{participant.referrerId && participant.referrerId !== 'false' ? participant.referrerId : 'Organic'}}</div>
 					</div>
 				</div>
 				<div class="col-md-1 vcenter">

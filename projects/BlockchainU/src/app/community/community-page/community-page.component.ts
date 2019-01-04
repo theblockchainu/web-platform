@@ -414,7 +414,7 @@ export class CommunityPageComponent implements OnInit, OnDestroy, AfterViewCheck
 	 * View participants
 	 */
 	public viewParticipants() {
-		this.dialogsService.viewParticipantstDialog(this.participants, this.communityId).subscribe();
+		this.dialogsService.viewParticipantsDialog(this.participants, this.communityId).subscribe();
 	}
 
 	public joinCommunity() {

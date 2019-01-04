@@ -1294,14 +1294,24 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	viewParticipants() {
-		this.dialogsService.viewParticipantstDialog(
+		let chatRoomId;
+		if (this.class.rooms && this.class.rooms.length > 0) {
+			chatRoomId = this.class.rooms[0].id;
+		}
+		this.dialogsService.viewParticipantsDialog(
 			this.participants,
 			this.classId,
-			this.userType).subscribe();
+			this.userType,
+			chatRoomId,
+			this.class.calendars).subscribe();
 	}
 
 	viewAllParticipants() {
-		this.dialogsService.viewParticipantstDialog(this.allParticipants, this.classId, this.userType).subscribe();
+		let chatRoomId;
+		if (this.class.rooms && this.class.rooms.length > 0) {
+			chatRoomId = this.class.rooms[0].id;
+		}
+		this.dialogsService.viewParticipantsDialog(this.allParticipants, this.classId, this.userType, chatRoomId, this.class.calendars).subscribe();
 	}
 
 	/**
@@ -1697,8 +1707,35 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.participants = [];
 		this.loadingParticipants = true;
 		const query = {
-			'relInclude': ['calendarId', 'referrerId'],
-			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections', 'certificates']
+			'relInclude': ['calendarId', 'referrerId', 'scholarshipId', 'joinedDate'],
+			'include': [
+				{'profiles': 'phone_numbers'},
+				'reviewsAboutYou',
+				'ownedCollections',
+				'certificates',
+				{'promoCodesApplied': [
+						{
+							'relation': 'collections',
+							'scope': {
+								'where': {
+									'or': [{ 'customUrl': this.classId }, { 'id': this.classId }]
+								}
+							}
+						}
+					]
+				},
+				{'transactions': [
+						{
+							'relation': 'collections',
+							'scope': {
+								'where': {
+									'or': [{ 'customUrl': this.classId }, { 'id': this.classId }]
+								}
+							}
+						}
+					]
+				}
+			]
 		};
 		let isCurrentUserParticipant = false;
 		let currentUserParticipatingCalendar = '';

@@ -622,16 +622,23 @@ export class DialogsService {
             data: data ? data : {}
         }).afterClosed();
     }
-
-    /**
-     * viewParticipantsDialog
-     */
-    public viewParticipantstDialog(participants: any, collectionId: string, userType?: string) {
+	
+	/**
+	 * Open dialog to view the list of participants
+	 * @param participants
+	 * @param {string} collectionId
+	 * @param {string} userType
+	 * @param chatRoomId
+	 * @returns {Observable<any>}
+	 */
+    public viewParticipantsDialog(participants: any, collectionId: string, userType?: string, chatRoomId?: string, calendars?: any) {
         return this.dialog.open(ViewParticipantsComponent, {
             data: {
                 participants: participants,
                 collectionId: collectionId,
-                userType: userType ? userType : ''
+                userType: userType ? userType : '',
+				chatRoomId: chatRoomId,
+				calendars: calendars
             },
             panelClass: 'responsive-dialog',
             width: '45vw',

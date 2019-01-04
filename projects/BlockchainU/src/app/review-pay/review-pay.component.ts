@@ -109,7 +109,7 @@ export class ReviewPayComponent implements OnInit {
                 this.statusMessage = params['statusMessage'];
                 this.failureMessage = params['failureMessage'];
                 console.log('Payment status: ' + this.paymentStatus);
-                this.actOnPaymentStatus();
+                this.actOnCCAvenuePaymentStatus();
             }
         });
         this.userId = _cookieUtilsService.getValue('userId');
@@ -248,7 +248,7 @@ export class ReviewPayComponent implements OnInit {
                     this.isBillingAddressAvailable = true;
                 }
                 if (this.paymentStatus !== undefined && this.paymentStatus !== null && !this.paymentStatus) {
-                    this.actOnPaymentStatus();
+                    this.actOnCCAvenuePaymentStatus();
                 } else {
                     this.loadCCAvenueForm();
                 }
@@ -367,7 +367,7 @@ export class ReviewPayComponent implements OnInit {
     }
 
 
-    public processPayment(e: Event) {
+    public processStripePayment(e: Event) {
         console.log('processing payment');
         this.savingData = true;
         this.createChargeData.amount = (this.totalPrice + this.taxAmount) * 100;
@@ -545,6 +545,7 @@ export class ReviewPayComponent implements OnInit {
         }
         this._collectionService.addParticipant(this.collectionId, this.userId, this.collectionCalendarId, this.selectedScholarship, this.referrerId).subscribe((response: any) => {
             console.log(response);
+            // If there is a promo code applied link it to the user
             if (this.codefound && this.codefound.id.length > 5) {
                 this.profileService.linkPromoCode(this.userId, this.codefound.id).subscribe(
                     res => {
@@ -555,7 +556,18 @@ export class ReviewPayComponent implements OnInit {
                         }
                     }
                 );
-            } else {
+				// If there is a promo code applied and saved as cookie for CCAvenue payments - link it to the user
+            } else if (this._cookieUtilsService.getValue('promo_code') && this._cookieUtilsService.getValue('promo_code').length > 0) {
+				this.profileService.linkPromoCode(this.userId, this._cookieUtilsService.getValue('promo_code')).subscribe(
+					res => {
+						if (this.collectionCalendarId) {
+							this.router.navigate([this.collection.type, this.collection.customUrl, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+						} else {
+							this.router.navigate([this.collection.type, this.collection.customUrl, 'paymentSuccess']);
+						}
+					}
+				);
+			} else {
                 if (this.collectionCalendarId) {
                     this.router.navigate([this.collection.type, this.collection.customUrl, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
                 } else {
@@ -686,25 +698,26 @@ export class ReviewPayComponent implements OnInit {
                     if (peerFound) {
                         if (moment().isBetween(moment(codefound.validFrom), moment(codefound.validTo))) {
                             this.updatePrice(codefound);
+							this._cookieUtilsService.setValue('promo_code', codefound.id);
                         } else {
                             this.matSnackBar.open('Promo code expired', 'Close', { duration: 3000 });
                         }
                     } else {
-                        this.matSnackBar.open('You are not allowed to use this code!', 'Close', { duration: 3000 });
+                        this.matSnackBar.open('This account is not eligible for this Promo code', 'Close', { duration: 3000 });
                     }
                 } else {
                     if (moment().isBetween(moment(codefound.validFrom), moment(codefound.validTo))) {
                         this.updatePrice(codefound);
+						this._cookieUtilsService.setValue('promo_code', codefound.id);
                     } else {
                         this.matSnackBar.open('Promo code expired', 'Close', { duration: 3000 });
                     }
                 }
-
             } else {
-                this.matSnackBar.open('Invalid Code', 'Close', { duration: 3000 });
+                this.matSnackBar.open('Invalid Promo code', 'Close', { duration: 3000 });
             }
         }, err => {
-            this.matSnackBar.open('Error applying code', 'Close', { duration: 3000 });
+            this.matSnackBar.open('Error applying Promo code', 'Close', { duration: 3000 });
         });
     }
 
@@ -734,6 +747,7 @@ export class ReviewPayComponent implements OnInit {
         this.discountCode.reset();
         this.discountCode.enable();
         delete this.codefound;
+        this._cookieUtilsService.deleteValue('promo_code');
         this.loadCCAvenueForm();
     }
 
@@ -747,7 +761,7 @@ export class ReviewPayComponent implements OnInit {
         }
     }
 
-    private actOnPaymentStatus() {
+    private actOnCCAvenuePaymentStatus() {
         if (this.paymentStatus !== undefined) {
             this.savingData = true;
             this.ccavenueReady = false;
@@ -761,7 +775,7 @@ export class ReviewPayComponent implements OnInit {
                 this.savingData = false;
                 this.joinCollection();
             } else {
-                console.log('Payment unsuccessful.');
+                console.log('Payment unsuccessful');
                 const message = this.statusMessage && this.statusMessage.length > 0 && this.statusMessage !== 'null' ? this.statusMessage : 'An error occurred.';
                 this.matSnackBar.open(message, 'Retry')
                     .onAction().subscribe(res => {
