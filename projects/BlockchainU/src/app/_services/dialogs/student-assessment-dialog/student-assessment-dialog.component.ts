@@ -18,7 +18,8 @@ export class StudentAssessmentDialogComponent implements OnInit {
 	public assessmentForm: FormGroup;
 	public pendingParticipants = false;
 	public loadingQuizSubmissions = true;
-	public contentWiseSubmissionArray = [];
+	public participantsInitArray = [];
+	public userWiseSubmissionArray = [];
 	public displayedSubmissionTableColumns = ['questionsAnswered'];
 	
 	@ViewChild(MatTable) table: MatTable<any>;
@@ -34,11 +35,10 @@ export class StudentAssessmentDialogComponent implements OnInit {
 
 	ngOnInit() {
 		this.loadData();
-		this.loadQuizAssessments();
 	}
 	
 	private loadData() {
-		const participantsInitArray = [];
+		this.participantsInitArray = [];
 		this.pendingParticipants = false;
 		this.data.participants.forEach(participant => {
 			let isParticipantAssessed = false;
@@ -50,37 +50,71 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			let commitmentResult = '';
 			participant.hasCertificate = false;
 			participant.isOnEthereum = false;
+			participant.isScholarshipOnEthereum = false;
 			participant.savingOnEthereum = true;
 			
 			// Check participation on blockchain
 			participant.hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
-			this.collectionService.getParticipantEthereumInfo(this.data.collection.id, participant.ethAddress)
-				.subscribe(res => {
-					console.log(res);
-					const resultParticipantFormGroup = this.assessmentForm && this.assessmentForm.controls ? _.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['ethAddress'].value.toLowerCase() === res['participantId'] ) : undefined;
-					if (res && res['result'] === true) {
-						participant.isOnEthereum = true;
-						if (resultParticipantFormGroup) {
-							resultParticipantFormGroup['controls']['isOnEthereum'].patchValue(true);
-							resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
+			if (participant.hasEthereumAddress) {
+				this.collectionService.getParticipantEthereumInfo(this.data.collection.id, participant.ethAddress)
+					.subscribe(res => {
+						console.log(res);
+						const resultParticipantFormGroup = this.assessmentForm && this.assessmentForm.controls ? _.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['ethAddress'].value.toLowerCase() === res['participantId'] ) : undefined;
+						if (res && res['result'] === true) {
+							participant.isOnEthereum = true;
+							if (resultParticipantFormGroup) {
+								resultParticipantFormGroup['controls']['isOnEthereum'].patchValue(true);
+								resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
+							}
+						} else {
+							participant.isOnEthereum = false;
+							if (resultParticipantFormGroup) {
+								resultParticipantFormGroup['controls']['isOnEthereum'].patchValue(false);
+								resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
+							}
 						}
-					} else {
+						
+					}, err => {
+						console.log(err);
+						const resultParticipantFormGroup = this.assessmentForm && this.assessmentForm.controls ? _.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['ethAddress'].value.toLowerCase() === err['participantId']) : undefined;
 						participant.isOnEthereum = false;
 						if (resultParticipantFormGroup) {
 							resultParticipantFormGroup['controls']['isOnEthereum'].patchValue(false);
 							resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
 						}
-					}
-					
-			}, err => {
-					console.log(err);
-					const resultParticipantFormGroup = this.assessmentForm && this.assessmentForm.controls ? _.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['ethAddress'].value.toLowerCase() === err['participantId']) : undefined;
-					participant.isOnEthereum = false;
-					if (resultParticipantFormGroup) {
-						resultParticipantFormGroup['controls']['isOnEthereum'].patchValue(false);
-						resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
-					}
-				});
+					});
+				this.collectionService.getParticipantScholarshipInfo(this.data.globalScholarshipId, participant.ethAddress)
+					.subscribe(res => {
+						console.log(res);
+						const resultParticipantFormGroup = this.assessmentForm && this.assessmentForm.controls ? _.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['ethAddress'].value.toLowerCase() === res['participantId'] ) : undefined;
+						if (res && res['result'] === true) {
+							participant.isScholarshipOnEthereum = true;
+							if (resultParticipantFormGroup) {
+								resultParticipantFormGroup['controls']['isScholarshipOnEthereum'].patchValue(true);
+								resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
+							}
+						} else {
+							participant.isScholarshipOnEthereum = false;
+							if (resultParticipantFormGroup) {
+								resultParticipantFormGroup['controls']['isScholarshipOnEthereum'].patchValue(false);
+								resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
+							}
+						}
+						
+					}, err => {
+						console.log(err);
+						const resultParticipantFormGroup = this.assessmentForm && this.assessmentForm.controls ? _.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['ethAddress'].value.toLowerCase() === err['participantId']) : undefined;
+						participant.isScholarshipOnEthereum = false;
+						if (resultParticipantFormGroup) {
+							resultParticipantFormGroup['controls']['isScholarshipOnEthereum'].patchValue(false);
+							resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
+						}
+					});
+			} else {
+				participant.isOnEthereum = false;
+				participant.isScholarshipOnEthereum = false;
+				participant.savingOnEthereum = false;
+			}
 			
 			if (participant.certificates) {
 				participant.certificates.forEach(certificate => {
@@ -134,7 +168,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 				this.pendingParticipants = true;
 				console.log('Assessment pending for : ' + participant.profiles[0].first_name + ' ' + participant.profiles[0].last_name);
 			}
-			participantsInitArray.push(
+			this.participantsInitArray.push(
 				this._fb.group({
 					name: participant.profiles[0].first_name + ' ' + participant.profiles[0].last_name,
 					id: participant.id,
@@ -143,6 +177,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 					commitment_result: [{ value: commitmentResult, disabled: isParticipantCommitmentAssessed }],
 					isAssessed: isParticipantAssessed,
 					isOnEthereum: participant.isOnEthereum,
+					isScholarshipOnEthereum: participant.isScholarshipOnEthereum,
 					savingOnEthereum: participant.savingOnEthereum,
 					hasCertificate: participant.hasCertificate,
 					certificateId: participant.certificateId,
@@ -152,28 +187,39 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			);
 		});
 		
+		this.loadQuizAssessments();
+		
 		this.assessmentForm = this._fb.group({
-			participants: this._fb.array(participantsInitArray)
+			participants: this._fb.array(this.participantsInitArray)
 		});
 	}
 	
 	private loadQuizAssessments() {
 		this.loadingQuizSubmissions = true;
-		this.contentWiseSubmissionArray = [];
-		if (this.data.quizContents && this.data.quizContents.length > 0) {
-			this.data.quizContents.forEach(quizContent => {
-				this.assessmentService.processQuizSubmissions(quizContent)
-					.subscribe(res => {
-						const submissionObject = {
-							quizId: quizContent.id,
-							quizTitle: quizContent.title,
-							quizSubmissions: res
-						};
-						this.loadingQuizSubmissions = false;
-						this.contentWiseSubmissionArray.push(submissionObject);
-					});
-			});
-		}
+		
+		this.userWiseSubmissionArray = [];
+		this.participantsInitArray.forEach(participant => {
+			const userWiseSubmissionObject = {
+				participantId: participant.value.id,
+				submissions: []
+			};
+			if (this.data.quizContents && this.data.quizContents.length > 0) {
+				this.data.quizContents.forEach(quizContent => {
+					this.assessmentService.processQuizSubmissions(quizContent)
+						.subscribe(res => {
+							const submissionObject = {
+								quizId: quizContent.id,
+								quizTitle: quizContent.title,
+								quizSubmissions: this.filterMySubmissions(res, participant.value.id)
+							};
+							userWiseSubmissionObject.submissions.push(submissionObject);
+						});
+				});
+			}
+			this.userWiseSubmissionArray.push(userWiseSubmissionObject);
+		});
+		
+		this.loadingQuizSubmissions = false;
 	}
 
 	public getGyanForRule(gyanPercent, totalGyan) {
