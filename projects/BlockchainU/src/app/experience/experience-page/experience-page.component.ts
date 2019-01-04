@@ -218,7 +218,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				private _commentService: CommentService,
 				private _fb: FormBuilder,
 				private dialog: MatDialog,
-				private dialogsService: DialogsService,
+				public dialogsService: DialogsService,
 				private snackBar: MatSnackBar,
 				private _socketService: SocketService,
 				private _authenticationService: AuthenticationService,
@@ -1333,14 +1333,24 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 	
 	viewParticipants() {
-		this.dialogsService.viewParticipantstDialog(
+		let chatRoomId;
+		if (this.experience.rooms && this.experience.rooms.length > 0) {
+			chatRoomId = this.experience.rooms[0].id;
+		}
+		this.dialogsService.viewParticipantsDialog(
 			this.participants,
 			this.experienceId,
-			this.userType).subscribe();
+			this.userType,
+			chatRoomId,
+			this.experience.calendars).subscribe();
 	}
 	
 	viewAllParticipants() {
-		this.dialogsService.viewParticipantstDialog(this.allParticipants, this.experienceId, this.userType).subscribe();
+		let chatRoomId;
+		if (this.experience.rooms && this.experience.rooms.length > 0) {
+			chatRoomId = this.experience.rooms[0].id;
+		}
+		this.dialogsService.viewParticipantsDialog(this.allParticipants, this.experienceId, this.userType, chatRoomId, this.experience.calendars).subscribe();
 	}
 	
 	/**
@@ -1755,8 +1765,35 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.participants = [];
 		this.loadingParticipants = true;
 		const query = {
-			'relInclude': ['calendarId', 'referrerId'],
-			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections', 'certificates']
+			'relInclude': ['calendarId', 'referrerId', 'scholarshipId', 'joinedDate'],
+			'include': [
+				{'profiles': 'phone_numbers'},
+				'reviewsAboutYou',
+				'ownedCollections',
+				'certificates',
+				{'promoCodesApplied': [
+						{
+							'relation': 'collections',
+							'scope': {
+								'where': {
+									'or': [{ 'customUrl': this.experienceId }, { 'id': this.experienceId }]
+								}
+							}
+						}
+					]
+				},
+				{'transactions': [
+						{
+							'relation': 'collections',
+							'scope': {
+								'where': {
+									'or': [{ 'customUrl': this.experienceId }, { 'id': this.experienceId }]
+								}
+							}
+						}
+					]
+				}
+			]
 		};
 		let isCurrentUserParticipant = false;
 		let currentUserParticipatingCalendar = '';
@@ -2016,7 +2053,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		if (this.experience.rooms && this.experience.rooms.length > 0) {
 			this.router.navigate(['console', 'inbox', this.experience.rooms[0].id]);
 		} else {
-			this.snackBar.open('Looks like you have not been subscribed to this experience\'s group chat. If this is unintentional, contact support.', 'Close', {
+			this.snackBar.open('Looks like you have not been subscribed to this workshop\'s group chat. If this is unintentional, contact support.', 'Close', {
 				duration: 5000
 			});
 		}

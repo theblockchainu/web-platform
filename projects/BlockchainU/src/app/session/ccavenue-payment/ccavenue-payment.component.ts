@@ -129,7 +129,7 @@ export class CcavenuePaymentComponent implements OnInit, OnChanges {
         billing_country: 'India',
         billing_tel: studentPhoneNumber,
         billing_email: this.student.email,
-        merchant_param1: '/session/book/' + this.teacherId + '/processPayment',
+        merchant_param1: '/session/book/' + this.teacherId + '/processStripePayment',
         merchant_param2: this.paymentBatchId
       };
       console.log(body);

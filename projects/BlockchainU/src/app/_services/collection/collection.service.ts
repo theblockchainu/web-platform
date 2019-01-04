@@ -609,8 +609,9 @@ export class CollectionService {
 	public addParticipant(collectionId: string, userId: string, calendarId?: string, scholarshipId?: string, referrerId?: string) {
 		const body = {
 			'calendarId': calendarId ? calendarId : false,
-			'scholarshipId': scholarshipId ? scholarshipId : false,
-			'referrerId': referrerId ? referrerId : false
+			'scholarshipId': scholarshipId && scholarshipId !== 'NA' ? scholarshipId : false,
+			'referrerId': referrerId ? referrerId : false,
+			'joinedDate': moment().format()
 		};
 		console.log(body);
 		return this.httpClient

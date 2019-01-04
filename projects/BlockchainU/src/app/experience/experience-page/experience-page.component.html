@@ -87,8 +87,7 @@
 						<div class="row">
 							<div class="col-md-10">
 								<a class="clickable margin-bottom-10" *ngIf="calendarId && userType !== 'participant'" (click)="backToCollection(experience)">
-									< Back to workshop page </a> <p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title
-										| titlecase}}
+									< Back to workshop page </a> <p class="mat-display-1" style="margin-bottom: 20px !important;">{{experience.title | titlecase}}
 										<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
 										<span *ngIf="!checkingEthereum && isOnEthereum && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant"
 										 style="padding-left: 15px; position: relative; top: -7px;">&emsp;
@@ -106,11 +105,9 @@
 												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
 											</span>
 											<span> {{totalDuration | i18nPlural : hourMapping}} {{experience.type}} &nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length
-												| i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
+												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.contents.length | i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
 											<span *ngIf="userType==='teacher'">
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.calendars.length
-												| i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;
+												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{experience.calendars.length | i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;
 											</span>
 											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
 												<br />
@@ -135,8 +132,7 @@
 												<span matTooltip="{{experience.views ? experience.views.length : '0'}} Views" *ngIf="experience.views && experience.views.length > 0">
 													&nbsp;&nbsp;&nbsp;
 													<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
-													<i class="fa fa-eye lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{experience.views
-													?experience.views.length : '0'}}
+													<i class="fa fa-eye lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{experience.views ?experience.views.length : '0'}}
 												</span>
 											</span>
 										</div>
@@ -164,27 +160,30 @@
 								<mat-icon *ngIf="experience.status !== 'cancelled'" [matMenuTriggerFor]="menu" style="cursor: pointer;top: 5px; color: #ccc;">more_vert</mat-icon>
 							</div>
 							<mat-menu #menu="matMenu">
-								<button mat-menu-item *ngIf="userType==='participant' && currentCalendar !== undefined && isCancelable()"
-								 (click)="dropOutExperience()">Cancel
+								<button mat-menu-item *ngIf="userType === 'teacher'" (click)="dialogsService.addPromoCodeDialog(experience.id)">
+									Add Promo Code
+								</button>
+								<button mat-menu-item *ngIf="userType === 'teacher'" (click)="dialogsService.viewPromoCodeDialog(experience.id)">
+									View Promo Codes
+								</button>
+								<button mat-menu-item *ngIf="userType==='participant' && currentCalendar !== undefined && isCancelable()" (click)="dropOutExperience()">Cancel
 									Participation
 								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length === 0"
-								 (click)="deleteExperience()">Delete
+								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length === 0" (click)="deleteExperience()">Delete
 									Workshop
 								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length > 0"
-								 (click)="cancelExperience()">Cancel
+								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length > 0" (click)="cancelExperience()">Cancel
 									Workshop
 								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length === 0"
-								 (click)=" deleteCohort()">Delete
+								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length === 0" (click)=" deleteCohort()">Delete
 									Cohort
 								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined" (click)=" addParticipant()">Add
-									participant
+								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined" (click)=" addParticipant()">
+									Add participant
 								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length >= 0 && currentCalendar.status !== 'cancelled'"
-								 (click)=" cancelCohort()">Cancel Cohort</button>
+								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length >= 0 && currentCalendar.status !== 'cancelled'" (click)=" cancelCohort()">
+									Cancel Cohort
+								</button>
 							</mat-menu>
 						</div>
 					</div>
@@ -703,7 +702,7 @@
 								<div class="row margin-top-20">
 									<div class="col-md-12">
 										<h3 style="display: inline-block;">Reviews ({{reviews.length}})</h3> &emsp;
-										<span style="display: inline-block;">
+										<span style="display: inline-block; padding-left: 10px;">
 											<p-rating style="display: inline-flex;" *ngIf="userType==='teacher' || userType==='public' || hasReviewed(reviews)"
 											 [ngModel]="userRating" readonly="true" stars="5" [cancel]="false"></p-rating>
 											<p-rating style="display: inline-flex;" *ngIf="userType==='participant' && !hasReviewed(reviews)"
@@ -1037,8 +1036,7 @@
 								<div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
 									<span class="cal-day-badge"></span>
 									<span>
-										{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d
-										MMM' }})
+										{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d MMM' }})
 									</span>
 								</div>
 								<div class="margin-top-10 margin-bottom-10">
@@ -1061,7 +1059,7 @@
 											<b>{{ event.start | date:'a' | lowercase}}</b>
 										</span>
 										&emsp;
-										<span>{{ parseTitle(event.title)[0] | titlecase }}</span>
+										<span style="padding-left: 10px;">{{ parseTitle(event.title)[0] | titlecase }}</span>
 									</div>
 									<div class="margin-top-20 margin-bottom-20">
 										<button mat-button (click)="viewDetails(key)" class="mat-border-button">View details of {{clickedCohort}}</button>
