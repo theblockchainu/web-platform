@@ -34,15 +34,15 @@
 							</div>
 							<div class="col-xs-3 vcenter">
 								<span *ngIf="participant.value.isOnEthereum && !participant.value.savingOnEthereum" matTooltip="Verified participation by one0x : {{participant.value.ethAddress}}"
-								      style="position: relative; top: 0px;">&emsp;
+								      style="position: relative; top: 0px; padding-left: 5px; padding-right: 5px;">&emsp;
 									<i class="fa fa-globe" style="color: #ff6d71; font-size: 14px;"></i>
 								</span>
 								<span *ngIf="participant.value.isScholarshipOnEthereum && !participant.value.savingOnEthereum" matTooltip="Verified global scholarship participation by one0x"
-								      style="position: relative; top: 0px;">&emsp;
+								      style="position: relative; top: 0px; padding-left: 5px; padding-right: 5px;">&emsp;
 									<i class="fa fa-globe" style="color: #ff6d71; font-size: 14px;"></i>
 								</span>
 								<span class="clickable" *ngIf="!participant.value.isOnEthereum && !participant.value.savingOnEthereum" matTooltip="Failed participation on blockchain : {{participant.value.ethAddress}}. Click to retry participation."
-								      style="position: relative; top: 0px;" (click)="addParticipantToBlockchain(participant)">&emsp;
+								      style="position: relative; top: 0px; padding-left: 5px; padding-right: 5px;" (click)="addParticipantToBlockchain(participant)">&emsp;
 									<i class="fa fa-refresh" style="color: #33bd9e; font-size: 14px;"></i>
 								</span>
 								<div *ngIf="participant.value.savingOnEthereum" matTooltip="Adding participant information to one0x blockchain...">&emsp;
