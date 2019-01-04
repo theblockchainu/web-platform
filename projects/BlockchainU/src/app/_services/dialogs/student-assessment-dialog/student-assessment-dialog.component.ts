@@ -174,7 +174,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 	
 	private checkBlockchainParticipation() {
 		this.fetchingFromBlockchain = true;
-		this.collectionService.getBlockchainParticipants(this.data.collectionId)
+		this.collectionService.getBlockchainParticipants(this.data.collection.id)
 			.subscribe(res => {
 				if (res && res['result']) {
 					this.participantsInitArray.forEach(participant => {
