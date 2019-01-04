@@ -122,6 +122,12 @@ export class CollectionService {
 
 	}
 	
+	public getBlockchainParticipants(id: string) {
+		return this.httpClient
+			.get(environment.apiUrl + '/api/collections/' + id + '/peers/ether', this.requestHeaderService.options);
+		
+	}
+	
 	public getParticipantScholarshipInfo(scholarshipId: string, peerEthAddress: string) {
 		return this.httpClient
 			.get(environment.apiUrl + '/api/scholarships/' + scholarshipId + '/peers/' + peerEthAddress + '/ether', this.requestHeaderService.options);

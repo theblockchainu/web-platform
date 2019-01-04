@@ -20,6 +20,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 	public loadingQuizSubmissions = true;
 	public participantsInitArray = [];
 	public userWiseSubmissionArray = [];
+	public fetchingFromBlockchain = true;
 	public displayedSubmissionTableColumns = ['questionsAnswered'];
 	
 	@ViewChild(MatTable) table: MatTable<any>;
@@ -51,38 +52,11 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			participant.hasCertificate = false;
 			participant.isOnEthereum = false;
 			participant.isScholarshipOnEthereum = false;
-			participant.savingOnEthereum = true;
+			participant.savingOnEthereum = false;
 			
 			// Check participation on blockchain
 			participant.hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
-			if (participant.hasEthereumAddress) {
-				this.collectionService.getParticipantEthereumInfo(this.data.collection.id, participant.ethAddress)
-					.subscribe(res => {
-						console.log(res);
-						const resultParticipantFormGroup = this.assessmentForm && this.assessmentForm.controls ? _.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['ethAddress'].value.toLowerCase() === res['participantId'] ) : undefined;
-						if (res && res['result'] === true) {
-							participant.isOnEthereum = true;
-							if (resultParticipantFormGroup) {
-								resultParticipantFormGroup['controls']['isOnEthereum'].patchValue(true);
-								resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
-							}
-						} else {
-							participant.isOnEthereum = false;
-							if (resultParticipantFormGroup) {
-								resultParticipantFormGroup['controls']['isOnEthereum'].patchValue(false);
-								resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
-							}
-						}
-						
-					}, err => {
-						console.log(err);
-						const resultParticipantFormGroup = this.assessmentForm && this.assessmentForm.controls ? _.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['ethAddress'].value.toLowerCase() === err['participantId']) : undefined;
-						participant.isOnEthereum = false;
-						if (resultParticipantFormGroup) {
-							resultParticipantFormGroup['controls']['isOnEthereum'].patchValue(false);
-							resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
-						}
-					});
+			if (participant.hasEthereumAddress && this.data.globalScholarshipId) {
 				this.collectionService.getParticipantScholarshipInfo(this.data.globalScholarshipId, participant.ethAddress)
 					.subscribe(res => {
 						console.log(res);
@@ -111,9 +85,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 						}
 					});
 			} else {
-				participant.isOnEthereum = false;
 				participant.isScholarshipOnEthereum = false;
-				participant.savingOnEthereum = false;
 			}
 			
 			if (participant.certificates) {
@@ -132,6 +104,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 					}
 				});
 			}
+			
 			this.data.assessment_models[0].assessment_rules.forEach(assessment_rule => {
 				if (assessment_rule.assessment_result) {
 					assessment_rule.assessment_result.forEach((result: any) => {
@@ -145,6 +118,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 				}
 				
 			});
+			
 			this.data.assessment_models[0].assessment_na_rules.forEach(assessment_na_rule => {
 				if (assessment_na_rule.assessment_result) {
 					assessment_na_rule.assessment_result.forEach((result: any) => {
@@ -164,10 +138,12 @@ export class StudentAssessmentDialogComponent implements OnInit {
 				}
 				
 			});
+			
 			if (!isParticipantAssessed) {
 				this.pendingParticipants = true;
 				console.log('Assessment pending for : ' + participant.profiles[0].first_name + ' ' + participant.profiles[0].last_name);
 			}
+			
 			this.participantsInitArray.push(
 				this._fb.group({
 					name: participant.profiles[0].first_name + ' ' + participant.profiles[0].last_name,
@@ -192,6 +168,29 @@ export class StudentAssessmentDialogComponent implements OnInit {
 		this.assessmentForm = this._fb.group({
 			participants: this._fb.array(this.participantsInitArray)
 		});
+		// Update every user's blockchain participation status
+		this.checkBlockchainParticipation();
+	}
+	
+	private checkBlockchainParticipation() {
+		this.fetchingFromBlockchain = true;
+		this.collectionService.getBlockchainParticipants(this.data.collectionId)
+			.subscribe(res => {
+				if (res && res['result']) {
+					this.participantsInitArray.forEach(participant => {
+						// If this participant exists in the returned blockchain list
+						const hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
+						if (hasEthereumAddress && _.some(res.participants, ethParticipant => ethParticipant.toLowerCase() === participant.value.ethAddress.toLowerCase())) {
+							participant['controls']['isOnEthereum'].patchValue(true);
+						}
+					});
+					this.fetchingFromBlockchain = false;
+				} else {
+					this.fetchingFromBlockchain = false;
+				}
+			}, error1 => {
+				this.fetchingFromBlockchain = false;
+			});
 	}
 	
 	private loadQuizAssessments() {

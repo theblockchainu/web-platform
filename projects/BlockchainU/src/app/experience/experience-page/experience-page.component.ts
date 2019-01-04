@@ -45,6 +45,7 @@ import { UcWordsPipe } from 'ngx-pipes';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 import {ContentQuizComponent} from './content-quiz/content-quiz.component';
+import {ScholarshipService} from '../../_services/scholarship/scholarship.service';
 declare var FB: any;
 declare var fbq: any;
 
@@ -127,6 +128,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public checkingEthereum: boolean;
 	public isOnEthereum: boolean;
 	public view: string;
+	public globalScholarshipId: string;
 	public dateClicked: boolean;
 	public viewDate: Date;
 	refresh: Subject<any>;
@@ -221,6 +223,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				public dialogsService: DialogsService,
 				private snackBar: MatSnackBar,
 				private _socketService: SocketService,
+				private _scholarshipService: ScholarshipService,
 				private _authenticationService: AuthenticationService,
 				private titleService: Title,
 				private metaService: Meta,
@@ -234,6 +237,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 	
 	ngOnInit() {
+		this.fetchScholarships();
 		this._authenticationService.isLoginSubject.subscribe(res => {
 			console.log('Initializing Page');
 			this.initializePage();
@@ -746,6 +750,23 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this.snackBar.open('This in-person experience has either been deleted or flagged.', 'OK', { duration: 5000 });
 			this.router.navigate(['home', 'experiences']);
 		}
+	}
+	
+	private fetchScholarships() {
+		const query = {
+			where: {
+				type: 'public'
+			}
+		};
+		this._scholarshipService.fetchScholarships(query)
+			.subscribe(res => {
+				if (res && res.length > 0) {
+					this.globalScholarshipId = res[0].id;
+				}
+			}, err => {
+				console.log(err);
+				this.globalScholarshipId = null;
+			});
 	}
 	
 	private getEthereumInfo() {
@@ -2066,7 +2087,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				'participants': this.participants,
 				'assessment_models': this.experience.assessment_models,
 				'academicGyan': this.experience.academicGyan,
-				'nonAcademicGyan': this.experience.nonAcademicGyan
+				'nonAcademicGyan': this.experience.nonAcademicGyan,
+				'quizContents': this.filterQuizContents(this.itenaryArray),
+				'globalScholarshipId': this.globalScholarshipId
 			}
 		).subscribe(dialogSelection => {
 			let assessmentEngagementRule, assessmentCommitmentRule;
@@ -2207,6 +2230,18 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		} else {
 			this.dialogsService.openSignup('/experience/' + this.experience.id);
 		}
+	}
+	
+	private filterQuizContents(itineraryDaysArray) {
+		const quizContents = [];
+		itineraryDaysArray.forEach(itineraryDay => {
+			itineraryDay.contents.forEach(content => {
+				if (content.type === 'quiz') {
+					quizContents.push(content);
+				}
+			});
+		});
+		return quizContents;
 	}
 	
 }
