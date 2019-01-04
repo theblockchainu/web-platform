@@ -121,6 +121,12 @@ export class CollectionService {
 			.get(environment.apiUrl + '/api/collections/' + id + '/peers/' + fk + '/ether', this.requestHeaderService.options);
 
 	}
+	
+	public getParticipantScholarshipInfo(scholarshipId: string, peerEthAddress: string) {
+		return this.httpClient
+			.get(environment.apiUrl + '/api/scholarships/' + scholarshipId + '/peers/' + peerEthAddress + '/ether', this.requestHeaderService.options);
+		
+	}
 
 	public addToEthereum(id: string) {
 		const body = {};
