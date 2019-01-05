@@ -193,17 +193,17 @@
 					<!--Action buttons-->
 					<div *ngIf="!loadingCountry || payAtVenue">
 						<div *ngIf="totalPrice && totalPrice!==0 && userCountry !== 'IN'">
-							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton"
-							 *ngIf="(!listAllCards || listAllCards.length <= 0 || useAnotherCard) && !payAtVenue" [disabled]="savingData">{{totalPrice
+							<button mat-raised-button (click)="processStripePayment($event)" color="primary" type="submit" class="text-center payButton"
+							        *ngIf="(!listAllCards || listAllCards.length <= 0 || useAnotherCard) && !payAtVenue" [disabled]="savingData">{{totalPrice
 								| convertCurrency: collection.currency |async}} - Confirm Payment
 							</button>
-							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton"
-							 *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard && !payAtVenue" [disabled]="!cardDetails.id || savingData">{{totalPrice
+							<button mat-raised-button (click)="processStripePayment($event)" color="primary" type="submit" class="text-center payButton"
+							        *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard && !payAtVenue" [disabled]="!cardDetails.id || savingData">{{totalPrice
 								| convertCurrency:collection.currency |async}} - Confirm
 								Payment
 							</button>
-							<button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton"
-							 *ngIf="payAtVenue" [disabled]="savingData">I confirm to pay {{totalPrice | convertCurrency: collection.currency
+							<button mat-raised-button (click)="processStripePayment($event)" color="primary" type="submit" class="text-center payButton"
+							        *ngIf="payAtVenue" [disabled]="savingData">I confirm to pay {{totalPrice | convertCurrency: collection.currency
 								|async}} at venue
 							</button>
 						</div>

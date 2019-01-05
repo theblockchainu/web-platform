@@ -125,13 +125,13 @@
                     </div>
                     <div *ngIf="!loadingCountry">
                         <div *ngIf="collection.price && collection.price!==0">
-                            <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard"
-                                [disabled]="savingData">{{totalPrice | convertCurrency: collection.currency
+                            <button mat-raised-button (click)="processStripePayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="!listAllCards || listAllCards.length <= 0 || useAnotherCard"
+                                    [disabled]="savingData">{{totalPrice | convertCurrency: collection.currency
                                 |async}} - Confirm Payment
                                 <!--<img src="/assets/images/powered_by_stripe.svg" class="stripe-image"> -->
                             </button>
-                            <button mat-raised-button (click)="processPayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard"
-                                [disabled]="!cardDetails.id || savingData">{{totalPrice | convertCurrency:
+                            <button mat-raised-button (click)="processStripePayment($event)" color="primary" type="submit" class="text-center payButton" *ngIf="listAllCards && listAllCards.length > 0 && !useAnotherCard"
+                                    [disabled]="!cardDetails.id || savingData">{{totalPrice | convertCurrency:
                                 collection.currency |async}} - Confirm Payment
                                 <!--<img src="/assets/images/powered_by_stripe.svg" class="stripe-image">-->
                             </button>

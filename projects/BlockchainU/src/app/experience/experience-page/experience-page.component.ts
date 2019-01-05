@@ -41,6 +41,7 @@ import { UcWordsPipe } from 'ngx-pipes';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { ProfileService } from '../../_services/profile/profile.service';
 import { Location } from '@angular/common';
+import { ScholarshipService } from '../../_services/scholarship/scholarship.service';
 declare var FB: any;
 declare var fbq: any;
 
@@ -123,6 +124,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public checkingEthereum: boolean;
 	public isOnEthereum: boolean;
 	public view: string;
+	public globalScholarshipId: string;
 	public dateClicked: boolean;
 	public viewDate: Date;
 	refresh: Subject<any>;
@@ -214,9 +216,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		private _commentService: CommentService,
 		private _fb: FormBuilder,
 		private dialog: MatDialog,
-		private dialogsService: DialogsService,
+		public dialogsService: DialogsService,
 		private snackBar: MatSnackBar,
 		private _socketService: SocketService,
+		private _scholarshipService: ScholarshipService,
 		private _authenticationService: AuthenticationService,
 		private titleService: Title,
 		private metaService: Meta,
@@ -230,6 +233,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		this.fetchScholarships();
 		this._authenticationService.isLoginSubject.subscribe(res => {
 			console.log('Initializing Page');
 			this.initializePage();
@@ -748,6 +752,23 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this.snackBar.open('This in-person experience has either been deleted or flagged.', 'OK', { duration: 5000 });
 			this.router.navigate(['home', 'experiences']);
 		}
+	}
+
+	private fetchScholarships() {
+		const query = {
+			where: {
+				type: 'public'
+			}
+		};
+		this._scholarshipService.fetchScholarships(query)
+			.subscribe(res => {
+				if (res && res[0] !== undefined) {
+					this.globalScholarshipId = res[0].id;
+				}
+			}, err => {
+				console.log(err);
+				this.globalScholarshipId = null;
+			});
 	}
 
 	private getEthereumInfo() {
@@ -1324,14 +1345,24 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	viewParticipants() {
-		this.dialogsService.viewParticipantstDialog(
+		let chatRoomId;
+		if (this.experience.rooms && this.experience.rooms.length > 0) {
+			chatRoomId = this.experience.rooms[0].id;
+		}
+		this.dialogsService.viewParticipantsDialog(
 			this.participants,
 			this.experienceId,
-			this.userType).subscribe();
+			this.userType,
+			chatRoomId,
+			this.experience.calendars).subscribe();
 	}
 
 	viewAllParticipants() {
-		this.dialogsService.viewParticipantstDialog(this.allParticipants, this.experienceId, this.userType).subscribe();
+		let chatRoomId;
+		if (this.experience.rooms && this.experience.rooms.length > 0) {
+			chatRoomId = this.experience.rooms[0].id;
+		}
+		this.dialogsService.viewParticipantsDialog(this.allParticipants, this.experienceId, this.userType, chatRoomId, this.experience.calendars).subscribe();
 	}
 
 	/**
@@ -1690,8 +1721,37 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.participants = [];
 		this.loadingParticipants = true;
 		const query = {
-			'relInclude': ['calendarId', 'referrerId'],
-			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections', 'certificates']
+			'relInclude': ['calendarId', 'referrerId', 'scholarshipId', 'joinedDate'],
+			'include': [
+				{ 'profiles': 'phone_numbers' },
+				'reviewsAboutYou',
+				'ownedCollections',
+				'certificates',
+				{
+					'promoCodesApplied': [
+						{
+							'relation': 'collections',
+							'scope': {
+								'where': {
+									'or': [{ 'customUrl': this.experienceId }, { 'id': this.experienceId }]
+								}
+							}
+						}
+					]
+				},
+				{
+					'transactions': [
+						{
+							'relation': 'collections',
+							'scope': {
+								'where': {
+									'or': [{ 'customUrl': this.experienceId }, { 'id': this.experienceId }]
+								}
+							}
+						}
+					]
+				}
+			]
 		};
 		let isCurrentUserParticipant = false;
 		let currentUserParticipatingCalendar = '';
@@ -1951,7 +2011,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		if (this.experience.rooms && this.experience.rooms.length > 0) {
 			this.router.navigate(['console', 'inbox', this.experience.rooms[0].id]);
 		} else {
-			this.snackBar.open('Looks like you have not been subscribed to this experience\'s group chat. If this is unintentional, contact support.', 'Close', {
+			this.snackBar.open('Looks like you have not been subscribed to this workshop\'s group chat. If this is unintentional, contact support.', 'Close', {
 				duration: 5000
 			});
 		}
@@ -1964,7 +2024,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				'participants': this.participants,
 				'assessment_models': this.experience.assessment_models,
 				'academicGyan': this.experience.academicGyan,
-				'nonAcademicGyan': this.experience.nonAcademicGyan
+				'nonAcademicGyan': this.experience.nonAcademicGyan,
+				'quizContents': this.filterQuizContents(this.itenaryArray),
+				'globalScholarshipId': this.globalScholarshipId
 			}
 		).subscribe(dialogSelection => {
 			let assessmentEngagementRule, assessmentCommitmentRule;
@@ -2105,6 +2167,18 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		} else {
 			this.dialogsService.openSignup('/experience/' + this.experience.id);
 		}
+	}
+
+	private filterQuizContents(itineraryDaysArray) {
+		const quizContents = [];
+		itineraryDaysArray.forEach(itineraryDay => {
+			itineraryDay.contents.forEach(content => {
+				if (content.type === 'quiz') {
+					quizContents.push(content);
+				}
+			});
+		});
+		return quizContents;
 	}
 
 }

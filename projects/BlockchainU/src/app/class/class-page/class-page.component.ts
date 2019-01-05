@@ -44,6 +44,7 @@ import { ProfileService } from '../../_services/profile/profile.service';
 import { Observable } from 'rxjs';
 import { first, flatMap } from 'rxjs/operators';
 import { Location } from '@angular/common';
+import { ScholarshipService } from '../../_services/scholarship/scholarship.service';
 declare var FB: any;
 declare var fbq: any;
 
@@ -163,6 +164,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public isOnEthereum: boolean;
 	public previewAs: string;
 	public view: string;
+	public globalScholarshipId: string;
 	public activityMapping:
 		{ [k: string]: string } = { '=0': 'No activity', '=1': 'One activity', 'other': '# activities' };
 	public hourMapping:
@@ -211,6 +213,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		private snackBar: MatSnackBar,
 		private _socketService: SocketService,
 		private _authenticationService: AuthenticationService,
+		private _scholarshipService: ScholarshipService,
 		private titleService: Title,
 		private metaService: Meta,
 		private _assessmentService: AssessmentService,
@@ -223,6 +226,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		this.fetchScholarships();
 		// Subscribe to login listener and refresh page when user logs in.
 		this._authenticationService.isLoginSubject.subscribe(res => {
 			this.initializePage();
@@ -343,8 +347,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.dateClicked = false;
 		this.viewDate = new Date();
 		this.refresh = new Subject();
-		this.events = [
-		];
+		this.events = [];
 		this.activeDayIsOpen = true;
 		this.loadingSimilarClasses = true;
 		this.loadingComments = true;
@@ -517,6 +520,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					}
 				}
 			}
+
 			if (this.userType === 'public' || this.userType === 'teacher') {
 				this.initializeAllItenaries();
 			}
@@ -740,6 +744,23 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		return new Observable(obs => {
 			obs.next();
 		});
+	}
+
+	private fetchScholarships() {
+		const query = {
+			where: {
+				type: 'public'
+			}
+		};
+		this._scholarshipService.fetchScholarships(query)
+			.subscribe(res => {
+				if (res && res[0] !== undefined) {
+					this.globalScholarshipId = res[0].id;
+				}
+			}, err => {
+				console.log(err);
+				this.globalScholarshipId = null;
+			});
 	}
 
 	private openCustomDialog(dialogName) {
@@ -1294,14 +1315,24 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	viewParticipants() {
-		this.dialogsService.viewParticipantstDialog(
+		let chatRoomId;
+		if (this.class.rooms && this.class.rooms.length > 0) {
+			chatRoomId = this.class.rooms[0].id;
+		}
+		this.dialogsService.viewParticipantsDialog(
 			this.participants,
 			this.classId,
-			this.userType).subscribe();
+			this.userType,
+			chatRoomId,
+			this.class.calendars).subscribe();
 	}
 
 	viewAllParticipants() {
-		this.dialogsService.viewParticipantstDialog(this.allParticipants, this.classId, this.userType).subscribe();
+		let chatRoomId;
+		if (this.class.rooms && this.class.rooms.length > 0) {
+			chatRoomId = this.class.rooms[0].id;
+		}
+		this.dialogsService.viewParticipantsDialog(this.allParticipants, this.classId, this.userType, chatRoomId, this.class.calendars).subscribe();
 	}
 
 	/**
@@ -1634,8 +1665,37 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.participants = [];
 		this.loadingParticipants = true;
 		const query = {
-			'relInclude': ['calendarId', 'referrerId'],
-			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections', 'certificates']
+			'relInclude': ['calendarId', 'referrerId', 'scholarshipId', 'joinedDate'],
+			'include': [
+				{ 'profiles': 'phone_numbers' },
+				'reviewsAboutYou',
+				'ownedCollections',
+				'certificates',
+				{
+					'promoCodesApplied': [
+						{
+							'relation': 'collections',
+							'scope': {
+								'where': {
+									'or': [{ 'customUrl': this.classId }, { 'id': this.classId }]
+								}
+							}
+						}
+					]
+				},
+				{
+					'transactions': [
+						{
+							'relation': 'collections',
+							'scope': {
+								'where': {
+									'or': [{ 'customUrl': this.classId }, { 'id': this.classId }]
+								}
+							}
+						}
+					]
+				}
+			]
 		};
 		let isCurrentUserParticipant = false;
 		let currentUserParticipatingCalendar = '';
@@ -1929,7 +1989,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				'assessment_models': this.class.assessment_models,
 				'academicGyan': this.class.academicGyan,
 				'nonAcademicGyan': this.class.nonAcademicGyan,
-				'quizContents': this.filterQuizContents(this.itenaryArray)
+				'quizContents': this.filterQuizContents(this.itenaryArray),
+				'globalScholarshipId': this.globalScholarshipId
 			}
 		).subscribe(dialogSelection => {
 			let assessmentEngagementRule, assessmentCommitmentRule;

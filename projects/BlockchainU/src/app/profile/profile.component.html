@@ -68,8 +68,7 @@
 					</div>
 					<div class="col-md-12 padding-left-0">
 						<span *ngIf="peerObj.emailVerified">Email address, </span>
-						<span *ngIf="peerObj.phoneVerified">Phone number, </span>
-						<span *ngIf="peerObj.accountVerified">Government ID</span>
+						<span *ngIf="peerObj.phoneVerified">Phone number</span>
 					</div>
 				</div>
 				<div class="row border-top" *ngIf="connectedIdentities['facebook'] || connectedIdentities['google']">
@@ -136,17 +135,24 @@
 						<div class="mat-title">Topics I teach</div>
 					</div>
 					<div class="col-md-12">
-						<div class="row" *ngFor="let topic of topicsTeaching">
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-12">
-										<div class="mat-body-2">{{topic.name | titlecase}}</div>
+						<div *ngFor="let topic of topicsTeaching; let i = index;">
+							<div class="row" *ngIf="i <= maxTopicsTeaching">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="mat-body-2">{{topic.name | titlecase}}</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<p class="alignJustify">{{topic.experience || profileObj.first_name + ' has not specified their experience in this topic' | ucfirst}}</p>
+										</div>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-md-12">
-										<p class="alignJustify">{{topic.experience || profileObj.first_name + ' has not specified their experience in this topic' | ucfirst}}</p>
-									</div>
+							</div>
+							<div class="row" *ngIf="topicsTeaching.length > maxTopicsTeaching">
+								<div class="col-md-12 mat-body-2 clickable" (click)="viewAllTopicsTeaching()">
+									+ View all
 								</div>
 							</div>
 						</div>
@@ -160,15 +166,15 @@
 						</div>
 					</div>
 				</div>
-				<hr *ngIf="(profileObj.work && profileObj.work.length > 0 ) || (profileObj.education && profileObj.education.length > 0)">
-				<div class="row margin-top-20 margin-bottom-20" *ngIf="(profileObj.work && profileObj.work.length > 0 ) || (profileObj.education && profileObj.education.length > 0)">
+				<hr *ngIf="(profileObj.work && profileObj.work.length > 0 && profileObj.work[0].position && profileObj.work[0].company ) || (profileObj.education && profileObj.education.length > 0 && profileObj.education[0].degree && profileObj.education[0].school)">
+				<div class="row margin-top-20 margin-bottom-20" *ngIf="(profileObj.work && profileObj.work.length > 0 && profileObj.work[0].position && profileObj.work[0].company ) || (profileObj.education && profileObj.education.length > 0 && profileObj.education[0].degree && profileObj.education[0].school)">
 					<div class="col-md-12">
 						<div class="row">
 							<div class="col-md-12">
 								<div class="mat-title">Institutions</div>
 							</div>
 						</div>
-						<div class="row" *ngIf="profileObj.work && profileObj.work.length > 0" style="padding-top: 20px;">
+						<div class="row" *ngIf="profileObj.work && profileObj.work.length > 0 && profileObj.work[0].position && profileObj.work[0].company" style="padding-top: 20px;">
 							<div class="col-md-12">
 								<div class="row">
 									<div class="col-md-1">
@@ -206,7 +212,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="row" style="padding-top: 20px;" *ngIf="profileObj.education && profileObj.education.length > 0">
+						<div class="row" style="padding-top: 20px;" *ngIf="profileObj.education && profileObj.education.length > 0 && profileObj.education[0].degree && profileObj.education[0].school">
 							<div class="col-md-12">
 								<div class="row">
 									<div class="col-md-1">
@@ -252,7 +258,7 @@
 							<div class="col-md-12 review">
 								<div class="mat-title" style="display:inline-block">Reviews</div>
 								&emsp;
-								<p-rating style="display: inline-block;" [ngModel]="userRating" readonly="true" stars="5" [cancel]="false">
+								<p-rating style="display: inline-block; padding-left: 10px;" [ngModel]="userRating" readonly="true" stars="5" [cancel]="false">
 								</p-rating>
 							</div>
 						</div>
@@ -291,8 +297,7 @@
 													</a>
 												</span>
 												<span class="bullet"></span>
-												<span> in {{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate
-													| date: 'MMMM y' }}</span>
+												<span> in {{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
 											</div>
 										</div>
 									</div>
@@ -350,8 +355,7 @@
 													</a>
 												</span>
 												<span class="bullet"></span>
-												<span> in {{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate
-													| date: 'MMMM y' }}</span>
+												<span> in {{ getReviewedCalendar(getReviewedCollection(profileObj.peer[0], review.collectionId).calendars, review.collectionCalendarId).startDate | date: 'MMMM y' }}</span>
 											</div>
 										</div>
 									</div>

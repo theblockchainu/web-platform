@@ -121,6 +121,18 @@ export class CollectionService {
 			.get(environment.apiUrl + '/api/collections/' + id + '/peers/' + fk + '/ether', this.requestHeaderService.options);
 
 	}
+	
+	public getBlockchainParticipants(id: string) {
+		return this.httpClient
+			.get(environment.apiUrl + '/api/collections/' + id + '/peers/ether', this.requestHeaderService.options);
+		
+	}
+	
+	public getParticipantScholarshipInfo(scholarshipId: string, peerEthAddress: string) {
+		return this.httpClient
+			.get(environment.apiUrl + '/api/scholarships/' + scholarshipId + '/peers/' + peerEthAddress + '/ether', this.requestHeaderService.options);
+		
+	}
 
 	public addToEthereum(id: string) {
 		const body = {};
@@ -609,8 +621,9 @@ export class CollectionService {
 	public addParticipant(collectionId: string, userId: string, calendarId?: string, scholarshipId?: string, referrerId?: string) {
 		const body = {
 			'calendarId': calendarId ? calendarId : false,
-			'scholarshipId': scholarshipId ? scholarshipId : false,
-			'referrerId': referrerId ? referrerId : false
+			'scholarshipId': scholarshipId && scholarshipId !== 'NA' ? scholarshipId : false,
+			'referrerId': referrerId ? referrerId : false,
+			'joinedDate': moment().format()
 		};
 		console.log(body);
 		return this.httpClient

@@ -1295,14 +1295,23 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 	}
 
 	viewParticipants() {
-		this.dialogsService.viewParticipantstDialog(
+		let chatRoomId;
+		if (this.bounty.rooms && this.bounty.rooms.length > 0) {
+			chatRoomId = this.bounty.rooms[0].id;
+		}
+		this.dialogsService.viewParticipantsDialog(
 			this.participants,
 			this.bountyId,
-			this.userType).subscribe();
+			this.userType,
+			chatRoomId).subscribe();
 	}
 
 	viewAllParticipants() {
-		this.dialogsService.viewParticipantstDialog(this.allParticipants, this.bountyId).subscribe();
+		let chatRoomId;
+		if (this.bounty.rooms && this.bounty.rooms.length > 0) {
+			chatRoomId = this.bounty.rooms[0].id;
+		}
+		this.dialogsService.viewParticipantsDialog(this.allParticipants, this.bountyId, this.userType, chatRoomId).subscribe();
 	}
 
 	/**
@@ -1650,8 +1659,35 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 		this.participants = [];
 		this.loadingParticipants = true;
 		const query = {
-			'relInclude': ['calendarId', 'referrerId'],
-			'include': ['profiles', 'reviewsAboutYou', 'ownedCollections']
+			'relInclude': ['calendarId', 'referrerId', 'scholarshipId', 'joinedDate'],
+			'include': [
+				{'profiles': 'phone_numbers'},
+				'reviewsAboutYou',
+				'ownedCollections',
+				'certificates',
+				{'promoCodesApplied': [
+						{
+							'relation': 'collections',
+							'scope': {
+								'where': {
+									'or': [{ 'customUrl': this.bountyId }, { 'id': this.bountyId }]
+								}
+							}
+						}
+					]
+				},
+				{'transactions': [
+						{
+							'relation': 'collections',
+							'scope': {
+								'where': {
+									'or': [{ 'customUrl': this.bountyId }, { 'id': this.bountyId }]
+								}
+							}
+						}
+					]
+				}
+			]
 		};
 		console.log('getParticipants');
 		this._collectionService.getParticipants(this.bountyId, query).subscribe(

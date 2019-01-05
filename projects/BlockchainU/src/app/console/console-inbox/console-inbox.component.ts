@@ -235,7 +235,7 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 	}
 
 	public viewAllParticipants() {
-		this.dialogsService.viewParticipantstDialog(
+		this.dialogsService.viewParticipantsDialog(
 			this.selectedRoom.participants,
 			this.selectedRoom.collection[0].id,
 			this.selectedRoom.belongsToUser ? 'teacher' : 'participant'

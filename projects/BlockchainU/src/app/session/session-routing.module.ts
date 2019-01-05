@@ -14,7 +14,7 @@ const routes: Routes = [
         canActivate: [AuthGuardService]
       },
       {
-        path: 'book/:peerId/processPayment',
+        path: 'book/:peerId/processStripePayment',
         component: ProcessSessionPaymentComponent,
         canActivate: [AuthGuardService]
       },

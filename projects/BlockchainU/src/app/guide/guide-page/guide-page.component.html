@@ -40,7 +40,7 @@
 		</div>
 
 		<div class="row margin-top-30">
-			<div class="col-md-10 col-md-offset-1">
+			<div class="col-md-12">
 				<div class="row guide-content">
 					<div class="col-md-6 left-content">
 						<div class="row guide-header">
@@ -49,8 +49,8 @@
 									<div class="col-md-12">
 										<div class="row" style="margin-top: 15px; margin-bottom: 20px;" *ngIf="userType==='teacher' || userType==='participant'">
 											<div class="col-xs-12 button-row lightText mat-h5">
-												<button mat-button (click)="openGroupChat()">Group Chat</button>
-												<button mat-button *ngIf="userType ==='participant' || userType === 'teacher'" (click)="scrollToDiscussion()">Discussion</button>
+												<button mat-button class="mat-border-button" (click)="openGroupChat()">Group Chat</button>
+												<button mat-button class="mat-border-button" *ngIf="userType ==='participant' || userType === 'teacher'" (click)="scrollToDiscussion()">Discussion</button>
 												<button mat-button class="mat-border-button" *ngIf="userType==='teacher'" (click)="gotoEdit()">Edit</button>
 												<mat-icon *ngIf="guide.status !== 'cancelled'" [matMenuTriggerFor]="menu" style="cursor: pointer;top: 5px; color: #ccc; float: right;">more_vert</mat-icon>
 											</div>
@@ -74,8 +74,7 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<p class="mat-display-1" style="margin-bottom: 20px !important; font-weight: 700;">{{guide.title |
-											titlecase}}
+										<p class="mat-display-1" style="margin-bottom: 20px !important; font-weight: 700;">{{guide.title | titlecase}}
 										</p>
 									</div>
 								</div>
@@ -121,11 +120,12 @@
 														<span class="clickable" style="margin-right: 15px;" (click)="saveBookmark()">
 															<ngx-loading [show]="bookmarking"></ngx-loading>
 															<span [hidden]="bookmarking">
-																<i [ngClass]="{'fa': true, 'fa-bookmark': true, 'hasBookmarked': hasBookmarked}"></i>
+																<mat-icon *ngIf="!hasBookmarked">bookmark_border</mat-icon>
+																<mat-icon class="hasBookmarked" *ngIf="hasBookmarked">bookmark</mat-icon>
 															</span>
 														</span>
 														<span class="clickable" (click)="openShareDialog()">
-															<i class="fa fa-share"></i>
+															<i class="material-icons" style="position: relative; top: 5px;">share</i>
 														</span>
 													</div>
 												</div>
@@ -208,7 +208,7 @@
 						</div>
 						<hr>
 						<!--REVIEWS-->
-						<div class="loading-container" [hidden]="!loadingReviews && !initialLoad">
+						<div class="loading-container" [hidden]="!loadingReviews && !loadingGuide">
 							<ngx-loading [show]="true"></ngx-loading>
 						</div>
 						<div class="row Reviews" *ngIf="reviews !== undefined">
@@ -411,7 +411,7 @@
 									</button>
 								</form>
 							</div>
-							<div class="loading-container" [hidden]="!loadingComments && !initialLoad">
+							<div class="loading-container" [hidden]="!loadingComments && !loadingGuide">
 								<ngx-loading [show]="true"></ngx-loading>
 							</div>
 							<div class="col-md-12">
@@ -618,28 +618,38 @@
 					<!--RIGHT SIDEBAR-->
 					<div class="col-md-6  col-xs-12 right-content right-content-sticky hide-small">
 						<!--CODE LAB-->
-						<div *ngIf="userType==='participant' || userType === 'teacher'">
+						<div *ngIf="userType==='participant' || userType === 'teacher'" style="position: fixed; right: 0; width: 50%;">
 							<div *ngIf="!loadingCodeLab &&  lab_details && lab_details.length>0">
 								<app-code-labs [lab_details]="lab_details"></app-code-labs>
 							</div>
 							<div *ngIf="!loadingCodeLab && (!lab_details || lab_details.length>0)">
 								<div class="row padding-top-100">
 									<div class="col-md-10 col-md-offset-1 center" *ngIf="corestack_student && corestack_student.student_course_status==='registered'">
+										<div class="margin-bottom-30 margin-top-40" style="font-size: 40px; color: #33bd9e;">
+											<mat-icon>schedule</mat-icon>
+										</div>
 										<h2>
-											Please wait while your lab is being provisioned.
+											Your CodeLab is being set up
 										</h2>
 										<p>
-											If you've just joined the lab please wait for atleast 10 minutes for us to provision your system. You'll be
-											notified via email once your lab is ready
+											It can take up to 10 minutes for your lab to be setup and ready to use
+										</p>
+										<br><br>
+										<h2>
+											You do not need to be stuck on this page
+										</h2>
+										<p>
+											You can continue learning from this guide or explore other content. We'll update you over email once your CodeLab is ready for use.
 										</p>
 									</div>
 									<div class="col-md-10 col-md-offset-1 center" *ngIf="!corestack_student || corestack_student.student_course_status!=='registered'">
 										<h2>
-											We're having some trouble setting up your codelab.
+											We're having some trouble setting up your CodeLab :(
 										</h2>
 										<p>
-											If it's a free course try unenrolling and re-enrolling to the course. If that doesn't works please contact
-											support.
+											Try cancelling your participation and re-enrolling into this Learning Guide.
+											<br><br>
+											If that doesn't work, please contact our support team.
 										</p>
 									</div>
 								</div>
@@ -688,8 +698,7 @@
 											<div class="col-xs-8">
 												<div class="row">
 													<div class="col-md-12">
-														<h2 style="display: inline-block; margin-bottom: -1px;">{{guide.price | convertCurrency:guide.currency |
-															async}}
+														<h2 style="display: inline-block; margin-bottom: -1px;">{{guide.price | convertCurrency:guide.currency | async}}
 														</h2> &nbsp; per person
 														<br />
 														<p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating>
@@ -699,18 +708,6 @@
 														<span *ngIf="!reviews" style="font-weight: 400; float: left; margin-left: 10px;">0 reviews</span>
 													</div>
 													<div class="col-md-12">
-														<!-- <span matTooltip="Earn up to {{guide.academicGyan + guide.nonAcademicGyan}} Gyan from this guide" style="font-weight: 700; vertical-align: middle;">
-															Earn
-															<i class="fab fa-ethereum lightText"></i> {{guide.academicGyan + guide.nonAcademicGyan}}
-														</span> -->
-														<!--<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
-														<span matTooltip="KARMA required to be burned for participation" style="font-weight: 700; vertical-align: middle;">
-															<i class="fas fa-fire lightText"></i> {{(guide.academicGyan + guide.nonAcademicGyan) | convertCrypto : 'GYAN' : 'KARMA' | async | shortNumber}}
-														</span>
-														<mat-icon style="font-size: 5px; top: 0px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
-														<span class="mat-border-button gyanBubbleCard" style="margin-left: 0px !important;" matTooltip="Pending payout {{getPredictedGyanEarn(guide) | convertCurrency : 'GYAN' | async}} ({{getPredictedGyanEarn(guide)}} GYAN) in 7 days">
-															<div style="font-size: 11px;">{{getPredictedGyanEarn(guide) | convertCurrency : 'GYAN' | async}}</div>
-														</span>-->
 													</div>
 												</div>
 											</div>
@@ -747,75 +744,6 @@
 										</a>
 									</div>
 								</div>
-
-								<!--<div class="row">
-							<div class="col-md-12">
-								<hr class="margin-top-10 margin-bottom-10">
-								<div class="row">
-									<div class="col-xs-5">
-										<div class="mat-body-2">
-											Need to know
-										</div>
-									</div>
-									<div class="col-xs-7 margin-top-8">
-										<b>{{guide.difficultyLevel}} level</b>
-										<div class="mat-caption pre-wrapped" [innerHTML]="guide.notes| linkify"></div>
-									</div>
-								</div>
-								<div class=" row margin-top-10">
-									<div class="col-xs-5">
-										<div class="mat-body-2">Cancellation policy</div>
-									</div>
-									<div class="col-xs-7 margin-top-10">
-										<p>Non refundable</p>
-									</div>
-								</div>
-								<hr class="margin-top-10 margin-bottom-10">
-							</div>
-						</div>-->
-								<!--<div class="row padding-top-20 padding-bottom-20" *ngIf="userType === 'public'">
-							<div class="col-xs-12">
-								<h2>Want to know more?</h2>
-								<div class="lightText">Drop us a message and we'll get back immediately.</div>
-							</div>
-							<div class="col-xs-12 margin-top-30">
-								<form [formGroup]="contactUsForm">
-									<div class="row">
-										<div class="col-xs-12">
-											<mat-form-field class="pb-block">
-												<input matInput type="text" placeholder="Name" formControlName="first_name">
-											</mat-form-field>
-										</div>
-										&lt;!&ndash;<div class="col-xs-12">
-											<mat-form-field class="pb-block">
-												<input matInput type="text" placeholder="Last Name" formControlName="last_name">
-											</mat-form-field>
-										</div>&ndash;&gt;
-										<div class="col-xs-12">
-											<mat-form-field class="pb-block ">
-												<input matInput type="text" placeholder="Email" formControlName="email">
-											</mat-form-field>
-										</div>
-										<div class="col-xs-12">
-											<mat-form-field class="pb-block">
-												<textarea matInput rows="1" matTextareaAutosize placeholder="Message" formControlName="message"></textarea>
-											</mat-form-field>
-										</div>
-										<div class="col-xs-6">
-											<mat-form-field class="pb-block">
-												<input matInput type="number" placeholder="Phone Number" formControlName="phone">
-											</mat-form-field>
-										</div>
-										<div class="col-xs-6">
-											<button mat-button color="primary" class="mat-border-button pb-block" type="submit" (click)="createGuestContacts()"
-											 style="float: right;" [disabled]="!contactUsForm.valid">
-												<span>Submit</span>
-											</button>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div> -->
 								<hr class="margin-top-10 margin-bottom-10">
 								<div class="row margin-bottom-20">
 									<div class="col-xs-12">
