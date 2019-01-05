@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject, ViewChild} from '@angular/core';
+import {Component, OnInit, Inject, ViewChild, AfterViewInit} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatTable, MatDialog} from '@angular/material';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {Router} from '@angular/router';
@@ -13,7 +13,7 @@ import {ViewQuizSubmissionComponent} from '../view-quiz-submission/view-quiz-sub
 	templateUrl: './student-assessment-dialog.component.html',
 	styleUrls: ['./student-assessment-dialog.component.scss']
 })
-export class StudentAssessmentDialogComponent implements OnInit {
+export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 
 	public assessmentForm: FormGroup;
 	public pendingParticipants = false;
@@ -35,6 +35,10 @@ export class StudentAssessmentDialogComponent implements OnInit {
 		private _fb: FormBuilder) { }
 
 	ngOnInit() {
+	
+	}
+	
+	ngAfterViewInit() {
 		this.loadData();
 	}
 	
@@ -163,13 +167,12 @@ export class StudentAssessmentDialogComponent implements OnInit {
 			);
 		});
 		
-		this.loadQuizAssessments();
-		
 		this.assessmentForm = this._fb.group({
 			participants: this._fb.array(this.participantsInitArray)
 		});
 		// Update every user's blockchain participation status
 		this.checkBlockchainParticipation();
+		this.loadQuizAssessments();
 	}
 	
 	private checkBlockchainParticipation() {
@@ -179,7 +182,7 @@ export class StudentAssessmentDialogComponent implements OnInit {
 				if (res && res['result']) {
 					this.participantsInitArray.forEach(participant => {
 						// If this participant exists in the returned blockchain list
-						const hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
+						const hasEthereumAddress = participant.value.ethAddress && participant.value.ethAddress.substring(0, 2) === '0x';
 						if (hasEthereumAddress && _.some(res['participants'], ethParticipant => ethParticipant.toLowerCase() === participant.value.ethAddress.toLowerCase())) {
 							participant['controls']['isOnEthereum'].patchValue(true);
 						}
