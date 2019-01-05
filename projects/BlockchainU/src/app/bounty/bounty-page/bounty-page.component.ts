@@ -1366,12 +1366,14 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 		const query = {
 			'include': [
 				{
-					'relation': 'collections', 'scope': {
+					'relation': 'collections',
+					'scope': {
 						'include':
 							[
 								{ 'owners': ['reviewsAboutYou', 'profiles'] },
 								'calendars', 'participants', 'rewards',
-								{ 'contents': 'locations' }], 'where': { 'type': 'bounty' }
+								{ 'contents': 'locations' }],
+						'where': { 'type': 'bounty' }
 					}
 				}
 			]
