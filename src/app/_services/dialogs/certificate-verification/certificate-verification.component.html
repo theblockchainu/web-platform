@@ -4,15 +4,14 @@
 			<img style="border-radius: 50%;height: 80px;width: 80px;" src="{{envVariable.apiUrl+data.collection.imageUrls[0]}}/100">
 		</div>
 		<div class="col-xs-9">
-			<span class="mat-subheading-2 ">
-				Certificate for {{data.collection.title | titlecase}}
-			</span>
-			<br>
-			<span class="mat-title">
+			<div class="mat-body-2 margin-bottom-10">
+				Certificate for {{data.collection.title | titlecase}} is awarded to
+			</di>
+			<span class="mat-display-1">
 				{{data.recipient.profile.first_name +' '+ data.recipient.profile.last_name | uppercase}}
 			</span>
 			<br>
-			<span class="lightText">
+			<span class="lightText mat-caption">
 				Issued on {{data.issuedOn | date: 'longDate'}} by {{data.issuer.profile.first_name +' '+ data.issuer.profile.last_name | ucwords}}
 			</span>
 			<hr>

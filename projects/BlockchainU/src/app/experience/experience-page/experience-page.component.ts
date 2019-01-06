@@ -107,7 +107,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public newUserRating: number;
 	public liveCohort;
 	public isViewTimeHidden: boolean;
-	
+	public collectionEthereumInfo: any;
 	
 	public busyDiscussion: boolean;
 	public busyReview: boolean;
@@ -772,6 +772,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	private getEthereumInfo() {
 		this._collectionService.getCollectionEthereumInfo(this.experienceId, {})
 			.subscribe(res => {
+				this.collectionEthereumInfo = res;
 				this.checkingEthereum = false;
 				if (res && res[6] && res[6] !== '0') {
 					this.isOnEthereum = true;
@@ -2089,7 +2090,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				'academicGyan': this.experience.academicGyan,
 				'nonAcademicGyan': this.experience.nonAcademicGyan,
 				'quizContents': this.filterQuizContents(this.itenaryArray),
-				'globalScholarshipId': this.globalScholarshipId
+				'globalScholarshipId': this.globalScholarshipId,
+				'collectionEthereumInfo': this.collectionEthereumInfo
 			}
 		).subscribe(dialogSelection => {
 			let assessmentEngagementRule, assessmentCommitmentRule;

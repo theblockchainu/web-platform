@@ -717,7 +717,7 @@
                       'font-style':(element.italic)?'italic':'normal',
                       'text-decoration-line': (element.underline)?'underline':'none'
                     }"
-									 style="width: 100%;
+									 style="width: 100%; line-height: 1.4em;
                     display: inline-block;">{{element.value}}</span>
 								</div>
 								<div *ngSwitchCase="'multi-line'">
@@ -729,7 +729,7 @@
                         'font-style':(element.italic)?'italic':'normal',
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }"
-									 style="width: 100%;
+									 style="width: 100%; line-height: 1.4em;
                       display: inline-block;">{{element.value}}</span>
 								</div>
 								<div *ngSwitchCase="'date'">
@@ -741,7 +741,7 @@
                         'font-style':(element.italic)?'italic':'normal',
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }"
-									 style="width: 100%;
+									 style="width: 100%; line-height: 1.4em;
                       display: inline-block;">{{element.value|date:'mediumDate'}}</span>
 								</div>
 								<div *ngSwitchCase="'email'">
@@ -753,7 +753,7 @@
                         'font-style':(element.italic)?'italic':'normal',
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }"
-									 style="width: 100%;
+									 style="width: 100%; line-height: 1.4em;
                       display: inline-block;">
 										<a href="mailto:{{element.value}}" target="_blank">{{element.value}}</a>
 									</span>
@@ -767,7 +767,7 @@
                         'font-style':(element.italic)?'italic':'normal',
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }"
-									 style="width: 100%;
+									 style="width: 100%; line-height: 1.4em;
                       display: inline-block;">
 										<a href="{{element.meta}}" target="_blank">{{element.value}}</a>
 									</span>
@@ -781,7 +781,7 @@
                         'font-style':(element.italic)?'italic':'normal',
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }"
-									 style="width: 100%;
+									 style="width: 100%; line-height: 1.4em;
                       display: inline-block;">{{element.value}}</span>
 								</div>
 								<div *ngSwitchCase="'variable'">
@@ -793,12 +793,12 @@
                         'font-style':(element.italic)?'italic':'normal',
                         'text-decoration-line': (element.underline)?'underline':'none'
                       }"
-									 style="width: 100%;
+									 style="width: 100%; line-height: 1.4em;
                       display: inline-block;">
 										{{element.value}}
 									</span>
 								</div>
-								<div *ngSwitchCase="'logo'">
+								<div *ngSwitchCase="'image'">
 									<span [ngStyle]="{
                         'color': element.color,
                         'height':element.font_size+'em',
@@ -809,7 +809,7 @@
                       }"
 									 style="width: 100%;
                       display: inline-block;">
-										<img style="height: auto; width: 100%;" src="{{element.value}}">
+										<img style="height: 100%; width: auto;" src="{{element.value}}">
 									</span>
 								</div>
 							</div>

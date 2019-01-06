@@ -148,7 +148,7 @@ export class CustomCertificateFormComponent implements OnInit {
 				color: ['#000000'],
 				value: [''],
 				font_size: [6],
-				name: ['logo'],
+				name: ['image'],
 				icon: ['add_a_photo'],
 				bold: [false],
 				italic: [false],
@@ -168,7 +168,13 @@ export class CustomCertificateFormComponent implements OnInit {
 				name: 'Assessment Result',
 				value: '{{assessmentResult}}'
 			}, {
-				name: 'Issuer Name',
+				name: 'Cohort Start Date',
+				value: '{{cohortStartDate}}'
+			}, {
+				name: 'Cohort End Date',
+				value: '{{cohortEndDate}}'
+			}, {
+				name: 'Instructor Name',
 				value: '{{issuerName}}'
 			}, {
 				name: 'Difficulty Level',
@@ -176,6 +182,9 @@ export class CustomCertificateFormComponent implements OnInit {
 			}, {
 				name: 'Gyan Earned',
 				value: '{{gyanEarned}}'
+			}, {
+				name: 'Issue Date',
+				value: '{{issueDate}}'
 			}, {
 				name: 'Expiry Date',
 				value: '{{expiryDate}}'

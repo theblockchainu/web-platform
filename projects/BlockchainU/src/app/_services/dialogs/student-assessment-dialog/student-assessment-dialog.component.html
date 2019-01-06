@@ -15,6 +15,7 @@
 			<ngx-loading [show]="true"></ngx-loading>
 		</div>
 	</div>
+	<!--<form *ngIf="!fetchingFromBlockchain && data.collectionEthereumInfo && data.collectionEthereumInfo[6] && data.collectionEthereumInfo[6] !== '0'" [formGroup]="assessmentForm" class="margin-top-40 margin-bottom-40">-->
 	<form *ngIf="!fetchingFromBlockchain" [formGroup]="assessmentForm" class="margin-top-40 margin-bottom-40">
 		<div formArrayName="participants">
 			<div class="row mat-body-2">
@@ -51,14 +52,14 @@
 							</div>
 						</div>
 						
-						<div class="row margin-top-20" *ngIf="!loadingQuizSubmissions && userWiseSubmissionArray && userWiseSubmissionArray[i].submissions.length > 0">
+						<div class="row margin-top-20" style="border: 1px solid #aaa;padding: 15px 5px;border-radius: 4px;margin: 0px 20px 0px 0px;" *ngIf="!loadingQuizSubmissions && userWiseSubmissionArray && userWiseSubmissionArray[i].submissions.length > 0">
 							<div class="col-xs-12">
-								<button mat-button class="mat-border-button" disabled>
+								<div class="mat-border-button mat-body-2">
 									Quiz Results
-								</button>
+								</div>
 							</div>
 							<div class="col-xs-12 margin-top-20" *ngFor="let submissionObject of userWiseSubmissionArray[i].submissions; let j = index;">
-								<div class="mat-body-2">
+								<div class="mat-body-1">
 									{{j + 1}}. {{submissionObject.quizTitle | titlecase | shorten: 20: '...'}}
 								</div>
 								<div class="row margin-top-10 clickable" *ngFor="let element of submissionObject.quizSubmissions">
@@ -131,11 +132,19 @@
 			</div>
 		</div>
 	</form>
-	<div class="row" *ngIf="!fetchingFromBlockchain">
+	<div class="row" *ngIf="!fetchingFromBlockchain && data.collectionEthereumInfo && data.collectionEthereumInfo[6] && data.collectionEthereumInfo[6] !== '0'">
 		<div class="col-xs-12">
 			<button type="button" [disabled]="!assessmentForm.valid || !pendingParticipants" (click)="submitForm()"
 			        mat-raised-button color="primary">Submit Assessment & Issue Certificates</button>
 			<div class="mat-h5 lightText margin-top-10">Submitting this assessment will automatically send an email to the participant with his Smart Certificate attached.</div>
+		</div>
+	</div>
+	<div *ngIf="!fetchingFromBlockchain && (!data.collectionEthereumInfo || !data.collectionEthereumInfo[6] || data.collectionEthereumInfo[6] === '0')" class="row margin-top-20 margin-bottom-20">
+		<div class="col-md-12 mat-body-2">
+			<mat-icon style="position: relative; top: 5px; font-size: 20px;">info</mat-icon> This course is not eligible for issuing Smart Certificates.
+		</div>
+		<div class="col-md-12 mat-caption margin-top-30">
+			Want to issue Smart Certificates for your course? <a [routerLink]="['/contact-us']">Contact us</a> to know more about it.
 		</div>
 	</div>
 </div>

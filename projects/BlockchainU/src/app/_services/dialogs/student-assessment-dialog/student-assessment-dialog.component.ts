@@ -60,37 +60,6 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 			
 			// Check participation on blockchain
 			participant.hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
-			/*if (participant.hasEthereumAddress && this.data.globalScholarshipId) {
-				this.collectionService.getParticipantScholarshipInfo(this.data.globalScholarshipId, participant.ethAddress)
-					.subscribe(res => {
-						console.log(res);
-						const resultParticipantFormGroup = this.assessmentForm && this.assessmentForm.controls ? _.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['ethAddress'].value.toLowerCase() === res['participantId'] ) : undefined;
-						if (res && res['result'] === true) {
-							participant.isScholarshipOnEthereum = true;
-							if (resultParticipantFormGroup) {
-								resultParticipantFormGroup['controls']['isScholarshipOnEthereum'].patchValue(true);
-								resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
-							}
-						} else {
-							participant.isScholarshipOnEthereum = false;
-							if (resultParticipantFormGroup) {
-								resultParticipantFormGroup['controls']['isScholarshipOnEthereum'].patchValue(false);
-								resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
-							}
-						}
-						
-					}, err => {
-						console.log(err);
-						const resultParticipantFormGroup = this.assessmentForm && this.assessmentForm.controls ? _.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['ethAddress'].value.toLowerCase() === err['participantId']) : undefined;
-						participant.isScholarshipOnEthereum = false;
-						if (resultParticipantFormGroup) {
-							resultParticipantFormGroup['controls']['isScholarshipOnEthereum'].patchValue(false);
-							resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
-						}
-					});
-			} else {
-				participant.isScholarshipOnEthereum = false;
-			}*/
 			
 			if (participant.certificates) {
 				participant.certificates.forEach(certificate => {
@@ -109,7 +78,10 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 				});
 			}
 			
-			this.data.assessment_models[0].assessment_rules.forEach(assessment_rule => {
+			this.data.assessment_models[0].assessment_rules.forEach((assessment_rule, i) => {
+				if (this.data.collectionEthereumInfo && this.data.collectionEthereumInfo[2] && this.data.collectionEthereumInfo[2].length >= i + 1) {
+					assessment_rule.value = this.data.collectionEthereumInfo[2][i];
+				}
 				if (assessment_rule.assessment_result) {
 					assessment_rule.assessment_result.forEach((result: any) => {
 						if (result.assessees && result.assessees.length > 0 && result.assessees[0].id === participant.id) {
