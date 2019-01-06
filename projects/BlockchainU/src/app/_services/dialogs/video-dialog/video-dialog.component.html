@@ -1,5 +1,5 @@
 <div class="video-container">
-    <vg-player>
+    <!-- <vg-player>
         <vg-overlay-play></vg-overlay-play>
         <vg-buffering></vg-buffering>
 
@@ -24,8 +24,12 @@
             <vg-fullscreen></vg-fullscreen>
         </vg-controls>
         
-        <video [vgMedia]="media" #media id="singleVideo" preload="auto" crossorigin>
+        <video [vgMedia]="media" #media  preload="auto" crossorigin>
             <source src="{{data}}" type="video/mp4">
         </video>
-    </vg-player>
+    </vg-player> -->
+    <mat-video #video id="singleVideo" [autoplay]="false" [preload]="true" [fullscreen]="true" [download]="false" color="accent"
+        spinner="dot">
+        <source *ngIf="data" matVideoSource [src]="data" type="video/mp4">
+    </mat-video>
 </div>

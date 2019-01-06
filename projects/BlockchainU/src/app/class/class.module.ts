@@ -8,23 +8,14 @@ import { ClassContentProjectComponent } from './class-content-project/class-cont
 import { ClassContentVideoComponent } from './class-content-video/class-content-video.component';
 import { ContentViewComponent } from './content-view/content-view.component';
 import { AppointmentCalendarComponent } from './appointment-calendar/appointment-calendar.component';
-import {VgOverlayPlayModule} from 'videogular2/overlay-play';
-import {VgControlsModule} from 'videogular2/controls';
-import {VgBufferingModule} from 'videogular2/buffering';
-import {VgCoreModule} from 'videogular2/core';
 import { ClassContentQuizComponent } from './class-content-quiz/class-content-quiz.component';
-import {DataSharingService} from '../_services/data-sharing-service/data-sharing.service';
-import {MatVideoModule} from 'mat-video';
+import { DataSharingService } from '../_services/data-sharing-service/data-sharing.service';
+
 @NgModule({
     imports: [
         SharedModule,
         ClassRoutingModule,
-		VgCoreModule,
-		VgControlsModule,
-		VgOverlayPlayModule,
-		VgBufferingModule,
-		MatVideoModule,
-	],
+    ],
     declarations: [
         ClassEditComponent,
         ClassContentComponent,

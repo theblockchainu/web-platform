@@ -1,0 +1,18 @@
+<div mat-dialog-content class="dialog-container">
+  <div class="row">
+    <div class="col-xs-12">
+      <button disableRipple mat-button style="min-width: 30px;padding: 0px 10px 0px 0px;vertical-align: middle;"
+        (click)="dialogRef.close()">
+        <mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+      </button>
+      <button mat-stroked-button class="pull-right" *ngIf="data.userType ==='teacher' || data.userType==='participant'"
+        color="primary" (click)="openContent()">Standalone Mode</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <app-content-video [data]="data"></app-content-video>
+    </div>
+  </div>
+  <div class="mat-dialog-focus-trap"></div>
+</div>

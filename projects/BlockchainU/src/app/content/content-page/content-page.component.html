@@ -1,0 +1,21 @@
+<div class="main-content">
+  <div *ngIf="data" [ngSwitch]="data.content.type">
+    <div class="row padding-top-50 padding-bottom-50">
+      <div class="col-xs-8 col-xs-offset-2">
+        <div class="row padding-top-50 padding-bottom-50">
+          <span class="clickable" [routerLink]="['/'+data.collection.type,data.collection.customUrl]">
+            <span class="mat-title">
+              <mat-icon style="font-size: 17px;">arrow_back_ios </mat-icon> {{ data.collection.type+' : '+
+              data.collection.title | titlecase}}
+            </span>
+          </span>
+        </div>
+        <app-content-inperson [data]="data" *ngSwitchCase="'in-person'"></app-content-inperson>
+        <app-content-online [data]="data" *ngSwitchCase="'online'"></app-content-online>
+        <app-content-project [data]="data" (exitDialog)="exitDialog($event)" *ngSwitchCase="'project'"></app-content-project>
+        <app-content-quiz [data]="data" (exitDialog)="exitDialog($event)" *ngSwitchCase="'quiz'"></app-content-quiz>
+        <app-content-video [data]="data" *ngSwitchCase="'video'"></app-content-video>
+      </div>
+    </div>
+  </div>
+</div>
