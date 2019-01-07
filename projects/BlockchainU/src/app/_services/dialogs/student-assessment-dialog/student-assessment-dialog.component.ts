@@ -7,6 +7,7 @@ import {AssessmentService} from '../../assessment/assessment.service';
 import {CollectionService} from '../../collection/collection.service';
 import * as _ from 'lodash';
 import {ViewQuizSubmissionComponent} from '../view-quiz-submission/view-quiz-submission.component';
+import {Observable} from 'rxjs';
 
 @Component({
 	selector: 'app-student-assessment-dialog',
@@ -21,7 +22,12 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 	public participantsInitArray = [];
 	public userWiseSubmissionArray = [];
 	public fetchingFromBlockchain = true;
+	public selectedParticipants = 0;
+	public totalAssessedParticipants = 0;
+	public totalPendingParticipants = 0;
+	public certificateCountMapping: { [k: string]: string };
 	public displayedSubmissionTableColumns = ['questionsAnswered'];
+	public loadingHttp = false;
 	
 	@ViewChild(MatTable) table: MatTable<any>;
 
@@ -35,7 +41,7 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 		private _fb: FormBuilder) { }
 
 	ngOnInit() {
-	
+		this.certificateCountMapping = { '=0': 'No Smart Certificate', '=1': '1 Smart Certificate', 'other': '# Smart Certificates' };
 	}
 	
 	ngAfterViewInit() {
@@ -44,6 +50,8 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 	
 	private loadData() {
 		this.participantsInitArray = [];
+		this.totalAssessedParticipants = 0;
+		this.totalPendingParticipants = 0;
 		this.pendingParticipants = false;
 		this.data.participants.forEach(participant => {
 			let isParticipantAssessed = false;
@@ -60,37 +68,6 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 			
 			// Check participation on blockchain
 			participant.hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
-			/*if (participant.hasEthereumAddress && this.data.globalScholarshipId) {
-				this.collectionService.getParticipantScholarshipInfo(this.data.globalScholarshipId, participant.ethAddress)
-					.subscribe(res => {
-						console.log(res);
-						const resultParticipantFormGroup = this.assessmentForm && this.assessmentForm.controls ? _.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['ethAddress'].value.toLowerCase() === res['participantId'] ) : undefined;
-						if (res && res['result'] === true) {
-							participant.isScholarshipOnEthereum = true;
-							if (resultParticipantFormGroup) {
-								resultParticipantFormGroup['controls']['isScholarshipOnEthereum'].patchValue(true);
-								resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
-							}
-						} else {
-							participant.isScholarshipOnEthereum = false;
-							if (resultParticipantFormGroup) {
-								resultParticipantFormGroup['controls']['isScholarshipOnEthereum'].patchValue(false);
-								resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
-							}
-						}
-						
-					}, err => {
-						console.log(err);
-						const resultParticipantFormGroup = this.assessmentForm && this.assessmentForm.controls ? _.find(this.assessmentForm['controls']['participants']['controls'], fgItem => fgItem['controls']['ethAddress'].value.toLowerCase() === err['participantId']) : undefined;
-						participant.isScholarshipOnEthereum = false;
-						if (resultParticipantFormGroup) {
-							resultParticipantFormGroup['controls']['isScholarshipOnEthereum'].patchValue(false);
-							resultParticipantFormGroup['controls']['savingOnEthereum'].patchValue(false);
-						}
-					});
-			} else {
-				participant.isScholarshipOnEthereum = false;
-			}*/
 			
 			if (participant.certificates) {
 				participant.certificates.forEach(certificate => {
@@ -109,11 +86,16 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 				});
 			}
 			
-			this.data.assessment_models[0].assessment_rules.forEach(assessment_rule => {
+			this.data.assessment_models[0].assessment_rules.forEach((assessment_rule, i) => {
+				if (this.data.collectionEthereumInfo && this.data.collectionEthereumInfo[2] && this.data.collectionEthereumInfo[2].length >= i + 1) {
+					// If Blockchain Assessment rules do not MATCH, override with Blockchain rules
+					assessment_rule.value = _.find(this.data.collectionEthereumInfo[2], ethereumRule => ethereumRule === assessment_rule.value ) ? assessment_rule.value : this.data.collectionEthereumInfo[2][i] ;
+				}
 				if (assessment_rule.assessment_result) {
 					assessment_rule.assessment_result.forEach((result: any) => {
 						if (result.assessees && result.assessees.length > 0 && result.assessees[0].id === participant.id) {
 							isParticipantAssessed = true;
+							this.totalAssessedParticipants++;
 							participantResult = assessment_rule;
 							participantAssessmentId = result.id;
 							console.log(participantResult);
@@ -167,12 +149,19 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 			);
 		});
 		
+		this.totalPendingParticipants = this.data.participants.length - this.totalAssessedParticipants;
+		
 		this.assessmentForm = this._fb.group({
 			participants: this._fb.array(this.participantsInitArray)
 		});
 		// Update every user's blockchain participation status
 		this.checkBlockchainParticipation();
-		this.loadQuizAssessments();
+		this.loadQuizAssessments()
+			.subscribe(res => {
+				if (res) {
+					this.loadingQuizSubmissions = false;
+				}
+			});
 	}
 	
 	private checkBlockchainParticipation() {
@@ -221,7 +210,9 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 			this.userWiseSubmissionArray.push(userWiseSubmissionObject);
 		});
 		
-		this.loadingQuizSubmissions = false;
+		return new Observable(obs => {
+			obs.next(true);
+		});
 	}
 
 	public getGyanForRule(gyanPercent, totalGyan) {
@@ -232,12 +223,14 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 	}
 
 	submitForm() {
+		this.loadingHttp = true;
 		const participants = [];
 		this.assessmentForm.value.participants.forEach(participantObj => {
 			if (participantObj.rule_obj && participantObj.rule_obj.value) {
 				participants.push(participantObj);
 			}
 		});
+		this.loadingHttp = false;
 		this.dialogRef.close({ participants: participants });
 	}
 	
@@ -247,6 +240,7 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 	}
 	
 	public resendCertificate(certificateId, assessmentId, index) {
+		this.loadingHttp = true;
 		const body = {
 			certificateId: certificateId,
 			assessmentId: assessmentId,
@@ -257,18 +251,21 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 		this.assessmentService.reissueCertificate(body)
 			.subscribe(res => {
 				if (res) {
-					this.snackBar.open('Certificate has been re-issued and sent to participant over email.', 'OK', {duration: 5000});
+					this.snackBar.open('Your certificate re-issue request has been accepted. Certificate will be shared over email soon.', 'OK', {duration: 5000});
 					this.data.participants[index].certificates.push(res);
 					this.loadData();
 				} else {
 					this.snackBar.open('Error occurred. Try again later.', 'OK', {duration: 5000});
 				}
+				this.loadingHttp = false;
 			}, err => {
-				this.snackBar.open('Cannot re-issue certificate. No backup available.', 'DISMISS', {duration: 5000});
+				this.loadingHttp = false;
+				this.snackBar.open('Cannot re-issue certificate. No backup available. Contact us to resolve this issue.', 'DISMISS', {duration: 5000});
 			});
 	}
 	
 	public addParticipantToBlockchain(participant) {
+		this.loadingHttp = true;
 		participant.controls['savingOnEthereum'].patchValue(true);
 		this.collectionService.addParticipantToEthereum(this.data.collection.id, participant.value.id)
 			.subscribe(res => {
@@ -277,10 +274,12 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 					participant.controls['isOnEthereum'].patchValue(true);
 					participant.controls['savingOnEthereum'].patchValue(false);
 				}
+				this.loadingHttp = false;
 			}, err => {
 				console.log(err);
 				participant.controls['isOnEthereum'].patchValue(false);
 				participant.controls['savingOnEthereum'].patchValue(false);
+				this.loadingHttp = false;
 			});
 	}
 	
@@ -288,6 +287,15 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 		return _.filter(submissions, (s) => {
 			return s.peerId === userId;
 		});
+	}
+	
+	public selectedAssessmentValue(event) {
+		console.log(event);
+		if (event.value && event.value.value.length > 0) {
+			this.selectedParticipants++;
+		} else {
+			this.selectedParticipants = Math.max(this.selectedParticipants - 1, 0);
+		}
 	}
 	
 	public openQuizSubmission(element) {

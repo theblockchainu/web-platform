@@ -7,6 +7,7 @@ import { ProfileService } from '../../../_services/profile/profile.service';
 import {DialogsService} from '../../../_services/dialogs/dialog.service';
 import {MatSnackBar} from '@angular/material';
 import {AuthenticationService} from '../../../_services/authentication/authentication.service';
+import {KnowledgeStoryService} from '../../../_services/knowledge-story/knowledge-story.service';
 
 @Component({
 	selector: 'app-console-account-wallet',
@@ -19,6 +20,7 @@ export class ConsoleAccountWalletComponent implements OnInit {
 	private userId: string;
 	public peer: any;
 	public loadingPeer = true;
+	public blockTransactions = [];
 	
 	constructor(
 		public consoleAccountComponent: ConsoleAccountComponent,
@@ -27,6 +29,7 @@ export class ConsoleAccountWalletComponent implements OnInit {
 		private _walletService: WalletService,
 		private _profileService: ProfileService,
 		private _cookieUtilsService: CookieUtilsService,
+		private _knowledgeStoryService: KnowledgeStoryService,
 		private snackBar: MatSnackBar,
 		private _dialogService: DialogsService
 	) {
@@ -43,24 +46,49 @@ export class ConsoleAccountWalletComponent implements OnInit {
 	
 	private fetchTransactions() {
 		this.loadingPeer = true;
-		const query = {
-			'include': [
-				{
-					'token_transactions': [
-						'collections',
-						'communities',
-						'contents',
-						'peers'
-					]
-				}
-			]
-		};
+		const query = {};
 		this._profileService.getPeerData(this.userId, query).subscribe(res => {
 			this.peer = res;
-			this.loadingPeer = false;
+			if (this.peer.ethAddress && this.peer.ethAddress.substring(0, 2) === '0x') {
+				this.fetchBlockTransactions({});
+			} else {
+				this.loadingPeer = false;
+			}
 		}, err => {
 			this.peer = {};
+			this.loadingPeer = false;
 		});
+	}
+	
+	private fetchBlockTransactions(topics) {
+		this.loadingPeer = true;
+		this.blockTransactions = [];
+		this._knowledgeStoryService.fetchBlockTransactions(this.peer.ethAddress, topics)
+			.subscribe(
+				(res: any) => {
+					if (res && res.constructor === Array) {
+						res.forEach(transaction => {
+							if (transaction.result) {
+								const resultObject = JSON.parse(transaction.result);
+								if (resultObject.hasOwnProperty('logs')) {
+									resultObject.logs.forEach(log => {
+										if (log.event === 'Transfer') {
+											this.blockTransactions.push(transaction);
+										}
+									});
+								}
+							}
+						});
+					} else {
+						this.blockTransactions = [];
+					}
+					this.loadingPeer = false;
+				},
+				err => {
+					this.loadingPeer = false;
+					this.blockTransactions = [];
+				}
+			);
 	}
 	
 	public toggleWalletId() {
@@ -83,5 +111,56 @@ export class ConsoleAccountWalletComponent implements OnInit {
 				}
 			});
 	}
+	
+	public parseTransactionLog(result) {
+		const parsedLog = {
+			events: [],
+			hash: '',
+			timestamp: ''
+		};
+		const resultObject = JSON.parse(result);
+		if (resultObject.hasOwnProperty('logs')) {
+			resultObject.logs.forEach(log => {
+				const value = log.args && log.args['value'] ? log.args['value'] : 0;
+				// Only capture Transfer events
+				const type = log.args && log.args['to'].toLowerCase() === this.peer.ethAddress.toLowerCase() ? 'debit' : 'credit';
+				const name = log.args && log.args['from'] === '0' ? 'Reward' : log.event;
+				parsedLog.events.push({name: name, args: log.args, type: type, amount: value});
+				parsedLog.hash = log.transactionHash;
+			});
+		}
+		console.log(parsedLog);
+		return parsedLog;
+	}
+	
+	/* Sample logs
+	"{
+		"tx":"0xfe018d4184e86f427bc2426890c7a858b9950c11e8dcb028069d7fb40206ce8a",
+		"receipt":{
+			"transactionHash":"0xfe018d4184e86f427bc2426890c7a858b9950c11e8dcb028069d7fb40206ce8a",
+			"transactionIndex":0,
+			"blockHash":"0xaa6017694c382c01f419f0c87c6c6287cb1440bc4b8eaf92e61a178b4004f366",
+			"blockNumber":39,
+			"gasUsed":74614,
+			"cumulativeGasUsed":74614,
+			"contractAddress":null,
+			"logs":[
+				{
+					"logIndex":0,
+					"transactionIndex":0,
+					"transactionHash":"0xfe018d4184e86f427bc2426890c7a858b9950c11e8dcb028069d7fb40206ce8a",
+					"blockHash":"0xaa6017694c382c01f419f0c87c6c6287cb1440bc4b8eaf92e61a178b4004f366",
+					"blockNumber":39,
+					"address":"0x8f0483125fcb9aaaefa9209d8e9d7b9c8b9fb90f",
+					"type":"mined",
+					"event":"ScholarshipJoin",
+					"args":{
+						"_id":"0x6439353865313633383762373437333039636461323462633936316635626462",
+						"_participantAddress":"0x680fa2622aba8bfd617f5d5775edcc0b3101c67d",
+						"pbNode":"0x92797c984f57b3acb092ec89c77241060d341e41"
+					}
+				}
+			]
+	*/
 	
 }

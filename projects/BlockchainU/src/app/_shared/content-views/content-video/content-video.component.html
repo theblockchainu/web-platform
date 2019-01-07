@@ -1,3 +1,29 @@
+<div class="row">
+	<div class="col-md-12 collectionContent">
+		<div class="pull-right" *ngIf="userType==='teacher' || userType==='participant'" color="primary">
+			<mat-icon>open_in_new</mat-icon>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="mat-display-1" style="margin-bottom: 20px;" *ngIf="data.content">
+			{{data.content.title | titlecase}}
+		</div>
+	</div>
+	<div class="col-md-10" style="padding-top: 15px;">
+		<span class="mat-body-2">{{duration}} mins {{_collectionService.getContentTypeFullName(data.content.type)}}</span>
+		<br /> Taught by
+		<a [routerLink]="['/profile',data.collection.owners[0]]">{{data.collection.owners[0].profiles[0].first_name |
+			ucwords}}</a>
+	</div>
+	<div class="col-md-2" style="text-align: right">
+		<img (click)="openProfilePage(data.collection.owners[0].id)" *ngIf="!data.collection.owners[0].profiles[0].picture_url"
+		 src="/assets/images/avatar.png" alt="A" class="clickable circle-thumb margin-top-5" style="width: 70px; height: 70px;">
+		<img (click)="openProfilePage(data.collection.owners[0].id)" *ngIf="data.collection.owners[0].profiles[0].picture_url"
+		 src="{{envVariable.apiUrl+ data.collection.owners[0].profiles[0].picture_url}}" class="clickable circle-thumb margin-top-5"
+		 alt="dp" style="width: 70px; height: 70px;">
+	</div>
+</div>
+<hr>
 <div *ngIf="data.content">
 	<div class="row">
 		<div class="content-image" *ngIf="videoDownloadUrl">
@@ -54,8 +80,11 @@
 		</div>
 		<br>
 		<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
-			<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="200" style="border: 0.5px solid #ccc">
-			<video *ngIf="file.type.includes('video')" controls width="200" style="border: 0.5px solid #ccc" preload="metadata">
+			<img *ngIf="file && file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
+			<div *ngIf="file && file.type.includes('application')" class="uploaded_file">
+				<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
+			</div>
+			<video *ngIf="file && file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
 				<source src="{{envVariable.apiUrl + file.url}}">
 			</video>
 			<div *ngIf="file.type.includes('application')" class="uploaded_file">

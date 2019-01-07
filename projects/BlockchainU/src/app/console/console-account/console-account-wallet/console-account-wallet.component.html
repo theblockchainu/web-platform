@@ -10,7 +10,7 @@
 		<div class="col-xs-7">
 			<h1 style="padding-top: 2%">
 			<i class="fas fa-fire"></i>
-				<span *ngIf="peer.ethAddress && peer.ethAddress.substring(0, 2) === '0x'"> {{peer.id | karmaBalance : 'peer' | async}} Karma</span>
+				<span *ngIf="peer.ethAddress && peer.ethAddress.substring(0, 2) === '0x'"> {{peer.id | karmaBalance : 'peer' | async | currency : ' ' : ' ' : '1.0-0'}} Karma</span>
 				<span *ngIf="!peer.ethAddress || peer.ethAddress.substring(0, 2) !== '0x'"> 0 Karma</span>
 			</h1>
 		</div>
@@ -37,31 +37,43 @@
 		</div>
 	</div>
 	<div class="row table-header">
-		<div class="col-xs-6">
+		<div class="col-xs-8">
 			Description
 		</div>
-		<div class="col-xs-3">
+		<div class="col-xs-2" style="text-align: right;">
 			Credit
 		</div>
-		<div class="col-xs-3">
+		<div class="col-xs-2" style="text-align: right;">
 			Debit
 		</div>
 	</div>
 	<div class="row table-data">
-		<div class="col-xs-12" *ngIf="!loadingPeer && peer && peer.token_transactions">
-			<div class="row" *ngFor="let transactions of peer.token_transactions">
-				<div class="col-xs-6">
-
-				</div>
-				<div class="col-xs-3">
-
-				</div>
-				<div class="col-xs-3">
-
+		<div class="col-xs-12" *ngIf="!loadingPeer && blockTransactions">
+			<div *ngFor="let transaction of blockTransactions">
+				<div class="row margin-bottom-20" *ngIf="parseTransactionLog(transaction.result).events && parseTransactionLog(transaction.result).events.length > 0">
+					<div class="col-xs-8">
+						<span class="mat-body-2">
+							{{parseTransactionLog(transaction.result).events[0].name}}
+						</span>
+						<br>
+						<span class="mat-h5 lightText">
+							<a href="https://ropsten.etherscan.io/tx/{{parseTransactionLog(transaction.result).hash}}" target="_blank" class="lightText">{{parseTransactionLog(transaction.result).hash}}</a>
+						</span>
+						<br>
+						<span class="mat-h5 lightText">
+							{{transaction.updatedAt | date : 'h:mm a, dd MMM y'}}
+						</span>
+					</div>
+					<div class="col-xs-2 mat-subheading-2" style="text-align: right;">
+						<span *ngIf="parseTransactionLog(transaction.result).events[0].type === 'credit'"><i class="fa fa-fire"></i>  {{parseTransactionLog(transaction.result).events[0].amount | currency : ' ' : ' ' : '1.0-0'}}</span>
+					</div>
+					<div class="col-xs-2 mat-subheading-2" style="text-align: right;">
+						<span *ngIf="parseTransactionLog(transaction.result).events[0].type === 'debit'"><i class="fa fa-fire"></i>  {{parseTransactionLog(transaction.result).events[0].amount | currency : ' ' : ' ' : '1.0-0'}}</span>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-12" *ngIf="loadingPeer || !peer || !peer.token_transactions || peer.token_transactions.length === 0">
+		<div class="col-xs-12" *ngIf="loadingPeer || !peer || !blockTransactions || blockTransactions.length === 0">
 			You do not have any <i class="fas fa-fire"></i> Karma transactions yet
 			<br><br>
 			<div class="mat-caption">

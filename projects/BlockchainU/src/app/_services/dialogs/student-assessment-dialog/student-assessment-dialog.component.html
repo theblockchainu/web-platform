@@ -5,7 +5,10 @@
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<div class="mat-display-1" style="margin-bottom: 20px;">
-				Student Assessment & Certificate Issue
+				Issue Smart Certificates
+			</div>
+			<div class="mat-caption">
+				{{totalAssessedParticipants | i18nPlural: certificateCountMapping}} issued. {{totalPendingParticipants | i18nPlural: certificateCountMapping}} pending.
 			</div>
 		</div>
 	</div>
@@ -15,10 +18,11 @@
 			<ngx-loading [show]="true"></ngx-loading>
 		</div>
 	</div>
-	<form *ngIf="!fetchingFromBlockchain" [formGroup]="assessmentForm" class="margin-top-40 margin-bottom-40">
+	<form *ngIf="!fetchingFromBlockchain && data.collectionEthereumInfo && data.collectionEthereumInfo[6] && data.collectionEthereumInfo[6] !== '0'" [formGroup]="assessmentForm" class="margin-top-40 margin-bottom-40">
+	<!--<form *ngIf="!fetchingFromBlockchain" [formGroup]="assessmentForm" class="margin-top-40 margin-bottom-40">-->
 		<div formArrayName="participants">
 			<div class="row mat-body-2">
-				<div class="col-xs-4">Student Name</div>
+				<div class="col-xs-4">Student Name ({{assessmentForm['controls']['participants']['controls'].length}})</div>
 				<div class="col-xs-4">Assessment Result</div>
 				<div class="col-xs-4">Summary</div>
 			</div>
@@ -51,14 +55,14 @@
 							</div>
 						</div>
 						
-						<div class="row margin-top-20" *ngIf="!loadingQuizSubmissions && userWiseSubmissionArray && userWiseSubmissionArray[i].submissions.length > 0">
+						<div class="row margin-top-20" style="border: 1px solid #aaa;padding: 15px 5px;border-radius: 4px;margin: 0px 20px 0px 0px;" *ngIf="!loadingQuizSubmissions && userWiseSubmissionArray && userWiseSubmissionArray[i].submissions.length > 0">
 							<div class="col-xs-12">
-								<button mat-button class="mat-border-button" disabled>
+								<div class="mat-body-2">
 									Quiz Results
-								</button>
+								</div>
 							</div>
 							<div class="col-xs-12 margin-top-20" *ngFor="let submissionObject of userWiseSubmissionArray[i].submissions; let j = index;">
-								<div class="mat-body-2">
+								<div class="mat-body-1">
 									{{j + 1}}. {{submissionObject.quizTitle | titlecase | shorten: 20: '...'}}
 								</div>
 								<div class="row margin-top-10 clickable" *ngFor="let element of submissionObject.quizSubmissions">
@@ -76,7 +80,7 @@
 					</div>
 					<div class="col-xs-4">
 						<mat-form-field>
-							<mat-select formControlName="rule_obj" placeholder="Academic Assessment">
+							<mat-select formControlName="rule_obj" placeholder="Academic Assessment" (selectionChange)="selectedAssessmentValue($event)">
 								<mat-option *ngFor="let assessment_rule of data.assessment_models[0].assessment_rules" [value]="assessment_rule">
 									{{ assessment_rule.value }}
 								</mat-option>
@@ -86,13 +90,11 @@
 							<div class="mat-caption lightText" *ngIf="assessment_na_rule.value === 'engagement'">
 								Assess community engagement
 							</div>
-							<mat-slider class="pb-block" *ngIf="assessment_na_rule.value === 'engagement'" thumbLabel tickInterval="1" min="1" max="100"
-							 formControlName="engagement_result"></mat-slider>
+							<mat-slider class="pb-block" *ngIf="assessment_na_rule.value === 'engagement'" thumbLabel tickInterval="1" min="1" max="100" formControlName="engagement_result"></mat-slider>
 							<div class="mat-caption lightText" *ngIf="assessment_na_rule.value === 'commitment'">
 								Assess student commitment
 							</div>
-							<mat-slider class="pb-block" *ngIf="assessment_na_rule.value === 'commitment'" thumbLabel tickInterval="1" min="1" max="100"
-							 formControlName="commitment_result"></mat-slider>
+							<mat-slider class="pb-block" *ngIf="assessment_na_rule.value === 'commitment'" thumbLabel tickInterval="1" min="1" max="100" formControlName="commitment_result"></mat-slider>
 						</div>
 					</div>
 					<div class="col-xs-4">
@@ -115,14 +117,17 @@
 							</div>
 						</div>
 						<div class="row" *ngIf="participant.value.isAssessed">
-							<div class="col-sm-12 primaryColor mat-body-2">
-								This participant has already been assessed.
+							<div class="col-sm-12 primaryColor mat-body-2" *ngIf="participant.value.hasCertificate">
+								<mat-icon [color]="primary" style="position: relative; top: 7px; padding-right: 5px;">check_circle</mat-icon> Smart Certificate Issued
+							</div>
+							<div class="col-sm-12 accentColor mat-body-2" *ngIf="!participant.value.hasCertificate">
+								<mat-icon style="position: relative; top: 7px; padding-right: 5px;">error</mat-icon> Smart Certificate Failed
 							</div>
 							<div class="col-sm-12 margin-top-20" *ngIf="participant.value.hasCertificate">
-								<button mat-button class="mat-border-button" (click)="openCertificate(participant.value.certificateId)">View Certificate</button>
+								<button [disabled]="loadingHttp" mat-button class="mat-border-button" (click)="openCertificate(participant.value.certificateId)">View Certificate</button>
 							</div>
 							<div class="col-sm-12 margin-top-20">
-								<button mat-button class="mat-border-button" (click)="resendCertificate(participant.value.certificateId, participant.value.assessmentId, i)">Resend Certificate</button>
+								<button [disabled]="loadingHttp" mat-button class="mat-border-button" (click)="resendCertificate(participant.value.certificateId, participant.value.assessmentId, i)">Resend Certificate</button>
 							</div>
 						</div>
 					</div>
@@ -131,11 +136,25 @@
 			</div>
 		</div>
 	</form>
-	<div class="row" *ngIf="!fetchingFromBlockchain">
+	<div class="row" *ngIf="!fetchingFromBlockchain && data.collectionEthereumInfo && data.collectionEthereumInfo[6] && data.collectionEthereumInfo[6] !== '0'">
 		<div class="col-xs-12">
-			<button type="button" [disabled]="!assessmentForm.valid || !pendingParticipants" (click)="submitForm()"
-			        mat-raised-button color="primary">Submit Assessment & Issue Certificates</button>
+			<div class="row" *ngIf="loadingHttp">
+				<div class="col-xs-1">
+					<ngx-loading [show]="true" [config]=""></ngx-loading>
+				</div>
+			</div>
+			<button *ngIf="!loadingHttp" type="button" [disabled]="!assessmentForm.valid || !pendingParticipants || selectedParticipants === 0" (click)="submitForm()" matTooltip="You need to assess at-least 1 participant to issue them a Smart Certificate" [matTooltipDisabled]="selectedParticipants > 0" mat-raised-button color="primary">
+				Issue {{selectedParticipants | i18nPlural: certificateCountMapping}}
+			</button>
 			<div class="mat-h5 lightText margin-top-10">Submitting this assessment will automatically send an email to the participant with his Smart Certificate attached.</div>
+		</div>
+	</div>
+	<div *ngIf="!fetchingFromBlockchain && (!data.collectionEthereumInfo || !data.collectionEthereumInfo[6] || data.collectionEthereumInfo[6] === '0')" class="row margin-top-20 margin-bottom-20">
+		<div class="col-md-12 mat-body-2">
+			<mat-icon style="position: relative; top: 5px; font-size: 20px;">info</mat-icon> This course is not eligible for issuing Smart Certificates.
+		</div>
+		<div class="col-md-12 mat-caption margin-top-30">
+			Want to issue Smart Certificates for your course? <a [routerLink]="['/contact-us']">Contact us</a> to know more about it.
 		</div>
 	</div>
 </div>
