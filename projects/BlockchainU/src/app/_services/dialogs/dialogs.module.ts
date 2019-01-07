@@ -79,6 +79,7 @@ import { ContentOnlineDialogComponent } from './content-online-dialog/content-on
 import { ContentProjectDialogComponent } from './content-project-dialog/content-project-dialog.component';
 import { ContentQuizDialogComponent } from './content-quiz-dialog/content-quiz-dialog.component';
 import { ContentVideoDialogComponent } from './content-video-dialog/content-video-dialog.component';
+import {ShowRSVPPopupComponent} from './show-rsvp-participants-dialog/show-rsvp-dialog.component';
 
 @NgModule({
 	imports: [
@@ -103,7 +104,9 @@ import { ContentVideoDialogComponent } from './content-video-dialog/content-vide
 		ViewConflictDialogComponent, SelectDateDialogComponent,
 		CollectionCloneDialogComponent, CollectionSubmitDialogComponent,
 		SubmissionViewComponent,
-		SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent, DeleteCohortDialogComponent,
+		SubmitEntryComponent, ViewEntryDialogComponent,
+		ShowRSVPPopupComponent,
+		InviteFriendsDialogComponent, DeleteCohortDialogComponent,
 		CancelCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
 		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent,
 		DateConflictDialogComponent, EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent,
@@ -151,7 +154,7 @@ import { ContentVideoDialogComponent } from './content-video-dialog/content-vide
 		ProfilePopupCardComponent, CancelCollectionDialogComponent, ExitCollectionDialogComponent,
 		DeleteCollectionDialogComponent, EditCalendarDialogComponent, AddTopicDialogComponent, AddLanguageDialogComponent,
 		ViewConflictDialogComponent, SelectDateDialogComponent, CollectionCloneDialogComponent,
-		CollectionSubmitDialogComponent, SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent,
+		CollectionSubmitDialogComponent, SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, ShowRSVPPopupComponent,
 		InviteFriendsDialogComponent, CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent,
 		RateParticipantComponent, ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent,
 		DateConflictDialogComponent, EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent,
