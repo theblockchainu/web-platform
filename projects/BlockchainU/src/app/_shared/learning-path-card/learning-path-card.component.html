@@ -4,10 +4,8 @@
 			<div class="card-image-content1 text-center">
 				<span class="image-heading">{{learningPath.title | titlecase }}</span>
 			</div>
-			<img *ngIf="learningPath.imageUrls && learningPath.imageUrls.length>0" [src]="envVariable.apiUrl+ learningPath.imageUrls[0] + '/300'"
-			     alt="landscape1">
-			<img *ngIf="!learningPath.imageUrls || learningPath.imageUrls.length<=0" src="/assets/images/technology-card.jpg"
-			     alt="landscape1">
+			<img *ngIf="learningPath.imageUrls && learningPath.imageUrls.length>0" [src]="envVariable.apiUrl+ learningPath.imageUrls[0] + '/300'" alt="Learning path">
+			<img *ngIf="!learningPath.imageUrls || learningPath.imageUrls.length<=0" src="/assets/images/technology-card.jpg" alt="Learning path">
 		</div>
 		<div class="card-content">
 			<!-- <p class="tags text-uppercase">
