@@ -1,12 +1,11 @@
 <div mat-dialog-content class="dialog-container">
   <div class="row">
-    <div class="col-xs-12">
-      <button disableRipple mat-button style="min-width: 30px;padding: 0px 10px 0px 0px;vertical-align: middle;"
-        (click)="dialogRef.close()">
+    <div class="col-xs-12 padding-top-10 padding-bottom-10">
+	    <button tabIndex="-1" mat-icon-button class="dialog-close-button" (click)="dialogRef.close()">
         <mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
       </button>
-      <button mat-stroked-button class="pull-right" *ngIf="data.userType ==='teacher' || data.userType==='participant'"
-        color="primary" (click)="openContent()">Standalone Mode</button>
+      <div class="pull-right clickable" *ngIf="data.userType ==='teacher' || data.userType==='participant'"
+        color="primary" (click)="openContent()"><mat-icon>open_in_new</mat-icon></div>
     </div>
   </div>
   <div class="row">

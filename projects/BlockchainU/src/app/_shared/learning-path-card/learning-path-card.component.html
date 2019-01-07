@@ -1,34 +1,33 @@
 <div class="col-sm-4">
-  <div class="custom-card clickable" [routerLink]="[ '/learning-path/', learningPath.customUrl]">
-    <div class="card-image rounded-6px">
-      <div class="card-image-content1 text-center">
-        <span class="image-heading">{{learningPath.title | titlecase }}</span>
-      </div>
-
-      <img *ngIf="learningPath.imageUrls && learningPath.imageUrls.length>0" [src]="envVariable.apiUrl+ learningPath.imageUrls[0] + '/300'"
-        alt="landscape1">
-      <img *ngIf="!learningPath.imageUrls || learningPath.imageUrls.length<=0" src="/assets/images/technology-card.jpg"
-        alt="landscape1">
-    </div>
-    <div class="card-content">
-      <!-- <p class="tags text-uppercase">
-			  <span>({{learningPath.contents.length}}) Courses</span>
-			</p> -->
-      <!-- <p class="title mat-body-2">Get up to speed</p> -->
-
-      <span class="mat-body-2">
-        {{learningPath.contents.length}} items <mat-icon style="font-size: 5px; top: -3px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
-        <span *ngIf="learningPath.totalHours<1">
-          {{learningPath.totalHours * 60 | number :'1.0-0'}} Minutes
-        </span>
-        <span *ngIf="learningPath.totalHours>=1">
-          {{learningPath.totalHours | number :'1.0-0'}} Hours
-        </span>
-      </span>
-      <br>
-      <span>
-        {{learningPath.headline | titlecase}}
-      </span>
-    </div>
-  </div>
+	<div class="custom-card clickable" [routerLink]="[ '/learning-path/', learningPath.customUrl]">
+		<div class="card-image rounded-6px">
+			<div class="card-image-content1 text-center">
+				<span class="image-heading">{{learningPath.title | titlecase }}</span>
+			</div>
+			<img *ngIf="learningPath.imageUrls && learningPath.imageUrls.length>0" [src]="envVariable.apiUrl+ learningPath.imageUrls[0] + '/300'"
+			     alt="landscape1">
+			<img *ngIf="!learningPath.imageUrls || learningPath.imageUrls.length<=0" src="/assets/images/technology-card.jpg"
+			     alt="landscape1">
+		</div>
+		<div class="card-content">
+			<!-- <p class="tags text-uppercase">
+					<span>({{learningPath.contents.length}}) Courses</span>
+				  </p> -->
+			<!-- <p class="title mat-body-2">Get up to speed</p> -->
+			
+			<span class="mat-body-2">
+				{{learningPath.contents.length}} items <mat-icon style="font-size: 5px; top: -3px; height: 20px; width: 7px;margin-left: 3px;">fiber_manual_record</mat-icon>
+				<span *ngIf="learningPath.totalHours<1">
+					{{learningPath.totalHours * 60 | number :'1.0-0'}} Minutes
+				</span>
+				<span *ngIf="learningPath.totalHours>=1">
+					{{learningPath.totalHours | number :'1.0-0'}} Hours
+				</span>
+			</span>
+			<br>
+			<span>
+				{{learningPath.headline | titlecase}}
+			</span>
+		</div>
+	</div>
 </div>

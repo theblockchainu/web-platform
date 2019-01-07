@@ -96,7 +96,7 @@ export class MyCalendarUtils extends CalendarUtils {
 	]
 })
 export class ClassPageComponent implements OnInit, OnDestroy {
-
+	
 	public classId: string;
 	public envVariable;
 	public userId;
@@ -107,6 +107,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public newUserRating: number;
 	public liveCohort;
 	public isViewTimeHidden: boolean;
+	public collectionEthereumInfo: any;
 	public busyDiscussion: boolean;
 	public busyReview: boolean;
 	public busyReply: boolean;
@@ -149,7 +150,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public comments: Array<any>;
 	today: any;
 	public answeredDate;
-
+	
 	// Calendar Start
 	public dateClicked: boolean;
 	public clickedDate;
@@ -197,34 +198,34 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public contactUsForm: FormGroup;
 	public isFollowing: boolean;
 	@ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
-
+	
 	objectKeys = Object.keys;
-
+	
 	constructor(public router: Router,
-		private activatedRoute: ActivatedRoute,
-		private _cookieUtilsService: CookieUtilsService,
-		public _collectionService: CollectionService,
-		public _contentService: ContentService,
-		public _topicService: TopicService,
-		private _commentService: CommentService,
-		private _fb: FormBuilder,
-		private dialog: MatDialog,
-		private dialogsService: DialogsService,
-		private snackBar: MatSnackBar,
-		private _socketService: SocketService,
-		private _authenticationService: AuthenticationService,
-		private _scholarshipService: ScholarshipService,
-		private titleService: Title,
-		private metaService: Meta,
-		private _assessmentService: AssessmentService,
-		private ucwords: UcWordsPipe,
-		private certificateService: CertificateService,
-		private _profileService: ProfileService,
-		private location: Location
+				private activatedRoute: ActivatedRoute,
+				private _cookieUtilsService: CookieUtilsService,
+				public _collectionService: CollectionService,
+				public _contentService: ContentService,
+				public _topicService: TopicService,
+				private _commentService: CommentService,
+				private _fb: FormBuilder,
+				private dialog: MatDialog,
+				private dialogsService: DialogsService,
+				private snackBar: MatSnackBar,
+				private _socketService: SocketService,
+				private _authenticationService: AuthenticationService,
+				private _scholarshipService: ScholarshipService,
+				private titleService: Title,
+				private metaService: Meta,
+				private _assessmentService: AssessmentService,
+				private ucwords: UcWordsPipe,
+				private certificateService: CertificateService,
+				private _profileService: ProfileService,
+				private location: Location
 	) {
 		this.envVariable = environment;
 	}
-
+	
 	ngOnInit() {
 		this.fetchScholarships();
 		// Subscribe to login listener and refresh page when user logs in.
@@ -232,7 +233,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.initializePage();
 		});
 	}
-
+	
 	ngOnDestroy() {
 		if (this.startedView) {
 			this.startedView.viewer = {
@@ -245,12 +246,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-
+	
 	initializePage() {
-
+		
 		// Close all existing dialogs
 		this.dialogsService.closeAll();
-
+		
 		console.log('Initializing Page');
 		this.initializeGlobalVariables();
 		this.setValuesFromCookies();
@@ -273,7 +274,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				this.initialised = true;
 			});
 	}
-
+	
 	private fetchData() {
 		this.loadingCertificate = true;
 		this.allParticipants = [];
@@ -309,7 +310,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				{
 					'assessment_models': [
 						{ 'assessment_na_rules': { 'assessment_result': 'assessees' } },
-						{ 'assessment_rules': { 'assessment_result': 'assessees' } }]
+						{ 'assessment_rules': { 'assessment_result': 'assessees' } }
+					]
 				}
 			],
 			'relInclude': 'calendarId',
@@ -317,10 +319,10 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				'or': [{ 'customUrl': this.classId }, { 'id': this.classId }]
 			}
 		};
-
+		
 		return this._collectionService.getAllCollections(query);
 	}
-
+	
 	private initializeGlobalVariables() {
 		this.newUserRating = 0;
 		this.isViewTimeHidden = true;
@@ -373,7 +375,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			touch: true
 		};
 	}
-
+	
 	private setValuesFromRouteParameters() {
 		return this.activatedRoute.params.pipe(
 			first(),
@@ -401,19 +403,19 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				});
 			}));
 	}
-
+	
 	private setValuesFromCookies() {
 		this.userId = this._cookieUtilsService.getValue('userId');
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
 	}
-
+	
 	refreshView(): void {
 		this.refresh.next();
 	}
-
+	
 	dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
 		this.eventsForTheDay = {};
-
+		
 		if (events.length === 0) {
 			this.dateClicked = false;
 			return;
@@ -461,13 +463,13 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		}
 	}
-
+	
 	/**
 	 * Open Dialog to manage cohorts
 	 */
 	public editCalendar() {
 		const sortedCalendar = this.sort(this.class.calendars, 'startDate', 'endDate');
-
+		
 		this.dialogsService
 			.editCalendar({ id: this.classId, type: this.class.type, name: this.class.title },
 				this.class.contents, this.class.calendars, this.allItenaries, this.allParticipants,
@@ -485,7 +487,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-
+	
 	/**
 	 * Set the current user's type
 	 */
@@ -520,16 +522,16 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					}
 				}
 			}
-
+			
 			if (this.userType === 'public' || this.userType === 'teacher') {
 				this.initializeAllItenaries();
 			}
-
+			
 			this.loadingClass = false;
-
+			
 		}
 	}
-
+	
 	private initializeAllItenaries() {
 		this.events = [];
 		this.allItenaries = [];
@@ -586,7 +588,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		}
 		this.refreshView();
 	}
-
+	
 	private processContent(key) {
 		const contentObj = this.itenariesObj[key];
 		const self = this;
@@ -609,7 +611,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		}
 		return contentObj;
 	}
-
+	
 	private processData(res: any) {
 		if (res && res.length > 0) {
 			console.log('PROCESSING DATA');
@@ -640,7 +642,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				} else {
 					this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
 				}
-
+				
 				if (contentObj.submissions && contentObj.submissions.length > 0) {
 					contentObj.submissions.forEach(submission => {
 						if (submission.peer) {
@@ -650,7 +652,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						}
 					});
 				}
-
+				
 				if (contentObj.questions && contentObj.questions.length > 0) {
 					contentObj.questions.forEach(question => {
 						if (question.answers) {
@@ -745,7 +747,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			obs.next();
 		});
 	}
-
+	
 	private fetchScholarships() {
 		const query = {
 			where: {
@@ -762,7 +764,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				this.globalScholarshipId = null;
 			});
 	}
-
+	
 	private openCustomDialog(dialogName) {
 		switch (dialogName) {
 			case 'paymentSuccess':
@@ -773,17 +775,18 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				this.openAssessmentDialog();
 		}
 	}
-
+	
 	private getEthereumInfo() {
 		this._collectionService.getCollectionEthereumInfo(this.classId, {})
 			.subscribe(res => {
+				this.collectionEthereumInfo = res;
 				this.checkingEthereum = false;
 				if (res && res[6] && res[6] !== '0') {
 					this.isOnEthereum = true;
 				}
 			});
 	}
-
+	
 	private checkIfFollowing() {
 		if (this.class.peersFollowing && this.class.peersFollowing.length > 0) {
 			this.class.peersFollowing.some(peer => {
@@ -796,10 +799,10 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-
+	
 	public createGuestContacts() {
 		console.log('Submitting request');
-
+		
 		const first_name = this.contactUsForm.controls['first_name'].value;
 		const email = this.contactUsForm.controls['email'].value;
 		const subject = 'Online Course: ' + this.class.title;
@@ -825,7 +828,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				this.snackBar.open('Error in sending mail', 'Close', { duration: 3000 });
 			});
 	}
-
+	
 	private setTags() {
 		this.titleService.setTitle(this.ucwords.transform(this.class.title));
 		this.metaService.updateTag({
@@ -875,13 +878,13 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			content: this.class.id
 		});
 	}
-
+	
 	private setUpCarousel() {
 		if (this.class.imageUrls && this.class.imageUrls.length > 0) {
 			this.carouselImages = this.class.imageUrls.map(url => environment.apiUrl + url);
 		}
 	}
-
+	
 	private recordStartView() {
 		// Send start view msg on socket
 		const view = {
@@ -901,7 +904,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.startedView = startedView;
 		});
 	}
-
+	
 	private getReviews() {
 		this.loadingReviews = true;
 		let query = {};
@@ -941,7 +944,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	public showAll(strLength) {
 		if (strLength > this.maxLength) {
 			this.maxLength = strLength;
@@ -949,7 +952,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.maxLength = 140;
 		}
 	}
-
+	
 	private getBookmarks() {
 		const query = {
 			'include': [
@@ -976,7 +979,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	private getDiscussions() {
 		this.loadingComments = true;
 		const query = {
@@ -1015,11 +1018,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	private fixTopics() {
 		this.topicFix = _.uniqBy(this.class.topics, 'id');
 	}
-
+	
 	private initializeForms() {
 		this.chatForm = this._fb.group({
 			description: ['', Validators.required],
@@ -1032,11 +1035,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			collectionId: this.classId,
 			collectionCalendarId: this.calendarId,
 		});
-
+		
 		const filter = {
 			'include': [{ 'profiles': ['phone_numbers'] }]
 		};
-
+		
 		this.contactUsForm = this._fb.group(
 			{
 				first_name: ['', Validators.required],
@@ -1046,17 +1049,17 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				phone: ['']
 			}
 		);
-
+		
 		return this._profileService.getPeerData(this.userId, filter);
 	}
-
+	
 	private setContactFormValues(res) {
 		// If user exists, setup his contact form
 		if (res && res.profiles && res.profiles.length > 0) {
-
+			
 			const userPhone = res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0 ? '+'
 				+ res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '';
-
+			
 			this.contactUsForm = this._fb.group(
 				{
 					first_name: [res.profiles[0].first_name, Validators.required],
@@ -1081,11 +1084,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			obs.next();
 		});
 	}
-
+	
 	gotoEdit() {
 		this.router.navigate(['class', this.classId, 'edit', this.class.stage ? this.class.stage : '1']);
 	}
-
+	
 	public setCurrentCalendar() {
 		if (this.calendarId) {
 			const calendarIndex = this.class.calendars.findIndex(calendar => {
@@ -1100,7 +1103,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			console.log('Calendar id not found');
 		}
 	}
-
+	
 	/**
 	 * Open Dialog to select a particular cohort
 	 */
@@ -1112,7 +1115,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-
+	
 	/**
 	 * Open Dialog to select a particular cohort and then open its assessment dialog.
 	 */
@@ -1124,7 +1127,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-
+	
 	/**
 	 * cancelClass
 	 */
@@ -1135,7 +1138,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	/**
 	 * dropoutClass
 	 */
@@ -1146,7 +1149,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	public cancelCohort() {
 		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res: any) => {
 			if (res) {
@@ -1156,7 +1159,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			console.log(err);
 		});
 	}
-
+	
 	public deleteCohort() {
 		this.dialogsService.openDeleteCohort(this.calendarId).subscribe(res => {
 			if (res) {
@@ -1164,7 +1167,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	/**
 	 * deleteClass
 	 */
@@ -1175,9 +1178,9 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
-
-
+	
+	
+	
 	/**
 	 * postComment
 	 */
@@ -1193,7 +1196,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	/**
 	 * saveBookmark
 	 */
@@ -1244,8 +1247,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.dialogsService.openSignup('/class/' + this.class.id);
 		}
 	}
-
-
+	
+	
 	/**
 	 * calculateTotalHours
 	 */
@@ -1258,12 +1261,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
 				totalLength += parseInt(contentLength, 10);
 			} else if (content.type === 'video') {
-
+			
 			}
 		});
 		this.totalDuration = totalLength.toString();
 	}
-
+	
 	/**
 	 * isLive
 	 */
@@ -1273,16 +1276,16 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		const endMoment = startMoment.clone();
 		endMoment.add(content.schedules[0].endDay, 'day');
 		const currentMoment = moment();
-
+		
 		const startTime = moment(content.schedules[0].startTime);
 		const endTime = moment(content.schedules[0].endTime);
-
+		
 		startMoment.hours(startTime.hours());
 		startMoment.minutes(startTime.minutes());
-
+		
 		endMoment.hours(endTime.hours());
 		endMoment.minutes(endTime.minutes());
-
+		
 		if (currentMoment.isBetween(startMoment, endMoment)) {
 			content.isLive = true;
 			return true;
@@ -1291,8 +1294,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			return false;
 		}
 	}
-
-
+	
+	
 	public getContentCount(type: string) {
 		let count = 0;
 		for (const content of this.class.contents) {
@@ -1302,7 +1305,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		}
 		return count;
 	}
-
+	
 	/**
 	 * toggleReviews
 	 */
@@ -1313,7 +1316,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.noOfReviews = 3;
 		}
 	}
-
+	
 	viewParticipants() {
 		let chatRoomId;
 		if (this.class.rooms && this.class.rooms.length > 0) {
@@ -1326,7 +1329,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			chatRoomId,
 			this.class.calendars).subscribe();
 	}
-
+	
 	viewAllParticipants() {
 		let chatRoomId;
 		if (this.class.rooms && this.class.rooms.length > 0) {
@@ -1334,7 +1337,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		}
 		this.dialogsService.viewParticipantsDialog(this.allParticipants, this.classId, this.userType, chatRoomId, this.class.calendars).subscribe();
 	}
-
+	
 	/**
 	 * openDialog
 	 content:any   */
@@ -1359,17 +1362,17 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			case 'project':
 				this.dialogsService.projectContentDialog(content, startDate, endDate, this.userType, this.peerHasSubmission,
 					this.class, this.calendarId).subscribe(res => {
-						if (res) {
-							this.initializePage();
-						}
-					});
+					if (res) {
+						this.initializePage();
+					}
+				});
 				break;
 			default:
 				break;
 		}
-
+		
 	}
-
+	
 	/**
 	 * timetoSession
 	 content:any   */
@@ -1379,23 +1382,23 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		const endMoment = startMoment.clone();
 		endMoment.add(content.schedules[0].endDay, 'day');
 		const currentMoment = moment();
-
+		
 		const startTime = moment(content.schedules[0].startTime);
 		const endTime = moment(content.schedules[0].endTime);
-
+		
 		startMoment.hours(startTime.hours());
 		startMoment.minutes(startTime.minutes());
-
+		
 		endMoment.hours(endTime.hours());
 		endMoment.minutes(endTime.minutes());
-
+		
 		if (startMoment.diff(currentMoment, 'minutes') < 0) {
 			content.timetoSession = 'Ended ' + endMoment.fromNow();
 		} else {
 			content.timetoSession = 'We will remind you ' + startMoment.fromNow();
 		}
 	}
-
+	
 	/**
 	 * getRecommendations
 	 */
@@ -1407,7 +1410,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					'relation': 'collections', 'scope': {
 						'include':
 							[{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', 'participants',
-							{ 'contents': 'locations' }], 'where': { 'type': 'class' }
+								{ 'contents': 'locations' }], 'where': { 'type': 'class' }
 					}
 				}
 			]
@@ -1447,12 +1450,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	/**
 	 * selectJoiningDates
 	 */
 	public selectJoiningDates() {
-
+		
 		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.class.type, this.class.maxSpots, this.accountApproved, this.userId)
 			.subscribe((result: any) => {
 				if (result) {
@@ -1466,27 +1469,27 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-
+	
 	private extractTime(dateString: string) {
 		const time = moment.utc(dateString).local().format('HH:mm:ss');
 		return time;
 	}
-
+	
 	public viewDetails(key) {
 		this.router.navigate(['class', this.classId, 'calendar', key]);
 	}
-
+	
 	public openEventDialog(calendarId, eventId) {
 		this.router.navigate(['class', this.classId, 'calendar', calendarId, eventId]);
 	}
-
+	
 	public createReplyForm(comment: any) {
 		this.replyingToCommentId = comment.id;
 		this.replyForm = this._fb.group({
 			description: ''
 		});
 	}
-
+	
 	/**
 	 * postReply
 	 */
@@ -1503,7 +1506,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	/**
 	 * deleteReply
 	 */
@@ -1516,7 +1519,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	/**
 	 * deleteComment
 	 */
@@ -1529,7 +1532,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	/**
 	 * deleteReview
 	 */
@@ -1542,7 +1545,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	/**
 	 * handleRate
 	 */
@@ -1550,11 +1553,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.reviewForm.controls['score'].setValue(event.value);
 		this.isRatingReceived = true;
 	}
-
+	
 	public updateRating(event) {
 		this.editReviewForm.controls['score'].setValue(event.value);
 	}
-
+	
 	/**
 	 * postReview
 	 */
@@ -1572,7 +1575,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	public updateReview() {
 		this.busyReview = true;
 		const reviewBody = this.editReviewForm.value;
@@ -1592,7 +1595,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	public updateComment() {
 		this.busyDiscussion = true;
 		const commentBody = this.editCommentForm.value;
@@ -1611,7 +1614,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	public updateReply() {
 		this.busyReply = true;
 		const replyBody = this.editReplyForm.value;
@@ -1630,7 +1633,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	addCommentUpvote(comment: any) {
 		this._commentService.addCommentUpvote(comment.id, {}).subscribe(
 			response => {
@@ -1645,7 +1648,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	addReplyUpvote(reply: any) {
 		this._commentService.addReplyUpvote(reply.id, {}).subscribe(
 			response => {
@@ -1660,7 +1663,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	public getParticipants() {
 		this.participants = [];
 		this.loadingParticipants = true;
@@ -1728,7 +1731,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-
+	
 	public hasUpvoted(upvotes) {
 		let result = false;
 		if (upvotes !== undefined) {
@@ -1744,11 +1747,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		}
 		return result;
 	}
-
+	
 	public isMyComment(comment) {
 		return comment.peer && comment.peer.length > 0 && comment.peer[0].id === this.userId;
 	}
-
+	
 	public hasReviewed(reviews) {
 		let result = false;
 		reviews.forEach(review => {
@@ -1758,17 +1761,17 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		});
 		return result;
 	}
-
+	
 	public isMyReview(review) {
 		return review.peer[0].id === this.userId;
 	}
-
+	
 	public hasCohortEnded() {
 		const cohortEndDate = moment(this.currentCalendar.endDate);
 		const currentDate = moment();
 		return cohortEndDate.diff(currentDate) > 0;
 	}
-
+	
 	public hasLiveCohort() {
 		let result = false;
 		this.class.calendars.forEach(calendar => {
@@ -1784,7 +1787,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		});
 		return result;
 	}
-
+	
 	public hasUpcomingCohort() {
 		let result = false;
 		this.class.calendars.forEach(calendar => {
@@ -1797,7 +1800,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		});
 		return result;
 	}
-
+	
 	public shareOnFb() {
 		FB.ui({
 			method: 'share_open_graph',
@@ -1816,17 +1819,17 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		}, function (response) {
 		});
 	}
-
+	
 	public shareOnTwitter() {
 		// TODO twitter sharing code
 	}
-
+	
 	public hasDatePassed(date) {
 		const eventDate = moment(date);
 		const currentDate = moment();
 		return (this.calendarId !== undefined && eventDate.diff(currentDate, 'seconds') < 0) && this.oneDay();
 	}
-
+	
 	public setContentViews(contents) {
 		contents.forEach(content => {
 			if (content.type !== 'project' && content.views !== undefined) {
@@ -1861,35 +1864,35 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	public showViewTime(content) {
 		if (this.userType === 'participant') {
 			content.isViewTimeHidden = false;
 		}
 	}
-
+	
 	public hideViewTime(content) {
 		if (this.userType === 'participant') {
 			content.isViewTimeHidden = true;
 		}
 	}
-
+	
 	public openVerificationPage() {
 		this.router.navigate(['console', 'profile', 'verification']);
 	}
-
+	
 	public openLoginPage() {
 		this.router.navigate(['login']);
 	}
-
+	
 	public openSignup(returnTo) {
 		this.dialogsService.openSignup(returnTo).subscribe();
 	}
-
+	
 	public openProfilePage(peerId) {
 		this.router.navigate(['profile', peerId]);
 	}
-
+	
 	public openInviteFriendsDialog() {
 		this.dialogsService.inviteFriends(this.class);
 	}
@@ -1906,38 +1909,38 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.dialogsService.startLiveSession(data).subscribe((result: any) => {
 		});
 	}
-
+	
 	private sort(calendars, param1, param2) {
 		return _.sortBy(calendars, [param1, param2]);
 	}
-
-
+	
+	
 	scrollToDiscussion() {
 		const el = document.getElementById('discussionTarget');
 		el.scrollIntoView();
 	}
-
+	
 	add1ToIndex(index) {
 		return 'Day ' + (+index + 1);
 	}
-
+	
 	oneDay() {
 		return true;
 		// return this.itenaryArray.length > 1;
 	}
-
+	
 	displayNone() {
 		return 'display: none';
 	}
-
+	
 	public parseTitle(title) {
 		return title.split(':');
 	}
-
+	
 	public backToCollection(collection) {
 		this.router.navigate([collection.type, collection.id]);
 	}
-
+	
 	public editReview(review: any) {
 		this.editReviewForm = this._fb.group({
 			description: [review.description, Validators.required],
@@ -1949,7 +1952,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		});
 		this.newUserRating = review.score;
 	}
-
+	
 	public editComment(comment: any) {
 		this.editCommentForm = this._fb.group({
 			description: [comment.description, Validators.required],
@@ -1957,20 +1960,20 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			id: comment.id
 		});
 	}
-
+	
 	public editReply(reply: any) {
 		this.editReplyForm = this._fb.group({
 			description: reply.description,
 			id: reply.id
 		});
 	}
-
+	
 	public isCancelable() {
 		if (this.currentCalendar) {
 			return moment(this.currentCalendar.endDate) > this.today;
 		}
 	}
-
+	
 	public openGroupChat() {
 		if (this.class.rooms && this.class.rooms.length > 0) {
 			this.router.navigate(['console', 'inbox', this.class.rooms[0].id]);
@@ -1980,7 +1983,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-
+	
 	public openAssessmentDialog() {
 		this.dialogsService.studentAssessmentDialog(
 			{
@@ -1990,7 +1993,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				'academicGyan': this.class.academicGyan,
 				'nonAcademicGyan': this.class.nonAcademicGyan,
 				'quizContents': this.filterQuizContents(this.itenaryArray),
-				'globalScholarshipId': this.globalScholarshipId
+				'globalScholarshipId': this.globalScholarshipId,
+				'collectionEthereumInfo': this.collectionEthereumInfo
 			}
 		).subscribe(dialogSelection => {
 			let assessmentEngagementRule, assessmentCommitmentRule;
@@ -2017,30 +2021,37 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						});
 					}
 				});
-				this._assessmentService.submitAssessment(assessmentArray).subscribe((result: any) => {
-					this.initializePage();
-					this.snackBar.open('Your assessment has been submitted. Students will be informed over email.', 'Ok', { duration: 5000 });
-				});
+				this._assessmentService.submitAssessment(assessmentArray)
+					.subscribe((result: any) => {
+						this.snackBar.open('Your assessments have been recorded. Eligible students will receive their Smart Certificates over email.', 'Ok', { duration: 5000 });
+						this.initializePage();
+					}, error1 => {
+						console.log(error1);
+						this.snackBar.open('Oops! We had an internal error. Please try again. If problem persists, contact support.', 'RETRY', {duration: 5000})
+							.onAction().subscribe(res => {
+							this.openAssessmentDialog();
+						});
+					});
 			}
 		});
 	}
-
+	
 	public onClassRefresh(event) {
 		if (event) {
 			this.getRecommendations();
 		}
 	}
-
+	
 	public getPredictedGyanEarn(collection) {
 		const participantCount = collection.participants ? collection.participants.length : 0;
 		return (collection.academicGyan + collection.nonAcademicGyan) * participantCount;
 	}
-
+	
 	public openMessageDialog(peer) {
 		this.dialogsService.messageParticipant(peer).subscribe((result: any) => {
 		});
 	}
-
+	
 	public addToEthereum() {
 		this._collectionService.addToEthereum(this.classId)
 			.subscribe(res => {
@@ -2049,7 +2060,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				this.snackBar.open('Could not add to one0x Blockchain. Try again later.', 'Ok', { duration: 5000 });
 			});
 	}
-
+	
 	private sortAssessmentRules() {
 		if (this.class.assessment_models && this.class.assessment_models.length > 0 && this.class.assessment_models[0].assessment_rules) {
 			const assessmentRulesUnsorted = <Array<any>>this.class.assessment_models[0].assessment_rules;
@@ -2064,7 +2075,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-
+	
 	private getCertificatetemplate() {
 		try {
 			this.certificateService.getCertificateTemplate(this.classId).subscribe((res: any) => {
@@ -2083,11 +2094,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			console.log(e);
 		}
 	}
-
+	
 	public getGyanForRule(gyanPercent, totalGyan) {
 		return Math.floor((gyanPercent / 100) * totalGyan);
 	}
-
+	
 	public addParticipant() {
 		this.dialogsService.addParticipant(this.classId, this.calendarId).subscribe(res => {
 			if (res) {
@@ -2095,13 +2106,13 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	public openShareDialog() {
 		this.dialogsService.shareCollection(this.class.type, this.class.id, this.class.title,
 			this.class.description, this.class.headline, environment.apiUrl + this.class.imageUrls[0]
 			, this.calendarId, this.userType === 'teacher');
 	}
-
+	
 	public followCollectionToggle() {
 		if (this.userId && this.userId.length > 5) {
 			if (!this.isFollowing) {
@@ -2127,7 +2138,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.dialogsService.openSignup('/class/' + this.class.id);
 		}
 	}
-
+	
 	private filterQuizContents(itineraryDaysArray) {
 		const quizContents = [];
 		itineraryDaysArray.forEach(itineraryDay => {
@@ -2139,7 +2150,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		});
 		return quizContents;
 	}
-
+	
 }
 
 interface AssessmentResult {

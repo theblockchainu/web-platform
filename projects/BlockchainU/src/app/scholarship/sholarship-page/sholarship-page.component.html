@@ -79,7 +79,7 @@
 											<b> {{scholarship.type |titlecase}}</b>
 										</div>
 									</div>
-									<div class="row">
+									<div class="row" *ngIf="scholarship.owner && scholarship.owner.length > 0">
 										<div class="col-xs-12">
 											<hr> Owned by :
 											<b>{{scholarship.owner[0].profiles[0].first_name +' '+ scholarship.owner[0].profiles[0].last_name | titlecase}}</b>

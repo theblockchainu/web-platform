@@ -57,12 +57,23 @@ Raven.setExtraContext({
 	environment: (environment.production) ? 'production' : 'development'
 });
 
+Raven.setEnvironment((environment.production) ? 'production' : 'development');
+Raven.setRelease('1.0.0');
+
 export class RavenErrorHandler implements ErrorHandler {
 	handleError(err: any): void {
 		Raven.captureException(err);
+		Raven.showReportDialog();
 	}
 }
 
+export function provideErrorHandler() {
+	if (environment.production) {
+		return new RavenErrorHandler();
+	} else {
+		return new ErrorHandler();
+	}
+}
 
 @NgModule({
 	declarations: [
@@ -130,7 +141,7 @@ export class RavenErrorHandler implements ErrorHandler {
 		UcFirstPipe,
 		{
 			provide: ErrorHandler,
-			useClass: RavenErrorHandler
+			useFactory: provideErrorHandler
 		},
 		Title,
 		Meta

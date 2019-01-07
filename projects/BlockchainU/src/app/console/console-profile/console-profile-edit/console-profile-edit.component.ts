@@ -386,7 +386,7 @@ export class ConsoleProfileEditComponent implements OnInit {
 		const phone_numbers = profileData.phone_numbers;
 		delete profileData.phone_numbers;
 		const emergency_contacts = profileData.emergency_contacts;
-		delete profileData.emergency_contact;
+		delete profileData.emergency_contacts;
 		// profileData = this.sanitize(profileData);
 		console.log(email);
 		// console.log(phone_numbers);
@@ -532,13 +532,13 @@ export class ConsoleProfileEditComponent implements OnInit {
 	 * deleteEmergencyContact
 	 */
 	public deleteEmergencyContact(index: number) {
-		const emergency_contact = <FormArray>this.profileForm.controls['emergency_contact'];
+		const emergency_contacts = <FormArray>this.profileForm.controls['emergency_contacts'];
 		if (index > 0) {
 
-			emergency_contact.removeAt(index);
+			emergency_contacts.removeAt(index);
 			return;
 		}
-		const phoneNumber = <FormGroup>emergency_contact.controls[index];
+		const phoneNumber = <FormGroup>emergency_contacts.controls[index];
 		phoneNumber.controls.country_code.patchValue('');
 		phoneNumber.controls.subscriber_number.patchValue('');
 	}
@@ -547,8 +547,8 @@ export class ConsoleProfileEditComponent implements OnInit {
 	 * addEmergencyContact
 	 */
 	public addEmergencyContact() {
-		const emergency_contact = <FormArray>this.profileForm.controls['emergency_contact'];
-		emergency_contact.push(this.initializeEmergencyContact());
+		const emergency_contacts = <FormArray>this.profileForm.controls['emergency_contacts'];
+		emergency_contacts.push(this.initializeEmergencyContact());
 	}
 
 	// Other Language

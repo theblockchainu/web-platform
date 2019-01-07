@@ -33,7 +33,7 @@ export class TeachersSectionComponent implements OnChanges, OnInit {
 				const topics = [];
 				console.log('checking_content');
 				console.log(content);
-				if (content.courses[0] && content.courses[0].owners && content.courses[0].owners[0]) {
+				if (content.courses && content.courses.length > 0 && content.courses[0] && content.courses[0].owners && content.courses[0].owners[0]) {
 					console.log('checking_teacher');
 					if (content.courses[0].owners[0].topicsTeaching) {
 						content.courses[0].owners[0].topicsTeaching.forEach(topicObj => {

@@ -90,8 +90,8 @@
 						</div>
 						<br>
 						<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
-							<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
-							<div *ngIf="file.type.includes('application')" class="uploaded_file">
+							<img *ngIf="file && file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
+							<div *ngIf="file && file.type.includes('application')" class="uploaded_file">
 								<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
 							</div>
 						</div>

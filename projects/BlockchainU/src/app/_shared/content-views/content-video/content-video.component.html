@@ -1,8 +1,8 @@
 <div class="row">
 	<div class="col-md-12 collectionContent">
-		<button mat-stroked-button class="pull-right" *ngIf="userType==='teacher' || userType==='participant'" color="primary">Open
-			in
-			Standalone Mode</button>
+		<div class="pull-right" *ngIf="userType==='teacher' || userType==='participant'" color="primary">
+			<mat-icon>open_in_new</mat-icon>
+		</div>
 	</div>
 	<div class="col-md-12">
 		<div class="mat-display-1" style="margin-bottom: 20px;" *ngIf="data.content">
@@ -78,11 +78,11 @@
 		</div>
 		<br>
 		<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
-			<img *ngIf="file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
-			<div *ngIf="file.type.includes('application')" class="uploaded_file">
+			<img *ngIf="file && file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
+			<div *ngIf="file && file.type.includes('application')" class="uploaded_file">
 				<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
 			</div>
-			<video *ngIf="file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
+			<video *ngIf="file && file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
 				<source src="{{envVariable.apiUrl + file.url}}">
 			</video>
 		</div>

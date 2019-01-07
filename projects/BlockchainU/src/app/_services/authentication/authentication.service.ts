@@ -7,6 +7,7 @@ import { SocketService } from '../socket/socket.service';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, take } from 'rxjs/operators';
+import * as Raven from 'raven-js';
 
 @Injectable()
 export class AuthenticationService {
@@ -58,6 +59,9 @@ export class AuthenticationService {
 					// login successful if there's a jwt token in the response
 					const user = response;
 					if (user && user.access_token) {
+						Raven.setUserContext({
+							id: user.userId
+						});
 						this._requestHeaderService.refreshToken.next(true);
 						this.isLoginSubject.next(true);
 						this._socketService.addUser(user.userId);
@@ -81,6 +85,7 @@ export class AuthenticationService {
 					}
 				);
 		}
+		Raven.setUserContext();
 		this.removeCookie('userId');
 		this.removeCookie('accountApproved');
 		this.removeCookie('access_token');
