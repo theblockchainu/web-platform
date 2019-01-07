@@ -107,6 +107,10 @@ export class ContentService {
 		return this.http.get(environment.apiUrl + '/api/contents?filter=' + JSON.stringify(query), this.requestHeaderService.options);
 	}
 
+	public getContentById(contentId: string, query: any) {
+		return this.http.get(environment.apiUrl + '/api/contents/' + contentId + '?filter=' + JSON.stringify(query), this.requestHeaderService.options);
+	}
+
 	public linkPayment(contentId: string, paymentId: string) {
 		return this.http.put(environment.apiUrl + '/api/contents/' + contentId + '/payments/rel/' + paymentId, {}, this.requestHeaderService.options);
 	}

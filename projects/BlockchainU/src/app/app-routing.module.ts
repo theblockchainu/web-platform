@@ -205,6 +205,10 @@ const routes: Routes = [
 		loadChildren: './question-page/question-page.module#QuestionPageModule'
 	},
 	{
+		path: 'content',
+		loadChildren: './content/content.module#ContentModule'
+	},
+	{
 		path: 'access-denied',
 		component: AccessDeniedComponent
 	},

@@ -48,6 +48,10 @@ strong {
 	color: #33bd9e;
 }
 
+.accentColor {
+	color: #FF6D71;
+}
+
 .clickable {
 	cursor: pointer !important;
 }

@@ -9,6 +9,7 @@ import { environment } from '../../../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { SocialSharingService } from '../../_services/social-sharing/social-sharing.service';
 import { ProfileService } from '../../_services/profile/profile.service';
+declare var fbq: any;
 
 @Component({
 	selector: 'app-sign-up',
@@ -23,6 +24,7 @@ export class SignUpComponent implements OnInit {
 	public emailRegister = false;
 	public envVariable;
 	private invitationId: string;
+	public loading = false;
 	invite: any;
 	public invitor;
 
@@ -85,11 +87,15 @@ export class SignUpComponent implements OnInit {
 		this.titleService.setTitle('Sign-up | The Blockchain University');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Sign up for theblockchainu.com'
+			content: 'Join Blockchain University'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
 			content: 'theblockchainu.com'
+		});
+		this.metaService.updateTag({
+			property: 'og:description',
+			content: 'Blockchain University is the world\'s largest Blockchain Education company.'
 		});
 		this.metaService.updateTag({
 			property: 'og:image',
@@ -106,6 +112,7 @@ export class SignUpComponent implements OnInit {
 	}
 
 	submitForm() {
+		this.loading = true;
 		console.log(this.signupForm);
 		if (this.signupForm.valid) {
 			const registerObject = this.signupForm.value;
@@ -120,10 +127,32 @@ export class SignUpComponent implements OnInit {
 				if (res.status === 'failed') {
 					this._MatSnackBar.open(res.reason, 'Close', { duration: 5000 });
 				} else {
+					try {
+						if (fbq && fbq !== undefined) {
+							fbq('track', 'CompleteRegistration', {
+								currency: 'USD',
+								value: 1.0,
+								status: 'approved'
+							});
+						}
+					} catch (e) {
+						console.log(e);
+					}
 					this.signIn();
 				}
 			}, err => {
 				console.log(err);
+				try {
+					if (fbq && fbq !== undefined) {
+						fbq('track', 'CompleteRegistration', {
+							currency: 'USD',
+							value: 1.0,
+							status: 'approved'
+						});
+					}
+				} catch (e) {
+					console.log(e);
+				}
 				this.signIn();
 			});
 		}
@@ -135,8 +164,10 @@ export class SignUpComponent implements OnInit {
 			this._RequestHeaderService.refreshToken.next(true);
 			this._AuthenticationService.isLoginSubject.next(true);
 			this._SocketService.addUser(userId);
-			this._router.navigate(['verification', '1']);
+			this.loading = false;
+			this._router.navigate(['invite', '1']);
 		} else {
+			this.loading = false;
 			this._MatSnackBar.open('An error occurred', 'close', { duration: 3000 });
 		}
 	}

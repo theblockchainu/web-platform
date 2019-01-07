@@ -18,10 +18,6 @@ import { VerifyEmailDialogComponent } from './verify-email-dialog/verify-email-d
 import { IdPolicyDialogComponent } from './id-policy-dialog/id-policy-dialog.component';
 import { VideoDialogComponent } from './video-dialog/video-dialog.component';
 import { VerifyPhoneDialogComponent } from './verify-phone-dialog/verify-phone-dialog.component';
-import { VgCoreModule } from 'videogular2/core';
-import { VgControlsModule } from 'videogular2/controls';
-import { VgOverlayPlayModule } from 'videogular2/overlay-play';
-import { VgBufferingModule } from 'videogular2/buffering';
 import { CollectionGridDialogComponent } from './collection-grid-dialog/collection-grid-dialog.component';
 import { ProfilePopupCardComponent } from './profile-popup-card/profile-popup-card.component';
 import { ExitCollectionDialogComponent } from './exit-collection-dialog/exit-collection-dialog.component';
@@ -78,6 +74,11 @@ import { SubmissionReviewDialogComponent } from './submission-review-dialog/subm
 import { GenericPromptDialogComponent } from './generic-prompt-dialog/generic-prompt-dialog.component';
 import { WinnerDialogComponent } from './winner-dialog/winner-dialog.component';
 import { ViewQuizSubmissionComponent } from './view-quiz-submission/view-quiz-submission.component';
+import { ContentInpersonDialogComponent } from './content-inperson-dialog/content-inperson-dialog.component';
+import { ContentOnlineDialogComponent } from './content-online-dialog/content-online-dialog.component';
+import { ContentProjectDialogComponent } from './content-project-dialog/content-project-dialog.component';
+import { ContentQuizDialogComponent } from './content-quiz-dialog/content-quiz-dialog.component';
+import { ContentVideoDialogComponent } from './content-video-dialog/content-video-dialog.component';
 
 @NgModule({
 	imports: [
@@ -85,10 +86,6 @@ import { ViewQuizSubmissionComponent } from './view-quiz-submission/view-quiz-su
 		FormsModule,
 		ReactiveFormsModule,
 		SharedModule,
-		VgCoreModule,
-		VgControlsModule,
-		VgOverlayPlayModule,
-		VgBufferingModule,
 		ClipboardModule,
 		RouterModule
 	],
@@ -134,7 +131,12 @@ import { ViewQuizSubmissionComponent } from './view-quiz-submission/view-quiz-su
 		SubmissionReviewDialogComponent,
 		GenericPromptDialogComponent,
 		WinnerDialogComponent,
-		ViewQuizSubmissionComponent
+		ViewQuizSubmissionComponent,
+		ContentInpersonDialogComponent,
+		ContentOnlineDialogComponent,
+		ContentProjectDialogComponent,
+		ContentQuizDialogComponent,
+		ContentVideoDialogComponent
 	],
 	providers: [
 		DialogsService,
@@ -144,22 +146,25 @@ import { ViewQuizSubmissionComponent } from './view-quiz-submission/view-quiz-su
 	],
 	entryComponents: [
 		SignupComponentDialogComponent, LoginComponentDialog, RequestPasswordDialogComponent, AddCardDialogComponent,
-		MultiselectTopicDialogComponent
-		, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent, VideoDialogComponent,
-		VerifyPhoneDialogComponent
-		, LiveSessionDialogComponent, CollectionGridDialogComponent, ProfilePopupCardComponent, CancelCollectionDialogComponent,
-		ExitCollectionDialogComponent, DeleteCollectionDialogComponent,
-		EditCalendarDialogComponent, AddTopicDialogComponent, AddLanguageDialogComponent, ViewConflictDialogComponent, SelectDateDialogComponent,
-		CollectionCloneDialogComponent, CollectionSubmitDialogComponent, SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent, InviteFriendsDialogComponent,
-		CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent, RateParticipantComponent,
-		ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent, DateConflictDialogComponent,
-		EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent, ViewParticipantsComponent,
-		StudentAssessmentDialogComponent, GyanTransactionsDialogComponent, RequestCommunityDialogComponent,
-		ScholarshipDialogComponent, GenerateKnowledgeStoryComponent, RequestKnowledgeStoryComponent, ConfirmPasswordDialogComponent,
-		AddViewerDialogComponent, GyanPromptComponent, AddCommunityDialogComponent, CreateAccreditationDialogComponent, SelectFieldDialogComponent,
-		CertificateVerificationComponent, TermsAndConditionsDialogComponent, CollectionStandardsDialogComponent, OnboardingDialogComponent, AddPromoCodeDialogComponent,
-		ViewPromocodeDialogComponent, AddParticipantDialogComponent, ConfirmDeleteAccountComponent, AddImageDialogComponent, AskQuestionDialogComponent, SubmissionReviewDialogComponent
-		, GenericPromptDialogComponent, WinnerDialogComponent, ViewQuizSubmissionComponent
+		MultiselectTopicDialogComponent, VerifyIdDialogComponent, VerifyEmailDialogComponent, IdPolicyDialogComponent,
+		VideoDialogComponent, VerifyPhoneDialogComponent, LiveSessionDialogComponent, CollectionGridDialogComponent,
+		ProfilePopupCardComponent, CancelCollectionDialogComponent, ExitCollectionDialogComponent,
+		DeleteCollectionDialogComponent, EditCalendarDialogComponent, AddTopicDialogComponent, AddLanguageDialogComponent,
+		ViewConflictDialogComponent, SelectDateDialogComponent, CollectionCloneDialogComponent,
+		CollectionSubmitDialogComponent, SubmissionViewComponent, SubmitEntryComponent, ViewEntryDialogComponent,
+		InviteFriendsDialogComponent, CancelCohortDialogComponent, DeleteCohortDialogComponent, ReportProfileComponent,
+		RateParticipantComponent, ShareDialogComponent, DeleteCommunityDialogComponent, ExitCommunityDialogComponent,
+		DateConflictDialogComponent, EditSubmissionDialogComponent, InboxDialogComponent, MessageParticipantDialogComponent,
+		ViewParticipantsComponent, StudentAssessmentDialogComponent, GyanTransactionsDialogComponent,
+		RequestCommunityDialogComponent, ScholarshipDialogComponent, GenerateKnowledgeStoryComponent,
+		RequestKnowledgeStoryComponent, ConfirmPasswordDialogComponent, AddViewerDialogComponent, GyanPromptComponent,
+		AddCommunityDialogComponent, CreateAccreditationDialogComponent, SelectFieldDialogComponent,
+		CertificateVerificationComponent, TermsAndConditionsDialogComponent, CollectionStandardsDialogComponent,
+		OnboardingDialogComponent, AddPromoCodeDialogComponent, ViewPromocodeDialogComponent,
+		AddParticipantDialogComponent, ConfirmDeleteAccountComponent, AddImageDialogComponent, AskQuestionDialogComponent,
+		SubmissionReviewDialogComponent, GenericPromptDialogComponent, WinnerDialogComponent, ViewQuizSubmissionComponent,
+		ContentInpersonDialogComponent, ContentOnlineDialogComponent, ContentProjectDialogComponent,
+		ContentQuizDialogComponent, ContentVideoDialogComponent
 	],
 })
 export class DialogsModule { }

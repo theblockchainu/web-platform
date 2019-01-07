@@ -40,6 +40,10 @@ img {
 	color: #33bd9e;
 }
 
+.accentColor {
+	color: #ff6d71;
+}
+
 .clickable {
 	cursor:  pointer !important;
 }

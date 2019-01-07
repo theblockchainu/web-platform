@@ -9,8 +9,7 @@ import { CookieUtilsService } from '../../_services/cookieUtils/cookie-utils.ser
 import { CollectionService } from '../../_services/collection/collection.service';
 import { ContentService } from '../../_services/content/content.service';
 import { CommentService } from '../../_services/comment/comment.service';
-import { ContentVideoComponent } from './content-video/content-video.component';
-import { ContentProjectComponent } from './content-project/content-project.component';
+
 import {
 	startOfDay,
 	endOfDay,
@@ -39,14 +38,13 @@ import { AuthenticationService } from '../../_services/authentication/authentica
 import { environment } from '../../../environments/environment';
 import { SocketService } from '../../_services/socket/socket.service';
 import { AssessmentService } from '../../_services/assessment/assessment.service';
-import { ContentOnlineComponent } from './content-online/content-online.component';
 import { UcWordsPipe } from 'ngx-pipes';
 import { CertificateService } from '../../_services/certificate/certificate.service';
 import { ProfileService } from '../../_services/profile/profile.service';
-import { ContentQuizComponent } from './content-quiz/content-quiz.component';
 import { Observable } from 'rxjs';
 import { first, flatMap } from 'rxjs/operators';
-import {ScholarshipService} from '../../_services/scholarship/scholarship.service';
+import { Location } from '@angular/common';
+import { ScholarshipService } from '../../_services/scholarship/scholarship.service';
 declare var FB: any;
 declare var fbq: any;
 
@@ -222,7 +220,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				private _assessmentService: AssessmentService,
 				private ucwords: UcWordsPipe,
 				private certificateService: CertificateService,
-				private _profileService: ProfileService
+				private _profileService: ProfileService,
+				private location: Location
 	) {
 		this.envVariable = environment;
 	}
@@ -769,6 +768,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	private openCustomDialog(dialogName) {
 		switch (dialogName) {
 			case 'paymentSuccess':
+				this.location.go('/class/' + this.classId + '/calendar/' + this.calendarId);
 				this.snackBar.open('Your payment was successful. Happy learning!', 'Okay', { duration: 5000 });
 				break;
 			case 'assessment':
@@ -1345,91 +1345,28 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.modalContent = content;
 		switch (content.type) {
 			case 'online':
-			{
-				const dialogRef = this.dialog.open(ContentOnlineComponent, {
-					data: {
-						content: content,
-						startDate: startDate,
-						endDate: endDate,
-						userType: this.userType,
-						collectionId: this.classId,
-						collection: this.class,
-						calendarId: this.calendarId
-					},
-					panelClass: 'responsive-dialog',
-					width: '45vw',
-					height: '100vh'
-				});
+				this.dialogsService.onlineContentDialog(content, startDate, endDate, this.userType, this.class, this.calendarId);
 				break;
-			}
 			case 'quiz':
-			{
-				const dialogRef = this.dialog.open(ContentQuizComponent, {
-					data: {
-						content: content,
-						startDate: startDate,
-						endDate: endDate,
-						userType: this.userType,
-						collectionId: this.classId,
-						collection: this.class,
-						calendarId: this.calendarId,
-						participants: this.participants
-					},
-					panelClass: 'responsive-dialog',
-					disableClose: true,
-					width: '45vw',
-					height: '100vh'
-				});
-				dialogRef.afterClosed().subscribe(res => {
-					if (res) {
-						content.hasAnswered = true;
-						content.answeredDate = moment().format('Do MMM, YYYY');
-					}
-				});
+				this.dialogsService.quizContentDialog(content, startDate, endDate, this.userType, this.class, this.calendarId, this.participants)
+					.subscribe(res => {
+						if (res) {
+							content.hasAnswered = true;
+							content.answeredDate = moment().format('Do MMM, YYYY');
+						}
+					});
 				break;
-			}
 			case 'video':
-			{
-				const dialogRef = this.dialog.open(ContentVideoComponent, {
-					data: {
-						content: content,
-						startDate: startDate,
-						endDate: endDate,
-						userType: this.userType,
-						collectionId: this.classId,
-						collection: this.class,
-						calendarId: this.calendarId
-					},
-					panelClass: 'responsive-dialog',
-					width: '45vw',
-					height: '100vh'
-				});
+				this.dialogsService.videoContentDialog(content, startDate, endDate, this.userType, this.class, this.calendarId);
 				break;
-			}
 			case 'project':
-			{
-				const dialogRef = this.dialog.open(ContentProjectComponent, {
-					data: {
-						content: content,
-						startDate: startDate,
-						endDate: endDate,
-						userType: this.userType,
-						peerHasSubmission: this.peerHasSubmission,
-						collectionId: this.classId,
-						collection: this.class,
-						calendarId: this.calendarId
-					},
-					panelClass: 'responsive-dialog',
-					width: '45vw',
-					height: '100vh'
-				});
-				dialogRef.afterClosed().subscribe(res => {
+				this.dialogsService.projectContentDialog(content, startDate, endDate, this.userType, this.peerHasSubmission,
+					this.class, this.calendarId).subscribe(res => {
 					if (res) {
 						this.initializePage();
 					}
 				});
 				break;
-			}
 			default:
 				break;
 		}
@@ -1733,11 +1670,12 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		const query = {
 			'relInclude': ['calendarId', 'referrerId', 'scholarshipId', 'joinedDate'],
 			'include': [
-				{'profiles': 'phone_numbers'},
+				{ 'profiles': 'phone_numbers' },
 				'reviewsAboutYou',
 				'ownedCollections',
 				'certificates',
-				{'promoCodesApplied': [
+				{
+					'promoCodesApplied': [
 						{
 							'relation': 'collections',
 							'scope': {
@@ -1748,7 +1686,8 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						}
 					]
 				},
-				{'transactions': [
+				{
+					'transactions': [
 						{
 							'relation': 'collections',
 							'scope': {
@@ -1897,7 +1836,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				const thisUserView = [];
 				let totalUserViewTime = 0;
 				content.views.forEach(view => {
-					if (view.peer[0].id === this.userId && view.endTime !== undefined) {
+					if (view.peer && view.peer[0].id === this.userId && view.endTime !== undefined) {
 						thisUserView.push(view);
 						const startTime = moment(view.startTime);
 						const endTime = moment(view.endTime);
@@ -2082,10 +2021,17 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						});
 					}
 				});
-				this._assessmentService.submitAssessment(assessmentArray).subscribe((result: any) => {
-					this.initializePage();
-					this.snackBar.open('Your assessment has been submitted. Students will be informed over email.', 'Ok', { duration: 5000 });
-				});
+				this._assessmentService.submitAssessment(assessmentArray)
+					.subscribe((result: any) => {
+						this.snackBar.open('Your assessments have been recorded. Eligible students will receive their Smart Certificates over email.', 'Ok', { duration: 5000 });
+						this.initializePage();
+					}, error1 => {
+						console.log(error1);
+						this.snackBar.open('Oops! We had an internal error. Please try again. If problem persists, contact support.', 'RETRY', {duration: 5000})
+							.onAction().subscribe(res => {
+							this.openAssessmentDialog();
+						});
+					});
 			}
 		});
 	}

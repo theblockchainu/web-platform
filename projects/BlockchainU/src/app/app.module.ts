@@ -49,7 +49,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { DigestModule } from './digest/digest.module';
 
 
-/*Raven
+Raven
 	.config('https://6c6efc37493d4ff2974b8b4a506c670a@sentry.io/289434')
 	.install();
 
@@ -57,12 +57,23 @@ Raven.setExtraContext({
 	environment: (environment.production) ? 'production' : 'development'
 });
 
+Raven.setEnvironment((environment.production) ? 'production' : 'development');
+Raven.setRelease('1.0.0');
+
 export class RavenErrorHandler implements ErrorHandler {
 	handleError(err: any): void {
 		Raven.captureException(err);
+		Raven.showReportDialog();
 	}
-}*/
+}
 
+export function provideErrorHandler() {
+	if (environment.production) {
+		return new RavenErrorHandler();
+	} else {
+		return new ErrorHandler();
+	}
+}
 
 @NgModule({
 	declarations: [
@@ -128,10 +139,10 @@ export class RavenErrorHandler implements ErrorHandler {
 		CookieService,
 		UcWordsPipe,
 		UcFirstPipe,
-		/*{
+		{
 			provide: ErrorHandler,
-			useClass: RavenErrorHandler
-		},*/
+			useFactory: provideErrorHandler
+		},
 		Title,
 		Meta
 	],

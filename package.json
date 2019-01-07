@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve BlockchainU",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -50,6 +50,7 @@
     "@nguniversal/express-engine": "^6.0.0",
     "@nguniversal/module-map-ngfactory-loader": "^6.0.0",
     "@ngx-share/core": "^6.0.1",
+    "@sentry/browser": "^4.4.2",
     "@types/core-js": "^2.5.0",
     "@types/google.analytics": "0.0.39",
     "amazing-time-picker": "^1.5.3",
