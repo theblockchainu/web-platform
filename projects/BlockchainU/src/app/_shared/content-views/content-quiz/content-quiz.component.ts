@@ -10,6 +10,7 @@ import { CookieUtilsService } from '../../../_services/cookieUtils/cookie-utils.
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { AssessmentService } from '../../../_services/assessment/assessment.service';
 
 @Component({
 	selector: 'app-content-quiz',
@@ -19,9 +20,8 @@ import * as _ from 'lodash';
 export class ContentQuizComponent implements OnInit {
 
 	@Input() data: any;
-
 	public userType = 'public';
-	public experienceId = '';
+	public collectionId = '';
 	public chatForm: FormGroup;
 	public replyForm: FormGroup;
 	public replyingToCommentId: string;
@@ -39,17 +39,20 @@ export class ContentQuizComponent implements OnInit {
 	public showSuccessMessage = false;
 	public answeredDate;
 	public loadingSubmissions = true;
-	public submissionArray = [];
+	public savingData = false;
+	public submissionArray;
 	public displayedSubmissionTableColumns = ['peerName', 'questionsAnswered'];
 
 	@ViewChild(MatTable) table: MatTable<any>;
 	@Output() exitDialog: EventEmitter<boolean> = new EventEmitter<boolean>();
+
 
 	constructor(
 		public _collectionService: CollectionService,
 		private _fb: FormBuilder,
 		private _commentService: CommentService,
 		private _cookieUtilsService: CookieUtilsService,
+		private _assessmentService: AssessmentService,
 		private dialogsService: DialogsService,
 		private contentService: ContentService,
 		private snackBar: MatSnackBar,
@@ -60,9 +63,7 @@ export class ContentQuizComponent implements OnInit {
 	ngOnInit() {
 		this.envVariable = environment;
 		this.userId = this._cookieUtilsService.getValue('userId');
-		this.showSuccessMessage = false;
-		this.userType = this.data.userType;
-		this.experienceId = this.data.collectionId;
+		this.collectionId = this.data.collectionId;
 		this.data.content.supplementUrls.forEach(file => {
 			this.contentService.getMediaObject(file).subscribe((res: any) => {
 				this.attachmentUrls.push(res[0]);
@@ -76,85 +77,39 @@ export class ContentQuizComponent implements OnInit {
 			this.lat = parseFloat(this.data.content.locations[0].map_lat);
 			this.lng = parseFloat(this.data.content.locations[0].map_lng);
 		}
-		this.checkHasAnswered();
+		this.showSuccessMessage = false;
+		this.data.content.questions = this.checkHasAnswered(this.data.content.questions, this.userId);
 		this.initializeForms();
-		this.processSubmissions();
+		this._assessmentService.processQuizSubmissions(this.data.content)
+			.subscribe(res => {
+				this.loadingSubmissions = false;
+				this.submissionArray = res;
+			}, error1 => {
+				this.loadingSubmissions = false;
+			});
 		this.getDiscussions();
 	}
 
-	private processSubmissions() {
-		this.loadingSubmissions = true;
-		this.submissionArray = [];
-		if (this.data.content.questions) {
-			this.data.content.questions.forEach(question => {
+	private checkHasAnswered(questions, userId) {
+		console.log('Checking own answers for user: ' + userId);
+		if (questions) {
+			questions.forEach(question => {
+				let myAnswer = null;
 				if (question.answers) {
 					question.answers.forEach(answer => {
-						if (answer.peer) {
-							// If the answer is by a peer who already has an entry in this array
-							if (_.find(this.submissionArray, function (o) { return o.peerId === answer.peer[0].id; })) {
-								_.find(this.submissionArray, function (o) { return o.peerId === answer.peer[0].id; }).questionsAnswered++;
-								if (question.type === 'single-choice') {
-									if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
-										_.find(this.submissionArray, function (o) {
-											return o.peerId === answer.peer[0].id;
-										}).correctAnswers++;
-									} else {
-										_.find(this.submissionArray, function (o) {
-											return o.peerId === answer.peer[0].id;
-										}).wrongAnswers++;
-									}
-								} else {
-									_.find(this.submissionArray, function (o) {
-										return o.peerId === answer.peer[0].id;
-									}).pendingEvaluation++;
-								}
-							} else {
-								const submissionEntry = {
-									position: this.submissionArray.length + 1,
-									peerId: answer.peer[0].id,
-									peerName: answer.peer[0].profiles[0].first_name + ' ' + answer.peer[0].profiles[0].last_name,
-									questionsAnswered: 1,
-									correctAnswers: 0,
-									wrongAnswers: 0,
-									pendingEvaluation: 0
-								};
-								if (question.type === 'single-choice') {
-									if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
-										submissionEntry.correctAnswers++;
-									} else {
-										submissionEntry.wrongAnswers++;
-									}
-								} else {
-									submissionEntry.pendingEvaluation++;
-								}
-								this.submissionArray.push(submissionEntry);
+						if (answer.peer !== undefined && answer.peer[0].id === userId) {
+							myAnswer = answer;
+							if (userId === this.userId) {
+								this.hasAnswered = true;
+								this.answeredDate = moment(answer.createdAt).format('Do MMM YY');
 							}
 						}
 					});
 				}
-			});
-			console.log(this.submissionArray);
-			this.loadingSubmissions = false;
-		} else {
-			this.loadingSubmissions = false;
-		}
-	}
-
-	private checkHasAnswered() {
-		if (this.data.content.questions) {
-			this.data.content.questions.forEach(question => {
-				if (question.answers) {
-					question.answers.forEach(answer => {
-						if (answer.peer[0].id === this.userId) {
-							this.hasAnswered = true;
-							this.answeredDate = moment(answer.createdAt).format('Do MMM YY');
-							question.myAnswer = answer;
-							return;
-						}
-					});
-				}
+				question['myAnswer'] = myAnswer;
 			});
 		}
+		return questions;
 	}
 
 	private initializeForms() {
@@ -348,48 +303,6 @@ export class ContentQuizComponent implements OnInit {
 		this.router.navigate(['profile', peerId]);
 	}
 
-	rsvpContent(contentId) {
-		this.contentService.createRSVP(contentId, this.data.calendarId)
-			.subscribe((response: any) => {
-				console.log(response);
-				this.data.content.hasRSVPd = true;
-			});
-	}
-
-	cancelRSVP(content) {
-		console.log(content);
-		this.contentService.deleteRSVP(content.rsvpId)
-			.subscribe((response: any) => {
-				console.log(response);
-				this.data.content.hasRSVPd = false;
-			});
-	}
-
-	public viewRSVPs(content, userType) {
-		let attendies = this.data.participants;
-		if (content.rsvps) {
-			content.rsvps.forEach(rsvp => {
-				if (rsvp.peer) {
-					const peer = rsvp.peer[0];
-					const peerFound = _.find(attendies, function (o) { return o.id === peer.id; });
-					if (peerFound) {
-						peerFound.hasRSVPd = true;
-						peerFound.rsvpId = rsvp.id;
-						peerFound.isPresent = rsvp.isPresent;
-						return;
-					}
-				}
-			});
-		}
-		attendies = _.filter(attendies, function (o) { return o.hasRSVPd; });
-		// TODO: view all RSVPs for this content
-		this.dialogsService.showRSVP(userType, content, attendies, this.experienceId).subscribe((result: any) => {
-			if (result) {
-				location.reload();
-			}
-		});
-	}
-
 	public getDirections(content) {
 		// TODO: get directions to this content location
 	}
@@ -428,6 +341,7 @@ export class ContentQuizComponent implements OnInit {
 	}
 
 	public submitAnswers() {
+		this.savingData = true;
 		console.log(this.answerArray.value);
 		let i = 0, j = 0;
 		this.answerArray.controls.forEach(answer => {
@@ -437,23 +351,42 @@ export class ContentQuizComponent implements OnInit {
 						j++;
 						if (j === this.totalRequiredQuestions) {
 							this.showSuccessMessage = true;
+							this.savingData = false;
+							this._collectionService.notifyOwnerForQuizSubmission(this.questionArray.controls[0].value.id)
+								.subscribe(res1 => {
+									if (res && res['result'] === 'success') {
+										console.log('Notified owner of new submission');
+									}
+								}, err => {
+									console.log('Could not notify owner of new submission. Err: ' + err);
+								});
 						}
 					}, err => {
 						j++;
 						if (j === this.totalRequiredQuestions) {
 							this.snackBar.open('Error submitting your answers. Please try again!', 'OK', { duration: 3000 });
+							this.savingData = false;
 						}
 					});
 			} else {
 				console.log('Not answered. Skipping this question.');
+				this.savingData = false;
 			}
 			i++;
 		});
+	}
+
+	public openQuizSubmission(element) {
+		this.dialogsService.openViewQuizSubmissionDialog(element)
+			.subscribe(res => {
+				if (res) {
+					element = res;
+				}
+			});
 	}
 
 	exit() {
 		this.exitDialog.next();
 		this.exitDialog.complete();
 	}
-
 }

@@ -237,7 +237,8 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			status: 'draft',
 			academicGyan: '',
 			nonAcademicGyan: 1,
-			subCategory: ''
+			subCategory: '',
+			githubUrl: ['', Validators.pattern('^(https\:\/\/)?(github\.com)\/.+$')]
 		});
 
 		this.timeline = this._fb.group({
@@ -792,6 +793,8 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		this.guide.controls['subCategory'].patchValue(res.subCategory);
 
+		// githubUrl
+		this.guide.controls['githubUrl'].patchValue(res.githubUrl);
 
 		this.isPhoneVerified = res.owners[0].phoneVerified;
 
