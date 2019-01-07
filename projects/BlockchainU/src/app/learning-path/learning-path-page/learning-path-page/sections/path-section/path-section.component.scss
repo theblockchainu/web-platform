@@ -21,6 +21,10 @@
   width: 1px;
 }
 
+.qa-message-content {
+	padding: 30px 0;
+}
+
 .message-item:not(.message-item-ticked):after {
   background: #aaaaaa;
   border-radius: 50%;
