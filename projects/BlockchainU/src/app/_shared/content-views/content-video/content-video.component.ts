@@ -1,4 +1,5 @@
-import { Component, OnInit, Inject, OnDestroy, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommentService } from '../../../_services/comment/comment.service';
 import { CollectionService } from '../../../_services/collection/collection.service';
@@ -8,17 +9,17 @@ import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { ContentService } from '../../../_services/content/content.service';
 import { MediaUploaderService } from '../../../_services/mediaUploader/media-uploader.service';
+import { DialogsService } from '../../../_services/dialogs/dialog.service';
 
 @Component({
 	selector: 'app-content-video',
 	templateUrl: './content-video.component.html',
 	styleUrls: ['./content-video.component.scss']
 })
+
 export class ContentVideoComponent implements OnInit {
-
 	@Input() data: any;
-
-
+	@Output() exit: EventEmitter<boolean> = new EventEmitter<boolean>();
 	public userType = 'public';
 	public experienceId = '';
 	public chatForm: FormGroup;
@@ -27,11 +28,11 @@ export class ContentVideoComponent implements OnInit {
 	public comments: Array<any>;
 	public userId;
 	public startedView;
-	// api: VgAPI;
 	public attachmentUrls = [];
 	public duration = 0;
 	public envVariable;
 	videoDownloadUrl: string;
+
 	constructor(
 		public _collectionService: CollectionService,
 		private _fb: FormBuilder,
@@ -41,25 +42,35 @@ export class ContentVideoComponent implements OnInit {
 		private router: Router,
 		// private deviceService: DeviceDetectorService,
 		private contentService: ContentService,
-		private mediaUploaderService: MediaUploaderService
+		private mediaUploaderService: MediaUploaderService,
+		private _dialogService: DialogsService
 	) {
 	}
 
 	ngOnInit() {
 		this.envVariable = environment;
-		this.userId = this.cookieUtilsService.getValue('userId');
-		this.userType = this.data.userType;
+		this.userType = this.cookieUtilsService.getValue('userId');
 		this.experienceId = this.data.collectionId;
 		this.data.content.supplementUrls.forEach(file => {
 			this.contentService.getMediaObject(file).subscribe((res: any) => {
 				this.attachmentUrls.push(res[0]);
 			});
 		});
-		this.duration = Math.round(this.data.content.videoLength / 60);
 		this.initializeForms();
 		this.getDiscussions();
 		this.getVideoUrl();
 		this.duration = Math.round(this.data.content.videoLength / 60);
+
+	}
+
+	getVideoUrl() {
+		const urlArray = this.data.content.imageUrl.split('/');
+		const filename = urlArray[urlArray.length - 1];
+		this.mediaUploaderService.getDownloadUrl(filename).subscribe((res: any) => {
+			this.videoDownloadUrl = res;
+		}, err => {
+			console.log(err);
+		});
 	}
 
 	private initializeForms() {
@@ -193,9 +204,9 @@ export class ContentVideoComponent implements OnInit {
 	// public onPlayerReady(api: VgAPI) {
 	// 	this.api = api;
 
-	// 	this.api.getDefaultMedia().subscriptions.canPlay.subscribe(() => {
+	// 	/*this.api.getDefaultMedia().subscriptions.canPlay.subscribe(() => {
 	// 		this.duration = Math.round(this.api.duration / 60);
-	// 	});
+	// 	});*/
 
 	// 	this.api.getDefaultMedia().subscriptions.playing.subscribe(() => {
 	// 		const view = {
@@ -234,14 +245,11 @@ export class ContentVideoComponent implements OnInit {
 		this.router.navigate(['profile', peerId]);
 	}
 
-	private getVideoUrl() {
-		const urlArray = this.data.content.imageUrl.split('/');
-		const filename = urlArray[urlArray.length - 1];
-		this.mediaUploaderService.getDownloadUrl(filename).subscribe((res: any) => {
-			this.videoDownloadUrl = res;
-		}, err => {
-			console.log(err);
+	public login() {
+		this._dialogService.openLogin().subscribe(res => {
+			if (res) {
+				this.exit.next();
+			}
 		});
 	}
-
 }
