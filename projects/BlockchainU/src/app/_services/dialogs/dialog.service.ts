@@ -498,7 +498,8 @@ export class DialogsService {
             panelClass: 'responsive-dialog',
             width: '75vw',
             height: '100vh',
-            data: data
+            data: data,
+			disableClose: true
         }).afterClosed();
     }
 

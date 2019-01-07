@@ -8,8 +8,7 @@
 		<span class="mat-body-2">{{_collectionService.getContentTypeFullName(data.content.type) | titlecase}}</span>
 		<span *ngIf="data.content.questions"> with {{data.content.questions.length}} questions</span>
 		<br /> Assessed by
-		<a [routerLink]="['/profile',data.collection.owners[0]]">{{data.collection.owners[0].profiles[0].first_name |
-			ucwords}}</a>
+		<a [routerLink]="['/profile',data.collection.owners[0]]">{{data.collection.owners[0].profiles[0].first_name | ucwords}}</a>
 	</div>
 	<div class="col-md-2 col-xs-4" style="text-align: right">
 		<img (click)="openProfilePage(data.collection.owners[0].id)" *ngIf="!data.collection.owners[0].profiles[0].picture_url"
@@ -56,7 +55,7 @@
 					<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
 						<img *ngIf="file && file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
 						<div *ngIf="file && file.type.includes('application')" class="uploaded_file">
-							<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
+							<a class="uploaded_file_text" href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
 						</div>
 					</div>
 				</div>

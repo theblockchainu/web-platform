@@ -63,6 +63,7 @@ export class ContentQuizComponent implements OnInit {
 	ngOnInit() {
 		this.envVariable = environment;
 		this.userId = this._cookieUtilsService.getValue('userId');
+		this.userType = this.data.userType;
 		this.collectionId = this.data.collectionId;
 		this.data.content.supplementUrls.forEach(file => {
 			this.contentService.getMediaObject(file).subscribe((res: any) => {

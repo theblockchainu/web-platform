@@ -32,7 +32,7 @@
 						<mat-icon *ngIf="file && file.type.includes('image')" (click)="deleteFromContainer(file.url, 'file')" class="delete-image">close
 						</mat-icon>
 						<div *ngIf="file && file.type.includes('application')" class="uploaded_file">
-							<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
+							<a class="uploaded_file_text" href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
 						</div>
 						<mat-icon *ngIf="file && file.type.includes('application')" (click)="deleteFromContainer(file.url, 'file')" class="delete-file">close
 						</mat-icon>

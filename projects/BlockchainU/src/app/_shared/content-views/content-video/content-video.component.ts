@@ -49,7 +49,8 @@ export class ContentVideoComponent implements OnInit {
 
 	ngOnInit() {
 		this.envVariable = environment;
-		this.userType = this.cookieUtilsService.getValue('userId');
+		this.userId = this.cookieUtilsService.getValue('userId');
+		this.userType = this.data.userType;
 		this.collectionId = this.data.collectionId;
 		this.data.content.supplementUrls.forEach(file => {
 			this.contentService.getMediaObject(file).subscribe((res: any) => {
