@@ -20,7 +20,7 @@ export class ContentOnlineComponent implements OnInit {
 	@Input() data: any;
 
 	public userType = 'public';
-	public classId = '';
+	public collectionId = '';
 	public chatForm: FormGroup;
 	public replyForm: FormGroup;
 	public replyingToCommentId: string;
@@ -47,7 +47,7 @@ export class ContentOnlineComponent implements OnInit {
 		console.log('Online data changed');
 
 		this.userType = this.data.userType;
-		this.classId = this.data.collectionId;
+		this.collectionId = this.data.collectionId;
 		this.data.content.supplementUrls.forEach(file => {
 			this.contentService.getMediaObject(file).subscribe((res: any) => {
 				this.attachmentUrls.push(res[0]);

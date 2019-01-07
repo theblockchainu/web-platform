@@ -364,6 +364,18 @@
 										<md-editor [options]="editorOptions" formControlName="description" [height]="'360px'" maxlength="20000"></md-editor>
 									</div>
 								</div>
+								<div class="row">
+									<div class="col-xs-12">
+										<h2 class="title">Optional: Please insert the Github Url</h2>
+										<p class="subtitle">This repository will be used to create a seed project for your students when their
+											virtual labs are provisioned
+										</p>
+										<mat-form-field [floatLabel]="'never'" class="pb-block" style="margin-bottom: 20px">
+											<input matInput formControlName="githubUrl" placeholder="https://github.com/your-repo/your-project">
+											<mat-error>Not a github url !</mat-error>
+										</mat-form-field>
+									</div>
+								</div>
 								<div style="margin-top:60px;">
 									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
