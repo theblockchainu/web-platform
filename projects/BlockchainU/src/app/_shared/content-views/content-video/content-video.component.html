@@ -1,9 +1,4 @@
 <div class="row">
-	<div class="col-md-12 collectionContent">
-		<div class="pull-right" *ngIf="userType==='teacher' || userType==='participant'" color="primary">
-			<mat-icon>open_in_new</mat-icon>
-		</div>
-	</div>
 	<div class="col-md-12">
 		<div class="mat-display-1" style="margin-bottom: 20px;" *ngIf="data.content">
 			{{data.content.title | titlecase}}
@@ -28,8 +23,9 @@
 	<div class="row">
 		<div class="content-image" *ngIf="videoDownloadUrl">
 			<div class="col-md-12 embed-responsive embed-responsive-16by9">
-				<mat-video #video [autoplay]="false" [preload]="true" [fullscreen]="true" [download]="false" color="accent" spinner="dot">
-					<source *ngIf="videoDownloadUrl" matVideoSource [src]="videoDownloadUrl  | safe:'resourceUrl'" type="video/mp4">
+				<mat-video *ngIf="userType !== 'public'" #video [autoplay]="false" [preload]="true" [fullscreen]="true" [download]="false"
+				 color="accent" spinner="dot">
+					<source *ngIf="videoDownloadUrl" matVideoSource src="{{videoDownloadUrl}}" type="video/mp4">
 				</mat-video>
 				<div class="video-container clickable" *ngIf="userType === 'public'" matTooltip="You need to enroll in this collection to watch the video.">
 					<video width="100%" height="auto" preload="metadata">
