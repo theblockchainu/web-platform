@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
-import { CollectionService } from '../../../_services/collection/collection.service';
+import { CollectionService } from '../../collection/collection.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
