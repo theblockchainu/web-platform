@@ -65,10 +65,13 @@ export class ContentVideoComponent implements OnInit {
 	}
 
 	getVideoUrl() {
+		console.log('this.data', this.data);
 		const urlArray = this.data.content.imageUrl.split('/');
 		const filename = urlArray[urlArray.length - 1];
+		console.log(filename);
 		this.mediaUploaderService.getDownloadUrl(filename).subscribe((res: any) => {
 			this.videoDownloadUrl = res;
+			console.log(this.videoDownloadUrl);
 		}, err => {
 			console.log(err);
 		});

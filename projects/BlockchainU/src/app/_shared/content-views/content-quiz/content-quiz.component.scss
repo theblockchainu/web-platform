@@ -1,25 +1,24 @@
-
 .hasUpvoted {
-	color: #33bd9e !important;
-	font-weight: 500;
+  color: #33bd9e !important;
+  font-weight: 500;
 }
 
 .pic:before {
-	display: inline-block;
-	content: "";
-	vertical-align: middle;
+  display: inline-block;
+  content: "";
+  vertical-align: middle;
 }
 
 .pic img {
-	max-width: 100%;
-	max-height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .imageContainer {
-	height: 100px;
-	width: 150px;
-	margin-bottom: 30px;
-	margin-right: 20px;
+  height: 100px;
+  width: 150px;
+  margin-bottom: 30px;
+  margin-right: 20px;
 }
 
 .uploaded_file {
@@ -33,17 +32,17 @@
 }
 
 agm-map {
-	height: 300px;
+  height: 300px;
 }
 
 .questionBox {
-	border: 1px solid #eeeeee;
-	padding: 15px;
+  border: 1px solid #eeeeee;
+  padding: 15px;
 }
 
 .submissionResultCountBox {
-	border: 1px solid #ddd;
-	padding: 1px 7px;
-	border-radius: 4px;
-	margin-right: 10px;
+  border: 1px solid #ddd;
+  padding: 1px 7px;
+  border-radius: 4px;
+  margin-right: 10px;
 }
