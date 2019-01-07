@@ -118,7 +118,7 @@
 						</div>
 						<div class="row" *ngIf="participant.value.isAssessed">
 							<div class="col-sm-12 primaryColor mat-body-2" *ngIf="participant.value.hasCertificate">
-								<mat-icon [color]="primary" style="position: relative; top: 7px; padding-right: 5px;">check_circle</mat-icon> Smart Certificate Issued
+								<mat-icon [color]="'primary'" style="position: relative; top: 7px; padding-right: 5px;">check_circle</mat-icon> Smart Certificate Issued
 							</div>
 							<div class="col-sm-12 accentColor mat-body-2" *ngIf="!participant.value.hasCertificate">
 								<mat-icon style="position: relative; top: 7px; padding-right: 5px;">error</mat-icon> Smart Certificate Failed

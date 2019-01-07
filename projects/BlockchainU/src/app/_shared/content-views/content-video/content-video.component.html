@@ -22,13 +22,12 @@
 	<div class="row">
 		<div class="content-image" *ngIf="videoDownloadUrl">
 			<div class="col-md-12 embed-responsive embed-responsive-16by9">
-				<mat-video *ngIf="userType !== 'public'" #video [autoplay]="false" [preload]="true" [fullscreen]="true" [download]="false"
-				 color="accent" spinner="dot">
+				<mat-video #video [autoplay]="false" [preload]="true" [fullscreen]="true" [download]="false" color="accent" spinner="dot">
 					<source *ngIf="videoDownloadUrl" matVideoSource src="{{videoDownloadUrl}}" type="video/mp4">
 				</mat-video>
 				<div class="video-container clickable" *ngIf="userType === 'public'" matTooltip="You need to enroll in this collection to watch the video.">
 					<video width="100%" height="auto" preload="metadata">
-						<source [src]="videoDownloadUrl  | safe:'resourceUrl'">
+						<source src="{{videoDownloadUrl}}">
 					</video>
 					<mat-icon class="centered-icon">play_circle_outline
 					</mat-icon>
@@ -77,7 +76,7 @@
 		<div *ngFor="let file of attachmentUrls" class="col-md-6 padding-left-0 imageContainer">
 			<img *ngIf="file && file.type.includes('image')" src="{{envVariable.apiUrl + file.url}}" width="150" style="border: 0.5px solid #ccc">
 			<div *ngIf="file && file.type.includes('application')" class="uploaded_file">
-				<a href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
+				<a class="uploaded_file_text" href="{{envVariable.apiUrl + file.url}}" target="_blank">{{file.originalFilename}}</a>
 			</div>
 			<video *ngIf="file && file.type.includes('video')" controls width="150" style="border: 0.5px solid #ccc" preload="metadata">
 				<source src="{{envVariable.apiUrl + file.url}}">

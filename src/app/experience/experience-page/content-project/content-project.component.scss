@@ -64,11 +64,11 @@
 }
 
 .uploaded_file {
-	width: 150px;
-	height: 84px;
+	width: 200px;
+	height: 85px;
 	border: 1px solid #ccc;
 	text-align: center;
-	margin: auto;
-	vertical-align: middle;
-	line-height: 84px;
+	display: table;
+	padding: 7px;
+	margin-bottom: 25px;
 }

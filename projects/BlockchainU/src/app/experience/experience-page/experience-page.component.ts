@@ -106,7 +106,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public liveCohort;
 	public isViewTimeHidden: boolean;
 	public collectionEthereumInfo: any;
-	
+	public certificateId = null;
 	public busyDiscussion: boolean;
 	public busyReview: boolean;
 	public busyReply: boolean;
@@ -1789,6 +1789,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this._collectionService.getParticipants(this.experienceId, query).subscribe(
 			(response: any) => {
 				this.participants = [];
+				this.certificateId = null;
 				this.allParticipants = response;
 				for (const responseObj of response) {
 					if (this.calendarId && this.calendarId === responseObj.calendarId) {
@@ -1801,6 +1802,16 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 					}
 					if (responseObj.id === this.userId) {
 						this.loggedInUser = responseObj;
+						if (responseObj.certificates) {
+							responseObj.certificates.forEach(certificate => {
+								if (certificate && certificate.stringifiedJSON && certificate.stringifiedJSON.length > 0) {
+									const certificateData = JSON.parse(certificate.stringifiedJSON);
+									if (certificateData.collection !== undefined && certificateData.collection.id === this.experienceId) {
+										this.certificateId = certificate.id;
+									}
+								}
+							});
+						}
 					}
 				}
 				if (isCurrentUserParticipant && currentUserParticipatingCalendar) {
@@ -2204,6 +2215,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		} else {
 			this.dialogsService.openSignup('/experience/' + this.experience.id);
 		}
+	}
+	
+	public openSmartCertificate() {
+		this.router.navigate(['/certificate', this.certificateId]);
 	}
 	
 	private filterQuizContents(itineraryDaysArray) {

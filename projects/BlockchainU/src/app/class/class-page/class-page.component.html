@@ -17,6 +17,11 @@
 				<span>This course is pending approval from Blockchain University team</span>
 			</div>
 		</div>
+		<div class="row pending-actions center" *ngIf="userType === 'participant' && certificateId" (click)="openSmartCertificate()">
+			<div class="col-md-10 col-md-offset-1">
+				<span>Your Smart Certificate for this course is now available. Click here to view.</span>
+			</div>
+		</div>
 		<div class="row pending-actions center" *ngIf="(class.status === 'draft' || class.status === '' ) && previewAs ">
 			<div class="col-md-10 col-md-offset-1">
 				<span>You are previewing as

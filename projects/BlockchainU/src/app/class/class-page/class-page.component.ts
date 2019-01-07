@@ -150,7 +150,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public comments: Array<any>;
 	today: any;
 	public answeredDate;
-	
+	public certificateId = null;
 	// Calendar Start
 	public dateClicked: boolean;
 	public clickedDate;
@@ -1706,6 +1706,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			(response: any) => {
 				this.participants = [];
 				this.allParticipants = response;
+				this.certificateId = null;
 				for (const responseObj of response) {
 					if (this.calendarId && this.calendarId === responseObj.calendarId) {
 						this.participants.push(responseObj);
@@ -1717,6 +1718,16 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 					}
 					if (responseObj.id === this.userId) {
 						this.loggedInUser = responseObj;
+						if (responseObj.certificates) {
+							responseObj.certificates.forEach(certificate => {
+								if (certificate && certificate.stringifiedJSON && certificate.stringifiedJSON.length > 0) {
+									const certificateData = JSON.parse(certificate.stringifiedJSON);
+									if (certificateData.collection !== undefined && certificateData.collection.id === this.classId) {
+										this.certificateId = certificate.id;
+									}
+								}
+							});
+						}
 					}
 				}
 				if (isCurrentUserParticipant && currentUserParticipatingCalendar) {
@@ -2137,6 +2148,10 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		} else {
 			this.dialogsService.openSignup('/class/' + this.class.id);
 		}
+	}
+	
+	public openSmartCertificate() {
+		this.router.navigate(['/certificate', this.certificateId]);
 	}
 	
 	private filterQuizContents(itineraryDaysArray) {

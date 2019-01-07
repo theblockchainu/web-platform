@@ -53,10 +53,10 @@
 
 .uploaded_file {
 	width: 200px;
-	height: 100px;
+	height: 85px;
 	border: 1px solid #ccc;
 	text-align: center;
-	margin: auto;
-	vertical-align: middle;
-	line-height: 100px;
+	display: table;
+	padding: 7px;
+	margin-bottom: 25px;
 }
