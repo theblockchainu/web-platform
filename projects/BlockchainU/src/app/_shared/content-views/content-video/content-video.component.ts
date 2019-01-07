@@ -21,7 +21,7 @@ export class ContentVideoComponent implements OnInit {
 	@Input() data: any;
 	@Output() exit: EventEmitter<boolean> = new EventEmitter<boolean>();
 	public userType = 'public';
-	public experienceId = '';
+	public collectionId = '';
 	public chatForm: FormGroup;
 	public replyForm: FormGroup;
 	public replyingToCommentId: string;
@@ -50,7 +50,7 @@ export class ContentVideoComponent implements OnInit {
 	ngOnInit() {
 		this.envVariable = environment;
 		this.userType = this.cookieUtilsService.getValue('userId');
-		this.experienceId = this.data.collectionId;
+		this.collectionId = this.data.collectionId;
 		this.data.content.supplementUrls.forEach(file => {
 			this.contentService.getMediaObject(file).subscribe((res: any) => {
 				this.attachmentUrls.push(res[0]);

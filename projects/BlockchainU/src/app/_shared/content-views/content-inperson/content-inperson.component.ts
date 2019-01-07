@@ -20,7 +20,7 @@ export class ContentInpersonComponent implements OnInit {
 	@Input() data: any;
 
 	public userType = 'public';
-	public experienceId = '';
+	public collectionId = '';
 	public chatForm: FormGroup;
 	public replyForm: FormGroup;
 	public replyingToCommentId: string;
@@ -50,7 +50,7 @@ export class ContentInpersonComponent implements OnInit {
 		console.log('in person data changed');
 		this.envVariable = environment;
 		this.userType = this.data.userType;
-		this.experienceId = this.data.collectionId;
+		this.collectionId = this.data.collectionId;
 		this.userId = this._cookieUtilsService.getValue('userId');
 		this.data.content.supplementUrls.forEach(file => {
 			this.contentService.getMediaObject(file).subscribe((res: any) => {
