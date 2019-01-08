@@ -572,11 +572,11 @@
 										</div>
 									</div>
 								</div>
-								<div class="row" *ngSwitchCase="'logo'">
+								<div class="row" *ngSwitchCase="'image'">
 									<div class="col-xs-12">
 										<div class="row">
 											<div class="col-xs-2 padding-top-20 center">
-												<b>Logo</b>
+												<b>Image</b>
 											</div>
 											<div class="col-xs-6 padding-top-10">
 												<button *ngIf="!customCertificateForm.value.groupArray[i].value || customCertificateForm.value.groupArray[i].value.length<=0"
@@ -839,6 +839,11 @@
 						justify-content: flex-start;
 						width: 100%;
 						background-color: #ffffff;
+						line-height: 1;
+						font-family: Lato, Helvetica Neue, sans-serif;
+						border: 1px solid #eeeeee;
+			            border-radius: 4px;
+			            padding: 2em;
 						">
 						<div style="min-height: 30em;">
 							<div style="padding: 1em 0;">
@@ -877,23 +882,21 @@
 							<div style="padding: 1em 0;">
 								<div>
 									<div>
-										<span style="width: 100%; display: inline-block;  font-size: 1.3em; text-align: center; font-weight: normal; font-style: normal; text-decoration-line: none;">Sahil
-											Parekh</span>
+										<span style="width: 100%; display: inline-block;  font-size: 1.3em; text-align: left; font-weight: normal; font-style: normal; text-decoration-line: none;">Sahil Parekh</span>
 									</div>
 								</div>
 							</div>
 							<div style="padding: 1em 0;">
 								<div>
 									<div>
-										<span style="width: 100%; display: inline-block;  font-size: 1.2em; text-align: center; font-weight: normal; font-style: normal; text-decoration-line: none;">CEO,
-											The Blockchain University</span>
+										<span style="width: 100%; display: inline-block;  font-size: 1.2em; text-align: left; font-weight: normal; font-style: normal; text-decoration-line: none;">CEO, Blockchain University</span>
 									</div>
 								</div>
 							</div>
 							<div style="padding: 1em 0;">
 								<div>
 									<div>
-										<span style="width: 100%; display: inline-block; font-size: 0.9em; text-align: center; font-weight: normal; font-style: italic; text-decoration-line: none;">This
+										<span style="width: 100%; display: inline-block; font-size: 0.7em; text-align: left; font-weight: normal; font-style: normal; text-decoration-line: none;">This
 											is sample certificate for educational purposes only</span>
 									</div>
 								</div>

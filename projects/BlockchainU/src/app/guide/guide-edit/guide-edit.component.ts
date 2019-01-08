@@ -697,8 +697,8 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 	public selected(event) {
-		if (event.length > 3) {
-			this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
+		if (event.length >= 5) {
+			this.maxTopicMsg = 'You cannot select more than 5 topics. Please delete any existing one and then try to add.';
 		}
 		this.interests = event;
 		this.suggestedTopics = event;
@@ -932,7 +932,7 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	private checkStatusAndSubmit(data, timeline?, step?) {
-		if (this.guide.controls.status.value === 'active') {
+		/*if (this.guide.controls.status.value === 'active') {
 			this.dialogsService.openCollectionCloneDialog({ type: 'guide' })
 				.subscribe((result) => {
 					if (result === 'accept') {
@@ -943,7 +943,8 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				});
 		} else {
 			this.executeSubmitGuide(data, timeline, step);
-		}
+		}*/
+		this.executeSubmitGuide(data, timeline, step);
 	}
 
 	private totalHours(): void {

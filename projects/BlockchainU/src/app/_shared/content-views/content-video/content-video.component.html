@@ -22,12 +22,12 @@
 	<div class="row">
 		<div class="content-image" *ngIf="videoDownloadUrl">
 			<div class="col-md-12 embed-responsive embed-responsive-16by9">
-				<mat-video #video [autoplay]="false" [preload]="true" [fullscreen]="true" [download]="false" color="accent" spinner="dot">
+				<mat-video *ngIf="userType !== 'public'" #video [autoplay]="false" [preload]="true" [fullscreen]="true" [download]="false" color="accent" spinner="dot">
 					<source *ngIf="videoDownloadUrl" matVideoSource src="{{videoDownloadUrl}}" type="video/mp4">
 				</mat-video>
-				<div class="video-container clickable" *ngIf="userType === 'public'" matTooltip="You need to enroll in this collection to watch the video.">
+				<div class="video-container clickable" *ngIf="userType === 'public'" matTooltip="You need to enroll in this course to watch the video.">
 					<video width="100%" height="auto" preload="metadata">
-						<source src="{{videoDownloadUrl}}">
+						<source *ngIf="videoDownloadUrl" src="{{videoDownloadUrl}}" type="video/mp4">
 					</video>
 					<mat-icon class="centered-icon">play_circle_outline
 					</mat-icon>

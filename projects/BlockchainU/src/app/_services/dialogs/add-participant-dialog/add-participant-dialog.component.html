@@ -5,7 +5,7 @@
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<div class="mat-display-1" style="margin-bottom: 20px;">
-				Add participant to cohort
+				Add a participant to cohort
 			</div>
 		</div>
 	</div>
@@ -26,16 +26,19 @@
 					       [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputAddOnBlur]="true" />
 				</mat-chip-list>
 				<mat-autocomplete #auto="matAutocomplete">
-					<mat-option *ngFor="let option of searchOptions" [value]="" (click)="onSearchOptionClicked(option.data)">
-						<span>
+					<mat-option *ngFor="let option of searchOptions" [value]="" (click)="onSearchOptionClicked(option.data)" style="height: auto; padding-top: 10px; padding-bottom: 10px;">
+						<div style="display: inline-block; vertical-align: middle;">
 							<img src="{{envVariable.apiUrl+option.data.profiles[0].picture_url}}" class="circle-thumb" style="margin-left: 0px; margin-right: 10px;"
 							     (error)="_collectionService.userImgErrorHandler($event)" />
-						</span>
-						<span>
-							{{option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name | ucwords}}
-							<br>
-							{{option.data.profiles[0].headline | ucfirst}}
-						</span>
+						</div>
+						<div style="display: inline-block; vertical-align: middle; width: 90%;">
+							<div style="white-space: normal; line-height: 1.7rem;">
+								{{option.data.profiles[0].first_name + ' ' + option.data.profiles[0].last_name | ucwords}}
+							</div>
+							<div class="mat-h5 lightText" style="margin-top: 0px; margin-bottom: 0px;">
+								{{option.data.profiles[0].headline | ucfirst}}
+							</div>
+						</div>
 					</mat-option>
 				</mat-autocomplete>
 			</mat-form-field>

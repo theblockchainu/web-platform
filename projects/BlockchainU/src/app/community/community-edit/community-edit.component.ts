@@ -480,8 +480,8 @@ export class CommunityEditComponent implements OnInit {
 
 
   public selected(event) {
-    if (event.length > 3) {
-      this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
+    if (event.length >= 5) {
+      this.maxTopicMsg = 'You cannot select more than 5 topics. Please delete any existing one and then try to add.';
     }
     this.interests = event;
     this.suggestedTopics = event;
