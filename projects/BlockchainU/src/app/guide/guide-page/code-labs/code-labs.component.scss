@@ -10,14 +10,16 @@
 }
 
 .credentials-box {
-  z-index: 2;
-  position: absolute;
-  bottom: 3vh;
-  background: white;
-  left: 4vw;
-  border-radius: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  height: 75px;
-  padding-top: 5px;
+  position: relative;
+  display: inline-flex;
+  height: 55px;
+  width: 380px;
+  padding-left: 15px;
+  padding-top: 10p;
+  margin-top: 10p;
+  top: 8px;
+}
+
+.mat-form-field-infix {
+  padding: 0.5em 0 0.5em 0 !important;
 }

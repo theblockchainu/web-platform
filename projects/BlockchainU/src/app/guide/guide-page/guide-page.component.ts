@@ -42,7 +42,7 @@ import { CertificateService } from '../../_services/certificate/certificate.serv
 import { ProfileService } from '../../_services/profile/profile.service';
 import { CorestackService } from '../../_services/corestack/corestack.service';
 import { first, flatMap } from 'rxjs/operators';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 declare var FB: any;
 declare var fbq: any;
 
@@ -248,10 +248,10 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	}
 
 	public initializePage() {
-		
+
 		// Close all existing dialogs
 		this.dialogsService.closeAll();
-		
+
 		console.log('Initializing Page');
 		this.initializeGlobalVariables();
 		this.setValuesFromCookies();
@@ -274,7 +274,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				this.initialised = true;
 			});
 	}
-	
+
 	private fetchData() {
 		this.loadingCertificate = true;
 		this.allParticipants = [];
@@ -292,10 +292,10 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				'or': [{ 'customUrl': this.guideId }, { 'id': this.guideId }]
 			}
 		};
-		
+
 		return this._collectionService.getAllCollections(query);
 	}
-	
+
 	private initializeGlobalVariables() {
 		this.guide = null;
 		this.loadingGuide = true;
@@ -348,12 +348,12 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 			touch: true
 		};
 	}
-	
+
 	private setValuesFromCookies() {
 		this.userId = this._cookieUtilsService.getValue('userId');
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
 	}
-	
+
 	private setValuesFromRouteParameters() {
 		return this.activatedRoute.params.pipe(
 			first(),
@@ -376,7 +376,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				});
 			}));
 	}
-	
+
 	private initializeForms() {
 		this.chatForm = this._fb.group({
 			description: ['', Validators.required],
@@ -388,11 +388,11 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 			score: '',
 			collectionId: this.guideId
 		});
-		
+
 		const filter = {
 			'include': [{ 'profiles': ['phone_numbers'] }]
 		};
-		
+
 		this.contactUsForm = this._fb.group(
 			{
 				first_name: ['', Validators.required],
@@ -402,17 +402,17 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				phone: ['']
 			}
 		);
-		
+
 		return this._profileService.getPeerData(this.userId, filter);
 	}
-	
+
 	private setContactFormValues(res) {
 		// If user exists, setup his contact form
 		if (res && res.profiles && res.profiles.length > 0) {
-			
+
 			const userPhone = res.profiles[0].phone_numbers && res.profiles[0].phone_numbers.length > 0 ? '+'
 				+ res.profiles[0].phone_numbers[0].country_code + res.profiles[0].phone_numbers[0].subscriber_number : '';
-			
+
 			this.contactUsForm = this._fb.group(
 				{
 					first_name: [res.profiles[0].first_name, Validators.required],
@@ -437,11 +437,11 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 			obs.next();
 		});
 	}
-	
+
 	refreshView(): void {
 		this.refresh.next();
 	}
-	
+
 	dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
 		this.eventsForTheDay = {};
 
@@ -616,7 +616,9 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 
 	private startCodeLab() {
 		this._corestackService.getAccessDetails
-			(this.corestack_student.student_id, this.corestack_student.course_id).subscribe((res: any) => {
+			(this.corestack_student.student_id, this.corestack_student.course_id)
+			.pipe(first())
+			.subscribe((res: any) => {
 				console.log('res');
 				console.log(res);
 				this.lab_details = res;
@@ -625,6 +627,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				console.log('err');
 				this.loadingCodeLab = false;
 				console.log(err);
+				this.snackBar.open(err.error.error.error.message, 'Close', { duration: 100000 });
 			});
 	}
 
@@ -1295,11 +1298,12 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		const query = {
 			'relInclude': ['calendarId', 'referrerId', 'scholarshipId', 'joinedDate'],
 			'include': [
-				{'profiles': 'phone_numbers'},
+				{ 'profiles': 'phone_numbers' },
 				'reviewsAboutYou',
 				'ownedCollections',
 				'certificates',
-				{'promoCodesApplied': [
+				{
+					'promoCodesApplied': [
 						{
 							'relation': 'collections',
 							'scope': {
@@ -1310,7 +1314,8 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 						}
 					]
 				},
-				{'transactions': [
+				{
+					'transactions': [
 						{
 							'relation': 'collections',
 							'scope': {
