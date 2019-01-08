@@ -529,6 +529,7 @@ export class ReviewPayComponent implements OnInit {
 
     public joinCollection() {
         // FB Event Trigger
+        this.savingData = true;
         try {
             if (fbq && fbq !== undefined) {
                 fbq('track', 'Purchase', {
@@ -554,20 +555,24 @@ export class ReviewPayComponent implements OnInit {
                         } else {
                             this.router.navigate([this.collection.type, this.collection.customUrl, 'paymentSuccess']);
                         }
+                    }, err => {
+                        this.savingData = false;
                     }
                 );
-				// If there is a promo code applied and saved as cookie for CCAvenue payments - link it to the user
+                // If there is a promo code applied and saved as cookie for CCAvenue payments - link it to the user
             } else if (this._cookieUtilsService.getValue('promo_code') && this._cookieUtilsService.getValue('promo_code').length > 0) {
-				this.profileService.linkPromoCode(this.userId, this._cookieUtilsService.getValue('promo_code')).subscribe(
-					res => {
-						if (this.collectionCalendarId) {
-							this.router.navigate([this.collection.type, this.collection.customUrl, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
-						} else {
-							this.router.navigate([this.collection.type, this.collection.customUrl, 'paymentSuccess']);
-						}
-					}
-				);
-			} else {
+                this.profileService.linkPromoCode(this.userId, this._cookieUtilsService.getValue('promo_code')).subscribe(
+                    res => {
+                        if (this.collectionCalendarId) {
+                            this.router.navigate([this.collection.type, this.collection.customUrl, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
+                        } else {
+                            this.router.navigate([this.collection.type, this.collection.customUrl, 'paymentSuccess']);
+                        }
+                    }, err => {
+                        this.savingData = false;
+                    }
+                );
+            } else {
                 if (this.collectionCalendarId) {
                     this.router.navigate([this.collection.type, this.collection.customUrl, 'calendar', this.collectionCalendarId, 'paymentSuccess']);
                 } else {
@@ -576,6 +581,7 @@ export class ReviewPayComponent implements OnInit {
             }
         }, err => {
             console.log(err);
+            this.savingData = false;
             this.matSnackBar.open('Error Joining Collection. Please contact us.', 'Close', { duration: 3000 });
         });
     }
@@ -698,7 +704,7 @@ export class ReviewPayComponent implements OnInit {
                     if (peerFound) {
                         if (moment().isBetween(moment(codefound.validFrom), moment(codefound.validTo))) {
                             this.updatePrice(codefound);
-							this._cookieUtilsService.setValue('promo_code', codefound.id);
+                            this._cookieUtilsService.setValue('promo_code', codefound.id);
                         } else {
                             this.matSnackBar.open('Promo code expired', 'Close', { duration: 3000 });
                         }
@@ -708,7 +714,7 @@ export class ReviewPayComponent implements OnInit {
                 } else {
                     if (moment().isBetween(moment(codefound.validFrom), moment(codefound.validTo))) {
                         this.updatePrice(codefound);
-						this._cookieUtilsService.setValue('promo_code', codefound.id);
+                        this._cookieUtilsService.setValue('promo_code', codefound.id);
                     } else {
                         this.matSnackBar.open('Promo code expired', 'Close', { duration: 3000 });
                     }
