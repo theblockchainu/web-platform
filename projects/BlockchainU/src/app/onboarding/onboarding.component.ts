@@ -130,8 +130,8 @@ export class OnboardingComponent implements OnInit {
 	}
 
 	public selected(event) {
-		if (this.interests.length >= 3) {
-			this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
+		if (this.interests.length >= 5) {
+			this.maxTopicMsg = 'You cannot select more than 5 topics. Please delete any existing one and then try to add.';
 		}
 		this.active = false;
 		this.interests = event;

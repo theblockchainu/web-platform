@@ -63,7 +63,6 @@ Raven.setRelease('1.0.0');
 export class RavenErrorHandler implements ErrorHandler {
 	handleError(err: any): void {
 		Raven.captureException(err);
-		Raven.showReportDialog();
 	}
 }
 

@@ -141,8 +141,8 @@
 										<div class="row">
 											<div class="col-sm-12">
 												<app-multiselect-autocomplete (selectedOutput)="selected($event)" (removedOutput)="removed($event)"
-												 [preSelectedTopics]=interests [searchUrl]=searchTopicURL [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
-												 [maxSelection]=maxTopics [minSelection]="1"></app-multiselect-autocomplete>
+												 [preSelectedTopics]="interests" [suggestedTopics]="suggestedTopics" [searchUrl]="searchTopicURL" [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic
+												 [maxSelection]="maxTopics" [minSelection]="1"></app-multiselect-autocomplete>
 											</div>
 										</div>
 										<div class="row">

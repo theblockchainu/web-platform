@@ -26,6 +26,7 @@ export class AppFooterComponent implements OnInit {
 		this.isLoggedIn = authService.isLoggedIn();
 		authService.isLoggedIn().subscribe((res: any) => {
 			this.loggedIn = res;
+			this.selectedCurrency = this._cookieUtilsService.getValue('currency') && this._cookieUtilsService.getValue('currency').length > 0 ? this._cookieUtilsService.getValue('currency').toUpperCase() : 'USD';
 		});
 	}
 	ngOnInit() {

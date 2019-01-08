@@ -699,8 +699,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 	public selected(event) {
-		if (event.length > 3) {
-			this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
+		if (event.length >= 5) {
+			this.maxTopicMsg = 'You cannot select more than 5 topics. Please delete any existing one and then try to add.';
 		}
 		this.interests = event;
 		this.suggestedTopics = event;
@@ -917,7 +917,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	private checkStatusAndSubmit(data, timeline?, step?) {
-		if (this.class.controls.status.value === 'active') {
+		/*if (this.class.controls.status.value === 'active') {
 			this.dialogsService.openCollectionCloneDialog({ type: 'class' })
 				.subscribe((result) => {
 					if (result === 'accept') {
@@ -930,7 +930,8 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				});
 		} else {
 			this.executeSubmitClass(data, timeline, step);
-		}
+		}*/
+		this.executeSubmitClass(data, timeline, step);
 	}
 
 	private totalHours(): void {
@@ -952,17 +953,18 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 						startMoment = moment('01-02-1990 ' + contentObj.schedule.startTime);
 						endMoment = moment('01-02-1990 ' + contentObj.schedule.endTime);
 					}
-					contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
+					contentLength = endMoment.diff(startMoment, 'seconds');
 					totalLength += parseInt(contentLength, 10);
 				} else if (contentObj.type === 'video' && contentObj.videoLength) {
 					totalLength += contentObj.videoLength;
+					this.totalVideoDuration = totalLength;
 				}
 			});
 		});
 		// console.log('totalLength' + totalLength);
-		this.totalDuration = parseFloat((totalLength / 3600).toFixed(2));
+		this.totalDuration = parseFloat((totalLength / 3600).toFixed(0));
 		this.totalGyan = this.totalDuration;
-		this.class.controls['academicGyan'].patchValue(totalLength);
+		this.class.controls['academicGyan'].patchValue(this.totalDuration);
 		this.class.controls['totalHours'].patchValue(this.totalDuration);
 	}
 
@@ -999,12 +1001,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			(response: any) => {
 				const result = response;
 				let collectionId;
-				// if (result.isNewInstance) {
-				// 	this.class.controls.status.setValue(result.status);
-				// 	collectionId = result.id;
-				// } else {
-					collectionId = this.classId;
-				// }
+				collectionId = this.classId;
 				result.topics = this.classData.topics;
 				result.contents = this.classData.contents;
 				result.owners = this.classData.owners;

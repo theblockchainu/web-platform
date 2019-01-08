@@ -164,12 +164,12 @@ export class SignupSocialComponent implements OnInit {
 		};
 		this._walletService.fixWallet(this.userId, passwordObj)
 			.subscribe((result: any) => {
-				this.snackbar.open('Successfully updated wallet. Redirecting...', 'Ok', { duration: 5000 });
+				this.snackbar.open('Your Knowledge Wallet is being setup. Redirecting...', 'Ok', { duration: 5000 });
 				this.authService.isLoginSubject.next(true);
 				this.router.navigate(['verification', '1']);
 			},
 				error => {
-					this.snackbar.open('Error fixing wallet: ' + error.error.error.message, 'Close', { duration: 5000 });
+					this.snackbar.open('Error setting up your Knowledge Wallet: ' + error.error.error.message, 'Close', { duration: 5000 });
 				});
 	}
 }

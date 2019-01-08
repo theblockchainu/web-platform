@@ -715,8 +715,8 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     public selected(event) {
-        if (event.length > 3) {
-            this.maxTopicMsg = 'You cannot select more than 3 topics. Please delete any existing one and then try to add.';
+        if (event.length >= 5) {
+            this.maxTopicMsg = 'You cannot select more than 5 topics. Please delete any existing one and then try to add.';
         }
         this.interests = event;
         this.suggestedTopics = event;
@@ -972,7 +972,7 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private checkStatusAndSubmit(data, timeline?, step?) {
-        if (this.bounty.controls.status.value === 'active') {
+        /*if (this.bounty.controls.status.value === 'active') {
             this.dialogsService.openCollectionCloneDialog({ type: 'bounty' })
                 .subscribe((result) => {
                     if (result === 'accept') {
@@ -983,7 +983,8 @@ export class BountyEditComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
         } else {
             this.executeSubmitBounty(data, timeline, step);
-        }
+        }*/
+		this.executeSubmitBounty(data, timeline, step);
     }
 
     private totalHours(): void {
