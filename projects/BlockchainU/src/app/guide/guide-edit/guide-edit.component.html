@@ -366,13 +366,14 @@
 								</div>
 								<div class="row">
 									<div class="col-xs-12">
-										<h2 class="title">Optional: Please insert the Github Url</h2>
-										<p class="subtitle">This repository will be used to create a seed project for your students when their
-											virtual labs are provisioned
+										<h2 class="title">Let's Setup your CodeLab</h2>
+										<p class="subtitle">
+											You can input a link to your GitHub repository which has the starting / boilerplate / sample code for your learning guide.
+											<br>When students join, they will be able to use these code files from within their CodeLabs environment.
 										</p>
 										<mat-form-field [floatLabel]="'never'" class="pb-block" style="margin-bottom: 20px">
 											<input matInput formControlName="githubUrl" placeholder="https://github.com/your-repo/your-project">
-											<mat-error>Not a github url !</mat-error>
+											<mat-error>Invalid GitHub URL</mat-error>
 										</mat-form-field>
 									</div>
 								</div>

@@ -334,22 +334,23 @@
 						</div>
 						<hr *ngIf="(userType==='teacher')">
 						<div *ngIf="(userType==='teacher')">
-							<h3 class="margin-bottom-20">Joined Readers</h3>
+							<h3 class="margin-bottom-20">Participants</h3>
 							<div>
 								<div class="loading-container" [hidden]="!loadingParticipants">
 									<ngx-loading [show]="true"></ngx-loading>
 								</div>
 								<div *ngIf="allParticipants.length<1">
-									No joined readers yet
+									No participants yet
 								</div>
 								<div *ngFor="let participant of allParticipants; let i=index">
 									<div class="row" *ngIf="participant.profiles && i<4">
-										<div class="col-md-2 vcenter clickable">
+										<div class="col-xs-1 vcenter clickable">
 											<app-profile-popup [peer]="participant"></app-profile-popup>
 										</div>
-										<div class="col-md-9 vcenter clickable" (click)="openProfilePage(participant.id)">
+										<div class="col-xs-9 vcenter clickable" (click)="openProfilePage(participant.id)">
 											{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name }}&emsp;
-											<span *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="lightText">{{participant.profiles[0].headline}}</span>
+											<br/>
+											<span *ngIf="participant.profiles[0].headline" style="font-weight: 300;" class="lightText mat-caption">{{participant.profiles[0].headline}}</span>
 										</div>
 									</div>
 								</div>
@@ -357,7 +358,7 @@
 									<div class="row">
 										<div class="col-md-12 margin-top-20">
 											<a (click)="viewAllParticipants()" style="cursor: pointer;" *ngIf="allParticipants.length > 0"> View all
-												joined readers
+												participants
 											</a>
 										</div>
 									</div>
@@ -626,20 +627,16 @@
 								<div class="row padding-top-100">
 									<div class="col-md-10 col-md-offset-1 center" *ngIf="corestack_student && corestack_student.student_course_status==='registered'">
 										<div class="margin-bottom-30 margin-top-40" style="font-size: 40px; color: #33bd9e;">
-											<mat-icon>schedule</mat-icon>
+											<mat-icon style="font-size: 100px; margin-left: -100px;">schedule</mat-icon>
 										</div>
 										<h2>
-											Your CodeLab is being set up
+											Your CodeLab™ is being set up
 										</h2>
 										<p>
 											It can take up to 10 minutes for your lab to be setup and ready to use
 										</p>
-										<br><br>
-										<h2>
-											You do not need to be stuck on this page
-										</h2>
 										<p>
-											You can continue learning from this guide or explore other content. We'll update you over email once your CodeLab is ready for use.
+											We'll update you over email once your CodeLab is ready for use
 										</p>
 									</div>
 									<div class="col-md-10 col-md-offset-1 center" *ngIf="!corestack_student || corestack_student.student_course_status!=='registered'">
@@ -664,15 +661,6 @@
 							<div class="col-md-10 col-md-offset-1">
 								<div class="row">
 									<div class="col-md-12">
-										<!--&lt;!&ndash;HEADLINE&ndash;&gt;
-										<div class="row padding-top-20">
-											<div class="col-md-12">
-												<h3>
-													{{guide.headline | titlecase}}
-												</h3>
-											</div>
-										</div>
-										<hr style="margin-bottom: 10px;">-->
 										<div class="row">
 											<div class="col-md-12 padding-top-20">
 												<div class="mat-display-2">
