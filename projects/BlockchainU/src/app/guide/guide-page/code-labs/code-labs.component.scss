@@ -1,25 +1,29 @@
 .floating-button {
-  position: absolute;
-  background: white;
-  right: 50px;
-  top: 13px;
+	position: absolute;
+	background: white;
+	right: 50px;
+	top: 13px;
 }
 .code-lab {
-  background: #ffffff !important;
-  padding-top: 2vh;
+	background: #ffffff !important;
+	padding-top: 2vh;
 }
 
 .credentials-box {
-  position: relative;
-  display: inline-flex;
-  height: 55px;
-  width: 380px;
-  padding-left: 15px;
-  padding-top: 10p;
-  margin-top: 10p;
-  top: 8px;
+	position: relative;
+	display: inline-flex;
+	height: 55px;
+	width: 265px;
+	margin-left: 35px;
+	padding: 5px 0px;
+	top: 8px;
+}
+
+.labSupportButtons {
+	position: relative;
+	top: 10px;
 }
 
 .mat-form-field-infix {
-  padding: 0.5em 0 0.5em 0 !important;
+	padding: 0.5em 0 0.5em 0 !important;
 }

@@ -1889,6 +1889,10 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	height: 100%;
 }
 
+.mat-button-toggle-group {
+	box-shadow: none !important;
+}
+
 .filterRow {
 	margin-top: -60px;
 	margin-left: -12%;
