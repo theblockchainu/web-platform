@@ -139,7 +139,7 @@
 										<div style="text-align: center">
 											<div class="pull-left">
 												<mat-chip-list class="cardTypeChip">
-													<mat-chip class="smallChip" [color]="'accent'">{{collection.type | titlecase}}</mat-chip>
+													<mat-chip class="smallChip" [color]="'accent'">{{collection.type | typeMap | titlecase}}</mat-chip>
 												</mat-chip-list>
 											</div>
 										</div>
@@ -213,10 +213,10 @@
 									</mat-card-content>
 									<mat-menu #ongoingCardMenu>
 										<button mat-menu-item (click)="cancelCollection(collection)">
-											Cancel {{collection.type | ucwords}}
+											Cancel {{collection.type | typeMap | ucwords}}
 										</button>
 										<button mat-menu-item (click)="_collectionService.openEditCollection(collection)">
-											Edit {{collection.type | ucwords}}
+											Edit {{collection.type | typeMap | ucwords}}
 										</button>
 										<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
 											Add Promo Code
@@ -249,7 +249,7 @@
 										<div style="text-align: center">
 											<div class="pull-left">
 												<mat-chip-list class="cardTypeChip">
-													<mat-chip class="smallChip" [color]="'accent'">{{collection.type | titlecase}}</mat-chip>
+													<mat-chip class="smallChip" [color]="'accent'">{{collection.type | typeMap | titlecase}}</mat-chip>
 												</mat-chip-list>
 											</div>
 										</div>
@@ -282,7 +282,7 @@
 										</div>
 										<span *ngIf="!_collectionService.getUpcomingEvent(collection) || collection.type=='bounty'">
 											<p class="upcomingEventLabel">
-												{{collection.type | titlecase}}
+												{{collection.type | typeMap | titlecase}}
 											</p>
 										</span>
 										<span *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).timeToStart === 0">
@@ -317,7 +317,7 @@
 											Cancel
 										</button>
 										<button mat-menu-item (click)="_collectionService.openEditCollection(collection)">
-											Edit {{collection.type | ucwords}}
+											Edit {{collection.type | typeMap | ucwords}}
 										</button>
 										<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
 											Add Promo Code
@@ -331,7 +331,7 @@
 									</mat-card-actions>
 									<mat-card-footer *ngIf="collection.type==='experience'||collection.type==='class'" class="cardFooter" style="line-height: 30px; position: absolute;bottom: 24px;width: 100%;left: 24px;">
 										<a style="font-size: 1.077rem" (click)="_collectionService.viewCollection(collection)">Is this a recurring
-											{{collection.type}}?</a>
+											{{collection.type | typeMap}}?</a>
 									</mat-card-footer>
 								</mat-card>
 							</div>
@@ -364,7 +364,7 @@
 											<div style="text-align: center">
 												<div class="pull-left">
 													<mat-chip-list class="cardTypeChip">
-														<mat-chip class="smallChip" [color]="'accent'">{{collection.type | titlecase}}</mat-chip>
+														<mat-chip class="smallChip" [color]="'accent'">{{collection.type | typeMap | titlecase}}</mat-chip>
 													</mat-chip-list>
 												</div>
 											</div>
@@ -375,7 +375,7 @@
 											<ng-template #draftMessage>
 												<mat-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></mat-progress-bar>
 												<p class="lightText" style="margin-top:20px">
-													You still have to complete filling up your {{collection.type}} details
+													You still have to complete filling up your {{collection.type | typeMap}} details
 												</p>
 											</ng-template>
 											<ng-template #submittedMessage>
@@ -399,7 +399,7 @@
 											Delete
 										</button>
 										<button mat-menu-item (click)="_collectionService.viewCollection(collection)">
-											View {{collection.type | ucwords}}
+											View {{collection.type | typeMap | ucwords}}
 										</button>
 									</mat-menu>
 								</div>
@@ -418,7 +418,7 @@
 											<ng-template #draftMessage>
 												<mat-progress-bar mode="determinate" value="{{ _collectionService.getProgressValue(collection) }}"></mat-progress-bar>
 												<p class="lightText" style="margin-top:20px">
-													You still have to complete filling up your {{collection.type}} details
+													You still have to complete filling up your {{collection.type | typeMap}} details
 												</p>
 											</ng-template>
 											<ng-template #submittedMessage>
@@ -442,7 +442,7 @@
 											Delete
 										</button>
 										<button mat-menu-item (click)="_collectionService.viewCollection(collection)">
-											View {{collection.type | ucwords}}
+											View {{collection.type | typeMap | ucwords}}
 										</button>
 									</mat-menu>
 								</div>
@@ -478,7 +478,7 @@
 											<div style="text-align: center">
 												<div class="pull-left">
 													<mat-chip-list class="cardTypeChip">
-														<mat-chip class="smallChip" [color]="'accent'">{{collection.type | titlecase}}</mat-chip>
+														<mat-chip class="smallChip" [color]="'accent'">{{collection.type | typeMap | titlecase}}</mat-chip>
 													</mat-chip-list>
 												</div>
 											</div>
@@ -520,7 +520,7 @@
 										</mat-card-content>
 										<mat-menu #pastCardMenu>
 											<button mat-menu-item (click)="_collectionService.viewCollection(collection)">
-												View {{collection.type | ucwords}}
+												View {{collection.type | typeMap | ucwords}}
 											</button>
 											<button mat-menu-item (click)="_dialogService.addPromoCodeDialog(collection.id)">
 												Add Promo Code

@@ -1,47 +1,63 @@
-<div class="dialog-container" mat-dialog-content>
-	<div class="mat-dialog-focus-trap"></div>
-	<div class="mat-display-1" *ngIf="!showMessage && !showError">Forgot password?</div>
-	<div *ngIf="!showMessage && !showError">
-		Enter the email you registered with. We will send you a password reset link on that email.<br/><br/>
-		If you registered using facebook or google, use the primary email ID registered with facebook or your google email ID.
-		<br/><br/>
-	</div>
-	<form [formGroup]="forgotpwdForm" class="form-horizontal">
-		<div>
-			<div class="dialog1">
-				<div *ngIf="showMessage" class="alert alert-success box-msg" role="alert">
-					<i class="fa fa-check-circle fa-lg" aria-hidden="true"></i>
-					<br> Email sent! Please click on the link to change your password
-					<br><br><br>
-					<button mat-dialog-close mat-raised-button class="loginbtn btn-width-large vertical-bottom">
-						<span class="txtcolor">Ok</span>
-					</button>
-				</div>
-				<div *ngIf="showError" class="alert alert-error box-msg" role="alert">
-					<i class="fa fa-close fa-lg" aria-hidden="true"></i>
-					<br>This email does not exist in our database
-					<br><br><br>
-					<button mat-dialog-close mat-raised-button class="loginbtn btn-width-large vertical-bottom">
-						<span class="txtcolor">Ok</span>
-					</button>
-				</div>
-				<div *ngIf="!showMessage && !showError">
-					<div>
-						<mat-form-field [floatLabel]="'always'" class="pb-block">
-							<input matInput #email placeholder="Email" formControlName="email" type="email">
-						</mat-form-field>
-					</div>
-					<div>
-						<span matTooltip="Invalid email" [matTooltipDisabled]="email.value.length != 0 && !email.invalid">
-							<button mat-raised-button class="loginbtn btn-width-large vertical-bottom" type="submit" (click)="sendForgotPwdMail()" [disabled]="email.value.length == 0 || email.invalid || loadingHttp">
-								<span class="txtcolor">Request for password</span>
-							</button>
-							<br>
-							<br>
-						</span>
-					</div>
+<div class="dialog-container">
+	<div mat-dialog-content>
+		<div class="mat-dialog-focus-trap"></div>
+		<div class="row">
+			<div class="col-md-12">
+				<button tabindex="-1" disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+					<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+				</button>
+				<div class="mat-display-1" style="margin-bottom: 20px;" *ngIf="!showMessage && !showError">
+					Forgot your password?
 				</div>
 			</div>
 		</div>
-	</form>
+		<hr>
+		<div class="row">
+			<div class="col-md-12">
+				<div *ngIf="!showMessage && !showError">
+					Enter the email you registered with. We will send you a password reset link on that email.<br/><br/>
+					If you registered using facebook or google, use the primary email ID registered with facebook or your google email ID.
+					<br/><br/>
+				</div>
+				<form [formGroup]="forgotpwdForm" class="form-horizontal">
+					<div>
+						<div class="dialog1">
+							<div *ngIf="showMessage" class="alert alert-success box-msg" role="alert">
+								<i class="fa fa-check-circle fa-lg" aria-hidden="true"></i>
+								<br> We have sent you an email with a link to change your password
+								<br><br><br>
+								<button mat-dialog-close mat-raised-button class="loginbtn btn-width-large vertical-bottom">
+									<span class="txtcolor">Ok</span>
+								</button>
+							</div>
+							<div *ngIf="showError" class="alert alert-error box-msg" role="alert">
+								<i class="fa fa-close fa-lg" aria-hidden="true"></i>
+								<br>This email does not exist in our database
+								<br><br><br>
+								<button mat-dialog-close mat-raised-button class="loginbtn btn-width-large vertical-bottom">
+									<span class="txtcolor">Ok</span>
+								</button>
+							</div>
+							<div *ngIf="!showMessage && !showError">
+								<div>
+									<mat-form-field [floatLabel]="'always'" class="pb-block">
+										<input matInput #email placeholder="Email" formControlName="email" type="email">
+									</mat-form-field>
+								</div>
+								<div>
+									<span matTooltip="Invalid email" [matTooltipDisabled]="email.value.length != 0 && !email.invalid">
+										<button mat-raised-button class="loginbtn btn-width-large vertical-bottom" type="submit" (click)="sendForgotPwdMail()" [disabled]="email.value.length == 0 || email.invalid || loadingHttp">
+											<span class="txtcolor">Request for password</span>
+										</button>
+										<br>
+										<br>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>

@@ -94,6 +94,7 @@ import { SafePipe } from './safe-pipe/safe.pipe';
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { PromocodeService } from '../_services/promocode/promocode.service';
 import { QuestionCardComponent } from '../question-card/question-card.component';
+import { TypemapPipe } from '../typemap.pipe';
 
 @NgModule({
     imports: [
@@ -152,7 +153,8 @@ import { QuestionCardComponent } from '../question-card/question-card.component'
         CustomCertificateFormComponent,
         SafePipe,
         UploadFileComponent,
-        QuestionCardComponent
+        QuestionCardComponent,
+        TypemapPipe
     ],
     providers: [
         CollectionService,

@@ -81,10 +81,11 @@ export class ContentQuizComponent implements OnInit {
 		this.showSuccessMessage = false;
 		this.data.content.questions = this.checkHasAnswered(this.data.content.questions, this.userId);
 		this.initializeForms();
+		this.submissionArray = [];
 		this._assessmentService.processQuizSubmissions(this.data.content)
 			.subscribe(res => {
-				this.loadingSubmissions = false;
 				this.submissionArray = res;
+				this.loadingSubmissions = false;
 			}, error1 => {
 				this.loadingSubmissions = false;
 			});

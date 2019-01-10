@@ -91,7 +91,7 @@
 								<div class="row" *ngIf="collection.payoutrules && collection.payoutrules.length > 0 && collection.payoutrules[0].external_account"
 								     style="padding-top: 5px; padding-bottom: 5px">
 									<div class="col-md-6" *ngIf="collection.type !== 'session'">
-										{{collection.type|titlecase}} :
+										{{collection.type | typeMap | titlecase}} :
 										<b>{{collection.title | ucwords}}</b>
 									</div>
 									<div class="col-md-6" *ngIf="collection.type === 'session'">

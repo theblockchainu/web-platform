@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import {Observable} from 'rxjs';
+import {throwError} from "rxjs/index";
+import {catchError} from "rxjs/internal/operators";
 
 @Injectable()
 export class AssessmentService {
@@ -12,19 +14,43 @@ export class AssessmentService {
 
 	constructor(private httpClient: HttpClient,
 		public _requestHeaderService: RequestHeaderService
-	) {
+	) {}
+	
+	private handleError(error: HttpErrorResponse) {
+		if (error.error instanceof ErrorEvent) {
+			// A client-side or network error occurred. Handle it accordingly.
+			console.error('An error occurred:', error.error.message);
+		} else {
+			// The backend returned an unsuccessful response code.
+			// The response body may contain clues as to what went wrong,
+			console.error(
+				`Backend returned code ${error.status}, ` +
+				`body was: ${error.error}`);
+		}
+		// return an observable with a user-facing error message
+		return throwError(
+			'Something bad happened; please try again later.');
 	}
 
 	public submitAssessment(assessment: Array<AssessmentResult>) {
-		return this.httpClient.post(environment.apiUrl + '/api/assessment_results', assessment, this._requestHeaderService.options);
+		return this.httpClient.post(environment.apiUrl + '/api/assessment_results', assessment, this._requestHeaderService.options)
+			.pipe(
+				catchError(this.handleError)
+			);
 	}
 	
 	public reissueCertificate(body) {
-		return this.httpClient.post(environment.apiUrl + '/api/assessment_results/reissue-certificate', body, this._requestHeaderService.options);
+		return this.httpClient.post(environment.apiUrl + '/api/assessment_results/reissue-certificate', body, this._requestHeaderService.options)
+			.pipe(
+				catchError(this.handleError)
+			);
 	}
 
 	public getAssessmentItems(fileLocation: string) {
-		return this.httpClient.get(fileLocation, this._requestHeaderService.options);
+		return this.httpClient.get(fileLocation, this._requestHeaderService.options)
+			.pipe(
+				catchError(this.handleError)
+			);
 	}
 
 
@@ -191,91 +217,141 @@ export class AssessmentService {
 	}
 	
 	public processQuizSubmissions(quizContent) {
-		const submissionArray = [];
-		if (quizContent.questions) {
-			quizContent.questions.forEach(question => {
-				if (question.answers) {
-					question.answers.forEach(answer => {
-						if (answer.peer) {
-							// If the answer is by a peer who already has an entry in this array
-							if (_.find(submissionArray, function(o) { return o.peerId === answer.peer[0].id; })) {
-								_.find(submissionArray, function(o) { return o.peerId === answer.peer[0].id; }).questionsAnswered++;
-								if (question.type === 'single-choice') {
-									if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
-										_.find(submissionArray, function (o) {
-											return o.peerId === answer.peer[0].id;
-										}).correctAnswers++;
+		return new Observable(obs => {
+			const submissionArray = [];
+			if (quizContent.questions) {
+				quizContent.questions.forEach(question => {
+					if (question.answers) {
+						question.answers.forEach(answer => {
+							if (answer.peer) {
+								let submissionEntry =  _.find(submissionArray, function (o) { return o.peerId === answer.peer[0].id; } );
+								// If the answer is by a peer who already has an entry in this array
+								if (submissionEntry) {
+										submissionEntry.questionsAnswered++;
+									if (question.type === 'single-choice') {
+										if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
+											submissionEntry.correctAnswers++;
+										} else {
+											submissionEntry.wrongAnswers++;
+										}
 									} else {
-										_.find(submissionArray, function (o) {
-											return o.peerId === answer.peer[0].id;
-										}).wrongAnswers++;
+										if (answer.isEvaluated && answer.marks === question.marks) {
+											submissionEntry.correctAnswers++;
+										} else if (answer.isEvaluated && answer.marks === 0) {
+											submissionEntry.wrongAnswers++;
+										} else {
+											submissionEntry.pendingEvaluation++;
+										}
 									}
 								} else {
-									if (answer.isEvaluated && answer.marks === question.marks) {
-										_.find(submissionArray, function (o) {
-											return o.peerId === answer.peer[0].id;
-										}).correctAnswers++;
-									} else if (answer.isEvaluated && answer.marks === 0) {
-										_.find(submissionArray, function (o) {
-											return o.peerId === answer.peer[0].id;
-										}).wrongAnswers++;
+									const questions = this.evaluateMyAnswers(this.checkHasAnswered(_.cloneDeep(quizContent.questions), answer.peer[0].id));
+									submissionEntry = {
+										position: submissionArray.length + 1,
+										peerId: answer.peer[0].id,
+										peerName: answer.peer[0].profiles[0].first_name + ' ' + answer.peer[0].profiles[0].last_name,
+										questionsAnswered: 1,
+										correctAnswers: 0,
+										wrongAnswers: 0,
+										pendingEvaluation: 0,
+										answeredDate: this.getAnsweredDate(questions),
+										questions: questions,
+										peer: answer.peer[0]
+									};
+									if (question.type === 'single-choice') {
+										if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
+											submissionEntry.correctAnswers++;
+										} else {
+											submissionEntry.wrongAnswers++;
+										}
 									} else {
-										_.find(submissionArray, function (o) {
-											return o.peerId === answer.peer[0].id;
-										}).pendingEvaluation++;
+										if (answer.isEvaluated && answer.marks === question.marks) {
+											submissionEntry.correctAnswers++;
+										} else if (answer.isEvaluated && answer.marks === 0) {
+											submissionEntry.wrongAnswers++;
+										} else {
+											submissionEntry.pendingEvaluation++;
+										}
 									}
+									submissionArray.push(submissionEntry);
 								}
-							} else {
-								const questions = _.cloneDeep(quizContent.questions);
-								const submissionEntry = {
-									position: submissionArray.length + 1,
-									peerId: answer.peer[0].id,
-									peerName: answer.peer[0].profiles[0].first_name + ' ' + answer.peer[0].profiles[0].last_name,
-									questionsAnswered: 1,
-									correctAnswers: 0,
-									wrongAnswers: 0,
-									pendingEvaluation: 0,
-									answeredDate: this.getAnsweredDate(questions),
-									questions: questions,
-									peer: answer.peer[0]
-								};
-								if (question.type === 'single-choice') {
-									if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
-										submissionEntry.correctAnswers++;
-									} else {
-										submissionEntry.wrongAnswers++;
-									}
-								} else {
-									if (answer.isEvaluated && answer.marks === question.marks) {
-										submissionEntry.correctAnswers++;
-									} else if (answer.isEvaluated && answer.marks === 0) {
-										submissionEntry.wrongAnswers++;
-									} else {
-										submissionEntry.pendingEvaluation++;
-									}
-								}
-								submissionArray.push(submissionEntry);
 							}
-						}
-					});
-				}
-			});
-			// Work on the submission array to mark user's answer for each question and whether the answer is correct
-			submissionArray.forEach(submission => {
-				submission.questions = this.checkHasAnswered(submission.questions, submission.peerId);
-				submission.questions = this.evaluateMyAnswers(submission.questions);
-				submission.answeredDate = this.getAnsweredDate(submission.questions);
-			});
-			return new Observable(obs => {
-				obs.next(submissionArray);
-			});
-		} else {
-			return new Observable(obs => {
-				obs.next(submissionArray);
-			});
-		}
+						});
+					}
+				});
+			}
+			obs.next(submissionArray);
+		});
+		
 	}
 	
+	public getUserQuizSubmissions(quizContent, userId) {
+		return new Observable(obs => {
+			const submissionArray = [];
+			// For all questions, check all answers received
+			if (quizContent.questions) {
+				quizContent.questions.forEach(question => {
+					if (question.answers) {
+						question.answers.forEach(answer => {
+							if (answer.peer && answer.peer[0].id === userId) {
+								let submissionEntry =  _.find(submissionArray, function (o) { return o.peerId === answer.peer[0].id; } );
+								// If the answer is by a peer who already has an entry in this array
+								if (submissionEntry) {
+									submissionEntry.questionsAnswered++;
+									if (question.type === 'single-choice') {
+										if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
+											submissionEntry.correctAnswers++;
+										} else {
+											submissionEntry.wrongAnswers++;
+										}
+									} else {
+										if (answer.isEvaluated && answer.marks === question.marks) {
+											submissionEntry.correctAnswers++;
+										} else if (answer.isEvaluated && answer.marks === 0) {
+											submissionEntry.wrongAnswers++;
+										} else {
+											submissionEntry.pendingEvaluation++;
+										}
+									}
+								} else {
+									const questions = this.evaluateMyAnswers(this.checkHasAnswered(_.cloneDeep(quizContent.questions), answer.peer[0].id));
+									submissionEntry = {
+										position: submissionArray.length + 1,
+										peerId: answer.peer[0].id,
+										peerName: answer.peer[0].profiles[0].first_name + ' ' + answer.peer[0].profiles[0].last_name,
+										questionsAnswered: 1,
+										correctAnswers: 0,
+										wrongAnswers: 0,
+										pendingEvaluation: 0,
+										answeredDate: this.getAnsweredDate(questions),
+										questions: questions,
+										peer: answer.peer[0]
+									};
+									if (question.type === 'single-choice') {
+										if (answer.answer === question.correct_answer || parseInt(question.correct_answer, 10) === parseInt(answer.answer, 10)) {
+											submissionEntry.correctAnswers++;
+										} else {
+											submissionEntry.wrongAnswers++;
+										}
+									} else {
+										if (answer.isEvaluated && answer.marks === question.marks) {
+											submissionEntry.correctAnswers++;
+										} else if (answer.isEvaluated && answer.marks === 0) {
+											submissionEntry.wrongAnswers++;
+										} else {
+											submissionEntry.pendingEvaluation++;
+										}
+									}
+									submissionArray.push(submissionEntry);
+								}
+							}
+						});
+					}
+				});
+			}
+			obs.next(submissionArray);
+		});
+		
+	}
 	
 	private checkHasAnswered(questions, userId) {
 		if (questions) {
@@ -293,8 +369,6 @@ export class AssessmentService {
 		}
 		return questions;
 	}
-	
-	
 	
 	private evaluateMyAnswers(questions) {
 		questions.forEach(question => {

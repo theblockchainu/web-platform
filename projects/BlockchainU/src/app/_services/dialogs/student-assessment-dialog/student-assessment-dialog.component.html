@@ -18,7 +18,7 @@
 			<ngx-loading [show]="true"></ngx-loading>
 		</div>
 	</div>
-	<form *ngIf="!fetchingFromBlockchain && data.collectionEthereumInfo && data.collectionEthereumInfo[6] && data.collectionEthereumInfo[6] !== '0'" [formGroup]="assessmentForm" class="margin-top-40 margin-bottom-40">
+	<form *ngIf="!fetchingFromBlockchain && isOnEthereum" [formGroup]="assessmentForm" class="margin-top-40 margin-bottom-40">
 	<!--<form *ngIf="!fetchingFromBlockchain" [formGroup]="assessmentForm" class="margin-top-40 margin-bottom-40">-->
 		<div formArrayName="participants">
 			<div class="row mat-body-2">
@@ -136,7 +136,7 @@
 			</div>
 		</div>
 	</form>
-	<div class="row" *ngIf="!fetchingFromBlockchain && data.collectionEthereumInfo && data.collectionEthereumInfo[6] && data.collectionEthereumInfo[6] !== '0'">
+	<div class="row" *ngIf="!fetchingFromBlockchain && isOnEthereum">
 		<div class="col-xs-12">
 			<div class="row" *ngIf="loadingHttp">
 				<div class="col-xs-1">
@@ -149,7 +149,7 @@
 			<div class="mat-h5 lightText margin-top-10">Submitting this assessment will automatically send an email to the participant with his Smart Certificate attached.</div>
 		</div>
 	</div>
-	<div *ngIf="!fetchingFromBlockchain && (!data.collectionEthereumInfo || !data.collectionEthereumInfo[6] || data.collectionEthereumInfo[6] === '0')" class="row margin-top-20 margin-bottom-20">
+	<div *ngIf="!fetchingFromBlockchain && !isOnEthereum" class="row margin-top-20 margin-bottom-20">
 		<div class="col-md-12 mat-body-2">
 			<mat-icon style="position: relative; top: 5px; font-size: 20px;">info</mat-icon> This course is not eligible for issuing Smart Certificates.
 		</div>
