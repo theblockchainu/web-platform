@@ -110,9 +110,11 @@
 												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
 											</span>
 											<span> {{totalDuration | i18nPlural : hourMapping}} {{class.type}} &nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{class.contents.length | i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
+												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{class.contents.length
+												| i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
 											<span *ngIf="userType==='teacher'">
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{class.calendars.length | i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;
+												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{class.calendars.length
+												| i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;
 											</span>
 											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
 												<br />
@@ -136,7 +138,8 @@
 												<span matTooltip="{{class.views ? class.views.length : '0'}} Views" *ngIf="class.views && class.views.length > 0">
 													&nbsp;&nbsp;&nbsp;
 													<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
-													<i class="fa fa-eye lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{class.views ? class.views.length : '0'}}
+													<i class="fa fa-eye lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{class.views ?
+													class.views.length : '0'}}
 												</span>
 											</span>
 										</div>
@@ -170,22 +173,27 @@
 								<button mat-menu-item *ngIf="userType === 'teacher'" (click)="dialogsService.viewPromoCodeDialog(class.id)">
 									View Promo Codes
 								</button>
-								<button mat-menu-item *ngIf="userType==='participant' && currentCalendar !== undefined && isCancelable()" (click)="dropOutClass()">
+								<button mat-menu-item *ngIf="userType==='participant' && currentCalendar !== undefined && isCancelable()"
+								 (click)="dropOutClass()">
 									Cancel Participation
 								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length === 0" (click)="deleteClass()">
+								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length === 0"
+								 (click)="deleteClass()">
 									Delete Course
 								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length > 0" (click)="cancelClass()">
+								<button mat-menu-item *ngIf="userType==='teacher' && calendarId === undefined && allParticipants.length > 0"
+								 (click)="cancelClass()">
 									Cancel Course
 								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length === 0" (click)=" deleteCohort()">
+								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length === 0"
+								 (click)=" deleteCohort()">
 									Delete Cohort
 								</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined" (click)=" addParticipant()">
 									Add participant
 								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length >= 0 && currentCalendar.status !== 'cancelled'" (click)=" cancelCohort()">
+								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length >= 0 && currentCalendar.status !== 'cancelled'"
+								 (click)=" cancelCohort()">
 									Cancel Cohort
 								</button>
 							</mat-menu>
@@ -293,7 +301,8 @@
 													<div class="row">
 														<div class="col-md-12 clickable" (click)="openProfilePage(class.owners[0].id)">
 															<span *ngIf="class.owners[0].profiles[0].first_name !== undefined">
-																{{class.owners[0].profiles[0].first_name | titlecase }} {{class.owners[0].profiles[0].last_name | titlecase }}
+																{{class.owners[0].profiles[0].first_name | titlecase }} {{class.owners[0].profiles[0].last_name |
+																titlecase }}
 															</span>
 															<span *ngIf="class.owners[0].profiles[0].first_name === undefined">
 																John Doe
@@ -359,7 +368,8 @@
 															<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined">
 																{{itenary.startDate | date:'EEEE, d MMMM'}} </div>
 															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length > 1">{{add1ToIndex(itenary.startDay)}}</div>
-															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate | date:'EEEE, d MMMM'}}</div>
+															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate
+																| date:'EEEE, d MMMM'}}</div>
 														</div>
 														<div (mouseover)="showViewTime(content)" (mouseout)="hideViewTime(content)" [ngClass]="{'row':true, 'timelineRowItem': true, 'timeRowItemProgress': content.views !== undefined && content.views.length > 0 && userType === 'participant'}"
 														 *ngFor="let content of itenary.contents">
@@ -734,7 +744,8 @@
 																	<div style="display: inline-block; margin-left: 5px; margin-top: 3px;">
 																		<div>
 																			<div>
-																				<span class="clickable" style="font-weight: 500" (click)="openProfilePage(review.peer[0].id)">{{review.peer[0].profiles[0].first_name + ' ' + review.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
+																				<span class="clickable" style="font-weight: 500" (click)="openProfilePage(review.peer[0].id)">{{review.peer[0].profiles[0].first_name
+																					+ ' ' + review.peer[0].profiles[0].last_name}}</span>&nbsp;&nbsp;
 																			</div>
 																		</div>
 																		<div class="">
@@ -899,7 +910,8 @@
 								</div>
 								<div class="row">
 									<div class="col-md-12">
-										<button mat-button class="mat-border-button" *ngIf="(calendarId && class && class.assessment_models && class.assessment_models.length>0 && class.assessment_models[0].type && userType === class.assessment_models[0].type.toLowerCase())" (click)="openAssessmentDialog()">Issue Certificates</button>
+										<button mat-button class="mat-border-button" *ngIf="(calendarId && class && class.assessment_models && class.assessment_models.length>0 && class.assessment_models[0].type && userType === class.assessment_models[0].type.toLowerCase())"
+										 (click)="openAssessmentDialog()">Issue Certificates</button>
 									</div>
 								</div>
 							</div>
@@ -939,8 +951,10 @@
 												<br>
 												<br>-->
 												<button mat-button class="mat-border-button" (click)="changeDates()">Filter by cohort</button> &emsp;
-												<button mat-button class="mat-border-button" style="margin-left: 15px;" *ngIf="!calendarId" (click)="changeDatesForAssessment()">Issue Certificates</button>
-												<button mat-button class="mat-border-button" style="margin-left: 15px;" *ngIf="(calendarId && class && class.assessment_models && class.assessment_models.length>0 && class.assessment_models[0].type && userType === class.assessment_models[0].type.toLowerCase())" (click)="openAssessmentDialog()">Issue Certificates</button>
+												<button mat-button class="mat-border-button" style="margin-left: 15px;" *ngIf="!calendarId" (click)="changeDatesForAssessment()">Issue
+													Certificates</button>
+												<button mat-button class="mat-border-button" style="margin-left: 15px;" *ngIf="(calendarId && class && class.assessment_models && class.assessment_models.length>0 && class.assessment_models[0].type && userType === class.assessment_models[0].type.toLowerCase())"
+												 (click)="openAssessmentDialog()">Issue Certificates</button>
 											</div>
 										</div>
 									</div>
@@ -1000,7 +1014,8 @@
 								<div style="margin: 15px 0px;" [ngClass]="{'displayFlex': dateClicked}">
 									<span class="cal-day-badge"></span>
 									<span>
-										{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d MMM' }})
+										{{clickedCohort | titlecase}} ({{clickedCohortStartDate | date:'d MMM' }} - {{clickedCohortEndDate | date:'d
+										MMM' }})
 									</span>
 								</div>
 								<div class="margin-top-10 margin-bottom-10">
@@ -1065,7 +1080,8 @@
 									<div class="col-xs-8">
 										<div class="row">
 											<div class="col-md-12">
-												<h2 style="display: inline-block; margin-bottom: -1px;">{{class.price | convertCurrency: class.currency |async}}
+												<h2 style="display: inline-block; margin-bottom: -1px;">{{class.price | convertCurrency: class.currency
+													|async}}
 												</h2>&nbsp; per person
 												<br />
 												<p-rating [ngModel]="userRating" readonly="true" stars="5" [cancel]="false" style="font-size: 13px; float: left;"></p-rating>
