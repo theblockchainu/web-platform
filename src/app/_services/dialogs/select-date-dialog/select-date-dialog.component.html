@@ -6,8 +6,8 @@
 			</button>
 			<div>
 				<div class="mat-display-1" *ngIf="mode === 'chooseDate' && userType === 'teacher'">Select a cohort to view specific details</div>
-				<div class="mat-display-1" *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When do you want to attend this {{collectionType}}?</div>
-				<div class="mat-display-1" *ngIf="mode === 'editDelete'">Existing {{collectionType}} cohorts</div>
+				<div class="mat-display-1" *ngIf="mode === 'chooseDate' && (userType === 'participant' || userType === 'public')">When do you want to attend this {{collectionType | typeMap}}?</div>
+				<div class="mat-display-1" *ngIf="mode === 'editDelete'">Existing {{collectionType | typeMap}} cohorts</div>
 			</div>
 			<div *ngIf="mode === 'editDelete'" class="col-md-2 pull-left" style="padding-top:6px">
 				<button mat-raised-button class="mat-raised-button" (click)="closeSelectCohort()" color="primary">Done</button>
@@ -18,7 +18,7 @@
 	<div class="row" *ngIf="filteredItineraries.length === 0">
 		<div class="col-md-12 margin-top-60 margin-left-40">
 			<mat-icon style="position: relative; top: 5px;">info</mat-icon>
-			There are no upcoming cohorts for this {{collectionType}}.
+			There are no upcoming cohorts for this {{collectionType | typeMap}}.
 		</div>
 	</div>
 	<p-accordion *ngIf="filteredItineraries.length > 0" (onOpen)="onTabOpen($event)" (onClose)="onTabClose($event)">

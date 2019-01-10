@@ -72,9 +72,7 @@
 																<div style="text-align: center">
 																	<div class="pull-left">
 																		<mat-chip-list class="cardTypeChip">
-																			<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'class'">Class</mat-chip>
-																			<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">Workshop</mat-chip>
-																			<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">Session</mat-chip>
+																			<mat-chip class="smallChip" [color]="'accent'">{{collection.type | typeMap | ucwords}}</mat-chip>
 																		</mat-chip-list>
 																	</div>
 																</div>

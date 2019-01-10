@@ -28,6 +28,8 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 	public certificateCountMapping: { [k: string]: string };
 	public displayedSubmissionTableColumns = ['questionsAnswered'];
 	public loadingHttp = false;
+	public collectionEthereumInfo;
+	public isOnEthereum = false;
 	
 	@ViewChild(MatTable) table: MatTable<any>;
 
@@ -45,7 +47,20 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 	}
 	
 	ngAfterViewInit() {
-		this.loadData();
+		this.fetchingFromBlockchain = true;
+		// Get ethereum data
+		this.getEthereumInfo()
+			.subscribe(res => {
+				this.collectionEthereumInfo = res;
+				if (res && res[6] && res[6] !== '0') {
+					this.isOnEthereum = true;
+				}
+				this.loadData();
+			}, (err) => {
+				this.collectionEthereumInfo = null;
+				this.isOnEthereum = false;
+				this.loadData();
+			});
 	}
 	
 	private loadData() {
@@ -87,9 +102,9 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 			}
 			
 			this.data.assessment_models[0].assessment_rules.forEach((assessment_rule, i) => {
-				if (this.data.collectionEthereumInfo && this.data.collectionEthereumInfo[2] && this.data.collectionEthereumInfo[2].length >= i + 1) {
+				if (this.collectionEthereumInfo && this.collectionEthereumInfo[2] && this.collectionEthereumInfo[2].length >= i + 1) {
 					// If Blockchain Assessment rules do not MATCH, override with Blockchain rules
-					assessment_rule.value = _.find(this.data.collectionEthereumInfo[2], ethereumRule => ethereumRule === assessment_rule.value ) ? assessment_rule.value : this.data.collectionEthereumInfo[2][i] ;
+					assessment_rule.value = _.find(this.collectionEthereumInfo[2], ethereumRule => ethereumRule === assessment_rule.value ) ? assessment_rule.value : this.collectionEthereumInfo[2][i] ;
 				}
 				if (assessment_rule.assessment_result) {
 					assessment_rule.assessment_result.forEach((result: any) => {
@@ -158,9 +173,8 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 		this.checkBlockchainParticipation();
 		this.loadQuizAssessments()
 			.subscribe(res => {
-				if (res) {
-					this.loadingQuizSubmissions = false;
-				}
+				this.userWiseSubmissionArray.push(res);
+				this.loadingQuizSubmissions = false;
 			});
 	}
 	
@@ -185,33 +199,33 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 			});
 	}
 	
+	private getEthereumInfo() {
+		return this.collectionService.getCollectionEthereumInfo(this.data.collection.id, {});
+	}
+	
 	private loadQuizAssessments() {
 		this.loadingQuizSubmissions = true;
-		
-		this.userWiseSubmissionArray = [];
-		this.participantsInitArray.forEach(participant => {
-			const userWiseSubmissionObject = {
-				participantId: participant.value.id,
-				submissions: []
-			};
-			if (this.data.quizContents && this.data.quizContents.length > 0) {
-				this.data.quizContents.forEach(quizContent => {
-					this.assessmentService.processQuizSubmissions(quizContent)
-						.subscribe(res => {
-							const submissionObject = {
-								quizId: quizContent.id,
-								quizTitle: quizContent.title,
-								quizSubmissions: this.filterMySubmissions(res, participant.value.id)
-							};
-							userWiseSubmissionObject.submissions.push(submissionObject);
-						});
-				});
-			}
-			this.userWiseSubmissionArray.push(userWiseSubmissionObject);
-		});
-		
 		return new Observable(obs => {
-			obs.next(true);
+			this.participantsInitArray.forEach(participant => {
+				const userWiseSubmissionObject = {
+					participantId: participant.value.id,
+					submissions: []
+				};
+				if (this.data.quizContents && this.data.quizContents.length > 0) {
+					this.data.quizContents.forEach(quizContent => {
+						this.assessmentService.getUserQuizSubmissions(quizContent, participant.value.id)
+							.subscribe(res => {
+								const submissionObject = {
+									quizId: quizContent.id,
+									quizTitle: quizContent.title,
+									quizSubmissions: res
+								};
+								userWiseSubmissionObject.submissions.push(submissionObject);
+							});
+					});
+				}
+				obs.next(userWiseSubmissionObject);
+			});
 		});
 	}
 

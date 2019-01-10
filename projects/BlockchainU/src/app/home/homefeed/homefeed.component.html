@@ -63,12 +63,9 @@
 									<img *ngIf="getLearnerUpcomingEvent(collection).type === 'quiz'" style="width: auto; border: 0.5px solid #eee;"
 									 class="continueLearning-thumb" src="/assets/images/quizcover.jpg">
 								</div>
-								<div class="mat-body-2" style="margin-top: 0px;">{{collection.type | titlecase}} : {{collection.title |
-									titlecase}}
+								<div class="mat-body-2" style="margin-top: 0px;">[{{collection.type | typeMap | titlecase}}] {{collection.title | titlecase}}
 								</div>
-								<div style="margin-top: 0px;">Recent {{getLearnerUpcomingEvent(collection).type}}
-									{{getLearnerUpcomingEvent(collection).fillerWord}}:
-									{{getLearnerUpcomingEvent(collection).title | shorten: 70 : '...' | titlecase}}
+								<div style="margin-top: 0px;">Continue with {{getLearnerUpcomingEvent(collection).type}} {{getLearnerUpcomingEvent(collection).fillerWord}} - {{getLearnerUpcomingEvent(collection).title | shorten: 70 : '...' | titlecase}}
 								</div>
 							</a>
 						</div>

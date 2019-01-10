@@ -21,7 +21,7 @@ import { EditCalendarDialogComponent } from './edit-calendar-dialog/edit-calenda
 import { AddTopicDialogComponent } from './add-topic-dialog/add-topic-dialog.component';
 import { AddLanguageDialogComponent } from './add-language-dialog/add-language-dialog.component';
 import {
-    CalendarEvent
+	CalendarEvent
 } from 'angular-calendar';
 import { FormGroup } from '@angular/forms';
 import { SelectDateDialogComponent } from './select-date-dialog/select-date-dialog.component';
@@ -74,561 +74,565 @@ import { ContentProjectDialogComponent } from './content-project-dialog/content-
 import { ContentInpersonDialogComponent } from './content-inperson-dialog/content-inperson-dialog.component';
 @Injectable()
 export class DialogsService {
-
-    constructor(public dialog: MatDialog
-    ) { }
-
-    public openSignup(returnTo: string) {
-        let dialogRef: MatDialogRef<SignupComponentDialogComponent>;
-
-        dialogRef = this.dialog.open(SignupComponentDialogComponent, {
-            panelClass: 'responsive-dialog',
-            width: '30vw',
-            data: {
-                returnTo: returnTo
-            }
-        });
-        return dialogRef.afterClosed();
-    }
-
-    public openLogin() {
-        console.log('openLogin dialog');
-        const dialogRef1: MatDialogRef<LoginComponentDialog> = this.dialog.open(LoginComponentDialog, {
-            panelClass: 'responsive-dialog',
-            maxHeight: '90vh'
-        });
-        return dialogRef1.afterClosed();
-    }
-    public addCard() {
-        let dialogRef4: MatDialogRef<AddCardDialogComponent>;
-
-        dialogRef4 = this.dialog.open(AddCardDialogComponent, {
-            panelClass: 'responsive-dialog', width: '610px',
-            height: '380px'
-        });
-        return dialogRef4.afterClosed();
-    }
-    public openIdVerify() {
-        let dialogRef5: MatDialogRef<VerifyIdDialogComponent>;
-
-        dialogRef5 = this.dialog.open(VerifyIdDialogComponent, {
-            panelClass: 'responsive-dialog', width: '60vw',
-            height: '90vh'
-        });
-        return dialogRef5.afterClosed();
-    }
-    public openEmailVerify() {
-        let dialogRef6: MatDialogRef<VerifyEmailDialogComponent>;
-
-        dialogRef6 = this.dialog.open(VerifyEmailDialogComponent, {
-            panelClass: 'responsive-dialog', width: '50vw',
-            height: '80vh'
-        });
-        return dialogRef6.afterClosed();
-    }
-    public openIdPolicy() {
-        let dialogRef7: MatDialogRef<IdPolicyDialogComponent>;
-
-        dialogRef7 = this.dialog.open(IdPolicyDialogComponent, {
-            panelClass: 'responsive-dialog', width: '45vw',
-            height: '100vh'
-        });
-        return dialogRef7.afterClosed();
-    }
-
-    public openVideo(url: string) {
-        let dialogRef8: MatDialogRef<VideoDialogComponent>;
-
-        dialogRef8 = this.dialog.open(VideoDialogComponent, {
-            width: '1000px',
-            panelClass: 'video-popup',
-            data: url
-        });
-        return dialogRef8.afterClosed();
-    }
-    public openPhoneVerify() {
-        let dialogRef9: MatDialogRef<VerifyPhoneDialogComponent>;
-
-        dialogRef9 = this.dialog.open(VerifyPhoneDialogComponent, {
-            panelClass: 'responsive-dialog', width: '50vw',
-            height: '80vh'
-        });
-        return dialogRef9.afterClosed();
-    }
-
-    public openOnboardingDialog(isSkippable?: boolean) {
-        let dialogRef: MatDialogRef<OnboardingDialogComponent>;
-
-        dialogRef = this.dialog.open(OnboardingDialogComponent, {
-            panelClass: 'responsive-dialog',
-            width: '30vw',
-            disableClose: true,
-            data: {
-                isSkippable: isSkippable
-            }
-        });
-        return dialogRef.afterClosed();
-    }
-
-    public openViewQuizSubmissionDialog(content: any) {
-        let dialogRef: MatDialogRef<ViewQuizSubmissionComponent>;
-
-        dialogRef = this.dialog.open(ViewQuizSubmissionComponent, {
-            panelClass: 'responsive-dialog',
-            width: '45vw',
-            height: '100vh',
-            disableClose: true,
-            data: {
-                content: content
-            }
-        });
-        return dialogRef.afterClosed();
-    }
-
-    public openFollowTopicDialog(type, inputs) {
-        let dialogRef5: MatDialogRef<MultiselectTopicDialogComponent>;
-
-        dialogRef5 = this.dialog.open(MultiselectTopicDialogComponent,
-            {
-                disableClose: true,
-                hasBackdrop: true,
-                panelClass: 'responsive-dialog', width: '50vw',
-                height: '70vh'
-            }
-        );
-        dialogRef5.componentInstance.searchUrl = inputs.searchTopicURL;
-        dialogRef5.componentInstance.title = inputs.title;
-        dialogRef5.componentInstance.minSelection = inputs.minSelection;
-        dialogRef5.componentInstance.maxSelection = inputs.maxSelection;
-        dialogRef5.componentInstance.suggestedTopics = inputs.suggestedTopics;
-        dialogRef5.componentInstance.data = {
-            searchUrl: inputs.searchTopicURL,
-            selected: []
-        };
-
-        return dialogRef5.afterClosed();
-    }
-
-    // /**
-    //  * startLiveSession
-    //  */
-    // public startLiveSession() {
-    //     let dialogRef5: MatDialogRef<LiveSessionDialogComponent>;
-
-    //     dialogRef5 = this.dialog.open(LiveSessionDialogComponent, {
-    //         panelClass: 'responsive-dialog', width: '100vw',
-    //         height: '100vh'
-    //     });
-    //     return dialogRef5.afterClosed();
-    // }
-
-    /**
-     * openCollectionGrid
-     */
-    public openCollectionGrid(title, collections) {
-        let dialogRef: MatDialogRef<CollectionGridDialogComponent>;
-
-        dialogRef = this.dialog.open(CollectionGridDialogComponent, {
-            panelClass: 'responsive-dialog', width: '80vw',
-            height: '80vh',
-            data: {
-                title: title,
-                collections: collections
-            }
-        });
-
-        return dialogRef.afterClosed();
-    }
-
-
-    openDeleteCollection(collection: any) {
-        const dialogRef = this.dialog.open(DeleteCollectionDialogComponent, {
-            data: collection,
-            panelClass: 'responsive-dialog', width: '30vw'
-        });
-
-        return dialogRef.afterClosed();
-    }
-
-    openExitCollection(collectionId: string, userId: string, type: string) {
-        const dialogRef = this.dialog.open(ExitCollectionDialogComponent, {
-            data: {
-                collectionId: collectionId,
-                userId: userId,
-                type: type
-            },
-            panelClass: 'responsive-dialog', width: '30vw'
-        });
-        return dialogRef.afterClosed();
-    }
-
-    openDeleteCommunity(community: any) {
-        const dialogRef = this.dialog.open(DeleteCommunityDialogComponent, {
-            data: community,
-            panelClass: 'responsive-dialog', width: '30vw'
-        });
-
-        return dialogRef.afterClosed();
-    }
-
-    openExitCommunity(communityId: string, userId: string) {
-        const dialogRef = this.dialog.open(ExitCommunityDialogComponent, {
-            data: {
-                communityId: communityId,
-                userId: userId
-            },
-            panelClass: 'responsive-dialog', width: '30vw'
-        });
-        return dialogRef.afterClosed();
-    }
-
-    openCancelCollection(collection: any) {
-        const dialogRef = this.dialog.open(CancelCollectionDialogComponent, {
-            data: collection,
-            panelClass: 'responsive-dialog', width: '30vw'
-        });
-        return dialogRef.afterClosed();
-    }
-
-    openDeleteCohort(calendarId: string) {
-        return this.dialog.open(DeleteCohortDialogComponent, {
-            data: calendarId,
-            panelClass: 'responsive-dialog', width: '30vw'
-        }).afterClosed();
-    }
-
-    openProfilePopup(config: any) {
-        return this.dialog.open(ProfilePopupCardComponent, config);
-    }
-
-    openForgotPassword(email: string) {
-        return this.dialog.open(RequestPasswordDialogComponent, {
-            data: email, panelClass: 'responsive-dialog'
-        });
-    }
-
-
-    public editCalendar(collection, contents, calendars, allItinerary, participants, events: CalendarEvent[], userId: string, startDate: Date, endDate: Date): Observable<boolean> {
-        let dialogRef: MatDialogRef<EditCalendarDialogComponent>;
-
-        dialogRef = this.dialog.open(EditCalendarDialogComponent, {
-            panelClass: 'responsive-dialog', width: '100vw',
-            height: '95vh'
-        }
-        );
-        dialogRef.componentInstance.collection = collection;
-        dialogRef.componentInstance.contents = contents;
-        dialogRef.componentInstance.calendars = calendars;
-        dialogRef.componentInstance.allItenaries = allItinerary;
-        dialogRef.componentInstance.participants = participants;
-        dialogRef.componentInstance.inpEvents = events;
-        dialogRef.componentInstance.userId = userId;
-        dialogRef.componentInstance.startDate = startDate;
-        dialogRef.componentInstance.endDate = endDate;
-
-        return dialogRef.afterClosed();
-    }
-
-
-    public addNewTopic() {
-        let dialogRef: MatDialogRef<AddTopicDialogComponent>;
-
-        dialogRef = this.dialog.open(AddTopicDialogComponent, {
-            panelClass: 'responsive-dialog'
-        });
-
-        return dialogRef.afterClosed();
-
-    }
-
-    public addNewLanguage() {
-        let dialogRef: MatDialogRef<AddLanguageDialogComponent>;
-
-        dialogRef = this.dialog.open(AddLanguageDialogComponent, {
-            panelClass: 'responsive-dialog'
-        });
-
-        return dialogRef.afterClosed();
-
-    }
-
-    /**
-     * startLiveSession
-     */
-    public startLiveSession(data: any) {
-        let dialogRef5: MatDialogRef<LiveSessionDialogComponent>;
-
-        dialogRef5 = this.dialog.open(LiveSessionDialogComponent, {
-            panelClass: 'my-full-screen-dialog',
-            width: '100vw',
-            height: '100vh',
-            maxWidth: '100%',
-            data: data
-        });
-        return dialogRef5.afterClosed();
-    }
-
-    public selectDateDialog(allItenaries, mode, participants, userType, collectionType, maxSeats, accountApproved, userId) {
-        return this.dialog.open(SelectDateDialogComponent, {
-            panelClass: 'responsive-dialog', width: '45vw',
-            height: '100vh',
-            data: {
-                itineraries: allItenaries,
-                mode: mode,
-                participants: participants,
-                userType: userType,
-                collectionType: collectionType,
-                maxSeats: maxSeats,
-                accountApproved: accountApproved,
-                userId: userId
-            }
-        }).afterClosed();
-    }
-
-    public openCollectionCloneDialog(collection: any) {
-        return this.dialog.open(CollectionCloneDialogComponent,
-            {
-                data: collection,
-                disableClose: true, hasBackdrop: true, panelClass: 'responsive-dialog', width: '40vw'
-            }).afterClosed();
-    }
-
-    public openCollectionSubmitDialog(collection: any) {
-        return this.dialog.open(CollectionSubmitDialogComponent,
-            {
-                data: collection,
-                disableClose: true, hasBackdrop: true, panelClass: 'responsive-dialog', width: '40vw'
-            }).afterClosed();
-    }
-
-    public submissionView(userType, submission, peerHasSubmission, collectionId) {
-        return this.dialog.open(SubmissionViewComponent, {
-            data: {
-                userType: userType,
-                submission: submission,
-                peerHasSubmission: peerHasSubmission,
-                collectionId: collectionId
-            },
-            panelClass: 'responsive-dialog', width: '45vw',
-            height: '100vh'
-        }).afterClosed();
-    }
-
-    /**
-     * submitEntry
-     */
-    public submitEntry(data) {
-        return this.dialog.open(SubmitEntryComponent, {
-            data: data,
-            panelClass: 'responsive-dialog', width: '45vw',
-            height: '100vh'
-        }).afterClosed();
-    }
-
-    public viewEntry(data) {
-        return this.dialog.open(ViewEntryDialogComponent, {
-            data: data,
-            panelClass: 'responsive-dialog', width: '45vw',
-            height: '100vh'
-        }).afterClosed();
-    }
-
-    public inviteFriends(collection) {
-        return this.dialog.open(InviteFriendsDialogComponent, {
-            data: {
-                url: collection.type + '/' + collection.id,
-                object: collection
-            },
-            panelClass: 'responsive-dialog', width: '40vw'
-        }).afterClosed();
-    }
-
-    public reportProfile() {
-        return this.dialog.open(ReportProfileComponent, {
-            panelClass: 'responsive-dialog', width: '40vw',
-            height: '70vh'
-        }).afterClosed();
-    }
-
-    public rateParticipant(data) {
-        return this.dialog.open(RateParticipantComponent, {
-            data: data,
-            panelClass: 'responsive-dialog', width: '50vw',
-            height: '80vh'
-        }).afterClosed();
-    }
-
-    public messageParticipant(data) {
-        return this.dialog.open(MessageParticipantDialogComponent, {
-            data: data,
-            panelClass: 'responsive-dialog', width: '50vw',
-            height: '60vh'
-        }).afterClosed();
-    }
-
-    public shareCollection(type: string, Id: string, title: string, description: string,
-        headline: string, imageUrl: string, cohortId?: string, isTeacher?: boolean, customUrl?: string) {
-        return this.dialog.open(ShareDialogComponent,
-            {
-                data: {
-                    type: type,
-                    id: Id,
-                    cohortId: cohortId,
-                    title: title,
-                    description: description,
-                    headline: headline,
-                    image: imageUrl,
-                    isTeacher: isTeacher,
-                    customUrl: customUrl
-                },
-                panelClass: 'responsive-dialog', width: '40vw'
-            }
-        ).afterClosed();
-    }
-
-    public dateConflictDialog() {
-        return this.dialog.open(DateConflictDialogComponent, {
-            panelClass: 'responsive-dialog', width: '40vw',
-            height: '31vh'
-        }).afterClosed();
-    }
-
-    public studentAssessmentDialog(data: any) {
-        return this.dialog.open(StudentAssessmentDialogComponent, {
-            panelClass: 'responsive-dialog',
-            width: '75vw',
-            height: '100vh',
-            data: data,
+	
+	constructor(public dialog: MatDialog
+	) { }
+	
+	public openSignup(returnTo: string) {
+		let dialogRef: MatDialogRef<SignupComponentDialogComponent>;
+		
+		dialogRef = this.dialog.open(SignupComponentDialogComponent, {
+			panelClass: 'responsive-dialog',
+			width: '30vw',
+			data: {
+				returnTo: returnTo
+			}
+		});
+		return dialogRef.afterClosed();
+	}
+	
+	public openLogin() {
+		console.log('openLogin dialog');
+		const dialogRef1: MatDialogRef<LoginComponentDialog> = this.dialog.open(LoginComponentDialog, {
+			panelClass: 'responsive-dialog',
+			maxHeight: '90vh'
+		});
+		return dialogRef1.afterClosed();
+	}
+	public addCard() {
+		let dialogRef4: MatDialogRef<AddCardDialogComponent>;
+		
+		dialogRef4 = this.dialog.open(AddCardDialogComponent, {
+			panelClass: 'responsive-dialog', width: '610px',
+			height: '380px'
+		});
+		return dialogRef4.afterClosed();
+	}
+	public openIdVerify() {
+		let dialogRef5: MatDialogRef<VerifyIdDialogComponent>;
+		
+		dialogRef5 = this.dialog.open(VerifyIdDialogComponent, {
+			panelClass: 'responsive-dialog', width: '60vw',
+			height: '90vh'
+		});
+		return dialogRef5.afterClosed();
+	}
+	public openEmailVerify() {
+		let dialogRef6: MatDialogRef<VerifyEmailDialogComponent>;
+		
+		dialogRef6 = this.dialog.open(VerifyEmailDialogComponent, {
+			panelClass: 'responsive-dialog', width: '50vw',
+			height: '80vh'
+		});
+		return dialogRef6.afterClosed();
+	}
+	public openIdPolicy() {
+		let dialogRef7: MatDialogRef<IdPolicyDialogComponent>;
+		
+		dialogRef7 = this.dialog.open(IdPolicyDialogComponent, {
+			panelClass: 'responsive-dialog', width: '45vw',
+			height: '100vh'
+		});
+		return dialogRef7.afterClosed();
+	}
+	
+	public openVideo(url: string) {
+		let dialogRef8: MatDialogRef<VideoDialogComponent>;
+		
+		dialogRef8 = this.dialog.open(VideoDialogComponent, {
+			width: '1000px',
+			panelClass: 'video-popup',
+			data: url
+		});
+		return dialogRef8.afterClosed();
+	}
+	public openPhoneVerify() {
+		let dialogRef9: MatDialogRef<VerifyPhoneDialogComponent>;
+		
+		dialogRef9 = this.dialog.open(VerifyPhoneDialogComponent, {
+			panelClass: 'responsive-dialog', width: '50vw',
+			height: '80vh'
+		});
+		return dialogRef9.afterClosed();
+	}
+	
+	public openOnboardingDialog(isSkippable?: boolean) {
+		let dialogRef: MatDialogRef<OnboardingDialogComponent>;
+		
+		dialogRef = this.dialog.open(OnboardingDialogComponent, {
+			panelClass: 'responsive-dialog',
+			width: '30vw',
+			disableClose: true,
+			data: {
+				isSkippable: isSkippable
+			}
+		});
+		return dialogRef.afterClosed();
+	}
+	
+	public openViewQuizSubmissionDialog(content: any) {
+		let dialogRef: MatDialogRef<ViewQuizSubmissionComponent>;
+		
+		dialogRef = this.dialog.open(ViewQuizSubmissionComponent, {
+			panelClass: 'responsive-dialog',
+			width: '45vw',
+			height: '100vh',
+			disableClose: true,
+			data: {
+				content: content
+			}
+		});
+		return dialogRef.afterClosed();
+	}
+	
+	public openFollowTopicDialog(type, inputs) {
+		let dialogRef5: MatDialogRef<MultiselectTopicDialogComponent>;
+		
+		dialogRef5 = this.dialog.open(MultiselectTopicDialogComponent,
+			{
+				disableClose: true,
+				hasBackdrop: true,
+				panelClass: 'responsive-dialog', width: '50vw',
+				height: '70vh'
+			}
+		);
+		dialogRef5.componentInstance.searchUrl = inputs.searchTopicURL;
+		dialogRef5.componentInstance.title = inputs.title;
+		dialogRef5.componentInstance.minSelection = inputs.minSelection;
+		dialogRef5.componentInstance.maxSelection = inputs.maxSelection;
+		dialogRef5.componentInstance.suggestedTopics = inputs.suggestedTopics;
+		dialogRef5.componentInstance.data = {
+			searchUrl: inputs.searchTopicURL,
+			selected: []
+		};
+		
+		return dialogRef5.afterClosed();
+	}
+	
+	// /**
+	//  * startLiveSession
+	//  */
+	// public startLiveSession() {
+	//     let dialogRef5: MatDialogRef<LiveSessionDialogComponent>;
+	
+	//     dialogRef5 = this.dialog.open(LiveSessionDialogComponent, {
+	//         panelClass: 'responsive-dialog', width: '100vw',
+	//         height: '100vh'
+	//     });
+	//     return dialogRef5.afterClosed();
+	// }
+	
+	/**
+	 * openCollectionGrid
+	 */
+	public openCollectionGrid(title, collections) {
+		let dialogRef: MatDialogRef<CollectionGridDialogComponent>;
+		
+		dialogRef = this.dialog.open(CollectionGridDialogComponent, {
+			panelClass: 'responsive-dialog', width: '80vw',
+			height: '80vh',
+			data: {
+				title: title,
+				collections: collections
+			}
+		});
+		
+		return dialogRef.afterClosed();
+	}
+	
+	
+	openDeleteCollection(collection: any) {
+		const dialogRef = this.dialog.open(DeleteCollectionDialogComponent, {
+			data: collection,
+			panelClass: 'responsive-dialog', width: '30vw'
+		});
+		
+		return dialogRef.afterClosed();
+	}
+	
+	openExitCollection(collectionId: string, userId: string, type: string) {
+		const dialogRef = this.dialog.open(ExitCollectionDialogComponent, {
+			data: {
+				collectionId: collectionId,
+				userId: userId,
+				type: type
+			},
+			panelClass: 'responsive-dialog', width: '30vw'
+		});
+		return dialogRef.afterClosed();
+	}
+	
+	openDeleteCommunity(community: any) {
+		const dialogRef = this.dialog.open(DeleteCommunityDialogComponent, {
+			data: community,
+			panelClass: 'responsive-dialog', width: '30vw'
+		});
+		
+		return dialogRef.afterClosed();
+	}
+	
+	openExitCommunity(communityId: string, userId: string) {
+		const dialogRef = this.dialog.open(ExitCommunityDialogComponent, {
+			data: {
+				communityId: communityId,
+				userId: userId
+			},
+			panelClass: 'responsive-dialog', width: '30vw'
+		});
+		return dialogRef.afterClosed();
+	}
+	
+	openCancelCollection(collection: any) {
+		const dialogRef = this.dialog.open(CancelCollectionDialogComponent, {
+			data: collection,
+			panelClass: 'responsive-dialog', width: '30vw'
+		});
+		return dialogRef.afterClosed();
+	}
+	
+	openDeleteCohort(calendarId: string) {
+		return this.dialog.open(DeleteCohortDialogComponent, {
+			data: calendarId,
+			panelClass: 'responsive-dialog', width: '30vw'
+		}).afterClosed();
+	}
+	
+	openProfilePopup(config: any) {
+		return this.dialog.open(ProfilePopupCardComponent, config);
+	}
+	
+	openForgotPassword(email: string) {
+		return this.dialog.open(RequestPasswordDialogComponent,
+			{
+				data: email,
+				panelClass: 'responsive-dialog',
+				width: '55vw',
+				height: '75vh'
+			});
+	}
+	
+	
+	public editCalendar(collection, contents, calendars, allItinerary, participants, events: CalendarEvent[], userId: string, startDate: Date, endDate: Date): Observable<boolean> {
+		let dialogRef: MatDialogRef<EditCalendarDialogComponent>;
+		
+		dialogRef = this.dialog.open(EditCalendarDialogComponent,
+			{
+				panelClass: 'responsive-dialog',
+				width: '100vw',
+				height: '95vh'
+			}
+		);
+		dialogRef.componentInstance.collection = collection;
+		dialogRef.componentInstance.contents = contents;
+		dialogRef.componentInstance.calendars = calendars;
+		dialogRef.componentInstance.allItenaries = allItinerary;
+		dialogRef.componentInstance.participants = participants;
+		dialogRef.componentInstance.inpEvents = events;
+		dialogRef.componentInstance.userId = userId;
+		dialogRef.componentInstance.startDate = startDate;
+		dialogRef.componentInstance.endDate = endDate;
+		
+		return dialogRef.afterClosed();
+	}
+	
+	
+	public addNewTopic() {
+		let dialogRef: MatDialogRef<AddTopicDialogComponent>;
+		
+		dialogRef = this.dialog.open(AddTopicDialogComponent, {
+			panelClass: 'responsive-dialog'
+		});
+		
+		return dialogRef.afterClosed();
+		
+	}
+	
+	public addNewLanguage() {
+		let dialogRef: MatDialogRef<AddLanguageDialogComponent>;
+		
+		dialogRef = this.dialog.open(AddLanguageDialogComponent, {
+			panelClass: 'responsive-dialog'
+		});
+		return dialogRef.afterClosed();
+	}
+	
+	/**
+	 * startLiveSession
+	 */
+	public startLiveSession(data: any) {
+		let dialogRef5: MatDialogRef<LiveSessionDialogComponent>;
+		
+		dialogRef5 = this.dialog.open(LiveSessionDialogComponent, {
+			panelClass: 'my-full-screen-dialog',
+			width: '100vw',
+			height: '100vh',
+			maxWidth: '100%',
+			data: data
+		});
+		return dialogRef5.afterClosed();
+	}
+	
+	public selectDateDialog(allItenaries, mode, participants, userType, collectionType, maxSeats, accountApproved, userId) {
+		return this.dialog.open(SelectDateDialogComponent, {
+			panelClass: 'responsive-dialog', width: '45vw',
+			height: '100vh',
+			data: {
+				itineraries: allItenaries,
+				mode: mode,
+				participants: participants,
+				userType: userType,
+				collectionType: collectionType,
+				maxSeats: maxSeats,
+				accountApproved: accountApproved,
+				userId: userId
+			}
+		}).afterClosed();
+	}
+	
+	public openCollectionCloneDialog(collection: any) {
+		return this.dialog.open(CollectionCloneDialogComponent,
+			{
+				data: collection,
+				disableClose: true, hasBackdrop: true, panelClass: 'responsive-dialog', width: '40vw'
+			}).afterClosed();
+	}
+	
+	public openCollectionSubmitDialog(collection: any) {
+		return this.dialog.open(CollectionSubmitDialogComponent,
+			{
+				data: collection,
+				disableClose: true, hasBackdrop: true, panelClass: 'responsive-dialog', width: '40vw'
+			}).afterClosed();
+	}
+	
+	public submissionView(userType, submission, peerHasSubmission, collectionId) {
+		return this.dialog.open(SubmissionViewComponent, {
+			data: {
+				userType: userType,
+				submission: submission,
+				peerHasSubmission: peerHasSubmission,
+				collectionId: collectionId
+			},
+			panelClass: 'responsive-dialog', width: '45vw',
+			height: '100vh'
+		}).afterClosed();
+	}
+	
+	/**
+	 * submitEntry
+	 */
+	public submitEntry(data) {
+		return this.dialog.open(SubmitEntryComponent, {
+			data: data,
+			panelClass: 'responsive-dialog', width: '45vw',
+			height: '100vh'
+		}).afterClosed();
+	}
+	
+	public viewEntry(data) {
+		return this.dialog.open(ViewEntryDialogComponent, {
+			data: data,
+			panelClass: 'responsive-dialog', width: '45vw',
+			height: '100vh'
+		}).afterClosed();
+	}
+	
+	public inviteFriends(collection) {
+		return this.dialog.open(InviteFriendsDialogComponent, {
+			data: {
+				url: collection.type + '/' + collection.id,
+				object: collection
+			},
+			panelClass: 'responsive-dialog', width: '40vw'
+		}).afterClosed();
+	}
+	
+	public reportProfile() {
+		return this.dialog.open(ReportProfileComponent, {
+			panelClass: 'responsive-dialog', width: '40vw',
+			height: '70vh'
+		}).afterClosed();
+	}
+	
+	public rateParticipant(data) {
+		return this.dialog.open(RateParticipantComponent, {
+			data: data,
+			panelClass: 'responsive-dialog', width: '50vw',
+			height: '80vh'
+		}).afterClosed();
+	}
+	
+	public messageParticipant(data) {
+		return this.dialog.open(MessageParticipantDialogComponent, {
+			data: data,
+			panelClass: 'responsive-dialog', width: '50vw',
+			height: '60vh'
+		}).afterClosed();
+	}
+	
+	public shareCollection(type: string, Id: string, title: string, description: string,
+						   headline: string, imageUrl: string, cohortId?: string, isTeacher?: boolean, customUrl?: string) {
+		return this.dialog.open(ShareDialogComponent,
+			{
+				data: {
+					type: type,
+					id: Id,
+					cohortId: cohortId,
+					title: title,
+					description: description,
+					headline: headline,
+					image: imageUrl,
+					isTeacher: isTeacher,
+					customUrl: customUrl
+				},
+				panelClass: 'responsive-dialog', width: '40vw'
+			}
+		).afterClosed();
+	}
+	
+	public dateConflictDialog() {
+		return this.dialog.open(DateConflictDialogComponent, {
+			panelClass: 'responsive-dialog', width: '40vw',
+			height: '31vh'
+		}).afterClosed();
+	}
+	
+	public studentAssessmentDialog(data: any) {
+		return this.dialog.open(StudentAssessmentDialogComponent, {
+			panelClass: 'responsive-dialog',
+			width: '75vw',
+			height: '100vh',
+			data: data,
 			disableClose: true
-        }).afterClosed();
-    }
-
-    public gyanTransactionsDialog(data: any) {
-        return this.dialog.open(GyanTransactionsDialogComponent, {
-            panelClass: 'responsive-dialog',
-            width: '55vw',
-            height: '90vh',
-            data: data
-        }).afterClosed();
-    }
-
-    /**
-     * requestCommunityDialog
-     */
-    public requestCommunityDialog() {
-        return this.dialog.open(RequestCommunityDialogComponent, {
-            panelClass: 'responsive-dialog',
-            width: '40vw',
-            height: '50vh'
-        });
-    }
-
-    /**
-     * createScholarshipDialog
-     */
-    public createScholarshipDialog(data?: any) {
-        return this.dialog.open(ScholarshipDialogComponent, {
-            panelClass: 'responsive-dialog',
-            width: '55vw',
-            height: '75vh',
-            data: data ? data : {}
-        }).afterClosed();
-    }
-
-    /**
-     * generate
-     */
-    public generateKnowledgeStoryDialog(userId, inputs) {
-
-        const dialogRef5 = this.dialog.open(GenerateKnowledgeStoryComponent,
-            {
-                panelClass: 'responsive-dialog',
-                width: '55vw',
-                height: '75vh',
-            }
-        );
-        dialogRef5.componentInstance.searchUrl = inputs.searchTopicURL;
-        dialogRef5.componentInstance.title = inputs.title;
-        dialogRef5.componentInstance.minSelection = inputs.minSelection;
-        dialogRef5.componentInstance.maxSelection = inputs.maxSelection;
-        dialogRef5.componentInstance.suggestedTopics = inputs.suggestedTopics;
-        dialogRef5.componentInstance.data = {
-            searchUrl: inputs.searchTopicURL,
-            selected: [],
-            userId: userId
-        };
-
-        return dialogRef5.afterClosed();
-    }
-
-    public requestStoryDialog(userId, inputs) {
-
-        const dialogRef5 = this.dialog.open(RequestKnowledgeStoryComponent,
-            {
-                panelClass: 'responsive-dialog',
-                width: '55vw',
-                height: '80vh',
-            }
-        );
-        dialogRef5.componentInstance.searchUrl = inputs.searchTopicURL;
-        dialogRef5.componentInstance.title = inputs.title;
-        dialogRef5.componentInstance.minSelection = inputs.minSelection;
-        dialogRef5.componentInstance.maxSelection = inputs.maxSelection;
-        dialogRef5.componentInstance.suggestedTopics = inputs.suggestedTopics;
-        dialogRef5.componentInstance.data = {
-            searchUrl: inputs.searchTopicURL,
-            selected: [],
-            userId: userId
-        };
-
-        return dialogRef5.afterClosed();
-    }
-
-    public confirmPasswordDialog() {
-        const dialogRef5 = this.dialog.open(ConfirmPasswordDialogComponent,
-            {
-                panelClass: 'responsive-dialog',
-                width: '55vw',
-                height: '75vh',
-            }
-        );
-        return dialogRef5.afterClosed();
-    }
-
-    public addViewer() {
-        const dialogRef5 = this.dialog.open(AddViewerDialogComponent,
-            {
-                panelClass: 'responsive-dialog',
-                width: '55vw',
-                height: '75vh',
-            }
-        );
-        return dialogRef5.afterClosed();
-    }
-
-    public showGyanNotif(availableGyan: number, requiredGyan: number) {
-        const dialogRef5 = this.dialog.open(GyanPromptComponent,
-            {
-                panelClass: 'responsive-dialog',
-                width: '55vw',
-                data: {
-                    availableGyan: availableGyan,
-                    requiredGyan: requiredGyan
-                }
-            }
-        );
-        return dialogRef5.afterClosed();
-    }
-
-
-    public createCommunityDialog(data?: any) {
-        return this.dialog.open(AddCommunityDialogComponent, {
-            panelClass: 'responsive-dialog',
-            width: '80vw',
-            height: '75vh',
-            data: data ? data : {}
-        }).afterClosed();
-    }
+		}).afterClosed();
+	}
+	
+	public gyanTransactionsDialog(data: any) {
+		return this.dialog.open(GyanTransactionsDialogComponent, {
+			panelClass: 'responsive-dialog',
+			width: '55vw',
+			height: '90vh',
+			data: data
+		}).afterClosed();
+	}
+	
+	/**
+	 * requestCommunityDialog
+	 */
+	public requestCommunityDialog() {
+		return this.dialog.open(RequestCommunityDialogComponent, {
+			panelClass: 'responsive-dialog',
+			width: '40vw',
+			height: '50vh'
+		});
+	}
+	
+	/**
+	 * createScholarshipDialog
+	 */
+	public createScholarshipDialog(data?: any) {
+		return this.dialog.open(ScholarshipDialogComponent, {
+			panelClass: 'responsive-dialog',
+			width: '55vw',
+			height: '75vh',
+			data: data ? data : {}
+		}).afterClosed();
+	}
+	
+	/**
+	 * generate
+	 */
+	public generateKnowledgeStoryDialog(userId, inputs) {
+		
+		const dialogRef5 = this.dialog.open(GenerateKnowledgeStoryComponent,
+			{
+				panelClass: 'responsive-dialog',
+				width: '55vw',
+				height: '75vh',
+			}
+		);
+		dialogRef5.componentInstance.searchUrl = inputs.searchTopicURL;
+		dialogRef5.componentInstance.title = inputs.title;
+		dialogRef5.componentInstance.minSelection = inputs.minSelection;
+		dialogRef5.componentInstance.maxSelection = inputs.maxSelection;
+		dialogRef5.componentInstance.suggestedTopics = inputs.suggestedTopics;
+		dialogRef5.componentInstance.data = {
+			searchUrl: inputs.searchTopicURL,
+			selected: [],
+			userId: userId
+		};
+		
+		return dialogRef5.afterClosed();
+	}
+	
+	public requestStoryDialog(userId, inputs) {
+		
+		const dialogRef5 = this.dialog.open(RequestKnowledgeStoryComponent,
+			{
+				panelClass: 'responsive-dialog',
+				width: '55vw',
+				height: '80vh',
+			}
+		);
+		dialogRef5.componentInstance.searchUrl = inputs.searchTopicURL;
+		dialogRef5.componentInstance.title = inputs.title;
+		dialogRef5.componentInstance.minSelection = inputs.minSelection;
+		dialogRef5.componentInstance.maxSelection = inputs.maxSelection;
+		dialogRef5.componentInstance.suggestedTopics = inputs.suggestedTopics;
+		dialogRef5.componentInstance.data = {
+			searchUrl: inputs.searchTopicURL,
+			selected: [],
+			userId: userId
+		};
+		
+		return dialogRef5.afterClosed();
+	}
+	
+	public confirmPasswordDialog() {
+		const dialogRef5 = this.dialog.open(ConfirmPasswordDialogComponent,
+			{
+				panelClass: 'responsive-dialog',
+				width: '55vw',
+				height: '75vh',
+			}
+		);
+		return dialogRef5.afterClosed();
+	}
+	
+	public addViewer() {
+		const dialogRef5 = this.dialog.open(AddViewerDialogComponent,
+			{
+				panelClass: 'responsive-dialog',
+				width: '55vw',
+				height: '75vh',
+			}
+		);
+		return dialogRef5.afterClosed();
+	}
+	
+	public showGyanNotif(availableGyan: number, requiredGyan: number) {
+		const dialogRef5 = this.dialog.open(GyanPromptComponent,
+			{
+				panelClass: 'responsive-dialog',
+				width: '55vw',
+				data: {
+					availableGyan: availableGyan,
+					requiredGyan: requiredGyan
+				}
+			}
+		);
+		return dialogRef5.afterClosed();
+	}
+	
+	
+	public createCommunityDialog(data?: any) {
+		return this.dialog.open(AddCommunityDialogComponent, {
+			panelClass: 'responsive-dialog',
+			width: '80vw',
+			height: '75vh',
+			data: data ? data : {}
+		}).afterClosed();
+	}
 	
 	/**
 	 * Open dialog to view the list of participants
@@ -638,283 +642,283 @@ export class DialogsService {
 	 * @param chatRoomId
 	 * @returns {Observable<any>}
 	 */
-    public viewParticipantsDialog(participants: any, collectionId: string, userType?: string, chatRoomId?: string, calendars?: any) {
-        return this.dialog.open(ViewParticipantsComponent, {
-            data: {
-                participants: participants,
-                collectionId: collectionId,
-                userType: userType ? userType : '',
+	public viewParticipantsDialog(participants: any, collectionId: string, userType?: string, chatRoomId?: string, calendars?: any) {
+		return this.dialog.open(ViewParticipantsComponent, {
+			data: {
+				participants: participants,
+				collectionId: collectionId,
+				userType: userType ? userType : '',
 				chatRoomId: chatRoomId,
 				calendars: calendars
-            },
-            panelClass: 'responsive-dialog',
-            width: '45vw',
-            height: '100vh'
-        }).afterClosed();
-    }
-
-    public createAccreditationDialog(data?: any) {
-        return this.dialog.open(CreateAccreditationDialogComponent, {
-            panelClass: 'responsive-dialog',
-            width: '55vw',
-            height: '56vh',
-            data: data ? data : {}
-        }).afterClosed();
-    }
-
-    public viewFields(fieldsArray: Array<FormGroup>) {
-        return this.dialog.open(SelectFieldDialogComponent, {
-            panelClass: 'responsive-dialog',
-            width: '40vw',
-            height: '40vh',
-            data: fieldsArray
-        }).afterClosed();
-    }
-
-    public verifyCertificateDialog(data?: any) {
-        return this.dialog.open(CertificateVerificationComponent, {
-            panelClass: ['responsive-dialog', 'noScrollY'],
-            width: '45vw',
-            maxHeight: '90vh',
-            data: data ? data : {}
-        }).afterClosed();
-    }
-
-    public collectionStandardsDialog(type?: string) {
-        return this.dialog.open(CollectionStandardsDialogComponent, {
-            panelClass: 'responsive-dialog',
-            width: '55vw',
-            height: '56vh',
-            data: type ? type : null
-        }).afterClosed();
-    }
-
-    public termsAndConditionsDialog(type?: string) {
-        return this.dialog.open(TermsAndConditionsDialogComponent, {
-            panelClass: 'responsive-dialog',
-            width: '55vw',
-            height: '56vh',
-            data: type ? type : null
-        }).afterClosed();
-    }
-
-    public cancelCohortDialog(calendarId: string) {
-        const dialogRef = this.dialog.open(CancelCohortDialogComponent, {
-            data: calendarId,
-            panelClass: 'responsive-dialog', width: '30vw'
-        });
-
-        return dialogRef.afterClosed();
-    }
-
-    public addPromoCodeDialog(collectionId: string) {
-        const dialogRef = this.dialog.open(AddPromoCodeDialogComponent, {
-            data: { collectionId: collectionId },
-            panelClass: 'responsive-dialog',
-            width: '55vw',
-            height: '85vh'
-        });
-
-        return dialogRef.afterClosed();
-    }
-
-    public viewPromoCodeDialog(collectionId: string) {
-        const dialogRef = this.dialog.open(ViewPromocodeDialogComponent, {
-            data: collectionId,
-            panelClass: 'responsive-dialog',
-            width: '55vw',
-            height: '80vh'
-        });
-
-        return dialogRef.afterClosed();
-    }
-
-    public addParticipant(collectionId: string, calendarId?: string) {
-        const dialogRef = this.dialog.open(AddParticipantDialogComponent, {
-            data: { collectionId: collectionId, calendarId: calendarId },
-            panelClass: 'responsive-dialog',
-            width: '55vw',
-            height: '80vh'
-        });
-
-        return dialogRef.afterClosed();
-    }
-
-    public confirmDeleteAccount(userId: string) {
-        const dialogRef = this.dialog.open(ConfirmDeleteAccountComponent, {
-            data: userId,
-            panelClass: 'responsive-dialog',
-            width: '30vw',
-            height: '40vh'
-        });
-        return dialogRef.afterClosed();
-    }
-
-    public addImageDialog() {
-        const dialogRef = this.dialog.open(AddImageDialogComponent, {
-            panelClass: 'responsive-dialog',
-            width: '55vw',
-            height: '90vh'
-        });
-        return dialogRef.afterClosed();
-    }
-
-    public askQuestion() {
-        const dialogRef = this.dialog.open(AskQuestionDialogComponent, {
-            panelClass: 'responsive-dialog',
-            width: '55vw',
-            minHeight: '50vh',
-            maxHeight: '90vh'
-        });
-        return dialogRef.afterClosed();
-    }
-
-    public assessSubmissions(collectionId: string) {
-        const dialogRef = this.dialog.open(SubmissionReviewDialogComponent, {
-            data: collectionId,
-            panelClass: 'responsive-dialog',
-            width: '80vw',
-            minHeight: '50vh',
-            maxHeight: '90vh'
-        });
-        return dialogRef.afterClosed();
-    }
-
-    public winnersDialog(rewardData: any, collectionData: any) {
-        const dialogRef = this.dialog.open(WinnerDialogComponent, {
-            data: {
-                rewardData: rewardData,
-                collectionData: collectionData
-            },
-            panelClass: 'responsive-dialog',
-            width: '80vw',
-            maxHeight: '90vh'
-        });
-        return dialogRef.afterClosed();
-    }
-
-    /**
-     * showRSVP
-     */
-    public showRSVP(userType, content, attendies, collectionId) {
-        return this.dialog.open(ShowRSVPPopupComponent, {
-            data: {
-                userType: userType,
-                contentId: content.id,
-                attendies: attendies,
-                experience: collectionId
-            },
-            panelClass: 'responsive-dialog',
-            width: '45vw',
-            height: '90vh'
-        }).afterClosed();
-    }
-
-    /**
-     * onlineContentDialog
-     */
-    public onlineContentDialog(content: any, startDate: any, endDate: any, userType: string, collection: any, calendarId: string) {
-        return this.dialog.open(ContentOnlineDialogComponent, {
-            data: {
-                content: content,
-                startDate: startDate,
-                endDate: endDate,
-                userType: userType,
-                collectionId: collection.id,
-                collection: collection,
-                calendarId: calendarId
-            },
-            panelClass: 'responsive-dialog',
-            width: '45vw',
-            height: '100vh'
-        }).afterClosed();
-    }
-
-    /**
-     * quizContentDialog
-     */
-    public quizContentDialog(content: any, startDate: any, endDate: any, userType: string, collection: any,
-        calendarId: string, participants: Array<any>) {
-        return this.dialog.open(ContentQuizDialogComponent, {
-            data: {
-                content: content,
-                startDate: startDate,
-                endDate: endDate,
-                userType: userType,
-                collectionId: collection.id,
-                collection: collection,
-                calendarId: calendarId,
-                participants: participants
-            },
-            panelClass: 'responsive-dialog',
-            disableClose: true,
-            width: '45vw',
-            height: '100vh'
-        }).afterClosed();
-
-    }
-
-    /**
-     * videoContentDialog
-     */
-    public videoContentDialog(content: any, startDate: any, endDate: any, userType: string, collection: any,
-        calendarId: string) {
-        return this.dialog.open(ContentVideoDialogComponent, {
-            data: {
-                content: content,
-                startDate: startDate,
-                endDate: endDate,
-                userType: userType,
-                collectionId: collection.id,
-                collection: collection,
-                calendarId: calendarId
-            },
-            panelClass: 'responsive-dialog',
-            width: '45vw',
-            height: '100vh'
-        }).afterClosed();
-    }
-
-    public projectContentDialog(content: any, startDate: any, endDate: any, userType: string,
-        peerHasSubmission: boolean, collection: any, calendarId: string) {
-        return this.dialog.open(ContentProjectDialogComponent, {
-            data: {
-                content: content,
-                startDate: startDate,
-                endDate: endDate,
-                userType: userType,
-                peerHasSubmission: peerHasSubmission,
-                collectionId: collection.id,
-                collection: collection,
-                calendarId: calendarId
-            },
-            panelClass: 'responsive-dialog',
-            width: '45vw',
-            height: '100vh'
-        }).afterClosed();
-    }
-
-    public inPersonContentDialog(content: any, startDate: any, endDate: any, userType: string,
-        collection: any, calendarId: string, participants: Array<any>) {
-        return this.dialog.open(ContentInpersonDialogComponent, {
-            data: {
-                content: content,
-                startDate: startDate,
-                endDate: endDate,
-                userType: userType,
-                collectionId: collection.id,
-                collection: collection,
-                calendarId: calendarId,
-                participants: participants
-            },
-            panelClass: 'responsive-dialog',
-            width: '45vw',
-            height: '100vh'
-        }).afterClosed();
-    }
-
-    public closeAll() {
-        this.dialog.closeAll();
-    }
-
+			},
+			panelClass: 'responsive-dialog',
+			width: '45vw',
+			height: '100vh'
+		}).afterClosed();
+	}
+	
+	public createAccreditationDialog(data?: any) {
+		return this.dialog.open(CreateAccreditationDialogComponent, {
+			panelClass: 'responsive-dialog',
+			width: '55vw',
+			height: '56vh',
+			data: data ? data : {}
+		}).afterClosed();
+	}
+	
+	public viewFields(fieldsArray: Array<FormGroup>) {
+		return this.dialog.open(SelectFieldDialogComponent, {
+			panelClass: 'responsive-dialog',
+			width: '40vw',
+			height: '40vh',
+			data: fieldsArray
+		}).afterClosed();
+	}
+	
+	public verifyCertificateDialog(data?: any) {
+		return this.dialog.open(CertificateVerificationComponent, {
+			panelClass: ['responsive-dialog', 'noScrollY'],
+			width: '45vw',
+			maxHeight: '90vh',
+			data: data ? data : {}
+		}).afterClosed();
+	}
+	
+	public collectionStandardsDialog(type?: string) {
+		return this.dialog.open(CollectionStandardsDialogComponent, {
+			panelClass: 'responsive-dialog',
+			width: '55vw',
+			height: '56vh',
+			data: type ? type : null
+		}).afterClosed();
+	}
+	
+	public termsAndConditionsDialog(type?: string) {
+		return this.dialog.open(TermsAndConditionsDialogComponent, {
+			panelClass: 'responsive-dialog',
+			width: '55vw',
+			height: '56vh',
+			data: type ? type : null
+		}).afterClosed();
+	}
+	
+	public cancelCohortDialog(calendarId: string) {
+		const dialogRef = this.dialog.open(CancelCohortDialogComponent, {
+			data: calendarId,
+			panelClass: 'responsive-dialog', width: '30vw'
+		});
+		
+		return dialogRef.afterClosed();
+	}
+	
+	public addPromoCodeDialog(collectionId: string) {
+		const dialogRef = this.dialog.open(AddPromoCodeDialogComponent, {
+			data: { collectionId: collectionId },
+			panelClass: 'responsive-dialog',
+			width: '55vw',
+			height: '85vh'
+		});
+		
+		return dialogRef.afterClosed();
+	}
+	
+	public viewPromoCodeDialog(collectionId: string) {
+		const dialogRef = this.dialog.open(ViewPromocodeDialogComponent, {
+			data: collectionId,
+			panelClass: 'responsive-dialog',
+			width: '55vw',
+			height: '80vh'
+		});
+		
+		return dialogRef.afterClosed();
+	}
+	
+	public addParticipant(collectionId: string, calendarId?: string) {
+		const dialogRef = this.dialog.open(AddParticipantDialogComponent, {
+			data: { collectionId: collectionId, calendarId: calendarId },
+			panelClass: 'responsive-dialog',
+			width: '55vw',
+			height: '80vh'
+		});
+		
+		return dialogRef.afterClosed();
+	}
+	
+	public confirmDeleteAccount(userId: string) {
+		const dialogRef = this.dialog.open(ConfirmDeleteAccountComponent, {
+			data: userId,
+			panelClass: 'responsive-dialog',
+			width: '30vw',
+			height: '40vh'
+		});
+		return dialogRef.afterClosed();
+	}
+	
+	public addImageDialog() {
+		const dialogRef = this.dialog.open(AddImageDialogComponent, {
+			panelClass: 'responsive-dialog',
+			width: '55vw',
+			height: '90vh'
+		});
+		return dialogRef.afterClosed();
+	}
+	
+	public askQuestion() {
+		const dialogRef = this.dialog.open(AskQuestionDialogComponent, {
+			panelClass: 'responsive-dialog',
+			width: '55vw',
+			minHeight: '50vh',
+			maxHeight: '90vh'
+		});
+		return dialogRef.afterClosed();
+	}
+	
+	public assessSubmissions(collectionId: string) {
+		const dialogRef = this.dialog.open(SubmissionReviewDialogComponent, {
+			data: collectionId,
+			panelClass: 'responsive-dialog',
+			width: '80vw',
+			minHeight: '50vh',
+			maxHeight: '90vh'
+		});
+		return dialogRef.afterClosed();
+	}
+	
+	public winnersDialog(rewardData: any, collectionData: any) {
+		const dialogRef = this.dialog.open(WinnerDialogComponent, {
+			data: {
+				rewardData: rewardData,
+				collectionData: collectionData
+			},
+			panelClass: 'responsive-dialog',
+			width: '80vw',
+			maxHeight: '90vh'
+		});
+		return dialogRef.afterClosed();
+	}
+	
+	/**
+	 * showRSVP
+	 */
+	public showRSVP(userType, content, attendies, collectionId) {
+		return this.dialog.open(ShowRSVPPopupComponent, {
+			data: {
+				userType: userType,
+				contentId: content.id,
+				attendies: attendies,
+				experience: collectionId
+			},
+			panelClass: 'responsive-dialog',
+			width: '45vw',
+			height: '90vh'
+		}).afterClosed();
+	}
+	
+	/**
+	 * onlineContentDialog
+	 */
+	public onlineContentDialog(content: any, startDate: any, endDate: any, userType: string, collection: any, calendarId: string) {
+		return this.dialog.open(ContentOnlineDialogComponent, {
+			data: {
+				content: content,
+				startDate: startDate,
+				endDate: endDate,
+				userType: userType,
+				collectionId: collection.id,
+				collection: collection,
+				calendarId: calendarId
+			},
+			panelClass: 'responsive-dialog',
+			width: '45vw',
+			height: '100vh'
+		}).afterClosed();
+	}
+	
+	/**
+	 * quizContentDialog
+	 */
+	public quizContentDialog(content: any, startDate: any, endDate: any, userType: string, collection: any,
+							 calendarId: string, participants: Array<any>) {
+		return this.dialog.open(ContentQuizDialogComponent, {
+			data: {
+				content: content,
+				startDate: startDate,
+				endDate: endDate,
+				userType: userType,
+				collectionId: collection.id,
+				collection: collection,
+				calendarId: calendarId,
+				participants: participants
+			},
+			panelClass: 'responsive-dialog',
+			disableClose: true,
+			width: '45vw',
+			height: '100vh'
+		}).afterClosed();
+		
+	}
+	
+	/**
+	 * videoContentDialog
+	 */
+	public videoContentDialog(content: any, startDate: any, endDate: any, userType: string, collection: any,
+							  calendarId: string) {
+		return this.dialog.open(ContentVideoDialogComponent, {
+			data: {
+				content: content,
+				startDate: startDate,
+				endDate: endDate,
+				userType: userType,
+				collectionId: collection.id,
+				collection: collection,
+				calendarId: calendarId
+			},
+			panelClass: 'responsive-dialog',
+			width: '45vw',
+			height: '100vh'
+		}).afterClosed();
+	}
+	
+	public projectContentDialog(content: any, startDate: any, endDate: any, userType: string,
+								peerHasSubmission: boolean, collection: any, calendarId: string) {
+		return this.dialog.open(ContentProjectDialogComponent, {
+			data: {
+				content: content,
+				startDate: startDate,
+				endDate: endDate,
+				userType: userType,
+				peerHasSubmission: peerHasSubmission,
+				collectionId: collection.id,
+				collection: collection,
+				calendarId: calendarId
+			},
+			panelClass: 'responsive-dialog',
+			width: '45vw',
+			height: '100vh'
+		}).afterClosed();
+	}
+	
+	public inPersonContentDialog(content: any, startDate: any, endDate: any, userType: string,
+								 collection: any, calendarId: string, participants: Array<any>) {
+		return this.dialog.open(ContentInpersonDialogComponent, {
+			data: {
+				content: content,
+				startDate: startDate,
+				endDate: endDate,
+				userType: userType,
+				collectionId: collection.id,
+				collection: collection,
+				calendarId: calendarId,
+				participants: participants
+			},
+			panelClass: 'responsive-dialog',
+			width: '45vw',
+			height: '100vh'
+		}).afterClosed();
+	}
+	
+	public closeAll() {
+		this.dialog.closeAll();
+	}
+	
 }

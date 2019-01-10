@@ -107,6 +107,7 @@ import { ContentProjectComponent } from './content-views/content-project/content
 import { ContentQuizComponent } from './content-views/content-quiz/content-quiz.component';
 import { ContentVideoComponent } from './content-views/content-video/content-video.component';
 import { MatVideoModule } from 'mat-video';
+import { TypeMapPipe } from './typemap-pipe/typemap.pipe';
 
 @NgModule({
     imports: [
@@ -182,7 +183,8 @@ import { MatVideoModule } from 'mat-video';
         ContentOnlineComponent,
         ContentProjectComponent,
         ContentQuizComponent,
-        ContentVideoComponent
+        ContentVideoComponent,
+        TypeMapPipe
     ],
     providers: [
         CollectionService,
@@ -266,6 +268,7 @@ import { MatVideoModule } from 'mat-video';
         ConvertCurrencyPipe,
         KarmaBalancePipe,
         ConvertCryptoPipe,
+		TypeMapPipe,
         ShortNumberPipe,
         TrimPipe,
         TextIconCarouselComponent,

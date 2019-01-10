@@ -1893,6 +1893,10 @@ mat-datepicker-toggle.disableMD, mat-datepicker-toggle.disableMD button, mat-dat
 	box-shadow: none !important;
 }
 
+.cdk-overlay-dark-backdrop {
+	background: rgba(0,0,0,0.888) !important;
+}
+
 .filterRow {
 	margin-top: -60px;
 	margin-left: -12%;

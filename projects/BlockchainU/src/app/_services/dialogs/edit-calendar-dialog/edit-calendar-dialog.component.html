@@ -6,7 +6,7 @@
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<div class="col-md-5">
-				<h3 mat-dialog-title>Add more cohorts to your {{ duration }} day {{collection.type}}</h3>
+				<h3 mat-dialog-title>Add more cohorts to your {{ duration }} day {{collection.type | typeMap}}</h3>
 				<div>
 					<span>You have
 						<b>{{calendars.length}}</b> existing cohorts.
@@ -21,7 +21,7 @@
 						<b>{{ recurringCount }}</b> new cohorts</label>
 				</div>
 				<div style="margin-top:5px">
-					<label>Your {{collection.type}} will run for
+					<label>Your {{collection.type | typeMap }} will run for
 						<b>{{ totalRunningDays }}</b> of the next
 						<b>{{nextDays}}</b> days</label>
 				</div>
@@ -34,7 +34,7 @@
 					<div class="leftContent">
 						<p class="mat-caption" *ngIf="calendars.length === 1">
 							<mat-icon style="vertical-align:sub;font-size: 16px;">info</mat-icon>
-							The first cohort was automatically created when this {{collection.type}} was approved. You can add more cohorts to your {{collection.type}} at any time.
+							The first cohort was automatically created when this {{collection.type | typeMap}} was approved. You can add more cohorts to your {{collection.type}} at any time.
 						</p>
 						<br>
 						<label *ngIf="calendars.length > 0">After your last existing cohort ends, the next cohort starts...</label>
@@ -109,7 +109,7 @@
 							<div class="margin-top-30 flex-column conflictContainer" *ngIf="computedConflict.length > 0">
 								<h3>We have detected some calendar conflicts</h3>
 								<div>
-									<label>{{computedConflict.length}} of your {{collection.type}} activities will have conflicts
+									<label>{{computedConflict.length}} of your {{collection.type | typeMap}} activities will have conflicts
 									       with
 										<br/> existing calendar events.</label>
 								</div>
@@ -164,7 +164,7 @@
 						</div>
 						<div class="button-bar">
 							<span matTooltip="Select options or solve all date conflicts before adding these cohorts" [matTooltipDisabled]="recurringCount !== 0 && (computedConflict.length <= 0 || acceptConflicts)">
-								<button mat-raised-button color="primary" (click)="saveCalendar()" matTooltip="Please resolve all conflicts before adding new cohorts" [matTooltipDisabled]="computedConflict.length === 0 || acceptConflicts" [disabled]="recurringCount == 0 || (computedConflict.length > 0 && !acceptConflicts)">Add these cohorts to my {{collection.type}}</button>
+								<button mat-raised-button color="primary" (click)="saveCalendar()" matTooltip="Please resolve all conflicts before adding new cohorts" [matTooltipDisabled]="computedConflict.length === 0 || acceptConflicts" [disabled]="recurringCount == 0 || (computedConflict.length > 0 && !acceptConflicts)">Add these cohorts to my {{collection.type | typeMap}}</button>
 							</span>
 						</div>
 					</div>

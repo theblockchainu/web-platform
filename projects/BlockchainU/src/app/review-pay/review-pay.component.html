@@ -5,7 +5,7 @@
 			<div class="col-md-offset-1 col-sm-6">
 				<div class="mat-caption margin-bottom-20">
 					<a [routerLink]="['/', collection.type, collection.id]"><i class="fa fa-arrow-left"></i> Return to
-						{{collection.type}}
+						{{collection.type | typeMap}}
 						page
 					</a>
 				</div>
@@ -13,7 +13,7 @@
 				<div class="seperate-section margin-bottom-20">
 					<div class="fw-bold margin-bottom-10">Student requirements / prerequisites</div>
 					<div class="text-grey" *ngIf="collection.difficultyLevel && collection.difficultyLevel.length > 0">
-						<b>This {{collection.type}} is of {{collection.difficultyLevel}} level.</b>
+						<b>This {{collection.type | typeMap}} is of {{collection.difficultyLevel}} level.</b>
 					</div>
 					<div class="text-grey margin-top-10 pre-wrapped" *ngIf="collection.notes && collection.notes.length > 0">
 						<div [innerHTML]="collection.notes | shorten: maxLength : '... ' | linkify "></div>
@@ -209,7 +209,7 @@
 						</div>
 						<button mat-raised-button (click)="joinCollection()" color="primary" type="submit" class="text-center payButton"
 						 *ngIf="!totalPrice || totalPrice===0 ">FREE
-							- Join {{collection.type | ucwords}}</button>
+							- Join {{collection.type | typeMap | ucwords}}</button>
 					</div>
 					<!--Saving data progressbar-->
 					<div class="display-inline-block margin-top-10 margin-bottom-10" *ngIf="savingData">
@@ -230,7 +230,7 @@
 						<a href="https://stripe.com" target="_blank">Stripe</a>
 					</div>
 					<div class="terms-text margin-top-20" *ngIf="collection.academicGyan">
-						<div class="terms-title">Your participation in this {{collection.type}} is eligible for a <a href="https://one0x.com"
+						<div class="terms-title">Your participation in this {{collection.type | typeMap}} is eligible for a <a href="https://one0x.com"
 							 target="_blank">one0x</a> backed Smart Certificate on the Blockchain.</div>
 					</div>
 
@@ -248,7 +248,7 @@
 								<div class="fs-17 clickable" [routerLink]="['/', collection.type, collection.id]">{{ collection.title |
 									titlecase}}
 									<br>
-									<span class="fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type }}
+									<span class="fs-15 text-grey">{{totalDuration | i18nPlural : hourMapping}} {{ collection.type | typeMap }}
 									</span>
 									<br>
 									<span class="fs-14 text-grey" *ngIf="collection.owners && collection.owners.length > 0">taught by

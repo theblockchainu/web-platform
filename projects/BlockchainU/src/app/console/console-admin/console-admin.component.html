@@ -31,7 +31,7 @@
 											</div>
 											<br />
 											<div class="mat-body-2 collectionTitle">
-												{{collection.type | ucfirst}}
+												{{collection.type | typeMap | ucwords}}
 											</div>
 											<div class="cohortDate" style="padding-top: 10px" *ngIf="collection.calendars && collection.calendars[0]">
 												<span>{{collection.calendars[0].startDate |extractTime:'Do MMM'}} - {{ collection.calendars[0].endDate |extractTime:'Do MMM' }}</span>
@@ -50,10 +50,10 @@
 												Delete
 											</button>
 											<button *ngIf="collection.type ==='class'" mat-menu-item [routerLink]="['/class/'+collection.id]">
-												View Class
+												View {{collection.type | typeMap | ucwords}}
 											</button>
 											<button *ngIf="collection.type ==='experience'" mat-menu-item [routerLink]="['/experience/'+collection.id]">
-												View Workshop
+												View {{collection.type | typeMap | ucwords}}
 											</button>
 										</mat-menu>
 										<mat-card-footer class="cardFooter" style="line-height: 30px">
@@ -74,7 +74,7 @@
 											</div>
 											<br />
 											<div class="mat-body-2 collectionTitle clickable">
-												Peer {{collection.type | ucfirst}}
+												Peer {{collection.type | typeMap | ucwords}}
 											</div>
 											<br>
 											<div class="clickable" (click)="_profileService.viewProfile(collection.owners[0])">{{collection.owners[0].profiles[0].first_name}}

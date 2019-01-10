@@ -167,9 +167,7 @@
 								<div style="text-align: center">
 									<div class="pull-left">
 										<mat-chip-list class="cardTypeChip">
-											<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'class'">Class</mat-chip>
-											<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">Workshop</mat-chip>
-											<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">Session</mat-chip>
+											<mat-chip class="smallChip" [color]="'accent'">{{collection.type | typeMap | ucwords}}</mat-chip>
 										</mat-chip-list>
 									</div>
 								</div>
@@ -259,9 +257,7 @@
 								<div style="text-align: center">
 									<div class="pull-left">
 										<mat-chip-list class="cardTypeChip">
-											<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'class'">Class</mat-chip>
-											<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">Workshop</mat-chip>
-											<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">Session</mat-chip>
+											<mat-chip class="smallChip" [color]="'accent'">{{collection.type | typeMap | ucwords}}</mat-chip>
 										</mat-chip-list>
 									</div>
 								</div>
@@ -448,9 +444,7 @@
 							<div style="text-align: center">
 								<div class="pull-left">
 									<mat-chip-list class="cardTypeChip">
-										<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'class'">Class</mat-chip>
-										<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">Workshop</mat-chip>
-										<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">Session</mat-chip>
+										<mat-chip class="smallChip" [color]="'accent'">{{collection.type | typeMap | ucwords}}</mat-chip>
 									</mat-chip-list>
 								</div>
 							</div>
@@ -521,10 +515,10 @@
 						</mat-card-content>
 						<mat-menu #ongoingCardMenu>
 							<button mat-menu-item (click)="cancelCollection(collection)">
-								Cancel {{collection.type | ucwords}}
+								Cancel {{collection.type | typeMap | ucwords}}
 							</button>
 							<button mat-menu-item (click)="_collectionService.openEditCollection(collection)">
-								Edit {{collection.type | ucwords}}
+								Edit {{collection.type | typeMap | ucwords}}
 							</button>
 						</mat-menu>
 						<mat-card-actions *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).hasStarted">
@@ -551,9 +545,7 @@
 							<div style="text-align: center">
 								<div class="pull-left">
 									<mat-chip-list class="cardTypeChip">
-										<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'class'">Class</mat-chip>
-										<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'experience'">Workshop</mat-chip>
-										<mat-chip class="smallChip" [color]="'accent'" *ngIf="collection.type == 'session'">Session</mat-chip>
+										<mat-chip class="smallChip" [color]="'accent'">{{collection.type | typeMap | ucwords}}</mat-chip>
 									</mat-chip-list>
 								</div>
 							</div>
@@ -608,7 +600,7 @@
 						</mat-card-actions>
 						<mat-card-footer class="cardFooter" style="line-height: 30px; position: absolute;bottom: 24px;width: 100%;left: 24px;">
 							<a style="font-size: 1.077rem" (click)="_collectionService.viewCollection(collection)">Is this a recurring
-								{{collection.type}}?</a>
+								{{collection.type | typeMap}}?</a>
 						</mat-card-footer>
 					</mat-card>
 				</div>

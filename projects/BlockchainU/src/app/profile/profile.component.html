@@ -414,7 +414,7 @@
 									</div>
 									<div class="col-md-12 margin-top-10  margin-bottom-20" *ngIf="(availablePaidPackages.length>0 || availableTrialPackages.length > 0) && urluserId !== cookieUserId">
 										<hr>
-										<a class="clickable mat-body-2 bookSessionButton" (click)="bookSession()">Book A Session</a>
+										<a class="clickable mat-body-2 bookSessionButton" (click)="bookSession()">Book A Mentor Session</a>
 										<hr>
 									</div>
 									<div class="col-md-12 margin-top-10  margin-bottom-20" *ngIf="(availablePaidPackages.length>0 || availableTrialPackages.length > 0) && urluserId === cookieUserId">
@@ -424,13 +424,13 @@
 									</div>
 									<div *ngIf="availablePaidPackages.length === 0 && availableTrialPackages.length === 0">
 										<div class="col-md-12 emptySectionText lightText margin-top-30" style="padding-left: 15px;">
-											<span>{{profileObj.first_name | ucwords}}'s profile has not yet been approved for peer sessions
+											<span>{{profileObj.first_name | ucwords}}'s profile has not yet been approved for mentor sessions
 											</span>
 										</div>
 									</div>
 								</div>
 							</mat-tab>
-							 <mat-tab label="Classes" style="min-width: min-content !important;">
+							 <mat-tab label="Online Courses" style="min-width: min-content !important;">
 								<div class="row" style="padding-left: 5px;">
 									<div *ngIf="upcomingClasses.length>0">
 										<div class="col-xs-12 mat-subheading-2 margin-top-20">
@@ -456,7 +456,7 @@
 										</div>
 										<div class="col-xs-12 margin-top-10 center">
 											<hr>
-											<a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openCollectionGrid('Upcoming Classes to be taught', upcomingClasses)">View all</a>
+											<a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openCollectionGrid('Upcoming online courses to be taught', upcomingClasses)">View all</a>
 											<hr>
 										</div>
 									</div>
@@ -518,12 +518,12 @@
 									</div>
 									<div *ngIf="upcomingClasses.length === 0 && ongoingClasses.length === 0 && pastClasses.length === 0">
 										<div class="col-md-12 emptySectionText lightText" style="padding-left: 15px;">
-											<span>{{profileObj.first_name | ucwords}} has not started his teaching journey on The Blockchain University</span>
+											<span>{{profileObj.first_name | ucwords}} has not started teaching Online Courses on Blockchain University</span>
 										</div>
 									</div>
 								</div>
 							</mat-tab>
-							<mat-tab label="Experiences" style="min-width: min-content !important;">
+							<mat-tab label="In-person Workshops" style="min-width: min-content !important;">
 								<div class="row" style="padding-left: 5px;">
 									<div *ngIf="upcomingExperiences.length>0">
 										<div class="col-xs-12 mat-subheading-2 margin-top-20">
@@ -605,13 +605,13 @@
 										</div>
 										<div class="col-xs-12 margin-top-10  margin-bottom-20 center">
 											<hr>
-											<a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openCollectionGrid('Workshops taught in the past',pastExperiences)">View all</a>
+											<a class="clickable" style="font-size:0.99rem;color:rgba(0,0,0,0.87);font-weight:400" (click)="openCollectionGrid('In-person workshops taught in the past',pastExperiences)">View all</a>
 											<hr>
 										</div>
 									</div>
 									<div *ngIf="upcomingExperiences.length === 0 && ongoingExperiences.length === 0 && pastExperiences.length === 0">
 										<div class="col-md-12 emptySectionText lightText" style="padding-left: 15px;">
-											<span>{{profileObj.first_name | ucwords}} has not started his teaching journey on The Blockchain University</span>
+											<span>{{profileObj.first_name | ucwords}} has not started teaching in-person workshops at Blockchain University</span>
 										</div>
 									</div>
 								</div>
@@ -682,7 +682,7 @@
 				</div>
 			</div>
 		</div>-->
-		<div class="row bottom-panel margin-top-30" *ngIf="!loadingKnowledgeStories && !loadingProfile && knowledgeStories.length > 0">
+		<div class="row bottom-panel margin-top-30" *ngIf="!loadingKnowledgeStories && !loadingProfile && (knowledgeStories.length > 0 || urlUserId === cookieUserId)">
 			<hr class="col-md-10 col-md-offset-1 margin-bottom-30">
 			<div class="col-md-offset-1 col-md-10">
 				<div class="row">
@@ -734,7 +734,7 @@
 			<div class="col-md-offset-1 col-md-10" *ngIf="(!pariticipatingCommunities && cookieUserId === urluserId) || (pariticipatingCommunities && pariticipatingCommunities.length > 0)">
 				<div class="row">
 					<div class="col-md-8">
-						<span class="mat-title">Communities</span>
+						<span class="mat-title">Communities Joined</span>
 					</div>
 				</div>
 				<div class="row feed-horizontal margin-top-20" style="padding: 0px 7px;">
@@ -769,7 +769,7 @@
 			</div>
 		</div>
 		<div class="bottomButton" (click)="bookSession()" *ngIf="isTeacher && (availableTrialPackages.length > 0 || availablePaidPackages.length > 0)">
-			Book Session
+			Book Mentor Session
 		</div>
 	</div>
 </div>
