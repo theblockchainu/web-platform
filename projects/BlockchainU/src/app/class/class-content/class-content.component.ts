@@ -126,14 +126,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 		const body = collection;
 		this._collectionService.patchCollection(collection.id, body).subscribe(
 			(response: any) => {
-				// const result = response;
-				// let collectionId;
-				// if (result.isNewInstance) {
-				// 	collectionId = result.id;
-				// 	this.reload(collectionId, 16);
-				// } else {
-				// 	window.location.reload();
-				// }
+				// Do something here
 			});
 	}
 	
@@ -289,16 +282,9 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 								if (resp1.status === 200) {
 									contentGroup.controls.pending.setValue(false);
 								}
-								// if (collectionId) {
-								// 	this.reload(collectionId, 16);
-								// }
 							})
 						;
 					}
-					
-					// if (collectionId) {
-					// 	this.reload(collectionId, 16);
-					// }
 				}
 			);
 	}
@@ -370,9 +356,6 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 								if (resp1.status === 200) {
 									contentGroup.controls.pending.setValue(false);
 								}
-								// if (collectionId) {
-								// 	this.reload(collectionId, 16);
-								// }
 							});
 					}
 				}
@@ -381,24 +364,16 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 	
 	deleteContent(eventIndex, index) {
 		const itenaryObj = this.myForm.value.itenary[index];
-		const scheduleDate = itenaryObj.date;
-		let collectionId;
-		if (eventIndex !== undefined) {
+		if (eventIndex !== undefined && itenaryObj.contents[eventIndex] !== undefined) {
 			const contentObj = itenaryObj.contents[eventIndex];
 			const contentId = contentObj.id;
 			this.http.delete(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + contentId, this.requestHeaderService.options)
 				.subscribe((response: any) => {
 					if (response !== null) {
-						const result = response;
-						// if (result.isNewInstance) {
-						// 	collectionId = result.id;
-						// 	this.reload(collectionId, 16);
-						// } else {
-							const itenary = <FormArray>this.myForm.controls.itenary;
-							const form = <FormGroup>itenary.controls[index];
-							const contentsArray = <FormArray>form.controls.contents;
-							contentsArray.removeAt(eventIndex);
-						// }
+						const itenary = <FormArray>this.myForm.controls.itenary;
+						const form = <FormGroup>itenary.controls[index];
+						const contentsArray = <FormArray>form.controls.contents;
+						contentsArray.removeAt(eventIndex);
 					} else {
 						const itenary = <FormArray>this.myForm.controls.itenary;
 						const form = <FormGroup>itenary.controls[index];
@@ -411,17 +386,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 			contentArray.forEach(content => {
 				this.http.delete(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents/' + content.id, this.requestHeaderService.options)
 					.subscribe((response: any) => {
-						if (response !== null) {
-							const result = response;
-							// if (result && result.isNewInstance) {
-							// 	collectionId = result.id;
-							// 	this.reload(collectionId, 16);
-							// } else {
-								const itenary = <FormArray>this.myForm.controls.itenary;
-							// }
-						} else {
-							const itenary = <FormArray>this.myForm.controls.itenary;
-						}
+						// Do something here
 					});
 			});
 		}
