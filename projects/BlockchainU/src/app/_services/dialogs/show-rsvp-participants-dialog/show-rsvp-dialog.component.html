@@ -23,9 +23,9 @@
         </div>
         <div *ngIf="data.attendies.length > 0">
             <div class="row margin-bottom-20" style="margin-top: -10px">
-                <div class="mat-body-2 col-md-8">Students</div>
-                <div *ngIf="data.userType === 'teacher'" class="mat-body-2 col-md-2">Present</div>
+                <div class="mat-body-2 col-md-8">Participants</div>
                 <div *ngIf="data.userType === 'teacher'" class="mat-body-2 col-md-2">Absent</div>
+	            <div *ngIf="data.userType === 'teacher'" class="mat-body-2 col-md-2">Present</div>
                 <div class="col-md-12">
                     <hr>
                 </div>
@@ -34,20 +34,20 @@
                 <div class="row" *ngFor="let attendie of data.attendies">
                     <div *ngIf="attendie.profiles">
                         <div class="col-md-8">
-                            <div class="row">
+                            <div class="row margin-bottom-10">
                                 <div class="col-md-2 vcenter">
-                                    <img src="{{envVariable.apiUrl+attendie.profiles[0].picture_url}}/100" style="margin-left: 0px;" class="circle-thumb" alt="dp" (error)="_collectionService.imgErrorHandler($event)">
+	                                <app-profile-popup [peer]="attendie"></app-profile-popup>
                                 </div>
                                 <div class="col-md-9 vcenter">
                                     <b>{{attendie.profiles[0].first_name +' '+ attendie.profiles[0].last_name | ucwords }}</b>
                                     <br/>
-                                    <span *ngIf="attendie.profiles[0].headline">{{attendie.profiles[0].headline | ucwords}}</span>
+                                    <span class="mat-caption" *ngIf="attendie.profiles[0].headline">{{attendie.profiles[0].headline | ucwords}}</span>
                                 </div>
                             </div>
                         </div>
                         <mat-radio-group>
                             <div class="col-md-2">
-                                <mat-radio-button *ngIf="data.userType === 'teacher'" value="0" (click)="markPresence(attendie, 0)" [checked]="attendie.isPresent ===false" color="primary"></mat-radio-button>
+                                <mat-radio-button *ngIf="data.userType === 'teacher'" value="0" (click)="markPresence(attendie, 0)" [checked]="attendie.isPresent === false" color="primary"></mat-radio-button>
                             </div>
                             <div class="col-md-2">
                                 <mat-radio-button *ngIf="data.userType === 'teacher'" value="1" class="col-md-offset-5" (click)="markPresence(attendie, 1)" [checked]="attendie.isPresent === true" color="primary"></mat-radio-button>

@@ -38,6 +38,7 @@ export class ContentInpersonComponent implements OnInit {
 		private _commentService: CommentService,
 		private _cookieUtilsService: CookieUtilsService,
 		private contentService: ContentService,
+		private _dialogsService: DialogsService,
 		private router: Router,
 	) {
 	}
@@ -234,8 +235,8 @@ export class ContentInpersonComponent implements OnInit {
 			});
 		}
 		attendies = _.filter(attendies, function (o) { return o.hasRSVPd; });
-		// TODO: view all RSVPs for this content
-
+		this._dialogsService.showRSVP(userType, content, attendies, this.collectionId)
+			.subscribe((result: any) => {});
 	}
 
 	public getDirections(content) {
