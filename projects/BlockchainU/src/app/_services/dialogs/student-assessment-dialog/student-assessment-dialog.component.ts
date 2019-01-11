@@ -47,6 +47,10 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 	}
 	
 	ngAfterViewInit() {
+		this.initializeTemplate();
+	}
+	
+	private initializeTemplate() {
 		this.fetchingFromBlockchain = true;
 		// Get ethereum data
 		this.getEthereumInfo()
@@ -80,6 +84,7 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 			participant.isOnEthereum = false;
 			participant.isScholarshipOnEthereum = false;
 			participant.savingOnEthereum = false;
+			participant.certificateStatus = 'new';
 			
 			// Check participation on blockchain
 			participant.hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
@@ -91,11 +96,13 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 						if (certificateData.collection !== undefined && certificateData.collection.id === this.data.collection.id) {
 							participant.hasCertificate = true;
 							participant.certificateId = certificate.id;
+							participant.certificateStatus = certificate.status;
 						}
 					} else if (certificate && certificate.stringifiedJSONWithoutSignature && certificate.stringifiedJSONWithoutSignature.length > 0) {
 						const certificateNonSignedData = JSON.parse(certificate.stringifiedJSONWithoutSignature);
 						if (certificateNonSignedData.collection !== undefined && certificateNonSignedData.collection.id === this.data.collection.id) {
 							participant.certificateId = certificate.id;
+							participant.certificateStatus = certificate.status;
 						}
 					}
 				});
@@ -158,6 +165,7 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 					savingOnEthereum: participant.savingOnEthereum,
 					hasCertificate: participant.hasCertificate,
 					certificateId: participant.certificateId,
+					certificateStatus: participant.certificateStatus,
 					assessmentId: participantAssessmentId,
 					ethAddress: participant.ethAddress
 				})
@@ -267,7 +275,7 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 				if (res) {
 					this.snackBar.open('Your certificate re-issue request has been accepted. Certificate will be shared over email soon.', 'OK', {duration: 5000});
 					this.data.participants[index].certificates.push(res);
-					this.loadData();
+					this.initializeTemplate();
 				} else {
 					this.snackBar.open('Error occurred. Try again later.', 'OK', {duration: 5000});
 				}

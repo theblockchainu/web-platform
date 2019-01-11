@@ -39,15 +39,11 @@
 							<div class="col-xs-3 vcenter">
 								<span *ngIf="participant.value.isOnEthereum && !participant.value.savingOnEthereum" matTooltip="Verified participation by one0x : {{participant.value.ethAddress}}"
 								      style="position: relative; top: 0px; padding-left: 5px; padding-right: 5px;">&emsp;
-									<i class="fa fa-globe" style="color: #ff6d71; font-size: 14px;"></i>
+									<mat-icon style="color: #33bd9e; font-size: 5px;"></mat-icon>
 								</span>
-								<!--<span *ngIf="participant.value.isScholarshipOnEthereum && !participant.value.savingOnEthereum" matTooltip="Verified global scholarship participation by one0x"
-								      style="position: relative; top: 0px; padding-left: 5px; padding-right: 5px;">&emsp;
-									<i class="fa fa-globe" style="color: #ff6d71; font-size: 14px;"></i>
-								</span>-->
 								<span class="clickable" *ngIf="!participant.value.isOnEthereum && !participant.value.savingOnEthereum" matTooltip="Failed participation on blockchain : {{participant.value.ethAddress}}. Click to retry participation."
 								      style="position: relative; top: 0px; padding-left: 5px; padding-right: 5px;" (click)="addParticipantToBlockchain(participant)">&emsp;
-									<i class="fa fa-refresh" style="color: #33bd9e; font-size: 14px;"></i>
+									<mat-icon style="color: #ff6d71; font-size: 5px;"></mat-icon>
 								</span>
 								<div *ngIf="participant.value.savingOnEthereum" matTooltip="Adding participant information to one0x blockchain...">&emsp;
 									<ngx-loading style="position: relative; top: 15px; left: -8px;" [show]="true"></ngx-loading>
@@ -117,11 +113,11 @@
 							</div>
 						</div>
 						<div class="row" *ngIf="participant.value.isAssessed">
-							<div class="col-sm-12 primaryColor mat-body-2" *ngIf="participant.value.hasCertificate">
+							<div class="col-sm-12 primaryColor mat-body-2" *ngIf="participant.value.hasCertificate && participant.value.certificateStatus === 'successBlockchain'">
 								<mat-icon [color]="'primary'" style="position: relative; top: 7px; padding-right: 5px;">check_circle</mat-icon> Smart Certificate Issued
 							</div>
-							<div class="col-sm-12 accentColor mat-body-2" *ngIf="!participant.value.hasCertificate">
-								<mat-icon style="position: relative; top: 7px; padding-right: 5px;">error</mat-icon> Smart Certificate Failed
+							<div class="col-sm-12 accentColor mat-body-2" *ngIf="!participant.value.hasCertificate" matTooltip="Status: {{participant.value.certificateStatus}}">
+								<mat-icon style="position: relative; top: 7px; padding-right: 5px;">error</mat-icon> Failed to send email
 							</div>
 							<div class="col-sm-12 margin-top-20" *ngIf="participant.value.hasCertificate">
 								<button [disabled]="loadingHttp" mat-button class="mat-border-button" (click)="openCertificate(participant.value.certificateId)">View Certificate</button>
