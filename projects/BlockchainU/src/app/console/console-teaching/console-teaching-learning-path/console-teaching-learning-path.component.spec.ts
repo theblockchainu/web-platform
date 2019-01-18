@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {ConsoleTeachingLearningPathComponent} from './console-teaching-learning-path.component';
 
-import { ConsoleTeachingLearningPathComponent } from './console-teaching-learningPath.component';
 
 describe('ConsoleTeachingLearningPathComponent', () => {
   let component: ConsoleTeachingLearningPathComponent;

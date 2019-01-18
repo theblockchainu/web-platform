@@ -6,16 +6,18 @@ import { RequestHeaderService } from '../requestHeader/request-header.service';
 import { CookieUtilsService } from '../cookieUtils/cookie-utils.service';
 import { environment } from '../../../environments/environment';
 import * as moment from 'moment';
+import {UcWordsPipe} from 'ngx-pipes';
 @Injectable()
 export class InboxService {
 	public key = 'userId';
 	public envVariable;
 
 	constructor(private http: HttpClient,
-		private route: ActivatedRoute,
-		public router: Router,
-		public _requestHeaderService: RequestHeaderService,
-		private _cookieUtilsService: CookieUtilsService
+				private route: ActivatedRoute,
+				public router: Router,
+				public _requestHeaderService: RequestHeaderService,
+				private _cookieUtilsService: CookieUtilsService,
+				private ucwords: UcWordsPipe
 	) {
 		this.envVariable = environment;
 	}
@@ -62,28 +64,23 @@ export class InboxService {
 	}
 
 	public createRoom(peerId, body) {
-		return this.http.post(environment.apiUrl + '/api/peers/' + peerId + '/joinedRooms', body, this._requestHeaderService.options)
-			;
+		return this.http.post(environment.apiUrl + '/api/peers/' + peerId + '/joinedRooms', body, this._requestHeaderService.options);
 	}
 
 	public addParticipantToRoom(roomId, participantId) {
-		return this.http.put(environment.apiUrl + '/api/rooms/' + roomId + '/participants/rel/' + participantId, {}, this._requestHeaderService.options)
-			;
+		return this.http.put(environment.apiUrl + '/api/rooms/' + roomId + '/participants/rel/' + participantId, {}, this._requestHeaderService.options);
 	}
 
 	public postMessage(roomId, body) {
-		return this.http.post(environment.apiUrl + '/api/rooms/' + roomId + '/messages', body, this._requestHeaderService.options)
-			;
+		return this.http.post(environment.apiUrl + '/api/rooms/' + roomId + '/messages', body, this._requestHeaderService.options);
 	}
 
 	public postMessageDeliveryReceipt(messageId, body) {
-		return this.http.post(environment.apiUrl + '/api/messages/' + messageId + '/deliveryReceipts', body, this._requestHeaderService.options)
-			;
+		return this.http.post(environment.apiUrl + '/api/messages/' + messageId + '/deliveryReceipts', body, this._requestHeaderService.options);
 	}
 
 	public postMessageReadReceipt(messageId, body) {
-		return this.http.post(environment.apiUrl + '/api/messages/' + messageId + '/readReceipts', body, this._requestHeaderService.options)
-			;
+		return this.http.post(environment.apiUrl + '/api/messages/' + messageId + '/readReceipts', body, this._requestHeaderService.options);
 	}
 
 	public formatDateTime(room, loggedInUserId) {
@@ -114,7 +111,7 @@ export class InboxService {
 			if (room.participants.length > 2) {
 				for (let i = 0; i < room.participants.length; i++) {
 					if (i < 2) {
-						participantTextHeader += room.participants[i].profiles[0].first_name + ' ' + room.participants[i].profiles[0].last_name + ', ';
+						participantTextHeader += this.ucwords.transform(room.participants[i].profiles[0].first_name + ' ' + room.participants[i].profiles[0].last_name + ', ');
 					}
 				}
 				participantTextHeader = participantTextHeader.trim().slice(0, -1);
@@ -122,7 +119,7 @@ export class InboxService {
 				participantTextHeaderSub.concat(room.participants.length - 2 + ' more');
 			} else {
 				for (let i = 0; i < room.participants.length; i++) {
-					participantTextHeader += room.participants[i].profiles[0].first_name + ' ' + room.participants[i].profiles[0].last_name + ', ';
+					participantTextHeader += this.ucwords.transform(room.participants[i].profiles[0].first_name + ' ' + room.participants[i].profiles[0].last_name + ', ');
 				}
 				participantTextHeader = participantTextHeader.trim().slice(0, -1);
 			}

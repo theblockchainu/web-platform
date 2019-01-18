@@ -72,7 +72,7 @@ export class ProfileService {
 	public getCompactProfile(userId) {
 		const profile = {};
 		if (userId) {
-			const filter = { 'include': [{ 'peer': ['ownedCollections', 'identities', 'credentials'] }, 'work', 'education', 'phone_numbers', 'emergency_contacts'] };
+			const filter = { 'include': [{ 'peer': ['ownedCollections', 'identities', 'credentials', 'scholarships_joined'] }, 'work', 'education', 'phone_numbers', 'emergency_contacts'] };
 			return this.http.get(environment.apiUrl + '/api/peers/' + userId + '/profiles?filter=' + JSON.stringify(filter), this._requestHeaderService.options)
 				;
 		} else {
@@ -94,7 +94,7 @@ export class ProfileService {
 				;
 		}
 	}
-	
+
 	public verifyPassword(userId, password) {
 		if (userId) {
 			const body = {

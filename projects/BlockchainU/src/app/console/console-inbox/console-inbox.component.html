@@ -1,20 +1,26 @@
-<div class="loading-container" style="width:60%" [hidden]="!loadingMessages">
-	<ngx-loading [show]="true"></ngx-loading>
+<div class="row">
+	<div class="col-md-1">
+		<div class="loading-container" [hidden]="!loadingMessages">
+			<ngx-loading [show]="true"></ngx-loading>
+		</div>
+	</div>
 </div>
 <div class="row border-box margin-top-20 margin-left-0 margin-right-0" *ngIf="!loadingMessages">
 	<div class="col-md-3 leftCol padding-left-0 padding-right-0 border-right">
 		<div class="headerChat col-md-12" style="padding-top:12px;padding-bottom:5px">
             <span>
-				<span class="col-md-2" id="demo-2">
+				<span class="col-md-2" id="demo-2" matTooltip="Search feature coming soon...">
 					<i class="material-icons" style="line-height:35px;vertical-align:middle">search</i>
 					<input type="search" placeholder="" name="searchbox">
 				</span>
 				<mat-form-field [floatLabel]="'always'">
-					<mat-select class="col-md-8" style="margin-left:5px" [(value)]="selected" (ngModelChange)="getSelectedCollection()">
-						<mat-option value="all">All Messages ({{tempJoinedRooms.length}})</mat-option>
-						<mat-option value="experience">Workshops ({{experienceCollection.length}})</mat-option>
-						<mat-option value="peer">Users ({{experienceCollection.length}})</mat-option>
-						<!--<mat-option value="class">Classes ({{classCollection.length}})</mat-option>-->
+					<mat-select [disableRipple]="true" class="col-md-8" style="margin-left:5px" [value]="selected" (selectionChange)="getSelectedCollection($event)">
+						<mat-option value="all">All Messages ({{joinedRooms.length}})</mat-option>
+						<mat-option value="peer">Personal Chats ({{peerCollection.length}})</mat-option>
+						<mat-option value="experience">In-person Workshops ({{experienceCollection.length}})</mat-option>
+						<mat-option value="class">Online Courses ({{classCollection.length}})</mat-option>
+						<mat-option value="guide">Learning Guides ({{guideCollection.length}})</mat-option>
+						<mat-option value="bounty">Reward Bounties ({{bountyCollection.length}})</mat-option>
 					</mat-select>
 				</mat-form-field>
             </span>
@@ -68,14 +74,23 @@
 					</div>
 				</div>
 			</div>
+			<div class="row chatListItemContainer" *ngIf="!tempJoinedRooms || tempJoinedRooms.length === 0">
+				<div class="col-md-12 mat-caption">
+					There are no chats to display with the selected filter.
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="col-md-9 padding-left-0 padding-right-0">
 		<div *ngIf="selectedRoom">
 			<div>
 				<div [ngClass]="{'headerChat': true, 'center': true}" style="padding-top:5px;padding-bottom:10px">
-					<div class="mat-body-2 clickable" *ngIf="selectedRoom.type === 'group'" (click)="viewAllParticipants()">{{selectedRoom.participantTextHeader}} {{selectedRoom.participantTextHeaderSub}}</div>
-					<div class="mat-body-2" *ngIf="selectedRoom.type === 'peer'">{{selectedRoom.participantTextHeader}} {{selectedRoom.participantTextHeaderSub}}</div>
+					<div class="mat-body-2 clickable" matTooltip="View all participants" *ngIf="selectedRoom.type === 'group'" (click)="viewAllParticipants()">
+						<mat-icon style="position: relative; top: 4px; font-size: 18px;">group</mat-icon> {{selectedRoom.participantTextHeader}} {{selectedRoom.participantTextHeaderSub}}
+					</div>
+					<div class="mat-body-2" *ngIf="selectedRoom.type === 'peer'">
+						<mat-icon style="position: relative; top: 4px; font-size: 18px;">group</mat-icon> {{selectedRoom.participantTextHeader}} {{selectedRoom.participantTextHeaderSub}}
+					</div>
 					<div class="pull-right" style="position: relative; top: -10px; right: 20px; display: none;">
 						<a color="secondary" style="padding-top:10px;padding-right:10px">
                             <mat-icon style="color:grey;font-size:20px">videocam</mat-icon>
@@ -84,7 +99,7 @@
                             <mat-icon style="color:grey;font-size:20px">phone</mat-icon>
                         </a>
                     </div>
-					<div class="mat-caption clickable" *ngIf="selectedRoom.collection && selectedRoom.collection.length > 0" (click)="_collectionService.openCollection(selectedRoom.collection[0])">View {{selectedRoom.collection[0].type | titlecase }}</div>
+					<div class="mat-caption clickable" *ngIf="selectedRoom.collection && selectedRoom.collection.length > 0" (click)="_collectionService.openCollection(selectedRoom.collection[0])">View {{selectedRoom.collection[0].type | titlecase | typeMap }}</div>
 					<div class="mat-caption" *ngIf="selectedRoom.type === 'peer'">Private Conversation</div>
 				</div>
 				<div class="center padding-top-20" #scrollMe *ngIf="selectedRoom.messages && selectedRoom.messages.length > 0" style="max-height: 54vh; min-height: 54vh; overflow-y: scroll;">
@@ -97,16 +112,16 @@
 						</div>
 						<div *ngIf="message.type==='system' || message.peer === undefined || message.peer.length === 0" class="center margin-top-10 mat-caption lightText">
 							<div *ngIf="message.peer && message.peer.length > 0" (click)="_profileService.viewProfile(message.peer[0])">
-								<i class="fa fa-sign-in" aria-hidden="true" style="padding-right:10px"></i>{{message.text}}
+								<mat-icon style="font-size: 15px; position: relative; top: 3px;">notifications</mat-icon> {{message.text}}
 							</div>
 							<div *ngIf="!message.peer || message.peer.length === 0">
-								<i class="fa fa-sign-in" aria-hidden="true" style="padding-right:10px"></i>{{message.text}}
+								<mat-icon style="font-size: 15px; position: relative; top: 3px;">notifications</mat-icon> {{message.text}}
 							</div>
 						</div>
 						<div *ngIf="message.type==='user' && message.peer !== undefined && message.peer.length !== 0" class="mat-caption">
-                            <div (click)="_profileService.viewProfile(message.peer[0])" [ngClass]="{'col-md-1': true, 'clickable': true, 'review-thumb': true, 'pull-left': message.peer && message.peer.length > 0 && message.peer[0].id !== userId, 'pull-right': message.peer && message.peer.length > 0 && message.peer[0].id === userId}">
-                                <img src="{{ envVariable.apiUrl + message.peer[0].profiles[0].picture_url + '/100'}}" alt=" " class="circle-thumb" (error)="imgErrorHandler($event)">
-	                            <mat-icon *ngIf="selectedRoom.collection && selectedRoom.collection.length > 0 && message.peer && message.peer.length > 0 && message.peer[0].id === selectedRoom.collection[0].owners[0].id" class="teacherIndicator">radio_button_checked</mat-icon>
+                            <div class="clickable" (click)="_profileService.viewProfile(message.peer[0])" [ngClass]="{'col-md-1': true, 'clickable': true, 'review-thumb': true, 'pull-left': message.peer && message.peer.length > 0 && message.peer[0].id !== userId, 'pull-right': message.peer && message.peer.length > 0 && message.peer[0].id === userId}">
+                                <app-profile-popup [peer]="message.peer[0]"></app-profile-popup>
+	                            <mat-icon matTooltip="Course Instructor" *ngIf="selectedRoom.collection && selectedRoom.collection.length > 0 && message.peer && message.peer.length > 0 && message.peer[0].id === selectedRoom.collection[0].owners[0].id" class="teacherIndicator">radio_button_checked</mat-icon>
                             </div>
 							<div class="talk-bubble tri-right left-top round margin-bottom-20" style="margin-top:3px">
                                 <div class="talktext">{{message.text}}</div>
@@ -116,8 +131,8 @@
 				</div>
 				<div>
 					<div class="col-md-11 chatbox" style="margin-left: 30px">
-						<mat-form-field [floatLabel]="'never'" style="width:100%">
-							<textarea #chatInputBox matInput [(ngModel)]="message" rows="1" (keyup.enter)="postMsg($event, selectedRoom.id)" placeholder="Message @{{selectedRoom.name | ucwords}}"></textarea>
+						<mat-form-field class="inbox-textarea" [floatLabel]="'never'" style="width:100%">
+							<textarea #chatInputBox matInput matTextareaAutosize [(ngModel)]="message" rows="1" (keyup.enter)="postMsg($event, selectedRoom.id)" placeholder="Message @{{selectedRoom.name | ucwords}}"></textarea>
 						</mat-form-field>
 					</div>
 					<div class="pull-right margin-top-10 margin-bottom-10"> <!--Post Msgs-->

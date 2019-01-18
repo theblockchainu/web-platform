@@ -1,0 +1,33 @@
+sudo: required
+
+language: node_js
+
+node_js:
+  - "8"
+
+branches:
+  only:
+    - master
+
+dist: trusty
+
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
+
+cache:
+  directories:
+     - ./node_modules
+
+install:
+  - npm install
+
+before_script:
+  - npm install -g @angular/cli
+
+script:
+  - npm run test-blockchainu
+  - npm run build-blockchainu

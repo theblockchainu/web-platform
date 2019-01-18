@@ -1,8 +1,8 @@
-import { TypemapPipe } from './typemap.pipe';
+import { TypeMapPipe } from './typemap.pipe';
 
-describe('TypemapPipe', () => {
+describe('TypeMapPipe', () => {
   it('create an instance', () => {
-    const pipe = new TypemapPipe();
+    const pipe = new TypeMapPipe();
     expect(pipe).toBeTruthy();
   });
 });

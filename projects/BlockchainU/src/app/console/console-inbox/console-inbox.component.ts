@@ -23,6 +23,9 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 	public tempJoinedRooms = [];
 	public experienceCollection = [];
 	public classCollection = [];
+	public guideCollection = [];
+	public bountyCollection = [];
+	public peerCollection = [];
 	public selectedRoom;
 	public userId;
 	private key = 'userId';
@@ -61,7 +64,7 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 
 	ngOnInit() {
 		this.loadingMessages = true;
-		this._inboxService.getRoomData(50)
+		this._inboxService.getRoomData(100)
 			.subscribe((response: any) => {
 				if (response) {
 					this.getPeerDataAndInitialize(response);
@@ -142,6 +145,9 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 	public enterRoom(room) {
 		if (room !== undefined) {
 			this.selectedRoom = room;
+			if (room.collection && room.collection.length > 0 && room.collection[0].owners[0].id === this.userId) {
+				this.selectedRoom.belongsToUser = true;
+			}
 			this.router.navigate(['console', 'inbox', room.id]);
 			if (room && room.unread && room.messages) {
 				room.messages.forEach(message => {
@@ -209,22 +215,40 @@ export class ConsoleInboxComponent implements OnInit, AfterViewChecked {
 	}
 
 	public getCollections() {
-		this.joinedRooms.forEach(element => {
-			this.experienceCollection = _.filter(element.collection, function (o) { return o.type === 'experience'; });
-		});
 
-		this.joinedRooms.forEach(element => {
-			this.classCollection = _.filter(element.collection, function (o) { return o.type === 'class'; });
-		});
+		this.peerCollection = _.filter(this.joinedRooms, function (o) { return o && o.type === 'peer'; });
+
+		this.experienceCollection = _.filter(this.joinedRooms, function (o) { return o.collection && o.collection.length > 0 && o.collection[0].type === 'experience'; });
+
+		this.classCollection = _.filter(this.joinedRooms, function (o) { return o.collection && o.collection.length > 0 && o.collection[0].type === 'class'; });
+
+		this.bountyCollection = _.filter(this.joinedRooms, function (o) { return o.collection && o.collection.length > 0 && o.collection[0].type === 'bounty'; });
+
+		this.guideCollection = _.filter(this.joinedRooms, function (o) { return o.collection && o.collection.length > 0 && o.collection[0].type === 'guide'; });
 	}
 
-	public getSelectedCollection() {
-		if (this.selected === 'class') {
-			this.tempJoinedRooms = this.classCollection;
-		} else if (this.selected === 'experience') {
-			this.tempJoinedRooms = this.experienceCollection;
-		} else {
-			this.tempJoinedRooms = this.joinedRooms;
+	public getSelectedCollection(event) {
+		switch (event.value) {
+			case 'class':
+				this.tempJoinedRooms = this.classCollection;
+				break;
+			case 'experience':
+				this.tempJoinedRooms = this.experienceCollection;
+				break;
+			case 'guide':
+				this.tempJoinedRooms = this.guideCollection;
+				break;
+			case 'bounty':
+				this.tempJoinedRooms = this.bountyCollection;
+				break;
+			case 'peer':
+				this.tempJoinedRooms = this.peerCollection;
+				break;
+			case 'all':
+				this.tempJoinedRooms = this.joinedRooms;
+				break;
+			default:
+				this.tempJoinedRooms = this.joinedRooms;
 		}
 	}
 

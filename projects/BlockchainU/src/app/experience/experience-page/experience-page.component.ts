@@ -94,7 +94,7 @@ export class MyCalendarUtils extends CalendarUtils {
 	]
 })
 export class ExperiencePageComponent implements OnInit, OnDestroy {
-	
+
 	public experienceId: string;
 	public envVariable;
 	public userId;
@@ -139,7 +139,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public accountApproved: string;
 	public inviteLink: string;
 	private certificateDomSubscription;
-	
+
 	public loggedInUser;
 	public bookmark;
 	public replyingToCommentId: string;
@@ -177,8 +177,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public toOpenDialogName;
 	private allowedDialogNames = ['paymentSuccess', 'assessment'];
 	public objectKeys = Object.keys;
-	
-	
+
+
 	public activityMapping:
 		{ [k: string]: string } = { '=0': 'No activity', '=1': 'One activity', 'other': '# activities' };
 	public hourMapping:
@@ -193,21 +193,21 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		{ [k: string]: string } = { '=0': 'Less than a day', '=1': 'One day', 'other': '# days' };
 	public discussionMapping:
 		{ [k: string]: string } = { '=0': 'No Comments', '=1': 'One comment', 'other': '# comments' };
-	
+
 	public carouselImages: Array<string>;
 	public carouselBanner: any;
 	public startedView;
 	public previewAs: string;
-	
+
 	certificateHTML: string;
 	loadingCertificate: boolean;
 	public assessmentRules: Array<any>;
 	public contactUsForm: FormGroup;
-	
+
 	public isFollowing: boolean;
-	
+
 	@ViewChildren('certificateDomHTML') certificateDomHTML: QueryList<any>;
-	
+
 	constructor(public router: Router,
 				private activatedRoute: ActivatedRoute,
 				private _cookieUtilsService: CookieUtilsService,
@@ -232,14 +232,14 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	) {
 		this.envVariable = environment;
 	}
-	
+
 	ngOnInit() {
 		this.fetchScholarships();
 		this._authenticationService.isLoginSubject.subscribe(res => {
 			this.initializePage();
 		});
 	}
-	
+
 	ngOnDestroy() {
 		if (this.startedView) {
 			this.startedView.viewer = {
@@ -252,12 +252,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-	
+
 	initializePage() {
-		
+
 		// Close all existing dialogs
 		this.dialogsService.closeAll();
-		
+
 		console.log('Initializing Page');
 		this.initializeGlobalVariables();
 		this.setValuesFromCookies();
@@ -280,7 +280,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				this.initialised = true;
 			});
 	}
-	
+
 	private fetchData() {
 		this.loadingCertificate = true;
 		this.allParticipants = [];
@@ -329,10 +329,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				'or': [{ 'customUrl': this.experienceId }, { 'id': this.experienceId }]
 			}
 		};
-		
+
 		return this._collectionService.getAllCollections(query);
 	}
-	
+
 	private initializeGlobalVariables() {
 		this.newUserRating = 0;
 		this.isViewTimeHidden = true;
@@ -383,7 +383,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			touch: true
 		};
 	}
-	
+
 	private setValuesFromRouteParameters() {
 		return this.activatedRoute.params.pipe(
 			first(),
@@ -411,19 +411,19 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				});
 			}));
 	}
-	
+
 	private setValuesFromCookies() {
 		this.userId = this._cookieUtilsService.getValue('userId');
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
 	}
-	
+
 	refreshView(): void {
 		this.refresh.next();
 	}
-	
+
 	dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
 		this.eventsForTheDay = {};
-		
+
 		if (events.length === 0) {
 			this.dateClicked = false;
 			return;
@@ -471,11 +471,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		}
 	}
-	
+
 	// Modal
 	public editCalendar() {
 		const sortedCalendar = this.sort(this.experience.calendars, 'startDate', 'endDate');
-		
+
 		this.dialogsService
 			.editCalendar({ id: this.experienceId, type: this.experience.type, name: this.experience.title },
 				this.experience.contents, this.experience.calendars, this.allItenaries, this.allParticipants,
@@ -493,7 +493,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-	
+
 	private initializeUserType() {
 		if (this.experience) {
 			if (this.previewAs) {
@@ -502,7 +502,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				for (const owner of this.experience.owners) {
 					if (owner.id === this.userId) {
 						console.log('ownerId:' + owner.id + ' userId:' + this.userId);
-						
+
 						this.userType = 'teacher';
 						this.sortAssessmentRules();
 						break;
@@ -530,12 +530,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			if (this.userType === 'public' || this.userType === 'teacher') {
 				this.initializeAllItenaries();
 			}
-			
+
 			this.loadingExperience = false;
-			
+
 		}
 	}
-	
+
 	private initializeAllItenaries() {
 		this.events = [];
 		this.allItenaries = [];
@@ -560,7 +560,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				}
 			}
 			console.log('allitenaries');
-			
+
 			console.log(this.allItenaries);
 			this.allItenaries.push(
 				{
@@ -596,7 +596,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		}
 		this.refreshView();
 	}
-	
+
 	private processContent(key) {
 		const contentObj = this.itenariesObj[key];
 		const self = this;
@@ -619,7 +619,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		}
 		return contentObj;
 	}
-	
+
 	private processData(res: any) {
 		if (res && res.length > 0) {
 			console.log('PROCESSING DATA');
@@ -650,7 +650,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				} else {
 					this.itenariesObj[contentObj.schedules[0].startDay] = [contentObj];
 				}
-				
+
 				if (contentObj.submissions && contentObj.submissions.length > 0) {
 					contentObj.submissions.forEach(submission => {
 						if (submission.peer) {
@@ -660,7 +660,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						}
 					});
 				}
-				
+
 				if (contentObj.locations && contentObj.locations.length > 0
 					&& contentObj.locations[0].map_lat !== undefined
 					&& contentObj.locations[0].map_lng !== undefined) {
@@ -688,12 +688,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 						endDate = this._collectionService.calculateDate(this.experience.calendars[0].startDate, key);
 					}
 					console.log('Sorting----------------');
-					
+
 					this.itenariesObj[key].sort(function (a, b) {
 						return moment(a.schedules[0].startTime).diff(moment(b.schedules[0].startTime));
 					});
 					console.log('Sorted----------------');
-					
+
 					this.itenariesObj[key].forEach(content => {
 						if (content.schedules[0].startTime !== undefined) {
 							content.schedules[0].startTime = startDate.format().toString().split('T')[0] +
@@ -754,7 +754,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			obs.next();
 		});
 	}
-	
+
 	private fetchScholarships() {
 		const query = {
 			where: {
@@ -771,7 +771,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				this.globalScholarshipId = null;
 			});
 	}
-	
+
 	private openCustomDialog(dialogName) {
 		switch (dialogName) {
 			case 'paymentSuccess':
@@ -782,7 +782,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				this.openAssessmentDialog();
 		}
 	}
-	
+
 	private getEthereumInfo() {
 		this._collectionService.getCollectionEthereumInfo(this.experienceId, {})
 			.subscribe(res => {
@@ -793,8 +793,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-	
-	
+
+
 	private checkIfFollowing() {
 		if (this.experience.peersFollowing && this.experience.peersFollowing.length > 0) {
 			this.experience.peersFollowing.some(peer => {
@@ -807,10 +807,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-	
+
 	public createGuestContacts() {
 		console.log('Submitting request');
-		
+
 		const first_name = this.contactUsForm.controls['first_name'].value;
 		const email = this.contactUsForm.controls['email'].value;
 		const subject = 'Workshop: ' + this.experience.title;
@@ -836,7 +836,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				this.snackBar.open('Error in sending mail', 'Close', { duration: 3000 });
 			});
 	}
-	
+
 	private setTags() {
 		this.titleService.setTitle(this.ucwords.transform(this.experience.title));
 		this.metaService.updateTag({
@@ -886,13 +886,13 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			content: this.experience.id
 		});
 	}
-	
+
 	private setUpCarousel() {
 		if (this.experience.imageUrls && this.experience.imageUrls.length > 0) {
 			this.carouselImages = this.experience.imageUrls.map(url => environment.apiUrl + url);
 		}
 	}
-	
+
 	private recordStartView() {
 		// Send start view msg on socket
 		const view = {
@@ -912,7 +912,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this.startedView = startedView;
 		});
 	}
-	
+
 	private getReviews() {
 		this.loadingReviews = true;
 		let query = {};
@@ -960,11 +960,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		}
 		this.onContentReady();
 	}
-	
+
 	public onContentReady() {
 		return true;
 	}
-	
+
 	private getBookmarks() {
 		const query = {
 			'include': [
@@ -991,7 +991,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	private getDiscussions() {
 		this.loadingComments = true;
 		const query = {
@@ -1030,11 +1030,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	private fixTopics() {
 		this.topicFix = _.uniqBy(this.experience.topics, 'id');
 	}
-	
+
 	private initializeForms() {
 		this.chatForm = this._fb.group({
 			description: ['', Validators.required],
@@ -1047,11 +1047,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			collectionId: this.experienceId,
 			collectionCalendarId: this.calendarId,
 		});
-		
+
 		const filter = {
 			'include': [{ 'profiles': ['phone_numbers'] }]
 		};
-		
+
 		this.contactUsForm = this._fb.group(
 			{
 				first_name: ['', Validators.required],
@@ -1061,10 +1061,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				phone: ['']
 			}
 		);
-		
+
 		return this._profileService.getPeerData(this.userId, filter);
 	}
-	
+
 	private setContactFormValues(res) {
 		// If user exists, setup his contact form
 		if (res && res.profiles && res.profiles.length > 0) {
@@ -1094,11 +1094,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			obs.next();
 		});
 	}
-	
+
 	gotoEdit() {
 		this.router.navigate(['experience', this.experienceId, 'edit', this.experience.stage ? this.experience.stage : '1']);
 	}
-	
+
 	public setCurrentCalendar() {
 		if (this.calendarId) {
 			const calendarIndex = this.experience.calendars.findIndex(calendar => {
@@ -1113,7 +1113,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			console.log('Calendar id not found');
 		}
 	}
-	
+
 	/**
 	 * changeDates
 	 */
@@ -1122,10 +1122,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			.subscribe((result: any) => {
 				if (result) {
 					this.router.navigate(['experience', this.experienceId, 'calendar', result]);
+					this.initializePage();
 				}
 			});
 	}
-	
+
 	/**
 	 * Open Dialog to select a particular cohort and then open its assessment dialog.
 	 */
@@ -1137,7 +1138,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-	
+
 	/**
 	 * cancelExperience
 	 */
@@ -1148,7 +1149,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	/**
 	 * dropoutExperience
 	 */
@@ -1159,7 +1160,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	/**
 	 * deleteExperience
 	 */
@@ -1170,9 +1171,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
-	
-	
+
+
+
 	/**
 	 * postComment
 	 */
@@ -1188,7 +1189,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	/**
 	 * saveBookmark
 	 */
@@ -1239,7 +1240,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this.dialogsService.openSignup('/experience/' + this.experience.id);
 		}
 	}
-	
+
 	/**
 	 * calculateTotalHours
 	 */
@@ -1252,12 +1253,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				const contentLength = moment.utc(endMoment.diff(startMoment)).format('HH');
 				totalLength += parseInt(contentLength, 10);
 			} else if (content.type === 'video') {
-			
+
 			}
 		});
 		this.totalDuration = totalLength.toString();
 	}
-	
+
 	/**
 	 * isLive
 	 */
@@ -1267,16 +1268,16 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		const endMoment = startMoment.clone();
 		endMoment.add(content.schedules[0].endDay, 'day');
 		const currentMoment = moment();
-		
+
 		const startTime = moment(content.schedules[0].startTime);
 		const endTime = moment(content.schedules[0].endTime);
-		
+
 		startMoment.hours(startTime.hours());
 		startMoment.minutes(startTime.minutes());
-		
+
 		endMoment.hours(endTime.hours());
 		endMoment.minutes(endTime.minutes());
-		
+
 		if (currentMoment.isBetween(startMoment, endMoment)) {
 			content.isLive = true;
 			return true;
@@ -1285,26 +1286,26 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			return false;
 		}
 	}
-	
+
 	public hasRSVPd(content) {
 		// TODO: check if the user has RSVPd for this content
 		console.log('called');
 	}
-	
+
 	rsvpContent(contentId) {
 		this._contentService.createRSVP(contentId, this.calendarId)
 			.subscribe((response: any) => {
 				this.initializePage();
 			});
 	}
-	
+
 	cancelRSVP(content) {
 		this._contentService.deleteRSVP(content.rsvpId)
 			.subscribe((response: any) => {
 				this.initializePage();
 			});
 	}
-	
+
 	public viewRSVPs(content, userType) {
 		let attendies = this.allParticipants;
 		if (content.rsvps) {
@@ -1330,12 +1331,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-	
+
 	public getDirections(content) {
 		// TODO: get directions to this content location
 	}
-	
-	
+
+
 	public getContentCount(type: string) {
 		let count = 0;
 		for (const content of this.experience.contents) {
@@ -1345,7 +1346,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		}
 		return count;
 	}
-	
+
 	/**
 	 * toggleReviews
 	 */
@@ -1356,7 +1357,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this.noOfReviews = 3;
 		}
 	}
-	
+
 	public cancelCohort() {
 		this.dialogsService.cancelCohortDialog(this.calendarId).subscribe((res: any) => {
 			if (res) {
@@ -1366,7 +1367,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			console.log(err);
 		});
 	}
-	
+
 	public deleteCohort() {
 		this.dialogsService.openDeleteCohort(this.calendarId).subscribe((res: any) => {
 			if (res) {
@@ -1374,7 +1375,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	viewParticipants() {
 		let chatRoomId;
 		if (this.experience.rooms && this.experience.rooms.length > 0) {
@@ -1387,7 +1388,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			chatRoomId,
 			this.experience.calendars).subscribe();
 	}
-	
+
 	viewAllParticipants() {
 		let chatRoomId;
 		if (this.experience.rooms && this.experience.rooms.length > 0) {
@@ -1395,7 +1396,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		}
 		this.dialogsService.viewParticipantsDialog(this.allParticipants, this.experienceId, this.userType, chatRoomId, this.experience.calendars).subscribe();
 	}
-	
+
 	/**
 	 * openDialog
 	 content:any   */
@@ -1429,9 +1430,9 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			default:
 				break;
 		}
-		
+
 	}
-	
+
 	/**
 	 * timetoSession
 	 content:any   */
@@ -1441,23 +1442,23 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		const endMoment = startMoment.clone();
 		endMoment.add(content.schedules[0].endDay, 'day');
 		const currentMoment = moment();
-		
+
 		const startTime = moment(content.schedules[0].startTime);
 		const endTime = moment(content.schedules[0].endTime);
-		
+
 		startMoment.hours(startTime.hours());
 		startMoment.minutes(startTime.minutes());
-		
+
 		endMoment.hours(endTime.hours());
 		endMoment.minutes(endTime.minutes());
-		
+
 		if (startMoment.diff(currentMoment, 'minutes') < 0) {
 			content.timetoSession = 'Ended ' + endMoment.fromNow();
 		} else {
 			content.timetoSession = 'We will remind you ' + startMoment.fromNow();
 		}
 	}
-	
+
 	/**
 	 * getRecommendations
 	 */
@@ -1530,12 +1531,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	/**
 	 * selectJoiningDates
 	 */
 	public selectJoiningDates() {
-		
+
 		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.experience.type, this.experience.maxSpots, this.accountApproved, this.userId)
 			.subscribe((result: any) => {
 				if (result) {
@@ -1549,31 +1550,31 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-	
+
 	public openSignup(returnTo) {
 		this.dialogsService.openSignup(returnTo).subscribe();
 	}
-	
+
 	private extractTime(dateString: string) {
 		const time = moment.utc(dateString).local().format('HH:mm:ss');
 		return time;
 	}
-	
+
 	public viewDetails(key) {
 		this.router.navigate(['experience', this.experienceId, 'calendar', key]);
 	}
-	
+
 	public openEventDialog(calendarId, eventId) {
 		this.router.navigate(['experience', this.experienceId, 'calendar', calendarId, eventId]);
 	}
-	
+
 	public createReplyForm(comment: any) {
 		this.replyingToCommentId = comment.id;
 		this.replyForm = this._fb.group({
 			description: ''
 		});
 	}
-	
+
 	/**
 	 * postReply
 	 */
@@ -1590,7 +1591,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	/**
 	 * deleteReply
 	 */
@@ -1603,7 +1604,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	/**
 	 * deleteComment
 	 */
@@ -1616,7 +1617,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	/**
 	 * deleteReview
 	 */
@@ -1629,7 +1630,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	/**
 	 * handleRate
 	 */
@@ -1637,11 +1638,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.reviewForm.controls['score'].setValue(event.value);
 		this.isRatingReceived = true;
 	}
-	
+
 	public updateRating(event) {
 		this.editReviewForm.controls['score'].setValue(event.value);
 	}
-	
+
 	/**
 	 * postReview
 	 */
@@ -1659,7 +1660,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	public updateReview() {
 		this.busyReview = true;
 		const reviewBody = this.editReviewForm.value;
@@ -1679,7 +1680,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	public updateComment() {
 		this.busyDiscussion = true;
 		const commentBody = this.editCommentForm.value;
@@ -1698,7 +1699,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	public updateReply() {
 		this.busyReply = true;
 		const replyBody = this.editReplyForm.value;
@@ -1717,7 +1718,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	addCommentUpvote(comment: any) {
 		this._commentService.addCommentUpvote(comment.id, {}).subscribe(
 			response => {
@@ -1732,7 +1733,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	addReplyUpvote(reply: any) {
 		this._commentService.addReplyUpvote(reply.id, {}).subscribe(
 			response => {
@@ -1747,7 +1748,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	public getParticipants() {
 		this.participants = [];
 		this.loadingParticipants = true;
@@ -1823,7 +1824,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
-	
+
 	public hasUpvoted(upvotes) {
 		let result = false;
 		if (upvotes !== undefined) {
@@ -1839,11 +1840,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		}
 		return result;
 	}
-	
+
 	public isMyComment(comment) {
 		return comment.peer && comment.peer.length > 0 && comment.peer[0].id === this.userId;
 	}
-	
+
 	public hasReviewed(reviews) {
 		let result = false;
 		reviews.forEach(review => {
@@ -1853,17 +1854,17 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		});
 		return result;
 	}
-	
+
 	public isMyReview(review) {
 		return review.peer[0].id === this.userId;
 	}
-	
+
 	public hasCohortEnded() {
 		const cohortEndDate = moment(this.currentCalendar.endDate);
 		const currentDate = moment();
 		return cohortEndDate.diff(currentDate) > 0;
 	}
-	
+
 	public hasLiveCohort() {
 		let result = false;
 		this.experience.calendars.forEach(calendar => {
@@ -1879,7 +1880,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		});
 		return result;
 	}
-	
+
 	public hasUpcomingCohort() {
 		let result = false;
 		this.experience.calendars.forEach(calendar => {
@@ -1892,7 +1893,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		});
 		return result;
 	}
-	
+
 	public shareOnFb() {
 		FB.ui({
 			method: 'share_open_graph',
@@ -1911,17 +1912,17 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		}, function (response) {
 		});
 	}
-	
+
 	public shareOnTwitter() {
 		// TODO twitter sharing code
 	}
-	
+
 	public hasDatePassed(date) {
 		const eventDate = moment(date);
 		const currentDate = moment();
 		return (this.calendarId !== undefined && eventDate.diff(currentDate, 'seconds') < 0) && this.oneDay();
 	}
-	
+
 	public setContentViews(contents) {
 		contents.forEach(content => {
 			if (content.type !== 'project' && content.views !== undefined) {
@@ -1956,66 +1957,66 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	public showViewTime(content) {
 		if (this.userType === 'participant') {
 			content.isViewTimeHidden = false;
 		}
 	}
-	
+
 	public hideViewTime(content) {
 		if (this.userType === 'participant') {
 			content.isViewTimeHidden = true;
 		}
 	}
-	
+
 	public openVerificationPage() {
 		this.router.navigate(['console', 'profile', 'verification']);
 	}
-	
+
 	public openLoginPage() {
 		this.router.navigate(['login']);
 	}
-	
+
 	public openProfilePage(peerId) {
 		this.router.navigate(['profile', peerId]);
 	}
-	
+
 	public openInviteFriendsDialog() {
 		this.dialogsService.inviteFriends(this.experience);
 	}
-	
+
 	private sort(calendars, param1, param2) {
 		return _.sortBy(calendars, [param1, param2]);
 	}
-	
-	
+
+
 	scrollToDiscussion() {
 		const el = document.getElementById('discussionTarget');
 		el.scrollIntoView();
 	}
-	
+
 	add1ToIndex(index) {
 		return 'Day ' + (+index + 1);
 	}
-	
+
 	oneDay() {
 		return true;
 		// return this.itenaryArray.length > 1;
 	}
-	
+
 	displayNone() {
 		return 'display: none';
 	}
-	
+
 	public parseTitle(title) {
 		return title.split(':');
 	}
-	
+
 	public backToCollection(collection) {
 		this.router.navigate([collection.type, collection.id]);
 	}
-	
+
 	public editReview(review: any) {
 		this.editReviewForm = this._fb.group({
 			description: [review.description, Validators.required],
@@ -2027,7 +2028,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		});
 		this.newUserRating = review.score;
 	}
-	
+
 	public editComment(comment: any) {
 		this.editCommentForm = this._fb.group({
 			description: [comment.description, Validators.required],
@@ -2035,20 +2036,20 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			id: comment.id
 		});
 	}
-	
+
 	public editReply(reply: any) {
 		this.editReplyForm = this._fb.group({
 			description: reply.description,
 			id: reply.id
 		});
 	}
-	
+
 	public isCancelable() {
 		if (this.currentCalendar) {
 			return moment(this.currentCalendar.endDate) > this.today;
 		}
 	}
-	
+
 	public openGroupChat() {
 		if (this.experience.rooms && this.experience.rooms.length > 0) {
 			this.router.navigate(['console', 'inbox', this.experience.rooms[0].id]);
@@ -2058,7 +2059,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			});
 		}
 	}
-	
+
 	public openAssessmentDialog() {
 		this.dialogsService.studentAssessmentDialog(
 			{
@@ -2110,23 +2111,23 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	public onExperienceRefresh(event) {
 		if (event) {
 			this.getRecommendations();
 		}
 	}
-	
+
 	public getPredictedGyanEarn(collection) {
 		const participantCount = collection.participants ? collection.participants.length : 0;
 		return (collection.academicGyan + collection.nonAcademicGyan) * participantCount;
 	}
-	
+
 	public openMessageDialog(peer) {
 		this.dialogsService.messageParticipant(peer).subscribe((result: any) => {
 		});
 	}
-	
+
 	public addToEthereum() {
 		this._collectionService.addToEthereum(this.experienceId)
 			.subscribe(res => {
@@ -2135,7 +2136,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				this.snackBar.open('Could not add to one0x Blockchain. Try again later.', 'Ok', { duration: 5000 });
 			});
 	}
-	
+
 	private sortAssessmentRules() {
 		if (this.experience.assessment_models && this.experience.assessment_models.length > 0) {
 			const assessmentRulesUnsorted = <Array<any>>this.experience.assessment_models[0].assessment_rules;
@@ -2154,7 +2155,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		}
 	}
-	
+
 	private getCertificatetemplate() {
 		try {
 			this.certificateService.getCertificateTemplate(this.experienceId).subscribe((res: any) => {
@@ -2173,11 +2174,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			console.log(e);
 		}
 	}
-	
+
 	public getGyanForRule(gyanPercent, totalGyan) {
 		return Math.floor((gyanPercent / 100) * totalGyan);
 	}
-	
+
 	public addParticipant() {
 		this.dialogsService.addParticipant(this.experienceId, this.calendarId).subscribe(res => {
 			if (res) {
@@ -2185,12 +2186,12 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
+
 	public openShareDialog() {
 		this.dialogsService.shareCollection(this.experience.type, this.experience.id, this.experience.title, this.experience.description, this.experience.headline, environment.apiUrl + this.experience.imageUrls[0]
 			, this.calendarId, this.userType === 'teacher');
 	}
-	
+
 	public followCollectionToggle() {
 		if (this.userId && this.userId.length > 5) {
 			if (!this.isFollowing) {
@@ -2216,11 +2217,11 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this.dialogsService.openSignup('/experience/' + this.experience.id);
 		}
 	}
-	
+
 	public openSmartCertificate() {
 		this.router.navigate(['/certificate', this.certificateId]);
 	}
-	
+
 	private filterQuizContents(itineraryDaysArray) {
 		const quizContents = [];
 		itineraryDaysArray.forEach(itineraryDay => {
@@ -2232,7 +2233,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		});
 		return quizContents;
 	}
-	
+
 }
 
 interface AssessmentResult {
