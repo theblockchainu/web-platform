@@ -1,4 +1,4 @@
-# Peerbuds2.0
+# Blockchain University Web Platform
 
 Under active development
 
