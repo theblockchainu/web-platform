@@ -244,10 +244,10 @@ export class ConsoleTeachingBountyComponent implements OnInit {
 		this._collectionService.cloneCollection(collectionId)
 			.subscribe(res => {
 				this.fetchData();
-				this.snackBar.open('Bounty Cloned', 'Close', { duration: 3000 });
+				this.snackBar.open('Reward bounty successfully duplicated and added to drafts section', 'Close', { duration: 3000 });
 			}, err => {
 				console.log(err);
-				this.snackBar.open('An error occured', 'Close', { duration: 3000 });
+				this.snackBar.open('An error occured. Please try again.', 'Close', { duration: 3000 });
 			});
 	}
 }

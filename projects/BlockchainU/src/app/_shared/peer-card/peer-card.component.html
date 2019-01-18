@@ -17,12 +17,12 @@
 		<div *ngIf="!peer.ethAddress || peer.ethAddress.substring(0, 2) !== '0x'">
 			<i class="fab fa-ethereum"></i> 0 Gyan
 		</div>
-		<div class="col-sm-12 padding-left-0">
+		<div class="col-sm-12 padding-left-0 mat-caption">
 			<span *ngIf="peer.topics.length<=1">
-				{{peer.topics}}
+				{{peer.topics | titlecase}}
 			</span>
 			<span *ngIf="peer.topics.length>1">
-				{{peer.topics | slice: 0:1}}
+				{{peer.topics | slice: 0:1 | titlecase}}
 				<b matTooltip="{{peer.topics}}">
 					&nbsp;& {{peer.topics.length - 1}} more
 				</b>

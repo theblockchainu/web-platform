@@ -4,9 +4,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 	name: 'typeMap'
 })
 export class TypeMapPipe implements PipeTransform {
-	
+
 	transform(inputType: any, args?: any): any {
-		switch (inputType) {
+		switch (inputType.toLowerCase()) {
 			case 'experience':
 				return 'in-person workshop';
 			case 'class':
@@ -19,5 +19,5 @@ export class TypeMapPipe implements PipeTransform {
 				return inputType;
 		}
 	}
-	
+
 }

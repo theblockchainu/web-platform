@@ -30,9 +30,6 @@
 		<loc>https://theblockchainu.com/about</loc>
 	</url>
 	<url>
-		<loc>https://theblockchainu.com/home/homefeed</loc>
-	</url>
-	<url>
 		<loc>https://theblockchainu.com/career</loc>
 	</url>
 	<url>
@@ -848,4 +845,17 @@
 	<url>
 		<loc>https://theblockchainu.com/profile/ff1350f3-8a97-4762-b901-53d5b41fa85e</loc>
 	</url>
+	<url>
+		<loc>https://help.theblockchainu.com</loc>
+	</url>
+	<url>
+		<loc>https://theblockchainu.com/digest/whyTeach</loc>
+	</url>
+	<url>
+		<loc>https://theblockchainu.com/digest/teachingBenefits</loc>
+	</url>
+	<url>
+		<loc>https://theblockchainu.com/digest/responsibleTeaching</loc>
+	</url>
+
 </urlset>

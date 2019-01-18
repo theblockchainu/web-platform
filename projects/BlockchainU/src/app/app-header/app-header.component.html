@@ -205,6 +205,17 @@
 		</div>
 		<hr>
 	</span>
+	<span mat-menu-item style="height: auto; line-height: 26px; white-space: pre-wrap; padding: 15px;" *ngIf=" globalScholarship && isLoggedIn | async"
+		  [routerLink]="['console', 'account', 'scholarships']">
+		Blockchain U Global Scholarship
+		<div style="line-height: 0.5rem; font-size: 12px; font-weight: 300; margin-top: 5px;">
+			You are a Global Scholarship student. <a href="https://help.theblockchainu.com/global-scholarship" target="_blank">Know more about it. </a>
+		</div>
+		<div class="mat-body-2" style="line-height: 0.5rem; font-size: 12px; font-weight: 300; margin-top: 8px;">
+			Available Funds: <i class="fa fa-fire"></i> {{globalScholarship.id | karmaBalance: 'scholarship' | async | currency : ' ' : ' ' : '1.0-0'}} KARMA
+		</div>
+		<hr>
+	</span>
 	<span mat-menu-item style="height: auto; line-height: 26px; white-space: pre-wrap; padding: 15px;">
 		<div class="col-xs-4">
 			<i class="fab fa-ethereum"></i> GYAN

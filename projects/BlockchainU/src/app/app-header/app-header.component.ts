@@ -8,13 +8,13 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { DialogsService } from '../_services/dialogs/dialog.service';
-import { AppNotificationDialogComponent } from './dialogs/app-notification-dialog/app-notification-dialog.component';
 import { NotificationService } from '../_services/notification/notification.service';
 import { SearchService } from '../_services/search/search.service';
 import { CookieUtilsService } from '../_services/cookieUtils/cookie-utils.service';
 import { CollectionService } from '../_services/collection/collection.service';
 import { InboxService } from '../_services/inbox/inbox.service';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 import { InboxDialogComponent } from '../_services/dialogs/inbox-dialog/inbox-dialog.component';
 import { SocketService } from '../_services/socket/socket.service';
 import { UcWordsPipe } from 'ngx-pipes';
@@ -53,6 +53,7 @@ export class AppHeaderComponent implements OnInit {
 	public sessionId: string;
 	public isSearchBarVisible: boolean;
 	public searching: boolean;
+	public globalScholarship;
 
 	constructor(public authService: AuthenticationService,
 		private http: HttpClient,
@@ -149,6 +150,11 @@ export class AppHeaderComponent implements OnInit {
 					this.isAccountApproved = this.profile.peer[0].accountVerified;
 					if (this.profile.peer[0].ownedCollections !== undefined && this.profile.peer[0].ownedCollections.length > 0) {
 						this.isTeacher = true;
+					}
+					if (this.profile.peer[0].scholarships_joined && this.profile.peer[0].scholarships_joined.length > 0) {
+						this.globalScholarship = _.find(this.profile.peer[0].scholarships_joined, scholarship => {
+							return scholarship.type === 'public';
+						});
 					}
 					this.profileCompletionObject = this._profileService.getProfileProgressObject(this.profile);
 					console.log(this.profileCompletionObject);
@@ -416,7 +422,7 @@ export class AppHeaderComponent implements OnInit {
 	public askQuestion() {
 		this.dialogsService.askQuestion();
 	}
-	
+
 	public openBlog() {
 		window.location.href = 'https://medium.com/theblockchainu';
 	}
