@@ -15,7 +15,7 @@
 							 alt="profile_pic">
 						<img class="img-rounded profile-pic" *ngIf="!profileObj.picture_url" src="/assets/images/user-placeholder.jpg" alt="profile_pic">
 					</div>
-					<div [ngClass]="{'col-md-6': cookieUserId && urluserId !== cookieUserId, 'col-md-12': cookieUserId && urluserId === cookieUserId}" style="margin-top: 25px; padding-left: 0px;">
+					<div [ngClass]="{'col-md-6': (cookieUserId && urluserId !== cookieUserId) || !cookieUserId, 'col-md-12': cookieUserId && urluserId === cookieUserId}" style="margin-top: 25px; padding-left: 0px;">
 						<h2 style="margin-bottom: 0px">{{profileObj.first_name | titlecase}} {{profileObj.last_name | titlecase}}</h2>
 						<h4 class="pre-wrapped">{{profileObj.headline ? profileObj.headline : 'new user' | titlecase}}</h4>
 					</div>
