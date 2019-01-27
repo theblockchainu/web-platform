@@ -559,7 +559,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 			this.guide = res[0];
 			this.guideId = this.guide.id;
 			this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
-			this.totalHours = this._collectionService.calculateDuration(this.guide.description.length);
+			this.totalHours = this.guide.description ? this._collectionService.calculateDuration(this.guide.description.length) : 0;
 			this.setTags();
 			try {
 				if (fbq && fbq !== undefined) {

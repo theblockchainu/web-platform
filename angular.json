@@ -1,297 +1,301 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
-  "newProjectRoot": "projects",
-  "projects": {
-    "peerbuds2.0": {
-      "root": "",
-      "sourceRoot": "src",
-      "projectType": "application",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "outputPath": "dist/browser",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "tsConfig": "src/tsconfig.app.json",
-            "polyfills": "src/polyfills.ts",
-            "assets": [
-              "src/assets",
-              "src/favicon.png",
-              "src/pb_logo_square.png",
-              "src/sitemap.xml"
-            ],
-            "styles": [
-              "node_modules/videogular2/fonts/videogular.css",
-              "node_modules/primeicons/primeicons.css",
-              "node_modules/primeng/resources/themes/omega/theme.scss",
-              "node_modules/primeng/resources/primeng.min.css",
-              "src/styles.scss"
-            ],
-            "scripts": []
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "peerbuds2.0:build",
-            "port": 8080
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "peerbuds2.0:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "peerbuds2.0:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "karmaConfig": "./karma.conf.js",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "scripts": [],
-            "styles": [
-              "node_modules/videogular2/fonts/videogular.css",
-              "node_modules/primeicons/primeicons.css",
-              "node_modules/primeng/resources/themes/omega/theme.css",
-              "node_modules/primeng/resources/primeng.min.css",
-              "src/styles.scss"
-            ],
-            "assets": [
-              "src/assets",
-              "src/favicon.png",
-              "src/pb_logo_square.png",
-              "src/sitemap.xml"
-            ]
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
-        "server": {
-          "builder": "@angular-devkit/build-angular:server",
-          "options": {
-            "outputPath": "dist/server",
-            "main": "src/main.server.ts",
-            "tsConfig": "src/tsconfig.server.json"
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          }
-        }
-      }
-    },
-    "peerbuds2.0-e2e": {
-      "root": "e2e",
-      "sourceRoot": "e2e",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "peerbuds2.0:serve"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "BlockchainU": {
-      "root": "projects/BlockchainU/",
-      "sourceRoot": "projects/BlockchainU/src",
-      "projectType": "application",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "outputPath": "dist/BlockchainU/browser",
-            "index": "projects/BlockchainU/src/index.html",
-            "main": "projects/BlockchainU/src/main.ts",
-            "polyfills": "projects/BlockchainU/src/polyfills.ts",
-            "tsConfig": "projects/BlockchainU/tsconfig.app.json",
-            "assets": [
-              "projects/BlockchainU/src/assets",
-              "projects/BlockchainU/src/favicon.png",
-              "projects/BlockchainU/src/bu_logo_square.png",
-              "projects/BlockchainU/src/sitemap.xml"
-            ],
-            "styles": [
-              "node_modules/fullcalendar/dist/fullcalendar.min.css",
-              "node_modules/primeicons/primeicons.css",
-              "node_modules/videogular2/fonts/videogular.css",
-              "node_modules/primeng/resources/themes/omega/theme.scss",
-              "node_modules/primeng/resources/primeng.min.css",
-              "projects/BlockchainU/src/styles.scss"
-            ],
-            "scripts": [
-              "node_modules/moment/moment.js",
-              "node_modules/fullcalendar/dist/fullcalendar.js"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "projects/BlockchainU/src/environments/environment.ts",
-                  "with": "projects/BlockchainU/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
-            }
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "BlockchainU:build",
-            "port": 8080
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "BlockchainU:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "BlockchainU:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/BlockchainU/src/test.ts",
-            "polyfills": "projects/BlockchainU/src/polyfills.ts",
-            "tsConfig": "projects/BlockchainU/tsconfig.spec.json",
-            "karmaConfig": "projects/BlockchainU/karma.conf.js",
-            "styles": [
-              "node_modules/videogular2/fonts/videogular.css",
-              "node_modules/primeicons/primeicons.css",
-              "node_modules/primeng/resources/themes/omega/theme.css",
-              "node_modules/primeng/resources/primeng.min.css",
-              "projects/BlockchainU/src/styles.scss"
-            ],
-            "scripts": [],
-            "assets": [
-              "projects/BlockchainU/src/assets",
-              "projects/BlockchainU/src/favicon.png",
-              "projects/BlockchainU/src/pb_logo_square.png",
-              "projects/BlockchainU/src/sitemap.xml"
-            ]
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/BlockchainU/tsconfig.app.json",
-              "projects/BlockchainU/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "BlockchainU-e2e": {
-      "root": "projects/BlockchainU-e2e/",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/BlockchainU-e2e/protractor.conf.js",
-            "devServerTarget": "BlockchainU:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "BlockchainU:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "projects/BlockchainU-e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    }
-  },
-  "defaultProject": "BlockchainU",
-  "schematics": {
-    "@schematics/angular:component": {
-      "prefix": "app",
-      "styleext": "scss"
-    },
-    "@schematics/angular:directive": {
-      "prefix": "app"
-    }
-  }
+	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+	"version": 1,
+	"newProjectRoot": "projects",
+	"projects": {
+		"peerbuds2.0": {
+			"root": "",
+			"sourceRoot": "src",
+			"projectType": "application",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:browser",
+					"options": {
+						"outputPath": "dist/browser",
+						"index": "src/index.html",
+						"main": "src/main.ts",
+						"tsConfig": "src/tsconfig.app.json",
+						"polyfills": "src/polyfills.ts",
+						"assets": [
+							"src/assets",
+							"src/favicon.png",
+							"src/pb_logo_square.png",
+							"src/sitemap.xml"
+						],
+						"styles": [
+							"node_modules/videogular2/fonts/videogular.css",
+							"node_modules/primeicons/primeicons.css",
+							"node_modules/primeng/resources/themes/omega/theme.scss",
+							"node_modules/primeng/resources/primeng.min.css",
+							"src/styles.scss"
+						],
+						"scripts": []
+					},
+					"configurations": {
+						"production": {
+							"optimization": true,
+							"outputHashing": "all",
+							"sourceMap": false,
+							"extractCss": true,
+							"namedChunks": false,
+							"aot": true,
+							"extractLicenses": true,
+							"vendorChunk": false,
+							"buildOptimizer": true,
+							"fileReplacements": [
+								{
+									"replace": "src/environments/environment.ts",
+									"with": "src/environments/environment.prod.ts"
+								}
+							]
+						}
+					}
+				},
+				"serve": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"browserTarget": "peerbuds2.0:build",
+						"port": 8080
+					},
+					"configurations": {
+						"production": {
+							"browserTarget": "peerbuds2.0:build:production"
+						}
+					}
+				},
+				"extract-i18n": {
+					"builder": "@angular-devkit/build-angular:extract-i18n",
+					"options": {
+						"browserTarget": "peerbuds2.0:build"
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"main": "src/test.ts",
+						"karmaConfig": "./karma.conf.js",
+						"polyfills": "src/polyfills.ts",
+						"tsConfig": "src/tsconfig.spec.json",
+						"scripts": [],
+						"styles": [
+							"node_modules/videogular2/fonts/videogular.css",
+							"node_modules/primeicons/primeicons.css",
+							"node_modules/primeng/resources/themes/omega/theme.css",
+							"node_modules/primeng/resources/primeng.min.css",
+							"src/styles.scss"
+						],
+						"assets": [
+							"src/assets",
+							"src/favicon.png",
+							"src/pb_logo_square.png",
+							"src/sitemap.xml"
+						]
+					}
+				},
+				"lint": {
+					"builder": "@angular-devkit/build-angular:tslint",
+					"options": {
+						"tsConfig": [
+							"src/tsconfig.app.json",
+							"src/tsconfig.spec.json"
+						],
+						"exclude": [
+							"**/node_modules/**"
+						]
+					}
+				},
+				"server": {
+					"builder": "@angular-devkit/build-angular:server",
+					"options": {
+						"outputPath": "dist/server",
+						"main": "src/main.server.ts",
+						"tsConfig": "src/tsconfig.server.json"
+					},
+					"configurations": {
+						"production": {
+							"fileReplacements": [
+								{
+									"replace": "src/environments/environment.ts",
+									"with": "src/environments/environment.prod.ts"
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		"peerbuds2.0-e2e": {
+			"root": "e2e",
+			"sourceRoot": "e2e",
+			"projectType": "application",
+			"architect": {
+				"e2e": {
+					"builder": "@angular-devkit/build-angular:protractor",
+					"options": {
+						"protractorConfig": "./protractor.conf.js",
+						"devServerTarget": "peerbuds2.0:serve"
+					}
+				},
+				"lint": {
+					"builder": "@angular-devkit/build-angular:tslint",
+					"options": {
+						"tsConfig": [
+							"e2e/tsconfig.e2e.json"
+						],
+						"exclude": [
+							"**/node_modules/**"
+						]
+					}
+				}
+			}
+		},
+		"BlockchainU": {
+			"root": "projects/BlockchainU/",
+			"sourceRoot": "projects/BlockchainU/src",
+			"projectType": "application",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:browser",
+					"options": {
+						"outputPath": "dist/BlockchainU/browser",
+						"index": "projects/BlockchainU/src/index.html",
+						"main": "projects/BlockchainU/src/main.ts",
+						"polyfills": "projects/BlockchainU/src/polyfills.ts",
+						"tsConfig": "projects/BlockchainU/tsconfig.app.json",
+						"assets": [
+							"projects/BlockchainU/src/assets",
+							"projects/BlockchainU/src/favicon.png",
+							"projects/BlockchainU/src/bu_logo_square.png",
+							"projects/BlockchainU/src/sitemap.xml"
+						],
+						"styles": [
+							"node_modules/fullcalendar/dist/fullcalendar.min.css",
+							"node_modules/primeicons/primeicons.css",
+							"node_modules/videogular2/fonts/videogular.css",
+							"node_modules/primeng/resources/themes/omega/theme.scss",
+							"node_modules/primeng/resources/primeng.min.css",
+							"projects/BlockchainU/src/styles.scss"
+						],
+						"scripts": [
+							"node_modules/moment/moment.js",
+							"node_modules/fullcalendar/dist/fullcalendar.js"
+						]
+					},
+					"configurations": {
+						"production": {
+							"fileReplacements": [
+								{
+									"replace": "projects/BlockchainU/src/environments/environment.ts",
+									"with": "projects/BlockchainU/src/environments/environment.prod.ts"
+								}
+							],
+							"optimization": true,
+							"outputHashing": "all",
+							"sourceMap": false,
+							"extractCss": true,
+							"namedChunks": false,
+							"aot": true,
+							"extractLicenses": true,
+							"vendorChunk": false,
+							"buildOptimizer": true
+						}
+					}
+				},
+				"serve": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"browserTarget": "BlockchainU:build",
+						"port": 8080
+					},
+					"configurations": {
+						"production": {
+							"browserTarget": "BlockchainU:build:production"
+						}
+					}
+				},
+				"extract-i18n": {
+					"builder": "@angular-devkit/build-angular:extract-i18n",
+					"options": {
+						"browserTarget": "BlockchainU:build"
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"main": "projects/BlockchainU/src/test.ts",
+						"polyfills": "projects/BlockchainU/src/polyfills.ts",
+						"tsConfig": "projects/BlockchainU/tsconfig.spec.json",
+						"karmaConfig": "projects/BlockchainU/karma.conf.js",
+						"styles": [
+							"node_modules/fullcalendar/dist/fullcalendar.min.css",
+							"node_modules/videogular2/fonts/videogular.css",
+							"node_modules/primeicons/primeicons.css",
+							"node_modules/primeng/resources/themes/omega/theme.css",
+							"node_modules/primeng/resources/primeng.min.css",
+							"projects/BlockchainU/src/styles.scss"
+						],
+						"scripts": [
+							"node_modules/moment/moment.js",
+							"node_modules/fullcalendar/dist/fullcalendar.js"
+						],
+						"assets": [
+							"projects/BlockchainU/src/assets",
+							"projects/BlockchainU/src/favicon.png",
+							"projects/BlockchainU/src/pb_logo_square.png",
+							"projects/BlockchainU/src/sitemap.xml"
+						]
+					}
+				},
+				"lint": {
+					"builder": "@angular-devkit/build-angular:tslint",
+					"options": {
+						"tsConfig": [
+							"projects/BlockchainU/tsconfig.app.json",
+							"projects/BlockchainU/tsconfig.spec.json"
+						],
+						"exclude": [
+							"**/node_modules/**"
+						]
+					}
+				}
+			}
+		},
+		"BlockchainU-e2e": {
+			"root": "projects/BlockchainU-e2e/",
+			"projectType": "application",
+			"architect": {
+				"e2e": {
+					"builder": "@angular-devkit/build-angular:protractor",
+					"options": {
+						"protractorConfig": "projects/BlockchainU-e2e/protractor.conf.js",
+						"devServerTarget": "BlockchainU:serve"
+					},
+					"configurations": {
+						"production": {
+							"devServerTarget": "BlockchainU:serve:production"
+						}
+					}
+				},
+				"lint": {
+					"builder": "@angular-devkit/build-angular:tslint",
+					"options": {
+						"tsConfig": "projects/BlockchainU-e2e/tsconfig.e2e.json",
+						"exclude": [
+							"**/node_modules/**"
+						]
+					}
+				}
+			}
+		}
+	},
+	"defaultProject": "BlockchainU",
+	"schematics": {
+		"@schematics/angular:component": {
+			"prefix": "app",
+			"styleext": "scss"
+		},
+		"@schematics/angular:directive": {
+			"prefix": "app"
+		}
+	}
 }

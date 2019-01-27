@@ -55,7 +55,7 @@
 		<div class="row pending-actions center" *ngIf="class.subCategory !== 'self paced' && class.status === 'active' && calendarId === undefined && !hasUpcomingCohort()">
 			<div class="col-md-10 col-md-offset-1">
 				<span>This online course was run in the past but has no upcoming batches.
-					<span class="clickable mat-body-2" (click)="followCollectionToggle()" style="padding-left: 15px;" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{class.type | titlecase}}">
+					<span class="clickable mat-body-2" (click)="followCollectionToggle()" style="padding-left: 15px;" matTooltip="{{ isFollowing?'You will be':'Get' }} notified whenever a new cohort is added for this {{class.type | typeMap | titlecase}}">
 						&emsp; <i [class]="'fa-bell fa' + (isFollowing ? 's' : 'r')"></i> Get notified of upcoming cohorts
 					</span>
 					<a href="javascript:void(0);" *ngIf="userType === 'teacher'" (click)="editCalendar()">Schedule one now?</a>
@@ -91,8 +91,7 @@
 						<div class="row">
 							<div class="col-md-10">
 								<a class="clickable margin-bottom-10" *ngIf="calendarId && userType !== 'participant'" (click)="backToCollection(class)">
-									< Back to course page </a> <p class="mat-display-1" style="margin-bottom: 20px !important;">{{class.title |
-										titlecase}}
+									< Back to course page </a> <p class="mat-display-1" style="margin-bottom: 20px !important;">{{class.title | titlecase}}
 										<span *ngIf="calendarId && userType !== 'participant'">(Cohort View)</span>
 										<span *ngIf="!checkingEthereum && isOnEthereum  && userType === 'teacher' && !previewAs" matTooltip="one0x Compliant"
 										 style="padding-left: 15px; position: relative; top: -7px;">&emsp;
@@ -109,12 +108,10 @@
 												&nbsp;&nbsp;&nbsp;
 												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
 											</span>
-											<span> {{totalDuration | i18nPlural : hourMapping}} {{class.type}} &nbsp;&nbsp;&nbsp;
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{class.contents.length
-												| i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
+											<span> {{totalDuration | i18nPlural : hourMapping}} {{class.type | typeMap}} &nbsp;&nbsp;&nbsp;
+												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{class.contents.length | i18nPlural : activityMapping}} &nbsp;&nbsp;&nbsp;</span>
 											<span *ngIf="userType==='teacher'">
-												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{class.calendars.length
-												| i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;
+												<mat-icon style="font-size: 5px; top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>{{class.calendars.length | i18nPlural : cohortMapping}} &nbsp;&nbsp;&nbsp;
 											</span>
 											<a href="javascript:void(0)" *ngIf="userType==='teacher' && calendarId !== undefined" (click)="changeDates()">
 												<br />
@@ -138,8 +135,7 @@
 												<span matTooltip="{{class.views ? class.views.length : '0'}} Views" *ngIf="class.views && class.views.length > 0">
 													&nbsp;&nbsp;&nbsp;
 													<mat-icon style="font-size: 5px;  top: -2px; height: 20px; width: 12px;">fiber_manual_record</mat-icon>
-													<i class="fa fa-eye lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{class.views ?
-													class.views.length : '0'}}
+													<i class="fa fa-eye lightText" style="margin-left: 10px; margin-right: 10px;"></i> {{class.views ? class.views.length : '0'}}
 												</span>
 											</span>
 										</div>
@@ -189,7 +185,7 @@
 								 (click)=" deleteCohort()">
 									Delete Cohort
 								</button>
-								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined" (click)=" addParticipant()">
+								<button mat-menu-item *ngIf="userType==='teacher'" (click)=" addParticipant()">
 									Add participant
 								</button>
 								<button mat-menu-item *ngIf="userType==='teacher' && calendarId !== undefined && participants.length >= 0 && currentCalendar.status !== 'cancelled'"
@@ -244,8 +240,7 @@
 							</div>
 							<div class="col-md-8 col-xs-8">
 								Next cohort starts
-								{{_collectionService.getDaysBetween(_collectionService.getUpcomingCalendar(class.calendars).startDate,
-								today)}}
+								{{_collectionService.getDaysBetween(_collectionService.getUpcomingCalendar(class.calendars).startDate, today)}}
 								<br>
 								<b>{{_collectionService.getUpcomingCalendar(class.calendars).startDate | extractTime:'Do MMMM YY'}}</b> -
 								<b>{{_collectionService.getUpcomingCalendar(class.calendars).endDate | extractTime:'Do MMMM YY'}}</b>
@@ -301,8 +296,7 @@
 													<div class="row">
 														<div class="col-md-12 clickable" (click)="openProfilePage(class.owners[0].id)">
 															<span *ngIf="class.owners[0].profiles[0].first_name !== undefined">
-																{{class.owners[0].profiles[0].first_name | titlecase }} {{class.owners[0].profiles[0].last_name |
-																titlecase }}
+																{{class.owners[0].profiles[0].first_name | titlecase }} {{class.owners[0].profiles[0].last_name | titlecase }}
 															</span>
 															<span *ngIf="class.owners[0].profiles[0].first_name === undefined">
 																John Doe
@@ -368,8 +362,7 @@
 															<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined">
 																{{itenary.startDate | date:'EEEE, d MMMM'}} </div>
 															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length > 1">{{add1ToIndex(itenary.startDay)}}</div>
-															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate
-																| date:'EEEE, d MMMM'}}</div>
+															<div *ngIf="(userType==='public'|| calendarId === undefined) && itenaryArray.length == 1">{{itenary.startDate | date:'EEEE, d MMMM'}}</div>
 														</div>
 														<div (mouseover)="showViewTime(content)" (mouseout)="hideViewTime(content)" [ngClass]="{'row':true, 'timelineRowItem': true, 'timeRowItemProgress': content.views !== undefined && content.views.length > 0 && userType === 'participant'}"
 														 *ngFor="let content of itenary.contents">
@@ -875,7 +868,7 @@
 							<hr class="margin-top-10 margin-bottom-10">
 						</div>
 						<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId !== undefined">
-							<h3 class="margin-bottom-20">Cohort Participants ({{participants ? participants.length : '0'}})</h3>
+							<h3 class="margin-bottom-20">Cohort Participants ({{participants ? participants.length : '0'}}) <mat-icon class="clickable" style="position: relative; top: 3px; font-size: 18px; margin-left: 10px; color: #33bd9e;" (click)="addParticipant()">person_add</mat-icon></h3>
 							<div>
 								<div class="loading-container" [hidden]="!loadingParticipants">
 									<ngx-loading [show]="true"></ngx-loading>
@@ -902,8 +895,7 @@
 								<div>
 									<div class="row">
 										<div class="col-md-12 margin-top-20 margin-bottom-40">
-											<a (click)="viewParticipants()" style="cursor: pointer;" *ngIf="participants.length > 0"> View all
-												participants
+											<a (click)="viewParticipants()" style="cursor: pointer;" *ngIf="participants.length > 0"> View all participants
 											</a>
 										</div>
 									</div>
@@ -917,7 +909,7 @@
 							</div>
 						</div>
 						<div *ngIf="(userType==='teacher' || userType==='participant') && calendarId === undefined">
-							<h3 class="margin-bottom-20">All Participants ({{allParticipants ? allParticipants.length : '0'}})</h3>
+							<h3 class="margin-bottom-20">All Participants ({{allParticipants ? allParticipants.length : '0'}}) <mat-icon class="clickable" style="position: relative; top: 3px; font-size: 18px; margin-left: 10px; color: #33bd9e;" (click)="addParticipant()">person_add</mat-icon></h3>
 							<div>
 								<div class="loading-container" [hidden]="!loadingParticipants">
 									<ngx-loading [show]="true"></ngx-loading>
@@ -937,8 +929,7 @@
 								<div>
 									<div class="row">
 										<div class="col-md-12 margin-top-20">
-											<a (click)="viewAllParticipants()" style="cursor: pointer;" *ngIf="allParticipants.length > 0"> View all
-												participants
+											<a (click)="viewAllParticipants()" style="cursor: pointer;" *ngIf="allParticipants.length > 0"> View all participants
 											</a>
 										</div>
 									</div>
@@ -1116,12 +1107,12 @@
 								</div>
 							</div>
 						</div>
-						<div *ngIf="class.isApproved && certificateHTML !== undefined && certificateHTML.length > 10">
+						<div *ngIf="class.isApproved && certificateHTML !== undefined && certificateFormData && certificateFormData.groupArray && certificateFormData.groupArray.length > 0">
 							<hr class="margin-top-30 margin-bottom-30">
 							<div>
 								<h3 style="display: inline-block;">Smart Certificate</h3>
 								<div class="margin-top-20">
-									You will receive this Smart Certificate immediately on completing this course.
+									You will receive this Smart Certificate on completing the course.
 								</div>
 								<!-- <br> -->
 								<div class="row padding-top-20">

@@ -175,7 +175,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public clickedCohortEndDate;
 	public eventsForTheDay: any;
 	public toOpenDialogName;
-	private allowedDialogNames = ['paymentSuccess', 'assessment'];
+	private allowedDialogNames = ['paymentSuccess', 'assessment', 'addParticipant'];
 	public objectKeys = Object.keys;
 
 
@@ -200,6 +200,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public previewAs: string;
 
 	certificateHTML: string;
+	public certificateFormData: string;
 	loadingCertificate: boolean;
 	public assessmentRules: Array<any>;
 	public contactUsForm: FormGroup;
@@ -326,7 +327,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			],
 			'relInclude': 'calendarId',
 			'where': {
-				'or': [{ 'customUrl': this.experienceId }, { 'id': this.experienceId }]
+				'and': [
+					{'type': 'experience'},
+					{'or': [{ 'customUrl': this.experienceId }, { 'id': this.experienceId }]}
+				]
 			}
 		};
 
@@ -780,6 +784,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				break;
 			case 'assessment':
 				this.openAssessmentDialog();
+				break;
+			case 'addParticipant':
+				this.addParticipant();
+				break;
 		}
 	}
 
@@ -1134,7 +1142,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.experience.type, this.experience.maxSpots, this.accountApproved, this.userId)
 			.subscribe((result: any) => {
 				if (result) {
-					this.router.navigate(['class', this.experienceId, 'calendar', result, 'assessment']);
+					this.router.navigate(['experience', this.experienceId, 'calendar', result, 'assessment']);
 				}
 			});
 	}
@@ -1256,7 +1264,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 
 			}
 		});
-		this.totalDuration = totalLength.toString();
+		this.totalDuration = this.experience.totalHours;
 	}
 
 	/**
@@ -2161,6 +2169,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 			this.certificateService.getCertificateTemplate(this.experienceId).subscribe((res: any) => {
 				if (res !== null && res !== undefined) {
 					this.certificateHTML = res.certificateHTML;
+					this.certificateFormData = JSON.parse(res.formData);
 					this.certificateDomSubscription = this.certificateDomHTML.changes.subscribe(elem => {
 						if (elem['first']) {
 							const image = elem['first'].nativeElement.children[0].children[0].children[1].children[0];
@@ -2180,11 +2189,20 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	}
 
 	public addParticipant() {
-		this.dialogsService.addParticipant(this.experienceId, this.calendarId).subscribe(res => {
-			if (res) {
-				this.initializePage();
-			}
-		});
+		if (this.calendarId) {
+			this.dialogsService.addParticipant(this.experienceId, this.calendarId).subscribe(res => {
+				if (res) {
+					this.initializePage();
+				}
+			});
+		} else {
+			this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.experience.type, this.experience.maxSpots, this.accountApproved, this.userId)
+				.subscribe((result: any) => {
+					if (result) {
+						this.router.navigate(['experience', this.experienceId, 'calendar', result, 'addParticipant']);
+					}
+				});
+		}
 	}
 
 	public openShareDialog() {

@@ -60,7 +60,7 @@
 											<div class="collectionSubtitle">
 												<span *ngIf="bookmark.collection[0].calendars">{{ bookmark.collection[0].calendars.length }} Days</span>
 												<span *ngIf="bookmark.collection[0].contents">  | {{bookmark.collection[0].contents.length}} Activity</span>
-												<span *ngIf="bookmark.collection[0].topics.length > 0; then topicName else noTopicText"></span>
+												<span *ngIf="bookmark.collection[0].topics && bookmark.collection[0].topics.length > 0; then topicName else noTopicText"></span>
 											</div>
 											<div *ngIf="consoleLearningComponent.getLearnerUpcomingEvent(bookmark.collection[0]).timeToStart===0">
 												<p class="upcomingEventLabel">

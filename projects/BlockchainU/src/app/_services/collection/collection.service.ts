@@ -121,17 +121,17 @@ export class CollectionService {
 			.get(environment.apiUrl + '/api/collections/' + id + '/peers/' + fk + '/ether', this.requestHeaderService.options);
 
 	}
-	
+
 	public getBlockchainParticipants(id: string) {
 		return this.httpClient
 			.get(environment.apiUrl + '/api/collections/' + id + '/peers/ether', this.requestHeaderService.options);
-		
+
 	}
-	
+
 	public getParticipantScholarshipInfo(scholarshipId: string, peerEthAddress: string) {
 		return this.httpClient
 			.get(environment.apiUrl + '/api/scholarships/' + scholarshipId + '/peers/' + peerEthAddress + '/ether', this.requestHeaderService.options);
-		
+
 	}
 
 	public addToEthereum(id: string) {
@@ -412,7 +412,7 @@ export class CollectionService {
 		}).filter((element, index) => {
 			return moment() < moment(element.startDate);
 		});
-		return calendars[0];
+		return calendars && calendars.length > 0 ? calendars[0] : {};
 	}
 
 	/**
