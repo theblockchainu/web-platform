@@ -592,7 +592,7 @@
 								Cancel
 							</button>
 							<button mat-menu-item (click)="_collectionService.openEditCollection(collection)">
-								Edit {{collection.type | ucwords}}
+								Edit {{collection.type | typeMap | ucwords}}
 							</button>
 						</mat-menu>
 						<mat-card-actions *ngIf="_collectionService.getUpcomingEvent(collection) && _collectionService.getUpcomingEvent(collection).hasStarted">

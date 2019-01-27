@@ -142,6 +142,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public editCommentForm: FormGroup;
 	public editReplyForm: FormGroup;
 	certificateHTML: string;
+	public certificateFormData: string;
 	loadingCertificate: boolean;
 	public replyForm: FormGroup;
 	public reviewForm: FormGroup;
@@ -160,7 +161,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public clickedCohortEndDate;
 	public eventsForTheDay: any;
 	public toOpenDialogName;
-	private allowedDialogNames = ['paymentSuccess', 'assessment'];
+	private allowedDialogNames = ['paymentSuccess', 'assessment', 'addParticipant'];
 	public checkingEthereum: boolean;
 	public isOnEthereum: boolean;
 	public previewAs: string;
@@ -316,7 +317,10 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			],
 			'relInclude': 'calendarId',
 			'where': {
-				'or': [{ 'customUrl': this.classId }, { 'id': this.classId }]
+				'and': [
+					{'type': 'class'},
+					{'or': [{ 'customUrl': this.classId }, { 'id': this.classId }]}
+				]
 			}
 		};
 
@@ -773,6 +777,10 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 				break;
 			case 'assessment':
 				this.openAssessmentDialog();
+				break;
+			case 'addParticipant':
+				this.addParticipant();
+				break;
 		}
 	}
 
@@ -1264,7 +1272,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 
 			}
 		});
-		this.totalDuration = totalLength.toString();
+		this.totalDuration = this.class.totalHours;
 	}
 
 	/**
@@ -2092,6 +2100,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 			this.certificateService.getCertificateTemplate(this.classId).subscribe((res: any) => {
 				if (res !== undefined && res !== null) {
 					this.certificateHTML = res.certificateHTML;
+					this.certificateFormData = JSON.parse(res.formData);
 					this.certificateDomSubscription = this.certificateDomHTML.changes.subscribe(elem => {
 						if (elem['first']) {
 							const image = elem['first'].nativeElement.children[0].children[0].children[1].children[0];
@@ -2111,11 +2120,20 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	}
 
 	public addParticipant() {
-		this.dialogsService.addParticipant(this.classId, this.calendarId).subscribe(res => {
-			if (res) {
-				this.initializePage();
-			}
-		});
+		if (this.calendarId) {
+			this.dialogsService.addParticipant(this.classId, this.calendarId).subscribe(res => {
+				if (res) {
+					this.initializePage();
+				}
+			});
+		} else {
+			this.dialogsService.selectDateDialog(this.allItenaries, 'chooseDate', this.allParticipants, this.userType, this.class.type, this.class.maxSpots, this.accountApproved, this.userId)
+				.subscribe((result: any) => {
+					if (result) {
+						this.router.navigate(['class', this.classId, 'calendar', result, 'addParticipant']);
+					}
+				});
+		}
 	}
 
 	public openShareDialog() {

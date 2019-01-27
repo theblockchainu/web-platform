@@ -948,6 +948,16 @@ h3.calendarTitle {
 	left: 2px !important;
 }
 
+.ui-fileupload-row .ui-button-icon-only {
+	width: 28px !important;
+	height: 28px !important;
+	border-radius: 200px !important;
+}
+
+.ui-button-icon-only .ui-button-icon-left {
+	left: 25% !important;
+}
+
 .circle-thumb img, .circle-thumb {
 	width: 40px;
 	height: 40px;

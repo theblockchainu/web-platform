@@ -317,10 +317,10 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 	}
 
 	private setTags() {
-		this.titleService.setTitle('Create Experience');
+		this.titleService.setTitle('Create In-person Workshop');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Create new experience'
+			content: 'Create new in-person workshop'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
@@ -828,6 +828,7 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 
 		this.experience.controls['subCategory'].patchValue(res.subCategory);
 
+		this.experience.controls['customUrl'].patchValue(res.customUrl);
 
 		this.isPhoneVerified = res.owners[0].phoneVerified;
 
@@ -1012,15 +1013,16 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 		const startMoment = moment(calendarGroup.controls['startDate'].value).local();
 		const endMoment = moment(calendarGroup.controls['endDate'].value).local();
 		if (startMoment.diff(endMoment) > 0) {
-			this.snackBar.open('Start date cannot be after end date!', 'Close', {
+			this.snackBar.open('Start date cannot be after end date.', 'Close', {
 				duration: 5000
 			});
 			return false;
 		}
 		console.log(startMoment.diff(moment(), 'days'));
-		if (startMoment.diff(moment(), 'days') < 0) {
+		// For a draft workshop, start date cannot be in the past
+		if (this.experience.controls['status'].value === 'draft' && startMoment.diff(moment(), 'days') < 0) {
 			this.busySavingData = false;
-			this.snackBar.open('Start date cannot be in the past!', 'Close', {
+			this.snackBar.open('Start date cannot be in the past.', 'Close', {
 				duration: 5000
 			});
 			return false;
@@ -1108,21 +1110,21 @@ export class ExperienceEditComponent implements OnInit, AfterViewInit, OnDestroy
 				});
 		} else {
 			this.busySavingData = false;
-			console.log('No date selected or no content added to itinerary! - ' + JSON.stringify(itinerary));
+			console.log('No date selected or no content added to your timeline! - ' + JSON.stringify(itinerary));
 			if (!itinerary || itinerary.length === 0 || this.totalDuration === 0) {
 				if (this.exitAfterSave) {
-					this.snackBar.open('You need to add at least 1 activity to your experience to proceed.', 'Exit Anyways', {
+					this.snackBar.open('You need to add at least 1 activity to your workshop to proceed.', 'Exit Anyways', {
 						duration: 5000
 					}).onAction().subscribe(res => {
 						this.exit();
 					});
 				} else {
-					this.snackBar.open('You need to add at least 1 activity to your experience to proceed.', 'Close', {
+					this.snackBar.open('You need to add at least 1 activity to your workshop to proceed.', 'Close', {
 						duration: 5000
 					});
 				}
 			} else {
-				this.snackBar.open('No dates have been selected for your experience.', 'Close', {
+				this.snackBar.open('No dates have been selected for your workshop.', 'Close', {
 					duration: 5000
 				});
 			}

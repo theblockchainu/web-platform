@@ -17,7 +17,7 @@ declare let FB: any;
 	styleUrls: ['./invite.component.scss']
 })
 export class InviteComponent implements OnInit {
-	
+
 	initialised = false;
 	provider: string;
 	public mobileQuery: MediaQueryList;
@@ -128,7 +128,7 @@ export class InviteComponent implements OnInit {
 			content: environment.clientUrl + this.router.url
 		});
 	}
-	
+
 	showOnboardingDialog() {
 		const filter = {
 			include: ['identities', 'credentials']
@@ -268,5 +268,7 @@ interface PeerInvite {
 	email: string;
 	peerId: string;
 	status: string;
-	contactId: string;
+	contactId?: string;
+	collectionId?: string;
+	calendarId?: string;
 }

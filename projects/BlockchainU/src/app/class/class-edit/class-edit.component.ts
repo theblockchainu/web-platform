@@ -311,10 +311,10 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	private setTags() {
-		this.titleService.setTitle('Create Class');
+		this.titleService.setTitle('Create Online Course');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Create a new course'
+			content: 'Create a new online course'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
@@ -810,6 +810,7 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		this.class.controls['subCategory'].patchValue(res.subCategory);
 
+		this.class.controls['customUrl'].patchValue(res.customUrl);
 
 		this.isPhoneVerified = res.owners[0].phoneVerified;
 
@@ -974,15 +975,15 @@ export class ClassEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		const endMoment = moment(calendarGroup.controls['endDate'].value).local();
 		if (startMoment.diff(endMoment) > 0) {
 			this.busySavingData = false;
-			this.snackBar.open('Start date cannot be after end date!', 'Close', {
+			this.snackBar.open('Start date cannot be after end date.', 'Close', {
 				duration: 5000
 			});
 			return false;
 		}
 		console.log(startMoment.diff(moment(), 'days'));
-		if (startMoment.diff(moment(), 'days') < 0) {
+		if (this.class.controls['status'].value === 'draft' && startMoment.diff(moment(), 'days') < 0) {
 			this.busySavingData = false;
-			this.snackBar.open('Start date cannot be in the past!', 'Close', {
+			this.snackBar.open('Start date cannot be in the past.', 'Close', {
 				duration: 5000
 			});
 			return false;

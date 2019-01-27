@@ -39,14 +39,14 @@
 				<mat-list style="margin-left: 0px">
 					<mat-list-item *ngFor="let Content of itenaryForm.controls['contents'].controls; let i=index" style="margin: 20px 0px; padding: 0px 0px; height: fit-content;">
 						<div class="col-md-3" style="padding-left: 0px; margin-right: 10px;" (click)="findAndOpenDialog(i)">
-							<img *ngIf="!Content.value.imageUrl" src="/assets/images/placeholder-image.jpg" style="width: 140px;">
-							<img *ngIf="Content.value.imageUrl  && Content.value.type !== 'video'" src="{{envVariable.apiUrl + Content.value.imageUrl}}/500"
-							 (error)="imgErrorHandler($event)" style="width: 140px;">
-							<video *ngIf="Content.value.imageUrl && Content.value.type === 'video'" width="100%" class="center-block itenary-media"
-							 preload="metadata" poster="../../../assets/images/placeholder-image.jpg" controls>
+							<img *ngIf="Content.value.type !== 'video' && Content.value.type !== 'quiz'" src="{{envVariable.apiUrl + Content.value.imageUrl}}/500"
+								 (error)="imgErrorHandler($event)" style="width: 140px;">
+							<video *ngIf="Content.value.imageUrl && Content.value.type === 'video' && !Content.value.youtubeId" width="100%" class="center-block itenary-media" preload="metadata" poster="../../../assets/images/community-banner-bg.jpg">
 								<source src="{{envVariable.apiUrl + Content.value.imageUrl}}" type="video/mp4">
 							</video>
-							<!-- <video *ngIf="Content.value.imageUrl && Content.value.type === 'video'" id="video" src="{{envVariable.apiUrl + Content.value.imageUrl}}" type="video/mp4" controls></video> -->
+							<img *ngIf="Content.value.type === 'quiz'" style="width: 140px;" src="/assets/images/quizcover.jpg">
+							<img *ngIf="!Content.value.imageUrl && Content.value.type === 'video' && !Content.value.youtubeId" style="width: 140px;" src="/assets/images/placeholder-image.jpg">
+							<img style="width: 140px;" *ngIf="Content.value.type==='video' && Content.value.youtubeId" [src]="'https://img.youtube.com/vi/'+Content.value.youtubeId+'/0.jpg'| safe:'resourceUrl'" (error)="imgErrorHandler($event)">
 						</div>
 						<div class="col-md-7" (click)="findAndOpenDialog(i)">
 							<div class="content-title">{{Content.value.title | titlecase}}</div>

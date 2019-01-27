@@ -144,7 +144,7 @@
 						<div class="row lightText padding-bottom-20">
 							<div class="col-xs-12">
 								<div class="mat-body-2" *ngIf="!loadingCollection" style="float: left;">
-									<a [routerLink]="['/', collection.type, collection.id]">< View {{collection.type}} details</a>
+									<a [routerLink]="['/', collection.type, collection.id]">< View {{collection.type | typeMap}} details</a>
 								</div>
 								<button class="pull-right" (click)="snav.open()" mat-icon-button>
 									<mat-icon>info</mat-icon>

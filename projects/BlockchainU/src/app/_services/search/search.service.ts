@@ -34,9 +34,12 @@ export class SearchService {
                 cb(err);
             });
     }
-	
+
 	public getPeerSearch(query: any, cb) {
-		this.http
+		if (this.httpSubscription) {
+			this.httpSubscription.unsubscribe();
+		}
+		this.httpSubscription = this.http
 			.get(environment.searchUrl + '/searchPeer?' + 'query=' + query, this.requestHeaderService.options)
 			.subscribe((response: any) => {
 				console.log(response);
