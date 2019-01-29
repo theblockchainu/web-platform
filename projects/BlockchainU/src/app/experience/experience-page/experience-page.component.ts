@@ -186,13 +186,15 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public projectMapping:
 		{ [k: string]: string } = { '=0': 'No projects', '=1': 'One project', 'other': '# projects' };
 	public inPersonSessionMapping:
-		{ [k: string]: string } = { '=0': 'No in-person activity', '=1': 'One in-person activity', 'other': '# in-person activities' };
+		{ [k: string]: string } = { '=0': 'No in-person meetup', '=1': 'One in-person meetup', 'other': '# in-person meetups' };
 	public cohortMapping:
 		{ [k: string]: string } = { '=0': 'No cohort', '=1': 'One cohort', 'other': '# cohorts' };
 	public dayMapping:
 		{ [k: string]: string } = { '=0': 'Less than a day', '=1': 'One day', 'other': '# days' };
 	public discussionMapping:
 		{ [k: string]: string } = { '=0': 'No Comments', '=1': 'One comment', 'other': '# comments' };
+	public quizMapping:
+		{ [k: string]: string } = { '=0': 'No quizzes', '=1': 'One quiz', 'other': '# quizzes' };
 
 	public carouselImages: Array<string>;
 	public carouselBanner: any;

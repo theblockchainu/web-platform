@@ -6,12 +6,18 @@
 				<span class="clickable dotted-underline" (click)="askQuestion()">Ask a Question</span>
 			</div>
 			<nav mat-tab-nav-bar disableRipple class="noJustify home">
+				<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive"
+				   matTooltip="Courses are a way to learn any subject completely online with videos, projects & live sessions.">
+					<img src="/assets/images/class_icon2.jpg" alt="logo" style="height: 100%;">
+					<h3 class="margin-left-10">Online Courses</h3>
+				</a>
 				<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
 				 matTooltip="In-person Workshops are a way to learn any subject in the real world together with your teacher.">
 					<img src="/assets/images/experiences_icon.jpeg" alt="logo" style="height: 100%;">
 					<h3 class="margin-left-10">In-person Workshops</h3>
 				</a>
-				<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive">
+				<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive"
+				   matTooltip="Learning Guides are text based lessons along with an interactive CodeLabs environment to help you get a practical learning experience." >
 					<img src="/assets/images/peers_icon1.jpg" alt="logo" style="height: 100%;">
 					<h3 class="margin-left-10">Learning Guides</h3>
 				</a>
@@ -19,11 +25,6 @@
 				 matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
 					<img src="/assets/images/communities_icon1.jpg" alt="logo" style="height: 100%;">
 					<h3>Communities</h3>
-				</a>
-				<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive"
-				 matTooltip="Courses are a way to learn any subject completely online with videos, projects & live sessions.">
-					<img src="/assets/images/class_icon2.jpg" alt="logo" style="height: 100%;">
-					<h3 class="margin-left-10">Online Courses</h3>
 				</a>
 			</nav>
 		</div>
@@ -101,6 +102,35 @@
 				</div>
 			</div>
 
+			<div class="row class-feed">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8">
+							<div class="mat-display-1 clickable" [routerLink]="'/home/classes'">Online Courses</div>
+						</div>
+						<div class="col-md-2 pull-right" style="text-align: right">
+							<a [routerLink]="'/home/classes'">
+								<span class="mat-body-1">
+									See all
+									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="loading-container" [hidden]="!loadingClasses">
+						<ngx-loading [show]="true"></ngx-loading>
+					</div>
+					<div *ngIf="!loadingClasses" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
+						<div class="noDataContainer" *ngIf="classes === undefined || classes.length === 0">
+							There are no new active courses to view right now.
+						</div>
+						<div *ngFor="let class of classes; let i =index">
+							<app-class-card [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="row experience-feed">
 				<div class="col-md-12">
 					<div class="row">
@@ -130,34 +160,6 @@
 				</div>
 			</div>
 
-			<div class="row class-feed">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-md-8">
-							<div class="mat-display-1 clickable" [routerLink]="'/home/classes'">Online Courses</div>
-						</div>
-						<div class="col-md-2 pull-right" style="text-align: right">
-							<a [routerLink]="'/home/classes'">
-								<span class="mat-body-1">
-									See all
-									<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
-								</span>
-							</a>
-						</div>
-					</div>
-					<div class="loading-container" [hidden]="!loadingClasses">
-						<ngx-loading [show]="true"></ngx-loading>
-					</div>
-					<div *ngIf="!loadingClasses" class="row feed-horizontal margin-bottom-60" style="padding: 0px 7px;">
-						<div class="noDataContainer" *ngIf="classes === undefined || classes.length === 0">
-							There are no new active courses to view right now.
-						</div>
-						<div *ngFor="let class of classes; let i =index">
-							<app-class-card [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>
-						</div>
-					</div>
-				</div>
-			</div>
 			<div class="row experience-feed">
 				<div class="col-md-12">
 					<div class="row">
@@ -186,6 +188,7 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="row experience-feed">
 				<div class="col-md-12">
 					<div class="row">
@@ -214,6 +217,7 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="row question-feed">
 				<div class="col-md-12">
 					<div class="row">
@@ -242,6 +246,7 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="row community-feed">
 				<div class="col-md-12">
 					<div class="row">
@@ -270,6 +275,7 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="row peer-feed margin-bottom-40">
 				<div class="col-md-12">
 					<div class="row">

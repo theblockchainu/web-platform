@@ -332,8 +332,7 @@ export class HomefeedComponent implements OnInit {
 						]
 					}
 				}
-			],
-			'order': 'createdAt desc'
+			]
 		};
 		this.loadingCommunities = true;
 		this._topicService.getTopics(query).subscribe(
@@ -376,7 +375,7 @@ export class HomefeedComponent implements OnInit {
 					});
 				}
 				this.communities = _.uniqBy(this.communities, 'id');
-				this.communities = _.orderBy(this.communities, ['createdAt'], ['desc']);
+				this.communities = _.orderBy(this.communities, ['participants.length'], ['desc']);
 				this.communities = _.chunk(this.communities, 5)[0];
 				this.loadingCommunities = false;
 			}, (err) => {
