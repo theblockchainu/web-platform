@@ -115,13 +115,19 @@
 			<h2 class="section-title">Explore The Blockchain University</h2>
 			<div class="homefeedContainer">
 				<nav mat-tab-nav-bar disableRipple class="noJustify home">
+					<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive"
+					   matTooltip="Online Courses are a way to learn any subject completely online with videos, projects & live sessions.">
+						<img src="/assets/images/classes_thumb.jpg" alt="logo" style="height: 100%;">
+						<h3 class="margin-left-10">Online Courses</h3>
+					</a>
 					<a mat-tab-link [routerLink]="'/home/experiences'" routerLinkActive #experienceLink="routerLinkActive" [active]="experienceLink.isActive"
 					 matTooltip="In-person Workshops are a way to learn any subject in the real world together with your teacher.">
 						<img src="/assets/images/experience_thumb.jpg" alt="logo" style="height: 100%;">
 						<h3 class="margin-left-10">In-person Workshops</h3>
 					</a>
 
-					<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive">
+					<a mat-tab-link [routerLink]="'/home/guides'" routerLinkActive #guideLink="routerLinkActive" [active]="guideLink.isActive"
+					   matTooltip="Learning Guides are text based lessons along with an interactive CodeLabs environment to help you get a practical learning experience.">
 						<img src="/assets/images/peer_thumb.jpg" alt="logo" style="height: 100%;">
 						<h3 class="margin-left-10">Learning Guides</h3>
 					</a>
@@ -129,11 +135,6 @@
 					 matTooltip="Communities are digital spaces where you can learn by asking and answering questions and discovering new content.">
 						<img src="/assets/images/community_thumb.jpg" alt="logo" style="height: 100%;">
 						<h3>Communities</h3>
-					</a>
-					<a mat-tab-link [routerLink]="'/home/classes'" routerLinkActive #classLink="routerLinkActive" [active]="classLink.isActive"
-					 matTooltip="Online Courses are a way to learn any subject completely online with videos, projects & live sessions.">
-						<img src="/assets/images/classes_thumb.jpg" alt="logo" style="height: 100%;">
-						<h3 class="margin-left-10">Online Courses</h3>
 					</a>
 				</nav>
 			</div>
@@ -162,6 +163,55 @@
 			<div class="row">
 				<div *ngFor="let learningPath of learningPaths">
 					<app-learning-path-card [learningPath]='learningPath'></app-learning-path-card>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="classes-anywhere spacing">
+		<div class="container">
+			<h2 class="section-title">Introducing Online Courses</h2>
+			<div class="jumbo-image-box">
+				<div class="row">
+					<div class="col-xs-4 image align-top">
+						<div class="image-container">
+							<img src="/assets/images/classes-anywhere.jpg" alt="classes-anywhere" class="img-fluid">
+						</div>
+					</div>
+					<div class="col-xs-8 content align-middle">
+						<h3>Interactive online courses designed by experts</h3>
+						<div class="intro mb-3">Host your own class to earn extra income</div>
+						<a [routerLink]="'/home/classes'" class="theme-btn">Find out more</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience-around-world top-rated-classes spacing">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8">
+					<h2 class="section-title pb-0" [routerLink]="'/home/classes'">Top rated online courses</h2>
+				</div>
+				<div class="col-md-2 pull-right" style="text-align: right">
+					<a [routerLink]="'/home/classes'">
+						<span class="mat-body-1">
+							See all
+							<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+						</span>
+					</a>
+				</div>
+			</div>
+			<div class="loading-container" [hidden]="!loadingClasses">
+				<ngx-loading [show]="true"></ngx-loading>
+			</div>
+			<div *ngIf="!loadingClasses" class="row feed-horizontal" style="padding: 0px 7px;">
+				<div class="noDataContainer" *ngIf="classes === undefined || classes.length === 0">
+					There are no new active courses to view right now.
+				</div>
+				<div *ngFor="let class of classes; let i =index">
+					<app-class-card *ngIf="i < 5" [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>
 				</div>
 			</div>
 		</div>
@@ -279,75 +329,6 @@
 		</div>
 	</section>
 
-	<section class="classes-anywhere spacing">
-		<div class="container">
-			<h2 class="section-title">Introducing Online Courses</h2>
-			<div class="jumbo-image-box">
-				<div class="row">
-					<div class="col-xs-4 image align-top">
-						<div class="image-container">
-							<img src="/assets/images/classes-anywhere.jpg" alt="classes-anywhere" class="img-fluid">
-						</div>
-					</div>
-					<div class="col-xs-8 content align-middle">
-						<h3>Interactive online courses designed by experts</h3>
-						<div class="intro mb-3">Host your own class to earn extra income</div>
-						<a [routerLink]="'/home/classes'" class="theme-btn">Find out more</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="experience-around-world top-rated-classes spacing">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-8">
-					<h2 class="section-title pb-0" [routerLink]="'/home/classes'">Top rated online courses</h2>
-				</div>
-				<div class="col-md-2 pull-right" style="text-align: right">
-					<a [routerLink]="'/home/classes'">
-						<span class="mat-body-1">
-							See all
-							<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
-						</span>
-					</a>
-				</div>
-			</div>
-			<div class="loading-container" [hidden]="!loadingClasses">
-				<ngx-loading [show]="true"></ngx-loading>
-			</div>
-			<div *ngIf="!loadingClasses" class="row feed-horizontal" style="padding: 0px 7px;">
-				<div class="noDataContainer" *ngIf="classes === undefined || classes.length === 0">
-					There are no new active courses to view right now.
-				</div>
-				<div *ngFor="let class of classes; let i =index">
-					<app-class-card *ngIf="i < 5" [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="classes-anywhere spacing">
-		<div class="container">
-			<h2 class="section-title">Introducing Reward Bounties </h2>
-			<div class="jumbo-image-box">
-				<div class="row">
-					<div class="col-xs-4 image align-top">
-						<div class="image-container">
-							<img src="/assets/images/bounties-anywhere.jpg" alt="bounties-anywhere" class="img-fluid">
-						</div>
-					</div>
-					<div class="col-xs-8 content align-middle">
-						<h3>Rewards based bounties designed by corporate partners</h3>
-						<div class="intro mb-3">Bug bounties, competitive bounties, hiring bounties and much more.</div>
-						<a [routerLink]="'/home/bounties'" class="theme-btn">Find out more</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
 	<section class="guide-around-world spacing">
 		<div class="container">
 			<div class="row">
@@ -372,6 +353,26 @@
 				</div>
 				<div *ngFor="let guide of guides; let i = index;">
 					<app-guide-card *ngIf="i < 5" [guide]="guide" (refresh)="onGuideRefresh($event)"></app-guide-card>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="classes-anywhere spacing">
+		<div class="container">
+			<h2 class="section-title">Introducing Reward Bounties </h2>
+			<div class="jumbo-image-box">
+				<div class="row">
+					<div class="col-xs-4 image align-top">
+						<div class="image-container">
+							<img src="/assets/images/bounties-anywhere.jpg" alt="bounties-anywhere" class="img-fluid">
+						</div>
+					</div>
+					<div class="col-xs-8 content align-middle">
+						<h3>Rewards based bounties designed by corporate partners</h3>
+						<div class="intro mb-3">Bug bounties, competitive bounties, hiring bounties and much more.</div>
+						<a [routerLink]="'/home/bounties'" class="theme-btn">Find out more</a>
+					</div>
 				</div>
 			</div>
 		</div>

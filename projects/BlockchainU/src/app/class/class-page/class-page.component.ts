@@ -174,7 +174,11 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 	public projectMapping:
 		{ [k: string]: string } = { '=0': 'No project', '=1': 'One project', 'other': '# projects' };
 	public onlineSessionMapping:
-		{ [k: string]: string } = { '=0': 'No live activity', '=1': 'One live activity', 'other': '# online activity' };
+		{ [k: string]: string } = { '=0': 'No live session', '=1': 'One live session', 'other': '# live sessions' };
+	public videoLessonMapping:
+		{ [k: string]: string } = { '=0': 'No video lessons', '=1': 'One video lesson', 'other': '# video lessons' };
+	public quizMapping:
+		{ [k: string]: string } = { '=0': 'No quizzes', '=1': 'One quiz', 'other': '# quizzes' };
 	public cohortMapping:
 		{ [k: string]: string } = { '=0': 'No cohort', '=1': 'One cohort', 'other': '# cohorts' };
 	public dayMapping:

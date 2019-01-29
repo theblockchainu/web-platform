@@ -15,7 +15,7 @@
 		</div>
 	</div>
 	<form [formGroup]="searchForm">
-		<div class="row" style="min-height: 40vh;">
+		<div class="row" style="min-height: 20vh;">
 			<div class="col-xs-12">
 				<mat-form-field class="pb-block">
 					<mat-chip-list #chipList>
@@ -24,7 +24,7 @@
 							<span *ngIf="!peer.id">Invite: {{peer.email}}</span>
 							<mat-icon matChipRemove>cancel</mat-icon>
 						</mat-chip>
-						<input placeholder="Search for an existing user or invite a participant to your cohort.." #searchInput formControlName="searchText" (keyup)="onSearch($event)"
+						<input tabindex="-1" placeholder="Search for an existing user or invite a participant to your cohort.." #searchInput formControlName="searchText" (keyup)="onSearch($event)"
 							   [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputAddOnBlur]="false" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
 							   (matChipInputTokenEnd)="onSearchTextAdded($event)" />
 					</mat-chip-list>
@@ -60,16 +60,16 @@
 					</mat-autocomplete>
 				</mat-form-field>
 			</div>
-			<div class="col-xs-12 mat-caption margin-top-30">
+			<div class="col-xs-12 mat-caption margin-top-40">
 				<b>How does a participant invite work?</b>
 				<br><br>
 				When you invite users by their email ID, they will receive an email from us with a special invite link to sign up on the platform.
 				<br>
-				After successfully signing up, the invitee will be automatically enrolled in this course.
+				After successfully signing up, the invitee will automatically be enrolled in this course.
 			</div>
 		</div>
 	</form>
-	<div class="row margin-top-50">
+	<div class="row margin-top-30">
 		<div class="col-xs-12 col-md-6">
 			<p-fileUpload auto="auto" #fubauto name="excelData" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" customUpload="true" (uploadHandler)="uploadExcel($event)" maxFileSize="100000" chooseLabel="Bulk Upload" [showCancelButton]="false" [disabled]="httpLoading">
 				<ng-template pTemplate="toolbar">
@@ -78,7 +78,7 @@
 			</p-fileUpload>
 		</div>
 		<div class="col-xs-12 col-md-6 padding-top-10" style="text-align: right">
-			<button (click)="addParticipant()" mat-raised-button color="primary" [disabled]="httpLoading">
+			<button (click)="addParticipant()" mat-raised-button color="primary" matTooltip="Add at-least 1 user above to invite as a participant." [matTooltipDisabled]="selectedInvites.length > 0 || selectedPeers.length > 0" [disabled]="httpLoading || (selectedInvites.length === 0 && selectedPeers.length === 0)">
 				<span *ngIf="!httpLoading">Add Participants</span>
 				<ngx-loading [show]="true" *ngIf="httpLoading"></ngx-loading>
 			</button>
