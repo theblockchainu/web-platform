@@ -154,7 +154,7 @@ export class PeersComponent implements OnInit {
 				'limit': 50,
 			};
 		}
-		
+
 		this._topicService.getTopics(query)
 			.subscribe(
 				(response: any) => {
@@ -170,7 +170,7 @@ export class PeersComponent implements OnInit {
 								if (topics.length > 0) {
 									peer.topics = topics;
 								} else {
-									topics.push('No topic selected');
+									topics.push('no topics yet');
 									peer.topics = topics;
 								}
 								peers.push(peer);
@@ -185,7 +185,7 @@ export class PeersComponent implements OnInit {
 								if (topics.length > 0) {
 									peer.topics = topics;
 								} else {
-									topics.push('No topics selected');
+									topics.push('no topics yet');
 									peer.topics = topics;
 								}
 								peers.push(peer);

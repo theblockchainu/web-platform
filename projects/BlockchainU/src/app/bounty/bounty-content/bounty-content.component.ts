@@ -104,7 +104,7 @@ export class BountyContentComponent implements OnInit, AfterViewInit {
 
 	checkBountyActive() {
 		if (this.collection.status === 'active') {
-			this.showDialogForActiveBounty(false);
+			this.executeSubmitBounty(this.collection);
 		} else {
 			const itenaries = <FormArray>this.myForm.controls['itenary'];
 			itenaries.push(this.initItenary());
@@ -125,13 +125,6 @@ export class BountyContentComponent implements OnInit, AfterViewInit {
 		this._collectionService.patchCollection(collection.id, body).subscribe(
 			(response: any) => {
 				const result = response;
-				let collectionId;
-				// if (result.isNewInstance) {
-				// 	collectionId = result.id;
-				// 	this.reload(collectionId, 13);
-				// } else {
-				// 	window.location.reload();
-				// }
 			});
 	}
 
@@ -153,7 +146,8 @@ export class BountyContentComponent implements OnInit, AfterViewInit {
 		if (event.action === 'add') {
 			// Show cloning warning since collection is active
 			if (this.collection.status === 'active') {
-				this._dialogsService.openCollectionCloneDialog({ type: 'bounty' })
+				this.postContent(event, i);
+				/*this._dialogsService.openCollectionCloneDialog({ type: 'bounty' })
 					.subscribe((result) => {
 						if (result === 'accept') {
 							this.postContent(event, i);
@@ -161,14 +155,15 @@ export class BountyContentComponent implements OnInit, AfterViewInit {
 							// Do nothing
 							this.router.navigate(['console', 'teaching', 'bounties']);
 						}
-					});
+					});*/
 			} else {
 				this.postContent(event, i);
 			}
 
 		} else if (event.action === 'update') {
 			if (this.collection.status === 'active') {
-				this._dialogsService.openCollectionCloneDialog({ type: 'bounty' })
+				this.patchContent(event, i);
+				/*this._dialogsService.openCollectionCloneDialog({ type: 'bounty' })
 					.subscribe((result) => {
 						if (result === 'accept') {
 							this.patchContent(event, i);
@@ -176,13 +171,14 @@ export class BountyContentComponent implements OnInit, AfterViewInit {
 							// Do nothing
 							this.router.navigate(['console', 'teaching', 'bounties']);
 						}
-					});
+					});*/
 			} else {
 				this.patchContent(event, i);
 			}
 		} else if (event.action === 'delete') {
 			if (this.collection.status === 'active') {
-				this._dialogsService.openCollectionCloneDialog({ type: 'bounty' })
+				this.deleteContent(event.value, i);
+				/*this._dialogsService.openCollectionCloneDialog({ type: 'bounty' })
 					.subscribe((result) => {
 						if (result === 'accept') {
 							this.deleteContent(event.value, i);
@@ -190,13 +186,17 @@ export class BountyContentComponent implements OnInit, AfterViewInit {
 							// Do nothing
 							this.router.navigate(['console', 'teaching', 'bounties']);
 						}
-					});
+					});*/
 			} else {
 				this.deleteContent(event.value, i);
 			}
 		} else if (event.action === 'deleteDay') {
 			if (this.collection.status === 'active') {
-				this._dialogsService.openCollectionCloneDialog({ type: 'bounty' })
+				this.deleteContent(null, i);
+				const itenary = <FormArray>this.myForm.controls.itenary;
+				itenary.removeAt(i);
+				this.days.emit(itenary);
+				/*this._dialogsService.openCollectionCloneDialog({ type: 'bounty' })
 					.subscribe((result) => {
 						if (result === 'accept') {
 							this.deleteContent(null, i);
@@ -207,7 +207,7 @@ export class BountyContentComponent implements OnInit, AfterViewInit {
 							// Do nothing
 							this.router.navigate(['console', 'teaching', 'bounties']);
 						}
-					});
+					});*/
 			} else {
 				this.deleteContent(null, i);
 				const itenary = <FormArray>this.myForm.controls.itenary;

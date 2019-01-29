@@ -19,25 +19,25 @@ import { flatMap } from 'rxjs/operators';
 	// Every Angular template is first compiled by the browser before Angular runs it's compiler
 	templateUrl: './class-content.component.html',
 	styleUrls: ['./class-content.component.scss']
-	
+
 })
 
 export class ClassContentComponent implements OnInit, AfterViewInit {
 	@Input()
 	public myForm: FormGroup;
-	
+
 	@Input()
 	public collection: any;
-	
+
 	@Input()
 	public status: string;
-	
+
 	@Input()
 	public calendar: any;
-	
+
 	@Output()
 	days = new EventEmitter<any>();
-	
+
 	public envVariable;
 	constructor(
 		public authenticationService: AuthenticationService,
@@ -53,15 +53,15 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 	) {
 		this.envVariable = environment;
 	}
-	
+
 	ngOnInit() {
 		this.myForm.addControl('itenary', this._fb.array([this.initItenary()]));
 	}
-	
+
 	ngAfterViewInit() {
 		this.cd.detectChanges();
 	}
-	
+
 	initItenary() {
 		return this._fb.group({
 			date: [null],
@@ -69,18 +69,18 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 			contents: this._fb.array([])
 		});
 	}
-	
+
 	addItenary() {
 		this.checkClassActive();
 	}
-	
+
 	removeItenary(i: number) {
 		const itenaries = <FormArray>this.myForm.controls.itenary;
 		const itenaryGroup = <FormGroup>itenaries.controls[i];
 		const contents = <Array<any>>itenaryGroup.value.contents;
-		
+
 		let deleteIndex = 0;
-		
+
 		while (deleteIndex !== contents.length) {
 			this.http.delete(environment.apiUrl + '/api/contents/' + contents[deleteIndex].id, this.requestHeaderService.options)
 				.subscribe((response: any) => {
@@ -91,7 +91,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 		itenaries.removeAt(i);
 		this.days.emit(itenaries);
 	}
-	
+
 	save(myForm: FormGroup) {
 		console.log(myForm.value);
 	}
@@ -103,21 +103,21 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 		const start = moment(startDate);
 		return current.diff(start, 'days');
 	}
-	
+
 	checkClassActive() {
 		if (this.collection.status === 'active') {
-			this.showDialogForActiveClass(false);
+			this.executeSubmitClass(this.collection);
 		} else {
 			const itenaries = <FormArray>this.myForm.controls['itenary'];
 			itenaries.push(this.initItenary());
 			this.days.emit(itenaries);
 		}
 	}
-	
+
 	reload(collectionId, step) {
 		window.location.href = '/class/' + collectionId + '/edit/' + step;
 	}
-	
+
 	private executeSubmitClass(collection) {
 		const calendars = collection.calendars;
 		const timeline = collection.contents;
@@ -129,7 +129,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 				// Do something here
 			});
 	}
-	
+
 	showDialogForActiveClass(isContent) {
 		this._dialogsService.openCollectionCloneDialog({type: 'class'})
 			.subscribe((result) => {
@@ -143,12 +143,13 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 				}
 			});
 	}
-	
+
 	saveTriggered(event, i) {
 		if (event.action === 'add') {
 			// Show cloning warning since collection is active
 			if (this.collection.status === 'active') {
-				this._dialogsService.openCollectionCloneDialog({type: 'class'})
+				this.postContent(event, i);
+				/*this._dialogsService.openCollectionCloneDialog({type: 'class'})
 					.subscribe((result) => {
 						if (result === 'accept') {
 							this.postContent(event, i);
@@ -156,14 +157,15 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 							// Do nothing
 							this.router.navigate(['console', 'teaching', 'classes']);
 						}
-					});
+					});*/
 			} else {
 				this.postContent(event, i);
 			}
-			
+
 		} else if (event.action === 'update') {
 			if (this.collection.status === 'active') {
-				this._dialogsService.openCollectionCloneDialog({type: 'class'})
+				this.patchContent(event, i);
+				/*this._dialogsService.openCollectionCloneDialog({type: 'class'})
 					.subscribe((result) => {
 						if (result === 'accept') {
 							this.patchContent(event, i);
@@ -171,13 +173,14 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 							// Do nothing
 							this.router.navigate(['console', 'teaching', 'classes']);
 						}
-					});
+					});*/
 			} else {
 				this.patchContent(event, i);
 			}
 		} else if (event.action === 'delete') {
 			if (this.collection.status === 'active') {
-				this._dialogsService.openCollectionCloneDialog({ type: 'class' })
+				this.deleteContent(event.value, i);
+				/*this._dialogsService.openCollectionCloneDialog({ type: 'class' })
 					.subscribe((result) => {
 						if (result === 'accept') {
 							this.deleteContent(event.value, i);
@@ -185,13 +188,17 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 							// Do nothing
 							this.router.navigate(['console', 'teaching', 'classes']);
 						}
-					});
+					});*/
 			} else {
 				this.deleteContent(event.value, i);
 			}
 		} else if (event.action === 'deleteDay') {
 			if (this.collection.status === 'active') {
-				this._dialogsService.openCollectionCloneDialog({ type: 'class' })
+				this.deleteContent(null, i);
+				const itenary = <FormArray>this.myForm.controls.itenary;
+				itenary.removeAt(i);
+				this.days.emit(itenary);
+				/*this._dialogsService.openCollectionCloneDialog({ type: 'class' })
 					.subscribe((result) => {
 						if (result === 'accept') {
 							this.deleteContent(null, i);
@@ -202,7 +209,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 							// Do nothing
 							this.router.navigate(['console', 'teaching', 'classes']);
 						}
-					});
+					});*/
 			} else {
 				this.deleteContent(null, i);
 				const itenary = <FormArray>this.myForm.controls.itenary;
@@ -213,7 +220,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 			console.log('unhandledEvent Triggered');
 		}
 	}
-	
+
 	postContent(event, i) {
 		let collectionId;
 		const itenaryObj = this.myForm.value.itenary[i];
@@ -226,13 +233,13 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 		delete contentObj.schedule;
 		delete contentObj.pending;
 		delete contentObj.questions;
-		
+
 		let contentId;
 		const itenary = <FormArray>this.myForm.controls.itenary;
 		const form = <FormGroup>itenary.controls[i];
 		const contentsArray = <FormArray>form.controls.contents;
 		const contentGroup = <FormGroup>contentsArray.controls[event.value];
-		
+
 		if (contentObj.type === 'project' || contentObj.type === 'video' || (contentObj.type === 'quiz' && !contentObj.isTimeBound)) {
 			if (contentObj.type === 'video' || contentObj.type === 'quiz') {
 				schedule.endDay = 0;
@@ -248,12 +255,12 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 			schedule.endDay = 0;
 		}
 		schedule.startDay = this.numberOfdays(scheduleDate, this.calendar.startDate);
-		
+
 		this.http.post(environment.apiUrl + '/api/collections/' + this.collection.id + '/contents', contentObj, this.requestHeaderService.options)
 			.pipe(
 				flatMap((response: any) => {
 					const result = response;
-					
+
 					if (result.isNewInstance) {
 						collectionId = result.id;
 						result.contents.forEach((content) => {
@@ -265,7 +272,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 						contentId = result.id;
 					}
 					contentGroup.controls.id.setValue(contentId);
-					
+
 					return this.http.patch(environment.apiUrl + '/api/contents/' + contentId + '/schedule', schedule, this.requestHeaderService.options);
 				})
 			)
@@ -274,7 +281,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 						contentGroup.controls.pending.setValue(false);
 						form.controls['startDay'].patchValue(resp.startDay);
 					}
-					
+
 					// Add questions to this content
 					if (questions !== undefined && questions.length > 0) {
 						this.http.post(environment.apiUrl + '/api/contents/' + contentId + '/questions', questions, this.requestHeaderService.options)
@@ -288,7 +295,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 				}
 			);
 	}
-	
+
 	patchContent(event, i) {
 		let collectionId;
 		const itenary = <FormArray>this.myForm.controls.itenary;
@@ -297,7 +304,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 		const contentGroup = <FormGroup>contentsArray.controls[event.value];
 		const ContentSchedule = <FormGroup>contentGroup.controls.schedule;
 		contentGroup.controls.pending.setValue(true);
-		
+
 		const itenaryObj = this.myForm.value.itenary[i];
 		const scheduleDate = itenaryObj.date;
 		const contentObj = _.cloneDeep(itenaryObj.contents[event.value]);
@@ -347,7 +354,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 					if (resp.status === 200) {
 						contentGroup.controls.pending.setValue(false);
 					}
-					
+
 					// Edit questions of this content
 					console.log(questions);
 					if (questions !== undefined && questions.length > 0) {
@@ -361,7 +368,7 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 				}
 			);
 	}
-	
+
 	deleteContent(eventIndex, index) {
 		const itenaryObj = this.myForm.value.itenary[index];
 		if (eventIndex !== undefined && itenaryObj.contents[eventIndex] !== undefined) {
@@ -391,15 +398,15 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 			});
 		}
 	}
-	
+
 	getCalendarStartDate() {
 		return new Date(this.calendar.startDate);
 	}
-	
+
 	getCalendarEndDate() {
 		return new Date(this.calendar.endDate);
 	}
-	
+
 	getSelectedItineraryDates() {
 		const selectedDates = [];
 		const itineraries = <FormArray>this.myForm.controls.itenary;
@@ -410,5 +417,5 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 		});
 		return selectedDates;
 	}
-	
+
 }

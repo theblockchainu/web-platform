@@ -56,7 +56,8 @@
 		<div class="mat-body-2" style="margin-top: -3px; font-weight: 900; color: #333;">{{experience.title | titlecase}}</div>
 		<div style="margin-top: 0px; font-size: 15px; color: #333;">
 			<span *ngIf="experience.startDiff>0">Starts {{experience.startsIn}}</span>
-			<span *ngIf="experience.startDiff<=0">Ends {{experience.endsIn}}</span>
+			<span *ngIf="experience.startDiff<=0 && experience.endDiff > 0">Ends {{experience.endsIn}}</span>
+			<span *ngIf="experience.startDiff<=0 && experience.endDiff <= 0">Ended {{experience.endsIn}}</span>
 		</div>
 		<div style="margin-top: 2px; font-size: 15px; color: #333;">
 			<span class="mat-body-2">{{experience.price | convertCurrency: experience.currency |async}}</span>

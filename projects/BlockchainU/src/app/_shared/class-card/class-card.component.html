@@ -31,7 +31,8 @@
 		<div class="mat-body-2" style="margin-top: -3px; font-weight: 900; color: #333;">{{class.title | titlecase}}</div>
 		<div *ngIf="class.subCategory === 'instructor led'" style="margin-top: 0px; font-size: 15px; color: #333;">
 			<span *ngIf="class.startDiff>0">Starts {{class.startsIn}}</span>
-			<span *ngIf="class.startDiff<=0">Ends {{class.endsIn}}</span>
+			<span *ngIf="class.startDiff<=0 && class.endDiff > 0">Ends {{class.endsIn}}</span>
+			<span *ngIf="class.startDiff<=0 && class.endDiff <= 0">Ended {{class.endsIn}}</span>
 		</div>
 		<div style="margin-top: 2px; font-size: 15px; color: #333;">
 			<span class="mat-body-2">{{class.price | convertCurrency: class.currency |async}}</span>

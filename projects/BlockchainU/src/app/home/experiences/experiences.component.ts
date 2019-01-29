@@ -89,10 +89,10 @@ export class ExperiencesComponent implements OnInit {
 	}
 
 	private setTags() {
-		this.titleService.setTitle('Experiences');
+		this.titleService.setTitle('In-person Workshops');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Explore Experiences'
+			content: 'Explore In-person Workshops'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
@@ -133,16 +133,18 @@ export class ExperiencesComponent implements OnInit {
 			let ratingBool = false;
 			let subtypeBool = false;
 			let titleBool = false;
-			
-			if (this.filterForm.value && this.filterForm.value.title) {
+
+			if (this.filterForm.value.title && this.filterForm.value.title.length > 0) {
 				for (let i = 0; (i < this.filterForm.value.title.length && !titleBool); i++) {
-					const title = this.filterForm.value.title[i];
-					if (_.includes(val.title, title)) {
+					const titleQuery = this.filterForm.value.title[i];
+					if (_.includes(val.title, titleQuery) && !titleBool) {
 						titleBool = true;
 					}
 				}
+			} else {
+				titleBool = true;
 			}
-			
+
 			if (this.filterForm.value.language && this.filterForm.value.language.length > 0) {
 				for (let i = 0; (i < this.filterForm.value.language.length && !languageBool); i++) {
 					const language = this.filterForm.value.language[i];
@@ -182,7 +184,7 @@ export class ExperiencesComponent implements OnInit {
 					console.log(subtype);
 					console.log(val.subCategory);
 
-					if (val.subCategory === subtype) {
+					if (val.subCategory.toLowerCase() === subtype.toLowerCase()) {
 						subtypeBool = true;
 					}
 				}

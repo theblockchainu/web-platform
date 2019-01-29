@@ -90,7 +90,7 @@
 					</div>
 					<div *ngIf="!loading" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;">
 						<div class="noDataContainer" *ngIf="experiences === undefined || experiences.length === 0">
-							There are no active workshops to view right now.
+							There are no active in-person workshops to view with the selected filters.
 						</div>
 						<div *ngFor="let experience of experiences;">
 							<app-experience-card [experience]="experience" (refresh)="onExperienceRefresh($event)"></app-experience-card>

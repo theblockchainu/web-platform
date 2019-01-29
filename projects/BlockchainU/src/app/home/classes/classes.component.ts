@@ -89,10 +89,10 @@ export class ClassesComponent implements OnInit {
 	}
 
 	private setTags() {
-		this.titleService.setTitle('Classes');
+		this.titleService.setTitle('Online Courses');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Explore Classes'
+			content: 'Explore Online Courses'
 		});
 
 		this.metaService.updateTag({
@@ -114,7 +114,8 @@ export class ClassesComponent implements OnInit {
 			language: [],
 			difficultyLevel: [],
 			rating: [],
-			subtype: []
+			subtype: [],
+			title: []
 		});
 
 		this.filterForm.valueChanges.subscribe(res => {
@@ -131,7 +132,19 @@ export class ClassesComponent implements OnInit {
 				let levelBool = false;
 				let ratingBool = false;
 				let subtypeBool = false;
-				
+				let titleBool = false;
+
+				if (this.filterForm.value.title && this.filterForm.value.title.length > 0) {
+					for (let i = 0; (i < this.filterForm.value.title.length && !titleBool); i++) {
+						const titleQuery = this.filterForm.value.title[i];
+						if (_.includes(val.title, titleQuery) && !titleBool) {
+							titleBool = true;
+						}
+					}
+				} else {
+					titleBool = true;
+				}
+
 				if (this.filterForm.value.language && this.filterForm.value.language.length > 0) {
 					for (let i = 0; (i < this.filterForm.value.language.length && !languageBool); i++) {
 						const language = this.filterForm.value.language[i];
@@ -142,7 +155,7 @@ export class ClassesComponent implements OnInit {
 				} else {
 					languageBool = true;
 				}
-				
+
 				if (this.filterForm.value.difficultyLevel && this.filterForm.value.difficultyLevel.length > 0) {
 					for (let i = 0; (i < this.filterForm.value.difficultyLevel.length && !levelBool); i++) {
 						const level = this.filterForm.value.difficultyLevel[i];
@@ -153,7 +166,7 @@ export class ClassesComponent implements OnInit {
 				} else {
 					levelBool = true;
 				}
-				
+
 				if (this.filterForm.value.rating && this.filterForm.value.rating.length > 0) {
 					console.log(this.filterForm.value.rating);
 					for (let i = 0; (i < this.filterForm.value.rating.length && !ratingBool); i++) {
@@ -165,13 +178,13 @@ export class ClassesComponent implements OnInit {
 				} else {
 					ratingBool = true;
 				}
-				
+
 				if (this.filterForm.value.subtype && this.filterForm.value.subtype.length > 0) {
 					for (let i = 0; (i < this.filterForm.value.subtype.length && !subtypeBool); i++) {
 						const subtype = this.filterForm.value.subtype[i];
 						console.log(subtype);
 						console.log(val.subCategory);
-						
+
 						if (val.subCategory === subtype) {
 							subtypeBool = true;
 						}
@@ -179,21 +192,21 @@ export class ClassesComponent implements OnInit {
 				} else {
 					subtypeBool = true;
 				}
-				
-				
+
+
 				if (this.selectedRange) {
 					priceBool = (val.price >= this.selectedRange[0] && val.price <= this.selectedRange[1]);
 				} else {
 					priceBool = true;
 				}
-				
+
 				if (this.selectedDurationRange) {
 					durationBool = (val.totalHours >= this.selectedDurationRange[0] && val.totalHours <= this.selectedDurationRange[1]);
 				} else {
 					durationBool = true;
 				}
-				
-				return languageBool && priceBool && durationBool && levelBool && ratingBool && subtypeBool;
+
+				return languageBool && priceBool && durationBool && levelBool && ratingBool && subtypeBool && titleBool;
 			});
 		}
 	}

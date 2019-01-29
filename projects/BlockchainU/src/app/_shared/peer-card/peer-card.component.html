@@ -19,10 +19,10 @@
 		</div>
 		<div class="col-sm-12 padding-left-0 mat-caption">
 			<span *ngIf="peer.topics.length<=1">
-				{{peer.topics}}
+				Teaches {{peer.topics}}
 			</span>
 			<span *ngIf="peer.topics.length>1">
-				{{peer.topics | slice: 0:1}}
+				Teaches {{peer.topics | slice: 0:1}}
 				<b matTooltip="{{peer.topics}}">
 					&nbsp;& {{peer.topics.length - 1}} more
 				</b>

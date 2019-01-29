@@ -335,7 +335,7 @@ export class IndexComponent implements OnInit {
 					});
 				}
 				this.communities = _.uniqBy(this.communities, 'id');
-				this.communities = _.orderBy(this.communities, ['createdAt'], ['desc']);
+				this.communities = _.orderBy(this.communities, ['participants.length'], ['desc']);
 				this.communities = _.chunk(this.communities, 5)[0];
 
 			}, (err) => {
