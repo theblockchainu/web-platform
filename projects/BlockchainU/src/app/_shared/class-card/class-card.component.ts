@@ -32,7 +32,7 @@ export class ClassCardComponent implements OnInit {
 	ngOnInit() {
 		this.getTime();
 	}
-	
+
 	public getTime() {
 		if (this._collectionService.getCurrentCalendar(this.class.calendars)) {
 			const startMoment = moment(this._collectionService.getCurrentCalendar(this.class.calendars).startDate);
@@ -40,9 +40,11 @@ export class ClassCardComponent implements OnInit {
 			this.class.startsIn = moment().to(startMoment);
 			this.class.startDiff = startMoment.diff(moment());
 			this.class.endsIn = moment().to(endMoment);
+			this.class.endDiff = endMoment.diff(moment());
 		} else {
 			this.class.startsIn = '';
 			this.class.startDiff = '';
+			this.class.endDiff = '';
 			this.class.endsIn = '';
 		}
 	}

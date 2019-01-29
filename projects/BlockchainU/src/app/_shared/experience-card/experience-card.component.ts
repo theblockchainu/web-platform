@@ -32,7 +32,7 @@ export class ExperienceCardComponent implements OnInit {
 	ngOnInit() {
 		this.getTime();
 	}
-	
+
 	public getTime() {
 		if (this._collectionService.getCurrentCalendar(this.experience.calendars)) {
 			const startMoment = moment(this._collectionService.getCurrentCalendar(this.experience.calendars).startDate);
@@ -40,9 +40,11 @@ export class ExperienceCardComponent implements OnInit {
 			this.experience.startsIn = moment().to(startMoment);
 			this.experience.startDiff = startMoment.diff(moment());
 			this.experience.endsIn = moment().to(endMoment);
+			this.experience.endDiff = endMoment.diff(moment());
 		} else {
 			this.experience.startsIn = '';
 			this.experience.startDiff = '';
+			this.experience.endDiff = '';
 			this.experience.endsIn = '';
 		}
 	}

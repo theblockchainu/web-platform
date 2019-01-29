@@ -6,14 +6,14 @@
 					<div class="row margin-bottom-20 filterRow">
 						<div class="col-md-12">
 							<div class="margin-right-10 mobile-margin-bottom-20" style="float: left;">
+								<button mat-button class="mat-border-button" #topicButton (click)="openTopicsDialog()" style="color: rgba(0,0,0,0.54) !important;">Topics</button>
+							</div>
+							<div class="margin-right-10 mobile-margin-bottom-20" style="float: left;">
 								<button mat-button class="mat-border-button" #priceButton (click)="openPriceDialog()" style="color: rgba(0,0,0,0.54) !important;">Price</button>
 							</div>
 							<div class="margin-right-10 mobile-margin-bottom-20" style="float: left;">
 								<button mat-button class="mat-border-button" #durationButton (click)="openDurationDialog()" style="color: rgba(0,0,0,0.54) !important;">Duration</button>
 							</div>
-							<!--<div style="float: left;">
-							  <button mat-button class="mat-border-button" #topicButton (click)="openTopicsDialog()" style="color: rgba(0,0,0,0.54) !important;">Topics</button>
-							</div>-->
 							<form [formGroup]="filterForm">
 								<div class="margin-right-10" style="float: left;">
 									<mat-form-field class="filterFormField" [floatLabel]="'never'">
@@ -83,7 +83,7 @@
 					</div>
 					<div *ngIf="!loading" class="row feed-horizontal margin-bottom-40" style="padding: 0px 7px;">
 						<div class="noDataContainer" *ngIf="classes === undefined || classes.length === 0">
-							There are no active classes to view right now.
+							There are no active online courses to view with the selected filters.
 						</div>
 						<div *ngFor="let class of classes; let i =index">
 							<app-class-card [class]="class" (refresh)="onClassRefresh($event)"></app-class-card>

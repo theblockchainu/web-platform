@@ -24,9 +24,11 @@ export class PathSectionComponent implements OnChanges, OnInit {
 	projectMapping: { [k: string]: string };
 	inPersonSessionMapping: { [k: string]: string };
 	onlineSessionMapping: { [k: string]: string };
+	quizMapping: { [k: string]: string };
+	videoLessonMapping: { [k: string]: string };
 	private userId: string;
-	
-	
+
+
 	constructor(
 		private _certificateService: CertificateService,
 		private _collectionService: CollectionService,
@@ -36,20 +38,22 @@ export class PathSectionComponent implements OnChanges, OnInit {
 	) {
 		this.envVariable = environment;
 	}
-	
+
 	ngOnInit() {
 		this.hourMapping = { '=0': 'Less than an hour of learning', '=1': 'One hour of learning', 'other': '# hours of learning' };
 		this.projectMapping = { '=0': 'No projects', '=1': 'One project', 'other': '# projects' };
-		this.inPersonSessionMapping = { '=0': 'No in-person activity', '=1': 'One in-person activity', 'other': '# in-person activities' };
-		this.onlineSessionMapping = { '=0': 'No live activity', '=1': 'One live activity', 'other': '# online activity' };
+		this.inPersonSessionMapping = { '=0': 'No in-person meetups', '=1': 'One in-person meetup', 'other': '# in-person meetups' };
+		this.onlineSessionMapping = { '=0': 'No live sessions', '=1': 'One live session', 'other': '# online sessions' };
+		this.quizMapping = { '=0': 'No quizzes', '=1': 'One quiz', 'other': '# quizzes' };
+		this.videoLessonMapping = { '=0': 'No video lessons', '=1': 'One video lesson', 'other': '# video lessons' };
 	}
-	
+
 	ngOnChanges() {
 		this.userId = this._cookieService.getValue('userId');
 		this.formatDiplayData();
 		this.getCertificatetemplate();
 	}
-	
+
 	private formatDiplayData() {
 		this.learningPath.contents.map(learningPathContent => {
 			// add duration to guides and bounties
@@ -63,16 +67,16 @@ export class PathSectionComponent implements OnChanges, OnInit {
 						}
 					});
 				}
-				
+
 				if (collection.type === 'guide' || collection.type === 'bounty') {
 					collection.totalHours = this._collectionService.calculateDuration(collection.description.length);
 				}
-				
+
 				if (collection.owners && collection.owners[0].reviewsAboutYou) {
 					collection.rating = this._collectionService.calculateCollectionRating(collection.id, collection.owners[0].reviewsAboutYou);
 					collection.ratingCount = this._collectionService.calculateCollectionRatingCount(collection.id, collection.owners[0].reviewsAboutYou);
 				}
-				
+
 				if (collection.type === 'experience' && collection.contents) {
 					let experienceLocation = 'Unknown location';
 					let lat = 37.5293864;
@@ -109,30 +113,32 @@ export class PathSectionComponent implements OnChanges, OnInit {
 								const contentLength = moment.utc(scheduleEndMoment.diff(scheduleStartMoment)).format('HH');
 								totalLength += parseInt(contentLength, 10);
 							} else if (experienceContent.type === 'video') {
-							
+								totalLength += parseInt(experienceContent.videoLength, 10) / 3600;
 							}
 						});
-						collection.totalDuration = totalLength.toString();
-						
+						collection.totalHours = totalLength;
+
 						// set content count
-						
+
 						collection.projectCount = this.getContentCount('project', collection);
 						collection.inPersonCount = this.getContentCount('in-person', collection);
 						collection.onlineCount = this.getContentCount('online', collection);
-						
+						collection.videoCount = this.getContentCount('video', collection);
+						collection.quizCount = this.getContentCount('quiz', collection);
+
 					}
 				}
-				
+
 				// get Content fullname
 				collection.typeFullName = this._collectionService.getCollectionContentType(collection.type);
 				collection.subCategoryFullName = this._collectionService.getContentTypeFullName(collection.subCategory);
-				
+
 				learningPathContent.courses[0] = collection;
 			}
 			return learningPathContent;
 		});
 	}
-	
+
 	private getContentCount(type: string, collection: any) {
 		let count = 0;
 		for (const content of collection.contents) {
@@ -142,7 +148,7 @@ export class PathSectionComponent implements OnChanges, OnInit {
 		}
 		return count;
 	}
-	
+
 	private getCertificatetemplate() {
 		this.loadingCertificate = true;
 		if (this.learningPath) {
@@ -166,7 +172,7 @@ export class PathSectionComponent implements OnChanges, OnInit {
 			});
 		}
 	}
-	
+
 	/**
 	 * saveBookmark
 	 */
@@ -214,5 +220,5 @@ export class PathSectionComponent implements OnChanges, OnInit {
 			this._dialogService.openSignup('/learning-path/' + this.learningPath.id);
 		}
 	}
-	
+
 }

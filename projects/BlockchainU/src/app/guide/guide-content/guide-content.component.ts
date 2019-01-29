@@ -104,7 +104,7 @@ export class GuideContentComponent implements OnInit, AfterViewInit {
 
 	checkGuideActive() {
 		if (this.collection.status === 'active') {
-			this.showDialogForActiveGuide(false);
+			this.executeSubmitGuide(this.collection);
 		} else {
 			const itenaries = <FormArray>this.myForm.controls['itenary'];
 			itenaries.push(this.initItenary());
@@ -153,7 +153,8 @@ export class GuideContentComponent implements OnInit, AfterViewInit {
 		if (event.action === 'add') {
 			// Show cloning warning since collection is active
 			if (this.collection.status === 'active') {
-				this._dialogsService.openCollectionCloneDialog({ type: 'guide' })
+				this.postContent(event, i);
+				/*this._dialogsService.openCollectionCloneDialog({ type: 'guide' })
 					.subscribe((result) => {
 						if (result === 'accept') {
 							this.postContent(event, i);
@@ -161,14 +162,15 @@ export class GuideContentComponent implements OnInit, AfterViewInit {
 							// Do nothing
 							this.router.navigate(['console', 'teaching', 'guides']);
 						}
-					});
+					});*/
 			} else {
 				this.postContent(event, i);
 			}
 
 		} else if (event.action === 'update') {
 			if (this.collection.status === 'active') {
-				this._dialogsService.openCollectionCloneDialog({ type: 'guide' })
+				this.patchContent(event, i);
+				/*this._dialogsService.openCollectionCloneDialog({ type: 'guide' })
 					.subscribe((result) => {
 						if (result === 'accept') {
 							this.patchContent(event, i);
@@ -176,13 +178,14 @@ export class GuideContentComponent implements OnInit, AfterViewInit {
 							// Do nothing
 							this.router.navigate(['console', 'teaching', 'guides']);
 						}
-					});
+					});*/
 			} else {
 				this.patchContent(event, i);
 			}
 		} else if (event.action === 'delete') {
 			if (this.collection.status === 'active') {
-				this._dialogsService.openCollectionCloneDialog({ type: 'guide' })
+				this.deleteContent(event.value, i);
+				/*this._dialogsService.openCollectionCloneDialog({ type: 'guide' })
 					.subscribe((result) => {
 						if (result === 'accept') {
 							this.deleteContent(event.value, i);
@@ -190,13 +193,17 @@ export class GuideContentComponent implements OnInit, AfterViewInit {
 							// Do nothing
 							this.router.navigate(['console', 'teaching', 'guides']);
 						}
-					});
+					});*/
 			} else {
 				this.deleteContent(event.value, i);
 			}
 		} else if (event.action === 'deleteDay') {
 			if (this.collection.status === 'active') {
-				this._dialogsService.openCollectionCloneDialog({ type: 'guide' })
+				this.deleteContent(null, i);
+				const itenary = <FormArray>this.myForm.controls.itenary;
+				itenary.removeAt(i);
+				this.days.emit(itenary);
+				/*this._dialogsService.openCollectionCloneDialog({ type: 'guide' })
 					.subscribe((result) => {
 						if (result === 'accept') {
 							this.deleteContent(null, i);
@@ -207,7 +214,7 @@ export class GuideContentComponent implements OnInit, AfterViewInit {
 							// Do nothing
 							this.router.navigate(['console', 'teaching', 'guides']);
 						}
-					});
+					});*/
 			} else {
 				this.deleteContent(null, i);
 				const itenary = <FormArray>this.myForm.controls.itenary;
