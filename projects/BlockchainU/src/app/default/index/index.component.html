@@ -192,7 +192,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8">
-					<h2 class="section-title pb-0" [routerLink]="'/home/classes'">Top rated online courses</h2>
+					<h2 class="section-title pb-0 clickable" [routerLink]="'/home/classes'">Top rated online courses</h2>
 				</div>
 				<div class="col-md-2 pull-right" style="text-align: right">
 					<a [routerLink]="'/home/classes'">
@@ -242,7 +242,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8">
-					<h2 class="section-title pb-0" [routerLink]="'/home/experiences'">In-person Workshops around the world</h2>
+					<h2 class="section-title pb-0 clickable" [routerLink]="'/home/experiences'">In-person Workshops around the world</h2>
 				</div>
 				<div class="col-md-2 pull-right" style="text-align: right">
 					<a [routerLink]="'/home/experiences'">
@@ -319,9 +319,7 @@
 								<span>Explore Now</span>
 							</p>
 							<h3 class="title">Hackathon Workshops</h3>
-							<p>Bootcamps and hackathons are more practical in-person workshops where you immerse yourself in finding
-								practical
-								solutions to problems</p>
+							<p>Bootcamps and hackathons are more practical in-person workshops where you immerse yourself in finding practical solutions to problems</p>
 						</div>
 					</div>
 				</div>
@@ -333,7 +331,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8">
-					<h2 class="section-title pb-0" [routerLink]="['home','guides']">Introducing Learning Guides with CodeLabs </h2>
+					<h2 class="section-title pb-0 clickable" [routerLink]="['home','guides']">Introducing Learning Guides with CodeLabs </h2>
 				</div>
 				<div class="col-md-2 pull-right" style="text-align: right">
 					<a [routerLink]="['home','guides']">
@@ -382,7 +380,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8">
-					<h2 class="section-title pb-0" [routerLink]="['home','bounties']">Accept Challenges with Reward Bounties</h2>
+					<h2 class="section-title pb-0 clickable" [routerLink]="['home','bounties']">Accept Challenges with Reward Bounties</h2>
 				</div>
 				<div class="col-md-2 pull-right" style="text-align: right">
 					<a [routerLink]="['home','bounties']">
@@ -459,7 +457,19 @@
 
 	<section class="experience-around-world communities spacing">
 		<div class="container">
-			<h2 class="section-title pb-0">Trending Communities</h2>
+			<div class="row">
+				<div class="col-md-8">
+					<h2 class="section-title pb-0 clickable" [routerLink]="['home','communities']">Trending Communities</h2>
+				</div>
+				<div class="col-md-2 pull-right" style="text-align: right">
+					<a [routerLink]="['home','communities']">
+						<span class="mat-body-1">
+							See all
+							<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+						</span>
+					</a>
+				</div>
+			</div>
 			<div class="loading-container" [hidden]="!loadingCommunities">
 				<ngx-loading [show]="true"></ngx-loading>
 			</div>
@@ -583,7 +593,19 @@
 
 	<section class="peers-teaching spacing">
 		<div class="container">
-			<h2 class="section-title pb-0">Blockchain experts teaching live</h2>
+			<div class="row">
+				<div class="col-md-8">
+					<h2 class="section-title pb-0 clickable" [routerLink]="['home','peers']">Blockchain experts teaching live</h2>
+				</div>
+				<div class="col-md-2 pull-right" style="text-align: right">
+					<a [routerLink]="['home','peers']">
+						<span class="mat-body-1">
+							See all
+							<mat-icon class="rightChevron" style="position: relative; top: 2px; font-size: 14px; width: 10px;">chevron_right</mat-icon>
+						</span>
+					</a>
+				</div>
+			</div>
 			<div class="loading-container" [hidden]="!loadingPeers">
 				<ngx-loading [show]="true"></ngx-loading>
 			</div>

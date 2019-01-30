@@ -10,21 +10,21 @@ export class TeachersSectionComponent implements OnChanges, OnInit {
 	@Input() learningPath: any;
 	private _learningPath: any;
 	loadingPeers: boolean;
-	
+
 	teachers: Array<any>;
-	
+
 	constructor(
 	) {
-	
+
 	}
-	
+
 	ngOnChanges() {
 		this.createTeachersArray();
 	}
-	
+
 	ngOnInit() {
 	}
-	
+
 	createTeachersArray() {
 		this.loadingPeers = true;
 		if (this.learningPath) {
@@ -41,7 +41,7 @@ export class TeachersSectionComponent implements OnChanges, OnInit {
 						});
 						content.courses[0].owners[0].topics = topics;
 					} else {
-						content.courses[0].owners[0].topics = [];
+						content.courses[0].owners[0].topics = ['no topics yet'];
 					}
 					const found = this.teachers.findIndex(teacher => {
 						return teacher.id === content.courses[0].owners[0].id;

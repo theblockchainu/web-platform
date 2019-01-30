@@ -58,7 +58,7 @@ Raven.setExtraContext({
 });
 
 Raven.setEnvironment((environment.production) ? 'production' : 'development');
-Raven.setRelease('1.0.0');
+Raven.setRelease('1.0.1');
 
 export class RavenErrorHandler implements ErrorHandler {
 	handleError(err: any): void {
