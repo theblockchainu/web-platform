@@ -1263,6 +1263,16 @@ export class CollectionService {
 		return parseFloat((descriptionLength / 72000).toFixed(2)); // word per minute considering 6 char per word and 200 word per minute
 	}
 
+	public calculateLearningPathClassDuration(collection) {
+		let duration = 0;
+		collection.contents.forEach(content => {
+			if (content.type === 'video') {
+				duration += content.videoLength / 3600;
+			}
+		});
+		return collection.totalHours + duration;
+	}
+
 	/**
 	 * cloneCollection
 	 */

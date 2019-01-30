@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material';
 	styleUrls: ['./intro-card.component.scss']
 })
 export class IntroCardComponent implements OnChanges, OnInit {
-	
+
 	@Input() learningPath: any;
 	envVariable: any;
 	totalHours: number;
@@ -28,17 +28,17 @@ export class IntroCardComponent implements OnChanges, OnInit {
 		private _cookieUtilsService: CookieUtilsService,
 		private _dialogsService: DialogsService,
 		private matSnackBar: MatSnackBar) { }
-	
-	
+
+
 	ngOnChanges() {
 		this.calculateLearningData();
 	}
-	
+
 	ngOnInit() {
 		this.envVariable = environment;
 		this.maxLength = 200;
 	}
-	
+
 	private calculateLearningData() {
 		this.totalHours = 0;
 		console.log(this.learningPath);
@@ -48,10 +48,15 @@ export class IntroCardComponent implements OnChanges, OnInit {
 			if (content.courses && content.courses.length > 0) {
 				if (content.courses[0].type === 'guide') {
 					const guideHours = this._collectionService.calculateDuration(content.courses[0].description.length);
-					console.log('guideHours' + guideHours);
+					console.log('guideHours: ' + guideHours);
 					this.totalHours += guideHours;
+				} else if (content.courses[0].type === 'class') {
+					const classHours = this._collectionService.calculateLearningPathClassDuration(content.courses[0]);
+					console.log('classHours: ' + classHours);
+					this.totalHours += classHours;
+				} else {
+					this.totalHours += content.courses[0].totalHours;
 				}
-				this.totalHours += content.courses[0].totalHours;
 				if (collectionTypeMap.has(content.courses[0].type)) {
 					let currentIndex = collectionTypeMap.get(content.courses[0].type);
 					currentIndex++;
@@ -67,9 +72,9 @@ export class IntroCardComponent implements OnChanges, OnInit {
 				count: val
 			});
 		});
-		
+
 	}
-	
+
 	join() {
 		this.joining = true;
 		const userId = this._cookieUtilsService.getValue('userId');
@@ -91,7 +96,7 @@ export class IntroCardComponent implements OnChanges, OnInit {
 			});
 		}
 	}
-	
+
 	leave() {
 		this.joining = true;
 		const userId = this._cookieUtilsService.getValue('userId');
@@ -100,13 +105,13 @@ export class IntroCardComponent implements OnChanges, OnInit {
 			this.joining = false;
 		});
 	}
-	
+
 	share() {
 		this._dialogsService.shareCollection('learning-path',
 			this.learningPath.id, this.learningPath.title, this.learningPath.description, this.learningPath.headline,
 			this.learningPath.imageUrls[0], null, null, this.learningPath.customUrl).subscribe();
 	}
-	
+
 	public showAll(strLength) {
 		if (strLength > this.maxLength) {
 			this.maxLength = strLength;
@@ -114,7 +119,7 @@ export class IntroCardComponent implements OnChanges, OnInit {
 			this.maxLength = 200;
 		}
 	}
-	
-	
-	
+
+
+
 }

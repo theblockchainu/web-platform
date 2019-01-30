@@ -207,14 +207,14 @@
 										<span>Offered in {{experience.language[0]}}</span>
 									</div>
 									<div class="col-md-12 margin-top-10">
+										<mat-icon style="top: 7px; margin-right: 15px;">map</mat-icon>&emsp;
+										<span>{{getContentCount('in-person') | i18nPlural : inPersonSessionMapping}}</span>
+									</div>
+									<div class="col-md-12 margin-top-10">
 										<mat-icon style="top: 7px; margin-right: 15px;">mouse</mat-icon>&emsp;
 										<span>{{getContentCount('project') | i18nPlural : projectMapping}}</span>
 									</div>
 									<div class="col-md-12 margin-top-10">
-										<mat-icon style="top: 7px; margin-right: 15px;">map</mat-icon>&emsp;
-										<span>{{getContentCount('in-person') | i18nPlural : inPersonSessionMapping}}</span>
-									</div>
-									<div class="col-md-12 margin-top-10" *ngIf="getContentCount('quiz') > 0">
 										<mat-icon style="top: 7px; margin-right: 15px;">check_box</mat-icon>&emsp;
 										<span>{{getContentCount('quiz') | i18nPlural : quizMapping }}</span>
 									</div>
