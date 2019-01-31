@@ -99,10 +99,10 @@
 																				<mat-icon style="top: 7px; margin-right: 15px;">check_box</mat-icon>&emsp;
 																				<span>{{content.courses[0].quizCount | i18nPlural :quizMapping}}</span>
 																			</div>
-																			<div class="col-xs-12 margin-top-10">
+																			<div class="col-xs-12 margin-top-10" style="margin-left: -7px;">
 																				<div *ngIf="content.courses[0] && content.courses[0].owners && content.courses[0].owners[0]"
 																					 class="clickable" style="display: inline-block; position: relative; vertical-align: top;">
-																					<app-profile-popup [size]="'large'" [peer]="content.courses[0].owners[0]"></app-profile-popup>
+																					<app-profile-popup [size]="'small'" [peer]="content.courses[0].owners[0]"></app-profile-popup>
 																				</div>
 																				<div style="display: inline-flex; margin-left: 10px; width: 80%; vertical-align: super;">
 																					<div class="row">

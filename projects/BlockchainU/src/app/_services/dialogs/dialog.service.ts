@@ -74,13 +74,13 @@ import { ContentProjectDialogComponent } from './content-project-dialog/content-
 import { ContentInpersonDialogComponent } from './content-inperson-dialog/content-inperson-dialog.component';
 @Injectable()
 export class DialogsService {
-	
+
 	constructor(public dialog: MatDialog
 	) { }
-	
+
 	public openSignup(returnTo: string) {
 		let dialogRef: MatDialogRef<SignupComponentDialogComponent>;
-		
+
 		dialogRef = this.dialog.open(SignupComponentDialogComponent, {
 			panelClass: 'responsive-dialog',
 			width: '30vw',
@@ -90,7 +90,7 @@ export class DialogsService {
 		});
 		return dialogRef.afterClosed();
 	}
-	
+
 	public openLogin() {
 		console.log('openLogin dialog');
 		const dialogRef1: MatDialogRef<LoginComponentDialog> = this.dialog.open(LoginComponentDialog, {
@@ -101,7 +101,7 @@ export class DialogsService {
 	}
 	public addCard() {
 		let dialogRef4: MatDialogRef<AddCardDialogComponent>;
-		
+
 		dialogRef4 = this.dialog.open(AddCardDialogComponent, {
 			panelClass: 'responsive-dialog', width: '610px',
 			height: '380px'
@@ -110,7 +110,7 @@ export class DialogsService {
 	}
 	public openIdVerify() {
 		let dialogRef5: MatDialogRef<VerifyIdDialogComponent>;
-		
+
 		dialogRef5 = this.dialog.open(VerifyIdDialogComponent, {
 			panelClass: 'responsive-dialog', width: '60vw',
 			height: '90vh'
@@ -119,7 +119,7 @@ export class DialogsService {
 	}
 	public openEmailVerify() {
 		let dialogRef6: MatDialogRef<VerifyEmailDialogComponent>;
-		
+
 		dialogRef6 = this.dialog.open(VerifyEmailDialogComponent, {
 			panelClass: 'responsive-dialog', width: '50vw',
 			height: '80vh'
@@ -128,17 +128,17 @@ export class DialogsService {
 	}
 	public openIdPolicy() {
 		let dialogRef7: MatDialogRef<IdPolicyDialogComponent>;
-		
+
 		dialogRef7 = this.dialog.open(IdPolicyDialogComponent, {
 			panelClass: 'responsive-dialog', width: '45vw',
 			height: '100vh'
 		});
 		return dialogRef7.afterClosed();
 	}
-	
+
 	public openVideo(url: string) {
 		let dialogRef8: MatDialogRef<VideoDialogComponent>;
-		
+
 		dialogRef8 = this.dialog.open(VideoDialogComponent, {
 			width: '1000px',
 			panelClass: 'video-popup',
@@ -148,17 +148,17 @@ export class DialogsService {
 	}
 	public openPhoneVerify() {
 		let dialogRef9: MatDialogRef<VerifyPhoneDialogComponent>;
-		
+
 		dialogRef9 = this.dialog.open(VerifyPhoneDialogComponent, {
 			panelClass: 'responsive-dialog', width: '50vw',
 			height: '80vh'
 		});
 		return dialogRef9.afterClosed();
 	}
-	
+
 	public openOnboardingDialog(isSkippable?: boolean) {
 		let dialogRef: MatDialogRef<OnboardingDialogComponent>;
-		
+
 		dialogRef = this.dialog.open(OnboardingDialogComponent, {
 			panelClass: 'responsive-dialog',
 			width: '30vw',
@@ -169,10 +169,10 @@ export class DialogsService {
 		});
 		return dialogRef.afterClosed();
 	}
-	
+
 	public openViewQuizSubmissionDialog(content: any) {
 		let dialogRef: MatDialogRef<ViewQuizSubmissionComponent>;
-		
+
 		dialogRef = this.dialog.open(ViewQuizSubmissionComponent, {
 			panelClass: 'responsive-dialog',
 			width: '45vw',
@@ -184,10 +184,10 @@ export class DialogsService {
 		});
 		return dialogRef.afterClosed();
 	}
-	
+
 	public openFollowTopicDialog(type, inputs) {
 		let dialogRef5: MatDialogRef<MultiselectTopicDialogComponent>;
-		
+
 		dialogRef5 = this.dialog.open(MultiselectTopicDialogComponent,
 			{
 				disableClose: true,
@@ -205,29 +205,29 @@ export class DialogsService {
 			searchUrl: inputs.searchTopicURL,
 			selected: []
 		};
-		
+
 		return dialogRef5.afterClosed();
 	}
-	
+
 	// /**
 	//  * startLiveSession
 	//  */
 	// public startLiveSession() {
 	//     let dialogRef5: MatDialogRef<LiveSessionDialogComponent>;
-	
+
 	//     dialogRef5 = this.dialog.open(LiveSessionDialogComponent, {
 	//         panelClass: 'responsive-dialog', width: '100vw',
 	//         height: '100vh'
 	//     });
 	//     return dialogRef5.afterClosed();
 	// }
-	
+
 	/**
 	 * openCollectionGrid
 	 */
 	public openCollectionGrid(title, collections) {
 		let dialogRef: MatDialogRef<CollectionGridDialogComponent>;
-		
+
 		dialogRef = this.dialog.open(CollectionGridDialogComponent, {
 			panelClass: 'responsive-dialog', width: '80vw',
 			height: '80vh',
@@ -236,20 +236,20 @@ export class DialogsService {
 				collections: collections
 			}
 		});
-		
+
 		return dialogRef.afterClosed();
 	}
-	
-	
+
+
 	openDeleteCollection(collection: any) {
 		const dialogRef = this.dialog.open(DeleteCollectionDialogComponent, {
 			data: collection,
 			panelClass: 'responsive-dialog', width: '30vw'
 		});
-		
+
 		return dialogRef.afterClosed();
 	}
-	
+
 	openExitCollection(collectionId: string, userId: string, type: string) {
 		const dialogRef = this.dialog.open(ExitCollectionDialogComponent, {
 			data: {
@@ -261,16 +261,16 @@ export class DialogsService {
 		});
 		return dialogRef.afterClosed();
 	}
-	
+
 	openDeleteCommunity(community: any) {
 		const dialogRef = this.dialog.open(DeleteCommunityDialogComponent, {
 			data: community,
 			panelClass: 'responsive-dialog', width: '30vw'
 		});
-		
+
 		return dialogRef.afterClosed();
 	}
-	
+
 	openExitCommunity(communityId: string, userId: string) {
 		const dialogRef = this.dialog.open(ExitCommunityDialogComponent, {
 			data: {
@@ -281,7 +281,7 @@ export class DialogsService {
 		});
 		return dialogRef.afterClosed();
 	}
-	
+
 	openCancelCollection(collection: any) {
 		const dialogRef = this.dialog.open(CancelCollectionDialogComponent, {
 			data: collection,
@@ -289,18 +289,18 @@ export class DialogsService {
 		});
 		return dialogRef.afterClosed();
 	}
-	
+
 	openDeleteCohort(calendarId: string) {
 		return this.dialog.open(DeleteCohortDialogComponent, {
 			data: calendarId,
 			panelClass: 'responsive-dialog', width: '30vw'
 		}).afterClosed();
 	}
-	
+
 	openProfilePopup(config: any) {
 		return this.dialog.open(ProfilePopupCardComponent, config);
 	}
-	
+
 	openForgotPassword(email: string) {
 		return this.dialog.open(RequestPasswordDialogComponent,
 			{
@@ -310,11 +310,11 @@ export class DialogsService {
 				height: '75vh'
 			});
 	}
-	
-	
+
+
 	public editCalendar(collection, contents, calendars, allItinerary, participants, events: CalendarEvent[], userId: string, startDate: Date, endDate: Date): Observable<boolean> {
 		let dialogRef: MatDialogRef<EditCalendarDialogComponent>;
-		
+
 		dialogRef = this.dialog.open(EditCalendarDialogComponent,
 			{
 				panelClass: 'responsive-dialog',
@@ -331,37 +331,37 @@ export class DialogsService {
 		dialogRef.componentInstance.userId = userId;
 		dialogRef.componentInstance.startDate = startDate;
 		dialogRef.componentInstance.endDate = endDate;
-		
+
 		return dialogRef.afterClosed();
 	}
-	
-	
+
+
 	public addNewTopic() {
 		let dialogRef: MatDialogRef<AddTopicDialogComponent>;
-		
+
 		dialogRef = this.dialog.open(AddTopicDialogComponent, {
 			panelClass: 'responsive-dialog'
 		});
-		
+
 		return dialogRef.afterClosed();
-		
+
 	}
-	
+
 	public addNewLanguage() {
 		let dialogRef: MatDialogRef<AddLanguageDialogComponent>;
-		
+
 		dialogRef = this.dialog.open(AddLanguageDialogComponent, {
 			panelClass: 'responsive-dialog'
 		});
 		return dialogRef.afterClosed();
 	}
-	
+
 	/**
 	 * startLiveSession
 	 */
 	public startLiveSession(data: any) {
 		let dialogRef5: MatDialogRef<LiveSessionDialogComponent>;
-		
+
 		dialogRef5 = this.dialog.open(LiveSessionDialogComponent, {
 			panelClass: 'my-full-screen-dialog',
 			width: '100vw',
@@ -371,7 +371,7 @@ export class DialogsService {
 		});
 		return dialogRef5.afterClosed();
 	}
-	
+
 	public selectDateDialog(allItenaries, mode, participants, userType, collectionType, maxSeats, accountApproved, userId) {
 		return this.dialog.open(SelectDateDialogComponent, {
 			panelClass: 'responsive-dialog', width: '45vw',
@@ -388,7 +388,7 @@ export class DialogsService {
 			}
 		}).afterClosed();
 	}
-	
+
 	public openCollectionCloneDialog(collection: any) {
 		return this.dialog.open(CollectionCloneDialogComponent,
 			{
@@ -396,7 +396,7 @@ export class DialogsService {
 				disableClose: true, hasBackdrop: true, panelClass: 'responsive-dialog', width: '40vw'
 			}).afterClosed();
 	}
-	
+
 	public openCollectionSubmitDialog(collection: any) {
 		return this.dialog.open(CollectionSubmitDialogComponent,
 			{
@@ -404,7 +404,7 @@ export class DialogsService {
 				disableClose: true, hasBackdrop: true, panelClass: 'responsive-dialog', width: '40vw'
 			}).afterClosed();
 	}
-	
+
 	public submissionView(userType, submission, peerHasSubmission, collectionId) {
 		return this.dialog.open(SubmissionViewComponent, {
 			data: {
@@ -417,7 +417,7 @@ export class DialogsService {
 			height: '100vh'
 		}).afterClosed();
 	}
-	
+
 	/**
 	 * submitEntry
 	 */
@@ -428,7 +428,7 @@ export class DialogsService {
 			height: '100vh'
 		}).afterClosed();
 	}
-	
+
 	public viewEntry(data) {
 		return this.dialog.open(ViewEntryDialogComponent, {
 			data: data,
@@ -436,7 +436,7 @@ export class DialogsService {
 			height: '100vh'
 		}).afterClosed();
 	}
-	
+
 	public inviteFriends(collection) {
 		return this.dialog.open(InviteFriendsDialogComponent, {
 			data: {
@@ -446,14 +446,14 @@ export class DialogsService {
 			panelClass: 'responsive-dialog', width: '40vw'
 		}).afterClosed();
 	}
-	
+
 	public reportProfile() {
 		return this.dialog.open(ReportProfileComponent, {
 			panelClass: 'responsive-dialog', width: '40vw',
 			height: '70vh'
 		}).afterClosed();
 	}
-	
+
 	public rateParticipant(data) {
 		return this.dialog.open(RateParticipantComponent, {
 			data: data,
@@ -461,7 +461,7 @@ export class DialogsService {
 			height: '80vh'
 		}).afterClosed();
 	}
-	
+
 	public messageParticipant(data) {
 		return this.dialog.open(MessageParticipantDialogComponent, {
 			data: data,
@@ -469,7 +469,7 @@ export class DialogsService {
 			height: '60vh'
 		}).afterClosed();
 	}
-	
+
 	public shareCollection(type: string, Id: string, title: string, description: string,
 						   headline: string, imageUrl: string, cohortId?: string, isTeacher?: boolean, customUrl?: string) {
 		return this.dialog.open(ShareDialogComponent,
@@ -489,14 +489,14 @@ export class DialogsService {
 			}
 		).afterClosed();
 	}
-	
+
 	public dateConflictDialog() {
 		return this.dialog.open(DateConflictDialogComponent, {
 			panelClass: 'responsive-dialog', width: '40vw',
 			height: '31vh'
 		}).afterClosed();
 	}
-	
+
 	public studentAssessmentDialog(data: any) {
 		return this.dialog.open(StudentAssessmentDialogComponent, {
 			panelClass: 'responsive-dialog',
@@ -506,7 +506,7 @@ export class DialogsService {
 			disableClose: true
 		}).afterClosed();
 	}
-	
+
 	public gyanTransactionsDialog(data: any) {
 		return this.dialog.open(GyanTransactionsDialogComponent, {
 			panelClass: 'responsive-dialog',
@@ -515,7 +515,7 @@ export class DialogsService {
 			data: data
 		}).afterClosed();
 	}
-	
+
 	/**
 	 * requestCommunityDialog
 	 */
@@ -526,7 +526,7 @@ export class DialogsService {
 			height: '50vh'
 		});
 	}
-	
+
 	/**
 	 * createScholarshipDialog
 	 */
@@ -538,12 +538,12 @@ export class DialogsService {
 			data: data ? data : {}
 		}).afterClosed();
 	}
-	
+
 	/**
 	 * generate
 	 */
 	public generateKnowledgeStoryDialog(userId, inputs) {
-		
+
 		const dialogRef5 = this.dialog.open(GenerateKnowledgeStoryComponent,
 			{
 				panelClass: 'responsive-dialog',
@@ -561,12 +561,12 @@ export class DialogsService {
 			selected: [],
 			userId: userId
 		};
-		
+
 		return dialogRef5.afterClosed();
 	}
-	
+
 	public requestStoryDialog(userId, inputs) {
-		
+
 		const dialogRef5 = this.dialog.open(RequestKnowledgeStoryComponent,
 			{
 				panelClass: 'responsive-dialog',
@@ -584,10 +584,10 @@ export class DialogsService {
 			selected: [],
 			userId: userId
 		};
-		
+
 		return dialogRef5.afterClosed();
 	}
-	
+
 	public confirmPasswordDialog() {
 		const dialogRef5 = this.dialog.open(ConfirmPasswordDialogComponent,
 			{
@@ -598,7 +598,7 @@ export class DialogsService {
 		);
 		return dialogRef5.afterClosed();
 	}
-	
+
 	public addViewer() {
 		const dialogRef5 = this.dialog.open(AddViewerDialogComponent,
 			{
@@ -609,7 +609,7 @@ export class DialogsService {
 		);
 		return dialogRef5.afterClosed();
 	}
-	
+
 	public showGyanNotif(availableGyan: number, requiredGyan: number) {
 		const dialogRef5 = this.dialog.open(GyanPromptComponent,
 			{
@@ -623,8 +623,8 @@ export class DialogsService {
 		);
 		return dialogRef5.afterClosed();
 	}
-	
-	
+
+
 	public createCommunityDialog(data?: any) {
 		return this.dialog.open(AddCommunityDialogComponent, {
 			panelClass: 'responsive-dialog',
@@ -633,7 +633,7 @@ export class DialogsService {
 			data: data ? data : {}
 		}).afterClosed();
 	}
-	
+
 	/**
 	 * Open dialog to view the list of participants
 	 * @param participants
@@ -642,21 +642,22 @@ export class DialogsService {
 	 * @param chatRoomId
 	 * @returns {Observable<any>}
 	 */
-	public viewParticipantsDialog(participants: any, collectionId: string, userType?: string, chatRoomId?: string, calendars?: any) {
+	public viewParticipantsDialog(participants: any, collectionId: string, userType?: string, chatRoomId?: string, calendars?: any, invites?: any) {
 		return this.dialog.open(ViewParticipantsComponent, {
 			data: {
 				participants: participants,
 				collectionId: collectionId,
 				userType: userType ? userType : '',
 				chatRoomId: chatRoomId,
-				calendars: calendars
+				calendars: calendars,
+				invites: invites
 			},
 			panelClass: 'responsive-dialog',
 			width: '45vw',
 			height: '100vh'
 		}).afterClosed();
 	}
-	
+
 	public createAccreditationDialog(data?: any) {
 		return this.dialog.open(CreateAccreditationDialogComponent, {
 			panelClass: 'responsive-dialog',
@@ -665,7 +666,7 @@ export class DialogsService {
 			data: data ? data : {}
 		}).afterClosed();
 	}
-	
+
 	public viewFields(fieldsArray: Array<FormGroup>) {
 		return this.dialog.open(SelectFieldDialogComponent, {
 			panelClass: 'responsive-dialog',
@@ -674,7 +675,7 @@ export class DialogsService {
 			data: fieldsArray
 		}).afterClosed();
 	}
-	
+
 	public verifyCertificateDialog(data?: any) {
 		return this.dialog.open(CertificateVerificationComponent, {
 			panelClass: ['responsive-dialog', 'noScrollY'],
@@ -683,7 +684,7 @@ export class DialogsService {
 			data: data ? data : {}
 		}).afterClosed();
 	}
-	
+
 	public collectionStandardsDialog(type?: string) {
 		return this.dialog.open(CollectionStandardsDialogComponent, {
 			panelClass: 'responsive-dialog',
@@ -692,7 +693,7 @@ export class DialogsService {
 			data: type ? type : null
 		}).afterClosed();
 	}
-	
+
 	public termsAndConditionsDialog(type?: string) {
 		return this.dialog.open(TermsAndConditionsDialogComponent, {
 			panelClass: 'responsive-dialog',
@@ -701,16 +702,16 @@ export class DialogsService {
 			data: type ? type : null
 		}).afterClosed();
 	}
-	
+
 	public cancelCohortDialog(calendarId: string) {
 		const dialogRef = this.dialog.open(CancelCohortDialogComponent, {
 			data: calendarId,
 			panelClass: 'responsive-dialog', width: '30vw'
 		});
-		
+
 		return dialogRef.afterClosed();
 	}
-	
+
 	public addPromoCodeDialog(collectionId: string) {
 		const dialogRef = this.dialog.open(AddPromoCodeDialogComponent, {
 			data: { collectionId: collectionId },
@@ -718,10 +719,10 @@ export class DialogsService {
 			width: '55vw',
 			height: '85vh'
 		});
-		
+
 		return dialogRef.afterClosed();
 	}
-	
+
 	public viewPromoCodeDialog(collectionId: string) {
 		const dialogRef = this.dialog.open(ViewPromocodeDialogComponent, {
 			data: collectionId,
@@ -729,10 +730,10 @@ export class DialogsService {
 			width: '55vw',
 			height: '80vh'
 		});
-		
+
 		return dialogRef.afterClosed();
 	}
-	
+
 	public addParticipant(collectionId: string, calendarId?: string) {
 		const dialogRef = this.dialog.open(AddParticipantDialogComponent, {
 			data: { collectionId: collectionId, calendarId: calendarId },
@@ -740,10 +741,10 @@ export class DialogsService {
 			width: '55vw',
 			height: '80vh'
 		});
-		
+
 		return dialogRef.afterClosed();
 	}
-	
+
 	public confirmDeleteAccount(userId: string) {
 		const dialogRef = this.dialog.open(ConfirmDeleteAccountComponent, {
 			data: userId,
@@ -753,7 +754,7 @@ export class DialogsService {
 		});
 		return dialogRef.afterClosed();
 	}
-	
+
 	public addImageDialog() {
 		const dialogRef = this.dialog.open(AddImageDialogComponent, {
 			panelClass: 'responsive-dialog',
@@ -762,7 +763,7 @@ export class DialogsService {
 		});
 		return dialogRef.afterClosed();
 	}
-	
+
 	public askQuestion() {
 		const dialogRef = this.dialog.open(AskQuestionDialogComponent, {
 			panelClass: 'responsive-dialog',
@@ -772,7 +773,7 @@ export class DialogsService {
 		});
 		return dialogRef.afterClosed();
 	}
-	
+
 	public assessSubmissions(collectionId: string) {
 		const dialogRef = this.dialog.open(SubmissionReviewDialogComponent, {
 			data: collectionId,
@@ -783,7 +784,7 @@ export class DialogsService {
 		});
 		return dialogRef.afterClosed();
 	}
-	
+
 	public winnersDialog(rewardData: any, collectionData: any) {
 		const dialogRef = this.dialog.open(WinnerDialogComponent, {
 			data: {
@@ -796,7 +797,7 @@ export class DialogsService {
 		});
 		return dialogRef.afterClosed();
 	}
-	
+
 	/**
 	 * showRSVP
 	 */
@@ -813,7 +814,7 @@ export class DialogsService {
 			height: '90vh'
 		}).afterClosed();
 	}
-	
+
 	/**
 	 * onlineContentDialog
 	 */
@@ -833,7 +834,7 @@ export class DialogsService {
 			height: '100vh'
 		}).afterClosed();
 	}
-	
+
 	/**
 	 * quizContentDialog
 	 */
@@ -855,9 +856,9 @@ export class DialogsService {
 			width: '45vw',
 			height: '100vh'
 		}).afterClosed();
-		
+
 	}
-	
+
 	/**
 	 * videoContentDialog
 	 */
@@ -878,7 +879,7 @@ export class DialogsService {
 			height: '100vh'
 		}).afterClosed();
 	}
-	
+
 	public projectContentDialog(content: any, startDate: any, endDate: any, userType: string,
 								peerHasSubmission: boolean, collection: any, calendarId: string) {
 		return this.dialog.open(ContentProjectDialogComponent, {
@@ -897,7 +898,7 @@ export class DialogsService {
 			height: '100vh'
 		}).afterClosed();
 	}
-	
+
 	public inPersonContentDialog(content: any, startDate: any, endDate: any, userType: string,
 								 collection: any, calendarId: string, participants: Array<any>) {
 		return this.dialog.open(ContentInpersonDialogComponent, {
@@ -916,9 +917,9 @@ export class DialogsService {
 			height: '100vh'
 		}).afterClosed();
 	}
-	
+
 	public closeAll() {
 		this.dialog.closeAll();
 	}
-	
+
 }
