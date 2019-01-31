@@ -294,7 +294,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 						{ 'profiles': ['work'] }
 					]
 				},
-				{ 'owners': [{ 'profiles': ['work'] }] },
+				{ 'owners': [{ 'profiles': ['work'] }, 'invites'] },
 				{
 					'contents': [
 						'locations',
@@ -1334,12 +1334,19 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		if (this.class.rooms && this.class.rooms.length > 0) {
 			chatRoomId = this.class.rooms[0].id;
 		}
+		let invites = [];
+		if (this.class.owners[0].invites && this.class.owners[0].invites.length > 0) {
+			invites = _.filter(this.class.owners[0].invites, invite => invite.collectionId === this.class.id);
+			invites = _.orderBy(invites, ['createdAt'], ['desc']);
+		}
 		this.dialogsService.viewParticipantsDialog(
 			this.participants,
 			this.classId,
 			this.userType,
 			chatRoomId,
-			this.class.calendars).subscribe();
+			this.class.calendars,
+			invites
+		).subscribe();
 	}
 
 	viewAllParticipants() {
@@ -1347,7 +1354,19 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		if (this.class.rooms && this.class.rooms.length > 0) {
 			chatRoomId = this.class.rooms[0].id;
 		}
-		this.dialogsService.viewParticipantsDialog(this.allParticipants, this.classId, this.userType, chatRoomId, this.class.calendars).subscribe();
+		let invites = [];
+		if (this.class.owners[0].invites && this.class.owners[0].invites.length > 0) {
+			invites = _.filter(this.class.owners[0].invites, invite => invite.collectionId === this.class.id);
+			invites = _.orderBy(invites, ['createdAt'], ['desc']);
+		}
+		this.dialogsService.viewParticipantsDialog(
+			this.allParticipants,
+			this.classId,
+			this.userType,
+			chatRoomId,
+			this.class.calendars,
+			invites
+		).subscribe();
 	}
 
 	/**

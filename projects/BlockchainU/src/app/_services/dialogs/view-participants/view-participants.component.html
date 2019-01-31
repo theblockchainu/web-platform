@@ -2,7 +2,7 @@
 	<div class="mat-dialog-focus-trap"></div>
 	<div class="row">
 		<div class="col-md-12 collectionContent">
-			<button disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+			<button tabindex="-1" disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
 				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
 			</button>
 			<div class="mat-display-1" style="margin-bottom: 20px;">
@@ -29,7 +29,7 @@
 				<div class="col-md-6 vcenter clickable" [routerLink]="['profile', participant.id]" (click)="dialogRef.close()">
 					<b>{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name | ucwords }}</b>
 					<br />
-					<span *ngIf="participant.profiles[0].headline" class="mat-caption lightText">{{participant.profiles[0].headline | ucwords}}</span>
+					<span *ngIf="participant.profiles[0].headline" class="mat-caption lightText">{{participant.profiles[0].headline | ucfirst}}</span>
 				</div>
 				<div class="col-md-3 vcenter">
 					<div *ngIf="data.userType === 'teacher'">
@@ -45,6 +45,45 @@
 						<button mat-menu-item (click)="messageParticipant(participant)" *ngIf="participant.id !== userId">Message</button>
 						<button mat-menu-item *ngIf="data.userType === 'teacher'" (click)="removeParticipant(participant.id)">Remove</button>
 						<button mat-menu-item *ngIf="participant.id !== userId" (click)="reportProfile(participant.id)">Report</button>
+					</mat-menu>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" *ngIf="data.userType === 'teacher'">
+		<div class="col-md-12">
+			<hr>
+		</div>
+		<div class="col-md-12 mat-body-2">
+			Invited Participants
+		</div>
+		<div class="col-md-12">
+			<hr>
+		</div>
+	</div>
+	<div *ngIf="data.invites && data.invites.length > 0 && data.userType === 'teacher'">
+		<div class="row margin-bottom-20" *ngFor="let invite of data.invites">
+			<div class="mat-caption">
+				<div class="col-md-7 vcenter clickable" (click)="dialogRef.close()">
+					<b>{{(invite.name && invite.name.length > 0) ? invite.name : invite.email | ucwords }}</b>
+					<br />
+					<span class="mat-caption lightText">{{(invite.name && invite.name.length > 0) ? invite.email : '' }}</span>
+					<div>
+						<span class="mat-h5 lightText">Invited on {{invite.createdAt | extractTime : 'Do MMM, YYYY'}}</span>
+					</div>
+				</div>
+				<div class="col-md-3 vcenter">
+					<div *ngIf="data.userType === 'teacher'">
+						<div>Status</div>
+						<div class="mat-caption lightText">{{invite.status | ucwords}}</div>
+					</div>
+				</div>
+				<div class="col-md-1 vcenter">
+					<button mat-icon-button [matMenuTriggerFor]="menu">
+						<mat-icon class="lightText">more_vert</mat-icon>
+					</button>
+					<mat-menu #menu="matMenu">
+						<button mat-menu-item (click)="removeInvite(invite.id)">Cancel Invite</button>
 					</mat-menu>
 				</div>
 			</div>

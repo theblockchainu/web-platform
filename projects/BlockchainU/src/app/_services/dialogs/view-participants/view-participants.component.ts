@@ -16,10 +16,10 @@ import * as moment from 'moment';
 	styleUrls: ['./view-participants.component.scss']
 })
 export class ViewParticipantsComponent implements OnInit {
-	
+
 	public userId;
 	public envVariable;
-	
+
 	constructor(public dialogRef: MatDialogRef<ViewParticipantsComponent>,
 				@Inject(MAT_DIALOG_DATA) public data: any,
 				private dialog: MatDialog,
@@ -32,12 +32,12 @@ export class ViewParticipantsComponent implements OnInit {
 	) {
 		this.envVariable = environment;
 	}
-	
+
 	ngOnInit() {
 		this.userId = this._cookieUtilsService.getValue('userId');
 	}
-	
-	
+
+
 	/**
 	 * messageParticipant
 	 */
@@ -52,7 +52,7 @@ export class ViewParticipantsComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	/**
 	 * removeParticipant
 	 */
@@ -62,7 +62,7 @@ export class ViewParticipantsComponent implements OnInit {
 			console.log('deleted');
 		});
 	}
-	
+
 	public reportProfile(participantId) {
 		this.dialog.open(ReportProfileComponent, {
 			panelClass: 'responsive-dialog', width: '40vw',
@@ -88,7 +88,7 @@ export class ViewParticipantsComponent implements OnInit {
 			}
 		});
 	}
-	
+
 	public exportAsExcel(): void {
 		const downloadData = [];
 		this.data.participants.forEach((participant, i) => {
@@ -134,11 +134,14 @@ export class ViewParticipantsComponent implements OnInit {
 		});
 		this._excelService.exportAsExcelFile(downloadData, 'Participant List - ' + this.data.collectionId);
 	}
-	
+
 	public openInbox(): void {
 		this.router.navigate(['console', 'inbox', this.data.chatRoomId]);
 		this.dialogRef.close();
 	}
-	
-	
+
+	public removeInvite(inviteId) {
+		// TODO
+	}
+
 }

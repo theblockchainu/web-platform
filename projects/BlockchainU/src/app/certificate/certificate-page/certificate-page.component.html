@@ -86,8 +86,7 @@
 							<div class="row">
 								<div class="col-md-12 clickable" [routerLink]="'/profile'+accreditation.createdBy[0].id">
 									<span *ngIf="accreditation.createdBy[0].profiles[0].first_name !== undefined">
-										{{accreditation.createdBy[0].profiles[0].first_name | titlecase }} {{accreditation.createdBy[0].profiles[0].last_name | titlecase
-										}}
+										{{accreditation.createdBy[0].profiles[0].first_name | titlecase }} {{accreditation.createdBy[0].profiles[0].last_name | titlecase}}
 									</span>
 									<span *ngIf="accreditation.createdBy[0].profiles[0].first_name === undefined">
 										John Doe
@@ -116,7 +115,7 @@
 						<div class="row">
 							<div class="col-xs-8">
 								<b>
-									Academic
+									For academics
 								</b>
 							</div>
 							<div class="col-xs-4">
@@ -126,11 +125,11 @@
 						<div class="row">
 							<div class="col-xs-8">
 								<b>
-									Non Academic
+									For commitment
 								</b>
 							</div>
 							<div class="col-xs-4">
-								<i class="fab fa-ethereum"></i> {{certificate.collection.assessment.academicGyanEarned}}
+								<i class="fab fa-ethereum"></i> {{certificate.collection.assessment.nonAcademicGyanEarned}}
 							</div>
 						</div>
 						<hr>

@@ -300,7 +300,8 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 				},
 				{
 					'owners': [
-						{ 'profiles': ['work'] }
+						{ 'profiles': ['work'] },
+						'invites'
 					]
 				},
 				{
@@ -1391,12 +1392,19 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		if (this.experience.rooms && this.experience.rooms.length > 0) {
 			chatRoomId = this.experience.rooms[0].id;
 		}
+		let invites = [];
+		if (this.experience.owners[0].invites && this.experience.owners[0].invites.length > 0) {
+			invites = _.filter(this.experience.owners[0].invites, invite => invite.collectionId === this.experience.id);
+			invites = _.orderBy(invites, ['createdAt'], ['desc']);
+		}
 		this.dialogsService.viewParticipantsDialog(
 			this.participants,
 			this.experienceId,
 			this.userType,
 			chatRoomId,
-			this.experience.calendars).subscribe();
+			this.experience.calendars,
+			invites
+		).subscribe();
 	}
 
 	viewAllParticipants() {
@@ -1404,7 +1412,19 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		if (this.experience.rooms && this.experience.rooms.length > 0) {
 			chatRoomId = this.experience.rooms[0].id;
 		}
-		this.dialogsService.viewParticipantsDialog(this.allParticipants, this.experienceId, this.userType, chatRoomId, this.experience.calendars).subscribe();
+		let invites = [];
+		if (this.experience.owners[0].invites && this.experience.owners[0].invites.length > 0) {
+			invites = _.filter(this.experience.owners[0].invites, invite => invite.collectionId === this.experience.id);
+			invites = _.orderBy(invites, ['createdAt'], ['desc']);
+		}
+		this.dialogsService.viewParticipantsDialog(
+			this.allParticipants,
+			this.experienceId,
+			this.userType,
+			chatRoomId,
+			this.experience.calendars,
+			invites
+		).subscribe();
 	}
 
 	/**
@@ -2193,7 +2213,10 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 	public addParticipant() {
 		if (this.calendarId) {
 			this.dialogsService.addParticipant(this.experienceId, this.calendarId).subscribe(res => {
-				if (res) {
+				if (res && res.action) {
+					this.viewParticipants();
+				} else if (res && !res.action) {
+					this.router.navigate(['experience', this.experienceId, 'calendar', this.calendarId]);
 					this.initializePage();
 				}
 			});

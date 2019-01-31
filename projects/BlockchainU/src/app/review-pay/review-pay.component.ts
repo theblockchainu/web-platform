@@ -122,8 +122,10 @@ export class ReviewPayComponent implements OnInit {
         this.setTags();
         this.setupForms();
         this.getUserCountry();
-        this.stripe = Stripe(environment.stripePublishableKey);
-        this.initializeStripeElements();
+        if (Stripe) {
+			this.stripe = Stripe(environment.stripePublishableKey);
+			this.initializeStripeElements();
+		}
         this.loadCollectionData();
         this.fetchScholarships();
         this.scholarshipAmount = 0;

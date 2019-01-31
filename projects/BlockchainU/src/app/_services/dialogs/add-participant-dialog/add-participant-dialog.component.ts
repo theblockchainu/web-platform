@@ -214,6 +214,10 @@ export class AddParticipantDialogComponent implements OnInit {
 		}
 	}
 
+	public openExistingInvites() {
+		this.dialogRef.close({action: 'viewParticipants'});
+	}
+
 }
 
 interface PeerObject {

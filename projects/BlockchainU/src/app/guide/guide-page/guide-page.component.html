@@ -623,8 +623,9 @@
 							<div *ngIf="!loadingCodeLab &&  lab_details && lab_details.length>0">
 								<app-code-labs [lab_details]="lab_details"></app-code-labs>
 							</div>
-							<div *ngIf="!loadingCodeLab && (!lab_details || lab_details.length>0)">
+							<div *ngIf="!loadingCodeLab && (!corestack_student || !lab_details || lab_details.length === 0)">
 								<div class="row padding-top-100">
+									<!--LAB AVAILABLE BUT NOT READY-->
 									<div class="col-md-10 col-md-offset-1 center" *ngIf="corestack_student && corestack_student.student_course_status==='registered'">
 										<div class="margin-bottom-30 margin-top-40" style="font-size: 40px; color: #33bd9e;">
 											<mat-icon style="font-size: 100px; margin-left: -100px;">schedule</mat-icon>
@@ -639,6 +640,7 @@
 											We'll update you over email once your CodeLab is ready for use
 										</p>
 									</div>
+									<!--LAB NOT AVAILABLE-->
 									<div class="col-md-10 col-md-offset-1 center" *ngIf="!corestack_student || corestack_student.student_course_status!=='registered'">
 										<div class="margin-bottom-30 margin-top-40" style="font-size: 40px; color: #33bd9e;">
 											<mat-icon style="font-size: 100px; margin-left: -100px;">power_off</mat-icon>

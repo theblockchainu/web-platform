@@ -611,12 +611,13 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 			} else {
 				this.loadingCodeLab = false;
 			}
+		} else {
+			this.loadingCodeLab = false;
 		}
 	}
 
 	private startCodeLab() {
-		this._corestackService.getAccessDetails
-			(this.corestack_student.student_id, this.corestack_student.course_id)
+		this._corestackService.getAccessDetails(this.corestack_student.student_id, this.corestack_student.course_id)
 			.pipe(first())
 			.subscribe((res: any) => {
 				console.log('res');
