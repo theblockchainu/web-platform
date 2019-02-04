@@ -76,23 +76,34 @@
 									<div class="col-md-12 transactionTableData">
 										<div class="row text-center" *ngIf="!transactions || transactions.length===0 " style="padding-top: 10px; padding-bottom: 10px;">
 											<span class="lightText">
-												Not made any transactions
+												You do not have any transactions to view.
 											</span>
 										</div>
-										<div class="row" *ngFor="let transaction of transactions" style="padding-top: 10px; padding-bottom: 10px;">
-											<div class="col-xs-2">{{transaction.modified | extractTime:'D/M/YY'}}</div>
-											<div class="col-xs-2">Payment</div>
-											<div class="col-xs-4">
-												<span *ngIf="transaction.collections && transaction.collections.length>0">{{transaction.collections[0].title | titlecase}} - {{transaction.collections[0].type | ucfirst}}</span>
-												<span *ngIf="transaction.contents && transaction.contents.length>0">{{transaction.contents[0].title | ucwords}}
-													<span *ngIf="transaction.contents[0].collections && transaction.contents[0].collections.length > 0">
-														with {{transaction.contents[0].collections[0].owners[0].profiles[0].first_name}} {{transaction.contents[0].collections[0].owners[0].profiles[0].last_name}}
+										<div *ngFor="let transaction of transactions">
+											<div *ngIf="transaction.status === 'succeeded' || transaction.order_status === 'Success'" class="row" style="padding-top: 10px; padding-bottom: 10px;">
+												<div class="col-xs-2">{{transaction.updatedAt | extractTime:'D/M/YY'}}</div>
+												<div class="col-xs-2">Payment</div>
+												<div class="col-xs-4">
+													<span *ngIf="transaction.collections && transaction.collections.length>0">
+														{{transaction.collections[0].title | titlecase}}
+														<br>
+														<span class="mat-caption">{{transaction.collections[0].type | typeMap | ucfirst}}</span>
 													</span>
-												</span>
-												<span *ngIf="(!transaction.collections || transaction.collections.length<=0) && (!transaction.contents || transaction.contents.length<=0)">{{transaction.description | ucfirst}}</span>
+													<span *ngIf="transaction.contents && transaction.contents.length>0">
+														{{transaction.contents[0].title | ucwords}}
+														<span *ngIf="transaction.contents[0].collections && transaction.contents[0].collections.length > 0">
+															with {{transaction.contents[0].collections[0].owners[0].profiles[0].first_name}} {{transaction.contents[0].collections[0].owners[0].profiles[0].last_name}}
+														</span>
+													</span>
+													<span *ngIf="(!transaction.collections || transaction.collections.length<=0) && (!transaction.contents || transaction.contents.length<=0)">
+														<span *ngIf="transaction.description">{{transaction.description}}</span>
+														<span *ngIf="transaction.merchant_param1">{{transaction.merchant_param1.split('/')[3]}}</span>
+													</span>
+												</div>
+												<div class="col-xs-2" *ngIf="transaction.gateway === 'stripe' || transaction.livemode">{{transaction.amount / 100 | convertCurrency: transaction.currency | async}}</div>
+												<div class="col-xs-2" *ngIf="transaction.gateway === 'ccavenue' || transaction.mer_amount">{{ transaction.amount | convertCurrency: transaction.currency | async}}</div>
+												<div class="col-xs-2"></div>
 											</div>
-											<div class="col-xs-2">{{transaction.amount / 100 | convertCurrency: transaction.currency | async}}</div>
-											<div class="col-xs-2"></div>
 										</div>
 									</div>
 								</div>
@@ -100,7 +111,7 @@
 							<mat-tab label="Future Transactions">
 								<div style="margin-top: 25px; margin-bottom: 50px;" class="lightText">
 									Here you will see all the transactions that were either paid out to your account we have on record or is scheduled to be
-									paid out on completion of your class, experience or session.
+									paid out on completion of your online course, in-person workshop or mentor session.
 								</div>
 								<h2> Booked : {{totalFutureTransactions | convertCurrency: userCurrency | async}} </h2>
 								<!-- <a href="#" class="pull-right"> Export to CSV</a> -->
@@ -159,19 +170,20 @@
 									<div class="col-md-12 transactionTableData">
 										<div class="row text-center" *ngIf="!retrievedFutureTransactions || retrievedFutureTransactions.length===0 " style="padding-top: 10px; padding-bottom: 10px;">
 											<span class="lightText">
-												No upcoming transactions
+												You have no future transactions
 											</span>
 										</div>
 										<div class="row" *ngFor="let transaction of retrievedFutureTransactions" style="padding-top: 10px; padding-bottom: 10px;">
-											<div class="col-xs-2">{{transaction.modified | extractTime:'DD/M/YY'}}</div>
+											<div class="col-xs-2">{{transaction.updatedAt | extractTime:'DD/M/YY'}}</div>
 											<div class="col-xs-2">Payment</div>
 											<div class="col-xs-4">
 												<span *ngIf="transaction.peers && transaction.peers.length>0 && transaction.peers[0].profiles && transaction.peers[0].profiles.length>0">
-													{{transaction.peers[0].profiles[0].first_name}} {{transaction.peers[0].profiles[0].last_name}} -
-													<span *ngIf="transaction.collections && transaction.collections.length > 0">
+													<b>{{transaction.peers[0].profiles[0].first_name}} {{transaction.peers[0].profiles[0].last_name}}</b>
+													<br/>
+													<span *ngIf="transaction.collections && transaction.collections.length > 0" class="mat-caption">
 														{{transaction.collections[0].title | titlecase}} - {{transaction.collections[0].type | ucfirst}}
 													</span>
-													<span *ngIf="transaction.contents && transaction.contents.length > 0">
+													<span *ngIf="transaction.contents && transaction.contents.length > 0" class="mat-caption">
 														{{transaction.contents[0].title | titlecase}}
 													</span>
 												</span>

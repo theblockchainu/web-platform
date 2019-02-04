@@ -50,7 +50,7 @@
 								</div>
 							</div>
 						</div>
-						
+
 						<div class="row margin-top-20" style="border: 1px solid #aaa;padding: 15px 5px;border-radius: 4px;margin: 0px 20px 0px 0px;" *ngIf="!loadingQuizSubmissions && userWiseSubmissionArray && userWiseSubmissionArray[i].submissions.length > 0">
 							<div class="col-xs-12">
 								<div class="mat-body-2">
@@ -119,8 +119,8 @@
 							<div class="col-sm-12 accentColor mat-body-2" *ngIf="!participant.value.hasCertificate && participant.value.certificateStatus !== 'pendingBlockchain'" matTooltip="Status: {{participant.value.certificateStatus}}">
 								<mat-icon style="position: relative; top: 7px; padding-right: 5px;">error</mat-icon> Failed to send email
 							</div>
-							<div class="col-sm-12 accentColor mat-body-2" *ngIf="!participant.value.hasCertificate && participant.value.certificateStatus === 'pendingBlockchain'" matTooltip="Status: {{participant.value.certificateStatus}}">
-								<mat-icon style="position: relative; top: 7px; padding-right: 5px;">error</mat-icon> Processing certificate...
+							<div class="col-sm-12 lightText mat-body-2" *ngIf="!participant.value.hasCertificate && participant.value.certificateStatus === 'pendingBlockchain'" matTooltip="Status: {{participant.value.certificateStatus}}">
+								<mat-icon style="position: relative; top: 7px; padding-right: 5px;">cached</mat-icon> Processing certificate...
 							</div>
 							<div class="col-sm-12 margin-top-20" *ngIf="participant.value.hasCertificate">
 								<button [disabled]="loadingHttp" mat-button class="mat-border-button" (click)="openCertificate(participant.value.certificateId)">View Certificate</button>

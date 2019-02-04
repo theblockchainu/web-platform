@@ -36,7 +36,7 @@ export class ConvertCurrencyPipe implements PipeTransform {
 					observer.next('FREE');
 				});
 			} else {
-				return this._paymentService.convertCurrency(amount, fromCurrency).pipe(
+				return this._paymentService.convertCurrency(parseFloat(amount), fromCurrency).pipe(
 					map(
 						res => {
 							if (res && res.currency) {
