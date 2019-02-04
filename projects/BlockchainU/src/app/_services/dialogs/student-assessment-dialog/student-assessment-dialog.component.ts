@@ -19,8 +19,12 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 	public assessmentForm: FormGroup;
 	public pendingParticipants = false;
 	public loadingQuizSubmissions = true;
-	public participantsInitArray = [];
+	public pendingParticipantsInitArray = [];
+	public processingParticipantsInitArray = [];
+	public failedParticipantsInitArray = [];
+	public issuedParticipantsInitArray = [];
 	public userWiseSubmissionArray = [];
+	public totalParticipantsInitArray = [];
 	public fetchingFromBlockchain = true;
 	public selectedParticipants = 0;
 	public totalAssessedParticipants = 0;
@@ -30,7 +34,7 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 	public loadingHttp = false;
 	public collectionEthereumInfo;
 	public isOnEthereum = false;
-	
+
 	@ViewChild(MatTable) table: MatTable<any>;
 
 	constructor(public dialogRef: MatDialogRef<StudentAssessmentDialogComponent>,
@@ -45,11 +49,11 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 	ngOnInit() {
 		this.certificateCountMapping = { '=0': 'No Smart Certificate', '=1': '1 Smart Certificate', 'other': '# Smart Certificates' };
 	}
-	
+
 	ngAfterViewInit() {
 		this.initializeTemplate();
 	}
-	
+
 	private initializeTemplate() {
 		this.fetchingFromBlockchain = true;
 		// Get ethereum data
@@ -66,9 +70,13 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 				this.loadData();
 			});
 	}
-	
+
 	private loadData() {
-		this.participantsInitArray = [];
+		this.pendingParticipantsInitArray = [];
+		this.processingParticipantsInitArray = [];
+		this.failedParticipantsInitArray = [];
+		this.issuedParticipantsInitArray = [];
+		this.totalParticipantsInitArray = [];
 		this.totalAssessedParticipants = 0;
 		this.totalPendingParticipants = 0;
 		this.pendingParticipants = false;
@@ -85,10 +93,10 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 			participant.isScholarshipOnEthereum = false;
 			participant.savingOnEthereum = false;
 			participant.certificateStatus = 'new';
-			
+
 			// Check participation on blockchain
 			participant.hasEthereumAddress = participant.ethAddress && participant.ethAddress.substring(0, 2) === '0x';
-			
+
 			if (participant.certificates) {
 				participant.certificates.forEach(certificate => {
 					if (certificate && certificate.stringifiedJSON && certificate.stringifiedJSON.length > 0) {
@@ -107,7 +115,7 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 					}
 				});
 			}
-			
+
 			this.data.assessment_models[0].assessment_rules.forEach((assessment_rule, i) => {
 				if (this.collectionEthereumInfo && this.collectionEthereumInfo[2] && this.collectionEthereumInfo[2].length >= i + 1) {
 					// If Blockchain Assessment rules do not MATCH, override with Blockchain rules
@@ -124,9 +132,9 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 						}
 					});
 				}
-				
+
 			});
-			
+
 			this.data.assessment_models[0].assessment_na_rules.forEach(assessment_na_rule => {
 				if (assessment_na_rule.assessment_result) {
 					assessment_na_rule.assessment_result.forEach((result: any) => {
@@ -144,38 +152,98 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 						}
 					});
 				}
-				
+
 			});
-			
+
 			if (!isParticipantAssessed) {
 				this.pendingParticipants = true;
 				console.log('Assessment pending for : ' + participant.profiles[0].first_name + ' ' + participant.profiles[0].last_name);
 			}
-			
-			this.participantsInitArray.push(
-				this._fb.group({
-					name: participant.profiles[0].first_name + ' ' + participant.profiles[0].last_name,
-					id: participant.id,
-					rule_obj: [{ value: participantResult, disabled: isParticipantAssessed }],
-					engagement_result: [{ value: engagementResult, disabled: isParticipantEngagementAssessed }],
-					commitment_result: [{ value: commitmentResult, disabled: isParticipantCommitmentAssessed }],
-					isAssessed: isParticipantAssessed,
-					isOnEthereum: participant.isOnEthereum,
-					isScholarshipOnEthereum: participant.isScholarshipOnEthereum,
-					savingOnEthereum: participant.savingOnEthereum,
-					hasCertificate: participant.hasCertificate,
-					certificateId: participant.certificateId,
-					certificateStatus: participant.certificateStatus,
-					assessmentId: participantAssessmentId,
-					ethAddress: participant.ethAddress
-				})
-			);
+
+			if (isParticipantAssessed && participant.hasCertificate) {
+				this.issuedParticipantsInitArray.push(
+					this._fb.group({
+						name: participant.profiles[0].first_name + ' ' + participant.profiles[0].last_name,
+						id: participant.id,
+						rule_obj: [{ value: participantResult, disabled: isParticipantAssessed }],
+						engagement_result: [{ value: engagementResult, disabled: isParticipantEngagementAssessed }],
+						commitment_result: [{ value: commitmentResult, disabled: isParticipantCommitmentAssessed }],
+						isAssessed: isParticipantAssessed,
+						isOnEthereum: participant.isOnEthereum,
+						isScholarshipOnEthereum: participant.isScholarshipOnEthereum,
+						savingOnEthereum: participant.savingOnEthereum,
+						hasCertificate: participant.hasCertificate,
+						certificateId: participant.certificateId,
+						certificateStatus: participant.certificateStatus,
+						assessmentId: participantAssessmentId,
+						ethAddress: participant.ethAddress
+					})
+				);
+			} else if (isParticipantAssessed && !participant.hasCertificate && participant.certificateStatus !== 'pendingBlockchain') {
+				this.failedParticipantsInitArray.push(
+					this._fb.group({
+						name: participant.profiles[0].first_name + ' ' + participant.profiles[0].last_name,
+						id: participant.id,
+						rule_obj: [{ value: participantResult, disabled: isParticipantAssessed }],
+						engagement_result: [{ value: engagementResult, disabled: isParticipantEngagementAssessed }],
+						commitment_result: [{ value: commitmentResult, disabled: isParticipantCommitmentAssessed }],
+						isAssessed: isParticipantAssessed,
+						isOnEthereum: participant.isOnEthereum,
+						isScholarshipOnEthereum: participant.isScholarshipOnEthereum,
+						savingOnEthereum: participant.savingOnEthereum,
+						hasCertificate: participant.hasCertificate,
+						certificateId: participant.certificateId,
+						certificateStatus: participant.certificateStatus,
+						assessmentId: participantAssessmentId,
+						ethAddress: participant.ethAddress
+					})
+				);
+			} else if (isParticipantAssessed && !participant.hasCertificate && participant.certificateStatus === 'pendingBlockchain') {
+				this.processingParticipantsInitArray.push(
+					this._fb.group({
+						name: participant.profiles[0].first_name + ' ' + participant.profiles[0].last_name,
+						id: participant.id,
+						rule_obj: [{ value: participantResult, disabled: isParticipantAssessed }],
+						engagement_result: [{ value: engagementResult, disabled: isParticipantEngagementAssessed }],
+						commitment_result: [{ value: commitmentResult, disabled: isParticipantCommitmentAssessed }],
+						isAssessed: isParticipantAssessed,
+						isOnEthereum: participant.isOnEthereum,
+						isScholarshipOnEthereum: participant.isScholarshipOnEthereum,
+						savingOnEthereum: participant.savingOnEthereum,
+						hasCertificate: participant.hasCertificate,
+						certificateId: participant.certificateId,
+						certificateStatus: participant.certificateStatus,
+						assessmentId: participantAssessmentId,
+						ethAddress: participant.ethAddress
+					})
+				);
+			} else if (!isParticipantAssessed) {
+				this.pendingParticipantsInitArray.push(
+					this._fb.group({
+						name: participant.profiles[0].first_name + ' ' + participant.profiles[0].last_name,
+						id: participant.id,
+						rule_obj: [{ value: participantResult, disabled: isParticipantAssessed }],
+						engagement_result: [{ value: engagementResult, disabled: isParticipantEngagementAssessed }],
+						commitment_result: [{ value: commitmentResult, disabled: isParticipantCommitmentAssessed }],
+						isAssessed: isParticipantAssessed,
+						isOnEthereum: participant.isOnEthereum,
+						isScholarshipOnEthereum: participant.isScholarshipOnEthereum,
+						savingOnEthereum: participant.savingOnEthereum,
+						hasCertificate: participant.hasCertificate,
+						certificateId: participant.certificateId,
+						certificateStatus: participant.certificateStatus,
+						assessmentId: participantAssessmentId,
+						ethAddress: participant.ethAddress
+					})
+				);
+			}
 		});
-		
+
 		this.totalPendingParticipants = this.data.participants.length - this.totalAssessedParticipants;
-		
+
+		this.totalParticipantsInitArray = _.concat(this.pendingParticipantsInitArray, this.failedParticipantsInitArray, this.processingParticipantsInitArray, this.issuedParticipantsInitArray);
 		this.assessmentForm = this._fb.group({
-			participants: this._fb.array(this.participantsInitArray)
+			participants: this._fb.array(this.totalParticipantsInitArray)
 		});
 		// Update every user's blockchain participation status
 		this.checkBlockchainParticipation();
@@ -185,13 +253,13 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 				this.loadingQuizSubmissions = false;
 			});
 	}
-	
+
 	private checkBlockchainParticipation() {
 		this.fetchingFromBlockchain = true;
 		this.collectionService.getBlockchainParticipants(this.data.collection.id)
 			.subscribe(res => {
 				if (res && res['result']) {
-					this.participantsInitArray.forEach(participant => {
+					this.pendingParticipantsInitArray.forEach(participant => {
 						// If this participant exists in the returned blockchain list
 						const hasEthereumAddress = participant.value.ethAddress && participant.value.ethAddress.substring(0, 2) === '0x';
 						if (hasEthereumAddress && _.some(res['participants'], ethParticipant => ethParticipant.toLowerCase() === participant.value.ethAddress.toLowerCase())) {
@@ -206,15 +274,15 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 				this.fetchingFromBlockchain = false;
 			});
 	}
-	
+
 	private getEthereumInfo() {
 		return this.collectionService.getCollectionEthereumInfo(this.data.collection.id, {});
 	}
-	
+
 	private loadQuizAssessments() {
 		this.loadingQuizSubmissions = true;
 		return new Observable(obs => {
-			this.participantsInitArray.forEach(participant => {
+			this.totalParticipantsInitArray.forEach(participant => {
 				const userWiseSubmissionObject = {
 					participantId: participant.value.id,
 					submissions: []
@@ -255,12 +323,12 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 		this.loadingHttp = false;
 		this.dialogRef.close({ participants: participants });
 	}
-	
+
 	public openCertificate(certificateId) {
 		window.open(environment.clientUrl + '/certificate/' + certificateId, '_blank');
 		/*this.router.navigate(['/certificate', certificateId]);*/
 	}
-	
+
 	public resendCertificate(certificateId, assessmentId, index) {
 		this.loadingHttp = true;
 		const body = {
@@ -285,7 +353,7 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 				this.snackBar.open('Cannot re-issue certificate. No backup available. Contact us to resolve this issue.', 'DISMISS', {duration: 5000});
 			});
 	}
-	
+
 	public addParticipantToBlockchain(participant) {
 		this.loadingHttp = true;
 		participant.controls['savingOnEthereum'].patchValue(true);
@@ -304,13 +372,13 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 				this.loadingHttp = false;
 			});
 	}
-	
+
 	public filterMySubmissions(submissions, userId) {
 		return _.filter(submissions, (s) => {
 			return s.peerId === userId;
 		});
 	}
-	
+
 	public selectedAssessmentValue(event) {
 		console.log(event);
 		if (event.value && event.value.value.length > 0) {
@@ -319,10 +387,10 @@ export class StudentAssessmentDialogComponent implements OnInit, AfterViewInit {
 			this.selectedParticipants = Math.max(this.selectedParticipants - 1, 0);
 		}
 	}
-	
+
 	public openQuizSubmission(element) {
 		let dialogRef: MatDialogRef<ViewQuizSubmissionComponent>;
-		
+
 		dialogRef = this.dialog.open(ViewQuizSubmissionComponent, {
 			panelClass: 'responsive-dialog',
 			width: '45vw',

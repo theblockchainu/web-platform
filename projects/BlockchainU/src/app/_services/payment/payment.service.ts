@@ -109,36 +109,42 @@ export class PaymentService {
 	 * convertCurrency
 	 */
 	public convertCurrency(amount: number, from: string, to?: number): Observable<{ amount: number, currency: string }> {
-		const body = {
-			'from': from,
-			'to': (to) ? to : this._cookieUtilsService.getValue('currency'),
-			'amount': amount
-		};
-		console.log(body);
-		/*if (from.length === 3 && this._cookieUtilsService.getValue('currency').length === 3) {*/
-		return this.http.post(environment.apiUrl + '/convertCurrency', body, this._requestHeaderService.options)
-			.pipe(map((response: any) => {
-				const res = response;
-				console.log(res);
-				if (res && res.success) {
-					return {
-						amount: res.result,
-						currency: this._cookieUtilsService.getValue('currency')
-					};
-				} else {
-					return {
+		const toCurrency = (to) ? to : this._cookieUtilsService.getValue('currency');
+		if (from !== toCurrency) {
+			const body = {
+				'from': from,
+				'to': toCurrency,
+				'amount': amount
+			};
+			console.log(body);
+			return this.http.post(environment.apiUrl + '/convertCurrency', body, this._requestHeaderService.options)
+				.pipe(map((response: any) => {
+					const res = response;
+					console.log(res);
+					if (res && res.success) {
+						return {
+							amount: res.result,
+							currency: this._cookieUtilsService.getValue('currency')
+						};
+					} else {
+						return {
+							amount: amount,
+							currency: from
+						};
+					}
+
+				}), catchError(err => {
+					return of({
 						amount: amount,
 						currency: from
-					};
-				}
-
-			}), catchError(err => {
-				return of({
-					amount: amount,
-					currency: from
-				});
-			}));
-		// }
+					});
+				}));
+		} else {
+			return of({
+				amount: amount,
+				currency: from
+			});
+		}
 	}
 
 	/**
