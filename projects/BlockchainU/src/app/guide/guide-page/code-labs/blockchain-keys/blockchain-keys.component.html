@@ -10,7 +10,12 @@
 					Private Key
 				</div>
 			</div>
-			<div class="row padding-bottom-10" *ngFor="let keyObject of keysArray">
+			<div class="row">
+				<div class="col-xs-12">
+					<hr>
+				</div>
+			</div>
+			<div class="row padding-bottom-10 mat-h5" *ngFor="let keyObject of keysArray">
 				<div class="col-xs-5">
 					{{keyObject.publicKey}}
 				</div>
