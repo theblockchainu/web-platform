@@ -15,7 +15,8 @@ export class AuthenticationService {
 	public userId;
 	public isLoginSubject = new BehaviorSubject<boolean>(this.hasToken());
 
-	constructor(private http: HttpClient,
+	constructor(
+		private http: HttpClient,
 		private _cookieUtilsService: CookieUtilsService,
 		private route: ActivatedRoute,
 		public router: Router,

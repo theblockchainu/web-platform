@@ -189,8 +189,10 @@
 												</span>
 												<span *ngIf="!transaction.peers || transaction.peers.length<=0">{{transaction.description | ucfirst}}</span>
 											</div>
-											<div class="col-xs-2">{{transaction.amount / 100 | convertCurrency: transaction.currency | async}}</div>
-											<div class="col-xs-2"></div>
+											<div class="col-xs-2" *ngIf="transaction.gateway === 'stripe' || transaction.livemode">{{transaction.amount / 100 | convertCurrency: transaction.currency | async}}</div>
+											<div class="col-xs-2" *ngIf="transaction.gateway === 'ccavenue' || transaction.mer_amount">{{transaction.amount | convertCurrency: transaction.currency | async}}</div>
+											<div class="col-xs-2" *ngIf="transaction.gateway === 'stripe' || transaction.livemode">{{transaction.amount / 100 | convertCurrency: transaction.currency | async}}</div>
+											<div class="col-xs-2" *ngIf="transaction.gateway === 'ccavenue' || transaction.mer_amount">{{transaction.amount | convertCurrency: transaction.currency | async}}</div>
 										</div>
 									</div>
 								</div>
