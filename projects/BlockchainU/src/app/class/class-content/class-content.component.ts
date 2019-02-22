@@ -105,13 +105,13 @@ export class ClassContentComponent implements OnInit, AfterViewInit {
 	}
 
 	checkClassActive() {
-		if (this.collection.status === 'active') {
+		/*if (this.collection.status === 'active') {
 			this.executeSubmitClass(this.collection);
-		} else {
+		} else {*/
 			const itenaries = <FormArray>this.myForm.controls['itenary'];
 			itenaries.push(this.initItenary());
 			this.days.emit(itenaries);
-		}
+		// }
 	}
 
 	reload(collectionId, step) {

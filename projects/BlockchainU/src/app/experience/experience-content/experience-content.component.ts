@@ -103,13 +103,13 @@ export class ExperienceContentComponent implements OnInit, AfterViewInit {
 	}
 
 	checkExperienceActive() {
-		if (this.collection.status === 'active') {
+		/*if (this.collection.status === 'active') {
 			this.executeSubmitExperience(this.collection);
-		} else {
+		} else {*/
 			const itenaries = <FormArray>this.myForm.controls['itenary'];
 			itenaries.push(this.initItenary());
 			this.days.emit(itenaries);
-		}
+		// }
 	}
 
 	reload(collectionId, step) {
