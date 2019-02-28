@@ -27,7 +27,7 @@
 							<div *ngFor="let collection of ongoingArray" [ngSwitch]="collection.status">
 								<ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
 								<ng-template #noTopicText>No Topics</ng-template>
-								<div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'active'">
+								<div class="col-md-4 learningConsoleCard" style="margin-top: 20px;" *ngSwitchCase="'active'">
 									<mat-card style="text-align: center; padding: 20px;">
 										<mat-card-content>
 											<div style="text-align: right">
@@ -116,7 +116,7 @@
 							<div *ngFor="let collection of upcomingArray" [ngSwitch]="collection.status">
 								<ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
 								<ng-template #noTopicText>No Topics</ng-template>
-								<div class="col-md-4" style="margin-top: 20px;" *ngSwitchCase="'active'">
+								<div class="col-md-4 learningConsoleCard" style="margin-top: 20px;" *ngSwitchCase="'active'">
 									<mat-card style="text-align: center; padding: 20px;">
 										<mat-card-content>
 											<div style="text-align: right">
@@ -208,7 +208,7 @@
 							<div *ngFor="let collection of pastArray">
 								<ng-template #topicName>{{collection.topics[0].name | titlecase}}</ng-template>
 								<ng-template #noTopicText>No Topics</ng-template>
-								<div class="col-md-4" style="margin-top: 20px;">
+								<div class="col-md-4 learningConsoleCard" style="margin-top: 20px;">
 									<mat-card style="text-align: center; padding: 20px;">
 										<mat-card-content>
 											<div style="text-align: right">

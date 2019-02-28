@@ -20,6 +20,7 @@ export class SholarshipPageComponent implements OnInit {
 	initialised = false;
 	accountApproved: string;
 	joined = false;
+	public userType: string;
 	constructor(
 		private activatedRoute: ActivatedRoute,
 		private _cookieUtilsService: CookieUtilsService,
@@ -29,7 +30,7 @@ export class SholarshipPageComponent implements OnInit {
 		private matSnackBar: MatSnackBar
 	) {
 	}
-	
+
 	ngOnInit() {
 		this.activatedRoute.params.subscribe(params => {
 			if (this.initialised && (this.scholarshipId !== params['scholarshipId'])) {
@@ -42,12 +43,14 @@ export class SholarshipPageComponent implements OnInit {
 		this.initializePage();
 		this.accountApproved = this._cookieUtilsService.getValue('accountApproved');
 	}
-	
+
 	initializePage() {
 		let filter;
 		if (this.scholarshipId === 'global') {
 			filter =  {
-				'include': [{ 'owner': 'profiles' }, 'peers_joined',
+				'include': [
+					{ 'owner': 'profiles' },
+					{'peers_joined': 'profiles'},
 					{
 						'allowed_collections': [
 							'calendars',
@@ -57,7 +60,8 @@ export class SholarshipPageComponent implements OnInit {
 							{ 'participants': 'profiles' },
 							'topics',
 						]
-					}],
+					}
+				],
 				'where': {
 					type: 'public'
 				}
@@ -67,16 +71,26 @@ export class SholarshipPageComponent implements OnInit {
 					this.scholarship = res[0];
 					this.scholarshipId = this.scholarship.id;
 					console.log(this.scholarship);
+					if (this.scholarship.owner[0].id === this.userId) {
+						this.userType = 'owner';
+					} else {
+						this.userType = 'public';
+					}
 					for (let index = 0; (!this.joined && index < this.scholarship.peers_joined.length); index++) {
 						const peer = this.scholarship.peers_joined[index];
 						if (peer.id === this.userId) {
 							this.joined = true;
+							if (!this.userType) {
+								this.userType = 'student';
+							}
 						}
 					}
 				});
 		} else {
 			filter = {
-				'include': [{ 'owner': 'profiles' }, 'peers_joined',
+				'include': [
+					{ 'owner': 'profiles' },
+					{'peers_joined': 'profiles'},
 					{
 						'allowed_collections': [
 							'calendars',
@@ -86,41 +100,51 @@ export class SholarshipPageComponent implements OnInit {
 							{ 'participants': 'profiles' },
 							'topics',
 						]
-					}]
+					}
+				]
 			};
 			this._scholarshipService.fetchScholarship(this.scholarshipId, filter)
 				.subscribe((res: any) => {
 					this.scholarship = res;
 					console.log(this.scholarship);
+					if (this.scholarship.owner[0].id === this.userId) {
+						this.userType = 'owner';
+					} else {
+						this.userType = 'public';
+					}
+					console.log(this.userType);
 					for (let index = 0; (!this.joined && index < this.scholarship.peers_joined.length); index++) {
 						const peer = this.scholarship.peers_joined[index];
 						if (peer.id === this.userId) {
 							this.joined = true;
+							if (!this.userType) {
+								this.userType = 'student';
+							}
 						}
 					}
 				});
 		}
 	}
-	
+
 	openCollection(collection: any) {
 		this.router.navigateByUrl('/' + collection.type + '/' + collection.id);
 	}
-	
-	
+
+
 	joinSholarship() {
 		this._scholarshipService.joinScholarship(this.userId, this.scholarshipId).subscribe(res => {
 			this.router.navigate(['console', 'account', 'scholarships']);
 			this.matSnackBar.open('Joined Scholarship', 'Close', { duration: 600 });
 		});
 	}
-	
+
 	public openInviteFriendsDialog() {
 		const shareObject = this.scholarship;
 		shareObject.type = 'scholarship';
 		this.dialogsService.inviteFriends(shareObject);
 	}
-	
-	
+
+
 	public shareOnFb() {
 		FB.ui({
 			method: 'share_open_graph',

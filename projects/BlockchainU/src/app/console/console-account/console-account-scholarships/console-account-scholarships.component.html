@@ -15,7 +15,7 @@
 		</div>
 		<div *ngIf="scholarships.length > 0">
 			<div class="row" style="margin-top:20px;">
-				<div class="col-xs-12 col-md-3" *ngFor="let scholarship of scholarships">
+				<div class="col-xs-12 col-md-4" *ngFor="let scholarship of scholarships">
 					<mat-card style="text-align: center; padding: 20px;">
 						<mat-card-content>
 							<div style="text-align: right">
@@ -27,14 +27,16 @@
 							</div>
 							<br>
 							<br>
-							<div class="collectionTitle clickable" [routerLink]="'/scholarship/'+scholarship.id">{{ scholarship.title | ucwords }} </div>
+							<div class="collectionTitle clickable mat-body-2" [routerLink]="'/scholarship/'+scholarship.id">
+								{{ scholarship.title | ucwords }}
+							</div>
 							<br>
 							<span>{{ scholarship.type | ucwords }}</span>
 							<br>
 							<br>
-							Balance Fund
+							Balance
 							<div class="mat-body-2">
-								<i class="fas fa-fire"></i> {{scholarship.id | karmaBalance: 'scholarship' | async | currency : ' ' : ' ' : '1.0-0'}} Karma
+								<i class="fas fa-fire"></i> {{scholarship.id | karmaBalance: 'scholarship' | async | currency : ' ' : ' ' : '1.0-0'}} KARMA
 							</div>
 						</mat-card-content>
 						<mat-menu #scholarCardMenu>
@@ -59,8 +61,8 @@
 	</div>
 	<div class="col-md-12 margin-top-30" *ngIf="hostedScholarshipsLoaded">
 		<div style="display:inline;">
-			<h2>Scholarships you have created &emsp;&emsp;
-				<a class="mat-caption clickable" (click)="hostScholarship()" color="primary"> + Create new scholarship</a>
+			<h2>Scholarships you have sponsored &emsp;&emsp;
+				<a style="padding-left: 15px;" class="mat-caption clickable" (click)="hostScholarship()" color="primary"> + Create new</a>
 			</h2>
 		</div>
 		<div #noContentView *ngIf="!hostedScholarships || hostedScholarships.length === 0 " style="margin-top: 5%;margin-bottom: 5%;">
@@ -70,11 +72,11 @@
 		</div>
 		<div *ngIf="hostedScholarships.length > 0">
 			<div class="row" style="margin-top:50px;">
-				<div class="col-xs-12 col-md-3" *ngFor="let scholarship of hostedScholarships">
+				<div class="col-xs-12 col-md-4" *ngFor="let scholarship of hostedScholarships">
 					<mat-card style="text-align: center; padding: 20px;">
 						<mat-card-content>
 							<div style="text-align: right">
-								<div style="text-align: right" *ngIf="scholarship.type !== 'public'">
+								<div style="text-align: right">
 									<div class="pull-right">
 										<a mat-icon-button [matMenuTriggerFor]="scholarCardMenu" style="text-align: right; padding: 0px">
 											<mat-icon>more_vert</mat-icon>
@@ -83,17 +85,23 @@
 								</div>
 							</div>
 							<br>
-							<div class="collectionTitle clickable" [routerLink]="'/scholarship/'+scholarship.id">{{ scholarship.title | ucwords }} </div>
+							<br>
+							<div class="collectionTitle clickable mat-body-2" [routerLink]="'/scholarship/'+scholarship.id">
+								{{ scholarship.title | ucwords }}
+							</div>
 							<br>
 							<span>{{ scholarship.type | ucwords }}</span>
 							<br>
 							<br>
-							Balance Fund
+							Balance
 							<div class="mat-body-2">
-								<i class="fas fa-fire"></i> {{scholarship.id | karmaBalance: 'scholarship' | async | currency : ' ' : ' ' : '1.0-0'}} Karma
+								<i class="fas fa-fire"></i> {{scholarship.id | karmaBalance: 'scholarship' | async | currency : ' ' : ' ' : '1.0-0'}} KARMA
 							</div>
 						</mat-card-content>
 						<mat-menu #scholarCardMenu>
+							<button (click)="editScholarship(scholarship)" mat-menu-item>
+								Edit Scholarship
+							</button>
 							<button (click)="deleteScholarship(scholarship.id)" mat-menu-item>
 								Delete Scholarship
 							</button>

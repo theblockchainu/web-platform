@@ -93,6 +93,36 @@ export class ConsoleAccountScholarshipsComponent implements OnInit {
 	}
 
 	/**
+	 * editScholarship
+	 */
+	public editScholarship(scholarshipData) {
+		const selectedCollections = [];
+		this._dialogsService.createScholarshipDialog(scholarshipData)
+			.pipe(
+				flatMap(res => {
+					if (res) {
+						res.selectedCollections.forEach(collection => {
+							selectedCollections.push(collection.id);
+						});
+						return this._scholarshipService.patchScholarship(scholarshipData.id, res.scholarshipForm);
+					}
+				}),
+				flatMap((res: any) => {
+					if (selectedCollections.length > 0) {
+						return this._scholarshipService.connectCollections(res.id, selectedCollections);
+					} else {
+						this._matSnackBar.open('Successfully created new scholarship', 'Close', { duration: 5000 });
+						this.fetchHostedScholarships();
+					}
+				})
+			)
+			.subscribe(res => {
+				this._matSnackBar.open('Successfully created new scholarship', 'Close', { duration: 5000 });
+				this.fetchHostedScholarships();
+			});
+	}
+
+	/**
 	 * deleteScholarship
 	 */
 	public deleteScholarship(id: string) {
