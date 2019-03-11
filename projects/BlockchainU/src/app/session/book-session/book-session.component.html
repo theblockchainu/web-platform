@@ -7,12 +7,15 @@
 					<div class="title margin-top-20 margin-bottom-20">What package do you wish to book?</div>
 					<mat-form-field [floatLabel]="'never'">
 						<mat-select [(value)]="selectedPackageIndex" (change)="resetSelectedSlots($event)" placeholder="Click to view options">
-							<mat-option *ngFor="let pack of packages;let i=index" value="{{i}}"> {{pack.price | convertCurrency:
-								pack.currency |async}} / {{convertTime(pack.duration)}} ~ {{pack.type | ucwords}} </mat-option>
+							<mat-option *ngFor="let pack of packages;let i=index" value="{{i}}"> {{pack.price | convertCurrency: pack.currency |async}} / {{convertTime(pack.duration)}} ~ {{pack.type | ucwords}} </mat-option>
 						</mat-select>
 					</mat-form-field>
 					<div *ngIf="selectedPackageIndex && (!availability || availability.length === 0)">
-						Oops! Looks like the teacher has no available hours to book right now. Please check back later.
+						Oops! Looks like the mentor has no available hours to book right now.
+						<br><br>
+						Send a message to the mentor asking for their availability at your desired time.
+						<br><br>
+
 					</div>
 					<div *ngIf="selectedPackageIndex && availability && availability.length > 0">
 						<div class="margin-top-50 mat-body-2 margin-bottom-10">
@@ -26,21 +29,23 @@
 							 [editable]="false" (onEventClick)="handleEventClick($event)" [allDaySlot]="false" [slotDuration]="'00:30:00'"></p-schedule>
 						</div>
 						<div>
-							<span class="lightText">We will only hold your slot uptil 10 minutes of booking. Please make your payment before
-								that.</span>
+							<span class="lightText mat-caption">Your session will be reserved and an email will be sent to the mentor. We will hold any unpaid session reservations up to 10 minutes before start of session. Please make your payment before that.</span>
 						</div>
-						<span *ngIf="bookingProcess === 'auto'" class="pull-right" matTooltip="Select a package and your preferred time slot to continue"
-						 [matTooltipDisabled]="selectedPackageIndex && totalDuration.getValue()>0">
+						<span *ngIf="bookingProcess === 'auto'" class="pull-right" disabled="savingData" matTooltip="Select a package and your preferred time slot to continue"
+						 [matTooltipDisabled]="selectedPackageIndex && totalDuration.getValue()>0 && !savingData">
 							<button mat-raised-button color="accent" (click)="joinSession($event)" [disabled]="!selectedPackageIndex || totalDuration.getValue() === 0">
-								Proceed to payment
+								Confirm and make payment
 							</button>
 						</span>
-						<span *ngIf="bookingProcess === 'manual'" class="pull-right" matTooltip="The teacher has requested to approve every session request before final confirmation. Teachers have 24 hours to respond to requests."
+						<span *ngIf="bookingProcess === 'manual'" class="pull-right" matTooltip="The mentor has requested to approve every session request before you can make payments for it. Mentors get up to 24 hours to respond to requests."
 						 [matTooltipDisabled]="selectedPackageIndex && totalDuration.getValue()>0">
 							<button mat-raised-button color="accent" (click)="joinSession($event)" [disabled]="!selectedPackageIndex || totalDuration.getValue() === 0">
-								Send request
+								Send request to mentor
 							</button>
 						</span>
+						<div class="pull-right mat-caption">
+							{{message}}
+						</div>
 					</div>
 				</div>
 				<div [hidden]="step!==2">
@@ -54,7 +59,7 @@
 						</div>
 					</span>
 					<span *ngIf="!paymentBatchId && !loadingData">
-						Please Book Again
+						Please book again
 					</span>
 					<div *ngIf="!loadingCountry && ccAvenue && teacherId && totalCost && paymentBatchId">
 						<app-ccavenue-payment [teacherId]="teacherId" [totalPrice]="totalCost" [paymentBatchId]="paymentBatchId"></app-ccavenue-payment>
@@ -75,7 +80,7 @@
 									<img class="bookSessionPeerImage" [src]="envVariable.apiUrl + session.owners[0].profiles[0].picture_url + '/300'"
 									 alt="image" (error)="_collectionService.userImgErrorHandler($event)" />
 								</div>
-								<div class="fs-17">Peer Session
+								<div class="fs-17">Mentor Session
 									<br>
 									<span class="fs-14 text-grey" *ngIf="session.owners && session.owners.length > 0">with
 										{{session.owners[0].profiles[0].first_name | ucwords}} {{session.owners[0].profiles[0].last_name | ucwords}}</span>
@@ -88,22 +93,21 @@
 						<div class="seperate-section" *ngIf="selectedPackageIndex">
 							<span class="fw-bold">Selected Package</span>
 							<br>
-							<span *ngIf="selectedPackageIndex"> {{packages[selectedPackageIndex].price | convertCurrency:
-								packages[selectedPackageIndex].currency |async}} for {{packages[selectedPackageIndex].duration}} minutes </span>
+							<span *ngIf="selectedPackageIndex"> {{packages[selectedPackageIndex].price | convertCurrency: packages[selectedPackageIndex].currency |async}} for {{packages[selectedPackageIndex].duration}} minutes </span>
 						</div>
 						<div class="seperate-section" *ngIf="selectedPackageIndex && totalDuration.getValue()>0">
 							<div class="margin-bottom-10">
 								<div *ngFor="let provision of provisions">
-									<span class="text-grey">{{provision.text | ucfirst}}</span>
-									<span class="pull-right">Included</span><br />
+									<div *ngIf="provision.length > 0">
+										<span class="text-grey">{{provision.text | ucfirst}}</span>
+										<span class="pull-right">Included</span><br />
+									</div>
 								</div>
 								<span class="text-grey">{{selectedFormattedTime}}</span>
-								<span class="pull-right">{{totalCost | convertCurrency: packages[selectedPackageIndex].currency
-									|async}}</span>
+								<span class="pull-right">{{totalCost | convertCurrency: packages[selectedPackageIndex].currency |async}}</span>
 								<br><br>
 								<span class="text-grey">Total</span>
-								<span class="pull-right"><b>{{totalCost | convertCurrency: packages[selectedPackageIndex].currency
-										|async}}</b></span>
+								<span class="pull-right"><b>{{totalCost | convertCurrency: packages[selectedPackageIndex].currency |async}}</b></span>
 							</div>
 						</div>
 						<div class="seperate-section" *ngIf="selectedPackageIndex">

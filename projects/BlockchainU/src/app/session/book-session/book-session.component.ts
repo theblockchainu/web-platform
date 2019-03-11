@@ -231,7 +231,7 @@ export class BookSessionComponent implements OnInit {
 				if (this.availability[i]) {
 					if (i > index && !this.availability[i].start.isSame(this.availability[i - 1].end)) {
 						assignable = false;
-						notAssignableReason = 'This is a ' + numberOfSlots + ' hour package. Your selection does not have a continuous avaialability of ' + numberOfSlots + ' hours. Try other dates or times.';
+						notAssignableReason = 'This is a ' + numberOfSlots + ' hour package. Your selection does not have a continuous availability of ' + numberOfSlots + ' hours. Try other dates or times.';
 					}
 				} else {
 					assignable = false;
@@ -239,7 +239,7 @@ export class BookSessionComponent implements OnInit {
 				}
 			}
 			if (assignable) {
-				console.log('assigining');
+				console.log('assigning');
 				for (let i = index; i < (index + numberOfSlots); i++) {
 					const temp = _.cloneDeep(this.availability[i]);
 					temp.booked = true;
@@ -273,7 +273,7 @@ export class BookSessionComponent implements OnInit {
 					this.availability[i] = temp;
 				}
 			} else {
-				this.snackBar.open('Cannot select this slot. Not enough available slots to complete package duration.', 'Close', {
+				this.snackBar.open('Cannot select this slot. Not enough continuous available slots to complete package duration.', 'Close', {
 					duration: 5000
 				});
 			}
@@ -287,7 +287,7 @@ export class BookSessionComponent implements OnInit {
 
 
 	public bookSession() {
-		console.log('Making payment');
+		console.log('Making payment..');
 		this.step++;
 	}
 
@@ -317,7 +317,7 @@ export class BookSessionComponent implements OnInit {
 			this._collectionService.postAvailability(this.userId,
 				this.session.id, groupArray, approval, this.packages[this.selectedPackageIndex].id)
 				.subscribe(res => {
-					this.message = 'Registered for peer session. Redirecting...';
+					this.message = 'Registered for mentor session. Redirecting you to payment...';
 					console.log('Join session response: ');
 					console.log('postAvailability');
 					console.log(res);
@@ -328,7 +328,7 @@ export class BookSessionComponent implements OnInit {
 				}, (err) => {
 					console.log(err);
 					this.savingData = false;
-					this.message = 'An Error has occurred,if your money has been deducted please contact support.';
+					this.message = 'An error occurred on our systems. If money was deducted from your bank account, please contact our support team.';
 				});
 		} else {
 			const contentArray = [];
@@ -375,10 +375,10 @@ export class BookSessionComponent implements OnInit {
 
 	paymentSuccessful(event: boolean) {
 		if (event) {
-			this.message = 'Payment succesful. Redirecting...';
+			this.message = 'Payment successful. Redirecting...';
 			this.router.navigate(['console', 'learning', 'sessions']);
 		} else {
-			this.message = 'Payment unsuccessful';
+			this.message = 'Payment unsuccessful. Please try again.';
 		}
 	}
 
