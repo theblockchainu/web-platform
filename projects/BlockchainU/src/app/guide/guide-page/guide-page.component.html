@@ -620,39 +620,61 @@
 					<div class="col-md-6  col-xs-12 right-content right-content-sticky hide-small">
 						<!--CODE LAB-->
 						<div *ngIf="userType==='participant' || userType === 'teacher'" style="position: fixed; right: 0; width: 50%;">
-							<div *ngIf="!loadingCodeLab &&  lab_details && lab_details.length>0">
-								<app-code-labs [lab_details]="lab_details"></app-code-labs>
+							<div *ngIf="!loadingCodeLab && labStatus === 'running'">
+								<app-code-labs [lab_details]="lab_details" [corestack_student]="corestack_student"></app-code-labs>
 							</div>
-							<div *ngIf="!loadingCodeLab && (!corestack_student || !lab_details || lab_details.length === 0)">
-								<div class="row padding-top-100">
-									<!--LAB AVAILABLE BUT NOT READY-->
-									<div class="col-md-10 col-md-offset-1 center" *ngIf="corestack_student && corestack_student.student_course_status==='registered'">
-										<div class="margin-bottom-30 margin-top-40" style="font-size: 40px; color: #33bd9e;">
-											<mat-icon style="font-size: 100px; margin-left: -100px;">schedule</mat-icon>
+							<div *ngIf="!loadingCodeLab">
+								<div *ngIf="!corestack_student || corestack_student.student_course_status !== 'registered' || labStatus === 'error'">
+									<div class="row padding-top-100">
+										<!--LAB NOT AVAILABLE-->
+										<div class="col-md-10 col-md-offset-1 center">
+											<div class="margin-bottom-30 margin-top-40" style="font-size: 40px; color: #33bd9e;">
+												<mat-icon style="font-size: 100px; margin-left: -100px;">power_off</mat-icon>
+											</div>
+											<h2>
+												We're having some trouble starting your CodeLab :(
+											</h2>
+											<p>
+												You could try refreshing this page
+												<br><br>
+												If that doesn't work, please contact our support team.
+											</p>
 										</div>
-										<h2>
-											Your CodeLab™ is being set up
-										</h2>
-										<p>
-											It can take up to 10 minutes for your lab to be setup and ready to use
-										</p>
-										<p>
-											We'll update you over email once your CodeLab is ready for use
-										</p>
 									</div>
-									<!--LAB NOT AVAILABLE-->
-									<div class="col-md-10 col-md-offset-1 center" *ngIf="!corestack_student || corestack_student.student_course_status!=='registered'">
-										<div class="margin-bottom-30 margin-top-40" style="font-size: 40px; color: #33bd9e;">
-											<mat-icon style="font-size: 100px; margin-left: -100px;">power_off</mat-icon>
+								</div>
+								<div *ngIf="corestack_student && corestack_student.student_course_status === 'registered' && labStatus === 'in_progress' ">
+									<div class="row padding-top-100">
+										<!--LAB AVAILABLE BUT NOT READY-->
+										<div class="col-md-10 col-md-offset-1 center">
+											<div class="margin-bottom-30 margin-top-40" style="font-size: 40px; color: #33bd9e;">
+												<mat-icon style="font-size: 100px; margin-left: -100px;">schedule</mat-icon>
+											</div>
+											<h2>
+												Your CodeLab™ is starting up
+											</h2>
+											<p>
+												It can take up to 10 minutes for your lab to be setup and ready to use
+											</p>
+											<p>
+												We'll update you over email once your CodeLab is ready for use
+											</p>
 										</div>
-										<h2>
-											We're having some trouble setting up your CodeLab :(
-										</h2>
-										<p>
-											You could try cancelling your participation and re-enrolling into this Learning Guide.
-											<br><br>
-											If that doesn't work, please contact our support team.
-										</p>
+									</div>
+								</div>
+								<div *ngIf="corestack_student && corestack_student.student_course_status === 'registered' && labStatus === 'stopped'">
+									<div class="row padding-top-100">
+										<!--LAB AVAILABLE BUT NOT READY-->
+										<div class="col-md-10 col-md-offset-1 center">
+											<div class="margin-bottom-30 margin-top-40" style="font-size: 40px; color: #33bd9e;">
+												<mat-icon style="font-size: 100px; margin-left: -100px;">pause</mat-icon>
+											</div>
+											<h2>
+												Your CodeLab™ was paused
+											</h2>
+											<p>
+												We are restarting the lab for you. Please wait...
+											</p>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -667,11 +689,19 @@
 								<div class="row">
 									<div class="col-md-12">
 										<div class="row">
-											<div class="col-md-12 padding-top-20">
+											<div class="col-md-12 padding-top-30">
 												<div class="mat-display-2">
 													Introducing
 													<br>
 													CodeLabs™
+												</div>
+											</div>
+											<div class="col-md-12 margin-bottom-30" style="border: 1px solid #cccccc; padding: 10px; border-radius: 2px;">
+												<div class="mat-body-2">Introductory Offer</div>
+												<div class="mat-caption">
+													This special learning guide gives you free 7 day access to CodeLabs™ (a $20 value)!
+													<br>
+													You can always re-subscribe to CodeLabs once your free access expires.
 												</div>
 											</div>
 											<div class="col-md-12">

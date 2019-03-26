@@ -1,16 +1,46 @@
 <div mat-dialog-content class="dialog-container">
 	<div class="mat-dialog-focus-trap"></div>
 	<div class="row">
-		<div class="col-xs-10 col-xs-offset-1">
+		<div class="col-md-12 collectionContent">
+			<button tabindex="-1" disableRipple mat-button style="min-width: 20px;padding: 0px 10px 0px 0px;vertical-align: middle;" (click)="dialogRef.close()">
+				<mat-icon class="mat-icon material-icons mat-icon-small">close</mat-icon>
+			</button>
+			<div class="mat-display-1" style="margin-bottom: 20px;">
+				Blockchain Accounts
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-xs-12" matTooltip="Your deployed smart contracts will be available at this URL. Click to copy this address.">
+			<b>Blockchain URL:</b>
+			<mat-form-field style="width: 70%;" class="clickable margin-left-20 no-underline" [ngxClipboard]="blockchainUrl" (cbOnSuccess)="onCopySuccess('Blockchain URL')">
+				<input #blockchainUrl matInput [readOnly]="true" value="{{data.blockchainUrl}}">
+			</mat-form-field>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12" matTooltip="Your sample web application will be available at this URL. Click to copy this address.">
+			<b>Web-App URL:</b>
+			<mat-form-field style="width: 70%;" class="clickable margin-left-20 no-underline" [ngxClipboard]="webAppUrl" (cbOnSuccess)="onCopySuccess('Blockchain URL')">
+				<input #webAppUrl matInput [readOnly]="true" value="{{data.webAppUrl}}">
+			</mat-form-field>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
 			<div class="row mat-body-2 padding-bottom-30 padding-top-30">
 				<div class="col-xs-5">
-					Public Key
+					Public Keys
 				</div>
 				<div class="col-xs-7">
-					Private Key
+					Private Keys
 				</div>
 			</div>
 			<div class="row">
+				<div class="col-xs-12 mat-caption">
+					These 10 blockchain accounts were created automatically with 100 Ether each. You can use them to test or build your front-end application.
+				</div>
 				<div class="col-xs-12">
 					<hr>
 				</div>

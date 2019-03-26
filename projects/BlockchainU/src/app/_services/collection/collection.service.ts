@@ -1280,4 +1280,8 @@ export class CollectionService {
 		return this.httpClient.post(environment.apiUrl + '/api/collections/clone/' + collectionId, {}, this.requestHeaderService.options);
 	}
 
+	public createCodeLabs(collectionId, data) {
+		return this.httpClient.post(environment.apiUrl + '/api/collections/' + collectionId + '/createCodeLabs', data, this.requestHeaderService.options)
+	}
+
 }

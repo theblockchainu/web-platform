@@ -135,6 +135,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	public loadingReviews: boolean;
 	public accountApproved: string;
 	public inviteLink: string;
+	public labStatus: string;
 
 	public loggedInUser;
 	public bookmark;
@@ -610,9 +611,11 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				this.startCodeLab();
 			} else {
 				this.loadingCodeLab = false;
+				this.labStatus = 'in_progress';
 			}
 		} else {
 			this.loadingCodeLab = false;
+			this.labStatus = 'in_progress';
 		}
 	}
 
@@ -620,15 +623,52 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		this._corestackService.getAccessDetails(this.corestack_student.student_id, this.corestack_student.course_id)
 			.pipe(first())
 			.subscribe((res: any) => {
-				console.log('res');
+				console.log('Corestack lab details: ');
 				console.log(res);
-				this.lab_details = res;
-				this.loadingCodeLab = false;
+				const additionalInformation = _.find(res, {'application_name': 'Additional Information'});
+				if (additionalInformation.instanceStatus) {
+					switch (additionalInformation.instanceStatus.instance_status) {
+						case 'running':
+							this.labStatus = 'running';
+							this.lab_details = res;
+							this.loadingCodeLab = false;
+							break;
+						case 'stopped':
+							this.labStatus = 'stopped';
+							// Lab has stopped. Auto restart the lab.
+							this._corestackService.startInstance(this.corestack_student.student_id, this.corestack_student.course_id)
+								.subscribe(startResult => {
+									if (startResult.status === 'success') {
+										this.labStatus = 'in_progress';
+										this.loadingCodeLab = false;
+									}
+								}, err => {
+									this.labStatus = 'error';
+									this.loadingCodeLab = false;
+								});
+							break;
+						case 'in_progress':
+							this.labStatus = 'in_progress';
+							this.loadingCodeLab = false;
+							break;
+						case 'error':
+							this.labStatus = 'error';
+							this.loadingCodeLab = false;
+							break;
+						default:
+							this.labStatus = 'error';
+							this.loadingCodeLab = false;
+							break;
+					}
+				} else {
+					this.labStatus = 'error';
+					this.loadingCodeLab = false;
+				}
 			}, err => {
-				console.log('err');
+				this.labStatus = 'error';
 				this.loadingCodeLab = false;
 				console.log(err);
-				this.snackBar.open(err.error.error.error.message, 'Close', { duration: 100000 });
+				this.snackBar.open(err.error.error.error.message, 'Close', { duration: 5000 });
 			});
 	}
 

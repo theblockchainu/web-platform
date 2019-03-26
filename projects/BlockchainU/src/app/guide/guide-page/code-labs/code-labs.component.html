@@ -37,10 +37,13 @@
 			</button>
 			<mat-menu #menu="matMenu">
 				<button mat-menu-item (click)="refreshPage()">
-					<mat-icon>refresh</mat-icon> Reload Tab
+					<mat-icon>refresh</mat-icon> Reload Current Tab
 				</button>
 				<button mat-menu-item (click)="openKeysDialog()">
-					<mat-icon>vpn_key</mat-icon> Wallet Accounts
+					<mat-icon>vpn_key</mat-icon> Blockchain Accounts
+				</button>
+				<button *ngIf="additional_information && additional_information.instanceStatus && additional_information.instanceStatus.instance_status === 'running'" mat-menu-item (click)="stopInstance()">
+					<mat-icon>vpn_key</mat-icon> Stop Instance
 				</button>
 			</mat-menu>
 		</div>
