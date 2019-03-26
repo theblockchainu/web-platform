@@ -638,10 +638,8 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 							// Lab has stopped. Auto restart the lab.
 							this._corestackService.startInstance(this.corestack_student.student_id, this.corestack_student.course_id)
 								.subscribe(startResult => {
-									if (startResult.status === 'success') {
-										this.labStatus = 'in_progress';
-										this.loadingCodeLab = false;
-									}
+									this.labStatus = 'in_progress';
+									this.loadingCodeLab = false;
 								}, err => {
 									this.labStatus = 'error';
 									this.loadingCodeLab = false;
