@@ -149,9 +149,10 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	timelineStep = 16;
 	exitAfterSave = false;
 	@ViewChild('certificateComponent') certificateComponent: CustomCertificateFormComponent;
-	defaultAssesment: any;
+	defaultAssessment: any;
 	availableDefaultAssessments: Array<AssessmentTypeData>;
 	availableSubtypes: Array<SubTypeInterface>;
+	availableCodeLabsEnvironments: Array<CodeLabsEnvironmentInterface>;
 	uploadProgress: number;
 	public editorOptions: any = {
 		'hideIcons': ['FullScreen']
@@ -182,7 +183,7 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		private metaService: Meta,
 		private profileService: ProfileService,
 		private certificateService: CertificateService,
-		private assesmentService: AssessmentService
+		private assessmentService: AssessmentService
 	) {
 		this.envVariable = environment;
 		this.activatedRoute.params.subscribe(params => {
@@ -238,7 +239,9 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 			academicGyan: '',
 			nonAcademicGyan: 1,
 			subCategory: '',
-			githubUrl: ['', Validators.pattern('^(https\:\/\/)?(github\.com)\/.+$')]
+			githubUrl: ['', Validators.pattern('^(https\:\/\/)?(github\.com)\/.+$')],
+			corestackCourseId: '',
+			corestackCourseTemplate: ''
 		});
 
 		this.timeline = this._fb.group({
@@ -317,10 +320,10 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	private setTags() {
-		this.titleService.setTitle('Create Guide');
+		this.titleService.setTitle('Create Learning Guide');
 		this.metaService.updateTag({
 			property: 'og:title',
-			content: 'Create new guide'
+			content: 'Create new learning guide'
 		});
 		this.metaService.updateTag({
 			property: 'og:site_name',
@@ -581,13 +584,19 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		};
 
 		this.availableSubtypes = [
-			{ name: 'lab', pic_url: '/assets/images/class_icon2.jpg', description: '' }];
+			{ name: 'hands on', pic_url: '/assets/images/class_icon2.jpg', description: '' },
+			{ name: 'reading', pic_url: '/assets/images/class_icon2.jpg', description: '' }
+		];
+
+		this.availableCodeLabsEnvironments = [
+			{ name: 'Ethereum', lab_id: 'BC0001', pic_url: '/assets/images/class_icon2.jpg', description: '' }
+		];
 
 		this.placeholderStringTopic = 'Start typing to to see a list of suggested topics...';
 
 		this.key = 'access_token';
 
-		this.availableDefaultAssessments = this.assesmentService.getAvailableAssessments();
+		this.availableDefaultAssessments = this.assessmentService.getAvailableAssessments();
 
 		this.countryPickerService.getCountries()
 			.subscribe((countries: any) => this.countries = countries);
@@ -598,7 +607,7 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.filteredLanguageOptions = this.guide.controls.selectedLanguage.valueChanges
 					.pipe(startWith(null),
 						map(val => val ? this.filter(val) : this.languagesArray.slice()))
-					;
+				;
 				console.log(this.filteredLanguageOptions);
 			});
 
@@ -646,25 +655,25 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (this.guideId) {
 			this._collectionService.getCollectionDetail(this.guideId, this.query)
 				.subscribe((res: any) => {
-					console.log(res);
-					this.guideData = res;
-					if (this.guideData.payoutrules && this.guideData.payoutrules.length > 0) {
-						this.payoutRuleNodeId = this.guideData.payoutrules[0].id;
-						this.payoutRuleAccountId = this.guideData.payoutrules[0].payoutId1;
-					}
-					this.retrieveAccounts();
-					this.initializeFormValues(res);
-					this.initializeTimeLine(res);
-					this.initializeAssessment(res);
-					this.initializeCertificate();
-					if (res.status === 'active' && this.sidebarMenuItems) {
-						this.sidebarMenuItems[3].visible = false;
-						this.sidebarMenuItems[4].visible = true;
-						this.sidebarMenuItems[4].active = true;
-						this.sidebarMenuItems[4].submenu[0].visible = true;
-						this.sidebarMenuItems[4].submenu[1].visible = true;
-					}
-				},
+						console.log(res);
+						this.guideData = res;
+						if (this.guideData.payoutrules && this.guideData.payoutrules.length > 0) {
+							this.payoutRuleNodeId = this.guideData.payoutrules[0].id;
+							this.payoutRuleAccountId = this.guideData.payoutrules[0].payoutId1;
+						}
+						this.retrieveAccounts();
+						this.initializeFormValues(res);
+						this.initializeTimeLine(res);
+						this.initializeAssessment(res);
+						this.initializeCertificate();
+						if (res.status === 'active' && this.sidebarMenuItems) {
+							this.sidebarMenuItems[3].visible = false;
+							this.sidebarMenuItems[4].visible = true;
+							this.sidebarMenuItems[4].active = true;
+							this.sidebarMenuItems[4].submenu[0].visible = true;
+							this.sidebarMenuItems[4].submenu[1].visible = true;
+						}
+					},
 					err => console.log('error'),
 					() => console.log('Completed!'));
 
@@ -733,7 +742,7 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 		// Topics
 		this.relTopics = _.uniqBy(res.topics, 'id');
 		this.interests = this.relTopics;
-		if (this.interests) {
+		if (this.interests && this.interests.length > 0) {
 			this.suggestedTopics = _.cloneDeep(this.interests);
 			this.originalInterests = _.cloneDeep(this.interests);
 		}
@@ -795,6 +804,10 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		// githubUrl
 		this.guide.controls['githubUrl'].patchValue(res.githubUrl);
+
+		// corestack details
+		this.guide.controls['corestackCourseTemplate'].patchValue(res.corestackCourseTemplate);
+		this.guide.controls['corestackCourseId'].patchValue(res.corestackCourseId);
 
 		this.isPhoneVerified = res.owners[0].phoneVerified;
 
@@ -904,8 +917,21 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	public submitGuide() {
 		this.busySavingData = true;
 		this.checkStatusAndSubmit(this.guide, this.timeline, this.step);
-
 	}
+
+	/*public createCodeLab() {
+		const data = {
+			lab_id: this.guide.value.corestackCourseTemplate
+		};
+		this._collectionService.createCodeLabs(this.guideId, data)
+			.subscribe(res => {
+				console.log(res);
+				this.checkStatusAndSubmit(this.guide, this.timeline, this.step);
+			}, err => {
+				console.log(err);
+				this.snackBar.open('Could not create CodeLabs. Error: ' + err.statusText, 'OK', {duration: 5000});
+			});
+	}*/
 
 	public submitCertificate(certificate: any) {
 		this.busySavingData = true;
@@ -1390,12 +1416,12 @@ export class GuideEditComponent implements OnInit, AfterViewInit, OnDestroy {
 	submitOTP() {
 		this._collectionService.confirmSmsOTP(this.phoneDetails.controls.inputOTP.value)
 			.subscribe((res: any) => {
-				console.log(res);
-				this.snackBar.open('Token Verified', 'Close', {
-					duration: 5000
-				});
-				this.step++;
-			},
+					console.log(res);
+					this.snackBar.open('Token Verified', 'Close', {
+						duration: 5000
+					});
+					this.step++;
+				},
 				(error) => {
 					this.snackBar.open(error.message, 'Close', {
 						duration: 5000
@@ -1630,6 +1656,13 @@ interface AssessmentTypeData {
 
 interface SubTypeInterface {
 	name: string;
+	pic_url: string;
+	description: string;
+}
+
+interface CodeLabsEnvironmentInterface {
+	name: string;
+	lab_id: string;
 	pic_url: string;
 	description: string;
 }

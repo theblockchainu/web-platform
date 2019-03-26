@@ -1,5 +1,5 @@
 <div style="background: #fff; padding: 0px; min-height: 100vh;" [class.main-content]="!mobileQuery.matches"
- [class.mobile-main-content]="mobileQuery.matches">
+	 [class.mobile-main-content]="mobileQuery.matches">
 	<mat-toolbar color="white">
 		<span>
 			<a class="brand clickable" aria-label="The Blockchain University Homepage" [routerLink]="['/home','homefeed']">
@@ -44,7 +44,7 @@
 	</mat-toolbar>
 	<mat-sidenav-container style="max-height: 90vh; min-height: 100vh; overflow-y: hidden; background: #ffffff;">
 		<mat-sidenav class="scroll-box" #snav [mode]="mobileQuery.matches === true ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
-		 [opened]="!mobileQuery.matches">
+					 [opened]="!mobileQuery.matches">
 			<app-left-sidebar [menuFile]="sidebarFilePath" (menuArray)="getMenuArray($event)"></app-left-sidebar>
 		</mat-sidenav>
 		<!-- Page Content -->
@@ -99,7 +99,7 @@
 										<mat-form-field>
 											<mat-select placeholder="Select Type" formControlName="subCategory">
 												<mat-option *ngFor="let subType of availableSubtypes" [value]="subType.name">
-													{{subType.name|titlecase}}
+													{{subType.name | ucwords}}
 												</mat-option>
 											</mat-select>
 										</mat-form-field>
@@ -137,8 +137,8 @@
 										<div class="row">
 											<div class="col-sm-12">
 												<app-multiselect-autocomplete (selectedOutput)="selected($event)" [suggestedTopics]="suggestedTopics" [preSelectedTopics]="interests" [searchUrl]=searchTopicURL
-												 [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic [maxSelection]=maxTopics
-												 [minSelection]="1" [suggestedTopics]="suggestedTopics"></app-multiselect-autocomplete>
+																			  [create]=true [createURL]=createTopicURL [title]=placeholderStringTopic [maxSelection]=maxTopics
+																			  [minSelection]="1"></app-multiselect-autocomplete>
 											</div>
 										</div>
 										<div class="row">
@@ -202,16 +202,15 @@
 				<div class="onboarding step-4" [hidden]="step!=4">
 					<div class="row">
 						<div class="col-xs-11 col-sm-8 col-md-8 col-md-8">
-							<h2 class="title">Which language will you host in?</h2>
-							<p class="subtitle">You will write your descriptions and present your guide in this language. Guests will
-								be
-								notified of this in your guide description.</p>
+							<h2 class="title">Which language will you write in?</h2>
+							<p class="subtitle">You will write descriptions and content of your guide in this language. Guests will
+								be notified of this in your guide description.</p>
 							<br />
 							<form [formGroup]="guide" (ngSubmit)="submitGuide()">
 								<div class="row margin-top-10">
 									<mat-form-field [floatLabel]="'always'" class="col-md-4">
 										<input type="text" name="other_languages" style="border-bottom: 0px;" placeholder="Select Language" matInput
-										 formControlName="selectedLanguage" [matAutocomplete]="auto">
+											   formControlName="selectedLanguage" [matAutocomplete]="auto">
 										<mat-autocomplete #auto="matAutocomplete">
 											<mat-option *ngFor="let l of filteredLanguageOptions | async" [value]="l" (click)="languageChange(l)">{{l}}</mat-option>
 										</mat-autocomplete>
@@ -247,7 +246,7 @@
 									<div class="col-sm-12">
 										<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin-bottom: 20px">
 											<textarea matInput #aboutHost maxlength="1000" rows="1" matTextareaAutosize formControlName="aboutHost"
-											 placeholder="Put in your background information"></textarea>
+													  placeholder="Put in your background information"></textarea>
 											<mat-hint align="end">{{aboutHost.value.length}} / 1000</mat-hint>
 										</mat-form-field>
 									</div>
@@ -260,7 +259,7 @@
 										Back
 									</button>
 									<span class="pull-right" matTooltip="A brief description about yourself is mandatory to continue"
-									 [matTooltipDisabled]="aboutHost.value.length !== 0">
+										  [matTooltipDisabled]="aboutHost.value.length !== 0">
 										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="aboutHost.value.length == 0 || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
@@ -356,7 +355,7 @@
 									<div class="col-sm-12">
 										<h2 class="title">Lets write the content of your learning guide</h2>
 										<p class="subtitle">Give detailed introduction & step by step guides on the topic you are covering.
-											<br><br>
+											<br>
 											Add code blocks and explain to the learner how it works. Include steps on how to run and test the code in
 											live lab instantly.
 										</p>
@@ -364,13 +363,29 @@
 										<md-editor [options]="editorOptions" formControlName="description" [height]="'360px'" maxlength="20000"></md-editor>
 									</div>
 								</div>
-								<div class="row">
+								<div class="row margin-top-60" *ngIf="guide.value.subCategory && guide.value.subCategory === 'hands on'">
 									<div class="col-xs-12">
-										<h2 class="title">Let's Setup your CodeLab</h2>
-										<p class="subtitle">
-											You can input a link to your GitHub repository which has the starting / boilerplate / sample code for your learning guide.
-											<br>When students join, they will be able to use these code files from within their CodeLabs environment.
-										</p>
+										<h2 class="title">Now, let's setup your hands-on lab</h2>
+										<div class="subtitle margin-bottom-60">
+											<ul>
+												<li>
+													Using CodeLabs, you can now allow your readers to access a blockchain development environment from their browsers.
+												</li>
+												<li>
+													Add a public GitHub repo which has sample codes for your hands-on practise. These sample codes will be available for learners in their CodeLabs dev environment.
+												</li>
+												<li>
+													Start by choosing your development environment and we'll take care of the rest...
+												</li>
+											</ul>
+										</div>
+										<mat-form-field>
+											<mat-select placeholder="Environment" formControlName="corestackCourseTemplate">
+												<mat-option *ngFor="let environment of availableCodeLabsEnvironments" [value]="environment.lab_id">
+													{{environment.name | ucwords}}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
 										<mat-form-field [floatLabel]="'never'" class="pb-block" style="margin-bottom: 20px">
 											<input matInput formControlName="githubUrl" placeholder="https://github.com/your-repo/your-project">
 											<mat-error>Invalid GitHub URL</mat-error>
@@ -381,8 +396,8 @@
 									<button mat-button type="button" (click)="back()" color="primary" class="mat-border-button">
 										Back
 									</button>
-									<span class="pull-right" matTooltip="Describe your guide in detail to continue" [matTooltipDisabled]="guide.value.description && guide.value.description.length !== 0">
-										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="(guide.value.description && guide.value.description.length == 0) || busySavingData">
+									<span class="pull-right" matTooltip="Describe your guide in detail and select a CodeLabs environment to continue" [matTooltipDisabled]="guide.value.description && guide.value.description.length !== 0">
+										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="(guide.value.description && guide.value.description.length === 0 && guide.value.corestackCourseTemplate && guide.value.corestackCourseTemplate.length === 0) || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
 												<ngx-loading [show]="busySavingData"></ngx-loading>
@@ -458,7 +473,7 @@
 												Back
 											</button>
 											<span class="pull-right" matTooltip="Enter the maximum number of participants you can teach in each Cohort of this guide"
-											 [matTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
+												  [matTooltipDisabled]="maxSpots.value.length !== 0 && maxSpots.value > 0">
 												<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="maxSpots.value.length == 0 || maxSpots.value < 0 || busySavingData">
 													<span *ngIf="!busySavingData">Next</span>
 													<span>
@@ -486,7 +501,7 @@
 									<div class="col-md-8">
 										<div class="stepHeader margin-top-20">Upload an image for your cover</div>
 										<p-fileUpload auto="auto" *ngIf="!uploadingImage" #fubauto name="image" accept="image/*" customUpload="true"
-										 (uploadHandler)="uploadImage($event)" maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
+													  (uploadHandler)="uploadImage($event)" maxFileSize="10000000" chooseLabel="Browse" (onRemove)="deleteFromContainerArr($event, 'image')">
 											<ng-template pTemplate="toolbar">
 												<div style="font-size: 80%; margin-top: 5px;">You can upload a maximum of 1 image</div>
 											</ng-template>
@@ -514,7 +529,7 @@
 											<span class="pull-right">
 												<span matTooltip="An image is mandatory to continue" [matTooltipDisabled]="urlForImages.length !== 0">
 													<button mat-button color="primary" class="mat-border-button" [disabled]="urlForImages.length === 0 ||  busySavingData"
-													 type="Submit">
+															type="Submit">
 														<span *ngIf="!busySavingData">Next</span>
 														<span>
 															<ngx-loading [show]="busySavingData"></ngx-loading>
@@ -533,7 +548,7 @@
 				<!-- step 11 - Certificate -->
 				<div class="onboarding step-12" [hidden]="step!=12">
 					<app-custom-certificate-form #certificateComponent *ngIf="certificateLoaded" [data]="certificateForm.value" (back)="back()"
-					 (next)="submitCertificate($event)"></app-custom-certificate-form>
+												 (next)="submitCertificate($event)"></app-custom-certificate-form>
 				</div>
 
 				<!-- step 12 - Assessment -->
@@ -548,7 +563,7 @@
 								</p>
 								<h3 class="margin-top-40">Select your grading pattern</h3>
 								<div class="row padding-top-10" *ngIf="!assessmentForm.value.style || (assessmentForm.value.style && assessmentForm.value.style.length>0)">
-									<mat-radio-group [(ngModel)]="defaultAssesment" [ngModelOptions]="{standalone: true}">
+									<mat-radio-group [(ngModel)]="defaultAssessment" [ngModelOptions]="{standalone: true}">
 										<span *ngFor="let assessment of availableDefaultAssessments">
 											<div class="col-xs-12 col-md-4 padding-top-20">
 												<mat-card>
@@ -579,7 +594,7 @@
 									</div>
 									<div formArrayName="rules">
 										<div *ngFor="let ruleForm of assessmentForm.controls['rules']['controls']; let i = index" [formGroupName]="i"
-										 class="row margin-top-20">
+											 class="row margin-top-20">
 											<div class="col-xs-4">
 												<mat-form-field class="pb-block">
 													<input matInput formControlName="value" required>
@@ -615,7 +630,7 @@
 								</p>
 								<div formArrayName="nARules">
 									<div *ngFor="let ruleForm of assessmentForm.controls['nARules']['controls']; let i = index" [formGroupName]="i"
-									 class="row">
+										 class="row">
 										<div class="col-xs-12" *ngIf="i<1">
 											<div class="row">
 												<div class="col-xs-3" *ngIf="assessmentForm.value.nARules[0]">
@@ -702,7 +717,7 @@
 										Back
 									</button>
 									<span class="pull-right" matTooltip="Enter a price you wish to charge for this class, its gyan value and its cancellation policy"
-									 [matTooltipDisabled]="guide.controls['price'].value && guide.controls['currency'].value  && guide.controls['cancellationPolicy'].value ">
+										  [matTooltipDisabled]="guide.controls['price'].value && guide.controls['currency'].value  && guide.controls['cancellationPolicy'].value ">
 										<button mat-button color="primary" class="mat-border-button" type="Submit" [disabled]="!(freeGuide || (guide.controls['price'].value && guide.controls['currency'].value)) || !guide.controls['cancellationPolicy'].value || busySavingData">
 											<span *ngIf="!busySavingData">Next</span>
 											<span>
@@ -750,7 +765,7 @@
 										<div class="col-xs-6">
 											<mat-form-field [floatLabel]="'auto'" class="dateStyles">
 												<input matInput [matDatepicker]="startDatePicker" [min]="currentDate" (click)="startDatePicker.open()"
-												 placeholder="Start date" formControlName="startDate">
+													   placeholder="Start date" formControlName="startDate">
 												<mat-datepicker-toggle matSuffix [for]="startDatePicker" class="svgStyle {{activeGuide}}"></mat-datepicker-toggle>
 												<mat-datepicker touchUi="true" #startDatePicker disabled="false"></mat-datepicker>
 											</mat-form-field>
@@ -758,7 +773,7 @@
 										<div class="col-xs-6">
 											<mat-form-field [floatLabel]="'auto'" class="dateStyles">
 												<input matInput [matDatepicker]="endDatePicker" (click)="endDatePicker.open()" [min]="timeline.controls['calendar'].value.startDate"
-												 placeholder="End date" formControlName="endDate">
+													   placeholder="End date" formControlName="endDate">
 												<mat-datepicker-toggle matSuffix [for]="endDatePicker" class="svgStyle"></mat-datepicker-toggle>
 												<mat-datepicker touchUi="true" #endDatePicker disabled="false"></mat-datepicker>
 											</mat-form-field>
@@ -780,7 +795,7 @@
 								</div>
 								<div class="row" *ngIf="timeline.controls['calendar'].value.startDate && timeline.controls['calendar'].value.endDate">
 									<app-guide-content [myForm]="timeline.controls['contentGroup']" [collection]="guideData" [calendar]="timeline.controls['calendar'].value"
-									 (days)="daysCollection($event)">
+													   (days)="daysCollection($event)">
 									</app-guide-content>
 								</div>
 								<div class="row">
@@ -824,7 +839,7 @@
 											Back
 										</button>
 										<span class="pull-right" matTooltip="You need to agree to The Blockchain University community terms to submit this guide for approval"
-										 [matTooltipDisabled]="selectedValues[0] && selectedValues[1]">
+											  [matTooltipDisabled]="selectedValues[0] && selectedValues[1]">
 											<button mat-button color="primary" class="mat-border-button" (click)="submitForReview();" [disabled]="!selectedValues[0] || !selectedValues[1]">
 												Submit for Review</button>
 										</span>
@@ -854,12 +869,12 @@
 											</mat-form-field>
 											<mat-form-field [floatLabel]="'always'" class="pb-block" style="margin: 20px 0px;">
 												<input type="tel" matInput #phoneNo formControlName="phoneNo" placeholder="Phone number from profile"
-												 [readOnly]="true">
+													   [readOnly]="true">
 												<mat-hint *ngIf="!isPhoneVerified">We will send the confirmation code on your mobile</mat-hint>
 												<mat-hint *ngIf="isPhoneVerified">Update your phone number from profile to change it for this guide</mat-hint>
 											</mat-form-field>
 											<button mat-raised-button #sendOtpButton color="accent" (click)="submitPhoneNo($event.target, 'Sending OTP...')"
-											 *ngIf="!isPhoneVerified">
+													*ngIf="!isPhoneVerified">
 												Send Code as SMS
 											</button>
 											<button mat-raised-button #sendOtpButton color="accent" *ngIf="isPhoneVerified">
