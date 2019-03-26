@@ -92,8 +92,8 @@ export class CodeLabsComponent implements OnInit, OnChanges {
 	}
 
 	openKeysDialog() {
-		this.accountData.blockchainUrl = this.ice_coder_settings.auth_url + ':8545';
-		this.accountData.webAppUrl = this.ice_coder_settings.auth_url + '/client/src/';
+		this.accountData['blockchainUrl'] = this.ice_coder_settings.auth_url + ':8545';
+		this.accountData['webAppUrl'] = this.ice_coder_settings.auth_url + '/client/src/';
 			this.matDialog.open(BlockchainKeysComponent, {
 			data: this.accountData,
 			width: '75vw',
@@ -106,11 +106,7 @@ export class CodeLabsComponent implements OnInit, OnChanges {
 	stopInstance() {
 		this.corestackService.stopInstance(this.corestack_student.student_id, this.corestack_student.course_id)
 			.subscribe(res => {
-				if (res.status === 'success') {
-					this.snackBar.open('Your CodeLab is being stopped. You can always restart it by refreshing this page.', 'OK', {duration: 3000});
-				} else {
-					this.snackBar.open('Error stopping this CodeLab. Please try again.', 'OK', {duration: 3000});
-				}
+				this.snackBar.open('Your CodeLab is being stopped. You can always restart it by refreshing this page.', 'OK', {duration: 3000});
 			}, err => {
 				this.snackBar.open('Error stopping this CodeLab. Please try again.', 'OK', {duration: 3000});
 			});
