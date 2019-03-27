@@ -92,7 +92,8 @@ export class CodeLabsComponent implements OnInit, OnChanges {
 	}
 
 	openKeysDialog() {
-		const blockchainUrl = this.ice_coder_settings.auth_url + ':8545';
+		let blockchainUrl = this.ice_coder_settings.auth_url + ':8545';
+		blockchainUrl = blockchainUrl.replace('https', 'http');
 		let webAppUrl = this.ice_coder_settings.auth_url + '/client/src/';
 		webAppUrl = webAppUrl.replace('https', 'http');
 		this.accountData['blockchainUrl'] = blockchainUrl;
