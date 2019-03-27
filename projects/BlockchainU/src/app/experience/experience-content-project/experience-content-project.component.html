@@ -40,9 +40,9 @@
 						<div class="form-group margin-top-40">
 							<label>Upload a photo/video that best describes this content</label>
 							<div class="upload-image-section imageHolder">
-								<app-upload-file (uploaded)="imageUploadNew($event)"></app-upload-file>
+								<app-upload-file (uploaded)="imageUploadNew($event)" [allowedTypes]="'image/*'"></app-upload-file>
 								<h5>Max File Size
-									<b>1000MB</b>
+									<b>10MB</b>
 								</h5>
 								<!-- <mat-grid-list cols="2" rowHeight="100px" gutterSize="10px" *ngIf="mediaObject && mediaObject.hasOwnProperty('type') && mediaObject.hasOwnProperty('url')">
 									<mat-grid-tile>
@@ -84,7 +84,7 @@
 								</progressbar>
 							</div> -->
 
-							<app-upload-file (uploaded)="addAttachmentUrl($event)"></app-upload-file>
+							<app-upload-file (uploaded)="addAttachmentUrl($event)" [allowedTypes]="'image/*, video/*, audio/*, application/*'"></app-upload-file>
 
 							<h5>Max File Size
 								<b>1000MB</b>

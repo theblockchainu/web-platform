@@ -123,7 +123,8 @@ export class ContentViewComponent implements OnInit, AfterViewInit {
 				map_lng: [null]
 			}),
 			questions: this._fb.array([]),
-			pending: ['']
+			pending: [''],
+			contentIndex: this.lastIndex + 1
 		});
 	}
 
