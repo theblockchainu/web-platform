@@ -40,7 +40,7 @@
 					<mat-icon>refresh</mat-icon> Reload Current Tab
 				</button>
 				<button mat-menu-item (click)="openKeysDialog()">
-					<mat-icon>vpn_key</mat-icon> Blockchain Accounts
+					<mat-icon>vpn_key</mat-icon> Account Details
 				</button>
 				<button *ngIf="additional_information && additional_information.instanceStatus && additional_information.instanceStatus.instance_status === 'running'" mat-menu-item (click)="stopInstance()">
 					<mat-icon>vpn_key</mat-icon> Stop Instance
