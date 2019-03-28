@@ -50,14 +50,14 @@
 						<b>What we'll do</b>
 					</div>
 					<br>
-					<p class="pre-wrapped alignJustify">{{data.content.description | trim | ucfirst | linkify }}</p>
+					<div class="pre-wrapped alignJustify" [innerHTML]="data.content.description | trim | ucfirst | linkify"></div>
 					<div *ngIf="data.content.prerequisites">
 						<hr>
 						<div>
 							<b>Need to know</b>
 						</div>
 						<br>
-						<p class="pre-wrapped alignJustify">{{data.content.prerequisites | trim | ucfirst | linkify}}</p>
+						<div class="pre-wrapped alignJustify" [innerHTML]="data.content.prerequisites | trim | ucfirst | linkify"></div>
 					</div>
 					<div *ngIf="data.content.locations">
 						<hr>
@@ -68,12 +68,9 @@
 						<div *ngIf="userType !== 'public'">
 							<p class="pre-wrapped alignJustify">{{data.content.locations[0].location_name | trim | ucwords}}</p>
 							<p class="pre-wrapped alignJustify">{{data.content.locations[0].apt_suite | ucwords}}
-								{{data.content.locations[0].street_address | ucwords}}, {{data.content.locations[0].city
-								| ucwords}}</p>
+								{{data.content.locations[0].street_address | ucwords}}, {{data.content.locations[0].city | ucwords}}</p>
 							<p class="pre-wrapped alignJustify">{{data.content.locations[0].state | ucwords}}
-								{{data.content.locations[0].zip
-								| ucwords}}, {{data.content.locations[0].country
-								| ucwords}}</p>
+								{{data.content.locations[0].zip | ucwords}}, {{data.content.locations[0].country | ucwords}}</p>
 						</div>
 						<div *ngIf="userType === 'public'">
 							<agm-map [latitude]="lat" [longitude]="lng" [mapDraggable]="false" [scrollwheel]="false" [usePanning]="true"
