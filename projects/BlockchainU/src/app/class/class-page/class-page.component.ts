@@ -1342,6 +1342,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.dialogsService.viewParticipantsDialog(
 			this.participants,
 			this.classId,
+			this.calendarId,
 			this.userType,
 			chatRoomId,
 			this.class.calendars,
@@ -1362,6 +1363,7 @@ export class ClassPageComponent implements OnInit, OnDestroy {
 		this.dialogsService.viewParticipantsDialog(
 			this.allParticipants,
 			this.classId,
+			this.calendarId,
 			this.userType,
 			chatRoomId,
 			this.class.calendars,

@@ -191,9 +191,13 @@ export class AddParticipantDialogComponent implements OnInit {
 		if (this.excelData && this.excelData.length > 0) {
 			this.excelData.forEach((row, index) => {
 				if (index !== 0) {
+					let name = row[1];
+					if (row[2] && row[2].length > 0) {
+						name = name + ' ' + row[2];
+					}
 					selectedInvitees.push({
 						email: row[3],
-						name: row[1] + ' ' + row[2],
+						name: name,
 						peerId: this.peerId,
 						status: 'pending',
 						contactId: '',

@@ -9,6 +9,7 @@ import { ReportProfileComponent } from '../report-profile/report-profile.compone
 import {ExcelService} from '../../excel/excel.service';
 import {Router} from '@angular/router';
 import * as moment from 'moment';
+import {AddParticipantDialogComponent} from '../add-participant-dialog/add-participant-dialog.component';
 
 @Component({
 	selector: 'app-view-participants',
@@ -142,6 +143,16 @@ export class ViewParticipantsComponent implements OnInit {
 
 	public removeInvite(inviteId) {
 		// TODO
+	}
+
+	public openAddParticipantsDialog() {
+		this.dialogRef.close();
+		this.dialog.open(AddParticipantDialogComponent, {
+			data: { collectionId: this.data.collectionId, calendarId: this.data.calendarId },
+			panelClass: 'responsive-dialog',
+			width: '55vw',
+			height: '80vh'
+		}).afterClosed();
 	}
 
 }

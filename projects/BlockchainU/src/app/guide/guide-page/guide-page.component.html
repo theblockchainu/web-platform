@@ -334,7 +334,7 @@
 						</div>
 						<hr *ngIf="(userType==='teacher')">
 						<div *ngIf="(userType==='teacher')">
-							<h3 class="margin-bottom-20">Participants</h3>
+							<h3 class="margin-bottom-20">Participants ({{allParticipants ? allParticipants.length : '0'}})</h3>
 							<div>
 								<div class="loading-container" [hidden]="!loadingParticipants">
 									<ngx-loading [show]="true"></ngx-loading>

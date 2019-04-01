@@ -94,6 +94,31 @@ export class MyCalendarUtils extends CalendarUtils {
 })
 export class GuidePageComponent implements OnInit, OnDestroy {
 
+	constructor(
+		public router: Router,
+		private activatedRoute: ActivatedRoute,
+		private _cookieUtilsService: CookieUtilsService,
+		public _collectionService: CollectionService,
+		public _contentService: ContentService,
+		public _topicService: TopicService,
+		private _commentService: CommentService,
+		private _fb: FormBuilder,
+		private dialog: MatDialog,
+		private dialogsService: DialogsService,
+		private snackBar: MatSnackBar,
+		private _socketService: SocketService,
+		private _authenticationService: AuthenticationService,
+		private titleService: Title,
+		private metaService: Meta,
+		private _assessmentService: AssessmentService,
+		private ucwords: UcWordsPipe,
+		private certificateService: CertificateService,
+		private _profileService: ProfileService,
+		private _corestackService: CorestackService
+	) {
+		this.envVariable = environment;
+	}
+
 	public guideId: string;
 	public envVariable;
 	public userId;
@@ -170,6 +195,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	public toOpenDialogName;
 
 	public objectKeys = Object.keys;
+	public calendarId: string;
 
 
 	public activityMapping:
@@ -202,37 +228,18 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 	selectedTab: number;
 	loadingCodeLab: boolean;
 	totalHours: number;
+	public isFollowing: boolean;
 
-	constructor(public router: Router,
-		private activatedRoute: ActivatedRoute,
-		private _cookieUtilsService: CookieUtilsService,
-		public _collectionService: CollectionService,
-		public _contentService: ContentService,
-		public _topicService: TopicService,
-		private _commentService: CommentService,
-		private _fb: FormBuilder,
-		private dialog: MatDialog,
-		private dialogsService: DialogsService,
-		private snackBar: MatSnackBar,
-		private _socketService: SocketService,
-		private _authenticationService: AuthenticationService,
-		private titleService: Title,
-		private metaService: Meta,
-		private _assessmentService: AssessmentService,
-		private ucwords: UcWordsPipe,
-		private certificateService: CertificateService,
-		private _profileService: ProfileService,
-		private _corestackService: CorestackService
-	) {
-		this.envVariable = environment;
+
+	static scrollToDiscussion() {
+		const el = document.getElementById('discussionTarget');
+		el.scrollIntoView();
 	}
 
 	ngOnInit() {
 		this._authenticationService.isLoginSubject.subscribe(res => {
-			console.log('Initializing Page');
 			this.initializePage();
 		});
-		this.initializePage();
 	}
 
 	ngOnDestroy() {
@@ -284,9 +291,20 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 			'include': [
 				'topics',
 				'views',
-				{ 'participants': [{ 'profiles': ['work'] }] },
-				{ 'owners': [{ 'profiles': ['work'] }] },
+				'calendars',
+				{
+					'participants': [
+						{ 'profiles': ['work'] }
+					]
+				},
+				{
+					'owners': [
+						{ 'profiles': ['work'] },
+						'invites'
+					]
+				},
 				'rooms',
+				'peersFollowing',
 				'corestackStudents'
 			],
 			'where': {
@@ -544,20 +562,24 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	private getEthereumInfo() {
-		this._collectionService.getCollectionEthereumInfo(this.guideId, {})
-			.subscribe(res => {
-				this.checkingEthereum = false;
-				if (res && res[6] && res[6] !== '0') {
-					this.isOnEthereum = true;
+	private checkIfFollowing() {
+		if (this.guide.peersFollowing && this.guide.peersFollowing.length > 0) {
+			this.guide.peersFollowing.some(peer => {
+				console.log(peer);
+				if (peer.id === this.userId) {
+					this.isFollowing = true;
+					console.log('isFollowing');
+					return true;
 				}
 			});
+		}
 	}
 
 	private processData(res: any) {
 		if (res && res.length > 0) {
 			console.log('PROCESSING DATA');
 			this.guide = res[0];
+			this.calendarId = this.guide.calendars[0];
 			this.guideId = this.guide.id;
 			this.inviteLink = environment.clientUrl + '/guide/' + this.guide.id;
 			this.totalHours = this.guide.description ? this._collectionService.calculateDuration(this.guide.description.length) : 0;
@@ -574,7 +596,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 			} catch (e) {
 				console.log(e);
 			}
-			this.getEthereumInfo();
 			this.initializeUserType();
 			this.fixTopics();
 			this.getReviews();
@@ -1034,11 +1055,28 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		if (this.guide.rooms && this.guide.rooms.length > 0) {
 			chatRoomId = this.guide.rooms[0].id;
 		}
+		let invites = [];
+		if (this.guide.owners[0].invites && this.guide.owners[0].invites.length > 0) {
+			invites = _.filter(this.guide.owners[0].invites, invite => invite.collectionId === this.guide.id);
+			invites = _.orderBy(invites, ['createdAt'], ['desc']);
+		}
+		if (this.guide.corestackStudents) {
+			this.participants.forEach(participant => {
+				const corestackStudent = _.find(this.guide.corestackStudents, student => student.student_id === participant.id);
+				if (corestackStudent) {
+					participant.codeLab = corestackStudent;
+				}
+			});
+		}
 		this.dialogsService.viewParticipantsDialog(
 			this.participants,
 			this.guideId,
+			this.calendarId,
 			this.userType,
-			chatRoomId).subscribe();
+			chatRoomId,
+			null,
+			invites
+		).subscribe();
 	}
 
 	viewAllParticipants() {
@@ -1046,7 +1084,28 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 		if (this.guide.rooms && this.guide.rooms.length > 0) {
 			chatRoomId = this.guide.rooms[0].id;
 		}
-		this.dialogsService.viewParticipantsDialog(this.allParticipants, this.guideId, this.userType, chatRoomId).subscribe();
+		let invites = [];
+		if (this.guide.owners[0].invites && this.guide.owners[0].invites.length > 0) {
+			invites = _.filter(this.guide.owners[0].invites, invite => invite.collectionId === this.guide.id);
+			invites = _.orderBy(invites, ['createdAt'], ['desc']);
+		}
+		if (this.guide.corestackStudents) {
+			this.allParticipants.forEach(participant => {
+				const corestackStudent = _.find(this.guide.corestackStudents, student => student.student_id === participant.id);
+				if (corestackStudent) {
+					participant.codeLab = corestackStudent;
+				}
+			});
+		}
+		this.dialogsService.viewParticipantsDialog(
+			this.allParticipants,
+			this.guideId,
+			this.calendarId,
+			this.userType,
+			chatRoomId,
+			null,
+			invites
+		).subscribe();
 	}
 
 
@@ -1062,7 +1121,7 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 					'scope': {
 						'include':
 							[{ 'owners': ['reviewsAboutYou', 'profiles'] }, 'calendars', 'participants',
-							{ 'contents': 'locations' }],
+								{ 'contents': 'locations' }],
 						'where': { 'type': 'guide' }
 					}
 				}
@@ -1524,12 +1583,6 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 
 	private sort(calendars, param1, param2) {
 		return _.sortBy(calendars, [param1, param2]);
-	}
-
-
-	scrollToDiscussion() {
-		const el = document.getElementById('discussionTarget');
-		el.scrollIntoView();
 	}
 
 	add1ToIndex(index) {

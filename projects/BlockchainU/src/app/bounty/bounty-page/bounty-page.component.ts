@@ -1302,6 +1302,7 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 		this.dialogsService.viewParticipantsDialog(
 			this.participants,
 			this.bountyId,
+			this.calendarId,
 			this.userType,
 			chatRoomId).subscribe();
 	}
@@ -1311,7 +1312,12 @@ export class BountyPageComponent implements OnInit, OnDestroy {
 		if (this.bounty.rooms && this.bounty.rooms.length > 0) {
 			chatRoomId = this.bounty.rooms[0].id;
 		}
-		this.dialogsService.viewParticipantsDialog(this.allParticipants, this.bountyId, this.userType, chatRoomId).subscribe();
+		this.dialogsService.viewParticipantsDialog(
+			this.allParticipants,
+			this.bountyId,
+			this.calendarId,
+			this.userType,
+			chatRoomId).subscribe();
 	}
 
 	/**
