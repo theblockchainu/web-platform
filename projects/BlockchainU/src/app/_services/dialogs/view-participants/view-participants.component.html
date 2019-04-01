@@ -30,6 +30,9 @@
 					<b>{{participant.profiles[0].first_name +' '+participant.profiles[0].last_name | ucwords }}</b>
 					<br />
 					<span *ngIf="participant.profiles[0].headline" class="mat-caption lightText">{{participant.profiles[0].headline | ucfirst}}</span>
+					<div *ngIf="participant.codeLab" style="padding: 5px 10px; border: 1px solid #333; border-radius: 4px; width: fit-content">
+						CodeLab is <b>{{participant.codeLab.student_course_status}}</b>
+					</div>
 				</div>
 				<div class="col-md-3 vcenter">
 					<div *ngIf="data.userType === 'teacher'">
@@ -55,37 +58,48 @@
 			<hr>
 		</div>
 		<div class="col-md-12 mat-body-2">
-			Invited Participants
+			Pending Invitations
 		</div>
 		<div class="col-md-12">
 			<hr>
 		</div>
 	</div>
 	<div *ngIf="data.invites && data.invites.length > 0 && data.userType === 'teacher'">
-		<div class="row margin-bottom-20" *ngFor="let invite of data.invites">
-			<div class="mat-caption">
-				<div class="col-md-7 vcenter clickable" (click)="dialogRef.close()">
-					<b>{{(invite.name && invite.name.length > 0) ? invite.name : invite.email | ucwords }}</b>
-					<br />
-					<span class="mat-caption lightText">{{(invite.name && invite.name.length > 0) ? invite.email : '' }}</span>
-					<div>
-						<span class="mat-h5 lightText">Invited on {{invite.createdAt | extractTime : 'Do MMM, YYYY'}}</span>
+		<div *ngFor="let invite of data.invites">
+			<div class="row margin-bottom-20" *ngIf="invite.status !== 'accepted'">
+				<div class="mat-caption">
+					<div class="col-md-7 vcenter clickable" (click)="dialogRef.close()">
+						<b>{{(invite.name && invite.name.length > 0) ? invite.name : invite.email | ucwords }}</b>
+						<br />
+						<span class="mat-caption lightText">{{(invite.name && invite.name.length > 0) ? invite.email : '' }}</span>
+						<div>
+							<span class="mat-h5 lightText">Invited on {{invite.createdAt | extractTime : 'Do MMM, YYYY'}}</span>
+						</div>
+					</div>
+					<div class="col-md-3 vcenter">
+						<div *ngIf="data.userType === 'teacher'">
+							<div>Status</div>
+							<div class="mat-caption lightText">{{invite.status | ucwords}}</div>
+						</div>
+					</div>
+					<div class="col-md-1 vcenter">
+						<button mat-icon-button [matMenuTriggerFor]="menu">
+							<mat-icon class="lightText">more_vert</mat-icon>
+						</button>
+						<mat-menu #menu="matMenu">
+							<button mat-menu-item (click)="removeInvite(invite.id)">Cancel Invite</button>
+						</mat-menu>
 					</div>
 				</div>
-				<div class="col-md-3 vcenter">
-					<div *ngIf="data.userType === 'teacher'">
-						<div>Status</div>
-						<div class="mat-caption lightText">{{invite.status | ucwords}}</div>
-					</div>
-				</div>
-				<div class="col-md-1 vcenter">
-					<button mat-icon-button [matMenuTriggerFor]="menu">
-						<mat-icon class="lightText">more_vert</mat-icon>
-					</button>
-					<mat-menu #menu="matMenu">
-						<button mat-menu-item (click)="removeInvite(invite.id)">Cancel Invite</button>
-					</mat-menu>
-				</div>
+			</div>
+		</div>
+	</div>
+	<div *ngIf="(!data.invites || data.invites.length === 0) && data.userType === 'teacher'">
+		<div class="row">
+			<div class="col-xs-12 mat-caption">
+				You do not have any pending invitations sent to participants for joining this course.
+				<br><br>
+				<div class="clickable primaryColor" (click)="openAddParticipantsDialog()">Invite participants now?</div>
 			</div>
 		</div>
 	</div>

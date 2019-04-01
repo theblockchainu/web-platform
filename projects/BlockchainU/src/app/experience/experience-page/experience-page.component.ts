@@ -1400,6 +1400,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.dialogsService.viewParticipantsDialog(
 			this.participants,
 			this.experienceId,
+			this.calendarId,
 			this.userType,
 			chatRoomId,
 			this.experience.calendars,
@@ -1420,6 +1421,7 @@ export class ExperiencePageComponent implements OnInit, OnDestroy {
 		this.dialogsService.viewParticipantsDialog(
 			this.allParticipants,
 			this.experienceId,
+			this.calendarId,
 			this.userType,
 			chatRoomId,
 			this.experience.calendars,

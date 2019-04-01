@@ -146,7 +146,7 @@ export class CommunityPageComponent implements OnInit, OnDestroy, AfterViewCheck
 		});
 		this.initializePage();
 	}
-	
+
 	ngOnDestroy() {
 		if (this.startedView) {
 			this.startedView.viewer = {
@@ -247,7 +247,7 @@ export class CommunityPageComponent implements OnInit, OnDestroy, AfterViewCheck
 			this.recordStartView();
 		}
 	}
-	
+
 	private recordStartView() {
 		// Send start view msg on socket
 		const view = {
@@ -414,7 +414,11 @@ export class CommunityPageComponent implements OnInit, OnDestroy, AfterViewCheck
 	 * View participants
 	 */
 	public viewParticipants() {
-		this.dialogsService.viewParticipantsDialog(this.participants, this.communityId).subscribe();
+		this.dialogsService.viewParticipantsDialog(
+			this.participants,
+			this.communityId,
+			null
+		).subscribe();
 	}
 
 	public joinCommunity() {
