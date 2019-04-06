@@ -157,7 +157,7 @@
 									<hr class="margin-top-50">
 								</div>
 								<div class="col-xs-12" *ngIf="globalStory || knowledgeStory.status === 'approved'">
-									<h3>Real-time updates</h3>
+									<h3>Gyan Timeline</h3>
 								</div>
 								<div class="col-xs-12 margin-top-10" *ngFor="let transaction of blockTransactions">
 									{{parseTransactionLog(transaction.result).events}}
@@ -171,7 +171,7 @@
 									</span>
 								</div>
 								<div class="col-md-12 lightText mat-caption" *ngIf="!blockTransactions || blockTransactions.length === 0">
-									You do not have any Gyan updates at this time.
+									As you learn, your Gyan activity will show up here.
 								</div>
 							</div>
 						</div>
@@ -203,7 +203,7 @@
 											</p>
 										</div>
 									</div>
-									<div class="row margin-top-20" *ngIf="knowledgeStory.protagonist[0].profiles[0].work && knowledgeStory.protagonist[0].profiles[0].work.length>0">
+									<div class="row margin-top-20" *ngIf="knowledgeStory.protagonist[0].profiles[0].work && knowledgeStory.protagonist[0].profiles[0].work.length>0 && knowledgeStory.protagonist[0].profiles[0].work.position && knowledgeStory.protagonist[0].profiles[0].work.company">
 										<div class="col-xs-12">
 											<h3>
 												Work
@@ -226,7 +226,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="row margin-top-20" *ngIf="knowledgeStory.protagonist[0].profiles[0].education && knowledgeStory.protagonist[0].profiles[0].education.length>0">
+									<div class="row margin-top-20" *ngIf="knowledgeStory.protagonist[0].profiles[0].education && knowledgeStory.protagonist[0].profiles[0].education.length>0 && knowledgeStory.protagonist[0].profiles[0].education.degree && knowledgeStory.protagonist[0].profiles[0].education.school">
 										<div class="col-xs-12">
 											<h3>
 												Education

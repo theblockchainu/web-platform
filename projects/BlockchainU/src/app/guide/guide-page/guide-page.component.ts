@@ -687,7 +687,9 @@ export class GuidePageComponent implements OnInit, OnDestroy {
 				this.labStatus = 'error';
 				this.loadingCodeLab = false;
 				console.log(err);
-				this.snackBar.open(err.error.error.error.message, 'Close', { duration: 5000 });
+				if (err.error.error.error.message) {
+					this.snackBar.open(err.error.error.error.message, 'Close', { duration: 5000 });
+				}
 			});
 	}
 

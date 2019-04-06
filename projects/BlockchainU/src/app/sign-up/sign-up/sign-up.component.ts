@@ -118,9 +118,11 @@ export class SignUpComponent implements OnInit {
 			const registerObject = this.signupForm.value;
 			const birthdate = <Date>registerObject.birthdate;
 			delete registerObject.birthdate;
-			registerObject.dobDay = birthdate.getDate();
-			registerObject.dobMonth = Number(birthdate.getMonth() + 1);
-			registerObject.dobYear = birthdate.getFullYear();
+			if (birthdate) {
+				registerObject.dobDay = birthdate.getDate();
+				registerObject.dobMonth = Number(birthdate.getMonth() + 1);
+				registerObject.dobYear = birthdate.getFullYear();
+			}
 			console.log(registerObject);
 
 			this._AuthenticationService.signup(registerObject).subscribe((res: any) => {
