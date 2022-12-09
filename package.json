@@ -60,7 +60,7 @@
 		"angular-calendar": "^0.25.2",
 		"angularx-qrcode": "^1.2.2",
 		"core-js": "^2.5.7",
-		"express": "^4.16.3",
+		"express": "^4.17.3",
 		"file-saver": "^2.0.0",
 		"fullcalendar": "4.0.0-alpha",
 		"hammerjs": "^2.0.8",
